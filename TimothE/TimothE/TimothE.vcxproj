@@ -60,7 +60,7 @@
     <Link>
       <SubSystem>Console</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
-      <AdditionalLibraryDirectories>$(SolutionDir)Dependancies\GLFW\lib-vc2019;$(SolutionDir)Dependancies\GLEW\lib\x64;$(SolutionDir)Dependancies\assimp\lib\;$(SolutionDir)Dependancies\freetype;$(SolutionDir)Dependancies\irrklang\lib</AdditionalLibraryDirectories>
+      <AdditionalLibraryDirectories>$(SolutionDir)Dependancies\GLFW\lib-vc2019;$(SolutionDir)Dependancies\GLEW\lib;$(SolutionDir)Dependancies\assimp\lib\;$(SolutionDir)Dependancies\freetype;$(SolutionDir)Dependancies\irrklang\lib</AdditionalLibraryDirectories>
       <AdditionalDependencies>glfw3.lib;%(AdditionalDependencies) opengl32.lib;glew32s.lib;freetype.lib;irrKlang.lib;assimpd.lib</AdditionalDependencies>
     </Link>
   </ItemDefinitionGroup>
