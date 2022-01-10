@@ -39,11 +39,7 @@ private:
 
 
 private:
-	unsigned int _width, _height;
-	const char* _pName;
 	GLFWwindow* _pWindow;
-
-	EventCallbackFn _callback;
 
 	struct WindowData
 	{

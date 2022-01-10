@@ -8,9 +8,6 @@
 
 #include <functional>
 #include <iostream>
-#include <memory>
-#include <utility>
-#include <algorithm>
 
 #define BIND_EVENT_FN(x) std::bind(&Application::x, this, std::placeholders::_1)
 
@@ -103,6 +100,8 @@ void Application::OnEditorEvent(Event& e)
 {
 	EventDispatcher dispatcher(e);
 	dispatcher.Dispatch<WindowCloseEvent>(BIND_EVENT_FN(OnWindowClose));
+
+	//TODO: Setup events for remaining application and input devices
 }
 
 void Application::OnGameEvent(Event& e)

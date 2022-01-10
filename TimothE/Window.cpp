@@ -4,23 +4,21 @@
 #include <iostream>
 
 Window::Window(unsigned int width, unsigned int height, const char* name)
-	: _width(width), _height(height), _pName(name) //Initialize Member variables
 {
+	_windowData._width = width;
+	_windowData._height = height;
+	_windowData._title = name;
 }
 
 void Window::SetEventCallback(const EventCallbackFn& callback)
 {
-	_callback = callback;
 	_windowData._eventCallback = callback;
 }
 
 void Window::CreateWindow()
 {
-	_windowData._width = _width;
-	_windowData._height = _height;
-	_windowData._title = _pName;
 	//Create and assign the GLFWwindow object
-	_pWindow = glfwCreateWindow(_width, _height, _pName, nullptr, nullptr);
+	_pWindow = glfwCreateWindow(_windowData._width, _windowData._height, _windowData._title.c_str(), nullptr, nullptr);
 
 	//Makes this current window the context (current one to be edited
 	glfwMakeContextCurrent(_pWindow);
@@ -32,10 +30,12 @@ void Window::CreateWindow()
 	}
 
 	//Syncs to monitor refresh rate
+	//1: Vsync. 0: No Vsync
 	glfwSwapInterval(1);
 
 	glfwSetWindowUserPointer(_pWindow, &_windowData);
 
+	//Sets the callback for resizing the window
 	glfwSetWindowSizeCallback(_pWindow, [](GLFWwindow* window, int width, int height)
 		{
 			WindowData& data = *(WindowData*)glfwGetWindowUserPointer(window);
@@ -46,6 +46,7 @@ void Window::CreateWindow()
 			data._eventCallback(event);
 		});
 
+	//Sets the callback for closing a window
 	glfwSetWindowCloseCallback(_pWindow, [](GLFWwindow* window)
 		{
 			WindowData& data = *(WindowData*)glfwGetWindowUserPointer(window);
@@ -53,6 +54,7 @@ void Window::CreateWindow()
 			data._eventCallback(event);
 		});
 
+	//Sets the callback for pressing a key
 	glfwSetKeyCallback(_pWindow, [](GLFWwindow* window, int key, int scancode, int action, int mods) 
 		{
 			WindowData& data = *(WindowData*)glfwGetWindowUserPointer(window);
@@ -80,6 +82,7 @@ void Window::CreateWindow()
 			}
 		});
 
+	//Sets the callback for pressing a mouse button
 	glfwSetMouseButtonCallback(_pWindow, [](GLFWwindow* window, int button, int action, int mods)
 		{
 			WindowData& data = *(WindowData*)glfwGetWindowUserPointer(window);
@@ -100,6 +103,7 @@ void Window::CreateWindow()
 			}
 		});
 
+	//Sets the callback for scrolling the mouse wheel
 	glfwSetScrollCallback(_pWindow, [](GLFWwindow* window, double xOffset, double yOffset)
 		{
 			WindowData& data = *(WindowData*)glfwGetWindowUserPointer(window);
@@ -108,6 +112,7 @@ void Window::CreateWindow()
 			data._eventCallback(event);
 		});
 
+	//Sets the callback for when the mouse position changes
 	glfwSetCursorPosCallback(_pWindow, [](GLFWwindow* window, double xPos, double yPos)
 		{
 			WindowData& data = *(WindowData*)glfwGetWindowUserPointer(window);
