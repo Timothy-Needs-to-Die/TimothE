@@ -6,6 +6,14 @@
 #include <thread>
 #include "Window.h"
 
+#include <functional>
+#include <iostream>
+#include <memory>
+#include <utility>
+#include <algorithm>
+
+#define BIND_EVENT_FN(x) std::bind(&Application::x, this, std::placeholders::_1)
+
 void Application::Init(bool createEditorWindow)
 {
 	_inEditorMode = createEditorWindow;
@@ -19,51 +27,92 @@ void Application::Init(bool createEditorWindow)
 	if (createEditorWindow) {
 		_pEditorWindow = new Window(1280, 720, "TimothE Engine");
 	}
+
+	_pEditorWindow->SetEventCallback(BIND_EVENT_FN(OnEditorEvent));
+	_pEditorWindow->CreateWindow();
+	_pGameWindow->SetEventCallback(BIND_EVENT_FN(OnGameEvent));
+	_pGameWindow->CreateWindow();
+
+	_running = true;
 }
 
 void Application::RunLoop()
 {
 	if (_inEditorMode) {
-		GLFWwindow* editorWin = _pEditorWindow->GetGLFWWindow();
-		std::thread editorWindowThread = std::thread([editorWin]
-			{
-				//While the editor window should not close
-				while (!glfwWindowShouldClose(editorWin)) {
-					//Sets this to be the current window being edited
-					glfwMakeContextCurrent(editorWin);
+		//While the editor window should not close
+		while (_running) {
+			//Sets this to be the current window being edited
+			glfwMakeContextCurrent(_pEditorWindow->GetGLFWWindow());
 
-					//Sets background colour and clears colour buffer bit
-					glClearColor(1.0f, 1.0f, 0.0f, 1.0f);
-					glClear(GL_COLOR_BUFFER_BIT);
+			//Sets background colour and clears colour buffer bit
+			glClearColor(1.0f, 1.0f, 0.0f, 1.0f);
+			glClear(GL_COLOR_BUFFER_BIT);
 
-					//Swaps back and front buffer
-					glfwSwapBuffers(editorWin);
+			//Swaps back and front buffer
+			glfwSwapBuffers(_pEditorWindow->GetGLFWWindow());
 
-					//Poll for glfw events
-					glfwPollEvents();
-				}
+			//Poll for glfw events
+			glfwPollEvents();
 
-				//Terminate glfw
-				glfwTerminate();
-			}
-		);
+			//==================
+			//RENDER GAME WINDOW
+			//==================
+
+			//Sets this to be the current window being edited
+			glfwMakeContextCurrent(_pGameWindow->GetGLFWWindow());
+
+			//Sets background colour and clears the colour buffer bit
+			glClearColor(0.3f, 1.0f, 0.0f, 1.0f);
+			glClear(GL_COLOR_BUFFER_BIT);
+
+			//Swaps back and front buffer
+			glfwSwapBuffers(_pGameWindow->GetGLFWWindow());
+
+			//Poll for glfw events
+			glfwPollEvents();
+		}
+
+		//Terminate glfw
+		glfwDestroyWindow(_pEditorWindow->GetGLFWWindow());
+	}
+	else
+	{
+		while (_running) {
+			//Sets this to be the current window being edited
+			glfwMakeContextCurrent(_pGameWindow->GetGLFWWindow());
+
+			//Sets background colour and clears the colour buffer bit
+			glClearColor(0.3f, 1.0f, 0.0f, 1.0f);
+			glClear(GL_COLOR_BUFFER_BIT);
+
+			//Swaps back and front buffer
+			glfwSwapBuffers(_pGameWindow->GetGLFWWindow());
+
+			//Poll for glfw events
+			glfwPollEvents();
+		}
+
 	}
 
-	while (!glfwWindowShouldClose(_pGameWindow->GetGLFWWindow())) {
-		//Sets this to be the current window being edited
-		glfwMakeContextCurrent(_pGameWindow->GetGLFWWindow());
-
-		//Sets background colour and clears the colour buffer bit
-		glClearColor(0.3f, 1.0f, 0.0f, 1.0f);
-		glClear(GL_COLOR_BUFFER_BIT);
-
-		//Swaps back and front buffer
-		glfwSwapBuffers(_pGameWindow->GetGLFWWindow());
-
-		//Poll for glfw events
-		glfwPollEvents();
-	}
 
 	//Terminate glfw
-	glfwTerminate();
+	glfwDestroyWindow(_pGameWindow->GetGLFWWindow());
+}
+
+void Application::OnEditorEvent(Event& e)
+{
+	EventDispatcher dispatcher(e);
+	dispatcher.Dispatch<WindowCloseEvent>(BIND_EVENT_FN(OnWindowClose));
+}
+
+void Application::OnGameEvent(Event& e)
+{
+
+}
+
+bool Application::OnWindowClose(WindowCloseEvent& e)
+{
+	std::cout << "OnWindowClose Event" << std::endl;
+	_running = false;
+	return true;
 }

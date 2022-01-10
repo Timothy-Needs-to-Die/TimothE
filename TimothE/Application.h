@@ -1,6 +1,7 @@
 #pragma once
 
 #include "Window.h"
+#include "ApplicationEvent.h"
 
 class Application
 {
@@ -11,10 +12,16 @@ public:
 	//Starts the game loop and the editor window loop
 	void RunLoop();
 
+	void OnEditorEvent(Event& e);
+	void OnGameEvent(Event& e);
+
 private:
+	bool OnWindowClose(WindowCloseEvent& e);
+
 	Window* _pGameWindow;
 	Window* _pEditorWindow;
 
 	bool _inEditorMode;
+	bool _running;
 };
 
