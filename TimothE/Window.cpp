@@ -15,6 +15,21 @@ void Window::SetEventCallback(const EventCallbackFn& callback)
 	_windowData._eventCallback = callback;
 }
 
+void Window::SetWindowColour(float r, float g, float b, float a)
+{
+	//Sets this to be the current window being edited
+	glfwMakeContextCurrent(_pWindow);
+
+	//Sets background colour and clears the colour buffer bit
+	glClearColor(r,g,b,a);
+	glClear(GL_COLOR_BUFFER_BIT);
+}
+
+void Window::DestroyWindow()
+{
+	glfwDestroyWindow(_pWindow);
+}
+
 void Window::CreateWindow()
 {
 	//Create and assign the GLFWwindow object
@@ -120,4 +135,9 @@ void Window::CreateWindow()
 			MouseMovedEvent event((float)xPos, (float)yPos);
 			data._eventCallback(event);
 		});
+}
+
+void Window::SwapBuffers()
+{
+	glfwSwapBuffers(_pWindow);
 }

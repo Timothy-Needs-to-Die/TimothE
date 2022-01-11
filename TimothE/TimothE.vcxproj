@@ -57,7 +57,7 @@
     <ClCompile>
       <PrecompiledHeader>NotUsing</PrecompiledHeader>
       <WarningLevel>Level3</WarningLevel>
-      <AdditionalIncludeDirectories>..\Dependancies\GLFW\include;..\Dependancies\GLEW\include;..\Dependancies\glm;..\Dependancies\irrklang\include;..\Dependancies\nlohmann;..\Dependancies\freetype;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>..\Dependancies\GLFW\include;..\Dependancies\GLEW\include;..\Dependancies\glm;..\Dependancies\irrklang\include;..\Dependancies\nlohmann;..\Dependancies\freetype;..\Dependancies\imgui;..\Dependancies\imgui\backend;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <Optimization>Disabled</Optimization>
     </ClCompile>
     <Link>
@@ -70,7 +70,7 @@
     <ClCompile>
       <PrecompiledHeader>NotUsing</PrecompiledHeader>
       <WarningLevel>Level3</WarningLevel>
-      <AdditionalIncludeDirectories>..\Dependancies\GLFW\include;..\Dependancies\GLEW\include;..\Dependancies\glm;..\Dependancies\irrklang\include;..\Dependancies\nlohmann;..\Dependancies\freetype;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>..\Dependancies\GLFW\include;..\Dependancies\GLEW\include;..\Dependancies\glm;..\Dependancies\irrklang\include;..\Dependancies\nlohmann;..\Dependancies\freetype;..\Dependancies\imgui;..\Dependancies\imgui\backend;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <Optimization>Disabled</Optimization>
     </ClCompile>
     <Link>
@@ -80,6 +80,15 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClInclude Include="..\Dependancies\imgui\imconfig.h" />
+    <ClInclude Include="..\Dependancies\imgui\imgui.h" />
+    <ClInclude Include="..\Dependancies\imgui\imgui_impl_glfw.h" />
+    <ClInclude Include="..\Dependancies\imgui\imgui_impl_opengl3.h" />
+    <ClInclude Include="..\Dependancies\imgui\imgui_impl_opengl3_loader.h" />
+    <ClInclude Include="..\Dependancies\imgui\imgui_internal.h" />
+    <ClInclude Include="..\Dependancies\imgui\imstb_rectpack.h" />
+    <ClInclude Include="..\Dependancies\imgui\imstb_textedit.h" />
+    <ClInclude Include="..\Dependancies\imgui\imstb_truetype.h" />
     <ClInclude Include="Application.h" />
     <ClInclude Include="ApplicationEvent.h" />
     <ClInclude Include="Component.h" />
@@ -96,6 +105,13 @@
     <ClInclude Include="Window.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="..\Dependancies\imgui\imgui.cpp" />
+    <ClCompile Include="..\Dependancies\imgui\imgui_demo.cpp" />
+    <ClCompile Include="..\Dependancies\imgui\imgui_draw.cpp" />
+    <ClCompile Include="..\Dependancies\imgui\imgui_impl_glfw.cpp" />
+    <ClCompile Include="..\Dependancies\imgui\imgui_impl_opengl3.cpp" />
+    <ClCompile Include="..\Dependancies\imgui\imgui_tables.cpp" />
+    <ClCompile Include="..\Dependancies\imgui\imgui_widgets.cpp" />
     <ClCompile Include="Application.cpp" />
     <ClCompile Include="Component.cpp" />
     <ClCompile Include="GameObject.cpp" />
