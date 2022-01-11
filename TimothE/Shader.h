@@ -1,8 +1,5 @@
 #pragma once
 
-#ifndef SHADER_H
-#define SHADER_H
-
 #include <GL/glew.h>
 #include <GL/gl.h>
 
@@ -37,5 +34,3 @@ private:
 	std::string _vertexShaderPath;
 	std::string _fragmentShaderPath;
 };
-
-#endif
