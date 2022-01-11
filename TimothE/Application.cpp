@@ -99,19 +99,27 @@ void Application::RunLoop()
 void Application::OnEditorEvent(Event& e)
 {
 	EventDispatcher dispatcher(e);
-	dispatcher.Dispatch<WindowCloseEvent>(BIND_EVENT_FN(OnWindowClose));
+	dispatcher.Dispatch<WindowCloseEvent>(BIND_EVENT_FN(OnEditorWindowClose));
 
 	//TODO: Setup events for remaining application and input devices
 }
 
 void Application::OnGameEvent(Event& e)
 {
-
+		EventDispatcher dispatcher(e);
+		dispatcher.Dispatch<WindowCloseEvent>(BIND_EVENT_FN(OnGameWindowClose));
 }
 
-bool Application::OnWindowClose(WindowCloseEvent& e)
+bool Application::OnEditorWindowClose(WindowCloseEvent& e)
 {
-	std::cout << "OnWindowClose Event" << std::endl;
+	std::cout << "Editor Window: " << e.ToString() << std::endl;
+	_running = false;
+	return true;
+}
+
+bool Application::OnGameWindowClose(WindowCloseEvent& e)
+{
+	std::cout << "Game Window: " << e.ToString() << std::endl;
 	_running = false;
 	return true;
 }

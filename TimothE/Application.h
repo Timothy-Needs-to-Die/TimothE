@@ -16,7 +16,8 @@ public:
 	void OnGameEvent(Event& e);
 
 private:
-	bool OnWindowClose(WindowCloseEvent& e);
+	bool OnEditorWindowClose(WindowCloseEvent& e);
+	bool OnGameWindowClose(WindowCloseEvent& e);
 
 	Window* _pGameWindow;
 	Window* _pEditorWindow;
