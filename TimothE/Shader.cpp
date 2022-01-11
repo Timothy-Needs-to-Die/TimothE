@@ -1,3 +1,4 @@
+#include <GL/glew.h>
 #include "Shader.h"
 
 Shader::Shader(const std::string& vsPath, const std::string& fsPath) : _vertexShaderPath(vsPath), _fragmentShaderPath(fsPath)

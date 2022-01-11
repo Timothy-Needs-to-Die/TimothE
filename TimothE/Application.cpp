@@ -1,3 +1,4 @@
+#include <GL/glew.h>
 #include <GLFW/glfw3.h>
 
 #include "Application.h"
@@ -27,8 +28,6 @@ void Application::Init(bool createEditorWindow)
 
 	_inEditorMode = createEditorWindow;
 
-
-
 	if (!glfwInit()) {
 		std::cout << "[ERROR: Application::Init()]: glfw failed to initialize" << std::endl;
 	}
@@ -47,6 +46,14 @@ void Application::Init(bool createEditorWindow)
 	_pGameWindow->SetEventCallback(BIND_EVENT_FN(OnGameEvent));
 	_pGameWindow->CreateWindow();
 
+	GLint GlewInitResult = glewInit();
+	if (GlewInitResult != GLEW_OK)
+	{
+		//std::cout << "ERROR: %s", glewGetErrorString(GlewInitResult) << std::endl;
+		exit(EXIT_FAILURE);
+	}
+
+	_graphics.Initialize();
 
 	ImGui::CreateContext();
 	ImGuiIO& io = ImGui::GetIO(); (void)io;
@@ -223,7 +230,7 @@ void Application::GameBeginRender()
 
 void Application::GameRender()
 {
-
+	_graphics.Render(_pGameWindow->GetGLFWWindow(), NULL);
 }
 
 void Application::GameEndRender()

@@ -2,6 +2,7 @@
 
 #include "Window.h"
 #include "ApplicationEvent.h"
+#include "Graphics.h"
 
 class Application
 {
@@ -48,6 +49,8 @@ private:
 	bool OnEditorWindowMouseButtonReleasedEvent(MouseButtonReleasedEvent& e);
 
 	void ModernDarkTheme();
+
+	Graphics _graphics;
 
 	Window* _pGameWindow;
 	Window* _pEditorWindow;
