@@ -1,6 +1,6 @@
 #include <gl/glew.h>
 #include <GLFW/glfw3.h>
-
+#include"Component.h"
 #include<iostream>
 
 void main() {
@@ -19,7 +19,10 @@ void main() {
 	//Syncs to monitor refresh rate
 	glfwSwapInterval(1);
 
-
+	Component<TestComponent>* comp = new Component<TestComponent>();
+	//comp->GetComponent().Test(5,6);
+	comp->OnUpdate();
+	delete comp;
 
 	while (!glfwWindowShouldClose(window)) {
 		glClearColor(0.3f, 1.0f, 0.0f, 1.0f);
