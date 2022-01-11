@@ -6,12 +6,13 @@
 #include <iostream>
 
 #include "GameObject.h"
+#include "Shader.h"
 
 class Graphics
 {
 public:
 	void Initialize();
 	void Render(GLFWwindow* window, GameObject* gameObject);
-	void BindShader(unsigned int vertexShader);
 private:
+	Shader* _pShader;
 };
