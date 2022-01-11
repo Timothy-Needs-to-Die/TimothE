@@ -3,24 +3,30 @@
 
 void Input::Init()
 {
-	for (int i = 0; i < GLFW_KEY_LAST; ++i) {
-		_pKeyArr[i] = GLFW_RELEASE;
+	//Sets the default state for each key to RELEASED
+	for (int i = 0; i < KEY_LAST; ++i) {
+		_pKeyArr[i] = RELEASE;
 	}
 
-	for (int i = 0; i < GLFW_MOUSE_BUTTON_LAST; ++i) {
-		_pMouseArr[i] = GLFW_RELEASE;
+	//Sets the default state for each mouse button to RELEASED	
+	for (int i = 0; i < BUTTON_LAST; ++i) {
+		_pMouseArr[i] = RELEASE;
 	}
 }
 
-//TODO: Range check keycode so it does not go outside array
 void Input::SetKey(TimothEKeyCode keycode, TimothEInputState state)
 {
+	//Check that the desired key code is within the array
+	assert(keycode <= KEY_LAST&& keycode >= KEY_FIRST);
+
 	_pKeyArr[keycode] = state;
 }
 
-//TODO: Range check button so it does not go outside array
 void Input::SetMouseButton(TimothEMouseCode button, TimothEInputState state)
 {
+	//Checks that the desired mouse button is within the array
+	assert(button <= BUTTON_LAST && button >= BUTTON_FIRST);
+
 	_pMouseArr[button] = state;
 }
 
@@ -49,5 +55,6 @@ bool Input::IsMouseButtonUp(TimothEMouseCode button)
 	return _pMouseArr[button] == GLFW_RELEASE;
 }
 
-int* Input::_pKeyArr = new int[GLFW_KEY_LAST];
-int* Input::_pMouseArr = new int[GLFW_MOUSE_BUTTON_LAST];
+//Initialize static members
+int* Input::_pKeyArr = new int[KEY_LAST];
+int* Input::_pMouseArr = new int[BUTTON_LAST];
