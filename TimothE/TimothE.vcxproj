@@ -92,6 +92,7 @@
     <ClInclude Include="Scene.h" />
     <ClInclude Include="TimothEInputCodes.h" />
     <ClInclude Include="Transform.h" />
+    <ClInclude Include="UID.h" />
     <ClInclude Include="Window.h" />
   </ItemGroup>
   <ItemGroup>

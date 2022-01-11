@@ -11,10 +11,14 @@
 #include <functional>
 #include <iostream>
 
+#include "UID.h"
+
 #define BIND_EVENT_FN(x) std::bind(&Application::x, this, std::placeholders::_1)
 
 void Application::Init(bool createEditorWindow)
 {
+	UID::Init();
+
 	_inEditorMode = createEditorWindow;
 
 	if (!glfwInit()) {
@@ -33,6 +37,7 @@ void Application::Init(bool createEditorWindow)
 	_pGameWindow->CreateWindow();
 
 	Input::Init();
+	
 
 	_running = true;
 }
@@ -56,26 +61,29 @@ void Application::RunLoop()
 			glfwPollEvents();
 
 			//INPUT TEST CODE
-			if (Input::IsKeyDown(KEY_W)) {
-				std::cout << "W is Pressed" << std::endl;
-			}
-
-			if (Input::IsKeyHeld(KEY_W)) {
-				std::cout << "W is Held" << std::endl;
-			}
-
-			if (Input::IsKeyUp(KEY_W)) {
-				std::cout << "W is Up" << std::endl;
-			}
-
-			if (Input::IsMouseButtonDown(BUTTON_LEFT)) {
-				std::cout << "Left Mouse Button is down" << std::endl;
-			}
-
-			if (Input::IsMouseButtonUp(BUTTON_LEFT)) {
-				std::cout << "Left Mouse Button is up" << std::endl;
-			}
+			//if (Input::IsKeyDown(KEY_W)) {
+			//	std::cout << "W is Pressed" << std::endl;
+			//}
+			//
+			//if (Input::IsKeyHeld(KEY_W)) {
+			//	std::cout << "W is Held" << std::endl;
+			//}
+			//
+			//if (Input::IsKeyUp(KEY_W)) {
+			//	std::cout << "W is Up" << std::endl;
+			//}
+			//
+			//if (Input::IsMouseButtonDown(BUTTON_LEFT)) {
+			//	std::cout << "Left Mouse Button is down" << std::endl;
+			//}
+			//
+			//if (Input::IsMouseButtonUp(BUTTON_LEFT)) {
+			//	std::cout << "Left Mouse Button is up" << std::endl;
+			//}
 			//END OF INPUT TEST CODE
+
+			//Unique ID test
+			//std::cout << UID::GenerateUID() << std::endl;
 
 			//==================
 			//RENDER GAME WINDOW
