@@ -8,5 +8,5 @@
 void main() {
 	Application* game = new Application();
 	game->Init(true);
-	game->RunLoop();
+	game->GameLoop();
 }

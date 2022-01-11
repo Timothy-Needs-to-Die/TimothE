@@ -33,8 +33,14 @@ public:
 
 	void SetEventCallback(const EventCallbackFn& callback);
 
+	void SetWindowColour(float r, float g, float b, float a);
+
+	void DestroyWindow();
+
 	//Creates a GLFWwindow with the passed in width, height and name.
 	void CreateWindow();
+
+	void SwapBuffers();
 private:
 
 

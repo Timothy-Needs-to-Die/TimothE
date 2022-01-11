@@ -10,10 +10,27 @@ public:
 	void Init(bool createEditorWindow = true);
 
 	//Starts the game loop and the editor window loop
-	void RunLoop();
+	void GameLoop();
 
 	void OnEditorEvent(Event& e);
 	void OnGameEvent(Event& e);
+
+protected:
+	void PollInput();
+
+	void EditorUpdate(float dt);
+	
+	void EditorStartRender();
+	void EditorRender();
+	void EditorEndRender();
+
+	void EditorImGUIBegin();
+	void EditorImGUIRender();
+	void EditorImGUIEndRender();
+
+	void GameBeginRender();
+	void GameRender();
+	void GameEndRender();
 
 private:
 	bool OnEditorWindowClose(WindowCloseEvent& e);
@@ -29,6 +46,8 @@ private:
 	bool OnEditorWindowKeyReleasedEvent(KeyReleasedEvent& e);
 	bool OnEditorWindowMouseButtonPressedEvent(MouseButtonPressedEvent& e);
 	bool OnEditorWindowMouseButtonReleasedEvent(MouseButtonReleasedEvent& e);
+
+	void ModernDarkTheme();
 
 	Window* _pGameWindow;
 	Window* _pEditorWindow;

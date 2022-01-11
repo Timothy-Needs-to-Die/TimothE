@@ -22,7 +22,9 @@ project "TimothE"
 		"Dependancies/glm",
 		"Dependancies/irrklang/include",
 		"Dependancies/nlohmann",
-		"Dependancies/freetype"
+		"Dependancies/freetype",
+		"Dependancies/imgui",
+		"Dependancies/imgui/backend"
 	}
 
 	libdirs {
