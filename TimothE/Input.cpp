@@ -13,38 +13,38 @@ void Input::Init()
 }
 
 //TODO: Range check keycode so it does not go outside array
-void Input::SetKey(int keycode, int state)
+void Input::SetKey(TimothEKeyCode keycode, TimothEInputState state)
 {
 	_pKeyArr[keycode] = state;
 }
 
 //TODO: Range check button so it does not go outside array
-void Input::SetMouseButton(int button, int state)
+void Input::SetMouseButton(TimothEMouseCode button, TimothEInputState state)
 {
 	_pMouseArr[button] = state;
 }
 
-bool Input::IsKeyDown(int keycode)
+bool Input::IsKeyDown(TimothEKeyCode keycode)
 {
 	return _pKeyArr[keycode] == GLFW_PRESS;
 }
 
-bool Input::IsKeyHeld(int keycode)
+bool Input::IsKeyHeld(TimothEKeyCode keycode)
 {
 	return _pKeyArr[keycode] == GLFW_REPEAT;
 }
 
-bool Input::IsKeyUp(int keycode)
+bool Input::IsKeyUp(TimothEKeyCode keycode)
 {
 	return _pKeyArr[keycode] == GLFW_RELEASE;
 }
 
-bool Input::IsMouseButtonDown(int button)
+bool Input::IsMouseButtonDown(TimothEMouseCode button)
 {
 	return _pMouseArr[button] == GLFW_PRESS;
 }
 
-bool Input::IsMouseButtonUp(int button)
+bool Input::IsMouseButtonUp(TimothEMouseCode button)
 {
 	return _pMouseArr[button] == GLFW_RELEASE;
 }

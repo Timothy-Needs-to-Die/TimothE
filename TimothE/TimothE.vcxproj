@@ -101,6 +101,7 @@
     <ClInclude Include="KeyEvent.h" />
     <ClInclude Include="MouseEvent.h" />
     <ClInclude Include="Scene.h" />
+    <ClInclude Include="TimothEInputCodes.h" />
     <ClInclude Include="Window.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

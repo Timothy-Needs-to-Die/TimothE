@@ -55,25 +55,27 @@ void Application::RunLoop()
 			//Poll for glfw events
 			glfwPollEvents();
 
-			if (Input::IsKeyDown(GLFW_KEY_W)) {
+			//INPUT TEST CODE
+			if (Input::IsKeyDown(KEY_W)) {
 				std::cout << "W is Pressed" << std::endl;
 			}
 
-			if (Input::IsKeyHeld(GLFW_KEY_W)) {
+			if (Input::IsKeyHeld(KEY_W)) {
 				std::cout << "W is Held" << std::endl;
 			}
 
-			if (Input::IsKeyUp(GLFW_KEY_W)) {
+			if (Input::IsKeyUp(KEY_W)) {
 				std::cout << "W is Up" << std::endl;
 			}
 
-			if (Input::IsMouseButtonDown(GLFW_MOUSE_BUTTON_LEFT)) {
+			if (Input::IsMouseButtonDown(BUTTON_LEFT)) {
 				std::cout << "Left Mouse Button is down" << std::endl;
 			}
 
-			if (Input::IsMouseButtonUp(GLFW_MOUSE_BUTTON_LEFT)) {
+			if (Input::IsMouseButtonUp(BUTTON_LEFT)) {
 				std::cout << "Left Mouse Button is up" << std::endl;
 			}
+			//END OF INPUT TEST CODE
 
 			//==================
 			//RENDER GAME WINDOW
@@ -159,11 +161,11 @@ bool Application::OnGameWindowKeyPressedEvent(KeyPressedEvent& e)
 {
 	//1: Is marked as GLFW repeat value
 	if (e.GetRepeatCount() == 1) {
-		Input::SetKey(e.GetKeyCode(), GLFW_REPEAT);
+		Input::SetKey((TimothEKeyCode)e.GetKeyCode(), HELD);
 	}
 	else
 	{
-		Input::SetKey(e.GetKeyCode(), GLFW_PRESS);
+		Input::SetKey((TimothEKeyCode)e.GetKeyCode(), PRESSED);
 	}
 
 	return true;
@@ -171,32 +173,32 @@ bool Application::OnGameWindowKeyPressedEvent(KeyPressedEvent& e)
 
 bool Application::OnGameWindowKeyReleasedEvent(KeyReleasedEvent& e)
 {
-	Input::SetKey(e.GetKeyCode(), GLFW_RELEASE);
+	Input::SetKey((TimothEKeyCode)e.GetKeyCode(), RELEASE);
 	return true;
 }
 
 
 bool Application::OnGameWindowMouseButtonPressedEvent(MouseButtonPressedEvent& e)
 {
-	Input::SetMouseButton(e.GetMouseButton(), GLFW_PRESS);
+	Input::SetMouseButton((TimothEMouseCode)e.GetMouseButton(), PRESSED);
 	return true;
 }
 
 bool Application::OnGameWindowMouseButtonReleasedEvent(MouseButtonReleasedEvent& e)
 {
-	Input::SetMouseButton(e.GetMouseButton(), GLFW_RELEASE);
+	Input::SetMouseButton((TimothEMouseCode)e.GetMouseButton(), RELEASE);
 	return true;
 }
 
 bool Application::OnEditorWindowKeyPressedEvent(KeyPressedEvent& e)
 {
-	//TODO: Replace this magic number with a constant. Requires some level of discussion as to what classes as a held button
-	if (e.GetRepeatCount() > 3) {
-		Input::SetKey(e.GetKeyCode(), GLFW_REPEAT);
+	//1: Is marked as GLFW repeat value
+	if (e.GetRepeatCount() == 1) {
+		Input::SetKey((TimothEKeyCode)e.GetKeyCode(), HELD);
 	}
 	else
 	{
-		Input::SetKey(e.GetKeyCode(), GLFW_PRESS);
+		Input::SetKey((TimothEKeyCode)e.GetKeyCode(), PRESSED);
 	}
 
 	return true;
@@ -204,18 +206,18 @@ bool Application::OnEditorWindowKeyPressedEvent(KeyPressedEvent& e)
 
 bool Application::OnEditorWindowKeyReleasedEvent(KeyReleasedEvent& e)
 {
-	Input::SetKey(e.GetKeyCode(), GLFW_RELEASE);
+	Input::SetKey((TimothEKeyCode)e.GetKeyCode(), RELEASE);
 	return true;
 }
 
 bool Application::OnEditorWindowMouseButtonPressedEvent(MouseButtonPressedEvent& e)
 {
-	Input::SetMouseButton(e.GetMouseButton(), GLFW_PRESS);
+	Input::SetMouseButton((TimothEMouseCode)e.GetMouseButton(), PRESSED);
 	return true;
 }
 
 bool Application::OnEditorWindowMouseButtonReleasedEvent(MouseButtonReleasedEvent& e)
 {
-	Input::SetMouseButton(e.GetMouseButton(), GLFW_RELEASE);
+	Input::SetMouseButton((TimothEMouseCode)e.GetMouseButton(), RELEASE);
 	return true;
 }
