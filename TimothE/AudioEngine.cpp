@@ -1,11 +1,22 @@
 #include "AudioEngine.h"
 #include <iostream>
 
+
+// ============================== System Functions ============================== // 
 AudioEngine::AudioEngine()
 {
 	//Create and initiliaze the fmod core system
 	FMOD::System_Create(&_fmodSystem);
 	Initialize();
+}
+
+//Initialize the fmod audio system.
+// the first parameter represents the total audio channels that will be created. 
+void AudioEngine::Initialize()
+{
+
+	FMOD_RESULT result = _fmodSystem->init(50, FMOD_INIT_NORMAL, 0);
+	CheckForErrors(result);
 }
 
 //This must be called within the main game loop in order for FMOD 
@@ -22,12 +33,7 @@ void AudioEngine::ShutDownAudio()
 	_fmodSystem->release();
 }
 
-//Release the sound object from memory. 
-//This should be done when a sound object is no longer going to be used.
-void AudioEngine::ReleaseSound(FMOD::Sound* sound)
-{
-	sound->release();
-}
+
 
 //If an error was detected with a certain issue this will print an error string
 //to aid with debugging
@@ -41,6 +47,9 @@ void AudioEngine::CheckForErrors(FMOD_RESULT result)
 	}
 }
 
+// =============================================================================== //
+
+// ============================== Core Functionality ============================== // 
 //CreateAndLoad loads a sound file into memory and returns that to the call
 //Loading sounds into memory is ideal for most ingame sounds as they will be used multiple times
 FMOD::Sound* AudioEngine::LoadAudio( const char* filePath)
@@ -69,11 +78,25 @@ void AudioEngine::PlayOneShot(FMOD::Sound* sound)
 	CheckForErrors(result);
 }
 
-//Initialize the fmod audio system.
-// the first parameter represents the total audio channels that will be created. 
-void AudioEngine::Initialize()
+//Toggle pause on a currently running audio channel 
+void AudioEngine::TogglePaused(FMOD::Channel* channel)
 {
-
-	FMOD_RESULT result = _fmodSystem->init(50, FMOD_INIT_NORMAL, 0);
-	CheckForErrors(result);
+	bool paused;
+	channel->getPaused(&paused);
+	channel->setPaused(!paused);
 }
+
+void AudioEngine::SetVolume(FMOD::Channel* channel, float value)
+{
+	channel->setVolume(value);
+
+}
+
+//Release the sound object from memory. 
+//This should be done when a sound object is no longer going to be used.
+void AudioEngine::ReleaseSound(FMOD::Sound* sound)
+{
+	sound->release();
+}
+
+

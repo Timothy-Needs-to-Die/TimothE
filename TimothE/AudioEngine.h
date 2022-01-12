@@ -21,8 +21,10 @@ public:
 	FMOD::Sound* LoadAudio(const char* filePath);
 	FMOD::Sound* CreateAudioStream(const char* filePath);
 
-	void PlayOneShot(FMOD::Sound*);
 
+	void PlayOneShot(FMOD::Sound*);
+	void TogglePaused(FMOD::Channel* channel);
+	void SetVolume(FMOD::Channel* channel, float value);
 private:
 
 	FMOD::System* _fmodSystem;
