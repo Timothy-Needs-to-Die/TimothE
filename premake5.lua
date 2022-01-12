@@ -36,5 +36,6 @@ project "TimothE"
 	links {
 		"opengl32.lib",
 		"glfw3.lib",
-		"glew32s.lib"
+		"glew32s.lib",
+		"glew32.lib"
 	}
