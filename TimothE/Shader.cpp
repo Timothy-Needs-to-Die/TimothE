@@ -83,11 +83,11 @@ ShaderSourceCode Shader::GetShadersFromFile()
 
     //Unsuccessful
     if (vsFile.fail())
-        //ADD LOGGER CODE
+        std::cout << "Vertex Shader Error" << std::endl;
 
     //Unsuccessful
     if (fsFile.fail())
-        //ADD LOGGER CODE
+        std::cout << "Fragment Shader Error" << std::endl;
 
     //READ EACH LINE OF FILE INTO STRING STREAM
     while (getline(vsFile, line))

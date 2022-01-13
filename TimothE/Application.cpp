@@ -231,6 +231,10 @@ void Application::GameBeginRender()
 void Application::GameRender()
 {
 	_graphics.Render(_pGameWindow->GetGLFWWindow(), NULL);
+<<<<<<< Updated upstream
+=======
+
+>>>>>>> Stashed changes
 }
 
 void Application::GameEndRender()

@@ -149,4 +149,8 @@
       <Filter>Resource Files</Filter>
     </None>
   </ItemGroup>
+  <ItemGroup>
+    <None Include="VertexShader.glsl" />
+    <None Include="FragmentShader.glsl" />
+  </ItemGroup>
 </Project>

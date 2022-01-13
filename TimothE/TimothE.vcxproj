@@ -125,8 +125,13 @@
     <ClCompile Include="Window.cpp" />
   </ItemGroup>
   <ItemGroup>
+<<<<<<< Updated upstream
     <None Include="FragmentShader.frag" />
     <None Include="VertexShader.vert" />
+=======
+    <None Include="FragmentShader.glsl" />
+    <None Include="VertexShader.glsl" />
+>>>>>>> Stashed changes
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
