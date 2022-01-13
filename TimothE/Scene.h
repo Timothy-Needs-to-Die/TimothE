@@ -13,6 +13,7 @@ class Scene
 public:
 	Scene(string name);
 	~Scene();
+	void Update(float deltaTime);
 	void RenderScene(GLFWwindow* pWindow, Graphics* pGraphics);
 	void AddGameObject(GameObject* gameObject) { _listOfGameObjects.push_back(gameObject); }
 	void RemoveGameObject(GameObject* gameObject) { _listOfGameObjects.remove(gameObject); }
@@ -23,5 +24,3 @@ private:
 	static int nextID;
 	list<GameObject*> _listOfGameObjects;
 };
-
-int Scene::nextID = 0;

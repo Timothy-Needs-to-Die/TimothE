@@ -72,6 +72,7 @@ void Application::Init(bool createEditorWindow)
 
 	ImGui::StyleColorsDark();
 
+	_currentScene = new Scene("Test scene");
 
 	_running = true;
 }
@@ -160,6 +161,7 @@ void Application::PollInput()
 
 void Application::EditorUpdate(float dt)
 {
+	_currentScene->Update(dt);
 	if (Input::IsKeyDown(KEY_W)) {
 		std::cout << "W is Pressed" << std::endl;
 	}
