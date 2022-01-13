@@ -230,8 +230,7 @@ void Application::GameBeginRender()
 
 void Application::GameRender()
 {
-	_graphics.
-		(_pGameWindow->GetGLFWWindow(), NULL);
+	_graphics.Render(_pGameWindow->GetGLFWWindow(), NULL);
 }
 
 void Application::GameEndRender()
