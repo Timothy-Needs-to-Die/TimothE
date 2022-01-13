@@ -1,6 +1,6 @@
 #pragma once
 #include <GLFW/glfw3.h>
-#include <list>
+#include <vector>
 #include <string>
 #include "GameObject.h"
 #include "Graphics.h"
@@ -16,11 +16,12 @@ public:
 	void Update(float deltaTime);
 	void RenderScene(GLFWwindow* pWindow, Graphics* pGraphics);
 	void AddGameObject(GameObject* gameObject) { _listOfGameObjects.push_back(gameObject); }
-	void RemoveGameObject(GameObject* gameObject) { _listOfGameObjects.remove(gameObject); }
+	void RemoveGameObject(GameObject* gameObject);
+	vector<GameObject*> GetGameObjects() { return _listOfGameObjects; }
 
 private:
 	string _name;
 	int _id;
 	static int nextID;
-	list<GameObject*> _listOfGameObjects;
+	vector<GameObject*> _listOfGameObjects;
 };

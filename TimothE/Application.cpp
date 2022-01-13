@@ -127,10 +127,13 @@ void Application::GameLoop()
 {
 	//TODO: Setup build process for game only
 
-
+	double previousTime = glfwGetTime();
 		//While the editor window should not close
 		while (_running) {
 			PollInput();
+
+			double currentTime = glfwGetTime();
+			double elapsed = currentTime - previousTime;
 
 			if (_inEditorMode) {
 				glBindFramebuffer(GL_FRAMEBUFFER, _fbo);
@@ -157,13 +160,10 @@ void Application::GameLoop()
 				ImGUISwitchRender();
 				EditorImGUIEndRender();
 
-
 				EditorEndRender();
 
-			
-
-				//TODO: Replace with actual delta time
-				EditorUpdate(0.016f);
+				EditorUpdate(elapsed);
+				previousTime = currentTime;
 			}
 			else {
 				GameBeginRender();
@@ -178,7 +178,7 @@ void Application::GameLoop()
 
 				GameEndRender();
 
-				GameUpdate(0.016f);
+				GameUpdate(elapsed);
 			}
 		}
 
@@ -252,7 +252,22 @@ void Application::EditorImGUIRender()
 	//Hierarchy
 	{
 		ImGui::Begin("Hierarchy");
-
+		static int index = 0;
+		vector<GameObject*> objects = _currentScene->GetGameObjects();
+		if (!objects.empty())
+		{
+			for (int i = 0; i < objects.size(); i++)
+			{
+				ImGui::RadioButton(objects[i]->GetName().c_str(), &index, i); ImGui::SameLine();
+				if (ImGui::Button("Delete object"))
+				{
+					_currentScene->RemoveGameObject(objects[i]);
+					objects = _currentScene->GetGameObjects();
+				}
+			}
+			if (!objects.empty())
+				GameObject* selectedObject = objects[index];
+		}
 		ImGui::End();
 	}
 

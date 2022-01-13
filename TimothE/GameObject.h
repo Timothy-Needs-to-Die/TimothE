@@ -23,7 +23,7 @@ class GameObject
 {
 public:
 	GameObject(string name, ObjectType tag, Texture2D* texture);
-	GameObject(string name, ObjectType tag, Transform* transform);
+	GameObject(string name, ObjectType tag, Texture2D* texture, Transform* transform);
 	~GameObject();
 
 	void Start();

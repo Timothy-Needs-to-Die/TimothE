@@ -11,10 +11,11 @@ GameObject::GameObject(string name, ObjectType tag, Texture2D* texture)
 	//Start();
 }
 
-GameObject::GameObject(string name, ObjectType tag, Transform* transform)
+GameObject::GameObject(string name, ObjectType tag, Texture2D* texture, Transform* transform)
 {
 	_name = name;
 	_tag = tag;
+	_pTexture = texture;
 	_UID = UID::GenerateUID();
 	_pTransform = transform;
 	AddComponent(new TestComponent(this));
