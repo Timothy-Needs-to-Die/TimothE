@@ -4564,8 +4564,7 @@ bool ImGui::InputTextEx(const char* label, const char* hint, char* buf, int buf_
     {
         // We cannot test for 'backup_current_text_length != apply_new_text_length' here because we have no guarantee that the size
         // of our owned buffer matches the size of the string object held by the user, and by design we allow InputText() to be used
-        // without any storage on user's side.
-        IM_ASSERT(apply_new_text_length >= 0);
+        // without any storage on user's s        IM_ASSERT(apply_new_text_length >= 0);
         if (is_resizable)
         {
             ImGuiInputTextCallbackData callback_data;

@@ -127,6 +127,8 @@
     <ClCompile Include="Window.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <None Include="fbFrag.fs" />
+    <None Include="fbVert.vs" />
     <None Include="FragmentShader.frag" />
     <None Include="VertexShader.vert" />
   </ItemGroup>
