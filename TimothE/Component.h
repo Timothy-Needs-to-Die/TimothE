@@ -25,14 +25,14 @@ class Component
 
 public:
 
-	GameObject* _parentObject;
-	void SetGameObject(GameObject* newparent) {
-		_parentObject = newparent;
-	}
-	// Getter
-	GameObject* GetGameObject() {
-		return _parentObject;
-	}
+	//GameObject* _parentObject;
+	//void SetGameObject(GameObject* newparent) {
+	//	_parentObject = newparent;
+	//}
+	//// Getter
+	//GameObject* GetGameObject() {
+	//	return _parentObject;
+	//}
 	//enum for types of components
 	enum Types
 	{
