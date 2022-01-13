@@ -5,7 +5,6 @@
 
 #include <iostream>
 #include <thread>
-#include "Window.h"
 
 #include "Input.h"
 
@@ -17,6 +16,8 @@
 #include "imgui_impl_opengl3.h"
 
 #include "UID.h"
+
+#include "Texture2D.h"
 
 
 #define BIND_EVENT_FN(x) std::bind(&Application::x, this, std::placeholders::_1)
@@ -293,7 +294,7 @@ void Application::GameBeginRender()
 
 void Application::GameRender()
 {
-	_graphics.Render(_pGameWindow->GetGLFWWindow(), NULL);
+	_graphics.Render(_pGameWindow->GetGLFWWindow(), gameObject);
 }
 
 void Application::GameEndRender()

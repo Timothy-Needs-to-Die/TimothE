@@ -1,0 +1,49 @@
+#include "Texture2D.h"
+
+Texture2D::Texture2D()
+{
+	_UID = UID::GenerateUID();
+
+}
+
+Texture2D::~Texture2D()
+{
+	glDeleteTextures(1, &_ID);
+}
+
+// Pass in file path, filter mode as "linear" or "nearest"
+bool Texture2D::Load(char* path, string mode)
+{
+	_ID = SOIL_load_OGL_texture
+	(
+		path,
+		SOIL_LOAD_AUTO,
+		SOIL_CREATE_NEW_ID,
+		SOIL_FLAG_MIPMAPS | SOIL_FLAG_INVERT_Y | SOIL_FLAG_NTSC_SAFE_RGB | SOIL_FLAG_COMPRESS_TO_DXT
+	);
+
+	/* check for an error during the load process */
+	if (0 == _ID)
+	{
+		printf("SOIL loading error: '%s'\n", SOIL_last_result());
+	}
+
+	return true;
+}
+
+
+void Texture2D::SetFilterMode(string mode)
+{
+	if (mode == "linear")
+	{
+		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
+		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+		cout << "Linear filter mode" << endl;
+	}
+	else if (mode == "nearest")
+	{
+		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
+		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
+		cout << "Nearest filter mode" << endl;
+	}
+}
