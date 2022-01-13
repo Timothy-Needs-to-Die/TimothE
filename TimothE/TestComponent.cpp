@@ -1,4 +1,4 @@
-#include "Test.h"
+#include "TestComponent.h"
 
 #include <iostream>
 

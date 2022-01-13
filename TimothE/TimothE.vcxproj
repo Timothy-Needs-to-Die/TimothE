@@ -102,6 +102,7 @@
     <ClInclude Include="Shader.h" />
     <ClInclude Include="Test.h" />
     <ClInclude Include="Texture2D.h" />
+    <ClInclude Include="TestComponent.h" />
     <ClInclude Include="TimothEInputCodes.h" />
     <ClInclude Include="Transform.h" />
     <ClInclude Include="UID.h" />
@@ -125,8 +126,13 @@
     <ClCompile Include="Source.cpp" />
     <ClCompile Include="Test.cpp" />
     <ClCompile Include="Texture2D.cpp" />
+    <ClCompile Include="TestComponent.cpp" />
     <ClCompile Include="Transform.cpp" />
     <ClCompile Include="Window.cpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="FragmentShader.frag" />
+    <None Include="VertexShader.vert" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

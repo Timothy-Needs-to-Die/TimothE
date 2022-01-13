@@ -44,7 +44,7 @@
     <ClInclude Include="MouseEvent.h" />
     <ClInclude Include="Scene.h" />
     <ClInclude Include="Shader.h" />
-    <ClInclude Include="Test.h" />
+    <ClInclude Include="TestComponent.h" />
     <ClInclude Include="TimothEInputCodes.h" />
     <ClInclude Include="Transform.h" />
     <ClInclude Include="UID.h" />
@@ -81,9 +81,13 @@
     <ClCompile Include="Scene.cpp" />
     <ClCompile Include="Shader.cpp" />
     <ClCompile Include="Source.cpp" />
-    <ClCompile Include="Test.cpp" />
+    <ClCompile Include="TestComponent.cpp" />
     <ClCompile Include="Transform.cpp" />
     <ClCompile Include="Window.cpp" />
     <ClCompile Include="Texture2D.cpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="FragmentShader.frag" />
+    <None Include="VertexShader.vert" />
   </ItemGroup>
 </Project>
