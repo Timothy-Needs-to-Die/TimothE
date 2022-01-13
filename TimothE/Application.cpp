@@ -23,6 +23,8 @@
 
 void Application::Init(bool createEditorWindow)
 {
+	Transform* transform = new Transform();
+	cam = new Camera(*transform);
 	UID::Init();
 	Input::Init();
 
@@ -104,7 +106,6 @@ void Application::GameLoop()
 			GameBeginRender();
 
 			GameRender();
-
 			GameEndRender();
 		}
 
@@ -160,6 +161,8 @@ void Application::PollInput()
 
 void Application::EditorUpdate(float dt)
 {
+
+	cam->OnUpdate();
 	if (Input::IsKeyDown(KEY_W)) {
 		std::cout << "W is Pressed" << std::endl;
 	}
@@ -230,8 +233,7 @@ void Application::GameBeginRender()
 
 void Application::GameRender()
 {
-	_graphics.
-		(_pGameWindow->GetGLFWWindow(), NULL);
+	_graphics.Render(_pGameWindow->GetGLFWWindow(), NULL);
 }
 
 void Application::GameEndRender()
