@@ -4,6 +4,7 @@
 #include "Component.h"
 #include "Transform.h"
 #include "UID.h"
+#include "TestComponent.h"
 
 using std::vector;
 using std::string;

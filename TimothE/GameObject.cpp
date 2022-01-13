@@ -6,14 +6,18 @@ GameObject::GameObject(string name, ObjectType tag)
 	_tag = tag;
 	_UID = UID::GenerateUID();
 	_pTransform = new Transform();
-	Start();
+	AddComponent(new TestComponent(this));
+	//Start();
 }
 
 GameObject::GameObject(string name, ObjectType tag, Transform* transform)
 {
 	_name = name;
 	_tag = tag;
+	_UID = UID::GenerateUID();
 	_pTransform = transform;
+	AddComponent(new TestComponent(this));
+	//Start();
 }
 
 GameObject::~GameObject()

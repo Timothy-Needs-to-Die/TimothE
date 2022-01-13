@@ -1,10 +1,12 @@
 #include "TestComponent.h"
+#include "GameObject.h"
 
 #include <iostream>
 
 
 TestComponent::TestComponent(GameObject* parentObject) : Component()
 {
+	_parentObject = parentObject;
 	//calls method on creation
 	OnStart();
 }

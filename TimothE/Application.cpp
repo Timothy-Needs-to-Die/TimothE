@@ -72,12 +72,14 @@ void Application::Init(bool createEditorWindow)
 
 	ImGui::StyleColorsDark();
 
+	_currentScene = new Scene("Test scene");
 
 	_running = true;
 }
 
 void Application::GameLoop()
 {
+	double previousTime = glfwGetTime();
 	if (_inEditorMode) {
 		//While the editor window should not close
 		while (_running) {
@@ -94,8 +96,12 @@ void Application::GameLoop()
 
 			EditorEndRender();
 
-			//TODO: Replace with actual delta time
-			EditorUpdate(0.016f);
+			double currentTime = glfwGetTime();
+			double elapsed = currentTime - previousTime;
+			std::cout << "DeltaTime: " << elapsed << std::endl;
+			EditorUpdate(elapsed);
+
+			previousTime = currentTime;
 
 			//==================
 			//RENDER GAME WINDOW
@@ -160,6 +166,7 @@ void Application::PollInput()
 
 void Application::EditorUpdate(float dt)
 {
+	_currentScene->Update(dt);
 	if (Input::IsKeyDown(KEY_W)) {
 		std::cout << "W is Pressed" << std::endl;
 	}

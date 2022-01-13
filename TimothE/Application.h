@@ -3,6 +3,7 @@
 #include "Window.h"
 #include "ApplicationEvent.h"
 #include "Graphics.h"
+#include "Scene.h"
 
 class Application
 {
@@ -57,5 +58,7 @@ private:
 
 	bool _inEditorMode;
 	bool _running;
+
+	Scene* _currentScene;
 };
 
