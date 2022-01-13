@@ -29,7 +29,7 @@ GLuint Shader::CreateShader()
 
     if (programID == 0)
     {
-        //ADD LOGGER CODE
+        std::cout << "[ERROR]: Program ID is invalid! Program ID is equal to " << programID << "." << std::endl;
     }
 
     GLuint vs = CompileShader(GL_VERTEX_SHADER, _shaderSourceCode.vertexShaderSource);
@@ -52,7 +52,7 @@ GLuint Shader::CompileShader(GLenum sType, const std::string& source)
 
     if (shader == 0)
     {
-        //ADD LOGGER CODE
+        std::cout << "[ERROR]: Shader cant be compiled! Shader ID is equal to " << shader << "." << std::endl;
     }
 
     const char* src = source.c_str();
@@ -83,11 +83,11 @@ ShaderSourceCode Shader::GetShadersFromFile()
 
     //Unsuccessful
     if (vsFile.fail())
-        std::cout << "Vertex Shader Error" << std::endl;
+        std::cout << "[ERROR]: Vertex Shader Error! Failed to open shader file: " << _vertexShaderPath << "." << std::endl;
 
     //Unsuccessful
     if (fsFile.fail())
-        std::cout << "Fragment Shader Error" << std::endl;
+        std::cout << "[ERROR]: Fragment Shader Error! Failed to open shader file: " << _vertexShaderPath << "." << std::endl;
 
     //READ EACH LINE OF FILE INTO STRING STREAM
     while (getline(vsFile, line))
