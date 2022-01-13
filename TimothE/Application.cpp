@@ -74,13 +74,13 @@ void Application::Init(bool devMode)
 	// vertex attributes for a quad that fills the entire screen in Normalized Device Coordinates.
 	float quadVertices[] = { 
 	// positions   // texCoords
-	-1.0f,  1.0f,  0.0f, 1.0f,
-	-1.0f, -1.0f,  0.0f, 0.0f,
-	 1.0f, -1.0f,  1.0f, 0.0f,
+	-0.65f,  -0.6f,  0.0f, 0.0f,
+	-0.65f,   0.82f,	0.0f, 1.0f,
+	 0.6f,   0.82f,	1.0f, 1.0f,
 
-	-1.0f,  1.0f,  0.0f, 1.0f,
-	 1.0f, -1.0f,  1.0f, 0.0f,
-	 1.0f,  1.0f,  1.0f, 1.0f
+	 0.65f,  -0.6f,  1.0f, 0.0f,
+	-0.65f,  -0.6f,	0.0f, 0.0f,
+	 0.6f,   0.82f,   1.0f, 1.0f
 	};
 
 	glGenVertexArrays(1, &_quadVAO);
@@ -95,8 +95,30 @@ void Application::Init(bool devMode)
 
 	_pScreenShader = new Shader("fbVert.vs", "fbFrag.fs");
 	_pScreenShader->BindShader();
+	int location = glGetUniformLocation(_pScreenShader->GetProgramID(), "screenTexture");
+	glUniform1i(location, 0);
 
 
+	glGenFramebuffers(1, &_fbo);
+	glBindFramebuffer(GL_FRAMEBUFFER, _fbo);
+
+	// create a color attachment texture
+	glGenTextures(1, &_texture);
+	glBindTexture(GL_TEXTURE_2D, _texture);
+	glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, 640, 360, 0, GL_RGB, GL_UNSIGNED_BYTE, NULL);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+	glFramebufferTexture2D(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0, GL_TEXTURE_2D, _texture, 0);
+	// create a renderbuffer object for depth and stencil attachment (we won't be sampling these)
+	
+	glGenRenderbuffers(1, &_rbo);
+	glBindRenderbuffer(GL_RENDERBUFFER, _rbo);
+	glRenderbufferStorage(GL_RENDERBUFFER, GL_DEPTH24_STENCIL8, 640, 360); // use a single renderbuffer object for both a depth AND stencil buffer.
+	glFramebufferRenderbuffer(GL_FRAMEBUFFER, GL_DEPTH_STENCIL_ATTACHMENT, GL_RENDERBUFFER, _rbo); // now actually attach it
+	// now that we actually created the framebuffer and added all attachments we want to check if it is actually complete now
+	if (glCheckFramebufferStatus(GL_FRAMEBUFFER) != GL_FRAMEBUFFER_COMPLETE)
+		cout << "ERROR::FRAMEBUFFER:: Framebuffer is not complete!" << endl;
+	glBindFramebuffer(GL_FRAMEBUFFER, 0);
 
 }
 
@@ -110,19 +132,34 @@ void Application::GameLoop()
 			PollInput();
 
 			if (_inEditorMode) {
+				glBindFramebuffer(GL_FRAMEBUFFER, _fbo);
+				glEnable(GL_DEPTH_TEST);
 				EditorStartRender();
 
-				EditorImGUIBegin();
+				_pScreenShader->BindShader();
 
-				//Render Here
-				EditorImGUIRender();
 
-				ImGUISwitchRender();
-				EditorImGUIEndRender();
+
+
 
 				EditorRender();
 
+				glBindFramebuffer(GL_FRAMEBUFFER, 0);
+				glDisable(GL_DEPTH_TEST);
+				glBindVertexArray(_quadVAO);
+				glBindTexture(GL_TEXTURE_2D, _texture);
+				glDrawArrays(GL_TRIANGLES, 0, 6);
+
+				EditorImGUIBegin();
+				//Render Here
+				EditorImGUIRender();
+				ImGUISwitchRender();
+				EditorImGUIEndRender();
+
+
 				EditorEndRender();
+
+			
 
 				//TODO: Replace with actual delta time
 				EditorUpdate(0.016f);
