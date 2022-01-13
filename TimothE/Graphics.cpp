@@ -12,9 +12,9 @@ void Graphics::Render(GLFWwindow* window, GameObject* gameObject)
 
 	static const GLfloat g_vertex_buffer_data[] =
 	{
-		-1.0f, -1.0f, 0.0f,
-		1.0f, -1.0f, 0.0f,
-		0.0f,  1.0f, 0.0f,
+		-1.0f, -1.0f, 0.0f, 0.0f, 0.0f,
+		1.0f, -1.0f, 0.0f, 0.0f, 1.0f,
+		0.0f,  1.0f, 0.0f, 0.0f, 0.5f
 	};
 
 	GLuint vertexArray;
@@ -40,6 +40,7 @@ void Graphics::Render(GLFWwindow* window, GameObject* gameObject)
 		(void*)0            // array buffer offset
 	);
 
+	glEnableClientState(GL_TEXTURE_COORD_ARRAY);
 	glDrawArrays(GL_TRIANGLES, 0, 3); // Starting from vertex 0; 3 vertices total -> 1 triangle
 	glDisableVertexAttribArray(0);
 }

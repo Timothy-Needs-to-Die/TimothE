@@ -5,9 +5,10 @@ GameObject::GameObject()
 	//_pTransform = new Transform();
 }
 
-GameObject::GameObject(Transform* transform)
+GameObject::GameObject(Transform* transform, Texture2D* texture)
 {
 	_pTransform = transform;
+	_pTexture = texture;
 }
 
 GameObject::~GameObject()
