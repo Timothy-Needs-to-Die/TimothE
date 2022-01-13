@@ -3,15 +3,12 @@
 
 void Graphics::Initialize()
 {
-	_pShader = new Shader("VertexShader.glsl", "FragmentShader.glsl");
+	_pShader = new Shader("VertexShader.vert", "FragmentShader.frag");
 }
 
 void Graphics::Render(GLFWwindow* window, GameObject* gameObject)
 {
-	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 	_pShader->BindShader();
-<<<<<<< Updated upstream
-=======
 
 	static const GLfloat g_vertex_buffer_data[] =
 	{
@@ -24,7 +21,7 @@ void Graphics::Render(GLFWwindow* window, GameObject* gameObject)
 	glGenVertexArrays(1, &vertexArray);
 	glBindVertexArray(vertexArray);
 	// This will identify our vertex buffer
-	GLuint vertexbuffer;
+		GLuint vertexbuffer;
 	// Generate 1 buffer, put the resulting identifier in vertexbuffer
 	glGenBuffers(1, &vertexbuffer);
 	// The following commands will talk about our 'vertexbuffer' buffer
@@ -39,13 +36,10 @@ void Graphics::Render(GLFWwindow* window, GameObject* gameObject)
 		3,                  // size
 		GL_FLOAT,           // type
 		GL_FALSE,           // normalized?
-		3 * sizeof(float),  // stride
+		3 * sizeof(float),                  // stride
 		(void*)0            // array buffer offset
 	);
 
 	glDrawArrays(GL_TRIANGLES, 0, 3); // Starting from vertex 0; 3 vertices total -> 1 triangle
 	glDisableVertexAttribArray(0);
-
-	glFlush();
->>>>>>> Stashed changes
 }

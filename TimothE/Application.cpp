@@ -230,11 +230,8 @@ void Application::GameBeginRender()
 
 void Application::GameRender()
 {
-	_graphics.Render(_pGameWindow->GetGLFWWindow(), NULL);
-<<<<<<< Updated upstream
-=======
-
->>>>>>> Stashed changes
+	_graphics.
+		(_pGameWindow->GetGLFWWindow(), NULL);
 }
 
 void Application::GameEndRender()
