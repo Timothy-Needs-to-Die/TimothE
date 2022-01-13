@@ -79,6 +79,7 @@ void Application::Init(bool createEditorWindow)
 
 void Application::GameLoop()
 {
+	double previousTime = glfwGetTime();
 	if (_inEditorMode) {
 		//While the editor window should not close
 		while (_running) {
@@ -95,8 +96,12 @@ void Application::GameLoop()
 
 			EditorEndRender();
 
-			//TODO: Replace with actual delta time
-			EditorUpdate(0.016f);
+			double currentTime = glfwGetTime();
+			double elapsed = currentTime - previousTime;
+			std::cout << "DeltaTime: " << elapsed << std::endl;
+			EditorUpdate(elapsed);
+
+			previousTime = currentTime;
 
 			//==================
 			//RENDER GAME WINDOW
