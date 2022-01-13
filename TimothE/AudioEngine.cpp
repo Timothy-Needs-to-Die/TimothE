@@ -1,8 +1,7 @@
 #include "AudioEngine.h"
-#include <iostream>
 
 
-// ============================== System Functions ============================== // 
+// ============================== System Functions =============================== // 
 AudioEngine::AudioEngine()
 {
 	//Create and initiliaze the fmod core system
@@ -14,8 +13,9 @@ AudioEngine::AudioEngine()
 // the first parameter represents the total audio channels that will be created. 
 void AudioEngine::Initialize()
 {
-
+	
 	FMOD_RESULT result = _fmodSystem->init(50, FMOD_INIT_NORMAL, 0);
+	
 	CheckForErrors(result);
 }
 
@@ -47,7 +47,85 @@ void AudioEngine::CheckForErrors(FMOD_RESULT result)
 	}
 }
 
-// =============================================================================== //
+//Release the sound object from memory. 
+//This should be done when a sound object is no longer going to be used.
+void AudioEngine::ReleaseSound(FMOD::Sound* sound)
+{
+	sound->release();
+}
+// ================================================================================ //
+
+// ========================= Grouping and Group Controls ========================== // 
+// 
+//Creates an audio channell group
+//This is useful for grouping together relevant audio channels such as
+// music, sfx, master etc.
+FMOD::ChannelGroup* AudioEngine::CreateChanellGroup(const char* name) {
+	FMOD::ChannelGroup* newChanellGroup;
+
+	FMOD_RESULT result =_fmodSystem->createChannelGroup(name, &newChanellGroup);
+	CheckForErrors(result);
+	return newChanellGroup;
+}
+
+//Set a certain channel to a channel group
+void AudioEngine::SetChannelGroup(FMOD::Channel* channelToSet, FMOD::ChannelGroup* groupToSet) {
+	FMOD_RESULT result = channelToSet->setChannelGroup(groupToSet);
+	CheckForErrors(result);
+}
+
+//Add a group as a child group of another group, creating a hierarchy.
+//This should be used to create a 'Master' Group which is the parent of every group
+void AudioEngine::AddChildGroup(FMOD::ChannelGroup* parentGroup, FMOD::ChannelGroup* childGroup) {
+	FMOD_RESULT result = parentGroup->addGroup(childGroup);
+	CheckForErrors(result);
+}
+
+//Gets the master group, the master group object should be passed in.
+FMOD::ChannelGroup* AudioEngine::GetMasterGroup(FMOD::ChannelGroup* masterGroupObject) {
+
+	FMOD::ChannelGroup* masterGroup = masterGroupObject;
+	FMOD_RESULT result = _fmodSystem->getMasterChannelGroup(&masterGroup);
+	CheckForErrors(result);
+
+	return masterGroup;
+}
+
+//========================= Group Controls ========================= //
+
+void AudioEngine::StopGroup(FMOD::ChannelGroup* group) {
+	FMOD_RESULT result = group->stop();
+	CheckForErrors(result);
+}
+
+void AudioEngine::ToggleGroupMute(FMOD::ChannelGroup* group) {
+	bool muted;
+
+	group->getMute(&muted);
+	FMOD_RESULT result = group->setMute(!muted);
+	CheckForErrors(result);
+}
+
+void AudioEngine::ToggleGroupPause(FMOD::ChannelGroup* group) {
+	bool paused;
+	group->getPaused(&paused);
+	FMOD_RESULT result = group->setPaused(!paused);
+	CheckForErrors(result);
+}
+
+void AudioEngine::SetGroupVolume(FMOD::ChannelGroup* group, float value) {
+	FMOD_RESULT result = group->setVolume(value);
+	CheckForErrors(result);
+}
+
+//Set pitch works differently with groups, it instead takes in a value between 0 and 10
+//and multiplies the number by its current frequency
+void AudioEngine::SetGroupPitch(FMOD::ChannelGroup* group, float value) {
+	FMOD_RESULT result = group->setPitch(value);
+	CheckForErrors(result);
+}
+
+// ================================================================================ //
 
 // ============================== Core Functionality ============================== // 
 //CreateAndLoad loads a sound file into memory and returns that to the call
@@ -92,11 +170,30 @@ void AudioEngine::SetVolume(FMOD::Channel* channel, float value)
 
 }
 
-//Release the sound object from memory. 
-//This should be done when a sound object is no longer going to be used.
-void AudioEngine::ReleaseSound(FMOD::Sound* sound)
-{
-	sound->release();
+// ================================================================================ //
+// ============================== Audio Modification ============================== // 
+
+// Adjust the octave or frequency of a sound 
+// To Utilise these methods first get the frequency of the channel you wish to modify and store it as a float
+// Then create a new float 'newFrequency' variable and set it equal to a function call to either method, passing in
+// frequency and the required change of value
+float AudioEngine::ChangeOctave(float frequency, float ammount) {
+	static float octaveRatio = 2.0f;
+	return frequency * pow(octaveRatio, ammount);
 }
+
+float AudioEngine::ChangeSemitone(float frequency, float ammount) {
+	static float semitoneRatio = pow(2.0f, 1.0f / 12.0f);
+	return frequency * pow(semitoneRatio, ammount);
+}
+
+//Set the panning of the channel (Left/right)
+//								   (-1/1)
+void AudioEngine::SetPanning(FMOD::Channel* channel, float ammount) {
+
+	channel->setPan(ammount);
+}
+
+
 
 
