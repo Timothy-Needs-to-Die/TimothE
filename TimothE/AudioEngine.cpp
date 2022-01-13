@@ -14,7 +14,8 @@ AudioEngine::AudioEngine()
 void AudioEngine::Initialize()
 {
 	
-	FMOD_RESULT result = _fmodSystem->init(50, FMOD_INIT_NORMAL, 0);
+	FMOD_RESULT result;
+	result = _fmodSystem->init(50, FMOD_INIT_NORMAL, 0);
 	
 	CheckForErrors(result);
 }
@@ -24,6 +25,7 @@ void AudioEngine::Initialize()
 void AudioEngine::AudioUpdate()
 {
 	_fmodSystem->update();
+	
 }
 
 //Shut down the audio system. 
@@ -63,14 +65,16 @@ void AudioEngine::ReleaseSound(FMOD::Sound* sound)
 FMOD::ChannelGroup* AudioEngine::CreateChanellGroup(const char* name) {
 	FMOD::ChannelGroup* newChanellGroup;
 
-	FMOD_RESULT result =_fmodSystem->createChannelGroup(name, &newChanellGroup);
+	FMOD_RESULT result;
+	result = _fmodSystem->createChannelGroup(name, &newChanellGroup);
 	CheckForErrors(result);
 	return newChanellGroup;
 }
 
 //Set a certain channel to a channel group
 void AudioEngine::SetChannelGroup(FMOD::Channel* channelToSet, FMOD::ChannelGroup* groupToSet) {
-	FMOD_RESULT result = channelToSet->setChannelGroup(groupToSet);
+	FMOD_RESULT result;
+	result = channelToSet->setChannelGroup(groupToSet);
 	CheckForErrors(result);
 }
 
@@ -78,15 +82,15 @@ void AudioEngine::SetChannelGroup(FMOD::Channel* channelToSet, FMOD::ChannelGrou
 //This should be used to create a 'Master' Group which is the parent of every group
 void AudioEngine::AddChildGroup(FMOD::ChannelGroup* parentGroup, FMOD::ChannelGroup* childGroup) {
 	FMOD_RESULT result = parentGroup->addGroup(childGroup);
-	CheckForErrors(result);
+	//CheckForErrors(result);
 }
 
 //Gets the master group, the master group object should be passed in.
 FMOD::ChannelGroup* AudioEngine::GetMasterGroup(FMOD::ChannelGroup* masterGroupObject) {
 
 	FMOD::ChannelGroup* masterGroup = masterGroupObject;
-	FMOD_RESULT result = _fmodSystem->getMasterChannelGroup(&masterGroup);
-	CheckForErrors(result);
+	//FMOD_RESULT result = _fmodSystem->getMasterChannelGroup(&masterGroup);
+	//CheckForErrors(_fmodSystem->getMasterChannelGroup(&masterGroup));
 
 	return masterGroup;
 }

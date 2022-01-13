@@ -1,4 +1,6 @@
 #include <fmod.hpp>
+#include "fmod.h"
+
 #include <string>
 #include <map>
 #include <iostream>
