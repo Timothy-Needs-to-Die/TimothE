@@ -1,9 +1,10 @@
 #include "GameObject.h"
 
-GameObject::GameObject(string name, ObjectType tag)
+GameObject::GameObject(string name, ObjectType tag, Texture2D* texture)
 {
 	_name = name;
 	_tag = tag;
+	_pTexture = texture;
 	_UID = UID::GenerateUID();
 	_pTransform = new Transform();
 	Start();
@@ -14,7 +15,7 @@ GameObject::GameObject(string name, ObjectType tag, Transform* transform)
 	_name = name;
 	_tag = tag;
 	_pTransform = transform;
-	_pTexture = texture;
+
 }
 
 GameObject::~GameObject()

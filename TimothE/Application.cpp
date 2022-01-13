@@ -5,7 +5,6 @@
 
 #include <iostream>
 #include <thread>
-#include "Window.h"
 
 #include "Input.h"
 
@@ -73,20 +72,6 @@ void Application::Init(bool createEditorWindow)
 	}
 
 	ImGui::StyleColorsDark();
-
-
-
-
-	GameObject* gameObject = new GameObject();
-	Texture2D* texture = new Texture2D();
-	texture->Load((char*)"Penguins.raw", 512, 512);
-	gameObject->SetTexture(texture);
-
-	_graphics.Render(_pGameWindow->GetGLFWWindow(), gameObject);
-
-
-
-
 
 	_running = true;
 }
@@ -245,7 +230,7 @@ void Application::GameBeginRender()
 
 void Application::GameRender()
 {
-	_graphics.Render(_pGameWindow->GetGLFWWindow(), NULL);
+	_graphics.Render(_pGameWindow->GetGLFWWindow(), gameObject);
 }
 
 void Application::GameEndRender()

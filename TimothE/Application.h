@@ -57,5 +57,7 @@ private:
 
 	bool _inEditorMode;
 	bool _running;
+
+	GameObject* gameObject;
 };
 

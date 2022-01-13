@@ -50,6 +50,23 @@
     <ClInclude Include="UID.h" />
     <ClInclude Include="Window.h" />
     <ClInclude Include="Texture2D.h" />
+    <ClInclude Include="SOIL\image_DXT.h" />
+    <ClInclude Include="SOIL\image_helper.h" />
+    <ClInclude Include="SOIL\jo_jpeg.h" />
+    <ClInclude Include="SOIL\pkm_helper.h" />
+    <ClInclude Include="SOIL\pvr_helper.h" />
+    <ClInclude Include="SOIL\SOIL2.h" />
+    <ClInclude Include="SOIL\stb_image.h" />
+    <ClInclude Include="SOIL\stb_image_write.h" />
+    <ClInclude Include="SOIL\stbi_DDS.h" />
+    <ClInclude Include="SOIL\stbi_DDS_c.h" />
+    <ClInclude Include="SOIL\stbi_ext.h" />
+    <ClInclude Include="SOIL\stbi_ext_c.h" />
+    <ClInclude Include="SOIL\stbi_pkm.h" />
+    <ClInclude Include="SOIL\stbi_pkm_c.h" />
+    <ClInclude Include="SOIL\stbi_pvr.h" />
+    <ClInclude Include="SOIL\stbi_pvr_c.h" />
+    <ClInclude Include="SOIL\wfETC.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Application.cpp" />
@@ -85,6 +102,10 @@
     <ClCompile Include="Transform.cpp" />
     <ClCompile Include="Window.cpp" />
     <ClCompile Include="Texture2D.cpp" />
+    <ClCompile Include="SOIL\image_DXT.c" />
+    <ClCompile Include="SOIL\image_helper.c" />
+    <ClCompile Include="SOIL\SOIL2.c" />
+    <ClCompile Include="SOIL\wfETC.c" />
   </ItemGroup>
   <ItemGroup>
     <None Include="FragmentShader.frag" />

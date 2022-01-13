@@ -21,7 +21,7 @@ enum class ObjectType
 class GameObject
 {
 public:
-	GameObject(string name, ObjectType tag);
+	GameObject(string name, ObjectType tag, Texture2D* texture);
 	GameObject(string name, ObjectType tag, Transform* transform);
 	~GameObject();
 
@@ -34,6 +34,7 @@ public:
 	Component* GetComponent(Component::Types componentType);
 	vector<Component*> GetComponents() { return _components; }
 	Transform* GetTransform() { return _pTransform; }
+	Texture2D* GetTexture() { return _pTexture; }
 	void SetTexture(Texture2D* texture) { _pTexture = texture; }
 
 	void AddComponent(Component* component);
