@@ -2,8 +2,13 @@
 #include <gl/glew.h>
 #include <iostream>
 #include <fstream>
-#include "SOIL/SOIL2.h"
+
+
 #include "UID.h"
+
+#include "SOIL/SOIL2.h"
+#include "SOIL/stb_image.h"
+#include "SOIL/image_helper.h"
 
 using namespace std;
 

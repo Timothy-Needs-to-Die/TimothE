@@ -294,7 +294,15 @@ void Application::GameBeginRender()
 
 void Application::GameRender()
 {
-	_graphics.Render(_pGameWindow->GetGLFWWindow(), gameObject);
+	Texture2D* t = new Texture2D();
+	t->Load("lenna3.jpg", "linear");
+
+	GameObject* go = new GameObject("LENNA!", ObjectType::Player, t);
+
+	_graphics.Render(_pGameWindow->GetGLFWWindow(), go);
+
+	delete go;
+	delete t;
 }
 
 void Application::GameEndRender()

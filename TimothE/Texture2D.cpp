@@ -25,7 +25,7 @@ bool Texture2D::Load(char* path, string mode)
 	/* check for an error during the load process */
 	if (0 == _ID)
 	{
-		printf("SOIL loading error: '%s'\n", SOIL_last_result());
+		//printf("SOIL loading error: '%s'\n", SOIL_last_result());
 	}
 
 	return true;

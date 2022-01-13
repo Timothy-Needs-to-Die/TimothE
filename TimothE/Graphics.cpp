@@ -51,6 +51,7 @@ void Graphics::Render(GLFWwindow* window, GameObject* gameObject)
 	glEnableVertexAttribArray(1);
 
 	_pShader->BindShader();
+
 	glBindTexture(GL_TEXTURE_2D, gameObject->GetTexture()->GetID());
 	glBindVertexArray(vertexArray);
 	glDrawArrays(GL_TRIANGLES, 0, 3);

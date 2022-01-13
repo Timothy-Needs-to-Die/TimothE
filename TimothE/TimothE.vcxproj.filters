@@ -4,6 +4,9 @@
     <Filter Include="Imgui">
       <UniqueIdentifier>{E087650D-4C9C-8DBE-151E-311E81F189EF}</UniqueIdentifier>
     </Filter>
+    <Filter Include="SOIL">
+      <UniqueIdentifier>{BCEC8B7C-A823-8D0D-5110-73103D26090F}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Application.h" />
@@ -42,31 +45,65 @@
     <ClInclude Include="Input.h" />
     <ClInclude Include="KeyEvent.h" />
     <ClInclude Include="MouseEvent.h" />
+    <ClInclude Include="SOIL\SOIL2.h">
+      <Filter>SOIL</Filter>
+    </ClInclude>
+    <ClInclude Include="SOIL\image_DXT.h">
+      <Filter>SOIL</Filter>
+    </ClInclude>
+    <ClInclude Include="SOIL\image_helper.h">
+      <Filter>SOIL</Filter>
+    </ClInclude>
+    <ClInclude Include="SOIL\jo_jpeg.h">
+      <Filter>SOIL</Filter>
+    </ClInclude>
+    <ClInclude Include="SOIL\pkm_helper.h">
+      <Filter>SOIL</Filter>
+    </ClInclude>
+    <ClInclude Include="SOIL\pvr_helper.h">
+      <Filter>SOIL</Filter>
+    </ClInclude>
+    <ClInclude Include="SOIL\stb_image.h">
+      <Filter>SOIL</Filter>
+    </ClInclude>
+    <ClInclude Include="SOIL\stb_image_write.h">
+      <Filter>SOIL</Filter>
+    </ClInclude>
+    <ClInclude Include="SOIL\stbi_DDS.h">
+      <Filter>SOIL</Filter>
+    </ClInclude>
+    <ClInclude Include="SOIL\stbi_DDS_c.h">
+      <Filter>SOIL</Filter>
+    </ClInclude>
+    <ClInclude Include="SOIL\stbi_ext.h">
+      <Filter>SOIL</Filter>
+    </ClInclude>
+    <ClInclude Include="SOIL\stbi_ext_c.h">
+      <Filter>SOIL</Filter>
+    </ClInclude>
+    <ClInclude Include="SOIL\stbi_pkm.h">
+      <Filter>SOIL</Filter>
+    </ClInclude>
+    <ClInclude Include="SOIL\stbi_pkm_c.h">
+      <Filter>SOIL</Filter>
+    </ClInclude>
+    <ClInclude Include="SOIL\stbi_pvr.h">
+      <Filter>SOIL</Filter>
+    </ClInclude>
+    <ClInclude Include="SOIL\stbi_pvr_c.h">
+      <Filter>SOIL</Filter>
+    </ClInclude>
+    <ClInclude Include="SOIL\wfETC.h">
+      <Filter>SOIL</Filter>
+    </ClInclude>
     <ClInclude Include="Scene.h" />
     <ClInclude Include="Shader.h" />
     <ClInclude Include="TestComponent.h" />
+    <ClInclude Include="Texture2D.h" />
     <ClInclude Include="TimothEInputCodes.h" />
     <ClInclude Include="Transform.h" />
     <ClInclude Include="UID.h" />
     <ClInclude Include="Window.h" />
-    <ClInclude Include="Texture2D.h" />
-    <ClInclude Include="SOIL\image_DXT.h" />
-    <ClInclude Include="SOIL\image_helper.h" />
-    <ClInclude Include="SOIL\jo_jpeg.h" />
-    <ClInclude Include="SOIL\pkm_helper.h" />
-    <ClInclude Include="SOIL\pvr_helper.h" />
-    <ClInclude Include="SOIL\SOIL2.h" />
-    <ClInclude Include="SOIL\stb_image.h" />
-    <ClInclude Include="SOIL\stb_image_write.h" />
-    <ClInclude Include="SOIL\stbi_DDS.h" />
-    <ClInclude Include="SOIL\stbi_DDS_c.h" />
-    <ClInclude Include="SOIL\stbi_ext.h" />
-    <ClInclude Include="SOIL\stbi_ext_c.h" />
-    <ClInclude Include="SOIL\stbi_pkm.h" />
-    <ClInclude Include="SOIL\stbi_pkm_c.h" />
-    <ClInclude Include="SOIL\stbi_pvr.h" />
-    <ClInclude Include="SOIL\stbi_pvr_c.h" />
-    <ClInclude Include="SOIL\wfETC.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Application.cpp" />
@@ -99,18 +136,8 @@
     <ClCompile Include="Shader.cpp" />
     <ClCompile Include="Source.cpp" />
     <ClCompile Include="TestComponent.cpp" />
+    <ClCompile Include="Texture2D.cpp" />
     <ClCompile Include="Transform.cpp" />
     <ClCompile Include="Window.cpp" />
-    <ClCompile Include="Texture2D.cpp" />
-    <ClCompile Include="SOIL\image_DXT.c" />
-    <ClCompile Include="SOIL\image_helper.c" />
-    <ClCompile Include="SOIL\SOIL2.c" />
-    <ClCompile Include="SOIL\wfETC.c" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="FragmentShader.frag" />
-    <None Include="VertexShader.vert" />
-    <None Include="fbVert.vs" />
-    <None Include="fbFrag.fs" />
   </ItemGroup>
 </Project>

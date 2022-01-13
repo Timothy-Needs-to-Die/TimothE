@@ -6,7 +6,7 @@ Scene::Scene(string name)
 {
 	_id = ++nextID;
 	_name = name;
-	AddGameObject(new GameObject("Test object", ObjectType::Player));
+	//AddGameObject(new GameObject("Test object", ObjectType::Player, NULL));
 }
 
 Scene::~Scene()

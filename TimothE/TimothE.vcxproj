@@ -62,7 +62,7 @@
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
-      <AdditionalDependencies>opengl32.lib;glfw3.lib;glew32s.lib;glew32.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>opengl32.lib;glfw3.lib;glew32s.lib;glew32.lib;soil2-debug.lib;%(AdditionalDependencies)</AdditionalDependencies>
       <AdditionalLibraryDirectories>..\Dependancies\GLFW\lib-vc2019;..\Dependancies\GLEW\lib;..\Dependancies\irrklang\lib;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
     </Link>
   </ItemDefinitionGroup>
@@ -75,7 +75,7 @@
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
-      <AdditionalDependencies>opengl32.lib;glfw3.lib;glew32s.lib;glew32.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>opengl32.lib;glfw3.lib;glew32s.lib;glew32.lib;soil2-debug.lib;%(AdditionalDependencies)</AdditionalDependencies>
       <AdditionalLibraryDirectories>..\Dependancies\GLFW\lib-vc2019;..\Dependancies\GLEW\lib;..\Dependancies\irrklang\lib;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
     </Link>
   </ItemDefinitionGroup>
@@ -98,14 +98,14 @@
     <ClInclude Include="Input.h" />
     <ClInclude Include="KeyEvent.h" />
     <ClInclude Include="MouseEvent.h" />
-    <ClInclude Include="Scene.h" />
-    <ClInclude Include="Shader.h" />
+    <ClInclude Include="SOIL\SOIL2.h" />
     <ClInclude Include="SOIL\image_DXT.h" />
     <ClInclude Include="SOIL\image_helper.h" />
     <ClInclude Include="SOIL\jo_jpeg.h" />
     <ClInclude Include="SOIL\pkm_helper.h" />
     <ClInclude Include="SOIL\pvr_helper.h" />
-    <ClInclude Include="SOIL\SOIL2.h" />
+    <ClInclude Include="SOIL\stb_image.h" />
+    <ClInclude Include="SOIL\stb_image_write.h" />
     <ClInclude Include="SOIL\stbi_DDS.h" />
     <ClInclude Include="SOIL\stbi_DDS_c.h" />
     <ClInclude Include="SOIL\stbi_ext.h" />
@@ -114,11 +114,11 @@
     <ClInclude Include="SOIL\stbi_pkm_c.h" />
     <ClInclude Include="SOIL\stbi_pvr.h" />
     <ClInclude Include="SOIL\stbi_pvr_c.h" />
-    <ClInclude Include="SOIL\stb_image.h" />
-    <ClInclude Include="SOIL\stb_image_write.h" />
     <ClInclude Include="SOIL\wfETC.h" />
-    <ClInclude Include="Texture2D.h" />
+    <ClInclude Include="Scene.h" />
+    <ClInclude Include="Shader.h" />
     <ClInclude Include="TestComponent.h" />
+    <ClInclude Include="Texture2D.h" />
     <ClInclude Include="TimothEInputCodes.h" />
     <ClInclude Include="Transform.h" />
     <ClInclude Include="UID.h" />
@@ -139,21 +139,11 @@
     <ClCompile Include="Input.cpp" />
     <ClCompile Include="Scene.cpp" />
     <ClCompile Include="Shader.cpp" />
-    <ClCompile Include="SOIL\image_DXT.c" />
-    <ClCompile Include="SOIL\image_helper.c" />
-    <ClCompile Include="SOIL\SOIL2.c" />
-    <ClCompile Include="SOIL\wfETC.c" />
     <ClCompile Include="Source.cpp" />
-    <ClCompile Include="Texture2D.cpp" />
     <ClCompile Include="TestComponent.cpp" />
+    <ClCompile Include="Texture2D.cpp" />
     <ClCompile Include="Transform.cpp" />
     <ClCompile Include="Window.cpp" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="fbFrag.fs" />
-    <None Include="fbVert.vs" />
-    <None Include="FragmentShader.frag" />
-    <None Include="VertexShader.vert" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
