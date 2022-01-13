@@ -3,7 +3,7 @@
 #include <iostream>
 
 
-TestComponent::TestComponent(GameObject* parentObject) : Component(parentObject)
+TestComponent::TestComponent(GameObject* parentObject) : Component()
 {
 	//calls method on creation
 	OnStart();

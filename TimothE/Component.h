@@ -25,14 +25,7 @@ class Component
 
 public:
 
-	//GameObject* _parentObject;
-	//void SetGameObject(GameObject* newparent) {
-	//	_parentObject = newparent;
-	//}
-	//// Getter
-	//GameObject* GetGameObject() {
-	//	return _parentObject;
-	//}
+	
 	//enum for types of components
 	enum Types
 	{
@@ -57,7 +50,7 @@ public:
 		Debug_Catagory = BIT(5),
 	};
 	//constructor and destructor calling start and end methods
-	Component(GameObject* parentObject) { _parentObject = parentObject; }
+	Component() {  }
 	~Component() {}
 	//virtual function for sub class of components
 	virtual void OnStart() = 0;

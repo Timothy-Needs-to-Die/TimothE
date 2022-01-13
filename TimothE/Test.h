@@ -12,5 +12,14 @@ public:
 	void OnUpdate() override;
 	void OnEnd() override;
 	void Test(int x, int y);
+
+	GameObject* _parentObject;
+	void SetGameObject(GameObject* newparent) {
+		_parentObject = newparent;
+	}
+	// Getter
+	GameObject* GetGameObject() {
+		return _parentObject;
+	}
 };
 
