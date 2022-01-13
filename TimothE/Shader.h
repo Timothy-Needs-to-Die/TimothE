@@ -25,13 +25,23 @@ public:
 	void BindShader();
 	void UnbindShader();
 
-	//UNIFORMS
-	bool setUniformfv(GLint location, GLsizei count, const GLfloat* v, int numElements);
+	/////////////////////////////
+	//UNIFORM UTILITY FUNCTIONS//
+	/////////////////////////////
+	void setBool(const std::string& name, bool value) const;
+	void setInt(const std::string& name, int value) const;
+	void setFloat(const std::string& name, float value) const;
 
-	bool setUniform1fv(GLint location, GLsizei count, const GLfloat* v) { return setUniformfv(location, count, v, 1); };
-	bool setUniform2fv(GLint location, GLsizei count, const GLfloat* v) { return setUniformfv(location, count, v, 2); };
-	bool setUniform3fv(GLint location, GLsizei count, const GLfloat* v) { return setUniformfv(location, count, v, 3); };
-	bool setUniform4fv(GLint location, GLsizei count, const GLfloat* v) { return setUniformfv(location, count, v, 4); };
+	void setVec2(const std::string& name, const glm::vec2& value) const;
+	void setVec2(const std::string& name, float x, float y) const;
+	void setVec3(const std::string& name, const glm::vec3& value) const;
+	void setVec3(const std::string& name, float x, float y, float z) const;
+	void setVec4(const std::string& name, const glm::vec4& value) const;
+	void setVec4(const std::string& name, float x, float y, float z, float w);
+
+	void setMat2(const std::string& name, const glm::mat2& mat) const;
+	void setMat3(const std::string& name, const glm::mat3& mat) const;
+	void setMat4(const std::string& name, const glm::mat4& mat) const;
 private:
 	GLuint CreateShader();
 	GLuint CompileShader(GLenum sType, const std::string& source);

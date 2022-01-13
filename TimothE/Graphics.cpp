@@ -21,7 +21,7 @@ void Graphics::Render(GLFWwindow* window, GameObject* gameObject)
 	glGenVertexArrays(1, &vertexArray);
 	glBindVertexArray(vertexArray);
 	// This will identify our vertex buffer
-		GLuint vertexbuffer;
+	GLuint vertexbuffer;
 	// Generate 1 buffer, put the resulting identifier in vertexbuffer
 	glGenBuffers(1, &vertexbuffer);
 	// The following commands will talk about our 'vertexbuffer' buffer
