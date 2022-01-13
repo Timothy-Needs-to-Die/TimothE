@@ -1,4 +1,5 @@
 #pragma once
+class Component;
 #include <vector>
 #include <string>
 #include "Component.h"
