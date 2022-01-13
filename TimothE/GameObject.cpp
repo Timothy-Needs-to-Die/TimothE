@@ -28,48 +28,37 @@ GameObject::~GameObject()
 
 void GameObject::Start()
 {
-	/*for (Component* c : _components)
+	for (Component* c : _components)
 	{
-		c->Start();
-	}*/
+		c->OnStart();
+	}
 }
 
 void GameObject::Update(float deltaTime)
 {
-	/*for (Component* c : _components)
+	for (Component* c : _components)
 	{
-		c->Update();
-	}*/
+		c->OnUpdate();
+	}
 }
 
 void GameObject::Exit()
 {
-	/*for (Component* c : _components)
+	for (Component* c : _components)
 	{
-		c->Exit();
-	}*/
+		c->OnEnd();
+	}
 }
 
-Component* GameObject::GetComponent(string name)
+Component* GameObject::GetComponent(Component::Types componentType)
 {
-	/*for (Component* c : _components)
+	for (Component* c : _components)
 	{
-		if (c->GetName() == name)
+		if (c->GetType() == componentType)
 		{
 			return c;
 		}
-	}*/
-	return nullptr;
-}
-Component* GameObject::GetComponent(string ID)
-{
-	/*for (Component* c : _components)
-	{
-		if (c->GetUID() == ID)
-		{
-			return c;
-		}
-	}*/
+	}
 	return nullptr;
 }
 

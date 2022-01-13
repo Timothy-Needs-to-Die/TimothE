@@ -29,8 +29,7 @@ public:
 
 	string GetUID() { return _UID; }
 	string GetName() { return _name; }
-	Component* GetComponent(string name);
-	Component* GetComponent(string ID);
+	Component* GetComponent(Component::Types componentType);
 	vector<Component*> GetComponents() { return _components; }
 	Transform* GetTransform() { return _pTransform; }
 
