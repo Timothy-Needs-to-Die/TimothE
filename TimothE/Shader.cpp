@@ -1,4 +1,6 @@
 #include <GL/glew.h>
+#include <assert.h>
+
 #include "Shader.h"
 
 Shader::Shader(const std::string& vsPath, const std::string& fsPath) : _vertexShaderPath(vsPath), _fragmentShaderPath(fsPath)
@@ -101,4 +103,9 @@ ShaderSourceCode Shader::GetShadersFromFile()
     shaderSourceCode.fragmentShaderSource = fsSource.str();
 
     return shaderSourceCode;
+}
+
+bool Shader::setUniformfv(GLint location, GLsizei count, const GLfloat* v, int numElements)
+{
+    return true;
 }

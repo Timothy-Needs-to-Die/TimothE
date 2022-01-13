@@ -2,6 +2,7 @@
 
 #include <GLFW/glfw3.h>
 #include <GL/gl.h>
+#include <glm.hpp>
 
 #include <string>
 #include <iostream>
@@ -23,6 +24,14 @@ public:
 
 	void BindShader();
 	void UnbindShader();
+
+	//UNIFORMS
+	bool setUniformfv(GLint location, GLsizei count, const GLfloat* v, int numElements);
+
+	bool setUniform1fv(GLint location, GLsizei count, const GLfloat* v) { return setUniformfv(location, count, v, 1); };
+	bool setUniform2fv(GLint location, GLsizei count, const GLfloat* v) { return setUniformfv(location, count, v, 2); };
+	bool setUniform3fv(GLint location, GLsizei count, const GLfloat* v) { return setUniformfv(location, count, v, 3); };
+	bool setUniform4fv(GLint location, GLsizei count, const GLfloat* v) { return setUniformfv(location, count, v, 4); };
 private:
 	GLuint CreateShader();
 	GLuint CompileShader(GLenum sType, const std::string& source);
