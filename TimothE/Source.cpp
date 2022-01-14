@@ -9,4 +9,7 @@ void main() {
 	Application* game = new Application();
 	game->Init(true);
 	game->GameLoop();
+
+	delete game;
+	game = nullptr;
 }
