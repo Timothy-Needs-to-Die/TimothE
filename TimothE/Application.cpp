@@ -68,7 +68,7 @@ void Application::Init(bool devMode)
 
 	ImGui::StyleColorsDark();
 
-	_currentScene = new Scene("Test scene");
+	_pCurrentScene = new Scene("Test scene");
 
 	_running = true;
 
@@ -121,6 +121,13 @@ void Application::Init(bool devMode)
 		cout << "ERROR::FRAMEBUFFER:: Framebuffer is not complete!" << endl;
 	glBindFramebuffer(GL_FRAMEBUFFER, 0);
 
+	/////////////
+	//TEST CODE//
+	/////////////
+	Texture2D* t = new Texture2D();
+	t->Load("lenna3.jpg", "linear");
+
+	_pTestObject = new GameObject("LENNA!", ObjectType::Player, t);
 }
 
 void Application::GameLoop()
@@ -138,10 +145,6 @@ void Application::GameLoop()
 				EditorStartRender();
 
 				_pScreenShader->BindShader();
-
-
-
-
 
 				EditorRender();
 
@@ -207,7 +210,7 @@ void Application::PollInput()
 
 void Application::EditorUpdate(float dt)
 {
-	_currentScene->Update(dt);
+	_pCurrentScene->Update(dt);
 }
 
 void Application::EditorStartRender()
@@ -294,15 +297,7 @@ void Application::GameBeginRender()
 
 void Application::GameRender()
 {
-	Texture2D* t = new Texture2D();
-	t->Load("lenna3.jpg", "linear");
-
-	GameObject* go = new GameObject("LENNA!", ObjectType::Player, t);
-
-	_graphics.Render(_pGameWindow->GetGLFWWindow(), go);
-
-	delete go;
-	delete t;
+	_graphics.Render(_pGameWindow->GetGLFWWindow(), _pTestObject);
 }
 
 void Application::GameEndRender()

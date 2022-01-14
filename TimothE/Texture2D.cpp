@@ -1,9 +1,8 @@
 #include "Texture2D.h"
 
-Texture2D::Texture2D()
+Texture2D::Texture2D() : Component()
 {
 	_UID = UID::GenerateUID();
-
 }
 
 Texture2D::~Texture2D()
@@ -31,6 +30,20 @@ bool Texture2D::Load(char* path, string mode)
 	return true;
 }
 
+void Texture2D::OnStart() 
+{ 
+
+}
+
+void Texture2D::OnUpdate()
+{ 
+
+}
+
+void Texture2D::OnEnd()
+{ 
+
+}
 
 void Texture2D::SetFilterMode(string mode)
 {

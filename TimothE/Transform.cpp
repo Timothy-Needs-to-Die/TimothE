@@ -1,37 +1,47 @@
 #include "Transform.h"
 
-Transform::Transform()
+Transform::Transform() : Component()
 {
-	_mScaleX = 1;
-	_mScaleY = 1;
-	_mXpos = 0;
-	_mYpos = 0;
-	_mXrot = 0;
-	_mYrot = 0;
+	_scaleX = 1;
+	_scaleY = 1;
+	_xPos = 0;
+	_yPos = 0;
+	_xRot = 0;
+	_yRot = 0;
 }
 
-Transform::Transform(float x, float y, float rotx, float roty, float scalex, float scaley)
+Transform::Transform(float x, float y, float rotx, float roty, float scalex, float scaley) : Component()
 {
-	_mScaleX = scalex;
-	_mScaleY = scaley;
-	_mXpos = x;
-	_mYpos = y;
-	_mXrot = rotx;
-	_mYrot = roty;
+	_scaleX = scalex;
+	_scaleY = scaley;
+	_xPos = x;
+	_yPos = y;
+	_xRot = rotx;
+	_yRot = roty;
+}
+
+void Transform::OnStart()
+{
+
+}
+
+void Transform::OnUpdate()
+{
+
+}
+
+void Transform::OnEnd()
+{
+
 }
 
 void Transform::SetPosition(float x, float y)
 {
-	_mXpos = x;
-	_mYpos = y;
+	_xPos = x;
+	_yPos = y;
 }
 
 void Transform::SetXrotation(float xRot)
 {
-	_mXrot = xRot;
-}
-
-Transform::~Transform()
-{
-
+	_xRot = xRot;
 }
