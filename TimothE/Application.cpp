@@ -26,6 +26,7 @@ void Application::Init(bool devMode)
 {
 	UID::Init();
 	Input::Init();
+	Renderer::Initialize();
 
 	_pNotesBuffer = new char[16348];
 
@@ -49,8 +50,6 @@ void Application::Init(bool devMode)
 		//std::cout << "ERROR: %s", glewGetErrorString(GlewInitResult) << std::endl;
 		exit(EXIT_FAILURE);
 	}
-
-	_renderer.Initialize();
 
 	ImGui::CreateContext();
 	ImGuiIO& io = ImGui::GetIO(); (void)io;

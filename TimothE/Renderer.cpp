@@ -4,7 +4,7 @@
 
 void Renderer::Initialize()
 {
-	_pShader = new Shader("VertexShader.vert", "FragmentShader.frag");
+	
 }
 
 void Renderer::RenderDrawables(vector<GameObject*> gameObjects)
@@ -18,7 +18,10 @@ void Renderer::RenderDrawables(vector<GameObject*> gameObjects)
 void Renderer::Render(GameObject* gameObject)
 {
 	glUseProgram(gameObject->GetShaderID());
-
+	
+	//////////////////////////////////
+	//NEEDS VERTICES FROM GAMEOBJECT//
+	//////////////////////////////////
 	/*
 
 	GLuint vertexArray;
