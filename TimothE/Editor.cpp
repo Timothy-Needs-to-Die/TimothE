@@ -5,7 +5,7 @@ Editor::Editor(Window* pWindow)
 	: _pWindow(pWindow)
 {
 	// vertex attributes for a quad that fills the editor screen space in Normalized Device Coordinates.
-	float quadVertices[] = {
+	float* quadVertices = new float[24] {
 		// positions   // texCoords
 		-0.65f,  -0.6f,  0.0f, 0.0f,
 		-0.65f,   0.82f,	0.0f, 1.0f,

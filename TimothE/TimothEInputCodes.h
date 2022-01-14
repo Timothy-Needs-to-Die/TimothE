@@ -2,6 +2,7 @@
 
 #include <GLFW/glfw3.h>
 
+//Holds all of the key codes that can be used
 enum TimothEKeyCode {
 	KEY_SPACE = GLFW_KEY_SPACE,
 	KEY_APOSTROPHE = GLFW_KEY_APOSTROPHE,
@@ -127,6 +128,7 @@ enum TimothEKeyCode {
 	KEY_FIRST = KEY_SPACE
 };
 
+//Holds all of the mouse button codes that can be used
 enum TimothEMouseCode {
 	BUTTON_1 = GLFW_MOUSE_BUTTON_1,
 	BUTTON_2 = GLFW_MOUSE_BUTTON_2,
@@ -143,6 +145,7 @@ enum TimothEMouseCode {
 	BUTTON_FIRST = BUTTON_1
 };
 
+//Holds the states that mouse buttons and keys can be at
 enum TimothEInputState {
 	PRESSED = GLFW_PRESS,
 	HELD = GLFW_REPEAT,

@@ -30,7 +30,7 @@ Framebuffer::~Framebuffer()
 	glDeleteRenderbuffers(1, &_rbo);
 	glDeleteFramebuffers(1, &_fbo);
 
-	delete _pQuadVertices;
+	delete[] _pQuadVertices;
 	_pQuadVertices = nullptr;
 }
 
