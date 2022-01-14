@@ -53,8 +53,6 @@ void Application::Init(bool devMode)
 		exit(EXIT_FAILURE);
 	}
 
-	_renderer.Initialize();
-
 	if (_devMode) {
 		ImGuiManager::CreateImGuiContext(_pGameWindow->GetGLFWWindow());
 	}
