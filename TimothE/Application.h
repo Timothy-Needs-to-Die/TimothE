@@ -2,7 +2,7 @@
 
 #include "Window.h"
 #include "ApplicationEvent.h"
-#include "Graphics.h"
+#include "Renderer.h"
 #include "Scene.h"
 
 class Application
@@ -45,7 +45,7 @@ private:
 
 	void ModernDarkTheme();
 
-	Graphics _graphics;
+	Renderer _renderer;
 
 	Window* _pGameWindow;
 
@@ -64,7 +64,5 @@ private:
 	unsigned int _texture;
 	unsigned int _quadVAO;
 	unsigned int _quadVBO;
-
-	GameObject* _pTestObject;
 };
 

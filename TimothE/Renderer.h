@@ -5,11 +5,13 @@
 #include <iostream>
 #include <vector>
 
-class Graphics
+class Renderer
 {
 public:
 	void Initialize();
-	void Render(vector<GameObject*> gameObjects);
+	void RenderDrawables(vector<GameObject*> gameObjects);
 public:
 	Shader* _pShader;
+private:
+	void Render(GameObject* gameObject);
 };

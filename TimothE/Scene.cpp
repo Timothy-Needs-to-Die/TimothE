@@ -1,3 +1,4 @@
+#include "Texture2D.h"
 #include "Scene.h"
 #include <algorithm>
 
@@ -7,7 +8,25 @@ Scene::Scene(string name)
 {
 	_id = ++nextID;
 	_name = name;
-	//AddGameObject(new GameObject("Test object", ObjectType::Player, (Texture2D*)nullptr));
+
+	/////////////
+	//TEST CODE//
+	/////////////
+	Texture2D* t = new Texture2D();
+	t->Load("lenna3.jpg", "linear");
+
+	static const GLfloat g_vertex_buffer_data[] =
+	{
+		//pos				//tex
+		-1.0f, -1.0f, 0.0f, 0.0f, 0.0f,
+		1.0f, -1.0f, 0.0f, 1.0f, 0.0f,
+		0.0f,  1.0f, 0.0f, 0.5f, 1.0f
+	};
+
+	GameObject* _pTestObject = new GameObject("LENNA!", ObjectType::Player, t);
+	//VERTEX DATA NEEDS TO BE STORED IN GAMEOBJECT
+
+	AddGameObject(_pTestObject);
 }
 
 Scene::~Scene()
@@ -26,10 +45,9 @@ void Scene::Update(float deltaTime)
 	}
 }
 
-void Scene::RenderScene(GLFWwindow* pWindow, Graphics* pGraphics)
+void Scene::RenderScene(Renderer* pRenderer)
 {
-	for (auto const& object : _listOfGameObjects)
-		pGraphics->Render(pWindow, object);
+	pRenderer->RenderDrawables(_listOfGameObjects);
 }
 
 void Scene::RemoveGameObject(GameObject* gameObject)

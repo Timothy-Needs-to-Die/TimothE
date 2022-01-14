@@ -50,7 +50,7 @@ void Application::Init(bool devMode)
 		exit(EXIT_FAILURE);
 	}
 
-	_graphics.Initialize();
+	_renderer.Initialize();
 
 	ImGui::CreateContext();
 	ImGuiIO& io = ImGui::GetIO(); (void)io;
@@ -120,14 +120,6 @@ void Application::Init(bool devMode)
 	if (glCheckFramebufferStatus(GL_FRAMEBUFFER) != GL_FRAMEBUFFER_COMPLETE)
 		cout << "ERROR::FRAMEBUFFER:: Framebuffer is not complete!" << endl;
 	glBindFramebuffer(GL_FRAMEBUFFER, 0);
-
-	/////////////
-	//TEST CODE//
-	/////////////
-	Texture2D* t = new Texture2D();
-	t->Load("lenna3.jpg", "linear");
-
-	_pTestObject = new GameObject("LENNA!", ObjectType::Player, t);
 }
 
 void Application::GameLoop()
@@ -312,7 +304,7 @@ void Application::GameBeginRender()
 
 void Application::GameRender()
 {
-	_graphics.Render(_pGameWindow->GetGLFWWindow(), _pTestObject);
+	_pCurrentScene->RenderScene(&_renderer);
 }
 
 void Application::GameEndRender()

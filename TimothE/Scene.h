@@ -3,7 +3,7 @@
 #include <vector>
 #include <string>
 #include "GameObject.h"
-#include "Graphics.h"
+#include "Renderer.h"
 
 
 using namespace std;
@@ -14,7 +14,7 @@ public:
 	Scene(string name);
 	~Scene();
 	void Update(float deltaTime);
-	void RenderScene(GLFWwindow* pWindow, Graphics* pGraphics);
+	void RenderScene(Renderer* pRenderer);
 	void AddGameObject(GameObject* gameObject) { _listOfGameObjects.push_back(gameObject); }
 	void RemoveGameObject(GameObject* gameObject);
 	vector<GameObject*> GetGameObjects() { return _listOfGameObjects; }

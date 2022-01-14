@@ -41,12 +41,16 @@ public:
 	Transform* GetTransform() { return (Transform*)GetComponent(Component::Types::Transform_Type); }
 	Texture2D* GetTexture() { return (Texture2D*)GetComponent(Component::Types::Texture_Type); }
 	int GetTextureID() { return _textureID; }
+	int GetShaderID() { return _shaderID; }
 
 	void LoadTexture(char* path, string mode);
+	void SetShader(int id) { _shaderID = id; };
 private:
 	string _UID;
 	string _name;
 	ObjectType _tag;
 	vector<Component*> _pComponents;
-	int _textureID;
+
+	int _textureID = 0;
+	int _shaderID = 0;
 };

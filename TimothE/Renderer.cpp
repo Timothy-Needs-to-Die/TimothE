@@ -1,21 +1,25 @@
 #include <GL/glew.h>
-#include "Graphics.h"
+#include "Renderer.h"
 #include "Texture2D.h"
 
-void Graphics::Initialize()
+void Renderer::Initialize()
 {
 	_pShader = new Shader("VertexShader.vert", "FragmentShader.frag");
 }
 
-void Graphics::Render(GLFWwindow* window, GameObject* gameObject)
+void Renderer::RenderDrawables(vector<GameObject*> gameObjects)
 {
-	static const GLfloat g_vertex_buffer_data[] =
+	for (auto& obj : gameObjects)
 	{
-		//pos				//tex
-		-1.0f, -1.0f, 0.0f, 0.0f, 0.0f,
-		1.0f, -1.0f, 0.0f, 1.0f, 0.0f,
-		0.0f,  1.0f, 0.0f, 0.5f, 1.0f
-	};
+		Render(obj);
+	}
+}
+
+void Renderer::Render(GameObject* gameObject)
+{
+	glUseProgram(gameObject->GetShaderID());
+
+	/*
 
 	GLuint vertexArray;
 	glGenVertexArrays(1, &vertexArray);
@@ -27,8 +31,8 @@ void Graphics::Render(GLFWwindow* window, GameObject* gameObject)
 	// The following commands will talk about our 'vertexbuffer' buffer
 	glBindBuffer(GL_ARRAY_BUFFER, vertexbuffer);
 	// Give our vertices to OpenGL.
-	glBufferData(GL_ARRAY_BUFFER, sizeof(g_vertex_buffer_data), g_vertex_buffer_data, GL_STATIC_DRAW);
-	
+	glBufferData(GL_ARRAY_BUFFER, sizeof(gameObject->GetVertexData()), gameObject->GetVertexData(), GL_STATIC_DRAW);
+
 	//glBindBuffer(GL_ARRAY_BUFFER, vertexbuffer); //apparently wasnt needed???? -Lucy
 	glVertexAttribPointer(
 		0,                  // attribute 0. No particular reason for 0, but must match the layout in the shader.
@@ -39,7 +43,7 @@ void Graphics::Render(GLFWwindow* window, GameObject* gameObject)
 		(void*)0            // array buffer offset
 	);
 	glEnableVertexAttribArray(0);
-	
+
 	glVertexAttribPointer(
 		1,                  // attribute 0. No particular reason for 0, but must match the layout in the shader.
 		2,                  // size
@@ -55,5 +59,7 @@ void Graphics::Render(GLFWwindow* window, GameObject* gameObject)
 	glBindTexture(GL_TEXTURE_2D, gameObject->GetTextureID());
 	glBindVertexArray(vertexArray);
 	glDrawArrays(GL_TRIANGLES, 0, 3);
-  	glDisableVertexAttribArray(0);
+	glDisableVertexAttribArray(0);
+
+	*/
 }
