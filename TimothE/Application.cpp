@@ -5,7 +5,6 @@
 
 #include <iostream>
 #include <thread>
-#include "Window.h"
 
 #include "Input.h"
 
@@ -18,15 +17,19 @@
 
 #include "UID.h"
 
+#include "Texture2D.h"
+
 
 #define BIND_EVENT_FN(x) std::bind(&Application::x, this, std::placeholders::_1)
 
-void Application::Init(bool createEditorWindow)
+void Application::Init(bool devMode)
 {
 	UID::Init();
 	Input::Init();
 
-	_inEditorMode = createEditorWindow;
+	_pNotesBuffer = new char[16348];
+
+	_devMode = devMode;
 
 	if (!glfwInit()) {
 		std::cout << "[ERROR: Application::Init()]: glfw failed to initialize" << std::endl;
@@ -37,12 +40,6 @@ void Application::Init(bool createEditorWindow)
 
 	_pGameWindow = new Window(1280, 720, "Game");
 
-	if (createEditorWindow) {
-		_pEditorWindow = new Window(1280, 720, "TimothE Engine");
-	}
-
-	_pEditorWindow->SetEventCallback(BIND_EVENT_FN(OnEditorEvent));
-	_pEditorWindow->CreateWindow();
 	_pGameWindow->SetEventCallback(BIND_EVENT_FN(OnGameEvent));
 	_pGameWindow->CreateWindow();
 
@@ -60,75 +57,133 @@ void Application::Init(bool createEditorWindow)
 	io.ConfigFlags |= ImGuiConfigFlags_NavEnableKeyboard;
 	io.ConfigFlags |= ImGuiConfigFlags_NavEnableGamepad;
 	io.ConfigFlags |= ImGuiConfigFlags_DockingEnable;
-	//io.ConfigFlags |= ImGuiConfigFlags_ViewportsEnable;
 
 	ModernDarkTheme();
 
-	if (createEditorWindow) {
-		ImGui_ImplGlfw_InitForOpenGL(_pEditorWindow->GetGLFWWindow(), true);
+	if (_devMode) {
+		ImGui_ImplGlfw_InitForOpenGL(_pGameWindow->GetGLFWWindow(), true);
 		const char* glsl_version = "#version 330";
 		ImGui_ImplOpenGL3_Init(glsl_version);
 	}
 
 	ImGui::StyleColorsDark();
 
-	_currentScene = new Scene("Test scene");
+	_pCurrentScene = new Scene("Test scene");
 
 	_running = true;
+
+	// vertex attributes for a quad that fills the entire screen in Normalized Device Coordinates.
+	float quadVertices[] = { 
+	// positions   // texCoords
+	-0.65f,  -0.6f,  0.0f, 0.0f,
+	-0.65f,   0.82f,	0.0f, 1.0f,
+	 0.6f,   0.82f,	1.0f, 1.0f,
+
+	 0.65f,  -0.6f,  1.0f, 0.0f,
+	-0.65f,  -0.6f,	0.0f, 0.0f,
+	 0.6f,   0.82f,   1.0f, 1.0f
+	};
+
+	glGenVertexArrays(1, &_quadVAO);
+	glGenBuffers(1, &_quadVBO);
+	glBindVertexArray(_quadVAO);
+	glBindBuffer(GL_ARRAY_BUFFER, _quadVBO);
+	glBufferData(GL_ARRAY_BUFFER, sizeof(quadVertices), quadVertices, GL_STATIC_DRAW);
+	glEnableVertexAttribArray(0);
+	glVertexAttribPointer(0, 2, GL_FLOAT, GL_FALSE, 4 * sizeof(float), (void*)0);
+	glEnableVertexAttribArray(1);
+	glVertexAttribPointer(1, 2, GL_FLOAT, GL_FALSE, 4 * sizeof(float), (void*)(2 * sizeof(float)));
+
+	_pScreenShader = new Shader("fbVert.vs", "fbFrag.fs");
+	_pScreenShader->BindShader();
+	int location = glGetUniformLocation(_pScreenShader->GetProgramID(), "screenTexture");
+	glUniform1i(location, 0);
+
+
+	glGenFramebuffers(1, &_fbo);
+	glBindFramebuffer(GL_FRAMEBUFFER, _fbo);
+
+	// create a color attachment texture
+	glGenTextures(1, &_texture);
+	glBindTexture(GL_TEXTURE_2D, _texture);
+	glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, 640, 360, 0, GL_RGB, GL_UNSIGNED_BYTE, NULL);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+	glFramebufferTexture2D(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0, GL_TEXTURE_2D, _texture, 0);
+	// create a renderbuffer object for depth and stencil attachment (we won't be sampling these)
+	
+	glGenRenderbuffers(1, &_rbo);
+	glBindRenderbuffer(GL_RENDERBUFFER, _rbo);
+	glRenderbufferStorage(GL_RENDERBUFFER, GL_DEPTH24_STENCIL8, 640, 360); // use a single renderbuffer object for both a depth AND stencil buffer.
+	glFramebufferRenderbuffer(GL_FRAMEBUFFER, GL_DEPTH_STENCIL_ATTACHMENT, GL_RENDERBUFFER, _rbo); // now actually attach it
+	// now that we actually created the framebuffer and added all attachments we want to check if it is actually complete now
+	if (glCheckFramebufferStatus(GL_FRAMEBUFFER) != GL_FRAMEBUFFER_COMPLETE)
+		cout << "ERROR::FRAMEBUFFER:: Framebuffer is not complete!" << endl;
+	glBindFramebuffer(GL_FRAMEBUFFER, 0);
+
+	/////////////
+	//TEST CODE//
+	/////////////
+	Texture2D* t = new Texture2D();
+	t->Load("lenna3.jpg", "linear");
+
+	_pTestObject = new GameObject("LENNA!", ObjectType::Player, t);
 }
 
 void Application::GameLoop()
 {
+	//TODO: Setup build process for game only
+
 	double previousTime = glfwGetTime();
-	if (_inEditorMode) {
 		//While the editor window should not close
 		while (_running) {
 			PollInput();
 
-			EditorStartRender();
-
-			EditorImGUIBegin();
-
-			//Render Here
-			EditorImGUIRender();
-
-			EditorImGUIEndRender();
-
-			EditorEndRender();
-
 			double currentTime = glfwGetTime();
 			double elapsed = currentTime - previousTime;
-			std::cout << "DeltaTime: " << elapsed << std::endl;
-			EditorUpdate(elapsed);
 
-			previousTime = currentTime;
+			if (_inEditorMode) {
+				glBindFramebuffer(GL_FRAMEBUFFER, _fbo);
+				glEnable(GL_DEPTH_TEST);
+				EditorStartRender();
 
-			//==================
-			//RENDER GAME WINDOW
-			//==================
+				_pScreenShader->BindShader();
 
-			GameBeginRender();
+				EditorRender();
 
-			GameRender();
+				glBindFramebuffer(GL_FRAMEBUFFER, 0);
+				glDisable(GL_DEPTH_TEST);
+				glBindVertexArray(_quadVAO);
+				glBindTexture(GL_TEXTURE_2D, _texture);
+				glDrawArrays(GL_TRIANGLES, 0, 6);
 
-			GameEndRender();
+				EditorImGUIBegin();
+				//Render Here
+				EditorImGUIRender();
+				ImGUISwitchRender();
+				EditorImGUIEndRender();
+
+				EditorEndRender();
+
+				EditorUpdate(elapsed);
+				previousTime = currentTime;
+			}
+			else {
+				GameBeginRender();
+
+				GameRender();
+
+				if (_devMode) {
+					EditorImGUIBegin();
+					ImGUISwitchRender();
+					EditorImGUIEndRender();
+				}
+
+				GameEndRender();
+
+				GameUpdate(elapsed);
+			}
 		}
-
-		_pEditorWindow->DestroyWindow();
-	}
-	else
-	{
-		while (_running) {
-			PollInput();
-			GameBeginRender();
-
-			//Render Here
-			GameRender();
-
-
-			GameEndRender();
-		}
-	}
 
 	ImGui_ImplOpenGL3_Shutdown();
 	ImGui_ImplGlfw_Shutdown();
@@ -137,17 +192,6 @@ void Application::GameLoop()
 	_pGameWindow->DestroyWindow();
 }
 
-void Application::OnEditorEvent(Event& e)
-{
-	EventDispatcher dispatcher(e);
-	dispatcher.Dispatch<WindowCloseEvent>(BIND_EVENT_FN(OnEditorWindowClose));
-	dispatcher.Dispatch<KeyPressedEvent>(BIND_EVENT_FN(OnEditorWindowKeyPressedEvent));
-	dispatcher.Dispatch<KeyReleasedEvent>(BIND_EVENT_FN(OnEditorWindowKeyReleasedEvent));
-	dispatcher.Dispatch<MouseButtonPressedEvent>(BIND_EVENT_FN(OnEditorWindowMouseButtonPressedEvent));
-	dispatcher.Dispatch<MouseButtonReleasedEvent>(BIND_EVENT_FN(OnEditorWindowMouseButtonReleasedEvent));
-
-	//TODO: Setup events for remaining application and input devices
-}
 
 void Application::OnGameEvent(Event& e)
 {
@@ -166,37 +210,22 @@ void Application::PollInput()
 
 void Application::EditorUpdate(float dt)
 {
-	_currentScene->Update(dt);
-	if (Input::IsKeyDown(KEY_W)) {
-		std::cout << "W is Pressed" << std::endl;
-	}
-	if (Input::IsKeyHeld(KEY_W)) {
-		std::cout << "W is Held" << std::endl;
-	}
-	if (Input::IsKeyUp(KEY_W)) {
-		std::cout << "W is Up" << std::endl;
-	}
-	if (Input::IsMouseButtonDown(BUTTON_LEFT)) {
-		std::cout << "Left Mouse Button is down" << std::endl;
-	}
-	if (Input::IsMouseButtonUp(BUTTON_LEFT)) {
-		std::cout << "Left Mouse Button is up" << std::endl;
-	}
+	_pCurrentScene->Update(dt);
 }
 
 void Application::EditorStartRender()
 {
-	_pEditorWindow->SetWindowColour(1.0f, 1.0f, 0.3f, 1.0f);
+	_pGameWindow->SetWindowColour(0.5f, 0.5f, 0.1f, 1.0f);
 }
 
 void Application::EditorRender()
 {
-
+	
 }
 
 void Application::EditorEndRender()
 {
-	_pEditorWindow->SwapBuffers();
+	_pGameWindow->SwapBuffers();
 }
 
 void Application::EditorImGUIBegin()
@@ -209,8 +238,53 @@ void Application::EditorImGUIBegin()
 void Application::EditorImGUIRender()
 {
 	{
-		ImGui::Begin("Hello World");
-		ImGui::Text("Hello");
+		ImGui::Begin("Notes");
+
+		ImGui::InputTextMultiline("Notes:", _pNotesBuffer, 16384, ImVec2(300.0f, 600.0f), 0,0, _pNotesBuffer);
+
+		ImGui::End();
+	}
+
+	//Inspector
+	{
+		ImGui::Begin("Inspector");
+
+		ImGui::End();
+	}
+
+	//Hierarchy
+	{
+		ImGui::Begin("Hierarchy");
+		static int index = 0;
+		vector<GameObject*> objects = _pCurrentScene->GetGameObjects();
+		if (!objects.empty())
+		{
+			for (int i = 0; i < objects.size(); i++)
+			{
+				ImGui::RadioButton(objects[i]->GetName().c_str(), &index, i); ImGui::SameLine();
+				if (ImGui::Button("Delete object"))
+				{
+					_pCurrentScene->RemoveGameObject(objects[i]);
+					objects = _pCurrentScene->GetGameObjects();
+				}
+			}
+			if (!objects.empty())
+				GameObject* selectedObject = objects[index];
+		}
+		ImGui::End();
+	}
+
+	//Console
+	{
+		ImGui::Begin("Console");
+
+		ImGui::End();
+	}
+
+	//Content Browser
+	{
+		ImGui::Begin("Content Browser");
+
 		ImGui::End();
 	}
 
@@ -228,6 +302,7 @@ void Application::EditorImGUIEndRender()
 		ImGui::UpdatePlatformWindows();
 		ImGui::RenderPlatformWindowsDefault();
 	}
+	ImGui::EndFrame();
 }
 
 void Application::GameBeginRender()
@@ -237,7 +312,7 @@ void Application::GameBeginRender()
 
 void Application::GameRender()
 {
-	_graphics.Render(_pGameWindow->GetGLFWWindow(), NULL);
+	_graphics.Render(_pGameWindow->GetGLFWWindow(), _pTestObject);
 }
 
 void Application::GameEndRender()
@@ -245,11 +320,26 @@ void Application::GameEndRender()
 	_pGameWindow->SwapBuffers();
 }
 
-bool Application::OnEditorWindowClose(WindowCloseEvent& e)
+void Application::GameUpdate(float dt)
 {
-	std::cout << "Editor Window: " << e.ToString() << std::endl;
-	_running = false;
-	return true;
+
+}
+
+void Application::ImGUISwitchRender()
+{
+	{
+		ImGui::Begin("Application Mode");
+		
+		if (ImGui::Button("Editor", ImVec2(100.0f, 30.0f))) {
+			_inEditorMode = true;
+		}
+		ImGui::SameLine();
+		if (ImGui::Button("Game", ImVec2(100.0f, 30.0f))) {
+			_inEditorMode = false;
+		}
+		ImGui::SameLine();
+		ImGui::End();
+	}
 }
 
 bool Application::OnGameWindowClose(WindowCloseEvent& e)
@@ -279,7 +369,6 @@ bool Application::OnGameWindowKeyReleasedEvent(KeyReleasedEvent& e)
 	return true;
 }
 
-
 bool Application::OnGameWindowMouseButtonPressedEvent(MouseButtonPressedEvent& e)
 {
 	Input::SetMouseButton((TimothEMouseCode)e.GetMouseButton(), PRESSED);
@@ -287,38 +376,6 @@ bool Application::OnGameWindowMouseButtonPressedEvent(MouseButtonPressedEvent& e
 }
 
 bool Application::OnGameWindowMouseButtonReleasedEvent(MouseButtonReleasedEvent& e)
-{
-	Input::SetMouseButton((TimothEMouseCode)e.GetMouseButton(), RELEASE);
-	return true;
-}
-
-bool Application::OnEditorWindowKeyPressedEvent(KeyPressedEvent& e)
-{
-	//1: Is marked as GLFW repeat value
-	if (e.GetRepeatCount() == 1) {
-		Input::SetKey((TimothEKeyCode)e.GetKeyCode(), HELD);
-	}
-	else
-	{
-		Input::SetKey((TimothEKeyCode)e.GetKeyCode(), PRESSED);
-	}
-
-	return true;
-}
-
-bool Application::OnEditorWindowKeyReleasedEvent(KeyReleasedEvent& e)
-{
-	Input::SetKey((TimothEKeyCode)e.GetKeyCode(), RELEASE);
-	return true;
-}
-
-bool Application::OnEditorWindowMouseButtonPressedEvent(MouseButtonPressedEvent& e)
-{
-	Input::SetMouseButton((TimothEMouseCode)e.GetMouseButton(), PRESSED);
-	return true;
-}
-
-bool Application::OnEditorWindowMouseButtonReleasedEvent(MouseButtonReleasedEvent& e)
 {
 	Input::SetMouseButton((TimothEMouseCode)e.GetMouseButton(), RELEASE);
 	return true;
@@ -342,7 +399,7 @@ void Application::ModernDarkTheme()
 	ImVec4* colors = ImGui::GetStyle().Colors;
 	colors[ImGuiCol_Text] = { 1.0f, 1.0f, 1.0f, 1.00f };				//
 	colors[ImGuiCol_TextDisabled] = { 0.25f, 0.25f, 0.25f, 1.00f };		//
-	colors[ImGuiCol_WindowBg] = { 0.09f, 0.09f, 0.09f, 0.94f };			//
+	colors[ImGuiCol_WindowBg] = { 0.2f, 0.2f, 0.2f, 1.0f };			//
 	colors[ImGuiCol_ChildBg] = { 0.11f, 0.11f, 0.11f, 1.00f };			//
 	colors[ImGuiCol_PopupBg] = { 0.11f, 0.11f, 0.11f, 0.94f };			//
 	colors[ImGuiCol_Border] = { 0.07f, 0.08f, 0.08f, 1.00f };

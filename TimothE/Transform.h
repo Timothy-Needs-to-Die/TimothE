@@ -1,5 +1,7 @@
 #pragma once
 
+#include "Component.h"
+
 struct Vector2D
 {
 	float _x, _y;
@@ -11,24 +13,29 @@ struct Vector2D
 	}
 };
 
-class Transform
+class Transform : public Component
 {
 public:
 	Transform();
 	Transform(float x, float y, float rotx, float roty, float scalex, float scaley);
 
-	Vector2D* GetPosition() { return new Vector2D(_mXpos, _mYpos); };
+	void OnStart() override;
+	void OnUpdate() override;
+	void OnEnd() override;
+
+	int GetCategory() const override { return 0; };
+	int GetType() const override { return 0; };
+
+	Vector2D* GetPosition() { return new Vector2D(_xPos, _yPos); };
 	void SetPosition(float x, float y);
-	float GetXrotation() { return _mXrot; };
+	float GetXrotation() { return _xRot; };
 	void SetXrotation(float xRot);
 
-	~Transform();
-
 private:
-	float _mXpos;
-	float _mYpos;
-	float _mXrot;
-	float _mYrot;
-	float _mScaleX;
-	float _mScaleY;
+	float _xPos;
+	float _yPos;
+	float _xRot;
+	float _yRot;
+	float _scaleX;
+	float _scaleY;
 };

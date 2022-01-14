@@ -37,5 +37,7 @@ project "TimothE"
 		"opengl32.lib",
 		"glfw3.lib",
 		"glew32s.lib",
-		"glew32.lib"
+		"glew32.lib",
+		"soil2-debug.lib",
+		"soil2-debug.dll"
 	}

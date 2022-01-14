@@ -6,7 +6,7 @@ class GameObject;
 class TestComponent : public Component
 {
 public:
-	COMPONENT_CLASS_CATEGOTY(Debug_Catagory);
+	COMPONENT_CLASS_CATEGORY(Debug_Category);
 	COMPONENT_CLASS_TYPE(Test_Type);
 	TestComponent(GameObject* _mParentObject);
 	~TestComponent();

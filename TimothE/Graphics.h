@@ -2,7 +2,6 @@
 
 #include "GameObject.h"
 #include "Shader.h"
-
 #include <iostream>
 #include <vector>
 
