@@ -56,7 +56,7 @@ private:
 
 	char* _pNotesBuffer;
 
-	Scene* _currentScene;
+	Scene* _pCurrentScene;
 
 	Shader* _pScreenShader;
 	unsigned int _fbo;
@@ -64,5 +64,7 @@ private:
 	unsigned int _texture;
 	unsigned int _quadVAO;
 	unsigned int _quadVBO;
+
+	GameObject* _pTestObject;
 };
 

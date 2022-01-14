@@ -52,7 +52,7 @@ void Graphics::Render(GLFWwindow* window, GameObject* gameObject)
 
 	_pShader->BindShader();
 
-	glBindTexture(GL_TEXTURE_2D, gameObject->GetTexture()->GetID());
+	glBindTexture(GL_TEXTURE_2D, gameObject->GetTextureID());
 	glBindVertexArray(vertexArray);
 	glDrawArrays(GL_TRIANGLES, 0, 3);
   	glDisableVertexAttribArray(0);
