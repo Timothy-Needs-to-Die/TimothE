@@ -84,6 +84,7 @@
     <ClInclude Include="ApplicationEvent.h" />
     <ClInclude Include="Component.h" />
     <ClInclude Include="Event.h" />
+    <ClInclude Include="Framebuffer.h" />
     <ClInclude Include="GameObject.h" />
     <ClInclude Include="Renderer.h" />
     <ClInclude Include="Imgui\imconfig.h" />
@@ -127,6 +128,7 @@
   <ItemGroup>
     <ClCompile Include="Application.cpp" />
     <ClCompile Include="Component.cpp" />
+    <ClCompile Include="Framebuffer.cpp" />
     <ClCompile Include="GameObject.cpp" />
     <ClCompile Include="Renderer.cpp" />
     <ClCompile Include="Imgui\imgui.cpp" />
