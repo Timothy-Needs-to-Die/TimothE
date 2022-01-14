@@ -105,6 +105,7 @@
     <ClInclude Include="Window.h" />
     <ClInclude Include="Renderer.h" />
     <ClInclude Include="Framebuffer.h" />
+    <ClInclude Include="ImGuiManager.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Application.cpp" />

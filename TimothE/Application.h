@@ -26,9 +26,7 @@ protected:
 	void EditorRender();
 	void EditorEndRender();
 
-	void EditorImGUIBegin();
 	void EditorImGUIRender();
-	void EditorImGUIEndRender();
 
 	void GameBeginRender();
 	void GameRender();
@@ -43,8 +41,6 @@ private:
 	bool OnGameWindowKeyReleasedEvent(KeyReleasedEvent& e);
 	bool OnGameWindowMouseButtonPressedEvent(MouseButtonPressedEvent& e);
 	bool OnGameWindowMouseButtonReleasedEvent(MouseButtonReleasedEvent& e);
-
-	void ModernDarkTheme();
 
 	Renderer _renderer;
 
