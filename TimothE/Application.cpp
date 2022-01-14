@@ -28,6 +28,7 @@ void Application::Init(bool devMode)
 {
 	UID::Init();
 	Input::Init();
+	Renderer::Initialize();
 
 	_pNotesBuffer = new char[16348];
 
@@ -63,7 +64,7 @@ void Application::Init(bool devMode)
 	_running = true;
 
 	// vertex attributes for a quad that fills the editor screen space in Normalized Device Coordinates.
-	float quadVertices[] = { 
+	float quadVertices[] = {
 	// positions   // texCoords
 	-0.65f,  -0.6f,  0.0f, 0.0f,
 	-0.65f,   0.82f,	0.0f, 1.0f,
@@ -169,7 +170,7 @@ void Application::EditorStartRender()
 
 void Application::EditorRender()
 {
-	
+
 }
 
 void Application::EditorEndRender()
@@ -257,7 +258,7 @@ void Application::ImGUISwitchRender()
 {
 	{
 		ImGui::Begin("Application Mode");
-		
+
 		if (ImGui::Button("Editor", ImVec2(100.0f, 30.0f))) {
 			_inEditorMode = true;
 		}

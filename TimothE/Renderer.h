@@ -8,10 +8,7 @@
 class Renderer
 {
 public:
-	void Initialize();
+	static void Initialize();
 	void RenderDrawables(vector<GameObject*> gameObjects);
-public:
-	Shader* _pShader;
-private:
 	void Render(GameObject* gameObject);
 };
