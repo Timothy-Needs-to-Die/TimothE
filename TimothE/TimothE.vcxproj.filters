@@ -106,6 +106,7 @@
     <ClInclude Include="Renderer.h" />
     <ClInclude Include="Framebuffer.h" />
     <ClInclude Include="ImGuiManager.h" />
+    <ClInclude Include="Editor.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Application.cpp" />
@@ -142,6 +143,7 @@
     <ClCompile Include="Window.cpp" />
     <ClCompile Include="Renderer.cpp" />
     <ClCompile Include="Framebuffer.cpp" />
+    <ClCompile Include="Editor.cpp" />
   </ItemGroup>
   <ItemGroup>
     <None Include="FragmentShader.frag" />

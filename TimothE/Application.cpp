@@ -12,8 +12,6 @@
 #include <iostream>
 
 #include "imgui.h"
-#include "imgui_impl_glfw.h"
-#include "imgui_impl_opengl3.h"
 
 #include "UID.h"
 
@@ -30,8 +28,6 @@ void Application::Init(bool devMode)
 	Input::Init();
 	Renderer::Initialize();
 
-	_pNotesBuffer = new char[16348];
-
 	_devMode = devMode;
 
 	if (!glfwInit()) {
@@ -41,10 +37,10 @@ void Application::Init(bool devMode)
 	glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 3);
 	glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 3);
 
-	_pGameWindow = new Window(1280, 720, "TimeothE");
+	_pWindow = new Window(1280, 720, "TimeothE");
 
-	_pGameWindow->SetEventCallback(BIND_EVENT_FN(OnGameEvent));
-	_pGameWindow->CreateWindow();
+	_pWindow->SetEventCallback(BIND_EVENT_FN(OnGameEvent));
+	_pWindow->CreateWindow();
 
 	GLint GlewInitResult = glewInit();
 	if (GlewInitResult != GLEW_OK)
@@ -54,27 +50,12 @@ void Application::Init(bool devMode)
 	}
 
 	if (_devMode) {
-		ImGuiManager::CreateImGuiContext(_pGameWindow->GetGLFWWindow());
+		ImGuiManager::CreateImGuiContext(_pWindow->GetGLFWWindow());
 	}
 
 	_pCurrentScene = new Scene("Test scene");
-
+	_pEditor = new Editor(_pWindow);
 	_running = true;
-
-	// vertex attributes for a quad that fills the editor screen space in Normalized Device Coordinates.
-	float quadVertices[] = {
-	// positions   // texCoords
-	-0.65f,  -0.6f,  0.0f, 0.0f,
-	-0.65f,   0.82f,	0.0f, 1.0f,
-	 0.6f,   0.82f,	1.0f, 1.0f,
-
-	 0.6f,  -0.6f,  1.0f, 0.0f,
-	-0.65f,  -0.6f,	0.0f, 0.0f,
-	 0.6f,   0.82f,   1.0f, 1.0f
-	};
-
-	_pScreenShader = new Shader("fbVert.vs", "fbFrag.fs");
-	_pEditorFramebuffer = new Framebuffer(_pScreenShader, quadVertices);
 }
 
 void Application::GameLoop()
@@ -82,59 +63,38 @@ void Application::GameLoop()
 	//TODO: Setup build process for game only
 
 	double previousTime = glfwGetTime();
-		//While the editor window should not close
-		while (_running) {
-			PollInput();
+	//While the editor window should not close
+	while (_running) {
+		PollInput();
 
-			double currentTime = glfwGetTime();
-			double elapsed = currentTime - previousTime;
+		double currentTime = glfwGetTime();
+		double elapsed = currentTime - previousTime;
 
-			if (_inEditorMode) {
-				EditorStartRender();
+		if (_inEditorMode) {
+			_pEditor->EditorLoop(_pCurrentScene, elapsed, _inEditorMode);
+		}
+		else {
+			GameBeginRender();
 
-				EditorRender();
+			GameRender();
 
-				//Handle unbinding the editor frame buffer and drawing it's contents
-				_pEditorFramebuffer->UnbindFramebuffer();
-				glDisable(GL_DEPTH_TEST);
-				_pEditorFramebuffer->DrawFramebuffer();
-
-				//Render Here
+			if (_devMode) {
 				ImGuiManager::ImGuiNewFrame();
-				EditorImGUIRender();
 				ImGUISwitchRender();
 				ImGuiManager::ImGuiEndFrame();
-
-
-				EditorEndRender();
-
-				EditorUpdate(elapsed);
-			}
-			else {
-				GameBeginRender();
-
-				GameRender();
-
-				if (_devMode) {
-					ImGuiManager::ImGuiNewFrame();
-					ImGUISwitchRender();
-					ImGuiManager::ImGuiEndFrame();
-				}
-
-				GameEndRender();
-
-				GameUpdate(elapsed);
 			}
 
-			previousTime = currentTime;
+			GameEndRender();
+
+			GameUpdate(elapsed);
 		}
 
-		ImGuiManager::DestroyImGui();
+		previousTime = currentTime;
+	}
 
-	delete _pEditorFramebuffer;
-	delete _pScreenShader;
-
-	_pGameWindow->DestroyWindow();
+	ImGuiManager::DestroyImGui();
+	delete _pEditor;
+	_pWindow->DestroyWindow();
 }
 
 
@@ -153,88 +113,9 @@ void Application::PollInput()
 	glfwPollEvents();
 }
 
-void Application::EditorUpdate(float dt)
-{
-	_pCurrentScene->Update(dt);
-}
-
-void Application::EditorStartRender()
-{
-	_pEditorFramebuffer->BindFramebuffer();
-	glEnable(GL_DEPTH_TEST);
-	_pGameWindow->SetWindowColour(0.5f, 0.5f, 0.1f, 1.0f);
-	_pEditorFramebuffer->BindShader();
-}
-
-void Application::EditorRender()
-{
-
-}
-
-void Application::EditorEndRender()
-{
-	_pGameWindow->SwapBuffers();
-}
-
-void Application::EditorImGUIRender()
-{
-	{
-		ImGui::Begin("Notes");
-
-		ImGui::InputTextMultiline("Notes:", _pNotesBuffer, 16384, ImVec2(300.0f, 600.0f), 0,0, _pNotesBuffer);
-
-		ImGui::End();
-	}
-
-	//Inspector
-	{
-		ImGui::Begin("Inspector");
-
-		ImGui::End();
-	}
-
-	//Hierarchy
-	{
-		ImGui::Begin("Hierarchy");
-		static int index = 0;
-		vector<GameObject*> objects = _pCurrentScene->GetGameObjects();
-		if (!objects.empty())
-		{
-			for (int i = 0; i < objects.size(); i++)
-			{
-				ImGui::RadioButton(objects[i]->GetName().c_str(), &index, i); ImGui::SameLine();
-				if (ImGui::Button("Delete object"))
-				{
-					_pCurrentScene->RemoveGameObject(objects[i]);
-					objects = _pCurrentScene->GetGameObjects();
-				}
-			}
-			if (!objects.empty())
-				GameObject* selectedObject = objects[index];
-		}
-		ImGui::End();
-	}
-
-	//Console
-	{
-		ImGui::Begin("Console");
-
-		ImGui::End();
-	}
-
-	//Content Browser
-	{
-		ImGui::Begin("Content Browser");
-
-		ImGui::End();
-	}
-
-	ImGui::ShowDemoWindow();
-}
-
 void Application::GameBeginRender()
 {
-	_pGameWindow->SetWindowColour(0.3f, 1.0f, 0.0f, 1.0f);
+	_pWindow->SetWindowColour(0.3f, 1.0f, 0.0f, 1.0f);
 }
 
 void Application::GameRender()
@@ -244,7 +125,7 @@ void Application::GameRender()
 
 void Application::GameEndRender()
 {
-	_pGameWindow->SwapBuffers();
+	_pWindow->SwapBuffers();
 }
 
 void Application::GameUpdate(float dt)

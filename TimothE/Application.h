@@ -4,7 +4,7 @@
 #include "ApplicationEvent.h"
 #include "Renderer.h"
 #include "Scene.h"
-#include "Framebuffer.h"
+#include "Editor.h"
 
 class Application
 {
@@ -19,14 +19,6 @@ public:
 
 protected:
 	void PollInput();
-
-	void EditorUpdate(float dt);
-	
-	void EditorStartRender();
-	void EditorRender();
-	void EditorEndRender();
-
-	void EditorImGUIRender();
 
 	void GameBeginRender();
 	void GameRender();
@@ -44,19 +36,15 @@ private:
 
 	Renderer _renderer;
 
-	Window* _pGameWindow;
+	Window* _pWindow;
 
 	bool _inEditorMode;
 	bool _devMode;
 
 	bool _running;
 
-	char* _pNotesBuffer;
-
 	Scene* _pCurrentScene;
 
-	Shader* _pScreenShader;
-
-	Framebuffer* _pEditorFramebuffer;
+	Editor* _pEditor;
 };
 
