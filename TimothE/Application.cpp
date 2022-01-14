@@ -256,7 +256,7 @@ void Application::EditorImGUIRender()
 	{
 		ImGui::Begin("Hierarchy");
 		static int index = 0;
-		vector<GameObject*> objects = _currentScene->GetGameObjects();
+		vector<GameObject*> objects = _pCurrentScene->GetGameObjects();
 		if (!objects.empty())
 		{
 			for (int i = 0; i < objects.size(); i++)
@@ -264,8 +264,8 @@ void Application::EditorImGUIRender()
 				ImGui::RadioButton(objects[i]->GetName().c_str(), &index, i); ImGui::SameLine();
 				if (ImGui::Button("Delete object"))
 				{
-					_currentScene->RemoveGameObject(objects[i]);
-					objects = _currentScene->GetGameObjects();
+					_pCurrentScene->RemoveGameObject(objects[i]);
+					objects = _pCurrentScene->GetGameObjects();
 				}
 			}
 			if (!objects.empty())

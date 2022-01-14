@@ -16,9 +16,9 @@ GameObject::GameObject(string name, ObjectType tag, Texture2D* texture, Transfor
 {
 	_name = name;
 	_tag = tag;
-	_pTexture = texture;
 	_UID = UID::GenerateUID();
 	AddComponent(transform, Component::Types::Transform_Type);
+	AddComponent(texture, Component::Types::Texture_Type);
 	Start();
 }
 
