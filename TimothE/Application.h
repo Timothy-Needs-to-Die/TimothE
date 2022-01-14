@@ -5,6 +5,7 @@
 #include "Renderer.h"
 #include "Scene.h"
 #include "Editor.h"
+#include "MemoryManager.h"
 
 class Application
 {

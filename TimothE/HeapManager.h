@@ -6,6 +6,8 @@
 class HeapManager
 {
 public:
+	static void Init();
+
 	//Returns the default heap
 	static Heap& GetDefaultHeap();
 
@@ -21,8 +23,16 @@ public:
 	//Debugs all heaps
 	static void DebugAll();
 
+	//Gets the amount of allocations
+	static int GetMemoryBookmark();
+
+	static void ReportMemoryLeaks(int bookmark);
+
+
+	static void ReportMemoryLeaks(int bookmark1, int bookmark2);
+
 private:
-	static Heap defaultHeap;
-	static std::unordered_map<std::string, Heap*> heapMap;
+	static Heap _defaultHeap;
+	static std::unordered_map<std::string, Heap*> _heapMap;
 };
 

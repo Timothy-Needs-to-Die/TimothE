@@ -23,6 +23,8 @@ void Heap::AllocateMemory(Header* header, int size)
 	if (pHead != NULL)
 		pHead->_pPrev = header;
 	pHead = header;
+
+	header->allocationNumber = ++_numberOfAllocations;
 }
 
 void Heap::DeallocateMemory(Header* header, int size)
@@ -133,3 +135,29 @@ void Heap::CheckIntegrity()
 		std::cout << "[MESSAGE: Heap::CheckIntegrity]: No Errors found in " << _name << std::endl;
 	}
 }
+
+int Heap::ReportMemoryLeaks(int bookmark1, int bookmark2)
+{
+	int nLeaks = 0;
+
+	Header* pHeader = pHead;
+	while (pHeader != NULL)
+	{
+		if (pHeader->allocationNumber >= bookmark1 &&
+			pHeader->allocationNumber < bookmark2)
+		{
+			printf("Leak in %s. Size: %d, address: 0x%0Xd\n",
+				_name, pHeader->size, (char*)pHeader + sizeof(Header));
+			nLeaks++;
+		}
+		pHeader = pHeader->_pNext;
+	}
+	return nLeaks;
+}
+
+int Heap::GetMemoryBookmark()
+{
+	return _numberOfAllocations;
+}
+
+int Heap::_numberOfAllocations = 1;

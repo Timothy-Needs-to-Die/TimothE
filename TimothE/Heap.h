@@ -25,6 +25,9 @@ public:
 	void DisplayDebugInformation();
 	void CheckIntegrity();
 
+	int ReportMemoryLeaks(int bookmark1, int bookmark2);
+	static int GetMemoryBookmark();
+
 	Heap(const Heap&) = default;
 	Heap& operator=(const Heap&) = default;
 
@@ -32,6 +35,8 @@ private:
 	int _currentlyAllocated;
 	int _peak;
 	std::string _name;
+
+	static int _numberOfAllocations;
 
 };
 

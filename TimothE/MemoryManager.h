@@ -12,6 +12,7 @@ struct Header {
 	Heap* _pHeap;
 	Header* _pNext = NULL;
 	Header* _pPrev = NULL;
+	int allocationNumber = 0;
 };
 
 

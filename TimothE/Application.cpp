@@ -27,6 +27,7 @@ void Application::Init(bool devMode)
 	UID::Init();
 	Input::Init();
 	Renderer::Initialize();
+	HeapManager::Init();
 
 	_devMode = devMode;
 
@@ -62,6 +63,8 @@ void Application::GameLoop()
 {
 	//TODO: Setup build process for game only
 
+	int memBookmark = HeapManager::GetMemoryBookmark();
+
 	double previousTime = glfwGetTime();
 	//While the editor window should not close
 	while (_running) {
@@ -93,8 +96,10 @@ void Application::GameLoop()
 	}
 
 	ImGuiManager::DestroyImGui();
-	delete _pEditor;
+	//delete _pEditor;
 	_pWindow->DestroyWindow();
+
+	HeapManager::ReportMemoryLeaks(memBookmark);
 }
 
 
