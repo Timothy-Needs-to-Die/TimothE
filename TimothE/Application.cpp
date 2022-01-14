@@ -78,47 +78,13 @@ void Application::Init(bool devMode)
 	-0.65f,   0.82f,	0.0f, 1.0f,
 	 0.6f,   0.82f,	1.0f, 1.0f,
 
-	 0.65f,  -0.6f,  1.0f, 0.0f,
+	 0.6f,  -0.6f,  1.0f, 0.0f,
 	-0.65f,  -0.6f,	0.0f, 0.0f,
 	 0.6f,   0.82f,   1.0f, 1.0f
 	};
 
-	glGenVertexArrays(1, &_quadVAO);
-	glGenBuffers(1, &_quadVBO);
-	glBindVertexArray(_quadVAO);
-	glBindBuffer(GL_ARRAY_BUFFER, _quadVBO);
-	glBufferData(GL_ARRAY_BUFFER, sizeof(quadVertices), quadVertices, GL_STATIC_DRAW);
-	glEnableVertexAttribArray(0);
-	glVertexAttribPointer(0, 2, GL_FLOAT, GL_FALSE, 4 * sizeof(float), (void*)0);
-	glEnableVertexAttribArray(1);
-	glVertexAttribPointer(1, 2, GL_FLOAT, GL_FALSE, 4 * sizeof(float), (void*)(2 * sizeof(float)));
-
 	_pScreenShader = new Shader("fbVert.vs", "fbFrag.fs");
-	_pScreenShader->BindShader();
-	int location = glGetUniformLocation(_pScreenShader->GetProgramID(), "screenTexture");
-	glUniform1i(location, 0);
-
-
-	glGenFramebuffers(1, &_fbo);
-	glBindFramebuffer(GL_FRAMEBUFFER, _fbo);
-
-	// create a color attachment texture
-	glGenTextures(1, &_texture);
-	glBindTexture(GL_TEXTURE_2D, _texture);
-	glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, 640, 360, 0, GL_RGB, GL_UNSIGNED_BYTE, NULL);
-	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
-	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
-	glFramebufferTexture2D(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0, GL_TEXTURE_2D, _texture, 0);
-	// create a renderbuffer object for depth and stencil attachment (we won't be sampling these)
-	
-	glGenRenderbuffers(1, &_rbo);
-	glBindRenderbuffer(GL_RENDERBUFFER, _rbo);
-	glRenderbufferStorage(GL_RENDERBUFFER, GL_DEPTH24_STENCIL8, 640, 360); // use a single renderbuffer object for both a depth AND stencil buffer.
-	glFramebufferRenderbuffer(GL_FRAMEBUFFER, GL_DEPTH_STENCIL_ATTACHMENT, GL_RENDERBUFFER, _rbo); // now actually attach it
-	// now that we actually created the framebuffer and added all attachments we want to check if it is actually complete now
-	if (glCheckFramebufferStatus(GL_FRAMEBUFFER) != GL_FRAMEBUFFER_COMPLETE)
-		cout << "ERROR::FRAMEBUFFER:: Framebuffer is not complete!" << endl;
-	glBindFramebuffer(GL_FRAMEBUFFER, 0);
+	_pEditorFramebuffer = new Framebuffer(_pScreenShader, quadVertices);
 }
 
 void Application::GameLoop()
@@ -134,19 +100,14 @@ void Application::GameLoop()
 			double elapsed = currentTime - previousTime;
 
 			if (_inEditorMode) {
-				glBindFramebuffer(GL_FRAMEBUFFER, _fbo);
-				glEnable(GL_DEPTH_TEST);
 				EditorStartRender();
-
-				_pScreenShader->BindShader();
 
 				EditorRender();
 
-				glBindFramebuffer(GL_FRAMEBUFFER, 0);
+				//Handle unbinding the editor frame buffer and drawing it's contents
+				_pEditorFramebuffer->UnbindFramebuffer();
 				glDisable(GL_DEPTH_TEST);
-				glBindVertexArray(_quadVAO);
-				glBindTexture(GL_TEXTURE_2D, _texture);
-				glDrawArrays(GL_TRIANGLES, 0, 6);
+				_pEditorFramebuffer->DrawFramebuffer();
 
 				EditorImGUIBegin();
 				//Render Here
@@ -154,10 +115,10 @@ void Application::GameLoop()
 				ImGUISwitchRender();
 				EditorImGUIEndRender();
 
+
 				EditorEndRender();
 
 				EditorUpdate(elapsed);
-				previousTime = currentTime;
 			}
 			else {
 				GameBeginRender();
@@ -174,11 +135,16 @@ void Application::GameLoop()
 
 				GameUpdate(elapsed);
 			}
+
+			previousTime = currentTime;
 		}
 
 	ImGui_ImplOpenGL3_Shutdown();
 	ImGui_ImplGlfw_Shutdown();
 	ImGui::DestroyContext();
+
+	delete _pEditorFramebuffer;
+	delete _pScreenShader;
 
 	_pGameWindow->DestroyWindow();
 }
@@ -206,7 +172,10 @@ void Application::EditorUpdate(float dt)
 
 void Application::EditorStartRender()
 {
+	_pEditorFramebuffer->BindFramebuffer();
+	glEnable(GL_DEPTH_TEST);
 	_pGameWindow->SetWindowColour(0.5f, 0.5f, 0.1f, 1.0f);
+	_pEditorFramebuffer->BindShader();
 }
 
 void Application::EditorRender()

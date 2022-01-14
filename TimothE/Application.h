@@ -4,6 +4,7 @@
 #include "ApplicationEvent.h"
 #include "Renderer.h"
 #include "Scene.h"
+#include "Framebuffer.h"
 
 class Application
 {
@@ -59,10 +60,7 @@ private:
 	Scene* _pCurrentScene;
 
 	Shader* _pScreenShader;
-	unsigned int _fbo;
-	unsigned int _rbo;
-	unsigned int _texture;
-	unsigned int _quadVAO;
-	unsigned int _quadVBO;
+
+	Framebuffer* _pEditorFramebuffer;
 };
 

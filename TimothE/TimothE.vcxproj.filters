@@ -104,6 +104,7 @@
     <ClInclude Include="UID.h" />
     <ClInclude Include="Window.h" />
     <ClInclude Include="Renderer.h" />
+    <ClInclude Include="Framebuffer.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Application.cpp" />
@@ -139,6 +140,7 @@
     <ClCompile Include="Transform.cpp" />
     <ClCompile Include="Window.cpp" />
     <ClCompile Include="Renderer.cpp" />
+    <ClCompile Include="Framebuffer.cpp" />
   </ItemGroup>
   <ItemGroup>
     <None Include="FragmentShader.frag" />
