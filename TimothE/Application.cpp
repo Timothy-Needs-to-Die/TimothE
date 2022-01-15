@@ -63,7 +63,19 @@ void Application::GameLoop()
 {
 	//TODO: Setup build process for game only
 
+	//Intial mem bookmark
 	int memBookmark = HeapManager::GetMemoryBookmark();
+
+	//Create some heaps
+	Heap* g = HeapManager::CreateHeap("GameObject", "Root");
+	Heap* c = HeapManager::CreateHeap("Cameras", "GameObject");
+	HeapManager::CreateHeap("Enemies", "GameObject");
+
+	//Creates some allocations. TestArr will not be deleted to test the memory leak detector
+	int* testArr = new(g) int[1024];
+	int* testArr2 = new(c) int[20124];
+	//Deletes testArr2
+	delete[]testArr2;
 
 	double previousTime = glfwGetTime();
 	//While the editor window should not close
@@ -96,9 +108,11 @@ void Application::GameLoop()
 	}
 
 	ImGuiManager::DestroyImGui();
-	//delete _pEditor;
+	delete _pEditor;
 	_pWindow->DestroyWindow();
 
+	//Prints the memory status and reports and memory leaks
+	HeapManager::PrintInfo();
 	HeapManager::ReportMemoryLeaks(memBookmark);
 }
 

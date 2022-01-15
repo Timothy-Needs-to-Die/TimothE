@@ -2,8 +2,72 @@
 
 #include "MemoryManager.h"
 #include <iostream>
+#include <cassert>
 
-Heap::Heap(std::string name) : _currentlyAllocated(0), _peak(0), _name(name) {}
+Heap::Heap(std::string name) : _currentlyAllocated(0), _peak(0), _name(name), _instances(0) {}
+
+void Heap::AttachTo(Heap* pParent)
+{
+	//Check we have a parent
+	assert(pParent != NULL);
+
+	//if the passed in heap is the same as our parent return
+	if (pParent == _pParent)
+		return;
+
+	// First detach from its current parent
+	//Step 1: Disconnect from previous sibling
+	if (_pPrevSibling != NULL)
+		_pPrevSibling->_pNextSibling = _pNextSibling;
+	//Step 2: Disconnect from next sibling
+	if (_pNextSibling != NULL)
+		_pNextSibling->_pPrevSibling = _pPrevSibling;
+	//Step 3: Disconnect from main parent by setting the new first child
+	if (_pParent != NULL)
+		if (_pParent->_pFirstChild == this)
+			_pParent->_pFirstChild = _pNextSibling;
+
+	// Now attach itself to the new parent
+	_pNextSibling = pParent->_pFirstChild;
+	_pPrevSibling = NULL;
+	_pParent = pParent;
+	pParent->_pFirstChild = this;
+}
+
+void Heap::PrintInfo(int indentLevel /*= 0*/)
+{
+	//Outputs the spaces for the passed in indent level
+	for (int i = 0; i < indentLevel; ++i)
+		std::cout << "  ";
+
+	//Create variables to store the tree stats
+	size_t totalBytes = 0;
+	size_t totalPeakBytes = 0;
+	int totalInstances = 0;
+	GetTreeStats(totalBytes, totalPeakBytes, totalInstances);
+
+	int spacing = 20 - indentLevel * 2;
+	//Nice formatting for the data %-*s sets the width of the name field area
+	printf("%-*s %6d %6d %5d  %6d %6d %5d\n",
+		spacing, _name,
+		_currentlyAllocated, _peak, _instances,
+		totalBytes, totalPeakBytes, totalInstances);
+}
+
+void Heap::PrintTreeInfo(int indentLevel /*= 0*/)
+{
+	//Prints the info for the base level of this heap
+	PrintInfo(indentLevel);
+	//If we have children
+	Heap* pChild = _pFirstChild;
+	while (pChild != NULL)
+	{
+		//Print the children's information
+		pChild->PrintTreeInfo(indentLevel + 1);
+		//Set our current child to the sibling
+		pChild = pChild->_pNextSibling;
+	}
+}
 
 void Heap::AllocateMemory(Header* header, int size)
 {
@@ -19,12 +83,13 @@ void Heap::AllocateMemory(Header* header, int size)
 
 	//Setup the previous and next elements in the doubly linked list
 	header->_pPrev = NULL;
-	header->_pNext = pHead;
-	if (pHead != NULL)
-		pHead->_pPrev = header;
-	pHead = header;
+	header->_pNext = _pHead;
+	if (_pHead != NULL)
+		_pHead->_pPrev = header;
+	_pHead = header;
 
 	header->allocationNumber = ++_numberOfAllocations;
+	_instances++;
 }
 
 void Heap::DeallocateMemory(Header* header, int size)
@@ -33,8 +98,8 @@ void Heap::DeallocateMemory(Header* header, int size)
 	_currentlyAllocated -= size;
 
 	//Find what elements need to be changed around to allow this element to be removed in the doubly linked list
-	if (pHead == header) {
-		pHead = header->_pNext;
+	if (_pHead == header) {
+		_pHead = header->_pNext;
 	}
 	if (header->_pNext != NULL) {
 		header->_pNext->_pPrev = header->_pPrev;
@@ -42,6 +107,7 @@ void Heap::DeallocateMemory(Header* header, int size)
 	if (header->_pPrev != NULL) {
 		header->_pPrev->_pNext = header->_pNext;
 	}
+	_instances--;
 }
 
 int Heap::GetAmountAllocated()
@@ -56,50 +122,6 @@ void* Heap::operator new(size_t size)
 	return pMem;
 }
 
-void Heap::DisplayDebugInformation()
-{
-	//Outputs the name of this heap
-	std::cout << "Name: " << _name << std::endl;
-	std::cout << "____________________________________________" << std::endl;
-
-	//if we have a head
-	if (pHead != NULL) {
-		//Output the total allocated and the peak memory
-		//Outputs a nice layout for the debug information
-		std::cout << "Current memory: " << _currentlyAllocated << "\tPeak memory: " << _peak << std::endl;
-		std::cout << "____________________________________________" << std::endl;
-		std::cout << "ADDRESS\t\t\tTYPE\t\tSIZE" << std::endl;
-		std::cout << "____________________________________________" << std::endl;
-
-		//Stores the size of the header
-		size_t hSize = sizeof(Header);
-
-		//Gets the current head of the list
-		Header* pCurrent = pHead;
-		//While the current exists
-		while (pCurrent != NULL)
-		{
-			if (pCurrent == NULL) break;
-			auto& startMem = *(pCurrent + hSize);
-			std::cout << &startMem << "\t" << typeid(startMem).name() << "\t" << pCurrent->size << std::endl;
-			if (pCurrent->_pNext == NULL) {
-				break;
-			}
-
-			//Cycle through to the next element of the list
-			pCurrent = pCurrent->_pNext;
-		}
-
-		std::cout << std::endl;
-	}
-	else {
-		//outputs the total and peak memory allocated if we do not have a head
-		std::cout << "Current memory: " << _currentlyAllocated << "\tPeak memory: " << _peak << std::endl;
-	}
-
-	std::cout << std::endl;
-}
-
 void Heap::CheckIntegrity()
 {
 	std::cout << "Checking integrity of " << _name << std::endl;
@@ -107,9 +129,9 @@ void Heap::CheckIntegrity()
 	bool errorFound = false;
 	int totalErrors = 0;
 
-	if (pHead != NULL) {
+	if (_pHead != NULL) {
 		//Start at the current head of the list
-		Header* pCurrent = pHead;
+		Header* pCurrent = _pHead;
 
 		//while our current head is not null
 		while (pCurrent != NULL) {
@@ -136,20 +158,39 @@ void Heap::CheckIntegrity()
 	}
 }
 
+void Heap::GetTreeStats(size_t& totalBytes, size_t& totalPeak, int& totalInstances)
+{
+	//Adds the heaps stats to the passed in references
+	totalBytes += _currentlyAllocated;
+	totalPeak += _peak;
+	totalInstances += _instances;
+
+	//Gets our child and cycles through all our trees children and siblings
+	Heap* pChild = _pFirstChild;
+	while (pChild != NULL)
+	{
+		//Gets the tree stats
+		pChild->GetTreeStats(totalBytes, totalPeak, totalInstances);
+		//Sets the child to the next sibling
+		pChild = pChild->_pNextSibling;
+	}
+}
+
 int Heap::ReportMemoryLeaks(int bookmark1, int bookmark2)
 {
 	int nLeaks = 0;
 
-	Header* pHeader = pHead;
+	Header* pHeader = _pHead;
 	while (pHeader != NULL)
 	{
+		//Checks if our current allocations is greater than the allocations at bookmark 1 and less than the allocations in bookmark 2
 		if (pHeader->allocationNumber >= bookmark1 &&
 			pHeader->allocationNumber < bookmark2)
 		{
-			printf("Leak in %s. Size: %d, address: 0x%0Xd\n",
-				_name, pHeader->size, (char*)pHeader + sizeof(Header));
+			std::cout << "Leak in " << _name << ". Size: " << pHeader->size << ". Address: " << ((char*)pHeader + sizeof(Header)) << std::endl;
 			nLeaks++;
 		}
+		//Go to the next header
 		pHeader = pHeader->_pNext;
 	}
 	return nLeaks;
@@ -157,6 +198,7 @@ int Heap::ReportMemoryLeaks(int bookmark1, int bookmark2)
 
 int Heap::GetMemoryBookmark()
 {
+	//Gets the amount of allocations at this point in time
 	return _numberOfAllocations;
 }
 
