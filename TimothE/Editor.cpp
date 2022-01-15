@@ -1,6 +1,8 @@
 #include "Editor.h"
 #include "ImGuiManager.h"
 
+vector<string> Console::output = vector<string>();
+
 Editor::Editor(Window* pWindow)
 	: _pWindow(pWindow)
 {
@@ -72,17 +74,42 @@ void Editor::EditorImGui(Scene* currentScene)
 
 		if (_pSelectedGameObject != nullptr)
 		{
+			// text box to change name
 			{
 				static string text = _pSelectedGameObject->GetName();
-				ImGui::InputText("Name", (char*)&text, 128);
+				ImGui::InputText(" ", (char*)&text, 128);
 				_pSelectedGameObject->SetName(text);
 			}
 
-			// transform component
-			ImGui::Text("Transform");
+			if (ImGui::CollapsingHeader("Object Type"))
+			{
+				static int consoletest = 0;
+				Console::Print("test output " + to_string(consoletest++));
 
+				static int index = (int)_pSelectedGameObject->GetType();
+				if (ImGui::RadioButton("Player", &index, 0))
+				{
+					_pSelectedGameObject->SetType(ObjectType::Player);
+				}
+				if (ImGui::RadioButton("Enemy", &index, 1))
+				{
+					_pSelectedGameObject->SetType(ObjectType::Enemy);
+				}
+				if (ImGui::RadioButton("NPC", &index, 2))
+				{
+					_pSelectedGameObject->SetType(ObjectType::NPC);
+				}
+				if (ImGui::RadioButton("PickUp", &index, 3))
+				{
+					_pSelectedGameObject->SetType(ObjectType::PickUp);
+				}
+			}
+
+			// transform component
 			if (_pSelectedGameObject->GetTransform() != nullptr)
 			{
+				ImGui::Text("Transform");
+
 				// get the position
 				float* pos = new float[2]{ _pSelectedGameObject->GetTransform()->GetPosition()->_x, _pSelectedGameObject->GetTransform()->GetPosition()->_y };
 				// create boxes to set the position
@@ -101,7 +128,6 @@ void Editor::EditorImGui(Scene* currentScene)
 				_pSelectedGameObject->GetTransform()->SetYScale(scale[1]);
 			}
 			
-			ImGui::Spacing();
 			if (ImGui::CollapsingHeader("AddComponent"))
 			{
 				if (ImGui::CollapsingHeader("Transform"))
@@ -190,6 +216,19 @@ void Editor::EditorImGui(Scene* currentScene)
 	{
 		ImGui::Begin("Console");
 
+		static int oldSize = 0;
+		// get output from console class
+		vector<string> consoleOut = Console::GetConsoleOutput();
+		for (string s : consoleOut)
+		{
+			ImGui::Text(s.c_str());
+			if (consoleOut.size() > oldSize)
+			{
+				ImGui::SetScrollY(ImGui::GetScrollMaxY());
+				oldSize = consoleOut.size();
+			}
+		}
+
 		ImGui::End();
 	}
 
@@ -241,4 +280,11 @@ void Editor::EditorEndRender()
 void Editor::EditorUpdate(Scene* currentScene, float dt)
 {
 	currentScene->Update(dt);
+}
+
+void Console::Print(string message)
+{
+	output.push_back(message);
+
+	// TODO: maybe add a way to remove old messages after size exceeded max size to reduce memory usage for unneeded messages
 }

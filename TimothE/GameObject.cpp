@@ -72,6 +72,11 @@ void GameObject::SetName(string name)
 	_name = name;
 }
 
+void GameObject::SetType(ObjectType tag)
+{
+	_tag = tag;
+}
+
 Component* GameObject::GetComponent(Component::Types componentType)
 {
 	for (Component* c : _pComponents)

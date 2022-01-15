@@ -23,8 +23,8 @@ public:
 	void OnUpdate() override;
 	void OnEnd() override;
 
-	int GetCategory() const override { return 0; };
-	int GetType() const override { return _type; };
+	int GetCategory() const override { return Transform_Category; };
+	int GetType() const override { return Transform_Type; };
 
 	Vector2D* GetPosition() { return new Vector2D(_xPos, _yPos); };
 	void SetPosition(float x, float y);

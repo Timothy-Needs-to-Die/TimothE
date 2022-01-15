@@ -7,6 +7,16 @@
 #include "Shader.h"
 #include "Scene.h"
 
+class Console
+{
+public:
+	static void Print(string message);
+	static vector<string> GetConsoleOutput() { return output; }
+
+private:
+	static vector<string> output;
+};
+
 class Editor
 {
 public:
