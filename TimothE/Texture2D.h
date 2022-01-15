@@ -23,7 +23,7 @@ public:
 	void OnEnd() override;
 
 	int GetCategory() const override { return 0; };
-	int GetType() const override { return 0; };
+	int GetType() const override { return _type; };
 
 	bool Load(char* path, string mode);
 	void SetFilterMode(string mode);

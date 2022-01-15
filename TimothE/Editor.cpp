@@ -70,27 +70,118 @@ void Editor::EditorImGui(Scene* currentScene)
 	{
 		ImGui::Begin("Inspector");
 
+		if (_pSelectedGameObject != nullptr)
+		{
+			{
+				static string text = _pSelectedGameObject->GetName();
+				ImGui::InputText("Name", (char*)&text, 128);
+				_pSelectedGameObject->SetName(text);
+			}
+
+			// transform component
+			ImGui::Text("Transform");
+
+			if (_pSelectedGameObject->GetTransform() != nullptr)
+			{
+				// get the position
+				float* pos = new float[2]{ _pSelectedGameObject->GetTransform()->GetPosition()->_x, _pSelectedGameObject->GetTransform()->GetPosition()->_y };
+				// create boxes to set the position
+				ImGui::InputFloat2("Position", pos);
+				// set the position on the game object
+				_pSelectedGameObject->GetTransform()->SetPosition(pos[0], pos[1]);
+
+				float* rot = new float[2]{ _pSelectedGameObject->GetTransform()->GetXrotation(), _pSelectedGameObject->GetTransform()->GetYrotation() };
+				ImGui::InputFloat2("Rotation", rot);
+				_pSelectedGameObject->GetTransform()->SetXrotation(rot[0]);
+				_pSelectedGameObject->GetTransform()->SetYrotation(rot[1]);
+
+				float* scale = new float[2]{ _pSelectedGameObject->GetTransform()->GetXrotation(), _pSelectedGameObject->GetTransform()->GetYrotation() };
+				ImGui::InputFloat2("Scale", scale);
+				_pSelectedGameObject->GetTransform()->SetXScale(scale[0]);
+				_pSelectedGameObject->GetTransform()->SetYScale(scale[1]);
+			}
+			
+			ImGui::Spacing();
+			if (ImGui::CollapsingHeader("AddComponent"))
+			{
+				if (ImGui::CollapsingHeader("Transform"))
+				{
+					if (ImGui::Button("Transform"))
+					{
+						if (_pSelectedGameObject->GetTransform() == nullptr)
+						{
+							_pSelectedGameObject->AddComponent(new Transform(), Component::Types::Transform_Type);
+						}
+					}
+				}
+				if (ImGui::CollapsingHeader("Sound System"))
+				{
+					if (ImGui::Button("Sound"))
+					{
+
+					}
+				}
+				if (ImGui::CollapsingHeader("Colliders"))
+				{
+					if (ImGui::Button("Box Collider"))
+					{
+
+					}
+					if (ImGui::Button("Circle Collider"))
+					{
+
+					}
+				}
+				if (ImGui::CollapsingHeader("AI"))
+				{
+					if (ImGui::Button("Pathfinding"))
+					{
+
+					}
+					if (ImGui::Button("GOAP"))
+					{
+
+					}
+				}
+				if (ImGui::CollapsingHeader("Graphics"))
+				{
+					if (ImGui::Button("Texture"))
+					{
+
+					}
+				}
+			}
+		}
+
 		ImGui::End();
 	}
 
 	//Hierarchy
 	{
 		ImGui::Begin("Hierarchy");
+		// index of the selected object
 		static int index = 0;
+		// get vector of objects from the current scene
 		vector<GameObject*> objects = currentScene->GetGameObjects();
 		if (!objects.empty())
 		{
 			for (int i = 0; i < objects.size(); i++)
 			{
+				// create a radio button for each of the objects
 				ImGui::RadioButton(objects[i]->GetName().c_str(), &index, i); ImGui::SameLine();
 				if (ImGui::Button("Delete object"))
 				{
+					// add button next to object button that removes game object
 					currentScene->RemoveGameObject(objects[i]);
+					_pSelectedGameObject = nullptr;
+					// update objects and take 1 from i (because the object at the current index was removed)
 					objects = currentScene->GetGameObjects();
+					i--;
 				}
 			}
+			// set selected object to the object that the user has selected. does nothing currently.
 			if (!objects.empty())
-				GameObject* selectedObject = objects[index];
+				_pSelectedGameObject = objects[index];
 		}
 		ImGui::End();
 	}

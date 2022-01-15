@@ -33,6 +33,8 @@ public:
 	string GetUID() { return _UID; }
 	string GetName() { return _name; }
 
+	void SetName(string name);
+
 	Component* GetComponent(Component::Types componentType);
 	vector<Component*> GetComponents() { return _pComponents; }
 

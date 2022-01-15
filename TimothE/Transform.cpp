@@ -45,3 +45,18 @@ void Transform::SetXrotation(float xRot)
 {
 	_xRot = xRot;
 }
+
+void Transform::SetYrotation(float yRot)
+{
+	_yRot = yRot;
+}
+
+void Transform::SetXScale(float scale)
+{
+	_scaleX = scale;
+}
+
+void Transform::SetYScale(float scale)
+{
+	_scaleY = scale;
+}
