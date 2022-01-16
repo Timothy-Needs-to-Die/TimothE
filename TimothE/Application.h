@@ -29,6 +29,7 @@ protected:
 	void ImGUISwitchRender();
 
 private:
+	//Event Handlers
 	bool OnGameWindowClose(WindowCloseEvent& e);
 	bool OnGameWindowKeyPressedEvent(KeyPressedEvent& e);
 	bool OnGameWindowKeyReleasedEvent(KeyReleasedEvent& e);

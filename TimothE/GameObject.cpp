@@ -1,5 +1,6 @@
 #include "GameObject.h"
 #include "Texture2D.h"
+#include "Stream.h"
 
 GameObject::GameObject(string name, ObjectType tag, Texture2D* texture)
 {
@@ -74,14 +75,28 @@ void GameObject::LoadTexture(char* path, string mode)
 
 bool GameObject::Write(IStream& stream) const
 {
+	//TODO: Implement writing and reading component information
 
-	return false;
+	//Writes name to serialized object
+	WriteString(stream, _name);
+
+	//Writes number of components
+	WriteInt(stream, _pComponents.size());
+
+	//TODO: GameObjects need a child system
+
+	return true;
 }
 
 bool GameObject::Read(IStream& stream)
 {
+	//Sets our name
+	_name = ReadString(stream);
 
-	return false;
+	//Reserve the amount of components
+	_pComponents.reserve(ReadInt(stream));
+
+	return true;
 }
 
 void GameObject::Fixup()

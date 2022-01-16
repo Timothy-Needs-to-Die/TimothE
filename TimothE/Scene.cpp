@@ -2,6 +2,9 @@
 #include "Scene.h"
 #include <algorithm>
 
+#include "AddressTranslator.h"
+#include "StreamFile.h"
+
 int Scene::nextID = 0;
 
 Scene::Scene(string name)
@@ -56,4 +59,36 @@ void Scene::RemoveGameObject(GameObject* gameObject)
 	//std::vector<GameObject*>::iterator pos = std::find(_listOfGameObjects.begin(), _listOfGameObjects.end(), gameObject);
 	/*std::iter_swap(_listOfGameObjects.begin() + pos, _listOfGameObjects.end() - 1);
 	_listOfGameObjects.pop_back();*/
+}
+
+void Scene::LoadScene(const std::string& filename)
+{
+	StreamFile stream;
+	stream.OpenRead(filename);
+
+	_listOfGameObjects = std::vector<GameObject*>();
+
+	int amountOfGo = ReadInt(stream);
+	_listOfGameObjects.resize(amountOfGo);
+
+	for (int i = 0; i < amountOfGo; ++i) {
+		GameObject* go = new GameObject();
+		go->Read(stream);
+	}
+
+}
+
+void Scene::SaveScene(const std::string& filename)
+{
+	StreamFile stream;
+	stream.OpenWrite(filename);
+
+	//Writes the amount of game objects in the scene 
+	WriteInt(stream, _listOfGameObjects.size());
+
+	for (int i = 0; i < _listOfGameObjects.size(); ++i) {
+		_listOfGameObjects[i]->Write(stream);
+	}
+
+
 }

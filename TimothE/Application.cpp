@@ -20,6 +20,7 @@
 #include "Texture2D.h"
 
 
+
 #define BIND_EVENT_FN(x) std::bind(&Application::x, this, std::placeholders::_1)
 
 void Application::Init(bool devMode)
@@ -66,10 +67,14 @@ void Application::GameLoop()
 	//Intial mem bookmark
 	int memBookmark = HeapManager::GetMemoryBookmark();
 
+	_pCurrentScene->LoadScene("scene1.scene");
+
 	//Create some heaps
 	Heap* g = HeapManager::CreateHeap("GameObject", "Root");
 	Heap* c = HeapManager::CreateHeap("Cameras", "GameObject");
 	HeapManager::CreateHeap("Enemies", "GameObject");
+
+
 
 	//Creates some allocations. TestArr will not be deleted to test the memory leak detector
 	int* testArr = new(g) int[1024];
@@ -114,6 +119,8 @@ void Application::GameLoop()
 	//Prints the memory status and reports and memory leaks
 	HeapManager::PrintInfo();
 	HeapManager::ReportMemoryLeaks(memBookmark);
+
+	_pCurrentScene->SaveScene("scene1.scene");
 }
 
 

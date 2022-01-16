@@ -19,6 +19,9 @@ public:
 	void RemoveGameObject(GameObject* gameObject);
 	vector<GameObject*> GetGameObjects() { return _listOfGameObjects; }
 
+	void LoadScene(const std::string& filename);
+	void SaveScene(const std::string& filename);
+
 private:
 	string _name;
 	int _id;

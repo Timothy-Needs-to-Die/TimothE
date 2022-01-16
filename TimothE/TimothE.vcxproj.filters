@@ -156,6 +156,7 @@
     <ClCompile Include="HeapManager.cpp" />
     <ClCompile Include="StreamFile.cpp" />
     <ClCompile Include="AddressTranslator.cpp" />
+    <ClCompile Include="StreamHelpers.cpp" />
   </ItemGroup>
   <ItemGroup>
     <None Include="FragmentShader.frag" />
