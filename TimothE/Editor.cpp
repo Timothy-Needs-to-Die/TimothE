@@ -5,7 +5,7 @@ Editor::Editor(Window* pWindow)
 	: _pWindow(pWindow)
 {
 	// vertex attributes for a quad that fills the editor screen space in Normalized Device Coordinates.
-	float* quadVertices = new float[24] {
+	float* quadVertices = new float[24]{
 		// positions   // texCoords
 		-0.65f,  -0.6f,  0.0f, 0.0f,
 		-0.65f,   0.82f,	0.0f, 1.0f,
@@ -76,6 +76,19 @@ void Editor::EditorImGui(Scene* currentScene)
 	//Hierarchy
 	{
 		ImGui::Begin("Hierarchy");
+
+		bool openMenu = ImGui::Button("New Object");
+		if (openMenu) {
+			ImGui::OpenPopup("Create Objects");
+		}
+		if (ImGui::BeginPopup("Create Objects")) {
+			if (ImGui::MenuItem("New GameObject")) {
+				currentScene->AddGameObject(new GameObject("New Object"));
+			}
+
+			ImGui::EndPopup();
+		}
+
 		static int index = 0;
 		vector<GameObject*> objects = currentScene->GetGameObjects();
 		if (!objects.empty())

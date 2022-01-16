@@ -68,12 +68,15 @@ void Scene::LoadScene(const std::string& filename)
 
 	_listOfGameObjects = std::vector<GameObject*>();
 
+	//Read in the amount of gameobjects in the scene
 	int amountOfGo = ReadInt(stream);
 	_listOfGameObjects.resize(amountOfGo);
 
+	//Read in the information for each gameobject
 	for (int i = 0; i < amountOfGo; ++i) {
 		GameObject* go = new GameObject();
 		go->Read(stream);
+		_listOfGameObjects[i] = go;
 	}
 
 }

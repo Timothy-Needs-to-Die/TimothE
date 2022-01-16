@@ -24,6 +24,7 @@ class GameObject : public ISerializable
 {
 public:
 	GameObject() {}
+	GameObject(string name) : _name(name) {}
 	GameObject(string name, ObjectType tag, Texture2D* texture);
 	GameObject(string name, ObjectType tag, Texture2D* texture, Transform* transform);
 	~GameObject();

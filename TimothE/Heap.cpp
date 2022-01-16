@@ -179,7 +179,7 @@ void Heap::GetTreeStats(size_t& totalBytes, size_t& totalPeak, int& totalInstanc
 int Heap::ReportMemoryLeaks(int bookmark1, int bookmark2)
 {
 	int nLeaks = 0;
-
+	size_t hSize = sizeof(Header);
 	Header* pHeader = _pHead;
 	while (pHeader != NULL)
 	{
@@ -187,7 +187,8 @@ int Heap::ReportMemoryLeaks(int bookmark1, int bookmark2)
 		if (pHeader->allocationNumber >= bookmark1 &&
 			pHeader->allocationNumber < bookmark2)
 		{
-			std::cout << "Leak in " << _name << ". Size: " << pHeader->size << ". Address: " << ((char*)pHeader + sizeof(Header)) << std::endl;
+			auto& address = *(pHeader + hSize);
+			std::cout << "Leak in " << _name << ". Size: " << pHeader->size << ". Address: " << &address << std::endl;
 			nLeaks++;
 		}
 		//Go to the next header
