@@ -49,12 +49,10 @@ void HeapManager::DebugAll()
 	//Iterates over the heapMap and displays debug information and checks the integrity
 	std::unordered_map<std::string, Heap*>::const_iterator it;
 	for (it = _heapMap.begin(); it != _heapMap.end(); it++) {
-		it->second->DisplayDebugInformation();
 		it->second->CheckIntegrity();
 	}
 
 	//Default heap debug and integrity
-	_defaultHeap.DisplayDebugInformation();
 	_defaultHeap.CheckIntegrity();
 }
 

@@ -72,6 +72,23 @@ void GameObject::LoadTexture(char* path, string mode)
 	}
 }
 
+bool GameObject::Write(IStream& stream) const
+{
+
+	return false;
+}
+
+bool GameObject::Read(IStream& stream)
+{
+
+	return false;
+}
+
+void GameObject::Fixup()
+{
+
+}
+
 Component* GameObject::GetComponent(Component::Types componentType)
 {
 	for (Component* c : _pComponents)

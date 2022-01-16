@@ -110,6 +110,10 @@
     <ClInclude Include="MemoryManager.h" />
     <ClInclude Include="Heap.h" />
     <ClInclude Include="HeapManager.h" />
+    <ClInclude Include="Stream.h" />
+    <ClInclude Include="StreamFile.h" />
+    <ClInclude Include="Serializable.h" />
+    <ClInclude Include="AddressTranslator.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Application.cpp" />
@@ -150,6 +154,8 @@
     <ClCompile Include="MemoryManager.cpp" />
     <ClCompile Include="Heap.cpp" />
     <ClCompile Include="HeapManager.cpp" />
+    <ClCompile Include="StreamFile.cpp" />
+    <ClCompile Include="AddressTranslator.cpp" />
   </ItemGroup>
   <ItemGroup>
     <None Include="FragmentShader.frag" />
