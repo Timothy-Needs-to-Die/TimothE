@@ -162,7 +162,7 @@ void Application::GameUpdate(float dt)
 void Application::ImGUISwitchRender()
 {
 	{
-		ImGui::Begin("Application Mode");
+		ImGui::Begin("#Application Mode");
 
 		if (ImGui::Button("Editor", ImVec2(100.0f, 30.0f))) {
 			_inEditorMode = true;
