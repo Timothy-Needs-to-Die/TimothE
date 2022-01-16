@@ -1,6 +1,7 @@
 #include "GameObject.h"
 #include "Texture2D.h"
 #include "Stream.h"
+#include "imgui.h"
 
 GameObject::GameObject(string name, ObjectType tag, Texture2D* texture)
 {
@@ -21,6 +22,18 @@ GameObject::GameObject(string name, ObjectType tag, Texture2D* texture, Transfor
 	AddComponent(transform, Component::Types::Transform_Type);
 	AddComponent(texture, Component::Types::Texture_Type);
 	Start();
+}
+
+GameObject::GameObject() : _name("New GameObject")
+{
+	Transform* pTransform = new Transform();
+	AddComponent(pTransform, Component::Transform_Type);
+}
+
+GameObject::GameObject(string name) : _name(name)
+{
+	Transform* pTransform = new Transform();
+	AddComponent(pTransform, Component::Transform_Type);
 }
 
 GameObject::~GameObject()
@@ -71,6 +84,46 @@ void GameObject::LoadTexture(char* path, string mode)
 	{
 		GetTexture()->Load(path, mode);
 	}
+}
+
+void GameObject::DisplayInEditor()
+{
+	ImGui::Text(_name.c_str());
+
+
+	Transform* pTransform = (Transform*)GetComponent(Component::Transform_Type);
+	ImGui::Text("Transform Component");
+	
+	ImGui::Text("Position");
+	ImGui::SameLine();
+	ImGui::PushItemWidth(50.0f);
+	ImGui::DragFloat("X: ", &pTransform->GetPosition()->_x, 1.0f, -100000.0f, 100000.0f, ".%2d", 1.0f);
+	ImGui::SameLine();
+	ImGui::DragFloat("Y: ", &pTransform->GetPosition()->_y, 1.0f, -100000.0f, 100000.0f, ".%2d", 1.0f);
+	ImGui::PopItemWidth();
+
+	ImGui::NewLine();
+
+
+	ImGui::Text("Rotation");
+	ImGui::SameLine();
+	float xRot = pTransform->GetXrotation();
+	ImGui::PushItemWidth(50.0f);
+	ImGui::DragFloat("#X: ", &xRot, 1.0f, -100000.0f, 100000.0f, ".%2d", 1.0f);
+	ImGui::SameLine();
+	//ImGui::DragFloat("Y: ", &pTransform->Get()->_y, 1.0f, -100000.0f, 100000.0f, ".%2d", 1.0f);
+	pTransform->SetXrotation(xRot);
+
+	ImGui::NewLine();
+
+	ImGui::Text("Scale");
+	ImGui::SameLine();
+	ImGui::PushItemWidth(50.0f);
+	ImGui::DragFloat("##X: ", &pTransform->GetScale()->_x, 1.0f, 0.0f, 100000.0f, ".%2d", 1.0f);
+	ImGui::SameLine();
+	ImGui::PushItemWidth(50.0f);
+	ImGui::DragFloat("##Y: ", &pTransform->GetScale()->_y, 1.0f, 0.0f, 100000.0f, ".%2d", 1.0f);
+
 }
 
 bool GameObject::Write(IStream& stream) const

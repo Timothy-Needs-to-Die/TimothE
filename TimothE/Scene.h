@@ -15,7 +15,7 @@ public:
 	~Scene();
 	void Update(float deltaTime);
 	void RenderScene(Renderer* pRenderer);
-	void AddGameObject(GameObject* gameObject) { _listOfGameObjects.push_back(gameObject); }
+	GameObject* AddGameObject(GameObject* gameObject) { _listOfGameObjects.push_back(gameObject); return gameObject; }
 	void RemoveGameObject(GameObject* gameObject);
 	vector<GameObject*> GetGameObjects() { return _listOfGameObjects; }
 

@@ -70,6 +70,9 @@ void Editor::EditorImGui(Scene* currentScene)
 	{
 		ImGui::Begin("Inspector");
 
+		if(_pSelectedGameObject != nullptr)
+			_pSelectedGameObject->DisplayInEditor();
+
 		ImGui::End();
 	}
 
@@ -83,7 +86,8 @@ void Editor::EditorImGui(Scene* currentScene)
 		}
 		if (ImGui::BeginPopup("Create Objects")) {
 			if (ImGui::MenuItem("New GameObject")) {
-				currentScene->AddGameObject(new GameObject("New Object"));
+				GameObject* obj = currentScene->AddGameObject(new GameObject("New Object"));
+				_pSelectedGameObject = obj;
 			}
 
 			ImGui::EndPopup();
@@ -95,9 +99,15 @@ void Editor::EditorImGui(Scene* currentScene)
 		{
 			for (int i = 0; i < objects.size(); i++)
 			{
-				ImGui::RadioButton(objects[i]->GetName().c_str(), &index, i); ImGui::SameLine();
+				if (ImGui::RadioButton(objects[i]->GetName().c_str(), &index, i)) {
+					std::cout << "Set I" << std::endl;
+					//index = i;
+					_pSelectedGameObject = objects[i];
+				}
+				ImGui::SameLine();
 				if (ImGui::Button("Delete object"))
 				{
+					if (objects[i] == _pSelectedGameObject) _pSelectedGameObject = nullptr;
 					currentScene->RemoveGameObject(objects[i]);
 					objects = currentScene->GetGameObjects();
 				}

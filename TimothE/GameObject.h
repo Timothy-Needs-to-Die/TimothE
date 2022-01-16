@@ -23,8 +23,8 @@ enum class ObjectType
 class GameObject : public ISerializable
 {
 public:
-	GameObject() {}
-	GameObject(string name) : _name(name) {}
+	GameObject();
+	GameObject(string name);
 	GameObject(string name, ObjectType tag, Texture2D* texture);
 	GameObject(string name, ObjectType tag, Texture2D* texture, Transform* transform);
 	~GameObject();
@@ -48,6 +48,8 @@ public:
 
 	void LoadTexture(char* path, string mode);
 	void SetShader(int id) { _shaderID = id; };
+
+	void DisplayInEditor();
 
 	// Inherited via ISerializable
 	virtual bool Write(IStream& stream) const override;
