@@ -52,7 +52,9 @@ void Scene::RenderScene(Renderer* pRenderer)
 
 void Scene::RemoveGameObject(GameObject* gameObject)
 {
-	int index = std::find(_listOfGameObjects.begin(), _listOfGameObjects.end(), gameObject) - _listOfGameObjects.begin();
+	_listOfGameObjects.erase(std::find(_listOfGameObjects.begin(), _listOfGameObjects.end(), gameObject));
+	/*int index = std::find(_listOfGameObjects.begin(), _listOfGameObjects.end(), gameObject) - _listOfGameObjects.begin();
 	std::iter_swap(_listOfGameObjects.begin() + index, _listOfGameObjects.end() - 1);
-	_listOfGameObjects.pop_back();
+	_listOfGameObjects.pop_back();*/
+	delete gameObject;
 }

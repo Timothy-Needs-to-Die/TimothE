@@ -61,6 +61,8 @@ void Editor::EditorLoop(Scene* currentScene, float dt, bool& editorMode, bool& p
 
 void Editor::EditorImGui(Scene* currentScene)
 {
+	static bool changeObject = false;
+
 	{
 		ImGui::Begin("Notes");
 
@@ -78,17 +80,25 @@ void Editor::EditorImGui(Scene* currentScene)
 			// text box to change name
 			{
 				static string text = _pSelectedGameObject->GetName();
+
+				if (changeObject)
+				{
+					text = _pSelectedGameObject->GetName();
+				}
+
 				ImGui::InputText(" ", (char*)&text, 128);
-				_pSelectedGameObject->SetName(text);
+				ImGui::SameLine();
+				if (ImGui::Button("Set name"))
+				{
+					Console::Print(_pSelectedGameObject->GetName() + " renamed to " + text);
+					_pSelectedGameObject->SetName(text);
+				}
 			}
 
 			// select object type
 			if (ImGui::CollapsingHeader("Object Type"))
 			{
-				static int consoletest = 0;
-				Console::Print("test output " + to_string(consoletest++));
-
-				static int index = (int)_pSelectedGameObject->GetType();
+				int index = (int)_pSelectedGameObject->GetType();
 				if (ImGui::RadioButton("Player", &index, 0))
 				{
 					_pSelectedGameObject->SetType(ObjectType::Player);
@@ -190,10 +200,9 @@ void Editor::EditorImGui(Scene* currentScene)
 		ImGui::Begin("Hierarchy");
 
 		// bugs: having a name of 19 or more characters crashes
-		// adding an object after another is deleted causes the first to come back? needs further testing
 		if (ImGui::CollapsingHeader("Add GameObject"))
 		{
-			static string name = "Name";
+			static string name = "New GameObject";
 			ImGui::InputText(" ", (char*)&name, 128);
 			static ObjectType tag = ObjectType::Player;
 			if (ImGui::CollapsingHeader("Object type"))
@@ -224,8 +233,11 @@ void Editor::EditorImGui(Scene* currentScene)
 				GameObject* obj = new GameObject(name, tag, t);
 				currentScene->AddGameObject(obj);
 				Console::Print("Object added: " + name);
+				name = "New GameObject";
 			}
 		}
+
+		changeObject = false;
 
 		// index of the selected object
 		static int index = 0;
@@ -236,8 +248,9 @@ void Editor::EditorImGui(Scene* currentScene)
 			for (int i = 0; i < objects.size(); i++)
 			{
 				// create a radio button for each of the objects
-				ImGui::RadioButton(objects[i]->GetName().c_str(), &index, i); ImGui::SameLine();
-				if (ImGui::Button(("Delete object##" + to_string(i)).c_str()))
+				// '##' is to add a unique ID for ImGui when labels are the same
+				ImGui::RadioButton((objects[i]->GetName() + "##" + objects[i]->GetUID()).c_str(), &index, i); ImGui::SameLine();
+				if (ImGui::Button(("Delete object##" + objects[i]->GetUID()).c_str()))
 				{
 					Console::Print("Deleted " + objects[i]->GetName());
 					// add button next to object button that removes game object
@@ -246,11 +259,25 @@ void Editor::EditorImGui(Scene* currentScene)
 					// update objects and take 1 from i (because the object at the current index was removed)
 					objects = currentScene->GetGameObjects();
 					i--;
+
+					if (i <= index)
+					{
+						if(index > 0)
+							index--;
+					}
 				}
 			}
 			// set selected object to the object that the user has selected. does nothing currently.
 			if (!objects.empty())
-				_pSelectedGameObject = objects[index];
+			{
+				if (_pSelectedGameObject != objects[index])
+				{
+					_pSelectedGameObject = objects[index];
+					changeObject = true;
+				}
+			}
+			else
+				_pSelectedGameObject = nullptr;
 		}
 		ImGui::End();
 	}
