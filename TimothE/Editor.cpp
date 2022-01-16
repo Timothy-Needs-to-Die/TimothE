@@ -1,5 +1,6 @@
 #include "Editor.h"
 #include "ImGuiManager.h"
+#include "Texture2D.h"
 
 vector<string> Console::output = vector<string>();
 
@@ -187,6 +188,46 @@ void Editor::EditorImGui(Scene* currentScene)
 	//Hierarchy
 	{
 		ImGui::Begin("Hierarchy");
+
+		// bugs: having a name of 19 or more characters crashes
+		// adding an object after another is deleted causes the first to come back? needs further testing
+		// cannot delete newly added objects
+		if (ImGui::CollapsingHeader("Add GameObject"))
+		{
+			static string name = "Name";
+			ImGui::InputText(" ", (char*)&name, 128);
+			static ObjectType tag = ObjectType::Player;
+			if (ImGui::CollapsingHeader("Object type"))
+			{
+				static int tagIndex = 0;
+				if (ImGui::RadioButton("Player", &tagIndex, 0))
+				{
+					tag = ObjectType::Player;
+				}
+				if (ImGui::RadioButton("Enemy", &tagIndex, 1))
+				{
+					tag = ObjectType::Enemy;
+				}
+				if (ImGui::RadioButton("NPC", &tagIndex, 2))
+				{
+					tag = ObjectType::NPC;
+				}
+				if (ImGui::RadioButton("PickUp", &tagIndex, 3))
+				{
+					tag = ObjectType::PickUp;
+				}
+			}
+			if (ImGui::Button("Add Object"))
+			{
+				Texture2D* t = new Texture2D();
+				t->Load("lenna3.jpg", "linear");
+
+				GameObject* obj = new GameObject(name, tag, t);
+				currentScene->AddGameObject(obj);
+				Console::Print("Object added: " + name);
+			}
+		}
+
 		// index of the selected object
 		static int index = 0;
 		// get vector of objects from the current scene
@@ -199,7 +240,7 @@ void Editor::EditorImGui(Scene* currentScene)
 				ImGui::RadioButton(objects[i]->GetName().c_str(), &index, i); ImGui::SameLine();
 				if (ImGui::Button("Delete object"))
 				{
-					Console::Print("Deleted " + _pSelectedGameObject->GetName());
+					Console::Print("Deleted " + objects[i]->GetName());
 					// add button next to object button that removes game object
 					currentScene->RemoveGameObject(objects[i]);
 					_pSelectedGameObject = nullptr;
