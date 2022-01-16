@@ -191,7 +191,6 @@ void Editor::EditorImGui(Scene* currentScene)
 
 		// bugs: having a name of 19 or more characters crashes
 		// adding an object after another is deleted causes the first to come back? needs further testing
-		// cannot delete newly added objects
 		if (ImGui::CollapsingHeader("Add GameObject"))
 		{
 			static string name = "Name";
@@ -238,7 +237,7 @@ void Editor::EditorImGui(Scene* currentScene)
 			{
 				// create a radio button for each of the objects
 				ImGui::RadioButton(objects[i]->GetName().c_str(), &index, i); ImGui::SameLine();
-				if (ImGui::Button("Delete object"))
+				if (ImGui::Button(("Delete object##" + to_string(i)).c_str()))
 				{
 					Console::Print("Deleted " + objects[i]->GetName());
 					// add button next to object button that removes game object
