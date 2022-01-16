@@ -39,6 +39,8 @@ public:
 	//Binds the texture
 	void BindTexture();
 
+	int GetTexture() const { return _texture; }
+
 	//Gets the shader attached to this framebuffer
 	Shader* GetAttachedShader() const { return _pScreenShader; }
 private:

@@ -23,7 +23,7 @@ Editor::Editor(Window* pWindow)
 	_pScreenShader = new Shader("fbVert.vs", "fbFrag.fs");
 
 	//Creates the editor framebuffer
-	_pEditorFramebuffer = new Framebuffer(_pScreenShader, quadVertices);
+	_pEditorFramebuffer = new Framebuffer(_pScreenShader);
 }
 
 Editor::~Editor()
@@ -37,15 +37,24 @@ void Editor::EditorLoop(Scene* currentScene, float dt, bool& editorMode)
 {
 	EditorStartRender();
 
-	EditorRender();
-
 	//Handle unbinding the editor frame buffer and drawing it's contents
+	glDisable(GL_DEPTH_TEST | GL_COLOR_BUFFER_BIT);
 	_pEditorFramebuffer->UnbindFramebuffer();
-	glDisable(GL_DEPTH_TEST);
-	_pEditorFramebuffer->DrawFramebuffer();
+
+	ImGuiManager::ImGuiNewFrame();
+
+	ImGui::Begin("Scene Window");
+
+	ImGui::GetWindowDrawList()->AddImage(
+		(void*)_pEditorFramebuffer->GetTexture(),
+		ImVec2(ImGui::GetCursorScreenPos()),
+		ImVec2(ImGui::GetCursorScreenPos().x + 800,
+			ImGui::GetCursorScreenPos().y + 450), ImVec2(0, 1), ImVec2(1, 0));
+
+	ImGui::End();
 
 	//Render Here
-	ImGuiManager::ImGuiNewFrame();
+	
 	EditorImGui(currentScene);
 	ImGUISwitchRender(editorMode);
 	ImGuiManager::ImGuiEndFrame();

@@ -109,7 +109,7 @@ void GameObject::DisplayInEditor()
 	ImGui::SameLine();
 	float xRot = pTransform->GetXrotation();
 	ImGui::PushItemWidth(50.0f);
-	ImGui::DragFloat("#X: ", &xRot, 1.0f, -100000.0f, 100000.0f, ".%2d", 1.0f);
+	ImGui::DragFloat("X: ", &xRot, 1.0f, -100000.0f, 100000.0f, ".%2d", 1.0f);
 	ImGui::SameLine();
 	//ImGui::DragFloat("Y: ", &pTransform->Get()->_y, 1.0f, -100000.0f, 100000.0f, ".%2d", 1.0f);
 	pTransform->SetXrotation(xRot);
@@ -119,10 +119,10 @@ void GameObject::DisplayInEditor()
 	ImGui::Text("Scale");
 	ImGui::SameLine();
 	ImGui::PushItemWidth(50.0f);
-	ImGui::DragFloat("##X: ", &pTransform->GetScale()->_x, 1.0f, 0.0f, 100000.0f, ".%2d", 1.0f);
+	ImGui::DragFloat("X: ", &pTransform->GetScale()->_x, 1.0f, 0.0f, 100000.0f, ".%2d", 1.0f);
 	ImGui::SameLine();
 	ImGui::PushItemWidth(50.0f);
-	ImGui::DragFloat("##Y: ", &pTransform->GetScale()->_y, 1.0f, 0.0f, 100000.0f, ".%2d", 1.0f);
+	ImGui::DragFloat("Y: ", &pTransform->GetScale()->_y, 1.0f, 0.0f, 100000.0f, ".%2d", 1.0f);
 
 }
 
