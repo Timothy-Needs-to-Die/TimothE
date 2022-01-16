@@ -35,7 +35,7 @@ Editor::~Editor()
 	delete _pNotesBuffer;
 }
 
-void Editor::EditorLoop(Scene* currentScene, float dt, bool& editorMode)
+void Editor::EditorLoop(Scene* currentScene, float dt, bool& editorMode, bool& paused)
 {
 	EditorStartRender();
 
@@ -49,13 +49,13 @@ void Editor::EditorLoop(Scene* currentScene, float dt, bool& editorMode)
 	//Render Here
 	ImGuiManager::ImGuiNewFrame();
 	EditorImGui(currentScene);
-	ImGUISwitchRender(editorMode);
+	ImGUISwitchRender(editorMode, paused);
 	ImGuiManager::ImGuiEndFrame();
-
 
 	EditorEndRender();
 
-	EditorUpdate(currentScene, dt);
+	if(!paused)
+		EditorUpdate(currentScene, dt);
 }
 
 void Editor::EditorImGui(Scene* currentScene)
@@ -81,6 +81,7 @@ void Editor::EditorImGui(Scene* currentScene)
 				_pSelectedGameObject->SetName(text);
 			}
 
+			// select object type
 			if (ImGui::CollapsingHeader("Object Type"))
 			{
 				static int consoletest = 0;
@@ -128,6 +129,7 @@ void Editor::EditorImGui(Scene* currentScene)
 				_pSelectedGameObject->GetTransform()->SetYScale(scale[1]);
 			}
 			
+			// add component
 			if (ImGui::CollapsingHeader("AddComponent"))
 			{
 				if (ImGui::CollapsingHeader("Transform"))
@@ -197,6 +199,7 @@ void Editor::EditorImGui(Scene* currentScene)
 				ImGui::RadioButton(objects[i]->GetName().c_str(), &index, i); ImGui::SameLine();
 				if (ImGui::Button("Delete object"))
 				{
+					Console::Print("Deleted " + _pSelectedGameObject->GetName());
 					// add button next to object button that removes game object
 					currentScene->RemoveGameObject(objects[i]);
 					_pSelectedGameObject = nullptr;
@@ -239,7 +242,7 @@ void Editor::EditorImGui(Scene* currentScene)
 		ImGui::End();
 	}
 
-	ImGui::ShowDemoWindow();
+	//ImGui::ShowDemoWindow();
 }
 
 void Editor::EditorStartRender()
@@ -250,21 +253,32 @@ void Editor::EditorStartRender()
 	_pEditorFramebuffer->BindShader();
 }
 
-void Editor::ImGUISwitchRender(bool& editorMode)
+void Editor::ImGUISwitchRender(bool& editorMode, bool& paused)
 {
-	{
-		ImGui::Begin("Application Mode");
+	ImGui::Begin("Application Mode");
 
-		if (ImGui::Button("Editor", ImVec2(100.0f, 30.0f))) {
-			editorMode = true;
-		}
-		ImGui::SameLine();
-		if (ImGui::Button("Game", ImVec2(100.0f, 30.0f))) {
-			editorMode = false;
-		}
-		ImGui::SameLine();
-		ImGui::End();
+	if (ImGui::Button("Editor", ImVec2(100.0f, 30.0f))) {
+		editorMode = true;
 	}
+	ImGui::SameLine();
+	if (ImGui::Button("Game", ImVec2(100.0f, 30.0f))) {
+		editorMode = false;
+	}
+	ImGui::SameLine();
+	//float width = ImGui::GetWindowSize().x;
+	//ImGui::SetCursorPosX((width - 30.0f) * 0.5f); // sets play and pause button to centre of window
+	if (ImGui::Button("Play", ImVec2(30.0f, 30.0f)))
+	{
+		paused = false;
+	}
+	ImGui::SameLine();
+	if (ImGui::Button("Pause", ImVec2(30.0f, 30.0f)))
+	{
+		paused = true;
+	}
+	ImGui::SameLine();
+	ImGui::Text(("Paused: " + to_string(paused)).c_str());
+	ImGui::End();
 }
 
 void Editor::EditorRender()

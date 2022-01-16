@@ -24,7 +24,7 @@ public:
 	~Editor();
 
 	//Runs through the editor loop
-	void EditorLoop(Scene* currentScene, float dt, bool& editorMode);
+	void EditorLoop(Scene* currentScene, float dt, bool& editorMode, bool& paused);
 
 private:
 	//Starts the render 
@@ -40,7 +40,7 @@ private:
 	void EditorImGui(Scene* currentScene);
 	
 	//ImGui
-	void ImGUISwitchRender(bool& editorMode);
+	void ImGUISwitchRender(bool& editorMode, bool& paused);
 
 	//Editor update loop
 	void EditorUpdate(Scene* currentScene, float dt);
