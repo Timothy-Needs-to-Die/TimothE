@@ -15,7 +15,6 @@
     <IgnoreWarnCompileDuplicatedFilename>true</IgnoreWarnCompileDuplicatedFilename>
     <Keyword>Win32Proj</Keyword>
     <RootNamespace>TimothE</RootNamespace>
-    <WindowsTargetPlatformVersion>10.0</WindowsTargetPlatformVersion>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'" Label="Configuration">
@@ -73,7 +72,6 @@
       <WarningLevel>Level3</WarningLevel>
       <AdditionalIncludeDirectories>..\Dependancies\GLFW\include;..\Dependancies\GLEW\include;..\Dependancies\glm;..\Dependancies\irrklang\include;..\Dependancies\nlohmann;..\Dependancies\freetype;..\Dependancies\imgui;..\Dependancies\imgui\backend;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <Optimization>Disabled</Optimization>
-      <LanguageStandard>stdcpp17</LanguageStandard>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
@@ -92,8 +90,6 @@
     <ClInclude Include="Heap.h" />
     <ClInclude Include="HeapManager.h" />
     <ClInclude Include="ImGuiManager.h" />
-    <ClInclude Include="MemoryManager.h" />
-    <ClInclude Include="Renderer.h" />
     <ClInclude Include="Imgui\imconfig.h" />
     <ClInclude Include="Imgui\imgui.h" />
     <ClInclude Include="Imgui\imgui_impl_glfw.h" />
@@ -105,7 +101,9 @@
     <ClInclude Include="Imgui\imstb_truetype.h" />
     <ClInclude Include="Input.h" />
     <ClInclude Include="KeyEvent.h" />
+    <ClInclude Include="MemoryManager.h" />
     <ClInclude Include="MouseEvent.h" />
+    <ClInclude Include="Renderer.h" />
     <ClInclude Include="SOIL\SOIL2.h" />
     <ClInclude Include="SOIL\image_DXT.h" />
     <ClInclude Include="SOIL\image_helper.h" />
@@ -140,8 +138,6 @@
     <ClCompile Include="GameObject.cpp" />
     <ClCompile Include="Heap.cpp" />
     <ClCompile Include="HeapManager.cpp" />
-    <ClCompile Include="MemoryManager.cpp" />
-    <ClCompile Include="Renderer.cpp" />
     <ClCompile Include="Imgui\imgui.cpp" />
     <ClCompile Include="Imgui\imgui_demo.cpp" />
     <ClCompile Include="Imgui\imgui_draw.cpp" />
@@ -150,6 +146,8 @@
     <ClCompile Include="Imgui\imgui_tables.cpp" />
     <ClCompile Include="Imgui\imgui_widgets.cpp" />
     <ClCompile Include="Input.cpp" />
+    <ClCompile Include="MemoryManager.cpp" />
+    <ClCompile Include="Renderer.cpp" />
     <ClCompile Include="Scene.cpp" />
     <ClCompile Include="Shader.cpp" />
     <ClCompile Include="Source.cpp" />
@@ -157,10 +155,6 @@
     <ClCompile Include="Texture2D.cpp" />
     <ClCompile Include="Transform.cpp" />
     <ClCompile Include="Window.cpp" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="FragmentShader.frag" />
-    <None Include="VertexShader.vert" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
