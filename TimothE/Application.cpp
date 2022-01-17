@@ -157,6 +157,13 @@ void Application::ImGUISwitchRender()
 		_paused = true;
 	}
 	ImGui::SameLine();
+	//resets game build
+	if (ImGui::Button("Stop", ImVec2(50.0f, 30.0f)))
+	{
+		_pCurrentScene = new Scene("Test scene");
+		_paused = true;
+	}
+	ImGui::SameLine();
 	ImGui::Text(("Paused: " + to_string(_paused)).c_str());
 	ImGui::End();
 }
