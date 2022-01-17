@@ -22,7 +22,7 @@ public:
 	void OnUpdate() override;
 	void OnEnd() override;
 
-	bool Load(char* path, string mode);
+	bool Load(string path, string mode);
 	void SetFilterMode(string mode);
 
 	GLuint GetID() const { return _ID; }
@@ -31,12 +31,15 @@ public:
 	virtual bool Write(IStream& stream) const override {
 		Component::Write(stream);
 
+		WriteString(stream, _filePath);
+
 		return true;
 
 	}
 	virtual bool Read(IStream& stream) override {
 		Component::Read(stream);
 
+		Load(ReadString(stream), "");
 
 		return true;
 
@@ -47,6 +50,7 @@ public:
 	virtual void DrawEditorUI() override;
 
 private:
+	string _filePath;
 	string _UID;
 	GLuint _ID;
 	// Inherited via Component
