@@ -15,9 +15,6 @@ Scene::Scene(string name)
 	Texture2D* t = new Texture2D();
 	t->Load("lenna3.jpg", "linear");
 
-	Shader* shader;
-	shader = new Shader("fbVert.vs", "fbFrag.fs");
-
 	static const GLfloat g_vertex_buffer_data[] =
 	{
 		//pos				//tex
@@ -27,7 +24,7 @@ Scene::Scene(string name)
 	};
 
 	GameObject* _pTestObject = new GameObject("LENNA!", ObjectType::Player, t);
-	_pTestObject->SetShader(shader->GetProgramID());
+	//VERTEX DATA NEEDS TO BE STORED IN GAMEOBJECT
 
 	AddGameObject(_pTestObject);
 }

@@ -1,12 +1,10 @@
 #pragma once
-class Component;
 #include <vector>
 #include <string>
 #include "Component.h"
 #include "Transform.h"
 #include "UID.h"
 #include "TestComponent.h"
-#include "Transform.h"
 
 class Texture2D;
 
@@ -18,12 +16,14 @@ enum class ObjectType
 	Player,
 	Enemy,
 	NPC,
-	PickUp
+	PickUp,
+	UI
 };
 
 class GameObject
 {
 public:
+	GameObject() : _name("New GameObject") {}
 	GameObject(string name, ObjectType tag, Texture2D* texture);
 	GameObject(string name, ObjectType tag, Texture2D* texture, Transform* transform);
 	~GameObject();

@@ -11,6 +11,4 @@ public:
 	static void Initialize();
 	void RenderDrawables(vector<GameObject*> gameObjects);
 	void Render(GameObject* gameObject);
-private:
-	std::string _UID = UID::GenerateUID();
 };

@@ -18,6 +18,7 @@
 #include "ImGuiManager.h"
 
 #include "Texture2D.h"
+#include "Button.h"
 
 
 #define BIND_EVENT_FN(x) std::bind(&Application::x, this, std::placeholders::_1)
@@ -71,6 +72,11 @@ void Application::GameLoop()
 	Heap* c = HeapManager::CreateHeap("Cameras", "GameObject");
 	HeapManager::CreateHeap("Enemies", "GameObject");
 
+	Texture2D* pTexture = new Texture2D();
+	// remove extra arguement if breaks
+	pTexture->Load("./lenna3.raw", "");
+	Button* pButton = new Button("TestButton", new Transform(0, 0, 0, 0, 1, 1), pTexture, 100, 100);
+
 	//Creates some allocations. TestArr will not be deleted to test the memory leak detector
 	int* testArr = new(g) int[1024];
 	int* testArr2 = new(c) int[20124];
@@ -93,6 +99,9 @@ void Application::GameLoop()
 
 			GameRender();
 
+			pButton->Update(elapsed);
+
+			
 			if (_devMode) {
 				ImGuiManager::ImGuiNewFrame();
 				ImGUISwitchRender();
@@ -125,6 +134,7 @@ void Application::OnGameEvent(Event& e)
 	dispatcher.Dispatch<KeyReleasedEvent>(BIND_EVENT_FN(OnGameWindowKeyReleasedEvent));
 	dispatcher.Dispatch<MouseButtonPressedEvent>(BIND_EVENT_FN(OnGameWindowMouseButtonPressedEvent));
 	dispatcher.Dispatch<MouseButtonReleasedEvent>(BIND_EVENT_FN(OnGameWindowMouseButtonReleasedEvent));
+	dispatcher.Dispatch<MouseMovedEvent>(BIND_EVENT_FN(OnGameWindowMouseMovedEvent));
 }
 
 void Application::PollInput()
@@ -206,4 +216,10 @@ bool Application::OnGameWindowMouseButtonReleasedEvent(MouseButtonReleasedEvent&
 {
 	Input::SetMouseButton((TimothEMouseCode)e.GetMouseButton(), RELEASE);
 	return true;
+}
+
+bool Application::OnGameWindowMouseMovedEvent(MouseMovedEvent& e)
+{
+	Input::SetMousePosition(e.GetX(), e.GetY());
+	return false;
 }
