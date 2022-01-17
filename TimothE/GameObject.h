@@ -28,14 +28,20 @@ public:
 	GameObject(string name);
 	GameObject(string name, ObjectType tag, Texture2D* texture);
 	GameObject(string name, ObjectType tag, Texture2D* texture, Transform* transform);
+	GameObject(string name, ObjectType tag);
+	GameObject(string name, ObjectType tag, Transform* transform);
 	~GameObject();
 
-	void Start();
-	void Update(float deltaTime);
-	void Exit();
+	virtual void Start();
+	virtual void Update(float deltaTime);
+	virtual void Exit();
 
 	string GetUID() { return _UID; }
 	string GetName() { return _name; }
+	void SetName(string name);
+
+	ObjectType GetType() { return _tag; }
+	void SetType(ObjectType tag);
 
 	Component* GetComponent(Component::Types componentType);
 	vector<Component*> GetComponents() { return _pComponents; }

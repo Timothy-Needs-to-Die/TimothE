@@ -2,11 +2,13 @@
 #include <GL/glew.h>
 #include <map>
 #include <string>
+#include "Scene.h"
 #include "UID.h"
+#include "Shader.h"
+#include "Texture2D.h"
 
 class Shader;
 class Texture2D;
-class Scene;
 
 static class ResourceManager
 {
@@ -22,24 +24,10 @@ public:
 	Scene* GetScene(std::string name) { return _scenes[name]; };
 
 	std::string GetUID() { return _UID; }
-
-	//cleanup
-	void Clear()
-	{
-		//// delete shaders	
-		//for (auto& shader : _shaders)
-		//	glDeleteProgram(shader.second.GetProgramID());
-		//// delete textures
-		//for (auto texture : _textures)
-		//	glDeleteTextures(1, &texture.second.ID);
-		//// delete scenes
-		//for (auto scene : _scenes)
-		//	glDeleteTextures(1, &scene.second.ID);
-	};
 private:
 	static std::map<std::string, Texture2D*> _textures;
 	static std::map<std::string, Shader*> _shaders;
 	static std::map<std::string, Scene*> _scenes;
-
+	
 	std::string _UID = UID::GenerateUID();
 };

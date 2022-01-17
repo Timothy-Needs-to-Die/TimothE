@@ -27,10 +27,15 @@ public:
 	//int GetType() const override { return 0; };
 	COMPONENT_CLASS_TYPE(Transform_Type);
 	COMPONENT_CLASS_CATEGORY(Categories::Transform_Category);
+	int GetCategory() const override { return Transform_Category; };
+	int GetType() const override { return Transform_Type; };
+
+	void EditorUI() override;
 
 	Vector2D* GetPosition() { return new Vector2D(_xPos, _yPos); };
 	void SetPosition(float x, float y);
 	float GetXrotation() { return _xRot; };
+	float GetYrotation() { return _yRot; };
 	void SetXrotation(float xRot);
 	Vector2D* GetScale() { return new Vector2D(_scaleX, _scaleY); }
 
@@ -77,6 +82,11 @@ public:
 	virtual void Fixup() override {
 
 	}
+	void SetYrotation(float yRot);
+	float GetXScale() { return _scaleX; }
+	float GetYScale() { return _scaleY; }
+	void SetXScale(float scale);
+	void SetYScale(float scale);
 
 private:
 	float _xPos;
