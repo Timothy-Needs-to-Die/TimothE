@@ -23,8 +23,6 @@
 
 void Application::Init(bool createEditorWindow)
 {
-	Transform* transform = new Transform();
-	cam = new Camera(*transform);
 	UID::Init();
 	Input::Init();
 
@@ -162,7 +160,7 @@ void Application::PollInput()
 void Application::EditorUpdate(float dt)
 {
 
-	cam->OnUpdate();
+	//cam->OnUpdate();
 	if (Input::IsKeyDown(KEY_W)) {
 		std::cout << "W is Pressed" << std::endl;
 	}

@@ -1,13 +1,18 @@
-#include <GL/glew.h>
-#include "Graphics.h"
+//#include <GL/glew.h>
 
+#include "Camera.h"
+#include "Graphics.h"
+Camera* cam;
+Transform* transform = new Transform();
 void Graphics::Initialize()
 {
 	_pShader = new Shader("VertexShader.vert", "FragmentShader.frag");
+	cam = new Camera(*transform);
 }
 
 void Graphics::Render(GLFWwindow* window, GameObject* gameObject)
 {
+	
 	_pShader->BindShader();
 
 	static const GLfloat g_vertex_buffer_data[] =
@@ -42,4 +47,5 @@ void Graphics::Render(GLFWwindow* window, GameObject* gameObject)
 
 	glDrawArrays(GL_TRIANGLES, 0, 3); // Starting from vertex 0; 3 vertices total -> 1 triangle
 	glDisableVertexAttribArray(0);
+	cam->OnUpdate();
 }

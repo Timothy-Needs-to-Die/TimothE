@@ -6,10 +6,14 @@
 
 class Camera {
 public:
-	Camera(Transform transform) { _mTransform = transform; }
+	//Vector2D _mFocusPosition;
+	//float _mZoom;
+	Transform _mTransform;
+
+	Camera(Transform transform) { _mTransform = transform;  }
 	~Camera() {}
 	void Onstart();
 	void OnUpdate();
 	void OnEnd();
-	Transform _mTransform;
+	 
 };

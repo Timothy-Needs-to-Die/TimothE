@@ -6,20 +6,17 @@ void Camera::Onstart()
 
 void Camera::OnUpdate()
 {
-	//updates camera position and rotation
-	glLoadIdentity();
-	glm::mat4 view;
-	view = glm::lookAt(glm::vec3(0.0f, 0.0f, 0.0f), glm::vec3(0.0f, 0.0f, 0.0f), glm::vec3(0.0f, 0.0f, 0.0f));
+	//glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
-	/*gluLookAt(_mTransform.GetPosition()->_x, _mTransform.GetPosition()->_y, 0.0f,
-		_mTransform.GetPosition()->_x, _mTransform.GetPosition()->_y + _mTransform.GetXrotation(), 0,
-		1.0f, 0, 0);*/
-	//glRotatef(_mTransform.GetXrotation(), 1, 0, 0);
-	//glRotatef(_mTransform.GetXrotation(), 0, 1, 0);//y
-	//glRotatef(_mTransform.GetXrotation(), 0, 0, 1);//z
-	//glTranslatef(_mTransform.GetPosition()->_x, _mTransform.GetPosition()->_y, 0);
-	//glm::mat4 projection;
-	//projection = glm::perspective(glm::radians(45.0f), 800.0f / 600.0f, 0.1f, 100.0f);
+	glMatrixMode(GL_PROJECTION);
+	glLoadIdentity();
+	
+	glTranslatef(5, 100, 0);
+	
+	glm::mat4 projection;
+	glm::mat4 view = glm::lookAt(glm::vec3{ 0,100,3 }, glm::vec3{ 0,99,2 }, glm::vec3{ 0,1,0 });;
+	projection = glm::perspective(glm::radians(45.0f), 1920.0f / 1080.0f, 0.1f, 100.0f);
+	//glUniformMatrix4fv(glGetUniformLocation());
 }
 
 void Camera::OnEnd()
