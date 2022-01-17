@@ -25,6 +25,7 @@ public:
 	GameObject(string name, ObjectType tag, Texture2D* texture);
 	GameObject(string name, ObjectType tag, Texture2D* texture, Transform* transform);
 	~GameObject();
+	void InitVertexData();
 
 	void Start();
 	void Update(float deltaTime);

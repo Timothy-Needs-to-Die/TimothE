@@ -26,6 +26,7 @@ public:
 	int GetType() const override { return 0; };
 
 	bool Load(char* path, string mode);
+	void Bind();
 	void SetFilterMode(string mode);
 
 	GLuint GetID() const { return _ID; }
