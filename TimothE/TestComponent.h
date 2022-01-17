@@ -6,9 +6,10 @@ class GameObject;
 class TestComponent : public Component
 {
 public:
-	TestComponent() {}
-	COMPONENT_CLASS_CATEGORY(Debug_Category);
-	COMPONENT_CLASS_TYPE(Test_Type);
+	TestComponent() {
+		SetType(Component::Types::Test_Type);
+		SetCategory(Component::Categories::Debug_Category);
+	}
 	TestComponent(GameObject* _mParentObject);
 	~TestComponent();
 	void OnStart() override;

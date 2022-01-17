@@ -6,6 +6,8 @@
 
 TestComponent::TestComponent(GameObject* parentObject) : Component()
 {
+	SetType(Component::Types::Test_Type);
+	SetCategory(Component::Categories::Debug_Category);
 	_parentObject = parentObject;
 	//calls method on creation
 	OnStart();

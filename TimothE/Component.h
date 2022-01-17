@@ -20,8 +20,6 @@
 
 //macros to define component type in subclass
 #define BIT(x) (1<<x)
-#define COMPONENT_CLASS_CATEGORY(category) virtual int GetCategory() const override {return category;}
-#define COMPONENT_CLASS_TYPE(type) virtual int GetType() const override {return type;}
 class Component : ISerializable
 {
 public:
@@ -63,8 +61,10 @@ public:
 	virtual void DrawEditorUI() = 0;
 
 	//gets the component type and catagory 
-	virtual int GetCategory() const = 0 ;
-	virtual int GetType() const = 0 ;
+	int GetCategory() const { return _category; }
+	int GetType() const {
+		return _type;
+	}
 
 	//Set functions
 	void SetCategory(Component::Categories category) { _category = category; }

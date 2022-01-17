@@ -97,6 +97,8 @@ bool GameObject::Write(IStream& stream) const
 	//Writes name to serialized object
 	WriteString(stream, _name);
 
+	WriteString(stream, _UID);
+
 	//Writes number of components
 	WriteInt(stream, _pComponents.size());
 
@@ -115,6 +117,8 @@ bool GameObject::Read(IStream& stream)
 	//Sets our name
 	_name = ReadString(stream);
 
+	_UID = ReadString(stream);
+
 	//Reserve the amount of components
 	int noComponents = ReadInt(stream);
 	_pComponents.reserve(noComponents);
@@ -123,12 +127,17 @@ bool GameObject::Read(IStream& stream)
 		Component::Types type = (Component::Types)ReadInt(stream);
 		Component::Categories cat = (Component::Categories)ReadInt(stream);
 
+
 		//Make instance of component
 		Component* c = ComponentFactor::GetComponent(type);
-
+		if (c == nullptr) {
+			std::cout << "Failed to load gameobject: " << _name << " Component is null" << std::endl;
+			return false;
+		}
 
 		//Read instance
 		c->Read(stream);
+
 		//Set component
 
 		_pComponents[i] = c;
@@ -139,6 +148,8 @@ bool GameObject::Read(IStream& stream)
 
 void GameObject::Fixup()
 {
+
+}
 
 void GameObject::SetName(string name)
 {

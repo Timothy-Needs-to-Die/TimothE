@@ -3,6 +3,8 @@
 
 Transform::Transform() : Component()
 {
+	SetType(Component::Types::Transform_Type);
+	SetCategory(Component::Categories::Transform_Category);
 	_scaleX = 1;
 	_scaleY = 1;
 	_xPos = 0;
@@ -13,6 +15,8 @@ Transform::Transform() : Component()
 
 Transform::Transform(float x, float y, float rotx, float roty, float scalex, float scaley) : Component()
 {
+	SetType(Component::Types::Transform_Type);
+	SetCategory(Component::Categories::Transform_Category);
 	_scaleX = scalex;
 	_scaleY = scaley;
 	_xPos = x;
@@ -36,12 +40,12 @@ void Transform::OnEnd()
 
 }
 
-void Transform::EditorUI()
+void Transform::DrawEditorUI()
 {
 	ImGui::Text("Transform");
 
 	// get the position
-	float* pos = new float[2]{ GetPosition()->_x, GetPosition()->_y };
+	float* pos = new float[2]{ GetPosition()._x, GetPosition()._y };
 	// create boxes to set the position
 	if (ImGui::InputFloat2("Position", pos))
 	{
@@ -62,6 +66,7 @@ void Transform::EditorUI()
 		SetXScale(scale[0]);
 		SetYScale(scale[1]);
 	}
+	delete[]pos;
 }
 
 void Transform::SetPosition(float x, float y)
@@ -75,39 +80,6 @@ void Transform::SetXrotation(float xRot)
 	_xRot = xRot;
 }
 
-void Transform::DrawEditorUI()
-{
-	ImGui::Text("Transform Component");
-
-	ImGui::Text("Position");
-	ImGui::SameLine();
-	ImGui::PushItemWidth(50.0f);
-	ImGui::DragFloat("X: ", &_xPos, 1.0f, -100000.0f, 100000.0f, ".%2d", 1.0f);
-	ImGui::SameLine();		  
-	ImGui::DragFloat("Y: ", &_yPos, 1.0f, -100000.0f, 100000.0f, ".%2d", 1.0f);
-	ImGui::PopItemWidth();
-
-	ImGui::NewLine();
-
-
-	ImGui::Text("Rotation");
-	ImGui::SameLine();
-	ImGui::PushItemWidth(50.0f);
-	ImGui::DragFloat("#X: ", &_xRot, 1.0f, -100000.0f, 100000.0f, ".%2d", 1.0f);
-	ImGui::SameLine();
-	//ImGui::DragFloaht("Y: ", &pTransform->Get()->_y, 1.0f, -100000.0f, 100000.0f, ".%2d", 1.0f);
-
-	ImGui::NewLine();
-
-	ImGui::Text("Scale");
-	ImGui::SameLine();
-	ImGui::PushItemWidth(50.0f);
-	ImGui::DragFloat("##X: ", &_scaleX, 1.0f, 0.0f, 100000.0f, ".%2d", 1.0f);
-	ImGui::SameLine();
-	ImGui::PushItemWidth(50.0f);
-	ImGui::DragFloat("##Y: ", &_scaleY, 1.0f, 0.0f, 100000.0f, ".%2d", 1.0f);
-
-	std::cout << "X: " << _xPos << " Y: " << _yPos << std::endl;
 void Transform::SetYrotation(float yRot)
 {
 	_yRot = yRot;

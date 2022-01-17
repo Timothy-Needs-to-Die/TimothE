@@ -11,7 +11,7 @@ Texture2D::~Texture2D()
 	glDeleteTextures(1, &_ID);
 }
 
-void Texture2D::EditorUI()
+void Texture2D::DrawEditorUI()
 {
 	ImGui::Text("Texture");
 	ImTextureID texID = (void*)_ID;
@@ -67,9 +67,4 @@ void Texture2D::SetFilterMode(string mode)
 		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
 		cout << "Nearest filter mode" << endl;
 	}
-}
-
-void Texture2D::DrawEditorUI()
-{
-
 }

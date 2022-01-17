@@ -25,9 +25,6 @@ public:
 	bool Load(char* path, string mode);
 	void SetFilterMode(string mode);
 
-	COMPONENT_CLASS_CATEGORY(Graphics_Category);
-	COMPONENT_CLASS_TYPE(Texture_Type);
-
 	GLuint GetID() const { return _ID; }
 
 	// Inherited via ISerializable
@@ -47,10 +44,12 @@ public:
 	virtual void Fixup() override {
 
 	}
+	virtual void DrawEditorUI() override;
+
 private:
 	string _UID;
 	GLuint _ID;
 	// Inherited via Component
-	virtual void DrawEditorUI() override;
+	
 	// Texture ID
 };

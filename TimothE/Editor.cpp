@@ -137,7 +137,7 @@ void Editor::EditorImGui(Scene* currentScene)
 
 			for (Component* c : _pSelectedGameObject->GetComponents())
 			{
-				c->EditorUI();
+				c->DrawEditorUI();
 			}
 			
 			// add component
@@ -191,7 +191,7 @@ void Editor::EditorImGui(Scene* currentScene)
 						Texture2D* tex = _pSelectedGameObject->GetTexture();
 						if (tex == nullptr)
 						{
-							_pSelectedGameObject->AddComponent(new Texture2D(), Component::Types::Transform_Type);
+							_pSelectedGameObject->AddComponent(new Texture2D(), Component::Types::Texture_Type);
 							_pSelectedGameObject->LoadTexture((char*)texPath.c_str(), "Linear");
 						}
 					}
