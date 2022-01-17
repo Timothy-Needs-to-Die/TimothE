@@ -7,6 +7,8 @@
 #include "Editor.h"
 #include "MemoryManager.h"
 
+#include "AudioEngine.h"
+
 class Application
 {
 public:
@@ -34,6 +36,8 @@ private:
 	bool OnGameWindowKeyReleasedEvent(KeyReleasedEvent& e);
 	bool OnGameWindowMouseButtonPressedEvent(MouseButtonPressedEvent& e);
 	bool OnGameWindowMouseButtonReleasedEvent(MouseButtonReleasedEvent& e);
+
+	AudioEngine* _audio;
 
 	Renderer _renderer;
 

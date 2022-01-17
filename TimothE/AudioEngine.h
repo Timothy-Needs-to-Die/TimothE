@@ -6,13 +6,17 @@
 #include <iostream>
 #include <math.h>
 
+struct SoundStruct {
+	char* filePath;
+	FMOD::Sound* sound;
+	char* name;
+};
+
 class AudioEngine
 {
 public:
 	AudioEngine();
 	~AudioEngine();
-
-	
 
 	// == System Functions == // 
 	void AudioUpdate(float elapsed);
@@ -69,10 +73,7 @@ private:
 	enum FadeState{Fade_None, Fade_In, Fade_Out};
 	FadeState fade;
 
-
-
 	SoundMap _sounds[Type_Count];
-
 
 	FMOD::System* _fmodSystem;
 	FMOD::ChannelGroup* _master;

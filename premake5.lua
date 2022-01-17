@@ -24,13 +24,15 @@ project "TimothE"
 		"Dependancies/nlohmann",
 		"Dependancies/freetype",
 		"Dependancies/imgui",
-		"Dependancies/imgui/backend"
+		"Dependancies/imgui/backend",
+		"Dependancies/Fmod/inc"
 	}
 
 	libdirs {
 		"Dependancies/GLFW/lib-vc2019",
 		"Dependancies/GLEW/lib",
-		"Dependancies/irrklang/lib"
+		"Dependancies/irrklang/lib", 
+		"Dependancies/Fmod/lib"
 	}
 
 	links {
@@ -39,5 +41,6 @@ project "TimothE"
 		"glew32s.lib",
 		"glew32.lib",
 		"soil2-debug.lib",
-		"soil2-debug.dll"
+		"soil2-debug.dll",
+		"fmod_vc.lib"
 	}

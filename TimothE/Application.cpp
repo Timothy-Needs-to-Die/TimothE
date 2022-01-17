@@ -66,6 +66,9 @@ void Application::GameLoop()
 	//Intial mem bookmark
 	int memBookmark = HeapManager::GetMemoryBookmark();
 
+	_audio = new AudioEngine;
+
+
 	//Create some heaps
 	Heap* g = HeapManager::CreateHeap("GameObject", "Root");
 	Heap* c = HeapManager::CreateHeap("Cameras", "GameObject");
@@ -78,9 +81,14 @@ void Application::GameLoop()
 	delete[]testArr2;
 
 	double previousTime = glfwGetTime();
+
+	//_audio->LoadSoundtrack("Resources/Sounds/Music/Title.wav");
+
 	//While the editor window should not close
 	while (_running) {
 		PollInput();
+		
+		//_audio->PlaySong("Resources/Sounds/Music/Title.wav");
 
 		double currentTime = glfwGetTime();
 		double elapsed = currentTime - previousTime;

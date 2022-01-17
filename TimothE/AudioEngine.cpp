@@ -90,8 +90,6 @@ void AudioEngine::ShutDownAudio()
 	_fmodSystem->release();
 }
 
-
-
 //If an error was detected with a certain issue this will print an error string
 //to aid with debugging
 void AudioEngine::CheckForErrors(FMOD_RESULT result)
@@ -265,9 +263,10 @@ void AudioEngine::PlaySFX(const char* path, float minVolume, float maxVolume, fl
 
 void AudioEngine::PlaySong(const char* filePath)
 {
+	
 	//Ignore if the song is allready playing
 	if (_currentSongPath == filePath) return;
-
+	std::cout << "PlaySong";
 	//If a song is playing, stop this song and set the next song 
 	if (_currentSongChannel != 0) {
 		StopSongs();
@@ -280,7 +279,8 @@ void AudioEngine::PlaySong(const char* filePath)
 
 	//Start playing song with volume set to 0 then fade in 
 	_currentSongPath = filePath;
-	_fmodSystem->playSound(songToPlay->second, _groups[Type_Song], false, &_currentSongChannel);
+	FMOD_RESULT result = _fmodSystem->playSound(songToPlay->second, _groups[Type_Song], false, &_currentSongChannel);
+	CheckForErrors(result);
 	_currentSongChannel->setChannelGroup(_groups[Type_Song]);
 	_currentSongChannel->setVolume(0.0f);
 	fade = Fade_In;
