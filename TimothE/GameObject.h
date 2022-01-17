@@ -30,7 +30,7 @@ public:
 	void InitVertexData();
 
 	void Start();
-	void Update(float deltaTime);
+	virtual void Update(float deltaTime);
 	void Exit();
 
 	string GetUID() { return _UID; }

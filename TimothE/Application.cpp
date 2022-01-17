@@ -75,7 +75,7 @@ void Application::GameLoop()
 	Texture2D* pTexture = new Texture2D();
 	// remove extra arguement if breaks
 	pTexture->Load("./lenna3.raw", "");
-	Button* pButton = new Button("TestButton", new Transform(0, 0, 0, 0, 1, 1), pTexture, 100, 100);
+	
 
 	//Creates some allocations. TestArr will not be deleted to test the memory leak detector
 	int* testArr = new(g) int[1024];
@@ -98,9 +98,6 @@ void Application::GameLoop()
 			GameBeginRender();
 
 			GameRender();
-
-			pButton->Update(elapsed);
-
 			
 			if (_devMode) {
 				ImGuiManager::ImGuiNewFrame();
@@ -159,6 +156,7 @@ void Application::GameEndRender()
 
 void Application::GameUpdate(float dt)
 {
+	_pCurrentScene->Update(dt);
 
 }
 

@@ -13,7 +13,7 @@ public:
 	Button(string name, Transform* transform, Texture2D* texture, int width, int height);
 	~Button();
 
-	void Update(float deltaTime);
+	void Update(float deltaTime) override;
 	void Render();
 
 	// Getter & Setter

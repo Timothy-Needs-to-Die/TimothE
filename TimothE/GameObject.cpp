@@ -96,6 +96,7 @@ void GameObject::Update(float deltaTime)
 	{
 		c->OnUpdate();
 	}
+	std::cout << _UID << std::endl;
 }
 
 void GameObject::Exit()

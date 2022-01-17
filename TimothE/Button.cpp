@@ -24,8 +24,8 @@ void Button::Update(float deltaTime)
 
 		Transform* tranform = GetTransform();
 
-		if (mouseX > this->GetTransform()->GetX() && mouseY > this->GetTransform()->GetY() &&
-			mouseX < this->GetTransform()->GetX() + _width && mouseY < this->GetTransform()->GetY() + _height)
+		if (mouseX > this->GetTransform()->GetPosition().x && mouseY > this->GetTransform()->GetPosition().y &&
+			mouseX < this->GetTransform()->GetPosition().x + _width && mouseY < this->GetTransform()->GetPosition().y + _height)
 		{
 			std::cout << "Mouse clicked inside the button! " << std::endl;
 		}
@@ -33,10 +33,12 @@ void Button::Update(float deltaTime)
 		std::cout << "Mouse clicked X: " << mouseX << " Y: " << mouseY << std::endl;
 	}
 
+	GameObject::Update(deltaTime);
 }
 
 void Button::Render()
 {
+
 }
 
 
