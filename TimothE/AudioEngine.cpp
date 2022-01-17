@@ -22,6 +22,8 @@ AudioEngine::AudioEngine()
 	//Set up modes for each type
 	modes[Type_SFX] = FMOD_DEFAULT;
 	modes[Type_Song] = FMOD_DEFAULT | FMOD_CREATESTREAM | FMOD_LOOP_NORMAL;
+
+	_currentSongChannel = nullptr;
 	
 }
 
@@ -74,9 +76,9 @@ void AudioEngine::AudioUpdate(float elapsed)
 		else
 			_currentSongChannel->setVolume(nextVolume);
 	}
-	else if (_currentSongChannel == 0 && !_nextSongPath == 0) {
-		PlaySong(_nextSongPath);
-		_nextSongPath = nullptr;
+	else if (_currentSongChannel == 0 && !_nextSong.filePath == 0 ) {
+		PlaySong(_nextSong);
+		_nextSong.filePath = 0;
 	}
 
 
@@ -196,27 +198,73 @@ void AudioEngine::SetGroupPitch(FMOD::ChannelGroup* group, float value) {
 // ============================== Core Functionality ============================== // 
 //CreateAndLoad loads a sound file into memory and populates the '_sounds' map with the sound data
 //Loading sounds into memory is ideal for most ingame sounds as they will be used multiple times
-void AudioEngine::Load(AudioType type, const char* filePath)
+//void AudioEngine::Load(AudioType type, const char* filePath)
+//{
+//	//Ensure the correct sound is being loaded
+//	//if (_sounds[type].find(filePath) != _sounds[type].end()) return;
+//
+//	FMOD::Sound* soundToLoad;
+//	FMOD_RESULT result = _fmodSystem->createSound(filePath, FMOD_DEFAULT, 0, &soundToLoad);
+//	CheckForErrors(result);
+//	
+//	_sounds[type].insert(std::make_pair(filePath, soundToLoad));
+//	std::cout << "Sountrack loaded from path: " << filePath << std::endl;
+//}
+
+SoundStruct AudioEngine::LoadSound(const char* name, const char* filePath, AudioType type)
 {
-	//Ensure the correct sound is being loaded
-	if (_sounds[type].find(filePath) != _sounds[type].end()) return;
+	SoundStruct newSound = SoundStruct();
+	newSound.name = name;
+	newSound.filePath = filePath;
+	newSound.type = type;
 
 	FMOD::Sound* soundToLoad;
-	FMOD_RESULT result = _fmodSystem->createSound(filePath, FMOD_DEFAULT, 0, &soundToLoad);
-	CheckForErrors(result);
 	
-	_sounds[type].insert(std::make_pair(filePath, soundToLoad));
+
+
+	FMOD_RESULT result = _fmodSystem->createSound(newSound.filePath, FMOD_DEFAULT, 0, &soundToLoad);
+	newSound.sound = soundToLoad;
+
+	CheckForErrors(result);
+	std::cout << "Sound Loaded: " << newSound.name << std::endl;
+	return newSound;
+
+	//Load(Type_Song, filePath);
+	//Load(soundTrack);
 }
 
-void AudioEngine::LoadSFX(const char* filePath)
-{
-	Load(Type_SFX, filePath); 
-}
+//void AudioEngine::PlaySound(SoundStruct sound)
+//{
+//	if (sound.type == Type_SFX)
+//	{
+//
+//	}
+//}
 
-void AudioEngine::LoadSoundtrack(const char* filePath)
-{
-	Load(Type_Song, filePath);
-}
+//void AudioEngine::LoadSFX(const char* filePath)
+//{
+//	Load(Type_SFX, filePath); 
+//}
+
+//void AudioEngine::LoadSoundtrack(const char* filePath)
+//{
+//	SoundStruct soundTrack = SoundStruct(); 
+//	soundTrack.filePath = filePath;
+//
+//	FMOD::Sound* soundToLoad;
+//	toLoad.sound = soundToLoad;
+//
+//	FMOD_RESULT result = _fmodSystem->createSound(toLoad.filePath, FMOD_DEFAULT, 0, &soundToLoad);
+//	CheckForErrors(result);
+//
+//	//Load(Type_Song, filePath);
+//	Load(soundTrack);
+//}
+//
+//void AudioEngine::LoadSoundTrack(SoundTrack soundTrack)
+//{
+
+
 
 //Creates an audio stream.
 //Audio streams are ideal for streaming long audio files such as soundtracks or voicelines
@@ -231,20 +279,20 @@ FMOD::Sound* AudioEngine::CreateAudioStream( const char* filePath)
 
 
 
-//This play sound method is useful for simple one shot sounds that do not need any modification 
-void AudioEngine::PlaySFX(FMOD::Sound* sound)
-{
-	FMOD_RESULT result = _fmodSystem->playSound(sound, NULL, false, 0);
-	CheckForErrors(result);
-}
+////This play sound method is useful for simple one shot sounds that do not need any modification 
+//void AudioEngine::PlaySFX(FMOD::Sound* sound)
+//{
+//	FMOD_RESULT result = _fmodSystem->playSound(sound, NULL, false, 0);
+//	CheckForErrors(result);
+//}
 
 //Play sound effects
 //Pass in values for min and max pitch to allow for slight variations in pitch for repeating sounds (footsteps, attacks etc)
-void AudioEngine::PlaySFX(const char* path, float minVolume, float maxVolume, float minPitch, float maxPitch)
+void AudioEngine::PlaySFX(SoundStruct sound, float minVolume, float maxVolume, float minPitch, float maxPitch)
 {
   //check that the SFX exists, returns if not found
-	SoundMap::iterator sound = _sounds[Type_SFX].find(path);
-	if (sound == _sounds[Type_SFX].end()) return;
+	/*SoundMap::iterator sound = _sounds[Type_SFX].find(path);
+	if (sound == _sounds[Type_SFX].end()) return;*/
 
 	//Calculate random value between pitch in the desired range
 	float volume = RandomBetween(minVolume, maxVolume);
@@ -252,7 +300,7 @@ void AudioEngine::PlaySFX(const char* path, float minVolume, float maxVolume, fl
 
 	//Play the sound effects while applying values to the channel 
 	FMOD::Channel* channel;
-	_fmodSystem->playSound(sound->second, NULL, false, &channel);
+	_fmodSystem->playSound(sound.sound, NULL, false, &channel);
 	channel->setChannelGroup(_groups[Type_SFX]);
 	channel->setVolume(volume);
 	float frequency;
@@ -261,30 +309,32 @@ void AudioEngine::PlaySFX(const char* path, float minVolume, float maxVolume, fl
 	channel->setPaused(false);
 }
 
-void AudioEngine::PlaySong(const char* filePath)
+void AudioEngine::PlaySong(SoundStruct sound)
 {
 	
-	//Ignore if the song is allready playing
-	if (_currentSongPath == filePath) return;
-	std::cout << "PlaySong";
-	//If a song is playing, stop this song and set the next song 
-	if (_currentSongChannel != 0) {
-		StopSongs();
-		_nextSongPath = filePath;
-		return;
-	}
-	//Find the correct song in the corresponding sound map : REPLACE WITH RESOURCE MANAGER IMPLEMENTATION
-	SoundMap::iterator songToPlay = _sounds[Type_Song].find(filePath);
-	if (songToPlay == _sounds[Type_Song].end()) return;
+	////Ignore if the song is allready playing
+	//if (_currentSongPath == filePath) return;
+	//
+	////If a song is playing, stop this song and set the next song 
+	//if (_currentSongChannel != 0) {
+	//	StopSongs();
+	//	_nextSongPath = filePath;
+	//	return;
+	//}
+	////Find the correct song in the corresponding sound map : REPLACE WITH RESOURCE MANAGER IMPLEMENTATION
+	//SoundMap::iterator songToPlay = _sounds[Type_Song].find(filePath);
+
+
+	/*if (songToPlay == _sounds[Type_Song].end()) return;*/
 
 	//Start playing song with volume set to 0 then fade in 
-	_currentSongPath = filePath;
-	FMOD_RESULT result = _fmodSystem->playSound(songToPlay->second, _groups[Type_Song], false, &_currentSongChannel);
+	_currentSongPath = sound.filePath;
+	FMOD_RESULT result = _fmodSystem->playSound(sound.sound, _groups[Type_Song], false, 0);
+	std::cout << "PlaySong";
 	CheckForErrors(result);
 	_currentSongChannel->setChannelGroup(_groups[Type_Song]);
 	_currentSongChannel->setVolume(0.0f);
 	fade = Fade_In;
-
 
 }
 
@@ -295,7 +345,7 @@ void AudioEngine::StopSongs()
 		fade = Fade_Out;
 
 	}
-	_nextSongPath = nullptr;
+	_nextSong.filePath = nullptr;
 }
 
 //Toggle pause on a currently running audio channel 

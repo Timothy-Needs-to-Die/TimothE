@@ -71,14 +71,22 @@ void Application::GameLoop()
 
 
 	double previousTime = glfwGetTime();
+	bool STstarted = false;
 
-	//_audio->LoadSoundtrack("Resources/Sounds/Music/Title.wav");
+	SoundStruct TitleSong = _audio->LoadSound("Title Song", "Resources/Sounds/Music/Title.wav", Type_Song);
+	
+	
 
 	//While the editor window should not close
 	while (_running) {
 		PollInput();
 		
-		//_audio->PlaySong("Resources/Sounds/Music/Title.wav");
+		if (STstarted == false)
+		{
+			_audio->PlaySong(TitleSong);
+			STstarted = true;
+
+		}
 
 		double currentTime = glfwGetTime();
 		double elapsed = currentTime - previousTime;
