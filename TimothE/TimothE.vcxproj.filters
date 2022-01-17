@@ -153,4 +153,8 @@
     <ClCompile Include="Window.cpp" />
     <ClCompile Include="Button.cpp" />
   </ItemGroup>
+  <ItemGroup>
+    <None Include="FragmentShader.frag" />
+    <None Include="VertexShader.vert" />
+  </ItemGroup>
 </Project>

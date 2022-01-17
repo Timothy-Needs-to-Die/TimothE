@@ -1,6 +1,8 @@
 #pragma once
 
 #include "Component.h"
+#include <glm.hpp>
+#include <gtc/matrix_transform.hpp>
 
 struct Vector2D
 {
@@ -17,7 +19,11 @@ class Transform : public Component
 {
 public:
 	Transform();
-	Transform(float x, float y, float rotx, float roty, float scalex, float scaley);
+	Transform(glm::vec2 position, glm::vec2 size, float rotation);
+
+	void Translate(glm::vec2 newPos);
+	void Scale(glm::vec2 newSize);
+	void Rotate(float rotationAmount, glm::vec3 axis);
 
 	void OnStart() override;
 	void OnUpdate() override;
@@ -33,11 +39,15 @@ public:
 	float GetXrotation() { return _xRot; };
 	void SetXrotation(float xRot);
 
+	//glm::mat4 GetTransformationMatrix() { return _transformationMatrix; };
+
+	int GetCategory() const override { return 0; };
+	int GetType() const override { return 0; };
+
+	glm::mat4 _transformationMatrix;
 private:
-	float _xPos;
-	float _yPos;
-	float _xRot;
-	float _yRot;
-	float _scaleX;
-	float _scaleY;
+
+	glm::vec2 _position;
+	glm::vec2 _size;
+	float _rotation;
 };
