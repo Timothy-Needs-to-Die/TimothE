@@ -152,6 +152,5 @@
     <ClCompile Include="Texture2D.cpp" />
     <ClCompile Include="Transform.cpp" />
     <ClCompile Include="Window.cpp" />
-    <ClCompile Include="ResourceManager.cpp" />
   </ItemGroup>
 </Project>
