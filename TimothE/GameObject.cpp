@@ -4,10 +4,12 @@
 #include "ComponentFactory.h"
 #include "imgui.h"
 
+
 GameObject::GameObject(string name, ObjectType tag) : _name(name), _tag(tag)
 {
 	_UID = UID::GenerateUID();
 	AddComponent(new Transform(), Component::Types::Transform_Type);
+
 	Start();
 }
 
@@ -15,11 +17,13 @@ GameObject::GameObject(string name, ObjectType tag, Transform* transform) : _nam
 {
 	_UID = UID::GenerateUID();
 	AddComponent(transform, Component::Types::Transform_Type);
+
 	Start();
 }
 
 GameObject::GameObject() : _name("New GameObject")
 {
+	_UID = UID::GenerateUID();
 	Transform* pTransform = new Transform();
 	AddComponent(pTransform, Component::Transform_Type);
 }
@@ -90,6 +94,22 @@ void GameObject::DisplayInEditor()
 
 }
 
+void GameObject::SetShader(string vs, string fs)
+{
+	_pShader = new Shader(vs,fs);
+	_shaderID = _pShader->GetProgramID();
+	_vsShaderName = vs;
+	_fsShaderName = fs;
+}
+
+void GameObject::SetShader(Shader* shader)
+{
+	_pShader = shader;
+	_vsShaderName = _pShader->GetVsPath();
+	_fsShaderName = _pShader->GetFsPath();
+	_shaderID = _pShader->GetProgramID();
+}
+
 bool GameObject::Write(IStream& stream) const
 {
 	//TODO: Implement writing and reading component information
@@ -98,6 +118,10 @@ bool GameObject::Write(IStream& stream) const
 	WriteString(stream, _name);
 
 	WriteString(stream, _UID);
+
+	WriteString(stream, _vsShaderName);
+	WriteString(stream, _fsShaderName);
+
 
 	//Writes number of components
 	WriteInt(stream, _pComponents.size());
@@ -119,9 +143,11 @@ bool GameObject::Read(IStream& stream)
 
 	_UID = ReadString(stream);
 
+	SetShader(ReadString(stream), ReadString(stream));
+
 	//Reserve the amount of components
 	int noComponents = ReadInt(stream);
-	_pComponents.reserve(noComponents);
+	//_pComponents.reserve(noComponents);
 
 	for (int i = 0; i < noComponents; ++i) {
 		Component::Types type = (Component::Types)ReadInt(stream);
@@ -131,7 +157,7 @@ bool GameObject::Read(IStream& stream)
 		//Make instance of component
 		Component* c = ComponentFactor::GetComponent(type);
 		if (c == nullptr) {
-			std::cout << "Failed to load gameobject: " << _name << " Component is null" << std::endl;
+			std::cout << "Failed to load Gameobject: " << _name << " Component is null" << std::endl;
 			return false;
 		}
 
@@ -140,7 +166,13 @@ bool GameObject::Read(IStream& stream)
 
 		//Set component
 
-		_pComponents[i] = c;
+		AddComponent(c, c->GetType());
+		//_pComponents[i] = c;
+	}
+
+	Texture2D* texture = (Texture2D*)GetComponent(Component::Texture_Type);
+	if (texture != nullptr) {
+		_textureID = texture->GetID();
 	}
 
 	return true;

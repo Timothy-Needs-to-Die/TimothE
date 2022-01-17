@@ -4,6 +4,8 @@
 Texture2D::Texture2D() : Component()
 {
 	_UID = UID::GenerateUID();
+	SetType(Component::Texture_Type);
+	SetCategory(Component::Graphics_Category);
 }
 
 Texture2D::~Texture2D()

@@ -7,6 +7,7 @@ class Component;
 #include "UID.h"
 #include "TestComponent.h"
 #include "Serializable.h"
+#include "Shader.h"
 
 class Texture2D;
 
@@ -58,6 +59,11 @@ public:
 
 	void DisplayInEditor();
 
+	Shader* GetShader() const { return _pShader; }
+
+	void SetShader(string vs, string fs);
+	void SetShader(Shader* shader);
+
 	// Inherited via ISerializable
 	virtual bool Write(IStream& stream) const override;
 	virtual bool Read(IStream& stream) override;
@@ -68,8 +74,12 @@ private:
 	ObjectType _tag;
 	vector<Component*> _pComponents;
 
+	string _vsShaderName;
+	string _fsShaderName;
+
 	int _textureID = 0;
 	int _shaderID = 0;
 
+	Shader* _pShader;
 
 };

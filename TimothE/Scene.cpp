@@ -32,6 +32,7 @@ Scene::Scene(string name)
 	GameObject* _pTestObject = new GameObject("LENNA!", ObjectType::Player);
 	_pTestObject->LoadTexture("lenna3.jpg", "linear");
 	_pTestObject->SetShader(shader->GetProgramID());
+	_pTestObject->SetShader(shader);
 
 	AddGameObject(_pTestObject);
 }

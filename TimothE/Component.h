@@ -61,8 +61,8 @@ public:
 	virtual void DrawEditorUI() = 0;
 
 	//gets the component type and catagory 
-	int GetCategory() const { return _category; }
-	int GetType() const {
+	Categories GetCategory() const { return _category; }
+	Types GetType() const {
 		return _type;
 	}
 

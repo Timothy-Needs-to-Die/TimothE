@@ -113,6 +113,7 @@ void Application::GameLoop()
 
 		previousTime = currentTime;
 	}
+	_pCurrentScene->SaveScene("scene1.scene");
 
 	ImGuiManager::DestroyImGui();
 	delete _pEditor;
@@ -121,7 +122,6 @@ void Application::GameLoop()
 	//Prints the memory status and reports and memory leaks
 	HeapManager::ReportMemoryLeaks(memBookmark);
 
-	_pCurrentScene->SaveScene("scene1.scene");
 }
 
 

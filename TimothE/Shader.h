@@ -1,7 +1,6 @@
 #pragma once
 
-#include <GLFW/glfw3.h>
-#include <GL/gl.h>
+#include <gl/glew.h>
 #include <glm.hpp>
 
 #include <string>
@@ -24,6 +23,9 @@ public:
 
 	void BindShader();
 	void UnbindShader();
+
+	std::string GetVsPath() const { return _vertexShaderPath; }
+	std::string GetFsPath() const { return _fragmentShaderPath; }
 
 	/////////////////////////////
 	//UNIFORM UTILITY FUNCTIONS//
