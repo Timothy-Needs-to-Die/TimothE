@@ -2,6 +2,9 @@
 #include "ImGuiManager.h"
 #include "Texture2D.h"
 
+#include "misc/cpp/imgui_stdlib.h"
+#include "misc/cpp/imgui_stdlib.cpp"
+
 vector<string> Console::output = vector<string>();
 
 Editor::Editor(Window* pWindow)
@@ -80,19 +83,28 @@ void Editor::EditorImGui(Scene* currentScene)
 			// text box to change name
 			{
 				static string text = _pSelectedGameObject->GetName();
-
 				if (changeObject)
 				{
 					text = _pSelectedGameObject->GetName();
+					//oldName = _pSelectedGameObject->GetName();
 				}
-
-				ImGui::InputText(" ", (char*)&text, 128);
-				ImGui::SameLine();
-				if (ImGui::Button("Set name"))
+				if (ImGui::InputText(" ", &text, ImGuiInputTextFlags_CharsNoBlank))
 				{
-					Console::Print(_pSelectedGameObject->GetName() + " renamed to " + text);
 					_pSelectedGameObject->SetName(text);
 				}
+				/*if (text != oldName)
+				{
+					ImGui::SameLine();
+					if (ImGui::Button("Set name"))
+					{
+						string name = _pSelectedGameObject->GetName();
+						string newname = text;
+						string s = name + " renamed to " + newname;
+						Console::Print(s);
+						_pSelectedGameObject->SetName(text);
+						oldName = text;
+					}
+				}*/
 			}
 
 			// select object type
@@ -203,7 +215,8 @@ void Editor::EditorImGui(Scene* currentScene)
 		if (ImGui::CollapsingHeader("Add GameObject"))
 		{
 			static string name = "New GameObject";
-			ImGui::InputText(" ", (char*)&name, 128);
+
+			ImGui::InputText("##NewGameObjectName", &name, ImGuiInputTextFlags_CharsNoBlank);
 			static ObjectType tag = ObjectType::Player;
 			if (ImGui::CollapsingHeader("Object type"))
 			{
@@ -229,7 +242,6 @@ void Editor::EditorImGui(Scene* currentScene)
 			{
 				Texture2D* t = new Texture2D();
 				t->Load("lenna3.jpg", "linear");
-
 				GameObject* obj = new GameObject(name, tag, t);
 				currentScene->AddGameObject(obj);
 				Console::Print("Object added: " + name);
