@@ -14,7 +14,7 @@ Texture2D::~Texture2D()
 void Texture2D::EditorUI()
 {
 	ImGui::Text("Texture");
-	ImTextureID texID = &_ID;
+	ImTextureID texID = (void*)_ID;
 	ImGui::Image(texID, ImVec2(100.0f, 100.0f));
 }
 

@@ -130,36 +130,6 @@ void Editor::EditorImGui(Scene* currentScene)
 			{
 				c->EditorUI();
 			}
-
-			//// transform component
-			//if (_pSelectedGameObject->GetTransform() != nullptr)
-			//{
-			//	_pSelectedGameObject->GetTransform()->EditorUI();
-			//	//ImGui::Text("Transform");
-
-			//	//// get the position
-			//	//float* pos = new float[2]{ _pSelectedGameObject->GetTransform()->GetPosition()->_x, _pSelectedGameObject->GetTransform()->GetPosition()->_y };
-			//	//// create boxes to set the position
-			//	//if (ImGui::InputFloat2("Position", pos))
-			//	//{
-			//	//	// set the position on the game object
-			//	//	_pSelectedGameObject->GetTransform()->SetPosition(pos[0], pos[1]);
-			//	//}
-
-			//	//float* rot = new float[2]{ _pSelectedGameObject->GetTransform()->GetXrotation(), _pSelectedGameObject->GetTransform()->GetYrotation() };
-			//	//if (ImGui::InputFloat2("Rotation", rot))
-			//	//{
-			//	//	_pSelectedGameObject->GetTransform()->SetXrotation(rot[0]);
-			//	//	_pSelectedGameObject->GetTransform()->SetYrotation(rot[1]);
-			//	//}
-
-			//	//float* scale = new float[2]{ _pSelectedGameObject->GetTransform()->GetXScale(), _pSelectedGameObject->GetTransform()->GetYScale() };
-			//	//if (ImGui::InputFloat2("Scale", scale))
-			//	//{
-			//	//	_pSelectedGameObject->GetTransform()->SetXScale(scale[0]);
-			//	//	_pSelectedGameObject->GetTransform()->SetYScale(scale[1]);
-			//	//}
-			//}
 			
 			// add component
 			if (ImGui::CollapsingHeader("AddComponent"))
