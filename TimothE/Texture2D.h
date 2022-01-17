@@ -22,11 +22,11 @@ public:
 	void OnUpdate() override;
 	void OnEnd() override;
 
-	int GetCategory() const override { return 0; };
-	int GetType() const override { return 0; };
-
 	bool Load(char* path, string mode);
 	void SetFilterMode(string mode);
+
+	COMPONENT_CLASS_CATEGORY(Graphics_Category);
+	COMPONENT_CLASS_TYPE(Texture_Type);
 
 	GLuint GetID() const { return _ID; }
 

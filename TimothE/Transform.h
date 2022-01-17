@@ -63,6 +63,7 @@ public:
 		_yPos = ReadFloat(stream);
 
 		//Save Rotation
+
 		_xRot = ReadFloat(stream);
 		_yRot = ReadFloat(stream);
 
