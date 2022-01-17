@@ -22,14 +22,34 @@ public:
 	void OnUpdate() override;
 	void OnEnd() override;
 
-	int GetCategory() const override { return 0; };
-	int GetType() const override { return 0; };
-
 	bool Load(char* path, string mode);
 	void SetFilterMode(string mode);
 
 	GLuint GetID() const { return _ID; }
+
+	// Inherited via ISerializable
+	virtual bool Write(IStream& stream) const override {
+		Component::Write(stream);
+
+		return true;
+
+	}
+	virtual bool Read(IStream& stream) override {
+		Component::Read(stream);
+
+
+		return true;
+
+	}
+	virtual void Fixup() override {
+
+	}
+	virtual void DrawEditorUI() override;
+
 private:
 	string _UID;
-	GLuint _ID; // Texture ID
+	GLuint _ID;
+	// Inherited via Component
+	
+	// Texture ID
 };

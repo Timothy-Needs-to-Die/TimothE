@@ -31,6 +31,7 @@ protected:
 	void ImGUISwitchRender();
 
 private:
+	//Event Handlers
 	bool OnGameWindowClose(WindowCloseEvent& e);
 	bool OnGameWindowKeyPressedEvent(KeyPressedEvent& e);
 	bool OnGameWindowKeyReleasedEvent(KeyReleasedEvent& e);
@@ -51,5 +52,7 @@ private:
 	Scene* _pCurrentScene;
 
 	Editor* _pEditor;
+
+	bool _paused = false;
 };
 

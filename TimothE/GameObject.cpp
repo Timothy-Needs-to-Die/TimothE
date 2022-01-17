@@ -1,25 +1,33 @@
 #include "GameObject.h"
 #include "Texture2D.h"
+#include "Stream.h"
+#include "ComponentFactory.h"
+#include "imgui.h"
 
-GameObject::GameObject(string name, ObjectType tag, Texture2D* texture)
+GameObject::GameObject(string name, ObjectType tag) : _name(name), _tag(tag)
 {
-	_name = name;
-	_tag = tag;
 	_UID = UID::GenerateUID();
-	_textureID = texture->GetID();
 	AddComponent(new Transform(), Component::Types::Transform_Type);
-	AddComponent(texture, Component::Types::Texture_Type);
 	Start();
 }
 
-GameObject::GameObject(string name, ObjectType tag, Texture2D* texture, Transform* transform)
+GameObject::GameObject(string name, ObjectType tag, Transform* transform) : _name(name), _tag(tag)
 {
-	_name = name;
-	_tag = tag;
 	_UID = UID::GenerateUID();
 	AddComponent(transform, Component::Types::Transform_Type);
-	AddComponent(texture, Component::Types::Texture_Type);
 	Start();
+}
+
+GameObject::GameObject() : _name("New GameObject")
+{
+	Transform* pTransform = new Transform();
+	AddComponent(pTransform, Component::Transform_Type);
+}
+
+GameObject::GameObject(string name) : _name(name)
+{
+	Transform* pTransform = new Transform();
+	AddComponent(pTransform, Component::Transform_Type);
 }
 
 GameObject::~GameObject()
@@ -70,6 +78,87 @@ void GameObject::LoadTexture(char* path, string mode)
 	{
 		GetTexture()->Load(path, mode);
 	}
+}
+
+void GameObject::DisplayInEditor()
+{
+	ImGui::Text(_name.c_str());
+
+	for (auto& comp : _pComponents) {
+		comp->DrawEditorUI();
+	}
+
+}
+
+bool GameObject::Write(IStream& stream) const
+{
+	//TODO: Implement writing and reading component information
+
+	//Writes name to serialized object
+	WriteString(stream, _name);
+
+	WriteString(stream, _UID);
+
+	//Writes number of components
+	WriteInt(stream, _pComponents.size());
+
+	for (int i = 0; i < _pComponents.size(); ++i) 
+	{
+		_pComponents[i]->Write(stream);
+	}
+
+	//TODO: GameObjects need a child system
+
+	return true;
+}
+
+bool GameObject::Read(IStream& stream)
+{
+	//Sets our name
+	_name = ReadString(stream);
+
+	_UID = ReadString(stream);
+
+	//Reserve the amount of components
+	int noComponents = ReadInt(stream);
+	_pComponents.reserve(noComponents);
+
+	for (int i = 0; i < noComponents; ++i) {
+		Component::Types type = (Component::Types)ReadInt(stream);
+		Component::Categories cat = (Component::Categories)ReadInt(stream);
+
+
+		//Make instance of component
+		Component* c = ComponentFactor::GetComponent(type);
+		if (c == nullptr) {
+			std::cout << "Failed to load gameobject: " << _name << " Component is null" << std::endl;
+			return false;
+		}
+
+		//Read instance
+		c->Read(stream);
+
+		//Set component
+
+		_pComponents[i] = c;
+	}
+
+	return true;
+}
+
+void GameObject::Fixup()
+{
+
+}
+
+void GameObject::SetName(string name)
+{
+	_name = name;
+}
+
+void GameObject::SetType(ObjectType tag)
+{
+	_tag = tag;
 }
 
 Component* GameObject::GetComponent(Component::Types componentType)

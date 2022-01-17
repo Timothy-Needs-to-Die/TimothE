@@ -1,4 +1,5 @@
 #include "Texture2D.h"
+#include "imgui.h"
 
 Texture2D::Texture2D() : Component()
 {
@@ -8,6 +9,13 @@ Texture2D::Texture2D() : Component()
 Texture2D::~Texture2D()
 {
 	glDeleteTextures(1, &_ID);
+}
+
+void Texture2D::DrawEditorUI()
+{
+	ImGui::Text("Texture");
+	ImTextureID texID = (void*)_ID;
+	ImGui::Image(texID, ImVec2(100.0f, 100.0f));
 }
 
 // Pass in file path, filter mode as "linear" or "nearest"
