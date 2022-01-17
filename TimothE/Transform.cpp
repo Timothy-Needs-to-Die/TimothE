@@ -43,48 +43,27 @@ void Transform::EditorUI()
 	ImGui::Text("Transform");
 
 	// get the position
-	float* pos = new float[2]{ GetPosition()->_x, GetPosition()->_y };
+	float* pos = new float[2]{ GetPosition().x, GetPosition().y };
 	// create boxes to set the position
 	if (ImGui::InputFloat2("Position", pos))
 	{
 		// set the position on the game object
-		SetPosition(pos[0], pos[1]);
+		SetPosition(glm::vec2(pos[0], pos[1]));
 	}
 
-	float* rot = new float[2]{ GetXrotation(), GetYrotation() };
+	float* rot = new float[1]{ GetRotation() };
 	if (ImGui::InputFloat2("Rotation", rot))
 	{
-		SetXrotation(rot[0]);
-		SetYrotation(rot[1]);
+		SetRotation(rot[0]);
 	}
 
-	float* scale = new float[2]{ GetXScale(), GetYScale() };
+	float* scale = new float[2]{ GetScale().x, GetScale().y };
 	if (ImGui::InputFloat2("Scale", scale))
 	{
-		SetXScale(scale[0]);
-		SetYScale(scale[1]);
+		SetScale(glm::vec2(scale[0], scale[1]));
 	}
-}
-
-void Transform::SetPosition(float x, float y)
-{
 }
 
 void Transform::OnEnd()
 {
-}
-
-void Transform::SetYrotation(float yRot)
-{
-	_yRot = yRot;
-}
-
-void Transform::SetXScale(float scale)
-{
-	_scaleX = scale;
-}
-
-void Transform::SetYScale(float scale)
-{
-	_scaleY = scale;
 }
