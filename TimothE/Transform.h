@@ -26,6 +26,8 @@ public:
 	int GetCategory() const override { return Transform_Category; };
 	int GetType() const override { return Transform_Type; };
 
+	void EditorUI() override;
+
 	Vector2D* GetPosition() { return new Vector2D(_xPos, _yPos); };
 	void SetPosition(float x, float y);
 	float GetXrotation() { return _xRot; };
