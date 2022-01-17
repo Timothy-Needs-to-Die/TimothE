@@ -3,6 +3,7 @@
 #include "Window.h"
 #include "ApplicationEvent.h"
 #include "Graphics.h"
+#include "Camera.h"
 
 class Application
 {
@@ -56,5 +57,7 @@ private:
 	Window* _pEditorWindow;
 	bool _inEditorMode;
 	bool _running;
+
+	Camera* pCamera;
 };
 

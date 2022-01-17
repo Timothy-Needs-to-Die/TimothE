@@ -72,6 +72,7 @@ void Application::Init(bool createEditorWindow)
 
 	ImGui::StyleColorsDark();
 
+	pCamera = new Camera(_pGameWindow->GetGLFWWindow(), 1280, 720, 30.0f);
 
 	_running = true;
 }
@@ -86,6 +87,10 @@ void Application::GameLoop()
 			EditorStartRender();
 
 			EditorImGUIBegin();
+
+
+			pCamera->Update(0.016f);
+
 
 			//Render Here
 			EditorImGUIRender();
