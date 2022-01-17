@@ -16,10 +16,10 @@ Scene::Scene(string name)
 	Texture2D* t = new Texture2D();
 	t->Load("lenna3.jpg", "linear");
 
-	GameObject* _pTestObject = new GameObject("LENNA!", ObjectType::Player, t, new Transform( { 0.1f, 0.1f }, { 1, 1 }, 0.1f));
-	//Button* pButton = new Button("TestButton", new Transform(), t, 100, 100);
+	GameObject* _pTestObject = new GameObject("LENNA!", ObjectType::Player, t, new Transform( { 0.0f, 0.1f }, { 1, 1 }, 0.1f));
+	Button* pButton = new Button("TestButton", new Transform(glm::vec2( -1, 0 ), glm::vec2(1, 1), 0.0f), t, 100, 100);
 
-	//AddGameObject(pButton);
+	AddGameObject(pButton);
 	AddGameObject(_pTestObject);
 	//AddGameObject(pButton);
 }

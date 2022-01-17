@@ -14,6 +14,7 @@ Transform::Transform(glm::vec2 position, glm::vec2 size, float rotation) : _posi
 {
 	_transformationMatrix = glm::mat4(1.0f);
 	_transformationMatrix = glm::scale(_transformationMatrix, glm::vec3(_size, 0 ));
+	_transformationMatrix = glm::translate(_transformationMatrix, glm::vec3(position, 0));
 }
 
 void Transform::Translate(glm::vec2 newPos)
