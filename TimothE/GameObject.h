@@ -45,7 +45,7 @@ public:
 	int GetTextureID() { return _textureID; }
 	int GetShaderID() { return _shaderID; }
 
-	void LoadTexture(char* path, string mode);
+	void LoadTexture(char* path);
 	void SetShader(int id) { _shaderID = id; };
 private:
 	string _UID;

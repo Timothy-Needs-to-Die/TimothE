@@ -57,26 +57,26 @@
     <ClCompile>
       <PrecompiledHeader>NotUsing</PrecompiledHeader>
       <WarningLevel>Level3</WarningLevel>
-      <AdditionalIncludeDirectories>..\Dependancies\GLFW\include;..\Dependancies\GLEW\include;..\Dependancies\glm;..\Dependancies\irrklang\include;..\Dependancies\nlohmann;..\Dependancies\freetype;..\Dependancies\imgui;..\Dependancies\imgui\backend;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>..\Dependancies\GLFW\include;..\Dependancies\GLEW\include;..\Dependancies\glm;..\Dependancies\irrklang\include;..\Dependancies\nlohmann;..\Dependancies\freetype;..\Dependancies\imgui;..\Dependancies\imgui\backend;..\Dependancies;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <Optimization>Disabled</Optimization>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
-      <AdditionalDependencies>opengl32.lib;glfw3.lib;glew32s.lib;glew32.lib;soil2-debug.lib;%(AdditionalDependencies)</AdditionalDependencies>
-      <AdditionalLibraryDirectories>..\Dependancies\GLFW\lib-vc2019;..\Dependancies\GLEW\lib;..\Dependancies\irrklang\lib;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalDependencies>opengl32.lib;glfw3.lib;glew32s.lib;glew32.lib;soil2-debug.lib;freetype.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalLibraryDirectories>..\Dependancies\GLFW\lib-vc2019;..\Dependancies\GLEW\lib;..\Dependancies\irrklang\lib;..\Dependancies\freetype;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
     <ClCompile>
       <PrecompiledHeader>NotUsing</PrecompiledHeader>
       <WarningLevel>Level3</WarningLevel>
-      <AdditionalIncludeDirectories>..\Dependancies\GLFW\include;..\Dependancies\GLEW\include;..\Dependancies\glm;..\Dependancies\irrklang\include;..\Dependancies\nlohmann;..\Dependancies\freetype;..\Dependancies\imgui;..\Dependancies\imgui\backend;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>..\Dependancies\GLFW\include;..\Dependancies\GLEW\include;..\Dependancies\glm;..\Dependancies\irrklang\include;..\Dependancies\nlohmann;..\Dependancies\freetype;..\Dependancies\imgui;..\Dependancies\imgui\backend;..\Dependancies;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <Optimization>Disabled</Optimization>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
-      <AdditionalDependencies>opengl32.lib;glfw3.lib;glew32s.lib;glew32.lib;soil2-debug.lib;%(AdditionalDependencies)</AdditionalDependencies>
-      <AdditionalLibraryDirectories>..\Dependancies\GLFW\lib-vc2019;..\Dependancies\GLEW\lib;..\Dependancies\irrklang\lib;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalDependencies>opengl32.lib;glfw3.lib;glew32s.lib;glew32.lib;soil2-debug.lib;freetype.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalLibraryDirectories>..\Dependancies\GLFW\lib-vc2019;..\Dependancies\GLEW\lib;..\Dependancies\irrklang\lib;..\Dependancies\freetype;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
@@ -126,6 +126,7 @@
     <ClInclude Include="Scene.h" />
     <ClInclude Include="Shader.h" />
     <ClInclude Include="TestComponent.h" />
+    <ClInclude Include="Text.h" />
     <ClInclude Include="Texture2D.h" />
     <ClInclude Include="TimothEInputCodes.h" />
     <ClInclude Include="Transform.h" />
@@ -155,6 +156,7 @@
     <ClCompile Include="Shader.cpp" />
     <ClCompile Include="Source.cpp" />
     <ClCompile Include="TestComponent.cpp" />
+    <ClCompile Include="Text.cpp" />
     <ClCompile Include="Texture2D.cpp" />
     <ClCompile Include="Transform.cpp" />
     <ClCompile Include="Window.cpp" />

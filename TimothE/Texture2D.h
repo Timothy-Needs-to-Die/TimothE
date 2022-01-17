@@ -25,7 +25,7 @@ public:
 	int GetCategory() const override { return 0; };
 	int GetType() const override { return 0; };
 
-	bool Load(char* path, string mode);
+	bool Load(char* path);
 	void SetFilterMode(string mode);
 
 	GLuint GetID() const { return _ID; }

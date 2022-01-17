@@ -52,6 +52,7 @@
     <ClInclude Include="MemoryManager.h" />
     <ClInclude Include="MouseEvent.h" />
     <ClInclude Include="Renderer.h" />
+    <ClInclude Include="ResourceManager.h" />
     <ClInclude Include="SOIL\SOIL2.h">
       <Filter>SOIL</Filter>
     </ClInclude>
@@ -106,12 +107,12 @@
     <ClInclude Include="Scene.h" />
     <ClInclude Include="Shader.h" />
     <ClInclude Include="TestComponent.h" />
+    <ClInclude Include="Text.h" />
     <ClInclude Include="Texture2D.h" />
     <ClInclude Include="TimothEInputCodes.h" />
     <ClInclude Include="Transform.h" />
     <ClInclude Include="UID.h" />
     <ClInclude Include="Window.h" />
-    <ClInclude Include="ResourceManager.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Application.cpp" />
@@ -145,13 +146,14 @@
     <ClCompile Include="Input.cpp" />
     <ClCompile Include="MemoryManager.cpp" />
     <ClCompile Include="Renderer.cpp" />
+    <ClCompile Include="ResourceManager.cpp" />
     <ClCompile Include="Scene.cpp" />
     <ClCompile Include="Shader.cpp" />
     <ClCompile Include="Source.cpp" />
     <ClCompile Include="TestComponent.cpp" />
+    <ClCompile Include="Text.cpp" />
     <ClCompile Include="Texture2D.cpp" />
     <ClCompile Include="Transform.cpp" />
     <ClCompile Include="Window.cpp" />
-    <ClCompile Include="ResourceManager.cpp" />
   </ItemGroup>
 </Project>

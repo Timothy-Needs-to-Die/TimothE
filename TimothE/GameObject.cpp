@@ -55,12 +55,12 @@ void GameObject::Exit()
 	}
 }
 
-void GameObject::LoadTexture(char* path, string mode)
+void GameObject::LoadTexture(char* path)
 {
 	if (GetTexture() == nullptr)
 	{
 		Texture2D* texture = new Texture2D();
-		texture->Load(path, mode);
+		texture->Load(path);
 		_textureID = texture->GetID();
 		AddComponent(texture, Component::Types::Texture_Type);
 
@@ -68,7 +68,7 @@ void GameObject::LoadTexture(char* path, string mode)
 	}
 	else
 	{
-		GetTexture()->Load(path, mode);
+		GetTexture()->Load(path);
 	}
 }
 

@@ -20,6 +20,7 @@
 #include "Texture2D.h"
 
 
+
 #define BIND_EVENT_FN(x) std::bind(&Application::x, this, std::placeholders::_1)
 
 void Application::Init(bool devMode)

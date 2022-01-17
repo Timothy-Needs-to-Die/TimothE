@@ -11,7 +11,7 @@ Texture2D::~Texture2D()
 }
 
 // Pass in file path, filter mode as "linear" or "nearest"
-bool Texture2D::Load(char* path, string mode)
+bool Texture2D::Load(char* path)
 {
 	_ID = SOIL_load_OGL_texture
 	(

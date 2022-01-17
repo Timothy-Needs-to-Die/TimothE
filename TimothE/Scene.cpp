@@ -1,9 +1,11 @@
 #include "Texture2D.h"
 #include "Scene.h"
 #include <algorithm>
-
+#include "Text.h"
 int Scene::nextID = 0;
 
+Shader* shader;
+Text* text;
 Scene::Scene(string name)
 {
 	_id = ++nextID;
@@ -13,9 +15,9 @@ Scene::Scene(string name)
 	//TEST CODE//
 	/////////////
 	Texture2D* t = new Texture2D();
-	t->Load("lenna3.jpg", "linear");
+	t->Load("lenna4.jpg");
 
-	Shader* shader;
+	
 	shader = new Shader("fbVert.vs", "fbFrag.fs");
 
 	static const GLfloat g_vertex_buffer_data[] =
@@ -30,6 +32,11 @@ Scene::Scene(string name)
 	_pTestObject->SetShader(shader->GetProgramID());
 
 	AddGameObject(_pTestObject);
+
+	shader = new Shader("txtVert.vs", "txtFrag.fs");
+	
+	text = new Text();
+
 }
 
 Scene::~Scene()
@@ -50,7 +57,9 @@ void Scene::Update(float deltaTime)
 
 void Scene::RenderScene(Renderer* pRenderer)
 {
+	
 	pRenderer->RenderDrawables(_listOfGameObjects);
+	text->RenderText(*shader, "Wacky Text", 10.0f, 30.0f, 1.0f, glm::vec3(0.2, 1.0f, 1.0f));
 }
 
 void Scene::RemoveGameObject(GameObject* gameObject)
