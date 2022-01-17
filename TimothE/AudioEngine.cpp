@@ -1,12 +1,35 @@
 #include "AudioEngine.h"
 
 
+
 // ============================== System Functions =============================== // 
 AudioEngine::AudioEngine()
 {
 	//Create and initiliaze the fmod core system
 	FMOD::System_Create(&_fmodSystem);
-	Initialize();
+
+	FMOD_RESULT result;
+	result = _fmodSystem->init(50, FMOD_INIT_NORMAL, 0);
+	CheckForErrors(result);
+
+	//Create channels for each audio type
+	_fmodSystem->getMasterChannelGroup(&_master);
+	for (int i = 0; i < Type_Count; i++)
+	{
+		_fmodSystem->createChannelGroup(0, &_groups[i]);
+		_master->addGroup(_groups[i]);
+	}
+	//Set up modes for each type
+	modes[Type_SFX] = FMOD_DEFAULT;
+	modes[Type_Song] = FMOD_DEFAULT | FMOD_CREATESTREAM | FMOD_LOOP_NORMAL;
+	
+}
+
+AudioEngine::~AudioEngine()
+{
+	//Release remaining sounds
+	
+
 }
 
 //Initialize the fmod audio system.
@@ -14,10 +37,7 @@ AudioEngine::AudioEngine()
 void AudioEngine::Initialize()
 {
 	
-	FMOD_RESULT result;
-	result = _fmodSystem->init(50, FMOD_INIT_NORMAL, 0);
 	
-	CheckForErrors(result);
 }
 
 //This must be called within the main game loop in order for FMOD 
@@ -132,14 +152,28 @@ void AudioEngine::SetGroupPitch(FMOD::ChannelGroup* group, float value) {
 // ================================================================================ //
 
 // ============================== Core Functionality ============================== // 
-//CreateAndLoad loads a sound file into memory and returns that to the call
+//CreateAndLoad loads a sound file into memory and populates the '_sounds' map with the sound data
 //Loading sounds into memory is ideal for most ingame sounds as they will be used multiple times
-FMOD::Sound* AudioEngine::LoadAudio( const char* filePath)
+void AudioEngine::Load(AudioType type, const char* filePath)
 {
+	//Ensure the correct sound is being loaded
+	if (_sounds[type].find(filePath) != _sounds[type].end()) return;
+
 	FMOD::Sound* soundToLoad;
 	FMOD_RESULT result = _fmodSystem->createSound(filePath, FMOD_DEFAULT, 0, &soundToLoad);
 	CheckForErrors(result);
-	return soundToLoad;
+	
+	_sounds[type].insert(std::make_pair(filePath, soundToLoad));
+}
+
+void AudioEngine::LoadSFX(const char* filePath)
+{
+	Load(Type_SFX, filePath); 
+}
+
+void AudioEngine::LoadSoundtrack(const char* filePath)
+{
+	Load(Type_Song, filePath);
 }
 
 //Creates an audio stream.
@@ -153,11 +187,36 @@ FMOD::Sound* AudioEngine::CreateAudioStream( const char* filePath)
 	return soundToStream;
 }
 
+
+
 //This play sound method is useful for simple one shot sounds that do not need any modification 
-void AudioEngine::PlayOneShot(FMOD::Sound* sound)
+void AudioEngine::PlaySFX(FMOD::Sound* sound)
 {
 	FMOD_RESULT result = _fmodSystem->playSound(sound, NULL, false, 0);
 	CheckForErrors(result);
+}
+
+//Play sound effects
+//Pass in values for min and max pitch to allow for slight variations in pitch for repeating sounds (footsteps, attacks etc)
+void AudioEngine::PlaySFX(const char* path, float minVolume, float maxVolume, float minPitch, float maxPitch)
+{
+  //check that the SFX exists, returns if not found
+	SoundMap::iterator sound = _sounds[Type_SFX].find(path);
+	if (sound == _sounds[Type_SFX].end()) return;
+
+	//Calculate random value between pitch in the desired range
+	float volume = RandomBetween(minVolume, maxVolume);
+	float pitch = RandomBetween(minPitch, maxPitch);
+
+	//Play the sound effects while applying values to the channel 
+	FMOD::Channel* channel;
+	_fmodSystem->playSound(sound->second, NULL, false, &channel);
+	channel->setChannelGroup(_groups[Type_SFX]);
+	channel->setVolume(volume);
+	float frequency;
+	channel->getFrequency(&frequency);
+	channel->setFrequency(ChangeSemitone(frequency, pitch));
+	channel->setPaused(false);
 }
 
 //Toggle pause on a currently running audio channel 
