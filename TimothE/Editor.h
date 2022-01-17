@@ -37,13 +37,13 @@ private:
 	void EditorEndRender();
 	
 	//Where all ImGui code will go
-	void EditorImGui();
+	void EditorImGui(Scene* currentScene);
 	
 	//ImGui
 	void ImGUISwitchRender(bool& editorMode, bool& paused);
 
 	//Editor update loop
-	void EditorUpdate(float dt);
+	void EditorUpdate(Scene* currentScene, float dt);
 
 	Window* _pWindow;
 
@@ -51,7 +51,5 @@ private:
 	Shader* _pScreenShader;
 
 	GameObject* _pSelectedGameObject = nullptr;
-
-	Scene* _pCurrentScene;
 };
 
