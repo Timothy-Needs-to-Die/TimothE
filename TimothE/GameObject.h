@@ -1,5 +1,5 @@
 #pragma once
-class Component;
+#include "Shader.h"
 #include <vector>
 #include <string>
 #include "Component.h"
@@ -19,7 +19,8 @@ enum class ObjectType
 	Player,
 	Enemy,
 	NPC,
-	PickUp
+	PickUp,
+	UI
 };
 
 class GameObject : public ISerializable
@@ -30,8 +31,8 @@ public:
 	GameObject(string name, ObjectType tag, Texture2D* texture);
 	GameObject(string name, ObjectType tag, Texture2D* texture, Transform* transform);
 	GameObject(string name, ObjectType tag);
-	GameObject(string name, ObjectType tag, Transform* transform);
 	~GameObject();
+	void InitVertexData();
 
 	virtual void Start();
 	virtual void Update(float deltaTime);
@@ -68,6 +69,7 @@ public:
 	virtual bool Write(IStream& stream) const override;
 	virtual bool Read(IStream& stream) override;
 	virtual void Fixup() override;
+	unsigned int GetVAO() const { return _vao; }
 private:
 	string _UID;
 	string _name;
@@ -76,10 +78,11 @@ private:
 
 	string _vsShaderName;
 	string _fsShaderName;
+	Shader* _pShader;
 
 	int _textureID = 0;
 	int _shaderID = 0;
 
-	Shader* _pShader;
-
+	unsigned int _vao;
+	unsigned int _vbo;
 };

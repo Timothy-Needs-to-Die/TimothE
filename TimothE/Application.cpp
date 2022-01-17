@@ -18,6 +18,7 @@
 #include "ImGuiManager.h"
 
 #include "Texture2D.h"
+#include "Button.h"
 
 #define BIND_EVENT_FN(x) std::bind(&Application::x, this, std::placeholders::_1)
 
@@ -74,13 +75,13 @@ void Application::GameLoop()
 	bool STstarted = false;
 
 	SoundStruct TitleSong = _audio->LoadSound("Title Song", "Resources/Sounds/Music/Title.wav", Type_Song);
-	
-	
+
+
 
 	//While the editor window should not close
 	while (_running) {
 		PollInput();
-		
+
 		if (STstarted == false)
 		{
 			_audio->PlaySong(TitleSong);
@@ -133,6 +134,7 @@ void Application::OnGameEvent(Event& e)
 	dispatcher.Dispatch<KeyReleasedEvent>(BIND_EVENT_FN(OnGameWindowKeyReleasedEvent));
 	dispatcher.Dispatch<MouseButtonPressedEvent>(BIND_EVENT_FN(OnGameWindowMouseButtonPressedEvent));
 	dispatcher.Dispatch<MouseButtonReleasedEvent>(BIND_EVENT_FN(OnGameWindowMouseButtonReleasedEvent));
+	dispatcher.Dispatch<MouseMovedEvent>(BIND_EVENT_FN(OnGameWindowMouseMovedEvent));
 }
 
 void Application::PollInput()
@@ -157,6 +159,7 @@ void Application::GameEndRender()
 
 void Application::GameUpdate(float dt)
 {
+	_pCurrentScene->Update(dt);
 
 }
 
@@ -234,4 +237,10 @@ bool Application::OnGameWindowMouseButtonReleasedEvent(MouseButtonReleasedEvent&
 {
 	Input::SetMouseButton((TimothEMouseCode)e.GetMouseButton(), RELEASE);
 	return true;
+}
+
+bool Application::OnGameWindowMouseMovedEvent(MouseMovedEvent& e)
+{
+	Input::SetMousePosition(e.GetX(), e.GetY());
+	return false;
 }

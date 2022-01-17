@@ -1,12 +1,15 @@
 #pragma once
 
 #include <gl/glew.h>
-#include <glm.hpp>
 
 #include <string>
 #include <iostream>
 #include <sstream>
 #include <fstream>
+
+#include <glm.hpp>
+#include <gtc/matrix_transform.hpp>
+#include <gtc/type_ptr.hpp>
 
 struct ShaderSourceCode {
 	std::string vertexShaderSource;

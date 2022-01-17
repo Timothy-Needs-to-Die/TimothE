@@ -1,6 +1,7 @@
 #include "Texture2D.h"
 #include "Scene.h"
 #include <algorithm>
+#include "Button.h"
 
 #include "AddressTranslator.h"
 #include "StreamFile.h"
@@ -33,8 +34,12 @@ Scene::Scene(string name)
 	_pTestObject->LoadTexture("lenna3.jpg", "linear");
 	_pTestObject->SetShader(shader->GetProgramID());
 	_pTestObject->SetShader(shader);
+	//GameObject* _pTestObject = new GameObject("LENNA!", ObjectType::Player);
+	//_pTestObject->LoadTexture("lenna3.jpg", "linear");
+	Button* pButton = new Button("TestButton", 640, 100);
 
-	AddGameObject(_pTestObject);
+	AddGameObject(pButton);
+	//AddGameObject(_pTestObject);
 }
 
 Scene::~Scene()
@@ -92,7 +97,7 @@ void Scene::SaveScene(const std::string& filename)
 	StreamFile stream;
 	stream.OpenWrite(filename);
 
-	//Writes the amount of game objects in the scene 
+	//Writes the amount of game objects in the scene
 	WriteInt(stream, _listOfGameObjects.size());
 
 	for (int i = 0; i < _listOfGameObjects.size(); ++i) {

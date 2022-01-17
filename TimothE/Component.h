@@ -1,12 +1,13 @@
-#pragma once
 
+
+#pragma once
 #include <string>
 #include <iostream>
 #include "Serializable.h"
 #include "Stream.h"
 
 /// <summary>
-/// 
+///
 /// COMPONENT_CLASS_CATEGOTY(Debug);
 ///COMPONENT_CLASS_TYPE(Test1);
 ///TestComponent();
@@ -60,7 +61,7 @@ public:
 
 	virtual void DrawEditorUI() = 0;
 
-	//gets the component type and catagory 
+	//gets the component type and catagory
 	Categories GetCategory() const { return _category; }
 	Types GetType() const {
 		return _type;
@@ -104,6 +105,3 @@ protected:
 
 
 };
-
-
-

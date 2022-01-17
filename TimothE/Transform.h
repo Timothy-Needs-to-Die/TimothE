@@ -1,23 +1,17 @@
 #pragma once
 
 #include "Component.h"
-
-struct Vector2D
-{
-	float _x, _y;
-
-	Vector2D(float x, float y)
-	{
-		_x = x;
-		_y = y;
-	}
-};
+#include <glm.hpp>
+#include <gtc/matrix_transform.hpp>
 
 class Transform : public Component
 {
 public:
 	Transform();
-	Transform(float x, float y, float rotx, float roty, float scalex, float scaley);
+
+	void Translate(glm::vec2 newPos);
+	void Scale(glm::vec2 newSize);
+	void Rotate(float rotationAmount, glm::vec2 axis);
 
 	void OnStart() override;
 	void OnUpdate() override;
@@ -32,7 +26,7 @@ public:
 	void SetXrotation(float xRot);
 	Vector2D GetScale() { return Vector2D(_scaleX, _scaleY); }
 
-	
+
 
 	// Inherited via ISerializable
 	virtual bool Write(IStream& stream) const override {
@@ -81,11 +75,18 @@ public:
 	void SetXScale(float scale);
 	void SetYScale(float scale);
 
+	float GetRotation() { return _rotation; }
+	//void SetRotation(float rotation) { _rotation = rotation; }
+
+	//glm::mat4 GetTransformationMatrix() { return _transformationMatrix; };
+
+	glm::vec2 GetScale() { return _size; }
+	//void SetScale(glm::vec2 scale) { _size = scale; }
+
+	glm::mat4 _transformationMatrix;
 private:
-	float _xPos;
-	float _yPos;
-	float _xRot;
-	float _yRot;
-	float _scaleX;
-	float _scaleY;
+
+	glm::vec2 _position;
+	glm::vec2 _size;
+	float _rotation;
 };

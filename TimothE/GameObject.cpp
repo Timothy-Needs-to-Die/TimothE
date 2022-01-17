@@ -18,6 +18,12 @@ GameObject::GameObject(string name, ObjectType tag, Transform* transform) : _nam
 	_UID = UID::GenerateUID();
 	AddComponent(transform, Component::Types::Transform_Type);
 
+	AddComponent(new Texture2D(), Component::Types::Texture_Type);
+	InitVertexData();
+
+	_pShader = new Shader("VertexShader.vert", "FragmentShader.frag");
+	_shaderID = _pShader->GetProgramID();
+
 	Start();
 }
 
@@ -41,6 +47,57 @@ GameObject::~GameObject()
 	{
 		delete(c);
 	}
+}
+
+void GameObject::InitVertexData()
+{
+	float vertexData[]{
+		//position               //texture coords
+		1.0f, -1.0f, 0.0f,       1.0f, 0.0f,
+		1.0f, 1.0f, 0.0f,        1.0f, 1.0f,
+		-1.0f, 1.0f, 0.0f,       0.0f, 1.0f,
+
+		1.0f, -1.0f, 0.0f,       1.0f, 1.0f,
+		-1.0f, 1.0f, 0.0f,       0.0f, 1.0f,
+		-1.0f, -1.0f, 0.0f,      0.0f, 0.0f
+	};
+
+	//VAO
+	glGenVertexArrays(1, &_vao);
+
+	//VBO
+	// Generate 1 buffer, put the resulting identifier in vertexbuffer
+	glGenBuffers(1, &_vbo);
+
+	glBindVertexArray(_vao);
+	// This will identify our vertex buffer
+	// The following commands will talk about our 'vertexbuffer' buffer
+	glBindBuffer(GL_ARRAY_BUFFER, _vbo);
+	// Give our vertices to OpenGL.
+	glBufferData(GL_ARRAY_BUFFER, sizeof(vertexData), vertexData, GL_STATIC_DRAW);
+
+	//glBindBuffer(GL_ARRAY_BUFFER, vertexbuffer); //apparently wasnt needed???? -Lucy
+	glVertexAttribPointer(
+		0,                  // attribute 0. No particular reason for 0, but must match the layout in the shader.
+		3,                  // size
+		GL_FLOAT,           // type
+		GL_FALSE,           // normalized?
+		5 * sizeof(float),                  // stride
+		(void*)0            // array buffer offset
+	);
+	glEnableVertexAttribArray(0);
+
+	glVertexAttribPointer(
+		1,
+		2,                  // size
+		GL_FLOAT,           // type
+		GL_FALSE,           // normalized?
+		5 * sizeof(float),                  // stride
+		(void*)(3 * sizeof(float))          // array buffer offset
+	);
+	glEnableVertexAttribArray(1);
+
+
 }
 
 void GameObject::Start()
@@ -126,7 +183,7 @@ bool GameObject::Write(IStream& stream) const
 	//Writes number of components
 	WriteInt(stream, _pComponents.size());
 
-	for (int i = 0; i < _pComponents.size(); ++i) 
+	for (int i = 0; i < _pComponents.size(); ++i)
 	{
 		_pComponents[i]->Write(stream);
 	}

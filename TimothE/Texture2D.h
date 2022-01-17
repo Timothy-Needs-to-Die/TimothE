@@ -22,7 +22,13 @@ public:
 	void OnUpdate() override;
 	void OnEnd() override;
 
-	bool Load(string path, string mode);
+	int GetCategory() const override { return Graphics_Category; };
+	int GetType() const override { return Texture_Type; };
+
+	void EditorUI() override;
+
+	bool Load(char* path, string mode);
+	void Bind();
 	void SetFilterMode(string mode);
 
 	GLuint GetID() const { return _ID; }
@@ -54,6 +60,6 @@ private:
 	string _UID;
 	GLuint _ID;
 	// Inherited via Component
-	
+
 	// Texture ID
 };

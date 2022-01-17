@@ -41,6 +41,11 @@ bool Texture2D::Load(string path, string mode)
 	return true;
 }
 
+void Texture2D::Bind()
+{
+	glBindTexture(GL_TEXTURE_2D, _ID);
+}
+
 void Texture2D::OnStart() 
 { 
 
