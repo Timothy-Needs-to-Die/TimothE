@@ -22,10 +22,10 @@ void Button::Update(float deltaTime)
 		int mouseX = Input::GetMouseX();
 		int mouseY = Input::GetMouseY();
 
-		Transform* tranform = GetTransform();
+		glm::vec2 tranformPosition = this->GetTransform()->GetPosition();
 
-		if (mouseX > this->GetTransform()->GetX() && mouseY > this->GetTransform()->GetY() &&
-			mouseX < this->GetTransform()->GetX() + _width && mouseY < this->GetTransform()->GetY() + _height)
+		if (mouseX > tranformPosition.x && mouseY > tranformPosition.y &&
+			mouseX < tranformPosition.x + _width && mouseY < tranformPosition.y + _height)
 		{
 			std::cout << "Mouse clicked inside the button! " << std::endl;
 		}
