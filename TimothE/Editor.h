@@ -51,5 +51,8 @@ private:
 	Shader* _pScreenShader;
 
 	GameObject* _pSelectedGameObject = nullptr;
+
+	void SearchFileDirectory();
+	string _mCurrentDir = ".";
 };
 

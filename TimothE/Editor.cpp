@@ -4,6 +4,12 @@
 
 #include "misc/cpp/imgui_stdlib.h"
 #include "misc/cpp/imgui_stdlib.cpp"
+#include "dirent.h"
+
+DIR* _mDirectory;
+struct dirent* _mDirent;
+vector<string> _mDirectoryList;
+bool _mContentUpdated = true;
 
 vector<string> Console::output = vector<string>();
 
@@ -45,6 +51,8 @@ void Editor::EditorLoop(Scene* currentScene, float dt, bool& editorMode, bool& p
 	_pEditorFramebuffer->UnbindFramebuffer();
 	glDisable(GL_DEPTH_TEST);
 	_pEditorFramebuffer->DrawFramebuffer();
+
+	SearchFileDirectory(); //creates initial file directory
 
 	//Render Here
 	ImGuiManager::ImGuiNewFrame();
@@ -317,9 +325,29 @@ void Editor::EditorImGui(Scene* currentScene)
 
 	//Content Browser
 	{
+		_mContentUpdated = false;
 		ImGui::Begin("Content Browser");
+		for (int i = 1; i < _mDirectoryList.size(); i++) {
+			if (i == 1)
+			{
+				if (ImGui::Button("Back"))
+				{
+					_mContentUpdated = true;
+				}
+			}
+			else
+			{
+				if (ImGui::Button(_mDirectoryList[i].c_str()))
+				{
+					_mContentUpdated = true;
+					_mCurrentDir += "/" + _mDirectoryList[i];
+				}
+			}
+		}
+
 
 		ImGui::End();
+		SearchFileDirectory();
 	}
 
 	//ImGui::ShowDemoWindow();
@@ -381,4 +409,26 @@ void Console::Print(string message)
 	output.push_back(message);
 
 	// TODO: maybe add a way to remove old messages after size exceeded max size to reduce memory usage for unneeded messages
+}
+
+void Editor::SearchFileDirectory()
+{
+	//initialises content list
+	if (_mContentUpdated)
+	{
+		_mDirectoryList.clear();
+		std::cout << _mCurrentDir << std::endl;
+		_mDirectory = opendir(_mCurrentDir.c_str());
+		if (_mDirectory)
+		{
+			while ((_mDirent = readdir(_mDirectory)) != NULL)
+			{
+				_mDirectoryList.push_back(_mDirent->d_name);
+
+				std::cout << "Content Browser loaded: " << _mDirent->d_name << std::endl;
+			}
+			closedir(_mDirectory);
+
+		}
+	}
 }

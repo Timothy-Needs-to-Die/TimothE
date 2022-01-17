@@ -110,6 +110,7 @@
     <ClInclude Include="MemoryManager.h" />
     <ClInclude Include="Heap.h" />
     <ClInclude Include="HeapManager.h" />
+    <ClInclude Include="Dirent.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Application.cpp" />

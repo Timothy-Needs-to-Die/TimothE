@@ -85,6 +85,7 @@
     <ClInclude Include="Application.h" />
     <ClInclude Include="ApplicationEvent.h" />
     <ClInclude Include="Component.h" />
+    <ClInclude Include="Dirent.h" />
     <ClInclude Include="Editor.h" />
     <ClInclude Include="Event.h" />
     <ClInclude Include="Framebuffer.h" />
