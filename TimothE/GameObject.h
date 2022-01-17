@@ -28,9 +28,9 @@ public:
 	GameObject(string name, ObjectType tag, Transform* transform);
 	~GameObject();
 
-	void Start();
-	void Update(float deltaTime);
-	void Exit();
+	virtual void Start();
+	virtual void Update(float deltaTime);
+	virtual void Exit();
 
 	string GetUID() { return _UID; }
 	string GetName() { return _name; }
