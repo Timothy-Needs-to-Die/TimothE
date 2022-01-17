@@ -3,9 +3,12 @@
 
 Button::Button(string name, int width, int height) : GameObject(name, ObjectType::UI)
 {
-	_width = width;
-	_height = height;
-	GetTransform()->Scale({ width, height });
+	//have to divide by two, because the origin is at centre
+	//so _width goes from the origin to a side of the square
+	//meaning that the scaled width is equal to 2 * width
+	_width = width / 2;
+	_height = height / 2;
+	GetTransform()->Scale({ _width, _height });
 }
 
 Button::~Button()

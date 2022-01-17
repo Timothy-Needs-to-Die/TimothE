@@ -5,7 +5,8 @@ Transform::Transform()
 {
 	_transformationMatrix = glm::mat4(1.0f);
 	_position = glm::vec2(640, 360);
-	_transformationMatrix = glm::translate(_transformationMatrix, glm::vec3(640, 360, 0));
+	_transformationMatrix = glm::scale(_transformationMatrix, { 1.0f, 1.0f, 1 });
+	_transformationMatrix = glm::translate(_transformationMatrix, glm::vec3(_position, 0));
 }
 
 void Transform::Translate(glm::vec2 newPos)

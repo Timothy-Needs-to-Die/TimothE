@@ -26,11 +26,7 @@ void Renderer::Render(GameObject* gameObject)
 	glm::mat4 projection = glm::ortho(0.0f, 1280.0f, 0.0f, 720.0f, -1.0f, 1.0f);
 	glUniformMatrix4fv(projectionLoc, 1, GL_FALSE, glm::value_ptr(projection));
 
-	glm::mat4 transform = glm::mat4(1.0f);
-	transform = gameObject->GetTransform()->_transformationMatrix;;
-	//transform = glm::translate(transform, glm::vec3(0.4f, 0.3f, 0.0f));
-
-	glm::mat4 view = projection * transform;
+	glm::mat4 transform = gameObject->GetTransform()->_transformationMatrix;
 
 	glUniformMatrix4fv(transformLoc, 1, GL_FALSE, glm::value_ptr(transform));
 

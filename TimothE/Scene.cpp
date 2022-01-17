@@ -21,8 +21,7 @@ Scene::Scene(string name)
 
 	//GameObject* _pTestObject = new GameObject("LENNA!", ObjectType::Player);
 	//_pTestObject->LoadTexture("lenna3.jpg", "linear");
-
-	Button* pButton = new Button("TestButton", 100, 100);
+	Button* pButton = new Button("TestButton", 640, 100);
 
 	AddGameObject(pButton);
 	//AddGameObject(_pTestObject);
