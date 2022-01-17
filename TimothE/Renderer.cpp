@@ -2,6 +2,16 @@
 #include "Renderer.h"
 #include "Texture2D.h"
 
+
+//TEMP
+static const GLfloat g_vertex_buffer_data[] =
+{
+	//pos				//tex
+	-1.0f, -1.0f, 0.0f, 0.0f, 0.0f,
+	1.0f, -1.0f, 0.0f, 1.0f, 0.0f,
+	0.0f,  1.0f, 0.0f, 0.5f, 1.0f
+};
+
 void Renderer::Initialize()
 {
 	
@@ -22,7 +32,6 @@ void Renderer::Render(GameObject* gameObject)
 	//////////////////////////////////
 	//NEEDS VERTICES FROM GAMEOBJECT//
 	//////////////////////////////////
-	/*
 
 	GLuint vertexArray;
 	glGenVertexArrays(1, &vertexArray);
@@ -34,7 +43,7 @@ void Renderer::Render(GameObject* gameObject)
 	// The following commands will talk about our 'vertexbuffer' buffer
 	glBindBuffer(GL_ARRAY_BUFFER, vertexbuffer);
 	// Give our vertices to OpenGL.
-	glBufferData(GL_ARRAY_BUFFER, sizeof(gameObject->GetVertexData()), gameObject->GetVertexData(), GL_STATIC_DRAW);
+	glBufferData(GL_ARRAY_BUFFER, sizeof(g_vertex_buffer_data), g_vertex_buffer_data, GL_STATIC_DRAW);
 
 	//glBindBuffer(GL_ARRAY_BUFFER, vertexbuffer); //apparently wasnt needed???? -Lucy
 	glVertexAttribPointer(
@@ -57,12 +66,9 @@ void Renderer::Render(GameObject* gameObject)
 	);
 	glEnableVertexAttribArray(1);
 
-	_pShader->BindShader();
-
 	glBindTexture(GL_TEXTURE_2D, gameObject->GetTextureID());
 	glBindVertexArray(vertexArray);
 	glDrawArrays(GL_TRIANGLES, 0, 3);
 	glDisableVertexAttribArray(0);
 
-	*/
 }
