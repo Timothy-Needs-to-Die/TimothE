@@ -12,8 +12,8 @@ Scene::Scene(string name)
 	/////////////
 	//TEST CODE//
 	/////////////
-	Texture2D* t = new Texture2D();
-	t->Load("lenna3.jpg", "linear");
+	/*Texture2D* t = new Texture2D();
+	t->Load("lenna3.jpg", "linear");*/
 
 	static const GLfloat g_vertex_buffer_data[] =
 	{
@@ -23,7 +23,8 @@ Scene::Scene(string name)
 		0.0f,  1.0f, 0.0f, 0.5f, 1.0f
 	};
 
-	GameObject* _pTestObject = new GameObject("LENNA!", ObjectType::Player, t);
+	GameObject* _pTestObject = new GameObject("LENNA!", ObjectType::Player);
+	_pTestObject->LoadTexture("lenna3.jpg", "linear");
 	//VERTEX DATA NEEDS TO BE STORED IN GAMEOBJECT
 
 	AddGameObject(_pTestObject);
