@@ -1,8 +1,8 @@
-
-
 #pragma once
+
 #include <string>
 #include <iostream>
+#include "GameObject.h"
 /// <summary>
 /// 
 /// COMPONENT_CLASS_CATEGOTY(Debug);
@@ -20,6 +20,7 @@
 #define BIT(x) (1<<x)
 #define COMPONENT_CLASS_CATEGORY(category) virtual int GetCategory() const override {return category;}
 #define COMPONENT_CLASS_TYPE(type) virtual int GetType() const override {return type;}
+
 class Component
 {
 public:
