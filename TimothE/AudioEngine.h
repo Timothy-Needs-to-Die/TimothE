@@ -15,10 +15,11 @@ public:
 	
 
 	// == System Functions == // 
-	void AudioUpdate();
+	void AudioUpdate(float elapsed);
 	void ShutDownAudio();
 	void ReleaseSound(FMOD::Sound* sound);
 	void CheckForErrors(FMOD_RESULT result);
+	float RandomBetween(float min, float max);
 
 	// == Grouping and Group Controls == //
 	FMOD::ChannelGroup* CreateChanellGroup(const char* name);
@@ -39,7 +40,8 @@ public:
 
 	void PlaySFX(FMOD::Sound* song);
 	void PlaySFX(const char* path, float minVolume, float maxVolume, float minPitch, float maxPitch);
-	void PlaySong(FMOD::Sound* song);
+	void PlaySong(const char* filePath);
+	void StopSongs();
 
 	void TogglePaused(FMOD::Channel* channel);
 	void SetVolume(FMOD::Channel* channel, float value);
@@ -48,6 +50,10 @@ public:
 	float ChangeOctave(float frequency, float ammount);
 	float ChangeSemitone(float frequency, float ammount);
 	void SetPanning(FMOD::Channel* channel, float ammount);
+
+	void SetMasterVolume(float volume);
+	void SetSFXVolume(float volume);
+	void SetMusicVolume(float volume);
 private:
 	//Current storage for sounds in a map 
 	typedef std::map <const char*, FMOD::Sound*> SoundMap;
@@ -56,7 +62,14 @@ private:
 
 	void Load(AudioType type, const char* filePath);
 
-	FMOD::Channel* currentSong;
+	//Song stuff
+	FMOD::Channel* _currentSongChannel;
+	const char* _currentSongPath;
+	const char* _nextSongPath;
+	enum FadeState{Fade_None, Fade_In, Fade_Out};
+	FadeState fade;
+
+
 
 	SoundMap _sounds[Type_Count];
 

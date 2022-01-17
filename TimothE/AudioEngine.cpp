@@ -42,9 +42,44 @@ void AudioEngine::Initialize()
 
 //This must be called within the main game loop in order for FMOD 
 //features to work correctly
-void AudioEngine::AudioUpdate()
+void AudioEngine::AudioUpdate(float elapsed)
 {
 	_fmodSystem->update();
+
+	//Fade in/out processing
+	const float fadeTime = 1.0f; // Seconds
+	if (_currentSongChannel != 0 && fade == Fade_In) {
+		float volume;
+		_currentSongChannel->getVolume(&volume);
+		float nextVolume = volume + elapsed / fadeTime;
+		if (nextVolume >= 1.0f)
+		{
+			_currentSongChannel->setVolume(1.0f);
+			fade = Fade_None;
+		}
+		else
+			_currentSongChannel->setVolume(nextVolume);
+	}
+	else if (_currentSongChannel != 0 && fade == Fade_Out) {
+		float volume;
+		_currentSongChannel->getVolume(&volume);
+		float nextVolume = volume - elapsed / fadeTime;
+		if (nextVolume <= 0.0f)
+		{
+			_currentSongChannel->stop();
+			_currentSongChannel = 0;
+			_currentSongPath = nullptr;
+			fade = Fade_None;
+		}
+		else
+			_currentSongChannel->setVolume(nextVolume);
+	}
+	else if (_currentSongChannel == 0 && !_nextSongPath == 0) {
+		PlaySong(_nextSongPath);
+		_nextSongPath = nullptr;
+	}
+
+
 	
 }
 
@@ -75,6 +110,13 @@ void AudioEngine::ReleaseSound(FMOD::Sound* sound)
 {
 	sound->release();
 }
+
+float AudioEngine::RandomBetween(float min, float max) {
+	if (min == max) return min;
+	float n = (float)rand() / (float)RAND_MAX;
+	return min + n * (max - min);
+}
+
 // ================================================================================ //
 
 // ========================= Grouping and Group Controls ========================== // 
@@ -149,6 +191,8 @@ void AudioEngine::SetGroupPitch(FMOD::ChannelGroup* group, float value) {
 	CheckForErrors(result);
 }
 
+
+
 // ================================================================================ //
 
 // ============================== Core Functionality ============================== // 
@@ -219,6 +263,41 @@ void AudioEngine::PlaySFX(const char* path, float minVolume, float maxVolume, fl
 	channel->setPaused(false);
 }
 
+void AudioEngine::PlaySong(const char* filePath)
+{
+	//Ignore if the song is allready playing
+	if (_currentSongPath == filePath) return;
+
+	//If a song is playing, stop this song and set the next song 
+	if (_currentSongChannel != 0) {
+		StopSongs();
+		_nextSongPath = filePath;
+		return;
+	}
+	//Find the correct song in the corresponding sound map : REPLACE WITH RESOURCE MANAGER IMPLEMENTATION
+	SoundMap::iterator songToPlay = _sounds[Type_Song].find(filePath);
+	if (songToPlay == _sounds[Type_Song].end()) return;
+
+	//Start playing song with volume set to 0 then fade in 
+	_currentSongPath = filePath;
+	_fmodSystem->playSound(songToPlay->second, _groups[Type_Song], false, &_currentSongChannel);
+	_currentSongChannel->setChannelGroup(_groups[Type_Song]);
+	_currentSongChannel->setVolume(0.0f);
+	fade = Fade_In;
+
+
+}
+
+void AudioEngine::StopSongs()
+{
+	if (_currentSongChannel != 0)
+	{
+		fade = Fade_Out;
+
+	}
+	_nextSongPath = nullptr;
+}
+
 //Toggle pause on a currently running audio channel 
 void AudioEngine::TogglePaused(FMOD::Channel* channel)
 {
@@ -255,6 +334,21 @@ float AudioEngine::ChangeSemitone(float frequency, float ammount) {
 void AudioEngine::SetPanning(FMOD::Channel* channel, float ammount) {
 
 	channel->setPan(ammount);
+}
+
+void AudioEngine::SetMasterVolume(float volume)
+{
+	_master->setVolume(volume);
+}
+
+void AudioEngine::SetSFXVolume(float volume)
+{
+	_groups[Type_SFX]->setVolume(volume);
+}
+
+void AudioEngine::SetMusicVolume(float volume)
+{
+	_groups[Type_Song]->setVolume(volume);
 }
 
 
