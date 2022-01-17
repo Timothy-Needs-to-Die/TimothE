@@ -7,20 +7,63 @@
     <Filter Include="SOIL">
       <UniqueIdentifier>{BCEC8B7C-A823-8D0D-5110-73103D26090F}</UniqueIdentifier>
     </Filter>
+    <Filter Include="GameObjects">
+      <UniqueIdentifier>{256bd95d-23cd-4b81-8bfd-ded3cc2bb519}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Components">
+      <UniqueIdentifier>{7a76d02f-9538-47b7-8a01-8f7defc8723a}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="GameObjects\Button">
+      <UniqueIdentifier>{feee6ffb-7252-456d-8ea5-a2751265b853}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="GameObjects\Camera">
+      <UniqueIdentifier>{98517b97-c3b4-4956-8a5a-49824cede8fa}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="GameObjects\GameObject Base">
+      <UniqueIdentifier>{d91a7d92-9345-474f-9cae-c32dc152d310}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Components\Component Base">
+      <UniqueIdentifier>{62925e5f-7f6a-456b-823a-ee66b11074d7}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Components\Transform">
+      <UniqueIdentifier>{28c7daca-9918-4f55-b52d-7caff05008b8}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Components\Texture2D">
+      <UniqueIdentifier>{1db88843-aab3-4b78-987c-f003f843129d}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Input">
+      <UniqueIdentifier>{93caac06-69d8-4d0f-9ea0-dbc56ed0d053}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Managers">
+      <UniqueIdentifier>{7d5bcfd6-e62b-4cdd-a736-fd215c399ff1}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Shader Files">
+      <UniqueIdentifier>{b187112a-e07b-4253-a521-abb688980278}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Components\Collider">
+      <UniqueIdentifier>{0c469983-ace5-475b-9aca-fdfae2249914}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Components\Collider\BoxCollder">
+      <UniqueIdentifier>{27f44168-c573-49ec-b165-0d51359ed859}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Components\Collider\Circle Collider">
+      <UniqueIdentifier>{c7877020-ebaf-4fd6-9225-b670f1c99cbd}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Components\Text">
+      <UniqueIdentifier>{102b73f2-6c85-47c6-b27f-57b7c3c88dea}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="GameObjects\Text%3f">
+      <UniqueIdentifier>{6018d317-61d1-425d-8eca-6871b8ac03bd}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Application.h" />
     <ClInclude Include="ApplicationEvent.h" />
     <ClInclude Include="AudioEngine.h" />
-    <ClInclude Include="Camera.h" />
-    <ClInclude Include="Component.h" />
     <ClInclude Include="Editor.h" />
     <ClInclude Include="Event.h" />
     <ClInclude Include="Framebuffer.h" />
-    <ClInclude Include="GameObject.h" />
     <ClInclude Include="Heap.h" />
-    <ClInclude Include="HeapManager.h" />
-    <ClInclude Include="ImGuiManager.h" />
     <ClInclude Include="Imgui\imconfig.h">
       <Filter>Imgui</Filter>
     </ClInclude>
@@ -48,12 +91,9 @@
     <ClInclude Include="Imgui\imstb_truetype.h">
       <Filter>Imgui</Filter>
     </ClInclude>
-    <ClInclude Include="Input.h" />
     <ClInclude Include="KeyEvent.h" />
-    <ClInclude Include="MemoryManager.h" />
     <ClInclude Include="MouseEvent.h" />
     <ClInclude Include="Renderer.h" />
-    <ClInclude Include="ResourceManager.h" />
     <ClInclude Include="SOIL\SOIL2.h">
       <Filter>SOIL</Filter>
     </ClInclude>
@@ -106,28 +146,88 @@
       <Filter>SOIL</Filter>
     </ClInclude>
     <ClInclude Include="Scene.h" />
-    <ClInclude Include="Shader.h" />
-    <ClInclude Include="TestComponent.h" />
-    <ClInclude Include="Texture2D.h" />
     <ClInclude Include="TimothEInputCodes.h" />
-    <ClInclude Include="Transform.h" />
     <ClInclude Include="UID.h" />
     <ClInclude Include="Window.h" />
+    <ClInclude Include="TestComponent.h">
+      <Filter>Components</Filter>
+    </ClInclude>
+    <ClInclude Include="Button.h">
+      <Filter>GameObjects\Button</Filter>
+    </ClInclude>
+    <ClInclude Include="Camera.h">
+      <Filter>GameObjects\Camera</Filter>
+    </ClInclude>
+    <ClInclude Include="GameObject.h">
+      <Filter>GameObjects\GameObject Base</Filter>
+    </ClInclude>
+    <ClInclude Include="Component.h">
+      <Filter>Components\Component Base</Filter>
+    </ClInclude>
+    <ClInclude Include="Texture2D.h">
+      <Filter>Components\Texture2D</Filter>
+    </ClInclude>
+    <ClInclude Include="Transform.h">
+      <Filter>Components\Transform</Filter>
+    </ClInclude>
+    <ClInclude Include="Input.h">
+      <Filter>Input</Filter>
+    </ClInclude>
+    <ClInclude Include="HeapManager.h">
+      <Filter>Managers</Filter>
+    </ClInclude>
+    <ClInclude Include="ImGuiManager.h">
+      <Filter>Managers</Filter>
+    </ClInclude>
+    <ClInclude Include="MemoryManager.h">
+      <Filter>Managers</Filter>
+    </ClInclude>
+    <ClInclude Include="Shader.h">
+      <Filter>Shader Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Application.cpp" />
     <ClCompile Include="AudioEngine.cpp" />
-    <ClCompile Include="Camera.cpp" />
-    <ClInclude Include="Button.h" />
+    <ClCompile Include="TestComponent.cpp">
+      <Filter>Components</Filter>
+    </ClCompile>
+    <ClCompile Include="Button.cpp">
+      <Filter>GameObjects\Button</Filter>
+    </ClCompile>
+    <ClCompile Include="Camera.cpp">
+      <Filter>GameObjects\Camera</Filter>
+    </ClCompile>
+    <ClCompile Include="GameObject.cpp">
+      <Filter>GameObjects\GameObject Base</Filter>
+    </ClCompile>
+    <ClCompile Include="Component.cpp">
+      <Filter>Components\Component Base</Filter>
+    </ClCompile>
+    <ClCompile Include="Texture2D.cpp">
+      <Filter>Components\Texture2D</Filter>
+    </ClCompile>
+    <ClCompile Include="Transform.cpp">
+      <Filter>Components\Transform</Filter>
+    </ClCompile>
+    <ClCompile Include="Input.cpp">
+      <Filter>Input</Filter>
+    </ClCompile>
+    <ClCompile Include="HeapManager.cpp">
+      <Filter>Managers</Filter>
+    </ClCompile>
+    <ClCompile Include="MemoryManager.cpp">
+      <Filter>Managers</Filter>
+    </ClCompile>
+    <ClCompile Include="Shader.cpp">
+      <Filter>Shader Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Application.cpp" />
-    <ClCompile Include="Component.cpp" />
     <ClCompile Include="Editor.cpp" />
     <ClCompile Include="Framebuffer.cpp" />
-    <ClCompile Include="GameObject.cpp" />
     <ClCompile Include="Heap.cpp" />
-    <ClCompile Include="HeapManager.cpp" />
     <ClCompile Include="Imgui\imgui.cpp">
       <Filter>Imgui</Filter>
     </ClCompile>
@@ -149,20 +249,17 @@
     <ClCompile Include="Imgui\imgui_widgets.cpp">
       <Filter>Imgui</Filter>
     </ClCompile>
-    <ClCompile Include="Input.cpp" />
-    <ClCompile Include="MemoryManager.cpp" />
     <ClCompile Include="Renderer.cpp" />
     <ClCompile Include="Scene.cpp" />
-    <ClCompile Include="Shader.cpp" />
     <ClCompile Include="Source.cpp" />
-    <ClCompile Include="TestComponent.cpp" />
-    <ClCompile Include="Texture2D.cpp" />
-    <ClCompile Include="Transform.cpp" />
     <ClCompile Include="Window.cpp" />
-    <ClCompile Include="Button.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="FragmentShader.frag" />
-    <None Include="VertexShader.vert" />
+    <None Include="VertexShader.vert">
+      <Filter>Shader Files</Filter>
+    </None>
+    <None Include="FragmentShader.frag">
+      <Filter>Shader Files</Filter>
+    </None>
   </ItemGroup>
 </Project>
