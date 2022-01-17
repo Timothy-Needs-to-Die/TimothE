@@ -68,7 +68,7 @@ void Application::GameLoop()
 
 	_audio = new AudioEngine;
 
-	_pCurrentScene->LoadScene("scene1.scene");
+	//_pCurrentScene->LoadScene("scene1.scene");
 
 
 	double previousTime = glfwGetTime();

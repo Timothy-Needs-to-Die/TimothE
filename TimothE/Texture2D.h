@@ -22,12 +22,7 @@ public:
 	void OnUpdate() override;
 	void OnEnd() override;
 
-	int GetCategory() const override { return Graphics_Category; };
-	int GetType() const override { return Texture_Type; };
-
-	void EditorUI() override;
-
-	bool Load(char* path, string mode);
+	bool Load(string path, string mode);
 	void Bind();
 	void SetFilterMode(string mode);
 
@@ -53,13 +48,13 @@ public:
 	virtual void Fixup() override {
 
 	}
+
 	virtual void DrawEditorUI() override;
 
 private:
 	string _filePath;
 	string _UID;
 	GLuint _ID;
-	// Inherited via Component
 
 	// Texture ID
 };

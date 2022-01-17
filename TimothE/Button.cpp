@@ -1,7 +1,7 @@
 #include "Button.h"
 
 
-Button::Button(string name, int width, int height) : GameObject(name, ObjectType::UI)
+Button::Button(string name, int width, int height) : GameObject(name, ObjectType::UI, new Texture2D())
 {
 	//have to divide by two, because the origin is at centre
 	//so _width goes from the origin to a side of the square

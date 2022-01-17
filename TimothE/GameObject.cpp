@@ -9,6 +9,10 @@ GameObject::GameObject(string name, ObjectType tag) : _name(name), _tag(tag)
 {
 	_UID = UID::GenerateUID();
 	AddComponent(new Transform(), Component::Types::Transform_Type);
+	InitVertexData();
+
+	_pShader = new Shader("VertexShader.vert", "FragmentShader.frag");
+	_shaderID = _pShader->GetProgramID();
 
 	Start();
 }
@@ -32,12 +36,51 @@ GameObject::GameObject() : _name("New GameObject")
 	_UID = UID::GenerateUID();
 	Transform* pTransform = new Transform();
 	AddComponent(pTransform, Component::Transform_Type);
+	InitVertexData();
+
+	_pShader = new Shader("VertexShader.vert", "FragmentShader.frag");
+	_shaderID = _pShader->GetProgramID();
+
+	Start();
 }
 
 GameObject::GameObject(string name) : _name(name)
 {
 	Transform* pTransform = new Transform();
 	AddComponent(pTransform, Component::Transform_Type);
+	InitVertexData();
+
+	_pShader = new Shader("VertexShader.vert", "FragmentShader.frag");
+	_shaderID = _pShader->GetProgramID();
+
+	Start();
+}
+
+GameObject::GameObject(string name, ObjectType tag, Texture2D* texture) : _name(name), _tag(tag)
+{
+	_UID = UID::GenerateUID();
+	Transform* pTransform = new Transform();
+	AddComponent(pTransform, Component::Transform_Type);
+	AddComponent(texture, Component::Texture_Type);
+	InitVertexData();
+
+	_pShader = new Shader("VertexShader.vert", "FragmentShader.frag");
+	_shaderID = _pShader->GetProgramID();
+
+	Start();
+}
+
+GameObject::GameObject(string name, ObjectType tag, Texture2D* texture, Transform* transform) : _name(name), _tag(tag)
+{
+	_UID = UID::GenerateUID();
+	AddComponent(transform, Component::Transform_Type);
+	AddComponent(texture, Component::Texture_Type);
+	InitVertexData();
+
+	_pShader = new Shader("VertexShader.vert", "FragmentShader.frag");
+	_shaderID = _pShader->GetProgramID();
+
+	Start();
 }
 
 GameObject::~GameObject()
@@ -57,7 +100,7 @@ void GameObject::InitVertexData()
 		1.0f, 1.0f, 0.0f,        1.0f, 1.0f,
 		-1.0f, 1.0f, 0.0f,       0.0f, 1.0f,
 
-		1.0f, -1.0f, 0.0f,       1.0f, 1.0f,
+		1.0f, -1.0f, 0.0f,       1.0f, 0.0f,
 		-1.0f, 1.0f, 0.0f,       0.0f, 1.0f,
 		-1.0f, -1.0f, 0.0f,      0.0f, 0.0f
 	};
@@ -132,12 +175,12 @@ void GameObject::LoadTexture(char* path, string mode)
 		texture->Load(path, mode);
 		_textureID = texture->GetID();
 		AddComponent(texture, Component::Types::Texture_Type);
-
-		return;
+		_textureID = texture->GetID();
 	}
 	else
 	{
 		GetTexture()->Load(path, mode);
+		_textureID = GetTexture()->GetID();
 	}
 }
 

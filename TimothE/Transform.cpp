@@ -42,21 +42,24 @@ void Transform::DrawEditorUI()
 	if (ImGui::InputFloat2("Position", pos))
 	{
 		// set the position on the game object
-		Translate(glm::vec2(pos[0], pos[1]));
+		SetPosition(pos[0], pos[1]);
 	}
 
 	float* rot = new float[2]{ GetRotation() };
 	if (ImGui::InputFloat2("Rotation", rot))
 	{
-		Rotate(0, glm::vec2(rot[0], rot[1]));
+		//TODO: GameObject's only rotate on X axis
+		SetRotation(rot[0]);
 	}
 
 	float* scale = new float[2]{ GetScale().x, GetScale().y };
 	if (ImGui::InputFloat2("Scale", scale))
 	{
-		Scale(glm::vec2(scale[0], scale[1]));
+		SetScale(glm::vec2(scale[0], scale[1]));
 	}
 	delete[]pos;
+	delete[]rot;
+	delete[]scale;
 }
 
 void Transform::OnEnd()

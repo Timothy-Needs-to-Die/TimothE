@@ -36,7 +36,9 @@ Scene::Scene(string name)
 	_pTestObject->SetShader(shader);
 	//GameObject* _pTestObject = new GameObject("LENNA!", ObjectType::Player);
 	//_pTestObject->LoadTexture("lenna3.jpg", "linear");
+
 	Button* pButton = new Button("TestButton", 640, 100);
+	pButton->LoadTexture("lenna3.jpg", "linear");
 
 	AddGameObject(pButton);
 	//AddGameObject(_pTestObject);
@@ -66,9 +68,6 @@ void Scene::RenderScene(Renderer* pRenderer)
 void Scene::RemoveGameObject(GameObject* gameObject)
 {
 	_listOfGameObjects.erase(std::find(_listOfGameObjects.begin(), _listOfGameObjects.end(), gameObject));
-	/*int index = std::find(_listOfGameObjects.begin(), _listOfGameObjects.end(), gameObject) - _listOfGameObjects.begin();
-	std::iter_swap(_listOfGameObjects.begin() + index, _listOfGameObjects.end() - 1);
-	_listOfGameObjects.pop_back();*/
 	delete gameObject;
 }
 
@@ -90,6 +89,7 @@ void Scene::LoadScene(const std::string& filename)
 		_listOfGameObjects[i] = go;
 	}
 
+	stream.Close();
 }
 
 void Scene::SaveScene(const std::string& filename)
@@ -104,5 +104,5 @@ void Scene::SaveScene(const std::string& filename)
 		_listOfGameObjects[i]->Write(stream);
 	}
 
-
+	stream.Close();
 }

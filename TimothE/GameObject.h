@@ -30,6 +30,7 @@ public:
 	GameObject(string name);
 	GameObject(string name, ObjectType tag, Texture2D* texture);
 	GameObject(string name, ObjectType tag, Texture2D* texture, Transform* transform);
+	GameObject(string name, ObjectType tag, Transform* transform);
 	GameObject(string name, ObjectType tag);
 	~GameObject();
 	void InitVertexData();
