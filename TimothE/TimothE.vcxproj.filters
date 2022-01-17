@@ -118,6 +118,11 @@
     <ClCompile Include="Application.cpp" />
     <ClCompile Include="AudioEngine.cpp" />
     <ClCompile Include="Camera.cpp" />
+    <ClInclude Include="Button.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="Application.cpp" />
+    <ClCompile Include="Component.cpp" />
     <ClCompile Include="Editor.cpp" />
     <ClCompile Include="Framebuffer.cpp" />
     <ClCompile Include="GameObject.cpp" />
@@ -154,5 +159,10 @@
     <ClCompile Include="Texture2D.cpp" />
     <ClCompile Include="Transform.cpp" />
     <ClCompile Include="Window.cpp" />
+    <ClCompile Include="Button.cpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="FragmentShader.frag" />
+    <None Include="VertexShader.vert" />
   </ItemGroup>
 </Project>

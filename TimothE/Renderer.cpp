@@ -1,16 +1,4 @@
-#include <GL/glew.h>
 #include "Renderer.h"
-#include "Texture2D.h"
-
-
-//TEMP
-static const GLfloat g_vertex_buffer_data[] =
-{
-	//pos				//tex
-	-1.0f, -1.0f, 0.0f, 0.0f, 0.0f,
-	1.0f, -1.0f, 0.0f, 1.0f, 0.0f,
-	0.0f,  1.0f, 0.0f, 0.5f, 1.0f
-};
 
 void Renderer::Initialize()
 {
@@ -29,45 +17,21 @@ void Renderer::Render(GameObject* gameObject)
 {
 	glUseProgram(gameObject->GetShaderID());
 	
-	//////////////////////////////////
-	//NEEDS VERTICES FROM GAMEOBJECT//
-	//////////////////////////////////
+	glBindVertexArray(gameObject->GetVAO());
+	
+	unsigned int transformLoc = glGetUniformLocation(gameObject->GetShaderID(), "transform");
+	
+	//gameObject->GetTransform()->Translate(glm::vec2(0.0001f, 0.0f));
+	//gameObject->GetTransform()->Scale(glm::vec2(1.0f, 1.0f));
+	//glm::mat4 transform = gameObject->GetTransform()->_transformationMatrix;
+	//gameObject->GetTransform()->Translate(glm::vec2(0.01, 0.01f));
+	glm::mat4 transform2 = gameObject->GetTransform()->_transformationMatrix;
 
-	GLuint vertexArray;
-	glGenVertexArrays(1, &vertexArray);
-	glBindVertexArray(vertexArray);
-	// This will identify our vertex buffer
-	GLuint vertexbuffer;
-	// Generate 1 buffer, put the resulting identifier in vertexbuffer
-	glGenBuffers(1, &vertexbuffer);
-	// The following commands will talk about our 'vertexbuffer' buffer
-	glBindBuffer(GL_ARRAY_BUFFER, vertexbuffer);
-	// Give our vertices to OpenGL.
-	glBufferData(GL_ARRAY_BUFFER, sizeof(g_vertex_buffer_data), g_vertex_buffer_data, GL_STATIC_DRAW);
+	glm::mat4 transform = glm::mat4(1.0);
+	transform = glm::translate(transform, glm::vec3(0.4f, 0.3f, 0.0f));
 
-	glVertexAttribPointer(
-		0,                  // attribute 0. No particular reason for 0, but must match the layout in the shader.
-		3,                  // size
-		GL_FLOAT,           // type
-		GL_FALSE,           // normalized?
-		5 * sizeof(float),                  // stride
-		(void*)0            // array buffer offset
-	);
-	glEnableVertexAttribArray(0);
+	glUniformMatrix4fv(transformLoc, 1, GL_FALSE, glm::value_ptr(transform2));
 
-	glVertexAttribPointer(
-		1,                  // attribute 0. No particular reason for 0, but must match the layout in the shader.
-		2,                  // size
-		GL_FLOAT,           // type
-		GL_FALSE,           // normalized?
-		5 * sizeof(float),                  // stride
-		(void*)(3 * sizeof(float))            // array buffer offset
-	);
-	glEnableVertexAttribArray(1);
-
-	glBindTexture(GL_TEXTURE_2D, gameObject->GetTextureID());
-	glBindVertexArray(vertexArray);
-	glDrawArrays(GL_TRIANGLES, 0, 3);
-	glDisableVertexAttribArray(0);
-	glDisableVertexAttribArray(1);
+	glDrawArrays(GL_TRIANGLES, 0, 6);
+	glBindVertexArray(0);
 }

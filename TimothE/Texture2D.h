@@ -28,6 +28,7 @@ public:
 	void EditorUI() override;
 
 	bool Load(char* path, string mode);
+	void Bind();
 	void SetFilterMode(string mode);
 
 	GLuint GetID() const { return _ID; }

@@ -1,12 +1,12 @@
 #pragma once
-class Component;
+#include "Shader.h"
 #include <vector>
 #include <string>
 #include "Component.h"
 #include "Transform.h"
 #include "UID.h"
 #include "TestComponent.h"
-#include "Transform.h"
+
 
 class Texture2D;
 
@@ -18,7 +18,8 @@ enum class ObjectType
 	Player,
 	Enemy,
 	NPC,
-	PickUp
+	PickUp,
+	UI
 };
 
 class GameObject
@@ -27,6 +28,7 @@ public:
 	GameObject(string name, ObjectType tag);
 	GameObject(string name, ObjectType tag, Transform* transform);
 	~GameObject();
+	void InitVertexData();
 
 	virtual void Start();
 	virtual void Update(float deltaTime);
@@ -51,12 +53,19 @@ public:
 
 	void LoadTexture(char* path, string mode);
 	void SetShader(int id) { _shaderID = id; };
+
+	unsigned int GetVAO() const { return _vao; }
 private:
 	string _UID;
 	string _name;
 	ObjectType _tag;
 	vector<Component*> _pComponents;
 
+	Shader* _pShader;
+
 	int _textureID = 0;
 	int _shaderID = 0;
+
+	unsigned int _vao;
+	unsigned int _vbo;
 };

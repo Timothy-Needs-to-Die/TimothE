@@ -1,6 +1,8 @@
 #pragma once
 
 #include "Component.h"
+#include <glm.hpp>
+#include <gtc/matrix_transform.hpp>
 
 struct Vector2D
 {
@@ -17,33 +19,35 @@ class Transform : public Component
 {
 public:
 	Transform();
-	Transform(float x, float y, float rotx, float roty, float scalex, float scaley);
+	Transform(glm::vec2 position, glm::vec2 size, float rotation);
+
+	void Translate(glm::vec2 newPos);
+	void Scale(glm::vec2 newSize);
+	void Rotate(float rotationAmount, glm::vec3 axis);
 
 	void OnStart() override;
 	void OnUpdate() override;
 	void OnEnd() override;
 
-	int GetCategory() const override { return Transform_Category; };
-	int GetType() const override { return Transform_Type; };
+	//int GetCategory() const override { return Transform_Category; };
+	//int GetType() const override { return Transform_Type; };
 
 	void EditorUI() override;
 
-	Vector2D* GetPosition() { return new Vector2D(_xPos, _yPos); };
-	void SetPosition(float x, float y);
-	float GetXrotation() { return _xRot; };
-	float GetYrotation() { return _yRot; };
-	void SetXrotation(float xRot);
-	void SetYrotation(float yRot);
-	float GetXScale() { return _scaleX; }
-	float GetYScale() { return _scaleY; }
-	void SetXScale(float scale);
-	void SetYScale(float scale);
 
+	COMPONENT_CLASS_CATEGORY(Transform_Category);
+	COMPONENT_CLASS_TYPE(Transform_Type);
+
+	glm::vec2 GetPosition() { return _position; };
+
+	//glm::mat4 GetTransformationMatrix() { return _transformationMatrix; };
+
+
+
+	glm::mat4 _transformationMatrix;
 private:
-	float _xPos;
-	float _yPos;
-	float _xRot;
-	float _yRot;
-	float _scaleX;
-	float _scaleY;
+
+	glm::vec2 _position;
+	glm::vec2 _size;
+	float _rotation;
 };
