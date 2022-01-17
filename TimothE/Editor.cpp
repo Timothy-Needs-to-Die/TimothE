@@ -22,9 +22,6 @@ Editor::Editor(Window* pWindow)
 		 0.6f,   0.82f,   1.0f, 1.0f
 	};
 
-	//Creates a large enough allocation to hold any notes we might have
-	_pNotesBuffer = new char[16348];
-
 	//Creates the screen shader for the framebuffer
 	_pScreenShader = new Shader("fbVert.vs", "fbFrag.fs");
 
@@ -36,7 +33,6 @@ Editor::~Editor()
 {
 	delete _pEditorFramebuffer;
 	delete _pScreenShader;
-	delete _pNotesBuffer;
 }
 
 void Editor::EditorLoop(Scene* currentScene, float dt, bool& editorMode, bool& paused)
@@ -69,7 +65,8 @@ void Editor::EditorImGui(Scene* currentScene)
 	{
 		ImGui::Begin("Notes");
 
-		ImGui::InputTextMultiline("Notes:", _pNotesBuffer, 16384, ImVec2(300.0f, 600.0f), 0, 0, _pNotesBuffer);
+		string notes;
+		ImGui::InputTextMultiline("Notes", &notes, ImVec2(300.0f, 600.0f), 0, 0);
 
 		ImGui::End();
 	}

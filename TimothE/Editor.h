@@ -49,7 +49,6 @@ private:
 
 	Framebuffer* _pEditorFramebuffer;
 	Shader* _pScreenShader;
-	char* _pNotesBuffer;
 
 	GameObject* _pSelectedGameObject = nullptr;
 };
