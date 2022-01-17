@@ -92,3 +92,8 @@ void GameObject::AddComponent(Component* component, Component::Types type)
 	component->SetType(type);
 	_pComponents.push_back(component);
 }
+
+void GameObject::RemoveComponent(Component* component)
+{
+	_pComponents.erase(std::find(_pComponents.begin(), _pComponents.end(), component));
+}

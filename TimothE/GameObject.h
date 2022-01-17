@@ -43,6 +43,7 @@ public:
 	vector<Component*> GetComponents() { return _pComponents; }
 
 	void AddComponent(Component* component, Component::Types type);
+	void RemoveComponent(Component* component);
 
 	Transform* GetTransform() { return (Transform*)GetComponent(Component::Types::Transform_Type); }
 	Texture2D* GetTexture() { return (Texture2D*)GetComponent(Component::Types::Texture_Type); }

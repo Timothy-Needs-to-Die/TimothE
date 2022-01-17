@@ -33,6 +33,12 @@ Editor::~Editor()
 {
 	delete _pEditorFramebuffer;
 	delete _pScreenShader;
+	delete _pWindow;
+	delete _pEditorFramebuffer;
+	delete _pScreenShader;
+	delete _pScreenShader;
+	delete _pSelectedGameObject;
+	delete _pCurrentScene;
 }
 
 void Editor::EditorLoop(Scene* currentScene, float dt, bool& editorMode, bool& paused)
@@ -48,17 +54,18 @@ void Editor::EditorLoop(Scene* currentScene, float dt, bool& editorMode, bool& p
 
 	//Render Here
 	ImGuiManager::ImGuiNewFrame();
-	EditorImGui(currentScene);
+	_pCurrentScene = currentScene;
+	EditorImGui();
 	ImGUISwitchRender(editorMode, paused);
 	ImGuiManager::ImGuiEndFrame();
 
 	EditorEndRender();
 
 	if(!paused)
-		EditorUpdate(currentScene, dt);
+		EditorUpdate(dt);
 }
 
-void Editor::EditorImGui(Scene* currentScene)
+void Editor::EditorImGui()
 {
 	static bool changeObject = false;
 
@@ -83,25 +90,11 @@ void Editor::EditorImGui(Scene* currentScene)
 				if (changeObject)
 				{
 					text = _pSelectedGameObject->GetName();
-					//oldName = _pSelectedGameObject->GetName();
 				}
-				if (ImGui::InputText(" ", &text, ImGuiInputTextFlags_CharsNoBlank))
+				if (ImGui::InputText("##ChangeObjectName", &text, ImGuiInputTextFlags_CharsNoBlank))
 				{
 					_pSelectedGameObject->SetName(text);
 				}
-				/*if (text != oldName)
-				{
-					ImGui::SameLine();
-					if (ImGui::Button("Set name"))
-					{
-						string name = _pSelectedGameObject->GetName();
-						string newname = text;
-						string s = name + " renamed to " + newname;
-						Console::Print(s);
-						_pSelectedGameObject->SetName(text);
-						oldName = text;
-					}
-				}*/
 			}
 
 			// select object type
@@ -126,24 +119,21 @@ void Editor::EditorImGui(Scene* currentScene)
 				}
 			}
 
-			for (Component* c : _pSelectedGameObject->GetComponents())
+			for(Component* c : _pSelectedGameObject->GetComponents())
 			{
 				c->EditorUI();
+				if (c->GetType() != Component::Transform_Type)
+				{
+					if (ImGui::Button(("Delete component##" + to_string(c->GetType())).c_str()))
+					{
+						_pSelectedGameObject->RemoveComponent(c);
+					}
+				}
 			}
 			
 			// add component
 			if (ImGui::CollapsingHeader("AddComponent"))
 			{
-				if (ImGui::CollapsingHeader("Transform"))
-				{
-					if (ImGui::Button("Transform"))
-					{
-						if (_pSelectedGameObject->GetTransform() == nullptr)
-						{
-							_pSelectedGameObject->AddComponent(new Transform(), Component::Types::Transform_Type);
-						}
-					}
-				}
 				if (ImGui::CollapsingHeader("Sound System"))
 				{
 					if (ImGui::Button("Sound"))
@@ -175,17 +165,18 @@ void Editor::EditorImGui(Scene* currentScene)
 				}
 				if (ImGui::CollapsingHeader("Graphics"))
 				{
-					string texPath = "lenna3.jpg";
-					ImGui::InputText("Texture path", &texPath);
+					static string texPath = "lenna3.jpg";
 					if (ImGui::Button("Texture"))
 					{
-						Texture2D* tex = _pSelectedGameObject->GetTexture();
-						if (tex == nullptr)
+						if (_pSelectedGameObject->GetTexture() == nullptr)
 						{
 							_pSelectedGameObject->AddComponent(new Texture2D(), Component::Types::Transform_Type);
 							_pSelectedGameObject->LoadTexture((char*)texPath.c_str(), "Linear");
 						}
 					}
+					ImGui::SameLine();
+
+					ImGui::InputText("##texturepath", &texPath);
 				}
 			}
 		}
@@ -226,7 +217,7 @@ void Editor::EditorImGui(Scene* currentScene)
 			if (ImGui::Button("Add Object"))
 			{
 				GameObject* obj = new GameObject(name, tag);
-				currentScene->AddGameObject(obj);
+				_pCurrentScene->AddGameObject(obj);
 				Console::Print("Object added: " + name);
 				name = "New GameObject";
 			}
@@ -237,7 +228,7 @@ void Editor::EditorImGui(Scene* currentScene)
 		// index of the selected object
 		static int index = 0;
 		// get vector of objects from the current scene
-		vector<GameObject*> objects = currentScene->GetGameObjects();
+		vector<GameObject*> objects = _pCurrentScene->GetGameObjects();
 		if (!objects.empty())
 		{
 			for (int i = 0; i < objects.size(); i++)
@@ -249,17 +240,18 @@ void Editor::EditorImGui(Scene* currentScene)
 				{
 					Console::Print("Deleted " + objects[i]->GetName());
 					// add button next to object button that removes game object
-					currentScene->RemoveGameObject(objects[i]);
+					_pCurrentScene->RemoveGameObject(objects[i]);
 					_pSelectedGameObject = nullptr;
-					// update objects and take 1 from i (because the object at the current index was removed)
-					objects = currentScene->GetGameObjects();
-					i--;
 
 					if (i <= index)
 					{
-						if(index > 0)
+						if (index > 0)
 							index--;
 					}
+
+					// update objects and take 1 from i (because the object at the current index was removed)
+					objects = _pCurrentScene->GetGameObjects();
+					i--;
 				}
 			}
 			// set selected object to the object that the user has selected. does nothing currently.
@@ -329,13 +321,20 @@ void Editor::ImGUISwitchRender(bool& editorMode, bool& paused)
 	ImGui::SameLine();
 	//float width = ImGui::GetWindowSize().x;
 	//ImGui::SetCursorPosX((width - 30.0f) * 0.5f); // sets play and pause button to centre of window
-	if (ImGui::Button("Play", ImVec2(30.0f, 30.0f)))
+	if (ImGui::Button("Play", ImVec2(50.0f, 30.0f)))
 	{
 		paused = false;
 	}
 	ImGui::SameLine();
-	if (ImGui::Button("Pause", ImVec2(30.0f, 30.0f)))
+	if (ImGui::Button("Pause", ImVec2(50.0f, 30.0f)))
 	{
+		paused = true;
+	}
+	ImGui::SameLine();
+	//resets game build
+	if (ImGui::Button("Stop", ImVec2(50.0f, 30.0f)))
+	{
+		_pCurrentScene = new Scene("Test scene");
 		paused = true;
 	}
 	ImGui::SameLine();
@@ -353,9 +352,9 @@ void Editor::EditorEndRender()
 	_pWindow->SwapBuffers();
 }
 
-void Editor::EditorUpdate(Scene* currentScene, float dt)
+void Editor::EditorUpdate(float dt)
 {
-	currentScene->Update(dt);
+	_pCurrentScene->Update(dt);
 }
 
 void Console::Print(string message)
