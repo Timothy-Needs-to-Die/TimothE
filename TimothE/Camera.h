@@ -17,64 +17,59 @@ public:
 	void Update(float dt);
 
 	float* Proj() {
-		return glm::value_ptr(proj);
+		return glm::value_ptr(_mProjection);
 	}
 
 	float* View() {
-		return glm::value_ptr(view);
+		return glm::value_ptr(_mView);
 	}
 
 	float* Position() {
-		return glm::value_ptr(cameraPos);
+		return glm::value_ptr(_mCameraPos);
 	}
 
 	glm::mat4 ProjMat() {
-		return proj;
+		return _mProjection;
 	}
 
 	glm::mat4 ViewMat() {
-		return view;
+		return _mView;
 	}
 
 	glm::vec3 GPosition() {
-		return cameraPos;
+		return _mCameraPos;
 	}
 
 	float* Front() {
-		return glm::value_ptr(cameraFront);
+		return glm::value_ptr(_mCameraFront);
 	}
 
-	void ProcessMouseMovement(float xOffset, float yOffset, bool constrainPitch = true);
 	void ProcessScrollMovement(float yOffset);
 
-	float pitch = 0.0f;
-	float yaw = -90.0f;
+	float _mPitch = 0.0f;
+	float _mYaw = -90.0f;
 
-	float fov = 45.0f;
+	float _mFOV = 45.0f;
 
 private:
 	void PollInput(float dt);
 
 private:
-	glm::vec3 cameraPos = glm::vec3(0.0f, 0.0f, 3.0f);
-	glm::vec3 cameraFront = glm::vec3(0.0f, 0.0f, -1.0f);
-	glm::vec3 cameraUp = glm::vec3(0.0f, 1.0f, 0.0f);
+	glm::vec3 _mCameraPos = glm::vec3(0.0f, 0.0f, 3.0f);
+	glm::vec3 _mCameraFront = glm::vec3(0.0f, 0.0f, -1.0f);
+	glm::vec3 _mCameraUp = glm::vec3(0.0f, 1.0f, 0.0f);
 
-	glm::vec3 cameraTarget;
-	glm::vec3 cameraDirection;
-
-
-	glm::vec3 cameraRight;
-
-	glm::mat4 proj;
-	glm::mat4 view;
+	glm::vec3 _mCameraTarget;
+	glm::vec3 _mCameraDirection;
 
 
+	glm::vec3 _mCameraRight;
 
-	int width;
-	int height;
+	glm::mat4 _mProjection;
+	glm::mat4 _mView;
 
-
+	int _mWidth;
+	int _mHeight;
 
 	GLFWwindow* _pWindow;
 };

@@ -2,7 +2,6 @@
 
 #include <string>
 #include <iostream>
-#include "GameObject.h"
 /// <summary>
 /// 
 /// COMPONENT_CLASS_CATEGOTY(Debug);

@@ -6,6 +6,7 @@ class Component;
 #include "Transform.h"
 #include "UID.h"
 #include "TestComponent.h"
+#include "Transform.h"
 
 class Texture2D;
 
