@@ -1,24 +1,17 @@
 #include "GameObject.h"
 #include "Texture2D.h"
 
-GameObject::GameObject(string name, ObjectType tag, Texture2D* texture)
+GameObject::GameObject(string name, ObjectType tag) : _name(name), _tag(tag)
 {
-	_name = name;
-	_tag = tag;
 	_UID = UID::GenerateUID();
-	_textureID = texture->GetID();
 	AddComponent(new Transform(), Component::Types::Transform_Type);
-	AddComponent(texture, Component::Types::Texture_Type);
 	Start();
 }
 
-GameObject::GameObject(string name, ObjectType tag, Texture2D* texture, Transform* transform)
+GameObject::GameObject(string name, ObjectType tag, Transform* transform) : _name(name), _tag(tag)
 {
-	_name = name;
-	_tag = tag;
 	_UID = UID::GenerateUID();
 	AddComponent(transform, Component::Types::Transform_Type);
-	AddComponent(texture, Component::Types::Texture_Type);
 	Start();
 }
 
@@ -70,6 +63,16 @@ void GameObject::LoadTexture(char* path, string mode)
 	{
 		GetTexture()->Load(path, mode);
 	}
+}
+
+void GameObject::SetName(string name)
+{
+	_name = name;
+}
+
+void GameObject::SetType(ObjectType tag)
+{
+	_tag = tag;
 }
 
 Component* GameObject::GetComponent(Component::Types componentType)

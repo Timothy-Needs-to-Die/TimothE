@@ -22,8 +22,8 @@ public:
 	void OnUpdate() override;
 	void OnEnd() override;
 
-	int GetCategory() const override { return 0; };
-	int GetType() const override { return 0; };
+	int GetCategory() const override { return Graphics_Category; };
+	int GetType() const override { return Transform_Type; };
 
 	bool Load(char* path, string mode);
 	void SetFilterMode(string mode);

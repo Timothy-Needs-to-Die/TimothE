@@ -51,5 +51,7 @@ private:
 	Scene* _pCurrentScene;
 
 	Editor* _pEditor;
+
+	bool _paused = false;
 };
 

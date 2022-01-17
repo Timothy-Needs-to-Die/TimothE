@@ -23,13 +23,19 @@ public:
 	void OnUpdate() override;
 	void OnEnd() override;
 
-	int GetCategory() const override { return 0; };
-	int GetType() const override { return 0; };
+	int GetCategory() const override { return Transform_Category; };
+	int GetType() const override { return Transform_Type; };
 
 	Vector2D* GetPosition() { return new Vector2D(_xPos, _yPos); };
 	void SetPosition(float x, float y);
 	float GetXrotation() { return _xRot; };
+	float GetYrotation() { return _yRot; };
 	void SetXrotation(float xRot);
+	void SetYrotation(float yRot);
+	float GetXScale() { return _scaleX; }
+	float GetYScale() { return _scaleY; }
+	void SetXScale(float scale);
+	void SetYScale(float scale);
 
 private:
 	float _xPos;

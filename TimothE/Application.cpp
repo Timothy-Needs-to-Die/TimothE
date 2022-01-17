@@ -19,7 +19,6 @@
 
 #include "Texture2D.h"
 
-
 #define BIND_EVENT_FN(x) std::bind(&Application::x, this, std::placeholders::_1)
 
 void Application::Init(bool devMode)
@@ -94,7 +93,7 @@ void Application::GameLoop()
 		double elapsed = currentTime - previousTime;
 
 		if (_inEditorMode) {
-			_pEditor->EditorLoop(_pCurrentScene, elapsed, _inEditorMode);
+			_pEditor->EditorLoop(_pCurrentScene, elapsed, _inEditorMode, _paused);
 		}
 		else {
 			GameBeginRender();
@@ -109,7 +108,8 @@ void Application::GameLoop()
 
 			GameEndRender();
 
-			GameUpdate(elapsed);
+			if(!_paused)
+				GameUpdate(elapsed);
 		}
 
 		previousTime = currentTime;
@@ -162,19 +162,37 @@ void Application::GameUpdate(float dt)
 
 void Application::ImGUISwitchRender()
 {
-	{
-		ImGui::Begin("Application Mode");
+	ImGui::Begin("Application Mode");
 
-		if (ImGui::Button("Editor", ImVec2(100.0f, 30.0f))) {
-			_inEditorMode = true;
-		}
-		ImGui::SameLine();
-		if (ImGui::Button("Game", ImVec2(100.0f, 30.0f))) {
-			_inEditorMode = false;
-		}
-		ImGui::SameLine();
-		ImGui::End();
+	if (ImGui::Button("Editor", ImVec2(100.0f, 30.0f))) {
+		_inEditorMode = true;
 	}
+	ImGui::SameLine();
+	if (ImGui::Button("Game", ImVec2(100.0f, 30.0f))) {
+		_inEditorMode = false;
+	}
+	ImGui::SameLine();
+	//float width = ImGui::GetWindowSize().x;
+	//ImGui::SetCursorPosX((width - 30.0f) * 0.5f); // sets play and pause button to centre of window
+	if (ImGui::Button("Play", ImVec2(50.0f, 30.0f)))
+	{
+		_paused = false;
+	}
+	ImGui::SameLine();
+	if (ImGui::Button("Pause", ImVec2(50.0f, 30.0f)))
+	{
+		_paused = true;
+	}
+	ImGui::SameLine();
+	//resets game build
+	if (ImGui::Button("Stop", ImVec2(50.0f, 30.0f)))
+	{
+		_pCurrentScene = new Scene("Test scene");
+		_paused = true;
+	}
+	ImGui::SameLine();
+	ImGui::Text(("Paused: " + to_string(_paused)).c_str());
+	ImGui::End();
 }
 
 bool Application::OnGameWindowClose(WindowCloseEvent& e)
