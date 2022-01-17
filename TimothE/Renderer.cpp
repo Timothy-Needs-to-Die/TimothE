@@ -20,17 +20,19 @@ void Renderer::Render(GameObject* gameObject)
 	glBindVertexArray(gameObject->GetVAO());
 	
 	unsigned int transformLoc = glGetUniformLocation(gameObject->GetShaderID(), "transform");
-	
-	//gameObject->GetTransform()->Translate(glm::vec2(0.0001f, 0.0f));
-	//gameObject->GetTransform()->Scale(glm::vec2(1.0f, 1.0f));
-	//glm::mat4 transform = gameObject->GetTransform()->_transformationMatrix;
-	//gameObject->GetTransform()->Translate(glm::vec2(0.01, 0.01f));
-	glm::mat4 transform2 = gameObject->GetTransform()->_transformationMatrix;
 
-	glm::mat4 transform = glm::mat4(1.0);
-	transform = glm::translate(transform, glm::vec3(0.4f, 0.3f, 0.0f));
+	unsigned int projectionLoc = glGetUniformLocation(gameObject->GetShaderID(), "projection");
 
-	glUniformMatrix4fv(transformLoc, 1, GL_FALSE, glm::value_ptr(transform2));
+	glm::mat4 projection = glm::ortho(0.0f, 1280.0f, 0.0f, 720.0f, -1.0f, 1.0f);
+	glUniformMatrix4fv(projectionLoc, 1, GL_FALSE, glm::value_ptr(projection));
+
+	glm::mat4 transform = glm::mat4(1.0f);
+	transform = gameObject->GetTransform()->_transformationMatrix;;
+	//transform = glm::translate(transform, glm::vec3(0.4f, 0.3f, 0.0f));
+
+	glm::mat4 view = projection * transform;
+
+	glUniformMatrix4fv(transformLoc, 1, GL_FALSE, glm::value_ptr(transform));
 
 	glDrawArrays(GL_TRIANGLES, 0, 6);
 	glBindVertexArray(0);

@@ -19,23 +19,13 @@ Scene::Scene(string name)
 	Shader* shader;
 	shader = new Shader("fbVert.vs", "fbFrag.fs");
 
-	static const GLfloat g_vertex_buffer_data[] =
-	{
-		//pos				//tex
-		-1.0f, -1.0f, 0.0f, 0.0f, 0.0f,
-		1.0f, -1.0f, 0.0f, 1.0f, 0.0f,
-		0.0f,  1.0f, 0.0f, 0.5f, 1.0f
-	};
+	//GameObject* _pTestObject = new GameObject("LENNA!", ObjectType::Player);
+	//_pTestObject->LoadTexture("lenna3.jpg", "linear");
 
-	GameObject* _pTestObject = new GameObject("LENNA!", ObjectType::Player, t, new Transform( { 0.0f, 0.1f }, { 1, 1 }, 0.1f));
-	_pTestObject->LoadTexture("lenna3.jpg", "linear");
-	_pTestObject->SetShader(shader->GetProgramID());
-	
-	Button* pButton = new Button("TestButton", new Transform(glm::vec2( -1, 0 ), glm::vec2(1, 1), 0.0f), t, 100, 100);
+	Button* pButton = new Button("TestButton", 100, 100);
 
 	AddGameObject(pButton);
-	AddGameObject(_pTestObject);
-	//AddGameObject(pButton);
+	//AddGameObject(_pTestObject);
 }
 
 Scene::~Scene()

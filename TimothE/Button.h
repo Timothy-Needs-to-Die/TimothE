@@ -10,7 +10,7 @@ using std::string;
 class Button : public GameObject
 {
 public:
-	Button(string name, Transform* transform, Texture2D* texture, int width, int height);
+	Button(string name, int width, int height);
 	~Button();
 
 	void Update(float deltaTime) override;

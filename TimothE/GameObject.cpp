@@ -5,22 +5,12 @@ GameObject::GameObject(string name, ObjectType tag) : _name(name), _tag(tag)
 {
 	_UID = UID::GenerateUID();
 	AddComponent(new Transform(), Component::Types::Transform_Type);
-	AddComponent(texture, Component::Types::Texture_Type);
-	InitVertexData();
-	Start();
-}
-
-GameObject::GameObject(string name, ObjectType tag, Transform* transform) : _name(name), _tag(tag)
-{
-	_UID = UID::GenerateUID();
-	AddComponent(transform, Component::Types::Transform_Type);
-	AddComponent(texture, Component::Types::Texture_Type);
+	AddComponent(new Texture2D(), Component::Types::Texture_Type);
 	InitVertexData();
 
 	_pShader = new Shader("VertexShader.vert", "FragmentShader.frag");
 	_shaderID = _pShader->GetProgramID();
 	
-
 	Start();
 }
 
@@ -37,13 +27,13 @@ void GameObject::InitVertexData()
 {
 	float vertexData[]{
 		//position               //texture coords
-		0.5f, -0.5f, 0.0f,       1.0f, 0.0f,
-		0.5f, 0.5f, 0.0f,        1.0f, 1.0f,
-		-0.5f, 0.5f, 0.0f,       0.0f, 1.0f,
+		1.0f, -1.0f, 0.0f,       1.0f, 0.0f,
+		1.0f, 1.0f, 0.0f,        1.0f, 1.0f,
+		-1.0f, 1.0f, 0.0f,       0.0f, 1.0f,
 
-		0.5f, -0.5f, 0.0f,       1.0f, 1.0f,
-		-0.5f, 0.5f, 0.0f,       0.0f, 1.0f,
-		-0.5f, -0.5f, 0.0f,      0.0f, 0.0f
+		1.0f, -1.0f, 0.0f,       1.0f, 1.0f,
+		-1.0f, 1.0f, 0.0f,       0.0f, 1.0f,
+		-1.0f, -1.0f, 0.0f,      0.0f, 0.0f
 	};
 
 	//VAO

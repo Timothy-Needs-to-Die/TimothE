@@ -1,41 +1,34 @@
 #include "Transform.h"
 #include "imgui.h"
 
-Transform::Transform() 
-{
-	_position = { 0,0 };
-	_size = { 1, 1 };
-	_rotation = 0;
-	_transformationMatrix = glm::mat4(1.0f);
-	_transformationMatrix = glm::scale(_transformationMatrix, { _size, 0 });
-
-}
-
-Transform::Transform(glm::vec2 position, glm::vec2 size, float rotation) : _position(position), _size(size), _rotation(rotation)
+Transform::Transform()
 {
 	_transformationMatrix = glm::mat4(1.0f);
-	_transformationMatrix = glm::scale(_transformationMatrix, glm::vec3(_size, 0 ));
-	_transformationMatrix = glm::translate(_transformationMatrix, glm::vec3(position, 0));
+	_position = glm::vec2(640, 360);
+	_transformationMatrix = glm::translate(_transformationMatrix, glm::vec3(640, 360, 0));
 }
 
 void Transform::Translate(glm::vec2 newPos)
 {
-	_transformationMatrix = glm::translate(_transformationMatrix, glm::vec3(newPos.x, newPos.y, 0));
+	_transformationMatrix = glm::translate(_transformationMatrix, glm::vec3(newPos, 0));
 }
 
 void Transform::Scale(glm::vec2 newSize)
 {
-	_transformationMatrix = glm::scale(_transformationMatrix, { newSize, 0 });
+	_transformationMatrix = glm::scale(_transformationMatrix, { newSize, 1 });
 }
 
-void Transform::Rotate(float rotationAmount, glm::vec3 axis)
+void Transform::Rotate(float rotationAmount, glm::vec2 axis)
 {
-	_transformationMatrix = glm::rotate(_transformationMatrix, rotationAmount, axis);
+	_transformationMatrix = glm::rotate(_transformationMatrix, rotationAmount, { axis, 0 });
 }
 
 void Transform::OnStart()
 {
+}
 
+void Transform::OnUpdate()
+{
 }
 
 void Transform::EditorUI()
@@ -48,19 +41,19 @@ void Transform::EditorUI()
 	if (ImGui::InputFloat2("Position", pos))
 	{
 		// set the position on the game object
-		SetPosition(glm::vec2(pos[0], pos[1]));
+		Translate(glm::vec2(pos[0], pos[1]));
 	}
 
-	float* rot = new float[1]{ GetRotation() };
+	float* rot = new float[2]{ GetRotation() };
 	if (ImGui::InputFloat2("Rotation", rot))
 	{
-		SetRotation(rot[0]);
+		Rotate(0, glm::vec2(rot[0], rot[1]));
 	}
 
 	float* scale = new float[2]{ GetScale().x, GetScale().y };
 	if (ImGui::InputFloat2("Scale", scale))
 	{
-		SetScale(glm::vec2(scale[0], scale[1]));
+		Scale(glm::vec2(scale[0], scale[1]));
 	}
 }
 

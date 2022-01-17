@@ -26,7 +26,6 @@ class GameObject
 {
 public:
 	GameObject(string name, ObjectType tag);
-	GameObject(string name, ObjectType tag, Transform* transform);
 	~GameObject();
 	void InitVertexData();
 
