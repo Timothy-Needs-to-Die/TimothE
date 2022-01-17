@@ -126,34 +126,40 @@ void Editor::EditorImGui(Scene* currentScene)
 				}
 			}
 
-			// transform component
-			if (_pSelectedGameObject->GetTransform() != nullptr)
+			for (Component* c : _pSelectedGameObject->GetComponents())
 			{
-				ImGui::Text("Transform");
-
-				// get the position
-				float* pos = new float[2]{ _pSelectedGameObject->GetTransform()->GetPosition()->_x, _pSelectedGameObject->GetTransform()->GetPosition()->_y };
-				// create boxes to set the position
-				if (ImGui::InputFloat2("Position", pos))
-				{
-					// set the position on the game object
-					_pSelectedGameObject->GetTransform()->SetPosition(pos[0], pos[1]);
-				}
-
-				float* rot = new float[2]{ _pSelectedGameObject->GetTransform()->GetXrotation(), _pSelectedGameObject->GetTransform()->GetYrotation() };
-				if (ImGui::InputFloat2("Rotation", rot))
-				{
-					_pSelectedGameObject->GetTransform()->SetXrotation(rot[0]);
-					_pSelectedGameObject->GetTransform()->SetYrotation(rot[1]);
-				}
-
-				float* scale = new float[2]{ _pSelectedGameObject->GetTransform()->GetXScale(), _pSelectedGameObject->GetTransform()->GetYScale() };
-				if (ImGui::InputFloat2("Scale", scale))
-				{
-					_pSelectedGameObject->GetTransform()->SetXScale(scale[0]);
-					_pSelectedGameObject->GetTransform()->SetYScale(scale[1]);
-				}
+				c->EditorUI();
 			}
+
+			//// transform component
+			//if (_pSelectedGameObject->GetTransform() != nullptr)
+			//{
+			//	_pSelectedGameObject->GetTransform()->EditorUI();
+			//	//ImGui::Text("Transform");
+
+			//	//// get the position
+			//	//float* pos = new float[2]{ _pSelectedGameObject->GetTransform()->GetPosition()->_x, _pSelectedGameObject->GetTransform()->GetPosition()->_y };
+			//	//// create boxes to set the position
+			//	//if (ImGui::InputFloat2("Position", pos))
+			//	//{
+			//	//	// set the position on the game object
+			//	//	_pSelectedGameObject->GetTransform()->SetPosition(pos[0], pos[1]);
+			//	//}
+
+			//	//float* rot = new float[2]{ _pSelectedGameObject->GetTransform()->GetXrotation(), _pSelectedGameObject->GetTransform()->GetYrotation() };
+			//	//if (ImGui::InputFloat2("Rotation", rot))
+			//	//{
+			//	//	_pSelectedGameObject->GetTransform()->SetXrotation(rot[0]);
+			//	//	_pSelectedGameObject->GetTransform()->SetYrotation(rot[1]);
+			//	//}
+
+			//	//float* scale = new float[2]{ _pSelectedGameObject->GetTransform()->GetXScale(), _pSelectedGameObject->GetTransform()->GetYScale() };
+			//	//if (ImGui::InputFloat2("Scale", scale))
+			//	//{
+			//	//	_pSelectedGameObject->GetTransform()->SetXScale(scale[0]);
+			//	//	_pSelectedGameObject->GetTransform()->SetYScale(scale[1]);
+			//	//}
+			//}
 			
 			// add component
 			if (ImGui::CollapsingHeader("AddComponent"))
@@ -199,9 +205,16 @@ void Editor::EditorImGui(Scene* currentScene)
 				}
 				if (ImGui::CollapsingHeader("Graphics"))
 				{
+					string texPath = "lenna3.jpg";
+					ImGui::InputText("Texture path", &texPath);
 					if (ImGui::Button("Texture"))
 					{
-
+						Texture2D* tex = _pSelectedGameObject->GetTexture();
+						if (tex == nullptr)
+						{
+							_pSelectedGameObject->AddComponent(new Texture2D(), Component::Types::Transform_Type);
+							_pSelectedGameObject->LoadTexture((char*)texPath.c_str(), "Linear");
+						}
 					}
 				}
 			}
@@ -243,7 +256,6 @@ void Editor::EditorImGui(Scene* currentScene)
 			if (ImGui::Button("Add Object"))
 			{
 				GameObject* obj = new GameObject(name, tag);
-				obj->LoadTexture("lenna3.jpg", "linear");
 				currentScene->AddGameObject(obj);
 				Console::Print("Object added: " + name);
 				name = "New GameObject";

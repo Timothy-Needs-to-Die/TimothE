@@ -1,4 +1,5 @@
 #include "Transform.h"
+#include "imgui.h"
 
 Transform::Transform() : Component()
 {
@@ -33,6 +34,34 @@ void Transform::OnUpdate()
 void Transform::OnEnd()
 {
 
+}
+
+void Transform::EditorUI()
+{
+	ImGui::Text("Transform");
+
+	// get the position
+	float* pos = new float[2]{ GetPosition()->_x, GetPosition()->_y };
+	// create boxes to set the position
+	if (ImGui::InputFloat2("Position", pos))
+	{
+		// set the position on the game object
+		SetPosition(pos[0], pos[1]);
+	}
+
+	float* rot = new float[2]{ GetXrotation(), GetYrotation() };
+	if (ImGui::InputFloat2("Rotation", rot))
+	{
+		SetXrotation(rot[0]);
+		SetYrotation(rot[1]);
+	}
+
+	float* scale = new float[2]{ GetXScale(), GetYScale() };
+	if (ImGui::InputFloat2("Scale", scale))
+	{
+		SetXScale(scale[0]);
+		SetYScale(scale[1]);
+	}
 }
 
 void Transform::SetPosition(float x, float y)

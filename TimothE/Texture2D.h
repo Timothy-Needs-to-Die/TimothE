@@ -23,7 +23,9 @@ public:
 	void OnEnd() override;
 
 	int GetCategory() const override { return Graphics_Category; };
-	int GetType() const override { return Transform_Type; };
+	int GetType() const override { return Texture_Type; };
+
+	void EditorUI() override;
 
 	bool Load(char* path, string mode);
 	void SetFilterMode(string mode);

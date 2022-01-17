@@ -69,6 +69,8 @@ public:
 	//checks if item is in catagory and type enums
 	inline bool IsInCategory(Categories category) { return GetCategory() & category; }
 	inline bool IsInTypes(Types type) { return GetType() & type; }
+
+	virtual void EditorUI() {};
 protected:
 	//variable for type and catagories to be assigned to
 	Types _type;
