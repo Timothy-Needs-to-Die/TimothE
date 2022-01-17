@@ -53,6 +53,7 @@
     <ClInclude Include="MemoryManager.h" />
     <ClInclude Include="MouseEvent.h" />
     <ClInclude Include="Renderer.h" />
+    <ClInclude Include="ResourceManager.h" />
     <ClInclude Include="SOIL\SOIL2.h">
       <Filter>SOIL</Filter>
     </ClInclude>
@@ -112,7 +113,6 @@
     <ClInclude Include="Transform.h" />
     <ClInclude Include="UID.h" />
     <ClInclude Include="Window.h" />
-    <ClInclude Include="ResourceManager.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Application.cpp" />
