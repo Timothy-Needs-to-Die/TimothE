@@ -114,6 +114,7 @@
     <ClInclude Include="StreamFile.h" />
     <ClInclude Include="Serializable.h" />
     <ClInclude Include="AddressTranslator.h" />
+    <ClInclude Include="ComponentFactory.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Application.cpp" />

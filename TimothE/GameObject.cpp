@@ -1,6 +1,7 @@
 #include "GameObject.h"
 #include "Texture2D.h"
 #include "Stream.h"
+#include "ComponentFactory.h"
 #include "imgui.h"
 
 GameObject::GameObject(string name, ObjectType tag, Texture2D* texture)
@@ -90,39 +91,9 @@ void GameObject::DisplayInEditor()
 {
 	ImGui::Text(_name.c_str());
 
-
-	Transform* pTransform = (Transform*)GetComponent(Component::Transform_Type);
-	ImGui::Text("Transform Component");
-	
-	ImGui::Text("Position");
-	ImGui::SameLine();
-	ImGui::PushItemWidth(50.0f);
-	ImGui::DragFloat("X: ", &pTransform->GetPosition()->_x, 1.0f, -100000.0f, 100000.0f, ".%2d", 1.0f);
-	ImGui::SameLine();
-	ImGui::DragFloat("Y: ", &pTransform->GetPosition()->_y, 1.0f, -100000.0f, 100000.0f, ".%2d", 1.0f);
-	ImGui::PopItemWidth();
-
-	ImGui::NewLine();
-
-
-	ImGui::Text("Rotation");
-	ImGui::SameLine();
-	float xRot = pTransform->GetXrotation();
-	ImGui::PushItemWidth(50.0f);
-	ImGui::DragFloat("X: ", &xRot, 1.0f, -100000.0f, 100000.0f, ".%2d", 1.0f);
-	ImGui::SameLine();
-	//ImGui::DragFloat("Y: ", &pTransform->Get()->_y, 1.0f, -100000.0f, 100000.0f, ".%2d", 1.0f);
-	pTransform->SetXrotation(xRot);
-
-	ImGui::NewLine();
-
-	ImGui::Text("Scale");
-	ImGui::SameLine();
-	ImGui::PushItemWidth(50.0f);
-	ImGui::DragFloat("X: ", &pTransform->GetScale()->_x, 1.0f, 0.0f, 100000.0f, ".%2d", 1.0f);
-	ImGui::SameLine();
-	ImGui::PushItemWidth(50.0f);
-	ImGui::DragFloat("Y: ", &pTransform->GetScale()->_y, 1.0f, 0.0f, 100000.0f, ".%2d", 1.0f);
+	for (auto& comp : _pComponents) {
+		comp->DrawEditorUI();
+	}
 
 }
 
@@ -136,6 +107,11 @@ bool GameObject::Write(IStream& stream) const
 	//Writes number of components
 	WriteInt(stream, _pComponents.size());
 
+	for (int i = 0; i < _pComponents.size(); ++i) 
+	{
+		_pComponents[i]->Write(stream);
+	}
+
 	//TODO: GameObjects need a child system
 
 	return true;
@@ -147,7 +123,23 @@ bool GameObject::Read(IStream& stream)
 	_name = ReadString(stream);
 
 	//Reserve the amount of components
-	_pComponents.reserve(ReadInt(stream));
+	int noComponents = ReadInt(stream);
+	_pComponents.reserve(noComponents);
+
+	for (int i = 0; i < noComponents; ++i) {
+		Component::Types type = (Component::Types)ReadInt(stream);
+		Component::Categories cat = (Component::Categories)ReadInt(stream);
+
+		//Make instance of component
+		Component* c = ComponentFactor::GetComponent(type);
+
+
+		//Read instance
+		c->Read(stream);
+		//Set component
+
+		_pComponents[i] = c;
+	}
 
 	return true;
 }

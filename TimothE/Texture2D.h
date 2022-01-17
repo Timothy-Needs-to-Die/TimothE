@@ -29,7 +29,28 @@ public:
 	void SetFilterMode(string mode);
 
 	GLuint GetID() const { return _ID; }
+
+	// Inherited via ISerializable
+	virtual bool Write(IStream& stream) const override {
+		Component::Write(stream);
+
+		return true;
+
+	}
+	virtual bool Read(IStream& stream) override {
+		Component::Read(stream);
+
+
+		return true;
+
+	}
+	virtual void Fixup() override {
+
+	}
 private:
 	string _UID;
-	GLuint _ID; // Texture ID
+	GLuint _ID;
+	// Inherited via Component
+	virtual void DrawEditorUI() override;
+	// Texture ID
 };
