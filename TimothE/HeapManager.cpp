@@ -52,6 +52,7 @@ void HeapManager::DebugAll()
 		it->second->CheckIntegrity();
 	}
 
+	//Default heap debug and integrity
 	_defaultHeap.CheckIntegrity();
 }
 

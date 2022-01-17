@@ -1,4 +1,5 @@
 #include "Transform.h"
+#include "imgui.h"
 
 Transform::Transform() : Component()
 {
@@ -44,4 +45,39 @@ void Transform::SetPosition(float x, float y)
 void Transform::SetXrotation(float xRot)
 {
 	_xRot = xRot;
+}
+
+void Transform::DrawEditorUI()
+{
+	ImGui::Text("Transform Component");
+
+	ImGui::Text("Position");
+	ImGui::SameLine();
+	ImGui::PushItemWidth(50.0f);
+	ImGui::DragFloat("X: ", &_xPos, 1.0f, -100000.0f, 100000.0f, ".%2d", 1.0f);
+	ImGui::SameLine();		  
+	ImGui::DragFloat("Y: ", &_yPos, 1.0f, -100000.0f, 100000.0f, ".%2d", 1.0f);
+	ImGui::PopItemWidth();
+
+	ImGui::NewLine();
+
+
+	ImGui::Text("Rotation");
+	ImGui::SameLine();
+	ImGui::PushItemWidth(50.0f);
+	ImGui::DragFloat("#X: ", &_xRot, 1.0f, -100000.0f, 100000.0f, ".%2d", 1.0f);
+	ImGui::SameLine();
+	//ImGui::DragFloaht("Y: ", &pTransform->Get()->_y, 1.0f, -100000.0f, 100000.0f, ".%2d", 1.0f);
+
+	ImGui::NewLine();
+
+	ImGui::Text("Scale");
+	ImGui::SameLine();
+	ImGui::PushItemWidth(50.0f);
+	ImGui::DragFloat("##X: ", &_scaleX, 1.0f, 0.0f, 100000.0f, ".%2d", 1.0f);
+	ImGui::SameLine();
+	ImGui::PushItemWidth(50.0f);
+	ImGui::DragFloat("##Y: ", &_scaleY, 1.0f, 0.0f, 100000.0f, ".%2d", 1.0f);
+
+	std::cout << "X: " << _xPos << " Y: " << _yPos << std::endl;
 }

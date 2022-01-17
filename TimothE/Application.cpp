@@ -20,6 +20,7 @@
 #include "Texture2D.h"
 
 
+
 #define BIND_EVENT_FN(x) std::bind(&Application::x, this, std::placeholders::_1)
 
 void Application::Init(bool devMode)
@@ -68,11 +69,14 @@ void Application::GameLoop()
 
 	_audio = new AudioEngine;
 
+	_pCurrentScene->LoadScene("scene1.scene");
 
 	//Create some heaps
 	Heap* g = HeapManager::CreateHeap("GameObject", "Root");
 	Heap* c = HeapManager::CreateHeap("Cameras", "GameObject");
 	HeapManager::CreateHeap("Enemies", "GameObject");
+
+
 
 	//Creates some allocations. TestArr will not be deleted to test the memory leak detector
 	int* testArr = new(g) int[1024];
@@ -122,6 +126,8 @@ void Application::GameLoop()
 	//Prints the memory status and reports and memory leaks
 	HeapManager::PrintInfo();
 	HeapManager::ReportMemoryLeaks(memBookmark);
+
+	_pCurrentScene->SaveScene("scene1.scene");
 }
 
 
@@ -163,7 +169,7 @@ void Application::GameUpdate(float dt)
 void Application::ImGUISwitchRender()
 {
 	{
-		ImGui::Begin("Application Mode");
+		ImGui::Begin("#Application Mode");
 
 		if (ImGui::Button("Editor", ImVec2(100.0f, 30.0f))) {
 			_inEditorMode = true;

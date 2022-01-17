@@ -6,6 +6,7 @@ class GameObject;
 class TestComponent : public Component
 {
 public:
+	TestComponent() {}
 	COMPONENT_CLASS_CATEGORY(Debug_Category);
 	COMPONENT_CLASS_TYPE(Test_Type);
 	TestComponent(GameObject* _mParentObject);
@@ -23,5 +24,23 @@ public:
 	GameObject* GetGameObject() {
 		return _parentObject;
 	}
+
+	// Inherited via ISerializable
+	virtual bool Write(IStream& stream) const override {
+		Component::Write(stream);
+
+		return true;
+	}
+	virtual bool Read(IStream& stream) override {
+		Component::Read(stream);
+
+		return true;
+	}
+	virtual void Fixup() override {
+
+	}
+
+	// Inherited via Component
+	virtual void DrawEditorUI() override;
 };
 

@@ -42,5 +42,10 @@ void TestComponent::Test(int x,int y)
 
 }
 
+void TestComponent::DrawEditorUI()
+{
+
+}
+
 
 

@@ -1,5 +1,8 @@
 #include "GameObject.h"
 #include "Texture2D.h"
+#include "Stream.h"
+#include "ComponentFactory.h"
+#include "imgui.h"
 
 GameObject::GameObject(string name, ObjectType tag, Texture2D* texture)
 {
@@ -20,6 +23,18 @@ GameObject::GameObject(string name, ObjectType tag, Texture2D* texture, Transfor
 	AddComponent(transform, Component::Types::Transform_Type);
 	AddComponent(texture, Component::Types::Texture_Type);
 	Start();
+}
+
+GameObject::GameObject() : _name("New GameObject")
+{
+	Transform* pTransform = new Transform();
+	AddComponent(pTransform, Component::Transform_Type);
+}
+
+GameObject::GameObject(string name) : _name(name)
+{
+	Transform* pTransform = new Transform();
+	AddComponent(pTransform, Component::Transform_Type);
 }
 
 GameObject::~GameObject()
@@ -70,6 +85,68 @@ void GameObject::LoadTexture(char* path, string mode)
 	{
 		GetTexture()->Load(path, mode);
 	}
+}
+
+void GameObject::DisplayInEditor()
+{
+	ImGui::Text(_name.c_str());
+
+	for (auto& comp : _pComponents) {
+		comp->DrawEditorUI();
+	}
+
+}
+
+bool GameObject::Write(IStream& stream) const
+{
+	//TODO: Implement writing and reading component information
+
+	//Writes name to serialized object
+	WriteString(stream, _name);
+
+	//Writes number of components
+	WriteInt(stream, _pComponents.size());
+
+	for (int i = 0; i < _pComponents.size(); ++i) 
+	{
+		_pComponents[i]->Write(stream);
+	}
+
+	//TODO: GameObjects need a child system
+
+	return true;
+}
+
+bool GameObject::Read(IStream& stream)
+{
+	//Sets our name
+	_name = ReadString(stream);
+
+	//Reserve the amount of components
+	int noComponents = ReadInt(stream);
+	_pComponents.reserve(noComponents);
+
+	for (int i = 0; i < noComponents; ++i) {
+		Component::Types type = (Component::Types)ReadInt(stream);
+		Component::Categories cat = (Component::Categories)ReadInt(stream);
+
+		//Make instance of component
+		Component* c = ComponentFactor::GetComponent(type);
+
+
+		//Read instance
+		c->Read(stream);
+		//Set component
+
+		_pComponents[i] = c;
+	}
+
+	return true;
+}
+
+void GameObject::Fixup()
+{
+
 }
 
 Component* GameObject::GetComponent(Component::Types componentType)

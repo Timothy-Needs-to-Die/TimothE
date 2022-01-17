@@ -5,7 +5,7 @@ Editor::Editor(Window* pWindow)
 	: _pWindow(pWindow)
 {
 	// vertex attributes for a quad that fills the editor screen space in Normalized Device Coordinates.
-	float* quadVertices = new float[24] {
+	float* quadVertices = new float[24]{
 		// positions   // texCoords
 		-0.65f,  -0.6f,  0.0f, 0.0f,
 		-0.65f,   0.82f,	0.0f, 1.0f,
@@ -23,7 +23,7 @@ Editor::Editor(Window* pWindow)
 	_pScreenShader = new Shader("fbVert.vs", "fbFrag.fs");
 
 	//Creates the editor framebuffer
-	_pEditorFramebuffer = new Framebuffer(_pScreenShader, quadVertices);
+	_pEditorFramebuffer = new Framebuffer(_pScreenShader);
 }
 
 Editor::~Editor()
@@ -37,15 +37,24 @@ void Editor::EditorLoop(Scene* currentScene, float dt, bool& editorMode)
 {
 	EditorStartRender();
 
-	EditorRender();
-
 	//Handle unbinding the editor frame buffer and drawing it's contents
+	glDisable(GL_DEPTH_TEST | GL_COLOR_BUFFER_BIT);
 	_pEditorFramebuffer->UnbindFramebuffer();
-	glDisable(GL_DEPTH_TEST);
-	_pEditorFramebuffer->DrawFramebuffer();
+
+	ImGuiManager::ImGuiNewFrame();
+
+	ImGui::Begin("Scene Window");
+
+	ImGui::GetWindowDrawList()->AddImage(
+		(void*)_pEditorFramebuffer->GetTexture(),
+		ImVec2(ImGui::GetCursorScreenPos()),
+		ImVec2(ImGui::GetCursorScreenPos().x + 800,
+			ImGui::GetCursorScreenPos().y + 450), ImVec2(0, 1), ImVec2(1, 0));
+
+	ImGui::End();
 
 	//Render Here
-	ImGuiManager::ImGuiNewFrame();
+	
 	EditorImGui(currentScene);
 	ImGUISwitchRender(editorMode);
 	ImGuiManager::ImGuiEndFrame();
@@ -70,21 +79,44 @@ void Editor::EditorImGui(Scene* currentScene)
 	{
 		ImGui::Begin("Inspector");
 
+		if(_pSelectedGameObject != nullptr)
+			_pSelectedGameObject->DisplayInEditor();
+
 		ImGui::End();
 	}
 
 	//Hierarchy
 	{
 		ImGui::Begin("Hierarchy");
+
+		bool openMenu = ImGui::Button("New Object");
+		if (openMenu) {
+			ImGui::OpenPopup("Create Objects");
+		}
+		if (ImGui::BeginPopup("Create Objects")) {
+			if (ImGui::MenuItem("New GameObject")) {
+				GameObject* obj = currentScene->AddGameObject(new GameObject("New Object"));
+				_pSelectedGameObject = obj;
+			}
+
+			ImGui::EndPopup();
+		}
+
 		static int index = 0;
 		vector<GameObject*> objects = currentScene->GetGameObjects();
 		if (!objects.empty())
 		{
 			for (int i = 0; i < objects.size(); i++)
 			{
-				ImGui::RadioButton(objects[i]->GetName().c_str(), &index, i); ImGui::SameLine();
+				if (ImGui::RadioButton(objects[i]->GetName().c_str(), &index, i)) {
+					std::cout << "Set I" << std::endl;
+					//index = i;
+					_pSelectedGameObject = objects[i];
+				}
+				ImGui::SameLine();
 				if (ImGui::Button("Delete object"))
 				{
+					if (objects[i] == _pSelectedGameObject) _pSelectedGameObject = nullptr;
 					currentScene->RemoveGameObject(objects[i]);
 					objects = currentScene->GetGameObjects();
 				}

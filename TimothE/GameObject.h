@@ -6,7 +6,7 @@ class Component;
 #include "Transform.h"
 #include "UID.h"
 #include "TestComponent.h"
-#include "Transform.h"
+#include "Serializable.h"
 
 class Texture2D;
 
@@ -21,9 +21,11 @@ enum class ObjectType
 	PickUp
 };
 
-class GameObject
+class GameObject : public ISerializable
 {
 public:
+	GameObject();
+	GameObject(string name);
 	GameObject(string name, ObjectType tag, Texture2D* texture);
 	GameObject(string name, ObjectType tag, Texture2D* texture, Transform* transform);
 	~GameObject();
@@ -47,6 +49,13 @@ public:
 
 	void LoadTexture(char* path, string mode);
 	void SetShader(int id) { _shaderID = id; };
+
+	void DisplayInEditor();
+
+	// Inherited via ISerializable
+	virtual bool Write(IStream& stream) const override;
+	virtual bool Read(IStream& stream) override;
+	virtual void Fixup() override;
 private:
 	string _UID;
 	string _name;
@@ -55,4 +64,6 @@ private:
 
 	int _textureID = 0;
 	int _shaderID = 0;
+
+
 };

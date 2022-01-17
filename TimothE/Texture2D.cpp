@@ -60,3 +60,8 @@ void Texture2D::SetFilterMode(string mode)
 		cout << "Nearest filter mode" << endl;
 	}
 }
+
+void Texture2D::DrawEditorUI()
+{
+
+}

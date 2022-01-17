@@ -2,6 +2,9 @@
 
 #include <string>
 #include <iostream>
+#include "Serializable.h"
+#include "Stream.h"
+
 /// <summary>
 /// 
 /// COMPONENT_CLASS_CATEGOTY(Debug);
@@ -19,8 +22,7 @@
 #define BIT(x) (1<<x)
 #define COMPONENT_CLASS_CATEGORY(category) virtual int GetCategory() const override {return category;}
 #define COMPONENT_CLASS_TYPE(type) virtual int GetType() const override {return type;}
-
-class Component
+class Component : ISerializable
 {
 public:
 	//enum for types of components
@@ -58,6 +60,8 @@ public:
 	virtual void OnEnd() = 0;
 	//virtual void GetComponent() = 0;
 
+	virtual void DrawEditorUI() = 0;
+
 	//gets the component type and catagory 
 	virtual int GetCategory() const = 0 ;
 	virtual int GetType() const = 0 ;
@@ -69,10 +73,36 @@ public:
 	//checks if item is in catagory and type enums
 	inline bool IsInCategory(Categories category) { return GetCategory() & category; }
 	inline bool IsInTypes(Types type) { return GetType() & type; }
+
+	// Inherited via ISerializable
+	virtual bool Write(IStream& stream) const override {
+		//Write type
+		WriteInt(stream, _type);
+
+		//Write category
+		WriteInt(stream, _category);
+
+		return true;
+	}
+	virtual bool Read(IStream& stream) override {
+		//Read type
+		//_type = (Types)ReadInt(stream);
+
+		//Read Category //Not sure if this will work? Testing required
+		//_category = (Categories)ReadInt(stream);
+
+
+		return true;
+	}
+	virtual void Fixup() override {
+
+	}
 protected:
 	//variable for type and catagories to be assigned to
 	Types _type;
 	Categories _category;
+
+
 };
 
 
