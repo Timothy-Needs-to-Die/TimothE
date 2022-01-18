@@ -7,6 +7,8 @@
 #include "Shader.h"
 #include "Scene.h"
 
+#define CONTENT_BROWSER_DIRECTORY "./Resources" //sets file directory for the content browser
+#define CONSOLE_MAX_MESSAGES 500
 class Console
 {
 public:
@@ -52,5 +54,8 @@ private:
 	char* _pNotesBuffer;
 
 	GameObject* _pSelectedGameObject = nullptr;
+
+	void SearchFileDirectory();
+	string _mCurrentDir = CONTENT_BROWSER_DIRECTORY;
 };
 

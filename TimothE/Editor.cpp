@@ -4,6 +4,11 @@
 
 #include "misc/cpp/imgui_stdlib.h"
 #include "misc/cpp/imgui_stdlib.cpp"
+#include "dirent.h"
+
+DIR* _mDirectory;
+struct dirent* _mDirent;
+vector<string> _mDirectoryList;
 
 vector<string> Console::output = vector<string>();
 
@@ -38,6 +43,7 @@ Editor::~Editor()
 void Editor::EditorLoop(Scene* currentScene, float dt, bool& editorMode, bool& paused)
 {
 	EditorStartRender();
+	EditorRender();
 
 	//Handle unbinding the editor frame buffer and drawing it's contents
 	glDisable(GL_DEPTH_TEST | GL_COLOR_BUFFER_BIT);
@@ -310,6 +316,22 @@ void Editor::EditorImGui(Scene* currentScene)
 	{
 		ImGui::Begin("Content Browser");
 
+		//adds back button which removes last directory and updates options
+		if (ImGui::Button("Back"))
+		{
+			_mCurrentDir = _mCurrentDir.substr(0, _mCurrentDir.find_last_of("\\/"));
+			SearchFileDirectory();
+		}
+
+		//for each item in directory create new button
+		for (int i = 2; i < _mDirectoryList.size(); i++) {
+			//adds button with directory name which when pressed adds its name to directory string and updates buttons
+			if (ImGui::Button(_mDirectoryList[i].c_str()))
+			{
+				_mCurrentDir += "/" + _mDirectoryList[i];
+				SearchFileDirectory();
+			}
+		}
 		ImGui::End();
 	}
 
@@ -369,7 +391,31 @@ void Editor::EditorUpdate(Scene* currentScene, float dt)
 
 void Console::Print(string message)
 {
+	if (output.size() > CONSOLE_MAX_MESSAGES)
+	{
+		output.erase(output.begin());
+	}
 	output.push_back(message);
 
 	// TODO: maybe add a way to remove old messages after size exceeded max size to reduce memory usage for unneeded messages
+}
+
+//creates list of directorys for the content browser
+void Editor::SearchFileDirectory()
+{
+	//clears old directory list
+	_mDirectoryList.clear();
+	std::cout << _mCurrentDir << std::endl;
+	//opens directory with current directory string and adds them to a list, closes directory finishing update
+	_mDirectory = opendir(_mCurrentDir.c_str());
+	if (_mDirectory)
+	{
+		while ((_mDirent = readdir(_mDirectory)) != NULL)
+		{
+			_mDirectoryList.push_back(_mDirent->d_name);
+	
+			std::cout << "Content Browser loaded: " << _mDirent->d_name << std::endl;
+		}
+		closedir(_mDirectory);
+	}
 }
