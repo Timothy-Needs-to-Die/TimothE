@@ -36,6 +36,7 @@ public:
 		PathFinding_Type = BIT(5),
 		GOAP_Type = BIT(6),
 		Texture_Type = BIT(7),
+		Sprite_Type = BIT(8),
 	};
 
 	//enums for different catagories of components
