@@ -19,6 +19,7 @@
 
 #include "Texture2D.h"
 #include "Button.h"
+#include "ResourceManager.h"
 
 #define BIND_EVENT_FN(x) std::bind(&Application::x, this, std::placeholders::_1)
 
@@ -42,6 +43,8 @@ void Application::Init(bool devMode)
 	Renderer::Initialize();
 	HeapManager::Init();
 
+	InitResources();
+
 	_devMode = devMode;
 
 	if (!glfwInit()) {
@@ -55,8 +58,6 @@ void Application::Init(bool devMode)
 
 	_pWindow->SetEventCallback(BIND_EVENT_FN(OnGameEvent));
 	_pWindow->CreateWindow();
-
-
 
 	GLint GlewInitResult = glewInit();
 	if (GlewInitResult != GLEW_OK)
@@ -283,4 +284,9 @@ bool Application::OnGameWindowMouseMovedEvent(MouseMovedEvent& e)
 {
 	Input::SetMousePosition(e.GetX(), e.GetY());
 	return false;
+}
+
+void Application::InitResources()
+{
+	//INITIALIZE ALL RESOURCES HERE
 }
