@@ -325,12 +325,20 @@ void Editor::EditorImGui(Scene* currentScene)
 
 		//for each item in directory create new button
 		for (int i = 2; i < _mDirectoryList.size(); i++) {
+			//add image for each directory
+			ImGui::GetWindowDrawList()->AddImage(
+		(void*)_pEditorFramebuffer->GetTexture(),
+		ImVec2(ImGui::GetCursorScreenPos().x+0, ImGui::GetCursorScreenPos().y),
+		ImVec2(ImGui::GetCursorScreenPos().x + 100,
+			ImGui::GetCursorScreenPos().y + 100), ImVec2(0, 1), ImVec2(1, 0));
+
 			//adds button with directory name which when pressed adds its name to directory string and updates buttons
 			if (ImGui::Button(_mDirectoryList[i].c_str()))
 			{
 				_mCurrentDir += "/" + _mDirectoryList[i];
 				SearchFileDirectory();
 			}
+			ImGui::Dummy(ImVec2(0, 80.0f));
 		}
 		ImGui::End();
 	}
