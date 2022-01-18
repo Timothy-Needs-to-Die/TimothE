@@ -67,9 +67,8 @@ public:
 	void SetShader(Shader* shader);
 
 	// Inherited via ISerializable
-	virtual bool Write(IStream& stream) const override;
-	virtual bool Read(IStream& stream) override;
-	virtual void Fixup() override;
+	virtual bool SaveState(IStream& stream) const override;
+	virtual bool LoadState(IStream& stream) override;
 	unsigned int GetVAO() const { return _vao; }
 private:
 	string _UID;

@@ -31,23 +31,20 @@ public:
 	GLuint GetID() const { return _ID; }
 
 	// Inherited via ISerializable
-	virtual bool Write(IStream& stream) const override {
-		Component::Write(stream);
+	virtual bool SaveState(IStream& stream) const override {
+		Component::SaveState(stream);
 
 		WriteString(stream, _filePath);
 
 		return true;
 
 	}
-	virtual bool Read(IStream& stream) override {
-		Component::Read(stream);
+	virtual bool LoadState(IStream& stream) override {
+		Component::LoadState(stream);
 
 		Load(ReadString(stream), "");
 
 		return true;
-
-	}
-	virtual void Fixup() override {
 
 	}
 

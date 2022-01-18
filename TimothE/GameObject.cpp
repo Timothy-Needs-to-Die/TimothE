@@ -63,7 +63,6 @@ void GameObject::InitVertexData()
 	// Give our vertices to OpenGL.
 	glBufferData(GL_ARRAY_BUFFER, sizeof(vertexData), vertexData, GL_STATIC_DRAW);
 
-	//glBindBuffer(GL_ARRAY_BUFFER, vertexbuffer); //apparently wasnt needed???? -Lucy
 	glVertexAttribPointer(
 		0,                  // attribute 0. No particular reason for 0, but must match the layout in the shader.
 		3,                  // size
@@ -121,15 +120,11 @@ void GameObject::LoadTexture(char* path, string mode)
 		_textureID = pTexture->GetID();
 		AddComponent(pTexture);
 		_textureID = pTexture->GetID();
-
-		std::cout << "Has a Texture" << std::endl;
 	}
 	else
 	{
 		pTexture->Load(path, mode);
 		_textureID = pTexture->GetID();
-
-		std::cout << "Texture created" << std::endl;
 	}
 }
 
@@ -159,10 +154,8 @@ void GameObject::SetShader(Shader* shader)
 	_shaderID = _pShader->GetProgramID();
 }
 
-bool GameObject::Write(IStream& stream) const
+bool GameObject::SaveState(IStream& stream) const
 {
-	//TODO: Implement writing and reading component information
-
 	//Writes name to serialized object
 	WriteString(stream, _name);
 
@@ -177,7 +170,7 @@ bool GameObject::Write(IStream& stream) const
 
 	for (int i = 0; i < _pComponents.size(); ++i)
 	{
-		_pComponents[i]->Write(stream);
+		_pComponents[i]->SaveState(stream);
 	}
 
 	//TODO: GameObjects need a child system
@@ -185,7 +178,7 @@ bool GameObject::Write(IStream& stream) const
 	return true;
 }
 
-bool GameObject::Read(IStream& stream)
+bool GameObject::LoadState(IStream& stream)
 {
 	//Sets our name
 	_name = ReadString(stream);
@@ -210,7 +203,7 @@ bool GameObject::Read(IStream& stream)
 		}
 
 		//Read instance
-		c->Read(stream);
+		c->LoadState(stream);
 
 		//Set component
 		AddComponent(c);
@@ -222,11 +215,6 @@ bool GameObject::Read(IStream& stream)
 	}
 
 	return true;
-}
-
-void GameObject::Fixup()
-{
-
 }
 
 void GameObject::SetName(string name)
@@ -242,7 +230,7 @@ void GameObject::SetType(ObjectType tag)
 void GameObject::SetDefaultShader()
 {
 	_pShader = new Shader("VertexShader.vert", "FragmentShader.frag");
-	_shaderID = _pShader->GetProgramID();
+	SetShader(_pShader);
 }
 
 template<typename T>

@@ -78,7 +78,7 @@ public:
 	inline bool IsInTypes(Types type) { return GetType() & type; }
 
 	// Inherited via ISerializable
-	virtual bool Write(IStream& stream) const override {
+	virtual bool SaveState(IStream& stream) const override {
 		//Write type
 		WriteInt(stream, _type);
 
@@ -87,7 +87,7 @@ public:
 
 		return true;
 	}
-	virtual bool Read(IStream& stream) override {
+	virtual bool LoadState(IStream& stream) override {
 		//Read type
 		//_type = (Types)ReadInt(stream);
 
@@ -96,9 +96,6 @@ public:
 
 
 		return true;
-	}
-	virtual void Fixup() override {
-
 	}
 protected:
 	//variable for type and catagories to be assigned to

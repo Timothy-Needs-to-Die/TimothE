@@ -3,6 +3,8 @@
 
 Transform::Transform()
 {
+	SetType(Component::Transform_Type);
+	SetCategory(Component::Transform_Category);
 	_transformationMatrix = glm::mat4(1.0f);
 	_position = glm::vec2(640, 360);
 	_transformationMatrix = glm::scale(_transformationMatrix, { 1.0f, 1.0f, 1 });

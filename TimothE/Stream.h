@@ -2,6 +2,8 @@
 
 #include <string>
 
+#include "glm.hpp"
+
 class IStream {
 public:
 	virtual ~IStream() {};
@@ -17,10 +19,12 @@ int ReadInt(IStream& stream);
 
 float ReadFloat(IStream& stream);
 
+glm::vec2 ReadVec2(IStream& stream);
+
 
 std::string ReadString(IStream& stream);
 
 bool WriteInt(IStream& stream, int n);
-
+bool WriteVec2(IStream& stream, glm::vec2 v);
 bool WriteFloat(IStream& stream, float f);
 bool WriteString(IStream& stream, const std::string& str);
