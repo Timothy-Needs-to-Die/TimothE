@@ -323,6 +323,26 @@ void Editor::EditorImGui(Scene* currentScene)
 	{
 		ImGui::Begin("Content Browser");
 
+		if (ImGui::BeginPopupContextWindow())
+		{
+			if (ImGui::CollapsingHeader("New Script"))
+			{
+				static string name = "New Script";
+				if (ImGui::InputText(" ", &name, ImGuiInputTextFlags_CharsNoBlank)) {}
+				if (ImGui::MenuItem("Add"))
+				{
+					std::ofstream cppStream(_mCurrentDir + "/" + name + ".cpp");
+					cppStream.close();
+					std::ofstream hStream(_mCurrentDir + "/" + name + ".h");
+					hStream.close();
+					SearchFileDirectory();
+				}
+				
+			}
+			
+			ImGui::EndPopup();
+		}
+
 		//adds back button which removes last directory and updates options
 		if (ImGui::Button("Back"))
 		{
@@ -405,6 +425,10 @@ void Console::Print(string message)
 	output.push_back(message);
 
 	// TODO: maybe add a way to remove old messages after size exceeded max size to reduce memory usage for unneeded messages
+}
+
+void Editor::CreateFileInContentBrowser()
+{
 }
 
 //creates list of directorys for the content browser

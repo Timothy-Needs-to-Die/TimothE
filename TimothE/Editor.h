@@ -54,6 +54,7 @@ private:
 
 	GameObject* _pSelectedGameObject = nullptr;
 
+	void CreateFileInContentBrowser();
 	void SearchFileDirectory();
 	string _mCurrentDir = CONTENT_BROWSER_DIRECTORY;
 };
