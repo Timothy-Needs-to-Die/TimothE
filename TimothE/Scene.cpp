@@ -2,7 +2,6 @@
 #include "Scene.h"
 #include <algorithm>
 #include "Button.h"
-
 #include "AddressTranslator.h"
 #include "StreamFile.h"
 
@@ -24,6 +23,7 @@ Scene::Scene(string name)
 
 	GameObject* _pTestObject = new GameObject("LENNA!", ObjectType::Player);
 	_pTestObject->LoadTexture("lenna3.jpg", "linear");
+	//_pTestObject->AddComponent<BoxColliderComponent>(new BoxColliderComponent());
 
 	//Orde of transformations matters!!!!!
 	//First we Translate

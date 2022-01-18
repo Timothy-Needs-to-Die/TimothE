@@ -4,6 +4,7 @@
 #include <string>
 #include "GameObject.h"
 #include "Renderer.h"
+#include "ColliderComponent.h"
 
 //  O.o
 using namespace std;

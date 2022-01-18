@@ -118,6 +118,7 @@
     <ClInclude Include="UID.h" />
     <ClInclude Include="Window.h" />
     <ClInclude Include="Button.h" />
+    <ClInclude Include="BoxColliderComponent.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="AddressTranslator.cpp" />
@@ -163,6 +164,7 @@
     <ClCompile Include="Transform.cpp" />
     <ClCompile Include="Window.cpp" />
     <ClCompile Include="Button.cpp" />
+    <ClCompile Include="BocColliderComponenet.cpp" />
   </ItemGroup>
   <ItemGroup>
     <None Include="FragmentShader.frag" />

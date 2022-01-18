@@ -1,10 +1,10 @@
-
-
 #pragma once
 #include <string>
 #include <iostream>
 #include "Serializable.h"
 #include "Stream.h"
+
+class GameObject;
 
 /// <summary>
 ///
@@ -24,6 +24,8 @@
 class Component : ISerializable
 {
 public:
+	GameObject* gameobject;
+
 	//enum for types of components
 	enum Types
 	{
@@ -96,6 +98,4 @@ protected:
 	//variable for type and categories to be assigned to
 	Types _type;
 	Categories _category;
-
-
 };
