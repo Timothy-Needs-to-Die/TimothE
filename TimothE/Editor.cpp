@@ -43,7 +43,6 @@ Editor::~Editor()
 void Editor::EditorLoop(Scene* currentScene, float dt, bool& editorMode, bool& paused)
 {
 	EditorStartRender();
-
 	EditorRender();
 
 	//Handle unbinding the editor frame buffer and drawing it's contents
@@ -399,6 +398,10 @@ void Editor::EditorUpdate(Scene* currentScene, float dt)
 
 void Console::Print(string message)
 {
+	if (output.size() > CONSOLE_MAX_MESSAGES)
+	{
+		output.erase(output.begin());
+	}
 	output.push_back(message);
 
 	// TODO: maybe add a way to remove old messages after size exceeded max size to reduce memory usage for unneeded messages

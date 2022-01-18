@@ -8,7 +8,7 @@
 #include "Scene.h"
 
 #define CONTENT_BROWSER_DIRECTORY "./Resources" //sets file directory for the content browser
-
+#define CONSOLE_MAX_MESSAGES 500
 class Console
 {
 public:
