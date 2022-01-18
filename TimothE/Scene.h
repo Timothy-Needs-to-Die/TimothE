@@ -5,7 +5,7 @@
 #include "GameObject.h"
 #include "Renderer.h"
 
-
+//  O.o
 using namespace std;
 
 class Scene
@@ -15,9 +15,12 @@ public:
 	~Scene();
 	void Update(float deltaTime);
 	void RenderScene(Renderer* pRenderer);
-	void AddGameObject(GameObject* gameObject) { _listOfGameObjects.push_back(gameObject); }
+	GameObject* AddGameObject(GameObject* gameObject) { _listOfGameObjects.push_back(gameObject); return gameObject; }
 	void RemoveGameObject(GameObject* gameObject);
 	vector<GameObject*> GetGameObjects() { return _listOfGameObjects; }
+
+	void LoadScene(const std::string& filename);
+	void SaveScene(const std::string& filename);
 
 private:
 	string _name;

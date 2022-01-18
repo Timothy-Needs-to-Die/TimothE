@@ -6,8 +6,13 @@ class GameObject;
 class TestComponent : public Component
 {
 public:
-	COMPONENT_CLASS_CATEGORY(Debug_Category);
-	COMPONENT_CLASS_TYPE(Test_Type);
+	TestComponent() {
+		SetType(Component::Types::Test_Type);
+		SetCategory(Component::Categories::Debug_Category);
+	}
+
+	COMPONENT_STATIC_TYPE(Test_Type)
+
 	TestComponent(GameObject* _mParentObject);
 	~TestComponent();
 	void OnStart() override;
@@ -23,5 +28,19 @@ public:
 	GameObject* GetGameObject() {
 		return _parentObject;
 	}
+
+	// Inherited via ISerializable
+	virtual bool SaveState(IStream& stream) const override {
+		Component::SaveState(stream);
+
+		return true;
+	}
+	virtual bool LoadState(IStream& stream) override {
+		Component::LoadState(stream);
+
+		return true;
+	}
+	// Inherited via Component
+	virtual void DrawEditorUI() override;
 };
 

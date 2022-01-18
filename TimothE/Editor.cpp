@@ -16,7 +16,7 @@ Editor::Editor(Window* pWindow)
 	: _pWindow(pWindow)
 {
 	// vertex attributes for a quad that fills the editor screen space in Normalized Device Coordinates.
-	float* quadVertices = new float[24] {
+	float* quadVertices = new float[24]{
 		// positions   // texCoords
 		-0.65f,  -0.6f,  0.0f, 0.0f,
 		-0.65f,   0.82f,	0.0f, 1.0f,
@@ -31,7 +31,9 @@ Editor::Editor(Window* pWindow)
 	_pScreenShader = new Shader("fbVert.vs", "fbFrag.fs");
 
 	//Creates the editor framebuffer
-	_pEditorFramebuffer = new Framebuffer(_pScreenShader, quadVertices);
+	_pEditorFramebuffer = new Framebuffer(_pScreenShader);
+
+	_pEditorCamera = new Camera(pWindow->GetGLFWWindow(), 1280, 720, 45.0f);
 }
 
 Editor::~Editor()
@@ -42,21 +44,10 @@ Editor::~Editor()
 
 void Editor::EditorLoop(Scene* currentScene, float dt, bool& editorMode, bool& paused)
 {
-	EditorStartRender();
-	EditorRender();
+	_pEditorCamera->Update(dt);
 
-	//Handle unbinding the editor frame buffer and drawing it's contents
-	_pEditorFramebuffer->UnbindFramebuffer();
-	glDisable(GL_DEPTH_TEST);
-	_pEditorFramebuffer->DrawFramebuffer();
-
-	//Render Here
-	ImGuiManager::ImGuiNewFrame();
 	EditorImGui(currentScene);
 	ImGUISwitchRender(editorMode, paused);
-	ImGuiManager::ImGuiEndFrame();
-
-	EditorEndRender();
 
 	if(!paused)
 		EditorUpdate(currentScene, dt);
@@ -130,35 +121,11 @@ void Editor::EditorImGui(Scene* currentScene)
 				}
 			}
 
-			// transform component
-			if (_pSelectedGameObject->GetTransform() != nullptr)
+			for (Component* c : _pSelectedGameObject->GetComponents())
 			{
-				ImGui::Text("Transform");
-
-				// get the position
-				float* pos = new float[2]{ _pSelectedGameObject->GetTransform()->GetPosition()->_x, _pSelectedGameObject->GetTransform()->GetPosition()->_y };
-				// create boxes to set the position
-				if (ImGui::InputFloat2("Position", pos))
-				{
-					// set the position on the game object
-					_pSelectedGameObject->GetTransform()->SetPosition(pos[0], pos[1]);
-				}
-
-				float* rot = new float[2]{ _pSelectedGameObject->GetTransform()->GetXrotation(), _pSelectedGameObject->GetTransform()->GetYrotation() };
-				if (ImGui::InputFloat2("Rotation", rot))
-				{
-					_pSelectedGameObject->GetTransform()->SetXrotation(rot[0]);
-					_pSelectedGameObject->GetTransform()->SetYrotation(rot[1]);
-				}
-
-				float* scale = new float[2]{ _pSelectedGameObject->GetTransform()->GetXScale(), _pSelectedGameObject->GetTransform()->GetYScale() };
-				if (ImGui::InputFloat2("Scale", scale))
-				{
-					_pSelectedGameObject->GetTransform()->SetXScale(scale[0]);
-					_pSelectedGameObject->GetTransform()->SetYScale(scale[1]);
-				}
+				c->DrawEditorUI();
 			}
-			
+
 			// add component
 			if (ImGui::CollapsingHeader("AddComponent"))
 			{
@@ -168,7 +135,7 @@ void Editor::EditorImGui(Scene* currentScene)
 					{
 						if (_pSelectedGameObject->GetTransform() == nullptr)
 						{
-							_pSelectedGameObject->AddComponent(new Transform(), Component::Types::Transform_Type);
+							_pSelectedGameObject->AddComponent(new Transform());
 						}
 					}
 				}
@@ -203,9 +170,16 @@ void Editor::EditorImGui(Scene* currentScene)
 				}
 				if (ImGui::CollapsingHeader("Graphics"))
 				{
+					string texPath = "lenna3.jpg";
+					ImGui::InputText("Texture path", &texPath);
 					if (ImGui::Button("Texture"))
 					{
-
+						Texture2D* tex = _pSelectedGameObject->GetComponent<Texture2D>();
+						if (tex == nullptr)
+						{
+							_pSelectedGameObject->AddComponent(new Texture2D());
+							_pSelectedGameObject->LoadTexture((char*)texPath.c_str(), "Linear");
+						}
 					}
 				}
 			}
@@ -247,7 +221,6 @@ void Editor::EditorImGui(Scene* currentScene)
 			if (ImGui::Button("Add Object"))
 			{
 				GameObject* obj = new GameObject(name, tag);
-				obj->LoadTexture("lenna3.jpg", "linear");
 				currentScene->AddGameObject(obj);
 				Console::Print("Object added: " + name);
 				name = "New GameObject";
@@ -369,7 +342,6 @@ void Editor::EditorStartRender()
 {
 	_pEditorFramebuffer->BindFramebuffer();
 	glEnable(GL_DEPTH_TEST);
-	_pWindow->SetWindowColour(0.5f, 0.5f, 0.1f, 1.0f);
 	_pEditorFramebuffer->BindShader();
 }
 
@@ -403,7 +375,15 @@ void Editor::ImGUISwitchRender(bool& editorMode, bool& paused)
 
 void Editor::EditorRender()
 {
+	ImGui::Begin("Scene Window");
 
+	ImGui::GetWindowDrawList()->AddImage(
+		(void*)_pEditorFramebuffer->GetTexture(),
+		ImVec2(ImGui::GetCursorScreenPos()),
+		ImVec2(ImGui::GetCursorScreenPos().x + 800,
+			ImGui::GetCursorScreenPos().y + 450), ImVec2(0, 1), ImVec2(1, 0));
+
+	ImGui::End();
 }
 
 void Editor::EditorEndRender()
@@ -444,7 +424,7 @@ void Editor::SearchFileDirectory()
 		while ((_mDirent = readdir(_mDirectory)) != NULL)
 		{
 			_mDirectoryList.push_back(_mDirent->d_name);
-	
+
 			std::cout << "Content Browser loaded: " << _mDirent->d_name << std::endl;
 		}
 		closedir(_mDirectory);

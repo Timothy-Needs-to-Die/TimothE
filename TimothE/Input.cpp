@@ -30,6 +30,12 @@ void Input::SetMouseButton(TimothEMouseCode button, TimothEInputState state)
 	_pMouseArr[button] = state;
 }
 
+void Input::SetMousePosition(float x, float y)
+{
+	_mouseXPos = x;
+	_mouseYPos = y;
+}
+
 bool Input::IsKeyDown(TimothEKeyCode keycode)
 {
 	return _pKeyArr[keycode] == GLFW_PRESS;
@@ -58,3 +64,5 @@ bool Input::IsMouseButtonUp(TimothEMouseCode button)
 //Initialize static members
 int* Input::_pKeyArr = new int[KEY_LAST];
 int* Input::_pMouseArr = new int[BUTTON_LAST];
+float Input::_mouseXPos = 0.0f;
+float Input::_mouseYPos = 0.0f;

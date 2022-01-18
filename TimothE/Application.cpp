@@ -18,6 +18,7 @@
 #include "ImGuiManager.h"
 
 #include "Texture2D.h"
+#include "Button.h"
 
 #define BIND_EVENT_FN(x) std::bind(&Application::x, this, std::placeholders::_1)
 
@@ -26,6 +27,7 @@ void Application::Init(bool devMode)
 	UID::Init();
 	Input::Init();
 	Renderer::Initialize();
+	HeapManager::Init();
 
 	_devMode = devMode;
 
@@ -36,7 +38,7 @@ void Application::Init(bool devMode)
 	glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 3);
 	glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 3);
 
-	_pWindow = new Window(1280, 720, "TimeothE");
+	_pWindow = new Window(1280, 720, "ThymeoWthE");
 
 	_pWindow->SetEventCallback(BIND_EVENT_FN(OnGameEvent));
 	_pWindow->CreateWindow();
@@ -61,16 +63,57 @@ void Application::GameLoop()
 {
 	//TODO: Setup build process for game only
 
+	//Intial mem bookmark
+	int memBookmark = HeapManager::GetMemoryBookmark();
+
+	_audio = new AudioEngine;
+
+	//_pCurrentScene->LoadScene("scene1.scene");
+
+
 	double previousTime = glfwGetTime();
+	bool STstarted = false;
+
+	SoundStruct TitleSong = _audio->LoadSound("Title Song", "Resources/Sounds/Music/Title.wav", Type_Song);
+
+	Camera* _pGameCamera = new Camera(_pWindow->GetGLFWWindow(), 1280, 720, 45.0f);
+
 	//While the editor window should not close
 	while (_running) {
 		PollInput();
 
+		if (STstarted == false)
+		{
+			//_audio->PlaySong(TitleSong);
+			STstarted = true;
+
+		}
+
 		double currentTime = glfwGetTime();
 		double elapsed = currentTime - previousTime;
 
+
+		_pGameCamera->Update(elapsed);
+
 		if (_inEditorMode) {
+			_pEditor->_pEditorFramebuffer->BindFramebuffer();
+			glEnable(GL_DEPTH);
+
+			GameBeginRender();
+
+			GameRender();
+
+			_pEditor->_pEditorFramebuffer->UnbindFramebuffer();
+
+			ImGuiManager::ImGuiNewFrame();
+			
+			glDisable(GL_DEPTH);
+
+			_pEditor->EditorRender();
 			_pEditor->EditorLoop(_pCurrentScene, elapsed, _inEditorMode, _paused);
+			ImGuiManager::ImGuiEndFrame();
+
+			_pEditor->EditorEndRender();
 		}
 		else {
 			GameBeginRender();
@@ -91,10 +134,15 @@ void Application::GameLoop()
 
 		previousTime = currentTime;
 	}
+	_pCurrentScene->SaveScene("scene1.scene");
 
 	ImGuiManager::DestroyImGui();
 	delete _pEditor;
 	_pWindow->DestroyWindow();
+
+	//Prints the memory status and reports and memory leaks
+	HeapManager::ReportMemoryLeaks(memBookmark);
+
 }
 
 
@@ -106,6 +154,7 @@ void Application::OnGameEvent(Event& e)
 	dispatcher.Dispatch<KeyReleasedEvent>(BIND_EVENT_FN(OnGameWindowKeyReleasedEvent));
 	dispatcher.Dispatch<MouseButtonPressedEvent>(BIND_EVENT_FN(OnGameWindowMouseButtonPressedEvent));
 	dispatcher.Dispatch<MouseButtonReleasedEvent>(BIND_EVENT_FN(OnGameWindowMouseButtonReleasedEvent));
+	dispatcher.Dispatch<MouseMovedEvent>(BIND_EVENT_FN(OnGameWindowMouseMovedEvent));
 }
 
 void Application::PollInput()
@@ -130,42 +179,45 @@ void Application::GameEndRender()
 
 void Application::GameUpdate(float dt)
 {
+	_pCurrentScene->Update(dt);
 
 }
 
 void Application::ImGUISwitchRender()
 {
-	ImGui::Begin("Application Mode");
+	{
+		ImGui::Begin("#Application Mode");
 
-	if (ImGui::Button("Editor", ImVec2(100.0f, 30.0f))) {
-		_inEditorMode = true;
+		if (ImGui::Button("Editor", ImVec2(100.0f, 30.0f))) {
+			_inEditorMode = true;
+		}
+		ImGui::SameLine();
+		if (ImGui::Button("Game", ImVec2(100.0f, 30.0f))) {
+			_inEditorMode = false;
+		}
+		ImGui::SameLine();
+		//float width = ImGui::GetWindowSize().x;
+		//ImGui::SetCursorPosX((width - 30.0f) * 0.5f); // sets play and pause button to centre of window
+		if (ImGui::Button("Play", ImVec2(50.0f, 30.0f)))
+		{
+			_paused = false;
+		}
+		ImGui::SameLine();
+		if (ImGui::Button("Pause", ImVec2(50.0f, 30.0f)))
+		{
+			_paused = true;
+		}
+		ImGui::SameLine();
+		//resets game build
+		if (ImGui::Button("Stop", ImVec2(50.0f, 30.0f)))
+		{
+			_pCurrentScene = new Scene("Test scene");
+			_paused = true;
+		}
+		ImGui::SameLine();
+		ImGui::Text(("Paused: " + to_string(_paused)).c_str());
+		ImGui::End();
 	}
-	ImGui::SameLine();
-	if (ImGui::Button("Game", ImVec2(100.0f, 30.0f))) {
-		_inEditorMode = false;
-	}
-	ImGui::SameLine();
-	//float width = ImGui::GetWindowSize().x;
-	//ImGui::SetCursorPosX((width - 30.0f) * 0.5f); // sets play and pause button to centre of window
-	if (ImGui::Button("Play", ImVec2(50.0f, 30.0f)))
-	{
-		_paused = false;
-	}
-	ImGui::SameLine();
-	if (ImGui::Button("Pause", ImVec2(50.0f, 30.0f)))
-	{
-		_paused = true;
-	}
-	ImGui::SameLine();
-	//resets game build
-	if (ImGui::Button("Stop", ImVec2(50.0f, 30.0f)))
-	{
-		_pCurrentScene = new Scene("Test scene");
-		_paused = true;
-	}
-	ImGui::SameLine();
-	ImGui::Text(("Paused: " + to_string(_paused)).c_str());
-	ImGui::End();
 }
 
 bool Application::OnGameWindowClose(WindowCloseEvent& e)
@@ -205,4 +257,10 @@ bool Application::OnGameWindowMouseButtonReleasedEvent(MouseButtonReleasedEvent&
 {
 	Input::SetMouseButton((TimothEMouseCode)e.GetMouseButton(), RELEASE);
 	return true;
+}
+
+bool Application::OnGameWindowMouseMovedEvent(MouseMovedEvent& e)
+{
+	Input::SetMousePosition(e.GetX(), e.GetY());
+	return false;
 }

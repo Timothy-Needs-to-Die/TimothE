@@ -3,10 +3,12 @@
 #pragma once
 #include <string>
 #include <iostream>
+#include "Serializable.h"
+#include "Stream.h"
+
 /// <summary>
-/// 
-/// COMPONENT_CLASS_CATEGOTY(Debug);
-///COMPONENT_CLASS_TYPE(Test1);
+///
+///COMPONENT_STATIC_TYPE(Texture_Type)
 ///TestComponent();
 ///~TestComponent();
 ///void OnStart() override;
@@ -15,12 +17,11 @@
 /// </summary>
 /// <returns></returns>
 
+#define COMPONENT_STATIC_TYPE(type) static Types GetStaticType() {return Types::##type; }
 
 //macros to define component type in subclass
 #define BIT(x) (1<<x)
-#define COMPONENT_CLASS_CATEGORY(category) virtual int GetCategory() const override {return category;}
-#define COMPONENT_CLASS_TYPE(type) virtual int GetType() const override {return type;}
-class Component
+class Component : ISerializable
 {
 public:
 	//enum for types of components
@@ -48,6 +49,8 @@ public:
 		Debug_Category = BIT(5),
 	};
 
+	COMPONENT_STATIC_TYPE(None)
+
 	//constructor and destructor calling start and end methods
 	Component() { }
 	~Component() {}
@@ -58,9 +61,15 @@ public:
 	virtual void OnEnd() = 0;
 	//virtual void GetComponent() = 0;
 
-	//gets the component type and catagory 
-	virtual int GetCategory() const = 0 ;
-	virtual int GetType() const = 0 ;
+	virtual void DrawEditorUI() = 0;
+
+	//gets the component type and catagory
+	Categories GetCategory() const { return _category; }
+
+
+	Types GetType() const {
+		return _type;
+	}
 
 	//Set functions
 	void SetCategory(Component::Categories category) { _category = category; }
@@ -69,11 +78,24 @@ public:
 	//checks if item is in catagory and type enums
 	inline bool IsInCategory(Categories category) { return GetCategory() & category; }
 	inline bool IsInTypes(Types type) { return GetType() & type; }
+
+	// Inherited via ISerializable
+	virtual bool SaveState(IStream& stream) const override {
+		//Write type
+		WriteInt(stream, _type);
+
+		//Write category
+		WriteInt(stream, _category);
+
+		return true;
+	}
+	virtual bool LoadState(IStream& stream) override {
+		return true;
+	}
 protected:
-	//variable for type and catagories to be assigned to
+	//variable for type and categories to be assigned to
 	Types _type;
 	Categories _category;
+
+
 };
-
-
-

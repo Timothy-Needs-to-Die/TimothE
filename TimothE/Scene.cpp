@@ -1,6 +1,10 @@
 #include "Texture2D.h"
 #include "Scene.h"
 #include <algorithm>
+#include "Button.h"
+
+#include "AddressTranslator.h"
+#include "StreamFile.h"
 
 int Scene::nextID = 0;
 
@@ -15,18 +19,23 @@ Scene::Scene(string name)
 	/*Texture2D* t = new Texture2D();
 	t->Load("lenna3.jpg", "linear");*/
 
-	static const GLfloat g_vertex_buffer_data[] =
-	{
-		//pos				//tex
-		-1.0f, -1.0f, 0.0f, 0.0f, 0.0f,
-		1.0f, -1.0f, 0.0f, 1.0f, 0.0f,
-		0.0f,  1.0f, 0.0f, 0.5f, 1.0f
-	};
+	Shader* shader;
+	shader = new Shader("fbVert.vs", "fbFrag.fs");
 
 	GameObject* _pTestObject = new GameObject("LENNA!", ObjectType::Player);
 	_pTestObject->LoadTexture("lenna3.jpg", "linear");
-	//VERTEX DATA NEEDS TO BE STORED IN GAMEOBJECT
 
+	//Orde of transformations matters!!!!!
+	//First we Translate
+	//Then we rotate
+	//Then finally scale
+	_pTestObject->GetTransform()->Translate({ 100,100 });
+	_pTestObject->GetTransform()->Scale({ 32,32 });
+
+	Button* pButton = new Button("TestButton", 32, 32);
+	pButton->LoadTexture("lenna3.jpg", "linear");
+
+	AddGameObject(pButton);
 	AddGameObject(_pTestObject);
 }
 
@@ -54,8 +63,41 @@ void Scene::RenderScene(Renderer* pRenderer)
 void Scene::RemoveGameObject(GameObject* gameObject)
 {
 	_listOfGameObjects.erase(std::find(_listOfGameObjects.begin(), _listOfGameObjects.end(), gameObject));
-	/*int index = std::find(_listOfGameObjects.begin(), _listOfGameObjects.end(), gameObject) - _listOfGameObjects.begin();
-	std::iter_swap(_listOfGameObjects.begin() + index, _listOfGameObjects.end() - 1);
-	_listOfGameObjects.pop_back();*/
 	delete gameObject;
+}
+
+void Scene::LoadScene(const std::string& filename)
+{
+	StreamFile stream;
+	stream.OpenRead(filename);
+
+	_listOfGameObjects = std::vector<GameObject*>();
+
+	//Read in the amount of gameobjects in the scene
+	int amountOfGo = ReadInt(stream);
+	_listOfGameObjects.resize(amountOfGo);
+
+	//Read in the information for each gameobject
+	for (int i = 0; i < amountOfGo; ++i) {
+		GameObject* go = new GameObject();
+		go->LoadState(stream);
+		_listOfGameObjects[i] = go;
+	}
+
+	stream.Close();
+}
+
+void Scene::SaveScene(const std::string& filename)
+{
+	StreamFile stream;
+	stream.OpenWrite(filename);
+
+	//Writes the amount of game objects in the scene
+	WriteInt(stream, _listOfGameObjects.size());
+
+	for (int i = 0; i < _listOfGameObjects.size(); ++i) {
+		_listOfGameObjects[i]->SaveState(stream);
+	}
+
+	stream.Close();
 }

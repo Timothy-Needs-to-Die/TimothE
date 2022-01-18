@@ -5,6 +5,9 @@
 #include "Renderer.h"
 #include "Scene.h"
 #include "Editor.h"
+#include "MemoryManager.h"
+
+#include "AudioEngine.h"
 
 class Application
 {
@@ -28,11 +31,15 @@ protected:
 	void ImGUISwitchRender();
 
 private:
+	//Event Handlers
 	bool OnGameWindowClose(WindowCloseEvent& e);
 	bool OnGameWindowKeyPressedEvent(KeyPressedEvent& e);
 	bool OnGameWindowKeyReleasedEvent(KeyReleasedEvent& e);
 	bool OnGameWindowMouseButtonPressedEvent(MouseButtonPressedEvent& e);
 	bool OnGameWindowMouseButtonReleasedEvent(MouseButtonReleasedEvent& e);
+	bool OnGameWindowMouseMovedEvent(MouseMovedEvent& e);
+
+	AudioEngine* _audio;
 
 	Renderer _renderer;
 
