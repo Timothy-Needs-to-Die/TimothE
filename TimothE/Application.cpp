@@ -22,7 +22,7 @@
 
 #define BIND_EVENT_FN(x) std::bind(&Application::x, this, std::placeholders::_1)
 
-void GLAPIENTRY ErrorMessageCallback(GLenum source,
+void GLAPIENTRY MessageCallback(GLenum source,
 	GLenum type,
 	GLuint id,
 	GLenum severity,
@@ -66,7 +66,7 @@ void Application::Init(bool devMode)
 	}
 
 	glEnable(GL_DEBUG_OUTPUT);
-	glDebugMessageCallback(ErrorMessageCallback, 0);
+	glDebugMessageCallback(MessageCallback, 0);
 
 	if (_devMode) {
 		ImGuiManager::CreateImGuiContext(_pWindow->GetGLFWWindow());
@@ -117,9 +117,9 @@ void Application::GameLoop()
 
 		if (_inEditorMode) {
 			_pEditor->_pEditorFramebuffer->BindFramebuffer();
+			GameBeginRender();
 			glEnable(GL_DEPTH_TEST);
 
-			GameBeginRender();
 
 			GameRender();
 

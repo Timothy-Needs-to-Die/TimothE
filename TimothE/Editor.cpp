@@ -356,14 +356,27 @@ void Editor::ImGUISwitchRender(bool& editorMode, bool& paused)
 void Editor::EditorRender()
 {
 	ImGui::Begin("Scene Window");
-
+	ImVec2 pos = ImGui::GetCursorScreenPos();
 	ImGui::GetWindowDrawList()->AddImage(
 		(void*)_pEditorFramebuffer->GetTexture(),
-		ImVec2(ImGui::GetCursorScreenPos()),
-		ImVec2(ImGui::GetCursorScreenPos().x + 800,
-			ImGui::GetCursorScreenPos().y + 450), ImVec2(0, 1), ImVec2(1, 0));
+		pos,
+		ImVec2(pos.x + 640, pos.y + 360),
+		ImVec2(0, 1.0), ImVec2(1.0, 0));
 
 	ImGui::End();
+
+	//ImGui::Begin("Scene Window");
+	//ImVec2 pos = ImGui::GetCursorScreenPos();
+	//ImDrawList* drawList = ImGui::GetWindowDrawList();
+	////auto app = SSEngine::App::main;
+	////uint f_tex = app->getFrameBuffer();
+	//drawList->AddImage(
+	//	(void*)_pEditorFramebuffer->GetTexture(),
+	//	pos,
+	//	ImVec2(pos.x + 512, pos.y + 512),
+	//	ImVec2(0, 1),
+	//	ImVec2(1, 0));
+	//ImGui::End();
 }
 
 void Editor::EditorEndRender()
