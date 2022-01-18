@@ -36,6 +36,9 @@ public:
 
 	//Ends the render
 	void EditorEndRender();
+
+
+	Framebuffer* _pEditorFramebuffer;
 	
 private:
 
@@ -50,7 +53,6 @@ private:
 
 	Window* _pWindow;
 
-	Framebuffer* _pEditorFramebuffer;
 	Shader* _pScreenShader;
 	char* _pNotesBuffer;
 

@@ -68,7 +68,7 @@ void Application::GameLoop()
 
 	_audio = new AudioEngine;
 
-	_pCurrentScene->LoadScene("scene1.scene");
+	//_pCurrentScene->LoadScene("scene1.scene");
 
 
 	double previousTime = glfwGetTime();
@@ -96,7 +96,21 @@ void Application::GameLoop()
 		_pGameCamera->Update(elapsed);
 
 		if (_inEditorMode) {
+			_pEditor->_pEditorFramebuffer->BindFramebuffer();
+			glEnable(GL_DEPTH);
+
+			GameBeginRender();
+
+			GameRender();
+
+			_pEditor->_pEditorFramebuffer->UnbindFramebuffer();
+
+			ImGuiManager::ImGuiNewFrame();
+			_pEditor->EditorRender();
 			_pEditor->EditorLoop(_pCurrentScene, elapsed, _inEditorMode, _paused);
+			ImGuiManager::ImGuiEndFrame();
+
+			_pEditor->EditorEndRender();
 		}
 		else {
 			GameBeginRender();
