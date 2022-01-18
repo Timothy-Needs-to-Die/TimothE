@@ -106,6 +106,9 @@ void Application::GameLoop()
 			_pEditor->_pEditorFramebuffer->UnbindFramebuffer();
 
 			ImGuiManager::ImGuiNewFrame();
+			
+			glDisable(GL_DEPTH);
+
 			_pEditor->EditorRender();
 			_pEditor->EditorLoop(_pCurrentScene, elapsed, _inEditorMode, _paused);
 			ImGuiManager::ImGuiEndFrame();
