@@ -12,12 +12,18 @@ float ReadFloat(IStream& stream) {
 	return n;
 }
 
-
 std::string ReadString(IStream& stream) {
 	int nLength = ReadInt(stream);
 	char txt[512];
 	stream.Read(nLength, txt);
 	return std::string(txt);
+}
+
+glm::vec2 ReadVec2(IStream& stream) {
+	glm::vec2 v;
+	v.x = ReadFloat(stream);
+	v.y = ReadFloat(stream);
+	return v;
 }
 
 bool WriteInt(IStream& stream, int n) {
@@ -35,4 +41,8 @@ bool WriteString(IStream& stream, const std::string& str) {
 	if (!WriteInt(stream, length)) return false;
 
 	return(stream.Write(length, str.c_str()) == length);
+}
+
+bool WriteVec2(IStream& stream, glm::vec2 v) {
+	return(WriteFloat(stream, v.x) && WriteFloat(stream, v.y));
 }

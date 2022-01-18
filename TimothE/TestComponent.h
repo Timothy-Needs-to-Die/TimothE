@@ -10,6 +10,9 @@ public:
 		SetType(Component::Types::Test_Type);
 		SetCategory(Component::Categories::Debug_Category);
 	}
+
+	COMPONENT_STATIC_TYPE(Test_Type)
+
 	TestComponent(GameObject* _mParentObject);
 	~TestComponent();
 	void OnStart() override;
@@ -27,20 +30,16 @@ public:
 	}
 
 	// Inherited via ISerializable
-	virtual bool Write(IStream& stream) const override {
-		Component::Write(stream);
+	virtual bool SaveState(IStream& stream) const override {
+		Component::SaveState(stream);
 
 		return true;
 	}
-	virtual bool Read(IStream& stream) override {
-		Component::Read(stream);
+	virtual bool LoadState(IStream& stream) override {
+		Component::LoadState(stream);
 
 		return true;
 	}
-	virtual void Fixup() override {
-
-	}
-
 	// Inherited via Component
 	virtual void DrawEditorUI() override;
 };

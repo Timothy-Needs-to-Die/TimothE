@@ -31,7 +31,7 @@ public:
 	template<typename T>
 	T* AddComponent(T* comp);
 
-	GameObject(string name = "New GameObject", ObjectType tag = ObjectType::Player, Texture2D* texture = nullptr, Transform* transform = nullptr);
+	GameObject(string name = "New GameObject", ObjectType tag = ObjectType::Player, Transform* transform = nullptr);
 	~GameObject();
 	void InitVertexData();
 
@@ -67,9 +67,8 @@ public:
 	void SetShader(Shader* shader);
 
 	// Inherited via ISerializable
-	virtual bool Write(IStream& stream) const override;
-	virtual bool Read(IStream& stream) override;
-	virtual void Fixup() override;
+	virtual bool SaveState(IStream& stream) const override;
+	virtual bool LoadState(IStream& stream) override;
 	unsigned int GetVAO() const { return _vao; }
 private:
 	string _UID;

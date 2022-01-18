@@ -28,39 +28,34 @@ public:
 
 
 	// Inherited via ISerializable
-	virtual bool Write(IStream& stream) const override {
-		Component::Write(stream);
+	virtual bool SaveState(IStream& stream) const override {
+		Component::SaveState(stream);
 
 		//Save position
-		WriteFloat(stream, _position.x);
-		WriteFloat(stream, _position.y);
+		WriteVec2(stream, _position);
 
 		//Save Rotation
 		WriteFloat(stream, _rotation);
 
 		//Save Scale
-		WriteFloat(stream, _size.x);
-		WriteFloat(stream, _size.y);
+		WriteVec2(stream, _size);
 
 		return true;
 
 	}
-	virtual bool Read(IStream& stream) override {
-		Component::Read(stream);
+	virtual bool LoadState(IStream& stream) override {
+		Component::LoadState(stream);
 
 		//Save position
-		_position = glm::vec2(ReadFloat(stream), ReadFloat(stream));
+		_position = ReadVec2(stream);
 
 		//Save Rotation
 		_rotation = ReadFloat(stream);
 
 		//Save Scale
-		_size = glm::vec2(ReadFloat(stream), ReadFloat(stream));
+		_size = ReadVec2(stream);
 
 		return true;
-
-	}
-	virtual void Fixup() override {
 
 	}
 

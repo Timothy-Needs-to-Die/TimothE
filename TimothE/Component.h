@@ -50,6 +50,8 @@ public:
 		Debug_Category = BIT(5),
 	};
 
+	COMPONENT_STATIC_TYPE(None)
+
 	//constructor and destructor calling start and end methods
 	Component() { }
 	~Component() {}
@@ -79,7 +81,7 @@ public:
 	inline bool IsInTypes(Types type) { return GetType() & type; }
 
 	// Inherited via ISerializable
-	virtual bool Write(IStream& stream) const override {
+	virtual bool SaveState(IStream& stream) const override {
 		//Write type
 		WriteInt(stream, _type);
 
@@ -88,21 +90,11 @@ public:
 
 		return true;
 	}
-	virtual bool Read(IStream& stream) override {
-		//Read type
-		//_type = (Types)ReadInt(stream);
-
-		//Read Category //Not sure if this will work? Testing required
-		//_category = (Categories)ReadInt(stream);
-
-
+	virtual bool LoadState(IStream& stream) override {
 		return true;
 	}
-	virtual void Fixup() override {
-
-	}
 protected:
-	//variable for type and catagories to be assigned to
+	//variable for type and categories to be assigned to
 	Types _type;
 	Categories _category;
 
