@@ -9,6 +9,8 @@ class Transform : public Component
 public:
 	Transform();
 
+	COMPONENT_STATIC_TYPE(Transform_Type)
+
 	void Translate(glm::vec2 newPos);
 	void Scale(glm::vec2 newSize);
 	void Rotate(float rotationAmount, glm::vec2 axis);

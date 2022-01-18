@@ -5,80 +5,24 @@
 #include "imgui.h"
 
 
-GameObject::GameObject(string name, ObjectType tag) : _name(name), _tag(tag)
+GameObject::GameObject(string name, ObjectType tag, Texture2D* texture, Transform* transform) 
+	: _name(name), _tag(tag), _pTransform(transform)
 {
 	_UID = UID::GenerateUID();
-	AddComponent(new Transform(), Component::Types::Transform_Type);
+
+	if (_pTransform == nullptr) {
+		_pTransform = new Transform();
+	}
+	AddComponent<Transform>(_pTransform);
+
+	if (texture == nullptr) {
+		texture = new Texture2D();
+	}
+	AddComponent<Texture2D>(texture);
+
 	InitVertexData();
 
-	_pShader = new Shader("VertexShader.vert", "FragmentShader.frag");
-	_shaderID = _pShader->GetProgramID();
-
-	Start();
-}
-
-GameObject::GameObject(string name, ObjectType tag, Transform* transform) : _name(name), _tag(tag)
-{
-	_UID = UID::GenerateUID();
-	AddComponent(transform, Component::Types::Transform_Type);
-
-	AddComponent(new Texture2D(), Component::Types::Texture_Type);
-	InitVertexData();
-
-	_pShader = new Shader("VertexShader.vert", "FragmentShader.frag");
-	_shaderID = _pShader->GetProgramID();
-
-	Start();
-}
-
-GameObject::GameObject() : _name("New GameObject")
-{
-	_UID = UID::GenerateUID();
-	Transform* pTransform = new Transform();
-	AddComponent(pTransform, Component::Transform_Type);
-	InitVertexData();
-
-	_pShader = new Shader("VertexShader.vert", "FragmentShader.frag");
-	_shaderID = _pShader->GetProgramID();
-
-	Start();
-}
-
-GameObject::GameObject(string name) : _name(name)
-{
-	Transform* pTransform = new Transform();
-	AddComponent(pTransform, Component::Transform_Type);
-	InitVertexData();
-
-	_pShader = new Shader("VertexShader.vert", "FragmentShader.frag");
-	_shaderID = _pShader->GetProgramID();
-
-	Start();
-}
-
-GameObject::GameObject(string name, ObjectType tag, Texture2D* texture) : _name(name), _tag(tag)
-{
-	_UID = UID::GenerateUID();
-	Transform* pTransform = new Transform();
-	AddComponent(pTransform, Component::Transform_Type);
-	AddComponent(texture, Component::Texture_Type);
-	InitVertexData();
-
-	_pShader = new Shader("VertexShader.vert", "FragmentShader.frag");
-	_shaderID = _pShader->GetProgramID();
-
-	Start();
-}
-
-GameObject::GameObject(string name, ObjectType tag, Texture2D* texture, Transform* transform) : _name(name), _tag(tag)
-{
-	_UID = UID::GenerateUID();
-	AddComponent(transform, Component::Transform_Type);
-	AddComponent(texture, Component::Texture_Type);
-	InitVertexData();
-
-	_pShader = new Shader("VertexShader.vert", "FragmentShader.frag");
-	_shaderID = _pShader->GetProgramID();
+	SetDefaultShader();
 
 	Start();
 }
@@ -169,18 +113,23 @@ void GameObject::Exit()
 
 void GameObject::LoadTexture(char* path, string mode)
 {
-	if (GetTexture() == nullptr)
+	Texture2D* pTexture = GetComponent<Texture2D>();
+	if (pTexture == nullptr)
 	{
-		Texture2D* texture = new Texture2D();
-		texture->Load(path, mode);
-		_textureID = texture->GetID();
-		AddComponent(texture, Component::Types::Texture_Type);
-		_textureID = texture->GetID();
+		pTexture = new Texture2D();
+		pTexture->Load(path, mode);
+		_textureID = pTexture->GetID();
+		AddComponent(pTexture);
+		_textureID = pTexture->GetID();
+
+		std::cout << "Has a Texture" << std::endl;
 	}
 	else
 	{
-		GetTexture()->Load(path, mode);
-		_textureID = GetTexture()->GetID();
+		pTexture->Load(path, mode);
+		_textureID = pTexture->GetID();
+
+		std::cout << "Texture created" << std::endl;
 	}
 }
 
@@ -247,7 +196,6 @@ bool GameObject::Read(IStream& stream)
 
 	//Reserve the amount of components
 	int noComponents = ReadInt(stream);
-	//_pComponents.reserve(noComponents);
 
 	for (int i = 0; i < noComponents; ++i) {
 		Component::Types type = (Component::Types)ReadInt(stream);
@@ -265,12 +213,10 @@ bool GameObject::Read(IStream& stream)
 		c->Read(stream);
 
 		//Set component
-
-		AddComponent(c, c->GetType());
-		//_pComponents[i] = c;
+		AddComponent(c);
 	}
 
-	Texture2D* texture = (Texture2D*)GetComponent(Component::Texture_Type);
+	Texture2D* texture = GetComponent<Texture2D>();
 	if (texture != nullptr) {
 		_textureID = texture->GetID();
 	}
@@ -293,20 +239,27 @@ void GameObject::SetType(ObjectType tag)
 	_tag = tag;
 }
 
-Component* GameObject::GetComponent(Component::Types componentType)
+void GameObject::SetDefaultShader()
 {
-	for (Component* c : _pComponents)
-	{
-		if (c->GetType() == componentType)
-		{
-			return c;
+	_pShader = new Shader("VertexShader.vert", "FragmentShader.frag");
+	_shaderID = _pShader->GetProgramID();
+}
+
+template<typename T>
+T* GameObject::GetComponent()
+{
+	for (auto& comp : _pComponents) {
+		if (comp->GetType() == T::GetStaticType()) {
+			return (T*)comp;
 		}
 	}
+
 	return nullptr;
 }
 
-void GameObject::AddComponent(Component* component, Component::Types type)
+template<typename T>
+T* GameObject::AddComponent(T* comp)
 {
-	component->SetType(type);
-	_pComponents.push_back(component);
+	_pComponents.push_back(comp);
+	return comp;
 }

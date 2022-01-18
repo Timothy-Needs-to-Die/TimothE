@@ -55,7 +55,6 @@
     <ClInclude Include="MemoryManager.h" />
     <ClInclude Include="MouseEvent.h" />
     <ClInclude Include="Renderer.h" />
-    <ClInclude Include="ResourceManager.h" />
     <ClInclude Include="SOIL\SOIL2.h">
       <Filter>SOIL</Filter>
     </ClInclude>
@@ -118,6 +117,7 @@
     <ClInclude Include="Transform.h" />
     <ClInclude Include="UID.h" />
     <ClInclude Include="Window.h" />
+    <ClInclude Include="Button.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="AddressTranslator.cpp" />
@@ -162,5 +162,10 @@
     <ClCompile Include="Texture2D.cpp" />
     <ClCompile Include="Transform.cpp" />
     <ClCompile Include="Window.cpp" />
+    <ClCompile Include="Button.cpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="FragmentShader.frag" />
+    <None Include="VertexShader.vert" />
   </ItemGroup>
 </Project>

@@ -8,8 +8,7 @@
 
 /// <summary>
 ///
-/// COMPONENT_CLASS_CATEGOTY(Debug);
-///COMPONENT_CLASS_TYPE(Test1);
+///COMPONENT_STATIC_TYPE(Texture_Type)
 ///TestComponent();
 ///~TestComponent();
 ///void OnStart() override;
@@ -18,6 +17,7 @@
 /// </summary>
 /// <returns></returns>
 
+#define COMPONENT_STATIC_TYPE(type) static Types GetStaticType() {return Types::##type; }
 
 //macros to define component type in subclass
 #define BIT(x) (1<<x)
@@ -63,6 +63,8 @@ public:
 
 	//gets the component type and catagory
 	Categories GetCategory() const { return _category; }
+
+
 	Types GetType() const {
 		return _type;
 	}

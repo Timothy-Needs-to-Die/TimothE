@@ -149,7 +149,7 @@ void Editor::EditorImGui(Scene* currentScene)
 					{
 						if (_pSelectedGameObject->GetTransform() == nullptr)
 						{
-							_pSelectedGameObject->AddComponent(new Transform(), Component::Types::Transform_Type);
+							_pSelectedGameObject->AddComponent(new Transform());
 						}
 					}
 				}
@@ -188,10 +188,10 @@ void Editor::EditorImGui(Scene* currentScene)
 					ImGui::InputText("Texture path", &texPath);
 					if (ImGui::Button("Texture"))
 					{
-						Texture2D* tex = _pSelectedGameObject->GetTexture();
+						Texture2D* tex = _pSelectedGameObject->GetComponent<Texture2D>();
 						if (tex == nullptr)
 						{
-							_pSelectedGameObject->AddComponent(new Texture2D(), Component::Types::Texture_Type);
+							_pSelectedGameObject->AddComponent(new Texture2D());
 							_pSelectedGameObject->LoadTexture((char*)texPath.c_str(), "Linear");
 						}
 					}

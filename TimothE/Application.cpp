@@ -84,7 +84,7 @@ void Application::GameLoop()
 
 		if (STstarted == false)
 		{
-			_audio->PlaySong(TitleSong);
+			//_audio->PlaySong(TitleSong);
 			STstarted = true;
 
 		}

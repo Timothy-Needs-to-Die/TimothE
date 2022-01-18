@@ -18,6 +18,8 @@ public:
 	Texture2D();
 	~Texture2D();
 
+	COMPONENT_STATIC_TYPE(Texture_Type)
+
 	void OnStart() override;
 	void OnUpdate() override;
 	void OnEnd() override;

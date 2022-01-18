@@ -26,12 +26,12 @@ enum class ObjectType
 class GameObject : public ISerializable
 {
 public:
-	GameObject();
-	GameObject(string name);
-	GameObject(string name, ObjectType tag, Texture2D* texture);
-	GameObject(string name, ObjectType tag, Texture2D* texture, Transform* transform);
-	GameObject(string name, ObjectType tag, Transform* transform);
-	GameObject(string name, ObjectType tag);
+	template<typename T>
+	T* GetComponent();
+	template<typename T>
+	T* AddComponent(T* comp);
+
+	GameObject(string name = "New GameObject", ObjectType tag = ObjectType::Player, Texture2D* texture = nullptr, Transform* transform = nullptr);
 	~GameObject();
 	void InitVertexData();
 
@@ -46,15 +46,15 @@ public:
 	ObjectType GetType() { return _tag; }
 	void SetType(ObjectType tag);
 
-	Component* GetComponent(Component::Types componentType);
+	void SetDefaultShader();
+
 	vector<Component*> GetComponents() { return _pComponents; }
 
-	void AddComponent(Component* component, Component::Types type);
-
-	Transform* GetTransform() { return (Transform*)GetComponent(Component::Types::Transform_Type); }
-	Texture2D* GetTexture() { return (Texture2D*)GetComponent(Component::Types::Texture_Type); }
+	Transform* GetTransform() { return _pTransform; }
 	int GetTextureID() { return _textureID; }
 	int GetShaderID() { return _shaderID; }
+
+
 
 	void LoadTexture(char* path, string mode);
 	void SetShader(int id) { _shaderID = id; };
@@ -80,6 +80,8 @@ private:
 	string _vsShaderName;
 	string _fsShaderName;
 	Shader* _pShader;
+
+	Transform* _pTransform;
 
 	int _textureID = 0;
 	int _shaderID = 0;

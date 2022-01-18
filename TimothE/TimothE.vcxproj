@@ -144,7 +144,6 @@
     <ClCompile Include="AudioEngine.cpp" />
     <ClCompile Include="Camera.cpp" />
     <ClCompile Include="Button.cpp" />
-    <ClCompile Include="Component.cpp" />
     <ClCompile Include="Editor.cpp" />
     <ClCompile Include="Framebuffer.cpp" />
     <ClCompile Include="GameObject.cpp" />
@@ -177,4 +176,4 @@
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
   </ImportGroup>
-</Project> 
+</Project>
