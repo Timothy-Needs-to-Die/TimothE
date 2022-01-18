@@ -76,7 +76,7 @@ void Application::GameLoop()
 
 	SoundStruct TitleSong = _audio->LoadSound("Title Song", "Resources/Sounds/Music/Title.wav", Type_Song);
 
-
+	Camera* _pGameCamera = new Camera(_pWindow->GetGLFWWindow(), 1280, 720, 45.0f);
 
 	//While the editor window should not close
 	while (_running) {
@@ -91,6 +91,9 @@ void Application::GameLoop()
 
 		double currentTime = glfwGetTime();
 		double elapsed = currentTime - previousTime;
+
+
+		_pGameCamera->Update(elapsed);
 
 		if (_inEditorMode) {
 			_pEditor->EditorLoop(_pCurrentScene, elapsed, _inEditorMode, _paused);

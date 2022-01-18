@@ -27,6 +27,8 @@ Editor::Editor(Window* pWindow)
 
 	//Creates the editor framebuffer
 	_pEditorFramebuffer = new Framebuffer(_pScreenShader);
+
+	_pEditorCamera = new Camera(pWindow->GetGLFWWindow(), 1280, 720, 45.0f);
 }
 
 Editor::~Editor()
@@ -38,6 +40,8 @@ Editor::~Editor()
 void Editor::EditorLoop(Scene* currentScene, float dt, bool& editorMode, bool& paused)
 {
 	EditorStartRender();
+
+	_pEditorCamera->Update(dt);
 
 	//Handle unbinding the editor frame buffer and drawing it's contents
 	glDisable(GL_DEPTH_TEST | GL_COLOR_BUFFER_BIT);
@@ -320,7 +324,6 @@ void Editor::EditorStartRender()
 {
 	_pEditorFramebuffer->BindFramebuffer();
 	glEnable(GL_DEPTH_TEST);
-	_pWindow->SetWindowColour(0.5f, 0.5f, 0.1f, 1.0f);
 	_pEditorFramebuffer->BindShader();
 }
 

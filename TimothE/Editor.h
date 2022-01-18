@@ -6,6 +6,7 @@
 #include "Framebuffer.h"
 #include "Shader.h"
 #include "Scene.h"
+#include "Camera.h"
 
 class Console
 {
@@ -26,8 +27,8 @@ public:
 	//Runs through the editor loop
 	void EditorLoop(Scene* currentScene, float dt, bool& editorMode, bool& paused);
 
-private:
-	//Starts the render 
+
+		//Starts the render 
 	void EditorStartRender();
 
 	//Renders the scene
@@ -36,6 +37,8 @@ private:
 	//Ends the render
 	void EditorEndRender();
 	
+private:
+
 	//Where all ImGui code will go
 	void EditorImGui(Scene* currentScene);
 	
@@ -52,5 +55,7 @@ private:
 	char* _pNotesBuffer;
 
 	GameObject* _pSelectedGameObject = nullptr;
+
+	Camera* _pEditorCamera;
 };
 
