@@ -22,6 +22,19 @@
 
 #define BIND_EVENT_FN(x) std::bind(&Application::x, this, std::placeholders::_1)
 
+void GLAPIENTRY MessageCallback(GLenum source,
+	GLenum type,
+	GLuint id,
+	GLenum severity,
+	GLsizei length,
+	const GLchar* message,
+	const void* userParam)
+{
+	fprintf(stderr, "GL CALLBACK: %s type = 0x%x, severity = 0x%x, message = %s\n",
+		(type == GL_DEBUG_TYPE_ERROR ? "** GL ERROR **" : ""),
+		type, severity, message);
+}
+
 void Application::Init(bool devMode)
 {
 	UID::Init();
@@ -43,12 +56,17 @@ void Application::Init(bool devMode)
 	_pWindow->SetEventCallback(BIND_EVENT_FN(OnGameEvent));
 	_pWindow->CreateWindow();
 
+
+
 	GLint GlewInitResult = glewInit();
 	if (GlewInitResult != GLEW_OK)
 	{
 		//std::cout << "ERROR: %s", glewGetErrorString(GlewInitResult) << std::endl;
 		exit(EXIT_FAILURE);
 	}
+
+	glEnable(GL_DEBUG_OUTPUT);
+	glDebugMessageCallback(MessageCallback, 0);
 
 	if (_devMode) {
 		ImGuiManager::CreateImGuiContext(_pWindow->GetGLFWWindow());
@@ -70,13 +88,14 @@ void Application::GameLoop()
 
 	//_pCurrentScene->LoadScene("scene1.scene");
 
+	glEnable(GL_DEPTH_TEST);
 
 	double previousTime = glfwGetTime();
 	bool STstarted = false;
 
 	SoundStruct TitleSong = _audio->LoadSound("Title Song", "Resources/Sounds/Music/Title.wav", Type_Song);
 
-
+	Camera* _pGameCamera = new Camera(_pWindow->GetGLFWWindow(), 1280, 720, 45.0f);
 
 	//While the editor window should not close
 	while (_running) {
@@ -92,25 +111,46 @@ void Application::GameLoop()
 		double currentTime = glfwGetTime();
 		double elapsed = currentTime - previousTime;
 
+		_pGameCamera->Update(elapsed);
+
+		ImGuiManager::ImGuiNewFrame();
+
 		if (_inEditorMode) {
+			_pEditor->_pEditorFramebuffer->BindFramebuffer();
+			GameBeginRender();
+			glEnable(GL_DEPTH_TEST);
+
+
+			GameRender();
+
+			if(!_paused)
+				GameUpdate(elapsed);
+
+			_pEditor->_pEditorFramebuffer->UnbindFramebuffer();
+			glDisable(GL_DEPTH_TEST);
+
+			glClear(GL_COLOR_BUFFER_BIT);
+			_pEditor->EditorRender();
 			_pEditor->EditorLoop(_pCurrentScene, elapsed, _inEditorMode, _paused);
 		}
 		else {
 			GameBeginRender();
+			glEnable(GL_DEPTH_TEST);
 
 			GameRender();
 
 			if (_devMode) {
-				ImGuiManager::ImGuiNewFrame();
 				ImGUISwitchRender();
-				ImGuiManager::ImGuiEndFrame();
 			}
 
-			GameEndRender();
-
-			if(!_paused)
+			if (!_paused)
 				GameUpdate(elapsed);
+
+			glDisable(GL_DEPTH_TEST);
 		}
+		ImGuiManager::ImGuiEndFrame();
+
+		_pWindow->SwapBuffers();
 
 		previousTime = currentTime;
 	}
@@ -145,6 +185,7 @@ void Application::PollInput()
 void Application::GameBeginRender()
 {
 	_pWindow->SetWindowColour(0.3f, 1.0f, 0.0f, 1.0f);
+	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 }
 
 void Application::GameRender()
@@ -160,7 +201,6 @@ void Application::GameEndRender()
 void Application::GameUpdate(float dt)
 {
 	_pCurrentScene->Update(dt);
-
 }
 
 void Application::ImGUISwitchRender()

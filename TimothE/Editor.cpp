@@ -32,6 +32,8 @@ Editor::Editor(Window* pWindow)
 
 	//Creates the editor framebuffer
 	_pEditorFramebuffer = new Framebuffer(_pScreenShader);
+
+	_pEditorCamera = new Camera(pWindow->GetGLFWWindow(), 1280, 720, 45.0f);
 }
 
 Editor::~Editor()
@@ -42,32 +44,10 @@ Editor::~Editor()
 
 void Editor::EditorLoop(Scene* currentScene, float dt, bool& editorMode, bool& paused)
 {
-	EditorStartRender();
-	EditorRender();
+	_pEditorCamera->Update(dt);
 
-	//Handle unbinding the editor frame buffer and drawing it's contents
-	glDisable(GL_DEPTH_TEST | GL_COLOR_BUFFER_BIT);
-	_pEditorFramebuffer->UnbindFramebuffer();
-
-	ImGuiManager::ImGuiNewFrame();
-
-	ImGui::Begin("Scene Window");
-
-	ImGui::GetWindowDrawList()->AddImage(
-		(void*)_pEditorFramebuffer->GetTexture(),
-		ImVec2(ImGui::GetCursorScreenPos()),
-		ImVec2(ImGui::GetCursorScreenPos().x + 800,
-			ImGui::GetCursorScreenPos().y + 450), ImVec2(0, 1), ImVec2(1, 0));
-
-	ImGui::End();
-
-	//Render Here
-	
 	EditorImGui(currentScene);
 	ImGUISwitchRender(editorMode, paused);
-	ImGuiManager::ImGuiEndFrame();
-
-	EditorEndRender();
 
 	if(!paused)
 		EditorUpdate(currentScene, dt);
@@ -145,7 +125,7 @@ void Editor::EditorImGui(Scene* currentScene)
 			{
 				c->DrawEditorUI();
 			}
-			
+
 			// add component
 			if (ImGui::CollapsingHeader("AddComponent"))
 			{
@@ -342,7 +322,6 @@ void Editor::EditorStartRender()
 {
 	_pEditorFramebuffer->BindFramebuffer();
 	glEnable(GL_DEPTH_TEST);
-	_pWindow->SetWindowColour(0.5f, 0.5f, 0.1f, 1.0f);
 	_pEditorFramebuffer->BindShader();
 }
 
@@ -376,7 +355,28 @@ void Editor::ImGUISwitchRender(bool& editorMode, bool& paused)
 
 void Editor::EditorRender()
 {
+	ImGui::Begin("Scene Window");
+	ImVec2 pos = ImGui::GetCursorScreenPos();
+	ImGui::GetWindowDrawList()->AddImage(
+		(void*)_pEditorFramebuffer->GetTexture(),
+		pos,
+		ImVec2(pos.x + 640, pos.y + 360),
+		ImVec2(0, 1.0), ImVec2(1.0, 0));
 
+	ImGui::End();
+
+	//ImGui::Begin("Scene Window");
+	//ImVec2 pos = ImGui::GetCursorScreenPos();
+	//ImDrawList* drawList = ImGui::GetWindowDrawList();
+	////auto app = SSEngine::App::main;
+	////uint f_tex = app->getFrameBuffer();
+	//drawList->AddImage(
+	//	(void*)_pEditorFramebuffer->GetTexture(),
+	//	pos,
+	//	ImVec2(pos.x + 512, pos.y + 512),
+	//	ImVec2(0, 1),
+	//	ImVec2(1, 0));
+	//ImGui::End();
 }
 
 void Editor::EditorEndRender()
@@ -413,7 +413,7 @@ void Editor::SearchFileDirectory()
 		while ((_mDirent = readdir(_mDirectory)) != NULL)
 		{
 			_mDirectoryList.push_back(_mDirent->d_name);
-	
+
 			std::cout << "Content Browser loaded: " << _mDirent->d_name << std::endl;
 		}
 		closedir(_mDirectory);

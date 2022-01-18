@@ -78,7 +78,6 @@ void GameObject::InitVertexData()
 	);
 	glEnableVertexAttribArray(1);
 
-
 }
 
 void GameObject::Start()
