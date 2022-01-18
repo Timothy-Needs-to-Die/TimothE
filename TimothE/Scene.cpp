@@ -13,27 +13,8 @@ Scene::Scene(string name)
 	_id = ++nextID;
 	_name = name;
 
-	/////////////
-	//TEST CODE//
-	/////////////
-	/*Texture2D* t = new Texture2D();
-	t->Load("lenna3.jpg", "linear");*/
-
-	Shader* shader;
-	shader = new Shader("fbVert.vs", "fbFrag.fs");
-
-	static const GLfloat g_vertex_buffer_data[] =
-	{
-		//pos				//tex
-		-1.0f, -1.0f, 0.0f, 0.0f, 0.0f,
-		1.0f, -1.0f, 0.0f, 1.0f, 0.0f,
-		0.0f,  1.0f, 0.0f, 0.5f, 1.0f
-	};
-
 	GameObject* _pTestObject = new GameObject("LENNA!", ObjectType::Player);
 	_pTestObject->LoadTexture("lenna3.jpg", "linear");
-	_pTestObject->SetShader(shader->GetProgramID());
-	_pTestObject->SetShader(shader);
 
 	Button* pButton = new Button("TestButton", 640, 100);
 	pButton->LoadTexture("lenna3.jpg", "linear");

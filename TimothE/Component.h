@@ -49,6 +49,8 @@ public:
 		Debug_Category = BIT(5),
 	};
 
+	COMPONENT_STATIC_TYPE(None)
+
 	//constructor and destructor calling start and end methods
 	Component() { }
 	~Component() {}
@@ -88,17 +90,10 @@ public:
 		return true;
 	}
 	virtual bool LoadState(IStream& stream) override {
-		//Read type
-		//_type = (Types)ReadInt(stream);
-
-		//Read Category //Not sure if this will work? Testing required
-		//_category = (Categories)ReadInt(stream);
-
-
 		return true;
 	}
 protected:
-	//variable for type and catagories to be assigned to
+	//variable for type and categories to be assigned to
 	Types _type;
 	Categories _category;
 

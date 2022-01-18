@@ -5,7 +5,7 @@
 #include "imgui.h"
 
 
-GameObject::GameObject(string name, ObjectType tag, Texture2D* texture, Transform* transform) 
+GameObject::GameObject(string name, ObjectType tag, Transform* transform) 
 	: _name(name), _tag(tag), _pTransform(transform)
 {
 	_UID = UID::GenerateUID();
@@ -14,11 +14,6 @@ GameObject::GameObject(string name, ObjectType tag, Texture2D* texture, Transfor
 		_pTransform = new Transform();
 	}
 	AddComponent<Transform>(_pTransform);
-
-	if (texture == nullptr) {
-		texture = new Texture2D();
-	}
-	AddComponent<Texture2D>(texture);
 
 	InitVertexData();
 
@@ -196,7 +191,7 @@ bool GameObject::LoadState(IStream& stream)
 
 
 		//Make instance of component
-		Component* c = ComponentFactor::GetComponent(type);
+		auto* c = ComponentFactor::GetComponent(type);
 		if (c == nullptr) {
 			std::cout << "Failed to load Gameobject: " << _name << " Component is null" << std::endl;
 			return false;
@@ -248,6 +243,13 @@ T* GameObject::GetComponent()
 template<typename T>
 T* GameObject::AddComponent(T* comp)
 {
+	for (auto& c : _pComponents) {
+		if (c->GetType() == comp->GetType())
+		{
+			return comp;
+		}
+	}
+
 	_pComponents.push_back(comp);
 	return comp;
 }

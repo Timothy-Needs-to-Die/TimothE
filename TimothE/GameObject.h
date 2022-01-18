@@ -31,7 +31,7 @@ public:
 	template<typename T>
 	T* AddComponent(T* comp);
 
-	GameObject(string name = "New GameObject", ObjectType tag = ObjectType::Player, Texture2D* texture = nullptr, Transform* transform = nullptr);
+	GameObject(string name = "New GameObject", ObjectType tag = ObjectType::Player, Transform* transform = nullptr);
 	~GameObject();
 	void InitVertexData();
 
