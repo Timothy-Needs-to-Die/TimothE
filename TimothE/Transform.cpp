@@ -7,7 +7,6 @@ Transform::Transform()
 	SetCategory(Component::Transform_Category);
 	_transformationMatrix = glm::mat4(1.0f);
 	_position = glm::vec2(640, 360);
-	_transformationMatrix = glm::scale(_transformationMatrix, { 1.0f, 1.0f, 1 });
 	_transformationMatrix = glm::translate(_transformationMatrix, glm::vec3(_position, 0));
 }
 
@@ -18,7 +17,7 @@ void Transform::Translate(glm::vec2 newPos)
 
 void Transform::Scale(glm::vec2 newSize)
 {
-	_transformationMatrix = glm::scale(_transformationMatrix, { newSize, 1 });
+	_transformationMatrix = glm::scale(_transformationMatrix, { newSize.x / 2, newSize.y / 2, 1 });
 }
 
 void Transform::Rotate(float rotationAmount, glm::vec2 axis)

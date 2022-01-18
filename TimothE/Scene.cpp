@@ -13,10 +13,26 @@ Scene::Scene(string name)
 	_id = ++nextID;
 	_name = name;
 
+	/////////////
+	//TEST CODE//
+	/////////////
+	/*Texture2D* t = new Texture2D();
+	t->Load("lenna3.jpg", "linear");*/
+
+	Shader* shader;
+	shader = new Shader("fbVert.vs", "fbFrag.fs");
+
 	GameObject* _pTestObject = new GameObject("LENNA!", ObjectType::Player);
 	_pTestObject->LoadTexture("lenna3.jpg", "linear");
 
-	Button* pButton = new Button("TestButton", 640, 100);
+	//Orde of transformations matters!!!!!
+	//First we Translate
+	//Then we rotate
+	//Then finally scale
+	_pTestObject->GetTransform()->Translate({ 100,100 });
+	_pTestObject->GetTransform()->Scale({ 32,32 });
+
+	Button* pButton = new Button("TestButton", 32, 32);
 	pButton->LoadTexture("lenna3.jpg", "linear");
 
 	AddGameObject(pButton);
