@@ -19,9 +19,6 @@ Scene::Scene(string name)
 	/*Texture2D* t = new Texture2D();
 	t->Load("lenna3.jpg", "linear");*/
 
-	Shader* shader;
-	shader = new Shader("fbVert.vs", "fbFrag.fs");
-
 	GameObject* _pTestObject = new GameObject("LENNA!", ObjectType::Player);
 	_pTestObject->LoadTexture("lenna3.jpg", "linear");
 
