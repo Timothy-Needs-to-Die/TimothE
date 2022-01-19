@@ -178,7 +178,7 @@ void Editor::EditorImGui(Scene* currentScene)
 						if (tex == nullptr)
 						{
 							_pSelectedGameObject->AddComponent(new Texture2D());
-							_pSelectedGameObject->LoadTexture((char*)texPath.c_str(), "Linear");
+							_pSelectedGameObject->LoadTexture((char*)texPath.c_str());
 						}
 					}
 				}
