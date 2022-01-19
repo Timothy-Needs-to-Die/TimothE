@@ -25,7 +25,6 @@ void Renderer::Render(GameObject* gameObject)
 	glm::mat4 transform = gameObject->GetTransform()->_transformationMatrix;
 	gameObject->GetShader()->SetMat4("transform", transform);
 
-	glActiveTexture(GL_TEXTURE0);
 	glBindTexture(GL_TEXTURE_2D, gameObject->GetTextureID());
 
 	glDrawArrays(GL_TRIANGLES, 0, 6);

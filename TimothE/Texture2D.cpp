@@ -21,30 +21,47 @@ void Texture2D::DrawEditorUI()
 }
 
 // Pass in file path, filter mode as "linear" or "nearest"
-bool Texture2D::Load(string path, string mode)
+bool Texture2D::Load(string path)
 {
-	_filePath = path;
-	_ID = SOIL_load_OGL_texture
-	(
-		path.c_str(),
-		SOIL_LOAD_AUTO,
-		SOIL_CREATE_NEW_ID,
-		SOIL_FLAG_MIPMAPS | SOIL_FLAG_INVERT_Y | SOIL_FLAG_NTSC_SAFE_RGB | SOIL_FLAG_COMPRESS_TO_DXT
-	);
+	unsigned char* data = SOIL_load_image(path.c_str(), &_width, &_height, &_channels, SOIL_LOAD_AUTO);
 
-	/* check for an error during the load process */
-	if (_ID == 0)
-	{
-		printf("SOIL loading error: '%s'\n", SOIL_last_result());
-	}
+	GenTexture(data);
+
+	//_filePath = path;
+	//_ID = SOIL_load_OGL_texture
+	//(
+	//	path.c_str(),
+	//	SOIL_LOAD_AUTO,
+	//	SOIL_CREATE_NEW_ID,
+	//	SOIL_FLAG_MIPMAPS | SOIL_FLAG_INVERT_Y | SOIL_FLAG_NTSC_SAFE_RGB | SOIL_FLAG_COMPRESS_TO_DXT
+	//);
+
+	///* check for an error during the load process */
+	//if (_ID == 0)
+	//{
+	//	printf("SOIL loading error: '%s'\n", SOIL_last_result());
+	//}
 
 	return true;
 }
 
-void Texture2D::Bind()
+void Texture2D::GenTexture(unsigned char* data)
 {
+	_ID = SOIL_create_OGL_texture(
+		data,
+		&_width,
+		&_height,
+		_channels,
+		SOIL_CREATE_NEW_ID,
+		SOIL_FLAG_MIPMAPS | SOIL_FLAG_INVERT_Y | SOIL_FLAG_COMPRESS_TO_DXT
+	);
+
 	glBindTexture(GL_TEXTURE_2D, _ID);
+
+	SOIL_free_image_data(data);
 }
+
+
 
 void Texture2D::OnStart() 
 { 
