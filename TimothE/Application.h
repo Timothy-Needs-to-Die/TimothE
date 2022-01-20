@@ -7,6 +7,8 @@
 #include "Editor.h"
 #include "MemoryManager.h"
 
+#include "AudioEngine.h"
+
 class Application
 {
 public:
@@ -29,17 +31,21 @@ protected:
 	void ImGUISwitchRender();
 
 private:
+	//Event Handlers
 	bool OnGameWindowClose(WindowCloseEvent& e);
 	bool OnGameWindowKeyPressedEvent(KeyPressedEvent& e);
 	bool OnGameWindowKeyReleasedEvent(KeyReleasedEvent& e);
 	bool OnGameWindowMouseButtonPressedEvent(MouseButtonPressedEvent& e);
 	bool OnGameWindowMouseButtonReleasedEvent(MouseButtonReleasedEvent& e);
+	bool OnGameWindowMouseMovedEvent(MouseMovedEvent& e);
+
+	AudioEngine* _audio;
 
 	Renderer _renderer;
 
 	Window* _pWindow;
 
-	bool _inEditorMode;
+	bool _inEditorMode = false;
 	bool _devMode;
 
 	bool _running;
@@ -47,5 +53,7 @@ private:
 	Scene* _pCurrentScene;
 
 	Editor* _pEditor;
+
+	bool _paused = false;
 };
 

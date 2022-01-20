@@ -18,18 +18,49 @@ public:
 	Texture2D();
 	~Texture2D();
 
+	COMPONENT_STATIC_TYPE(Texture_Type)
+
 	void OnStart() override;
 	void OnUpdate() override;
 	void OnEnd() override;
 
-	int GetCategory() const override { return 0; };
-	int GetType() const override { return 0; };
+	int GetHeight() { return _height; };
+	int GetWidth() { return _width; };
 
-	bool Load(char* path);
+	bool Load(string path);
 	void SetFilterMode(string mode);
 
 	GLuint GetID() const { return _ID; }
+
+	// Inherited via ISerializable
+	virtual bool SaveState(IStream& stream) const override {
+		Component::SaveState(stream);
+
+		WriteString(stream, _filePath);
+
+		return true;
+
+	}
+	virtual bool LoadState(IStream& stream) override {
+		Component::LoadState(stream);
+
+		Load(ReadString(stream));
+
+		return true;
+
+	}
+
+	virtual void DrawEditorUI() override;
+
 private:
+	void GenTexture(unsigned char* data);
+
+	string _filePath;
 	string _UID;
-	GLuint _ID; // Texture ID
+	GLuint _ID;
+
+	int _width;
+	int _height;
+	int _channels;
+	// Texture ID
 };

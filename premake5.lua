@@ -26,13 +26,15 @@ project "TimothE"
 		"Dependancies/imgui",
 		"Dependancies/imgui/backend",
 		"Dependancies"
+		"Dependancies/Fmod/inc"
 	}
 
 	libdirs {
 		"Dependancies/GLFW/lib-vc2019",
 		"Dependancies/GLEW/lib",
-		"Dependancies/irrklang/lib",
-		"Dependancies/freetype"
+		"Dependancies/freetype",
+		"Dependancies/irrklang/lib", 
+		"Dependancies/Fmod/lib"
 	}
 
 	links {
@@ -43,4 +45,5 @@ project "TimothE"
 		"soil2-debug.lib",
 		"soil2-debug.dll",
 		"freetype.lib"
+		"fmod_vc.lib"
 	}

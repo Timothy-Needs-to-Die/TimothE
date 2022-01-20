@@ -12,6 +12,10 @@ public:
 	static void SetKey(TimothEKeyCode keycode, TimothEInputState state);
 	static void SetMouseButton(TimothEMouseCode button, TimothEInputState state);
 
+	static void SetMousePosition(float x, float y);
+	static float GetMouseX() { return _mouseXPos; }
+	static float GetMouseY() { return _mouseYPos; }
+
 	//Is the key pressed?
 	static bool IsKeyDown(TimothEKeyCode keycode);
 
@@ -33,5 +37,8 @@ private:
 
 	//Holds each of the mouse buttons that can be queried
 	static int* _pMouseArr;
+
+	static float _mouseXPos;
+	static float _mouseYPos;
 };
 
