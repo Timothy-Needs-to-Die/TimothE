@@ -8,6 +8,7 @@
 #include "Scene.h"
 #include "Camera.h"
 #include "Console.h"
+#include "imgui.h"
 
 #define CONTENT_BROWSER_DIRECTORY "./Resources" //sets file directory for the content browser
 
@@ -30,6 +31,7 @@ public:
 	//Ends the render
 	void EditorEndRender();
 
+	void ConvertGameToEditorSpace();
 
 	Framebuffer* _pEditorFramebuffer;
 
@@ -55,6 +57,11 @@ private:
 	void SearchFileDirectory();
 	string _mCurrentDir = CONTENT_BROWSER_DIRECTORY;
 	Camera* _pEditorCamera;
+
+	ImVec2 _windowPos;
+	ImVec2 _windowSize;
+
+	glm::vec2 _mousePosInEditorSpace;
 
 	//Texture2D* pContentTextureImage = new Texture2D();
 	//Texture2D* pContentTextureScene = new Texture2D();
