@@ -3,7 +3,7 @@
 #include "Stream.h"
 #include "ComponentFactory.h"
 #include "imgui.h"
-
+#include "Console.h"
 
 GameObject::GameObject(string name, ObjectType tag, Transform* transform) 
 	: _name(name), _tag(tag), _pTransform(transform)
@@ -77,8 +77,6 @@ void GameObject::InitVertexData()
 		(void*)(3 * sizeof(float))          // array buffer offset
 	);
 	glEnableVertexAttribArray(1);
-
-
 }
 
 void GameObject::Start()
@@ -110,16 +108,27 @@ void GameObject::LoadTexture(char* path, string mode)
 	Texture2D* pTexture = GetComponent<Texture2D>();
 	if (pTexture == nullptr)
 	{
-		pTexture = new Texture2D(this);
-		pTexture->Load(path, mode);
-		_textureID = pTexture->GetID();
-		AddComponent(pTexture);
-		_textureID = pTexture->GetID();
+		pTexture = new Texture2D();
+		if (pTexture->Load(path, mode))
+		{
+			_textureID = pTexture->GetID();
+			AddComponent(pTexture);
+		}
+		else
+		{
+			Console::Print("Unable to load texture " + std::string(path));
+		}
 	}
 	else
 	{
-		pTexture->Load(path, mode);
-		_textureID = pTexture->GetID();
+		if (pTexture->Load(path, mode))
+		{
+			_textureID = pTexture->GetID();
+		}
+		else
+		{
+			Console::Print("Unable to load texture " + std::string(path));
+		}
 	}
 }
 
@@ -252,4 +261,10 @@ T* GameObject::AddComponent(T* comp)
 
 	_pComponents.push_back(comp);
 	return comp;
+}
+
+void GameObject::RemoveComponent(Component* comp)
+{
+	_pComponents.erase(std::find(_pComponents.begin(), _pComponents.end(), comp));
+	delete comp;
 }

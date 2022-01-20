@@ -30,6 +30,7 @@ public:
 	T* GetComponent();
 	template<typename T>
 	T* AddComponent(T* comp);
+	void RemoveComponent(Component* comp);
 
 	GameObject(string name = "New GameObject", ObjectType tag = ObjectType::Player, Transform* transform = nullptr);
 	~GameObject();

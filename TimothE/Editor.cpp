@@ -86,25 +86,11 @@ void Editor::EditorImGui(Scene* currentScene)
 				if (changeObject)
 				{
 					text = _pSelectedGameObject->GetName();
-					//oldName = _pSelectedGameObject->GetName();
 				}
 				if (ImGui::InputText(" ", &text, ImGuiInputTextFlags_CharsNoBlank))
 				{
 					_pSelectedGameObject->SetName(text);
 				}
-				/*if (text != oldName)
-				{
-					ImGui::SameLine();
-					if (ImGui::Button("Set name"))
-					{
-						string name = _pSelectedGameObject->GetName();
-						string newname = text;
-						string s = name + " renamed to " + newname;
-						Console::Print(s);
-						_pSelectedGameObject->SetName(text);
-						oldName = text;
-					}
-				}*/
 			}
 
 			// select object type
@@ -132,6 +118,14 @@ void Editor::EditorImGui(Scene* currentScene)
 			for (Component* c : _pSelectedGameObject->GetComponents())
 			{
 				c->DrawEditorUI();
+
+				if (c->GetType() != Component::Transform_Type)
+				{
+					if (ImGui::Button(("Delete component##" + to_string(c->GetType())).c_str()))
+					{
+						_pSelectedGameObject->RemoveComponent(c);
+					}
+				}
 			}
 
 			// add component
@@ -178,7 +172,7 @@ void Editor::EditorImGui(Scene* currentScene)
 				}
 				if (ImGui::CollapsingHeader("Graphics"))
 				{
-					string texPath = "lenna3.jpg";
+					static string texPath = "lenna3.jpg";
 					ImGui::InputText("Texture path", &texPath);
 					if (ImGui::Button("Texture"))
 					{
@@ -331,22 +325,6 @@ void Editor::EditorImGui(Scene* currentScene)
 			SearchFileDirectory();
 		}
 
-		/*string texPath = "lenna3.jpg";
-		ImGui::InputText("Texture path", &texPath);
-		if (ImGui::Button("Texture"))
-		{
-			Texture2D* tex = new Texture2D();
-			if (tex == nullptr)
-			{
-				_pSelectedGameObject->AddComponent(new Texture2D());
-				tex.LoadTexture((char*)texPath.c_str(), "Linear");
-			}
-		}*/
-		
-		
-		string texPath = "lenna3.jpg";
-		
-		
 		//for each item in directory create new button
 		for (int i = 2; i < _mDirectoryList.size(); i++) {
 			//add image for each directory
@@ -423,17 +401,6 @@ void Editor::EditorEndRender()
 void Editor::EditorUpdate(Scene* currentScene, float dt)
 {
 	currentScene->Update(dt);
-}
-
-void Console::Print(string message)
-{
-	if (output.size() > CONSOLE_MAX_MESSAGES)
-	{
-		output.erase(output.begin());
-	}
-	output.push_back(message);
-
-	// TODO: maybe add a way to remove old messages after size exceeded max size to reduce memory usage for unneeded messages
 }
 
 void Editor::CreateFileInContentBrowser()
