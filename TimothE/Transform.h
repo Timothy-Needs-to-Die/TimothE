@@ -87,4 +87,8 @@ private:
 	glm::vec2 _position;
 	glm::vec2 _size;
 	float _rotation;
+
+	float* editorPos;
+	float* editorRot;
+	float* editorScale;
 };

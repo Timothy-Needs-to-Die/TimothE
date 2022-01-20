@@ -179,7 +179,7 @@ void Editor::EditorImGui(Scene* currentScene)
 						Texture2D* tex = _pSelectedGameObject->GetComponent<Texture2D>();
 						if (tex == nullptr)
 						{
-							_pSelectedGameObject->AddComponent(new Texture2D());
+							_pSelectedGameObject->AddComponent(new Texture2D(_pSelectedGameObject));
 							_pSelectedGameObject->LoadTexture((char*)texPath.c_str());
 						}
 					}
