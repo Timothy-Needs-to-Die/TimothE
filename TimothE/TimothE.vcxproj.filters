@@ -9,9 +9,14 @@
     </Filter>
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="AddressTranslator.h" />
     <ClInclude Include="Application.h" />
     <ClInclude Include="ApplicationEvent.h" />
+    <ClInclude Include="AudioEngine.h" />
+    <ClInclude Include="Button.h" />
+    <ClInclude Include="Camera.h" />
     <ClInclude Include="Component.h" />
+    <ClInclude Include="ComponentFactory.h" />
     <ClInclude Include="Editor.h" />
     <ClInclude Include="Event.h" />
     <ClInclude Include="Framebuffer.h" />
@@ -51,6 +56,7 @@
     <ClInclude Include="MemoryManager.h" />
     <ClInclude Include="MouseEvent.h" />
     <ClInclude Include="Renderer.h" />
+    <ClInclude Include="ResourceManager.h" />
     <ClInclude Include="SOIL\SOIL2.h">
       <Filter>SOIL</Filter>
     </ClInclude>
@@ -103,18 +109,23 @@
       <Filter>SOIL</Filter>
     </ClInclude>
     <ClInclude Include="Scene.h" />
+    <ClInclude Include="Serializable.h" />
     <ClInclude Include="Shader.h" />
+    <ClInclude Include="Stream.h" />
+    <ClInclude Include="StreamFile.h" />
     <ClInclude Include="TestComponent.h" />
     <ClInclude Include="Texture2D.h" />
     <ClInclude Include="TimothEInputCodes.h" />
     <ClInclude Include="Transform.h" />
     <ClInclude Include="UID.h" />
     <ClInclude Include="Window.h" />
-    <ClInclude Include="Button.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="AddressTranslator.cpp" />
     <ClCompile Include="Application.cpp" />
-    <ClCompile Include="Component.cpp" />
+    <ClCompile Include="AudioEngine.cpp" />
+    <ClCompile Include="Button.cpp" />
+    <ClCompile Include="Camera.cpp" />
     <ClCompile Include="Editor.cpp" />
     <ClCompile Include="Framebuffer.cpp" />
     <ClCompile Include="GameObject.cpp" />
@@ -147,10 +158,11 @@
     <ClCompile Include="Scene.cpp" />
     <ClCompile Include="Shader.cpp" />
     <ClCompile Include="Source.cpp" />
+    <ClCompile Include="StreamFile.cpp" />
+    <ClCompile Include="StreamHelpers.cpp" />
     <ClCompile Include="TestComponent.cpp" />
     <ClCompile Include="Texture2D.cpp" />
     <ClCompile Include="Transform.cpp" />
     <ClCompile Include="Window.cpp" />
-    <ClCompile Include="Button.cpp" />
   </ItemGroup>
 </Project>

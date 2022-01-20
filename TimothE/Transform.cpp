@@ -1,47 +1,68 @@
 #include "Transform.h"
+#include "imgui.h"
 
-Transform::Transform() : Component()
+Transform::Transform()
 {
-	_scaleX = 1;
-	_scaleY = 1;
-	_xPos = 0;
-	_yPos = 0;
-	_xRot = 0;
-	_yRot = 0;
+	SetType(Component::Transform_Type);
+	SetCategory(Component::Transform_Category);
+	_transformationMatrix = glm::mat4(1.0f);
+	_position = glm::vec2(640, 360);
+	_transformationMatrix = glm::translate(_transformationMatrix, glm::vec3(_position, 0));
 }
 
-Transform::Transform(float x, float y, float rotx, float roty, float scalex, float scaley) : Component()
+void Transform::Translate(glm::vec2 newPos)
 {
-	_scaleX = scalex;
-	_scaleY = scaley;
-	_xPos = x;
-	_yPos = y;
-	_xRot = rotx;
-	_yRot = roty;
+	_transformationMatrix = glm::translate(_transformationMatrix, glm::vec3(newPos, 0));
+}
+
+void Transform::Scale(glm::vec2 newSize)
+{
+	_transformationMatrix = glm::scale(_transformationMatrix, { newSize.x / 2, newSize.y / 2, 1 });
+}
+
+void Transform::Rotate(float rotationAmount, glm::vec2 axis)
+{
+	_transformationMatrix = glm::rotate(_transformationMatrix, rotationAmount, { axis, 0 });
 }
 
 void Transform::OnStart()
 {
-
 }
 
 void Transform::OnUpdate()
 {
+}
 
+void Transform::DrawEditorUI()
+{
+	ImGui::Text("Transform");
+
+	// get the position
+	float* pos = new float[2]{ GetPosition().x, GetPosition().y };
+	// create boxes to set the position
+	if (ImGui::InputFloat2("Position", pos))
+	{
+		// set the position on the game object
+		SetPosition(pos[0], pos[1]);
+	}
+
+	float* rot = new float[2]{ GetRotation() };
+	if (ImGui::InputFloat2("Rotation", rot))
+	{
+		//TODO: GameObject's only rotate on X axis
+		SetRotation(rot[0]);
+	}
+
+	float* scale = new float[2]{ GetScale().x, GetScale().y };
+	if (ImGui::InputFloat2("Scale", scale))
+	{
+		SetScale(glm::vec2(scale[0], scale[1]));
+	}
+	delete[]pos;
+	delete[]rot;
+	delete[]scale;
 }
 
 void Transform::OnEnd()
 {
-
-}
-
-void Transform::SetPosition(float x, float y)
-{
-	_xPos = x;
-	_yPos = y;
-}
-
-void Transform::SetXrotation(float xRot)
-{
-	_xRot = xRot;
 }

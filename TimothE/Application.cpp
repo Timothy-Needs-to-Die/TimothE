@@ -20,8 +20,20 @@
 #include "Texture2D.h"
 #include "Button.h"
 
-
 #define BIND_EVENT_FN(x) std::bind(&Application::x, this, std::placeholders::_1)
+
+void GLAPIENTRY MessageCallback(GLenum source,
+	GLenum type,
+	GLuint id,
+	GLenum severity,
+	GLsizei length,
+	const GLchar* message,
+	const void* userParam)
+{
+	fprintf(stderr, "GL CALLBACK: %s type = 0x%x, severity = 0x%x, message = %s\n",
+		(type == GL_DEBUG_TYPE_ERROR ? "** GL ERROR **" : ""),
+		type, severity, message);
+}
 
 void Application::Init(bool devMode)
 {
@@ -39,10 +51,12 @@ void Application::Init(bool devMode)
 	glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 3);
 	glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 3);
 
-	_pWindow = new Window(1280, 720, "TimeothE");
+	_pWindow = new Window(1280, 720, "ThymeoWthE");
 
 	_pWindow->SetEventCallback(BIND_EVENT_FN(OnGameEvent));
 	_pWindow->CreateWindow();
+
+
 
 	GLint GlewInitResult = glewInit();
 	if (GlewInitResult != GLEW_OK)
@@ -50,6 +64,9 @@ void Application::Init(bool devMode)
 		//std::cout << "ERROR: %s", glewGetErrorString(GlewInitResult) << std::endl;
 		exit(EXIT_FAILURE);
 	}
+
+	glEnable(GL_DEBUG_OUTPUT);
+	glDebugMessageCallback(MessageCallback, 0);
 
 	if (_devMode) {
 		ImGuiManager::CreateImGuiContext(_pWindow->GetGLFWWindow());
@@ -67,62 +84,85 @@ void Application::GameLoop()
 	//Intial mem bookmark
 	int memBookmark = HeapManager::GetMemoryBookmark();
 
-	//Create some heaps
-	Heap* g = HeapManager::CreateHeap("GameObject", "Root");
-	Heap* c = HeapManager::CreateHeap("Cameras", "GameObject");
-	HeapManager::CreateHeap("Enemies", "GameObject");
+	_audio = new AudioEngine;
 
-	Texture2D* pTexture = new Texture2D();
-	// remove extra arguement if breaks
-	pTexture->Load("./lenna3.raw", "");
-	Button* pButton = new Button("TestButton", new Transform(0, 0, 0, 0, 1, 1), pTexture, 100, 100);
+	//_pCurrentScene->LoadScene("scene1.scene");
 
-	//Creates some allocations. TestArr will not be deleted to test the memory leak detector
-	int* testArr = new(g) int[1024];
-	int* testArr2 = new(c) int[20124];
-	//Deletes testArr2
-	delete[]testArr2;
+	glEnable(GL_DEPTH_TEST);
 
 	double previousTime = glfwGetTime();
+	bool STstarted = false;
+
+	SoundStruct TitleSong = _audio->LoadSound("Title Song", "Resources/Sounds/Music/Title.wav", Type_Song);
+
+	Camera* _pGameCamera = new Camera(_pWindow->GetGLFWWindow(), 1280, 720, 45.0f);
+
 	//While the editor window should not close
 	while (_running) {
 		PollInput();
 
+		if (STstarted == false)
+		{
+			//_audio->PlaySong(TitleSong);
+			STstarted = true;
+
+		}
+
 		double currentTime = glfwGetTime();
 		double elapsed = currentTime - previousTime;
 
+		_pGameCamera->Update(elapsed);
+
+		ImGuiManager::ImGuiNewFrame();
+
 		if (_inEditorMode) {
-			_pEditor->EditorLoop(_pCurrentScene, elapsed, _inEditorMode);
-		}
-		else {
+			_pEditor->_pEditorFramebuffer->BindFramebuffer();
 			GameBeginRender();
+			glEnable(GL_DEPTH_TEST);
+
 
 			GameRender();
 
-			pButton->Update(elapsed);
+			if(!_paused)
+				GameUpdate(elapsed);
 
-			
+			_pEditor->_pEditorFramebuffer->UnbindFramebuffer();
+			glDisable(GL_DEPTH_TEST);
+
+			glClear(GL_COLOR_BUFFER_BIT);
+			_pEditor->EditorRender();
+			_pEditor->EditorLoop(_pCurrentScene, elapsed, _inEditorMode, _paused);
+		}
+		else {
+			GameBeginRender();
+			glEnable(GL_DEPTH_TEST);
+
+			GameRender();
+
 			if (_devMode) {
-				ImGuiManager::ImGuiNewFrame();
 				ImGUISwitchRender();
-				ImGuiManager::ImGuiEndFrame();
 			}
 
-			GameEndRender();
+			if (!_paused)
+				GameUpdate(elapsed);
 
-			GameUpdate(elapsed);
+			glDisable(GL_DEPTH_TEST);
 		}
+		ImGuiManager::ImGuiEndFrame();
+
+		_pWindow->SwapBuffers();
 
 		previousTime = currentTime;
 	}
+	_pCurrentScene->SaveScene("scene1.scene");
 
 	ImGuiManager::DestroyImGui();
 	delete _pEditor;
 	_pWindow->DestroyWindow();
 
 	//Prints the memory status and reports and memory leaks
-	HeapManager::PrintInfo();
 	HeapManager::ReportMemoryLeaks(memBookmark);
+
 }
 
 
@@ -145,6 +185,7 @@ void Application::PollInput()
 void Application::GameBeginRender()
 {
 	_pWindow->SetWindowColour(0.3f, 1.0f, 0.0f, 1.0f);
+	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 }
 
 void Application::GameRender()
@@ -159,13 +200,13 @@ void Application::GameEndRender()
 
 void Application::GameUpdate(float dt)
 {
-
+	_pCurrentScene->Update(dt);
 }
 
 void Application::ImGUISwitchRender()
 {
 	{
-		ImGui::Begin("Application Mode");
+		ImGui::Begin("#Application Mode");
 
 		if (ImGui::Button("Editor", ImVec2(100.0f, 30.0f))) {
 			_inEditorMode = true;
@@ -175,6 +216,26 @@ void Application::ImGUISwitchRender()
 			_inEditorMode = false;
 		}
 		ImGui::SameLine();
+		//float width = ImGui::GetWindowSize().x;
+		//ImGui::SetCursorPosX((width - 30.0f) * 0.5f); // sets play and pause button to centre of window
+		if (ImGui::Button("Play", ImVec2(50.0f, 30.0f)))
+		{
+			_paused = false;
+		}
+		ImGui::SameLine();
+		if (ImGui::Button("Pause", ImVec2(50.0f, 30.0f)))
+		{
+			_paused = true;
+		}
+		ImGui::SameLine();
+		//resets game build
+		if (ImGui::Button("Stop", ImVec2(50.0f, 30.0f)))
+		{
+			_pCurrentScene = new Scene("Test scene");
+			_paused = true;
+		}
+		ImGui::SameLine();
+		ImGui::Text(("Paused: " + to_string(_paused)).c_str());
 		ImGui::End();
 	}
 }

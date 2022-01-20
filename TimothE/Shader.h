@@ -1,13 +1,15 @@
 #pragma once
 
-#include <GLFW/glfw3.h>
-#include <GL/gl.h>
-#include <glm.hpp>
+#include <gl/glew.h>
 
 #include <string>
 #include <iostream>
 #include <sstream>
 #include <fstream>
+
+#include <glm.hpp>
+#include <gtc/matrix_transform.hpp>
+#include <gtc/type_ptr.hpp>
 
 struct ShaderSourceCode {
 	std::string vertexShaderSource;
@@ -24,6 +26,9 @@ public:
 
 	void BindShader();
 	void UnbindShader();
+
+	std::string GetVsPath() const { return _vertexShaderPath; }
+	std::string GetFsPath() const { return _fragmentShaderPath; }
 
 	/////////////////////////////
 	//UNIFORM UTILITY FUNCTIONS//
