@@ -66,6 +66,8 @@ void Editor::EditorImGui(Scene* currentScene)
 		ImGui::End();
 	}
 
+	ImGui::ShowDemoWindow();
+
 	//Inspector
 	{
 		ImGui::Begin("Inspector");

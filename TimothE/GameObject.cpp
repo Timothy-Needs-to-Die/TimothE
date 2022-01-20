@@ -227,28 +227,3 @@ void GameObject::SetDefaultShader()
 	SetShader(_pShader);
 }
 
-template<typename T>
-T* GameObject::GetComponent()
-{
-	for (auto& comp : _pComponents) {
-		if (comp->GetType() == T::GetStaticType()) {
-			return (T*)comp;
-		}
-	}
-
-	return nullptr;
-}
-
-template<typename T>
-T* GameObject::AddComponent(T* comp)
-{
-	for (auto& c : _pComponents) {
-		if (c->GetType() == comp->GetType())
-		{
-			return comp;
-		}
-	}
-
-	_pComponents.push_back(comp);
-	return comp;
-}

@@ -1,8 +1,19 @@
 #include "TextComponent.h"
+#include "imgui.h"
 
-TextComponent::TextComponent(std::string font)
+#include "misc/cpp/imgui_stdlib.h"
+
+TextComponent::TextComponent(GameObject* parentObject, std::string font) : Component()
 {
-	_font = "fonts/" + font + ".ttf";
+	SetFont(font);
+	_text = "Enter text here...";
+	_shader = new Shader("txtVert.vs", "txtFrag.fs");
+	_scale = 1.0f;
+	_color = { 1.0f, 1.0f, 1.0f };
+	_UID = UID::GenerateUID();
+	SetType(Component::Types::Texture_Type);
+	SetCategory(Component::Categories::Graphics_Category);
+	_parentObject = parentObject;
 	OnStart();
 }
 
@@ -11,7 +22,62 @@ TextComponent::~TextComponent()
 	OnEnd();
 }
 
+void TextComponent::DrawEditorUI()
+{
+	if (ImGui::CollapsingHeader("Text"))
+	{
+		ImGui::InputText("TextInput", &_text);
+		const char* items[] = { "arial", "comic" };
+		static int item_current = 0;
+		if (ImGui::Combo("Font", &item_current, items, IM_ARRAYSIZE(items)))
+		{
+			SetFont(items[item_current]);
+			//OnStart();
+		}
+		ImGui::SliderFloat("Size", &_scale, 0.01f, 5.0f, "size = %.3f");
+		float col[3] = { _color.x, _color.y, _color.z };
+		ImGui::ColorEdit3("Colour", col);
+		{
+			_color.x = col[0];
+			_color.y = col[1];
+			_color.z = col[2];
+		}
+	}
+}
+
 void TextComponent::OnStart()
+{
+	LoadFont();
+
+	glEnable(GL_BLEND);
+	glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+	
+	glGenVertexArrays(1, &_VAO);
+	glGenBuffers(1, &_VBO);
+	glBindVertexArray(_VAO);
+	glBindBuffer(GL_ARRAY_BUFFER, _VBO);
+	glBufferData(GL_ARRAY_BUFFER, sizeof(float) * 6 * 4, NULL, GL_DYNAMIC_DRAW);
+	glEnableVertexAttribArray(0);
+	glVertexAttribPointer(0, 4, GL_FLOAT, GL_FALSE, 4 * sizeof(float), 0);
+	glBindBuffer(GL_ARRAY_BUFFER, 0);
+	glBindVertexArray(0);
+}
+
+void TextComponent::OnEnd()
+{
+}
+
+void TextComponent::OnUpdate()
+{
+	RenderText(*_shader, _text, _parentObject->GetTransform()->GetPosition().x, _parentObject->GetTransform()->GetPosition().y, _scale, _color);
+}
+
+void TextComponent::SetFont(std::string font)
+{
+	_font = font;
+	_fontPath = "fonts/" + font + ".ttf";
+}
+void TextComponent::LoadFont()
 {
 	FT_Library ft;
 	if (FT_Init_FreeType(&ft))
@@ -20,7 +86,7 @@ void TextComponent::OnStart()
 		return;
 	}
 	FT_Face face;
-	if (FT_New_Face(ft, _font.c_str(), 0, &face))
+	if (FT_New_Face(ft, _fontPath.c_str(), 0, &face))
 	{
 		std::cout << "ERROR::FREETYPE: Failed to load font" << std::endl;
 		return;
@@ -33,7 +99,7 @@ void TextComponent::OnStart()
 	}
 
 	glPixelStorei(GL_UNPACK_ALIGNMENT, 1); // disable byte-alignment restriction
-	
+
 	for (unsigned char c = 0; c < 128; c++)
 	{
 		// load character gylph
@@ -74,23 +140,6 @@ void TextComponent::OnStart()
 
 	FT_Done_Face(face);
 	FT_Done_FreeType(ft);
-
-	glEnable(GL_BLEND);
-	glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
-	
-	glGenVertexArrays(1, &_VAO);
-	glGenBuffers(1, &_VBO);
-	glBindVertexArray(_VAO);
-	glBindBuffer(GL_ARRAY_BUFFER, _VBO);
-	glBufferData(GL_ARRAY_BUFFER, sizeof(float) * 6 * 4, NULL, GL_DYNAMIC_DRAW);
-	glEnableVertexAttribArray(0);
-	glVertexAttribPointer(0, 4, GL_FLOAT, GL_FALSE, 4 * sizeof(float), 0);
-	glBindBuffer(GL_ARRAY_BUFFER, 0);
-	glBindVertexArray(0);
-}
-
-void TextComponent::OnEnd()
-{
 }
 
 void TextComponent::RenderText(Shader& s, std::string text, float x = 0.0f, float y = 0.0f, float scale = 1.0f, glm::vec3 color = { 1.0f, 1.0f, 1.0f })

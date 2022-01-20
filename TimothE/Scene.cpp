@@ -25,7 +25,7 @@ Scene::Scene(string name)
 	GameObject* _pTestObject = new GameObject("LENNA!", ObjectType::Player);
 	_pTestObject->LoadTexture("lenna3.jpg");
 
-	//Orde of transformations matters!!!!!
+	//Order of transformations matters!!!!!
 	//First we Translate
 	//Then we rotate
 	//Then finally scale
@@ -37,10 +37,13 @@ Scene::Scene(string name)
 
 	AddGameObject(pButton);
 	AddGameObject(_pTestObject);
-
-	shader = new Shader("txtVert.vs", "txtFrag.fs");
 	
-	text = new TextComponent("arial");
+	//text = new TextComponent(_pTestObject, "arial");
+	GameObject* _pTextObj = new GameObject("TEXTOBJ", ObjectType::UI);
+	//_pTextObj->LoadTexture("timothe.gif");
+	AddGameObject(_pTextObj);
+	_pTextObj->AddComponent(new TextComponent(_pTextObj, "arial"));
+	//TextComponent* text = _pTextObj->GetComponent<TextComponent>();
 
 }
 
@@ -64,8 +67,8 @@ void Scene::RenderScene(Renderer* pRenderer)
 {
 	
 	pRenderer->RenderDrawables(_listOfGameObjects);
-	text->RenderText(*shader, "lenna\nfopen", 10.0f, 200.0f, 1.0f, glm::vec3(0.2, 0.2f, 1.0f));
-	text->RenderText(*shader, "Wacky\nWacky", 400.0f, 200.0f, 2.0f, glm::vec3(1.0f, 0.2, 0.2f));
+	//text->RenderText(*shader, "lenna\nfopen", 10.0f, 200.0f, 1.0f, glm::vec3(0.2, 0.2f, 1.0f));
+	//text->RenderText(*shader, "Wacky\nWacky", 400.0f, 200.0f, 2.0f, glm::vec3(1.0f, 0.2, 0.2f));
 }
 
 void Scene::RemoveGameObject(GameObject* gameObject)

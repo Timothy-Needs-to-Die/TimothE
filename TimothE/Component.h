@@ -27,7 +27,7 @@ public:
 	//enum for types of components
 	enum Types
 	{
-		None=0,
+		None = 0,
 		Test_Type = BIT(0),
 		Transform_Type = BIT(1),
 		Sound_Type = BIT(2),
@@ -36,6 +36,7 @@ public:
 		PathFinding_Type = BIT(5),
 		GOAP_Type = BIT(6),
 		Texture_Type = BIT(7),
+		Text_Type = BIT(8)
 	};
 
 	//enums for different catagories of components
