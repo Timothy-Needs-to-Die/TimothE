@@ -5,6 +5,7 @@
 
 #include "UID.h"
 #include "Component.h"
+#include "SubTexture2D.h"
 
 #include "SOIL/SOIL2.h"
 #include "SOIL/stb_image.h"
@@ -54,6 +55,8 @@ public:
 
 private:
 	void GenTexture(unsigned char* data);
+
+	bool isSubTexture;
 
 	string _filePath;
 	string _UID;

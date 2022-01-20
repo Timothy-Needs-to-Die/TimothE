@@ -121,6 +121,7 @@
     <ClInclude Include="Window.h" />
     <ClInclude Include="Button.h" />
     <ClInclude Include="SpriteComponent.h" />
+    <ClInclude Include="SubTexture2D.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="AddressTranslator.cpp" />
@@ -168,9 +169,6 @@
     <ClCompile Include="Window.cpp" />
     <ClCompile Include="Button.cpp" />
     <ClCompile Include="SpriteComponent.cpp" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="FragmentShader.frag" />
-    <None Include="VertexShader.vert" />
+    <ClCompile Include="SubTexture2D.cpp" />
   </ItemGroup>
 </Project>
