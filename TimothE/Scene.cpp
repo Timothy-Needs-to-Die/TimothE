@@ -1,7 +1,6 @@
 #include "Texture2D.h"
 #include "Scene.h"
 #include <algorithm>
-#include "Button.h"
 
 #include "AddressTranslator.h"
 #include "StreamFile.h"
@@ -29,11 +28,13 @@ Scene::Scene(string name)
 	_pTestObject->GetTransform()->Translate({ 100,100 });
 	_pTestObject->GetTransform()->Scale({ 320,320 });
 
-	Button* pButton = new Button("TestButton", 32, 32);
+	/*Button* pButton = new Button("TestButton", 32, 32);
 	pButton->LoadTexture("lenna3.jpg");
+	pButton->GetTransform()->Translate({ 100,100 });
+	pButton->GetTransform()->Scale({ 320,320 });
 
 
-	AddGameObject(pButton);
+	AddGameObject(pButton);*/
 	AddGameObject(_pTestObject);
 }
 

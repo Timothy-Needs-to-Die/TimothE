@@ -3,6 +3,8 @@
 #include <vector>
 
 #include "GameObject.h"
+#include "Component.h"
+#include "Transform.h"
 #include "MouseEvent.h"
 #include "Texture2D.h"
 #include "Input.h"
@@ -10,14 +12,19 @@
 using std::string;
 using std::vector;
 
-class Button : public GameObject
+class Button : public Component
 {
 public:
-	Button(string name, int width, int height);
+	Button(GameObject* parent, int width, int height);
 	~Button();
 
-	void Update(float deltaTime) override;
-	void Render();
+	COMPONENT_STATIC_TYPE(Buttom_Type);
+
+	//void OnStart() override;
+	void OnUpdate() override;
+	//void OnEnd() override;
+	void DrawEditorUI() override;
+
 
 	void AddOnClickCall(void (*function)());
 	void RemoveOnClickCall(void (*function)());

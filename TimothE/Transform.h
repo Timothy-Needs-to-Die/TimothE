@@ -1,6 +1,8 @@
 #pragma once
 
+#include "imgui.h"
 #include "Component.h"
+#include "MemoryManager.h"
 #include <glm.hpp>
 #include <gtc/matrix_transform.hpp>
 

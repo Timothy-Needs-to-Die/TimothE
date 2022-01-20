@@ -15,14 +15,16 @@ void TestFunction3()
 	cout << "Test3" << endl;
 }
 
-Button::Button(string name, int width, int height) : GameObject(name, ObjectType::UI)
+Button::Button(GameObject* parent, int width, int height) : Component(parent)
 {
 	//have to divide by two, because the origin is at centre
 	//so _width goes from the origin to a side of the square
 	//meaning that the scaled width is equal to 2 * width
 	_width = width / 2;
 	_height = height / 2;
-	GetTransform()->Scale({ _width, _height });
+	
+	parent->GetComponent<Transform>()->SetScale(glm::vec2(_width, _height));
+	//parent->GetComponent<Texture2D>();
 
 	_isClicked = false;
 	_isHovering = false;
@@ -32,55 +34,58 @@ Button::~Button()
 {
 }
 
-void Button::Update(float deltaTime)
+void Button::OnUpdate()
 {
 	int mouseX = Input::GetMouseX();
 	int mouseY = Input::GetMouseY();
 
-	glm::vec2 pos = GetTransform()->GetPosition();
-	_width = GetTransform()->GetScale().x;
-	_height = GetTransform()->GetScale().y;
+	//Transform* transform = Parent()->GetComponent<Transform>();
 
-	// Check if the mouse is inside the button
-	if (mouseX > pos.x - _width && mouseX < pos.x + _width
-		&& mouseY > pos.y - _height && mouseY < pos.y + _height)
-	{
-		// If the mouse is inside the button then we are now hovering over the button;
-		_isHovering = true;
-		
-		// Check if the button is now being clicked
-		if (Input::IsMouseButtonDown(BUTTON_1))
-		{
-			_isClicked = true;
+	////glm::vec2* pos = Parent()->GetComponent<Transform>();
+	//glm::vec2 pos = transform->GetPosition();
+	//_width = transform->GetScale().x;
+	//_height = transform->GetScale().y;
 
-			// If we have function calls to perform when the button is clicked
-			if (!_onClickCalls.empty())
-			{
-				// Perform them all
-				for (int i = 0; i < _onClickCalls.size(); i++)
-				{
-					_onClickCalls[i]();
-				}
-			}
-		}
-		else
-		{
-			// We are not clicking the button
-			_isClicked = false;
-		}
-	}
-	else 
-	{
-		// We are not hovering over the button
-		_isHovering = false;
-	}
+	//// Check if the mouse is inside the button
+	//if (mouseX > pos.x - _width && mouseX < pos.x + _width
+	//	&& mouseY > pos.y - _height && mouseY < pos.y + _height)
+	//{
+	//	// If the mouse is inside the button then we are now hovering over the button;
+	//	_isHovering = true;
+	//	
+	//	// Check if the button is now being clicked
+	//	if (Input::IsMouseButtonDown(BUTTON_1))
+	//	{
+	//		_isClicked = true;
 
-	GameObject::Update(deltaTime);
+	//		// If we have function calls to perform when the button is clicked
+	//		if (!_onClickCalls.empty())
+	//		{
+	//			// Perform them all
+	//			for (int i = 0; i < _onClickCalls.size(); i++)
+	//			{
+	//				_onClickCalls[i]();
+	//			}
+	//		}
+	//	}
+	//	else
+	//	{
+	//		// We are not clicking the button
+	//		_isClicked = false;
+	//	}
+	//}
+	//else 
+	//{
+	//	// We are not hovering over the button
+	//	_isHovering = false;
+	//}
+
+	//Debug 
+	cout << "isHovering = " << _isHovering << " isClicked = " << _isClicked << endl;
 }
 
-void Button::Render()
+void Button::DrawEditorUI()
 {
-
 }
 
 void Button::AddOnClickCall(void(*function)())
