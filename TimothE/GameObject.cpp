@@ -108,7 +108,7 @@ void GameObject::LoadTexture(char* path, string mode)
 	Texture2D* pTexture = GetComponent<Texture2D>();
 	if (pTexture == nullptr)
 	{
-		pTexture = new Texture2D();
+		pTexture = new Texture2D(this);
 		if (pTexture->Load(path, mode))
 		{
 			_textureID = pTexture->GetID();

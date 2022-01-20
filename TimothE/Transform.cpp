@@ -33,7 +33,6 @@ void Transform::OnStart()
 
 void Transform::OnUpdate()
 {
-	std::cout << Parent()->GetTextureID() << std::endl;
 }
 
 void Transform::DrawEditorUI()
