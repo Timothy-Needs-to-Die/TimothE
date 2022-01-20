@@ -2,10 +2,9 @@
 #include "Shader.h"
 #include <vector>
 #include <string>
-#include "Component.h"
 #include "Transform.h"
+#include "Component.h"
 #include "UID.h"
-#include "TestComponent.h"
 #include "Serializable.h"
 #include "Shader.h"
 
@@ -27,9 +26,29 @@ class GameObject : public ISerializable
 {
 public:
 	template<typename T>
-	T* GetComponent();
+	T* GetComponent()
+	{
+		for (auto& comp : _pComponents) {
+			if (comp->GetType() == T::GetStaticType()) {
+				return (T*)comp;
+			}
+		}
+
+		return nullptr;
+	}
 	template<typename T>
-	T* AddComponent(T* comp);
+	T* AddComponent(T* comp)
+	{
+		for (auto& c : _pComponents) {
+			if (c->GetType() == comp->GetType())
+			{
+				return comp;
+			}
+		}
+
+		_pComponents.push_back(comp);
+		return comp;
+	}
 	void RemoveComponent(Component* comp);
 
 	GameObject(string name = "New GameObject", ObjectType tag = ObjectType::Player, Transform* transform = nullptr);

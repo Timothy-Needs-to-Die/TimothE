@@ -1,10 +1,10 @@
 #include "Texture2D.h"
 #include "Scene.h"
 #include <algorithm>
-#include "Button.h"
 
 #include "AddressTranslator.h"
 #include "StreamFile.h"
+#include "Button.h"
 
 int Scene::nextID = 0;
 
@@ -29,12 +29,16 @@ Scene::Scene(string name)
 	_pTestObject->GetTransform()->Translate({ 100,100 });
 	_pTestObject->GetTransform()->Scale({ 320,320 });
 
-	Button* pButton = new Button("TestButton", 32, 32);
-	pButton->LoadTexture("lenna3.jpg");
-	pButton->SetShader("vr_UIShader.vert", "fr_UIShader.frag");
+	GameObject* _pButtonTestingObject = new GameObject("BUTTON", ObjectType::UI);
+	_pButtonTestingObject->LoadTexture("lenna3.jpg");
+	_pTestObject->GetTransform()->Translate({ 100,100 });
+	_pTestObject->GetTransform()->Scale({ 320,320 });
 
-	AddGameObject(pButton);
+	_pButtonTestingObject->AddComponent(new Button(_pButtonTestingObject));
+	_pButtonTestingObject->SetShader("vr_UIShader.vert", "fr_UIShader.frag");
+
 	AddGameObject(_pTestObject);
+	AddGameObject(_pButtonTestingObject);
 }
 
 Scene::~Scene()
