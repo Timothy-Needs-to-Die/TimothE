@@ -6,6 +6,8 @@
 #include "AddressTranslator.h"
 #include "StreamFile.h"
 
+#include "SubTexture2D.h"
+
 int Scene::nextID = 0;
 
 Scene::Scene(string name)
@@ -18,6 +20,15 @@ Scene::Scene(string name)
 	/////////////
 	/*Texture2D* t = new Texture2D();
 	t->Load("lenna3.jpg", "linear");*/
+	/*Texture2D* testSheet;
+	SubTexture2D* testSubTex;
+
+
+	testSheet->Load("Resources/Images/Spritesheets/RPGpack_sheet.png");
+	testSubTex = &testSubTex->CreateFromTexCoords(testSheet, { 7,6 }, { 128, 128 });
+
+	GameObject* _testSubTex = new GameObject("SubTex", ObjectType::UI);
+	_testSubTex->*/
 
 	GameObject* _pTestObject = new GameObject("LENNA!", ObjectType::Player);
 	_pTestObject->LoadTexture("lenna3.jpg");

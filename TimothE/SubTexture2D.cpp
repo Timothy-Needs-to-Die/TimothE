@@ -14,6 +14,10 @@ SubTexture2D SubTexture2D::CreateFromTexCoords(Texture2D* texture, const glm::ve
 	return subTexture;
 }
 
+SubTexture2D::~SubTexture2D()
+{
+}
+
 void SubTexture2D::ProcessTexCoords(Texture2D* texture, const glm::vec2& min, const glm::vec2& max)
 {
 	_texture = texture;

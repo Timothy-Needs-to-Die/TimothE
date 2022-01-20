@@ -136,6 +136,7 @@
     <ClInclude Include="SubTexture2D.h" />
     <ClInclude Include="TestComponent.h" />
     <ClInclude Include="Texture2D.h" />
+    <ClInclude Include="TileMapManager.h" />
     <ClInclude Include="TimothEInputCodes.h" />
     <ClInclude Include="Transform.h" />
     <ClInclude Include="UID.h" />
@@ -171,6 +172,7 @@
     <ClCompile Include="SubTexture2D.cpp" />
     <ClCompile Include="TestComponent.cpp" />
     <ClCompile Include="Texture2D.cpp" />
+    <ClCompile Include="TileMapManager.cpp" />
     <ClCompile Include="Transform.cpp" />
     <ClCompile Include="Window.cpp" />
   </ItemGroup>

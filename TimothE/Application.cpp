@@ -18,6 +18,7 @@
 #include "ImGuiManager.h"
 
 #include "Texture2D.h"
+#include "SubTexture2D.h"
 #include "Button.h"
 
 #define BIND_EVENT_FN(x) std::bind(&Application::x, this, std::placeholders::_1)
@@ -93,10 +94,11 @@ void Application::GameLoop()
 	double previousTime = glfwGetTime();
 	bool STstarted = false;
 
-	SoundStruct TitleSong = _audio->LoadSound("Title Song", "Resources/Sounds/Music/Title.wav", Type_Song);
+	//SoundStruct TitleSong = _audio->LoadSound("Title Song", "Resources/Sounds/Music/Title.wav", Type_Song);
+	
 
 	Camera* _pGameCamera = new Camera(_pWindow->GetGLFWWindow(), 1280, 720, 45.0f);
-
+	
 	//While the editor window should not close
 	while (_running) {
 		PollInput();
