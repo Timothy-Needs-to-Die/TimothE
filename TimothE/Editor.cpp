@@ -323,13 +323,25 @@ void Editor::EditorImGui(Scene* currentScene)
 			SearchFileDirectory();
 		}
 
+		/*string texPath = "lenna3.jpg";
+		ImGui::InputText("Texture path", &texPath);
+		if (ImGui::Button("Texture"))
+		{
+			Texture2D* tex = new Texture2D();
+			if (tex == nullptr)
+			{
+				_pSelectedGameObject->AddComponent(new Texture2D());
+				tex.LoadTexture((char*)texPath.c_str(), "Linear");
+			}
+		}*/
+
 		//for each item in directory create new button
 		for (int i = 2; i < _mDirectoryList.size(); i++) {
 			//add image for each directory
 			ImGui::GetWindowDrawList()->AddImage(
-		(void*)_pEditorFramebuffer->GetTexture(),
-		ImVec2(ImGui::GetCursorScreenPos().x+0, ImGui::GetCursorScreenPos().y),
-		ImVec2(ImGui::GetCursorScreenPos().x + 100,
+			(void*)_pEditorFramebuffer->GetTexture(),
+			ImVec2(ImGui::GetCursorScreenPos().x+0, ImGui::GetCursorScreenPos().y),
+			ImVec2(ImGui::GetCursorScreenPos().x + 100,
 			ImGui::GetCursorScreenPos().y + 100), ImVec2(0, 1), ImVec2(1, 0));
 
 			//adds button with directory name which when pressed adds its name to directory string and updates buttons
