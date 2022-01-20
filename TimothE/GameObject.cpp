@@ -115,32 +115,6 @@ void GameObject::LoadTexture(Texture2D* texture)
 		_textureID = texture->GetID();
 		AddComponent<Texture2D>(texture);
 	}
-
-	/*Texture2D* pTexture = GetComponent<Texture2D>();
-	if (pTexture == nullptr)
-	{
-		pTexture = new Texture2D(this);
-		if (pTexture->Load(path))
-		{
-			_textureID = pTexture->GetID();
-			AddComponent<Texture2D>(pTexture);
-		}
-		else
-		{
-			Console::Print("Unable to load texture " + std::string(path));
-		}
-	}
-	else
-	{
-		if (pTexture->Load(path))
-		{
-			_textureID = pTexture->GetID();
-		}
-		else
-		{
-			Console::Print("Unable to load texture " + std::string(path));
-		}
-	}*/
 }
 
 void GameObject::DisplayInEditor()

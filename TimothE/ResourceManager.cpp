@@ -8,14 +8,12 @@ std::string ResourceManager::_UID;
 
 void ResourceManager::InstantiateTexture(string name, string path)
 { 
-	Texture2D* texture = new Texture2D(path);
-	_textures[name] = texture; 
+	_textures[name] = new Texture2D(path);
 };
 
 void ResourceManager::InstantiateShader(string name, const char* vs, const char* fs)
 { 
-	Shader* shader = new Shader(vs, fs);
-	_shaders[name] = shader; 
+	_shaders[name] = new Shader(vs, fs);
 };
 
 void ResourceManager::InstantiateScene(string name, Scene* scene)
