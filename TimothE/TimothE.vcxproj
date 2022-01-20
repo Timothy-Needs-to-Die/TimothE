@@ -88,6 +88,7 @@
     <ClInclude Include="Camera.h" />
     <ClInclude Include="Component.h" />
     <ClInclude Include="ComponentFactory.h" />
+    <ClInclude Include="Console.h" />
     <ClInclude Include="Editor.h" />
     <ClInclude Include="Event.h" />
     <ClInclude Include="Framebuffer.h" />
@@ -147,6 +148,7 @@
     <ClCompile Include="AudioEngine.cpp" />
     <ClCompile Include="Button.cpp" />
     <ClCompile Include="Camera.cpp" />
+    <ClCompile Include="Console.cpp" />
     <ClCompile Include="Editor.cpp" />
     <ClCompile Include="Framebuffer.cpp" />
     <ClCompile Include="GameObject.cpp" />

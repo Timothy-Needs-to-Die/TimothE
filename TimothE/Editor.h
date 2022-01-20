@@ -7,18 +7,9 @@
 #include "Shader.h"
 #include "Scene.h"
 #include "Camera.h"
+#include "Console.h"
 
 #define CONTENT_BROWSER_DIRECTORY "./Resources" //sets file directory for the content browser
-#define CONSOLE_MAX_MESSAGES 500
-class Console
-{
-public:
-	static void Print(string message);
-	static vector<string> GetConsoleOutput() { return output; }
-
-private:
-	static vector<string> output;
-};
 
 class Editor
 {
@@ -60,7 +51,16 @@ private:
 
 	GameObject* _pSelectedGameObject = nullptr;
 
+	void CreateFileInContentBrowser();
 	void SearchFileDirectory();
 	string _mCurrentDir = CONTENT_BROWSER_DIRECTORY;
 	Camera* _pEditorCamera;
+
+	//Texture2D* pContentTextureImage = new Texture2D();
+	//Texture2D* pContentTextureScene = new Texture2D();
+	//Texture2D* pContentTextureConfig = new Texture2D();
+	//Texture2D* pContentTextureScript = new Texture2D();
+	//Texture2D* pContentTextureSound = new Texture2D();
+	//Texture2D* pContentTextureFile = new Texture2D();
+	//Texture2D* pContentTextureFolder = new Texture2D();
 };

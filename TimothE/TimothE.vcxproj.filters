@@ -119,8 +119,7 @@
     <ClInclude Include="Transform.h" />
     <ClInclude Include="UID.h" />
     <ClInclude Include="Window.h" />
-    <ClInclude Include="VBO.h" />
-    <ClInclude Include="VAO.h" />
+    <ClInclude Include="Console.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="AddressTranslator.cpp" />
@@ -166,7 +165,6 @@
     <ClCompile Include="Texture2D.cpp" />
     <ClCompile Include="Transform.cpp" />
     <ClCompile Include="Window.cpp" />
-    <ClCompile Include="VBO.cpp" />
-    <ClCompile Include="VAO.cpp" />
+    <ClCompile Include="Console.cpp" />
   </ItemGroup>
 </Project>

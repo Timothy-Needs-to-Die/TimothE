@@ -22,7 +22,7 @@ void Renderer::Render(GameObject* gameObject)
 	glm::mat4 projection = glm::ortho(0.0f, 1280.0f, 0.0f, 720.0f, -1.0f, 1.0f);
 	gameObject->GetShader()->SetMat4("projection", projection);
 
-	glm::mat4 transform = gameObject->GetTransform()->_transformationMatrix;
+	glm::mat4 transform = gameObject->GetTransform()->GetTransformMatrix();
 	gameObject->GetShader()->SetMat4("transform", transform);
 
 	glBindTexture(GL_TEXTURE_2D, gameObject->GetTextureID());
