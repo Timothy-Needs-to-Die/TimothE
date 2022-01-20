@@ -14,22 +14,22 @@
 
 struct Character
 {
-	unsigned int TextureID; // ID handle of the glyph texture
-	glm::ivec2 Size;		// Size of glyph
-	glm::ivec2 Bearing;		// Offset from baseline to left/top of glyph
-	unsigned int Advance;	// Offset to advance to next glyph
+	unsigned int _textureID; // ID handle of the glyph texture
+	glm::ivec2 _size;		// Size of glyph
+	glm::ivec2 _bearing;		// Offset from baseline to left/top of glyph
+	unsigned int _advance;	// Offset to advance to next glyph
 };
 
 
 class Text
 {
-private:
-	std::map<char, Character> Characters;
-	unsigned int VAO, VBO;
 public:
-	Text();
+	Text(std::string font);
 	~Text();
-	int Initialise();
 	void RenderText(Shader& s, std::string text, float x, float y, float scale, glm::vec3 color);
+private:
+	int Initialise(std::string font);
+	std::map<char, Character> _characters;
+	unsigned int _VAO, _VBO;
 };
 

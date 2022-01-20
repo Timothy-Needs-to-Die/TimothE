@@ -35,7 +35,7 @@ Scene::Scene(string name)
 
 	shader = new Shader("txtVert.vs", "txtFrag.fs");
 	
-	text = new Text();
+	text = new Text("arial");
 
 }
 
