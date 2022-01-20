@@ -221,6 +221,11 @@ bool GameObject::LoadState(IStream& stream)
 	return true;
 }
 
+void GameObject::SwapComponents(int index1, int index2)
+{
+	std::iter_swap(_pComponents.begin() + index1, _pComponents.begin() + index2);
+}
+
 void GameObject::SetName(string name)
 {
 	_name = name;

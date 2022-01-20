@@ -1,4 +1,4 @@
-#include "Editor.h"
+﻿#include "Editor.h"
 #include "ImGuiManager.h"
 #include "Texture2D.h"
 
@@ -116,15 +116,43 @@ void Editor::EditorImGui(Scene* currentScene)
 				}
 			}
 
-			for (Component* c : _pSelectedGameObject->GetComponents())
+			// for each component in the game object
+			for (int i = 0; i < _pSelectedGameObject->GetComponents().size(); i++)
 			{
+				Component* c = _pSelectedGameObject->GetComponents()[i];
+				// draw the UI for the current component
 				c->DrawEditorUI();
 
+				// check the current component is not transform
 				if (c->GetType() != Component::Transform_Type)
 				{
+					// add a delete button
 					if (ImGui::Button(("Delete component##" + to_string(c->GetType())).c_str()))
 					{
 						_pSelectedGameObject->RemoveComponent(c);
+					}
+					// check if i is not the first
+					if (i > 0)
+					{
+						if (_pSelectedGameObject->GetComponents()[i - 1]->GetType() != Component::Transform_Type)
+						{
+							ImGui::SameLine();
+							// add button to move the component up 
+							if (ImGui::Button("Up"))
+							{
+								_pSelectedGameObject->SwapComponents(i, i - 1);
+							}
+						}
+					}
+					// check if i is not the last
+					if (i < _pSelectedGameObject->GetComponents().size() - 1)
+					{
+						ImGui::SameLine();
+						// add button to move the component down
+						if (ImGui::Button("Down"))
+						{
+							_pSelectedGameObject->SwapComponents(i, i + 1);
+						}
 					}
 				}
 			}
@@ -180,8 +208,7 @@ void Editor::EditorImGui(Scene* currentScene)
 						Texture2D* tex = _pSelectedGameObject->GetComponent<Texture2D>();
 						if (tex == nullptr)
 						{
-							_pSelectedGameObject->AddComponent(new Texture2D(_pSelectedGameObject));
-							_pSelectedGameObject->LoadTexture((char*)texPath.c_str());
+							_pSelectedGameObject->LoadTexture((char*)texPath.c_str(), "Linear");
 						}
 					}
 				}
