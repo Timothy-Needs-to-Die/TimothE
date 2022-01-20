@@ -1,7 +1,5 @@
 #include "Transform.h"
-#include "imgui.h"
-#include "GameObject.h"
-#include "MemoryManager.h"
+
 
 Transform::Transform(GameObject* pParent)
 	: _transformationMatrix(glm::mat4(1.0f)), _position(glm::vec2(0.0f)), _rotation(0.0f), _size(glm::vec2(32.0f)), Component(pParent)

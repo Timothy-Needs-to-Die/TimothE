@@ -1,30 +1,62 @@
 #pragma once
 
+#include <vector>
+
 #include "GameObject.h"
+#include "Component.h"
+#include "Transform.h"
 #include "MouseEvent.h"
 #include "Texture2D.h"
 #include "Input.h"
 
 using std::string;
+using std::vector;
 
-class Button : public GameObject
+class Button : public Component
 {
 public:
-	Button(string name, int width, int height);
+	Button(GameObject* parent);
 	~Button();
 
-	void Update(float deltaTime) override;
-	void Render();
+	COMPONENT_STATIC_TYPE(Buttom_Type);
+
+	// Component Methods
+	void OnStart() override;
+	void OnUpdate() override;
+	void OnEnd() override;
+	void DrawEditorUI() override;
+
+	// OnClick management
+	void AddOnClickCall(void (*function)());
+	void RemoveOnClickCall(void (*function)());
 
 	// Getter & Setter
-	int GetWidth() { return _width; }
-	void SetWidth(int width) { _width = width; }
-	int GetHeight() { return _height; }
-	void SetHeight(int height) { _width = height; }
+	bool IsHovering() { return _isHovering; }
+	bool IsClicked() { return _isClicked; }
 
+	bool IsEnabled() { return _isEnabled; }
+	void SetEnabled(bool state) { _isEnabled = state; }
 private:	
-	int _width;
-	int _height;
+	bool _isHovering;
+	bool _isClicked;
+	bool _isEnabled;
 
+	// OnClick Calls
+	vector<void(*)()> _onClickCalls;
+
+	// Editor UI
+	bool* _editorIsEnabled;
 };
 
+
+/*
+	Button:
+		OnHoverering
+		Functions for adding and removing onClickCalls
+		EditorUI function
+
+	Different textures for clicked, idle, hovered?
+	Text, text colors, icons
+
+	Enable Disable buttons. Toggle Buttons?
+*/
