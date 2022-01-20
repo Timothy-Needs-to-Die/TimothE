@@ -1,10 +1,5 @@
 #include "Renderer.h"
 
-void Renderer::Initialize()
-{
-	
-}
-
 void Renderer::RenderDrawables(vector<GameObject*> gameObjects)
 {
 	for (auto& obj : gameObjects)

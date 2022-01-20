@@ -63,6 +63,7 @@ public:
 
 	//constructor and destructor calling start and end methods
 	Component(GameObject* pParent) : _parentObject(pParent) { }
+	Component() {}
 	~Component() {}
 
 	//virtual function for sub class of components

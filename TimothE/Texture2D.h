@@ -16,6 +16,7 @@ class Texture2D : public Component
 {
 public:
 	Texture2D(GameObject* pParent);
+	Texture2D(string path);
 	~Texture2D();
 
 	COMPONENT_STATIC_TYPE(Texture_Type)

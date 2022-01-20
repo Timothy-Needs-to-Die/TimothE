@@ -40,12 +40,14 @@ void Application::Init(bool devMode)
 {
 	UID::Init();
 	Input::Init();
-	Renderer::Initialize();
 	HeapManager::Init();
+	ResourceManager::Init();
 
 	InitResources();
 
 	_devMode = devMode;
+
+	_renderer = new Renderer();
 
 	if (!glfwInit()) {
 		std::cout << "[ERROR: Application::Init()]: glfw failed to initialize" << std::endl;
@@ -191,7 +193,7 @@ void Application::GameBeginRender()
 
 void Application::GameRender()
 {
-	_pCurrentScene->RenderScene(&_renderer);
+	_pCurrentScene->RenderScene(_renderer);
 }
 
 void Application::GameEndRender()
@@ -293,4 +295,5 @@ bool Application::OnGameWindowMouseMovedEvent(MouseMovedEvent& e)
 void Application::InitResources()
 {
 	//INITIALIZE ALL RESOURCES HERE
+	//ResourceManager::InstantiateTexture("lenna3", new Texture2D("lenna3.jpg"));
 }

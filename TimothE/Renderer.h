@@ -11,7 +11,10 @@
 class Renderer
 {
 public:
-	static void Initialize();
+	Renderer() : _UID(UID::GenerateUID()) { };
+
 	void RenderDrawables(vector<GameObject*> gameObjects);
 	void Render(GameObject* gameObject);
+private:
+	std::string _UID;
 };

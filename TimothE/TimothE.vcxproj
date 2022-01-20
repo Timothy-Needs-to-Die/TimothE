@@ -164,6 +164,7 @@
     <ClCompile Include="Input.cpp" />
     <ClCompile Include="MemoryManager.cpp" />
     <ClCompile Include="Renderer.cpp" />
+    <ClCompile Include="ResourceManager.cpp" />
     <ClCompile Include="Scene.cpp" />
     <ClCompile Include="Shader.cpp" />
     <ClCompile Include="Source.cpp" />

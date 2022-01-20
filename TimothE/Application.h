@@ -44,7 +44,7 @@ private:
 private:
 	AudioEngine* _audio;
 
-	Renderer _renderer;
+	Renderer* _renderer;
 
 	Window* _pWindow;
 

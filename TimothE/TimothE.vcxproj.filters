@@ -120,6 +120,8 @@
     <ClInclude Include="UID.h" />
     <ClInclude Include="Window.h" />
     <ClInclude Include="Console.h" />
+    <ClInclude Include="VAO.h" />
+    <ClInclude Include="VBO.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="AddressTranslator.cpp" />
@@ -166,5 +168,8 @@
     <ClCompile Include="Transform.cpp" />
     <ClCompile Include="Window.cpp" />
     <ClCompile Include="Console.cpp" />
+    <ClCompile Include="VAO.cpp" />
+    <ClCompile Include="VBO.cpp" />
+    <ClCompile Include="ResourceManager.cpp" />
   </ItemGroup>
 </Project>
