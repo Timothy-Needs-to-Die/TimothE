@@ -6,6 +6,7 @@
 #include "Texture2D.h"
 #include "TestComponent.h"
 #include "GameObject.h"
+#include "BoxColliderComponent.h"
 
 class ComponentFactory {
 public:

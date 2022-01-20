@@ -7,6 +7,7 @@
 #include "UID.h"
 #include "Serializable.h"
 #include "Shader.h"
+#include "BoxColliderComponent.h"
 
 class Texture2D;
 
