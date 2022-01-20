@@ -1,11 +1,14 @@
 #pragma once
 
+#include <vector>
+
 #include "GameObject.h"
 #include "MouseEvent.h"
 #include "Texture2D.h"
 #include "Input.h"
 
 using std::string;
+using std::vector;
 
 class Button : public GameObject
 {
@@ -26,5 +29,18 @@ private:
 	int _width;
 	int _height;
 
+	vector<void(*)()> _onClickCalls;
 };
 
+
+/*
+	Button:
+		OnHoverering
+		Functions for adding and removing onClickCalls
+		EditorUI function
+
+	Different textures for clicked, idle, hovered?
+	Text, text colors, icons
+
+	Enable Disable buttons. Toggle Buttons?
+*/
