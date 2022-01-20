@@ -15,6 +15,15 @@ vector<string> Console::output = vector<string>();
 Editor::Editor(Window* pWindow)
 	: _pWindow(pWindow)
 {
+
+	pContentTextureScript->Load("Icons/ScriptContent.png", "Linear");
+	pContentTextureImage->Load("Icons/ImageContent.png", "Linear");
+	pContentTextureScene->Load("Icons/SceneContent.png", "Linear");
+	pContentTextureConfig->Load("Icons/ConfigContent.png", "Linear");
+	pContentTextureSound->Load("Icons/SoundContent.png", "Linear");
+	pContentTextureFile->Load("Icons/FileContent.png", "Linear");
+	pContentTextureFolder->Load("Icons/FolderContent.png", "Linear");
+
 	// vertex attributes for a quad that fills the editor screen space in Normalized Device Coordinates.
 	float* quadVertices = new float[24]{
 		// positions   // texCoords
@@ -35,13 +44,12 @@ Editor::Editor(Window* pWindow)
 
 	_pEditorCamera = new Camera(pWindow->GetGLFWWindow(), 1280, 720, 45.0f);
 
-	//pContentTextureImage->Load("Icons/ImageContent.png", "Linear");
-	//pContentTextureScene->Load("Icons/SceneContent.png", "Linear");
-	//pContentTextureConfig->Load("Icons/ConfigContent.png", "Linear");
-	//pContentTextureScript->Load("Icons/ScriptContent.png", "Linear");
-	//pContentTextureSound->Load("Icons/SoundContent.png", "Linear");
-	//pContentTextureFile->Load("Icons/FileContent.png", "Linear");
-	//pContentTextureFolder->Load("Icons/FolderContent.png", "Linear");
+	
+	
+	
+	
+	
+	
 }
 
 Editor::~Editor()
@@ -333,10 +341,8 @@ void Editor::EditorImGui(Scene* currentScene)
 				if (ImGui::InputText(" ", &name, ImGuiInputTextFlags_CharsNoBlank)) {}
 				if (ImGui::MenuItem("Add"))
 				{
-					std::ofstream cppStream(_mCurrentDir + "/" + name + ".cpp");
-					cppStream.close();
-					std::ofstream hStream(_mCurrentDir + "/" + name + ".h");
-					hStream.close();
+					CreateFileInContentBrowser(name, ".cpp");
+					CreateFileInContentBrowser(name, ".h");
 					SearchFileDirectory();
 				}
 				
@@ -351,12 +357,12 @@ void Editor::EditorImGui(Scene* currentScene)
 			_mCurrentDir = _mCurrentDir.substr(0, _mCurrentDir.find_last_of("\\/"));
 			SearchFileDirectory();
 		}
+		
 
 		//for each item in directory create new button
 		for (int i = 2; i < _mDirectoryList.size(); i++) {
-			//add image for each directory
+			CheckFileType(_mDirectoryList[i]);
 			
-			//ImGui::Image((void*)pContentTextureScript->GetID(), ImVec2(100,100));
 
 			//adds button with directory name which when pressed adds its name to directory string and updates buttons
 			if (ImGui::Button(_mDirectoryList[i].c_str()))
@@ -364,7 +370,7 @@ void Editor::EditorImGui(Scene* currentScene)
 				_mCurrentDir += "/" + _mDirectoryList[i];
 				SearchFileDirectory();
 			}
-			ImGui::Dummy(ImVec2(0, 80.0f));
+			//ImGui::Dummy(ImVec2(0, 80.0f));
 		}
 		ImGui::End();
 	}
@@ -430,8 +436,43 @@ void Editor::EditorUpdate(Scene* currentScene, float dt)
 	currentScene->Update(dt);
 }
 
-void Editor::CreateFileInContentBrowser()
+void Editor::CreateFileInContentBrowser(string name, string type)
 {
+	std::ofstream fileStream(_mCurrentDir + "/" + name + type);
+	fileStream.close();
+}
+
+void Editor::CheckFileType(string fileDirectory)
+{
+	//add image for each directory
+	if (fileDirectory.find(".cpp") != std::string::npos || fileDirectory.find(".h") != std::string::npos)
+	{
+		ImGui::Image((void*)pContentTextureScript->GetID(), ImVec2(100, 100));
+	}
+	else if (fileDirectory.find(".png") != std::string::npos || fileDirectory.find(".jpeg") != std::string::npos)
+	{
+		ImGui::Image((void*)pContentTextureImage->GetID(), ImVec2(100, 100));
+	}
+	else if (fileDirectory.find(".scene") != std::string::npos)
+	{
+		ImGui::Image((void*)pContentTextureScene->GetID(), ImVec2(100, 100));
+	}
+	else if (fileDirectory.find(".ini") != std::string::npos)
+	{
+		ImGui::Image((void*)pContentTextureConfig->GetID(), ImVec2(100, 100));
+	}
+	else if (fileDirectory.find(".mp3") != std::string::npos || fileDirectory.find(".wav") != std::string::npos)
+	{
+		ImGui::Image((void*)pContentTextureSound->GetID(), ImVec2(100, 100));
+	}
+	else if (fileDirectory.find(".") == std::string::npos)
+	{
+		ImGui::Image((void*)pContentTextureFolder->GetID(), ImVec2(100, 100));
+	}
+	else
+	{
+		ImGui::Image((void*)pContentTextureFile->GetID(), ImVec2(100, 100));
+	}
 }
 
 //creates list of directorys for the content browser
