@@ -13,6 +13,7 @@
     <ClInclude Include="Application.h" />
     <ClInclude Include="ApplicationEvent.h" />
     <ClInclude Include="AudioEngine.h" />
+    <ClInclude Include="Button.h" />
     <ClInclude Include="Camera.h" />
     <ClInclude Include="Component.h" />
     <ClInclude Include="ComponentFactory.h" />
@@ -55,6 +56,7 @@
     <ClInclude Include="MemoryManager.h" />
     <ClInclude Include="MouseEvent.h" />
     <ClInclude Include="Renderer.h" />
+    <ClInclude Include="ResourceManager.h" />
     <ClInclude Include="SOIL\SOIL2.h">
       <Filter>SOIL</Filter>
     </ClInclude>
@@ -124,6 +126,7 @@
     <ClCompile Include="AddressTranslator.cpp" />
     <ClCompile Include="Application.cpp" />
     <ClCompile Include="AudioEngine.cpp" />
+    <ClCompile Include="Button.cpp" />
     <ClCompile Include="Camera.cpp" />
     <ClCompile Include="Editor.cpp" />
     <ClCompile Include="Framebuffer.cpp" />

@@ -24,8 +24,10 @@ public:
 	void OnUpdate() override;
 	void OnEnd() override;
 
-	bool Load(string path, string mode);
-	void Bind();
+	int GetHeight() { return _height; };
+	int GetWidth() { return _width; };
+
+	bool Load(string path);
 	void SetFilterMode(string mode);
 
 	GLuint GetID() const { return _ID; }
@@ -42,7 +44,7 @@ public:
 	virtual bool LoadState(IStream& stream) override {
 		Component::LoadState(stream);
 
-		Load(ReadString(stream), "");
+		Load(ReadString(stream));
 
 		return true;
 
@@ -51,9 +53,14 @@ public:
 	virtual void DrawEditorUI() override;
 
 private:
+	void GenTexture(unsigned char* data);
+
 	string _filePath;
 	string _UID;
 	GLuint _ID;
 
+	int _width;
+	int _height;
+	int _channels;
 	// Texture ID
 };

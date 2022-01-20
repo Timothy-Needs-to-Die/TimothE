@@ -21,10 +21,10 @@ public:
 
 	void DrawEditorUI() override;
 
+	//set position of player, different to translate
 	glm::vec2 GetPosition() { return _position; };
 	void SetPosition(float x, float y) { _position = glm::vec2(x, y); }
 	void SetRotation(float xRot) { _rotation = xRot; }
-
 
 
 	// Inherited via ISerializable

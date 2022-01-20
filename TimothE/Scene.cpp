@@ -13,11 +13,24 @@ Scene::Scene(string name)
 	_id = ++nextID;
 	_name = name;
 
-	GameObject* _pTestObject = new GameObject("LENNA!", ObjectType::Player);
-	_pTestObject->LoadTexture("lenna3.jpg", "linear");
+	/////////////
+	//TEST CODE//
+	/////////////
+	/*Texture2D* t = new Texture2D();
+	t->Load("lenna3.jpg", "linear");*/
 
-	Button* pButton = new Button("TestButton", 640, 100);
-	pButton->LoadTexture("lenna3.jpg", "linear");
+	GameObject* _pTestObject = new GameObject("LENNA!", ObjectType::Player);
+	_pTestObject->LoadTexture("lenna3.jpg");
+
+	//Orde of transformations matters!!!!!
+	//First we Translate
+	//Then we rotate
+	//Then finally scale
+	_pTestObject->GetTransform()->Translate({ 100,100 });
+	_pTestObject->GetTransform()->Scale({ 320,320 });
+
+	Button* pButton = new Button("TestButton", 32, 32);
+	pButton->LoadTexture("lenna3.jpg");
 
 	AddGameObject(pButton);
 	AddGameObject(_pTestObject);

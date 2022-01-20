@@ -36,7 +36,7 @@ public:
 		return _mView;
 	}
 
-	glm::vec3 GPosition() {
+	glm::vec3 PositionVec() {
 		return _mCameraPos;
 	}
 

@@ -35,13 +35,13 @@ void GameObject::InitVertexData()
 {
 	float vertexData[]{
 		//position               //texture coords
-		1.0f, -1.0f, 0.0f,       1.0f, 0.0f,
-		1.0f, 1.0f, 0.0f,        1.0f, 1.0f,
-		-1.0f, 1.0f, 0.0f,       0.0f, 1.0f,
+		1.0f, -1.0f, 0.0f,       1.0f, 0.0f,     //bottom right
+		1.0f, 1.0f, 0.0f,        1.0f, 1.0f,     //top right
+		-1.0f, 1.0f, 0.0f,       0.0f, 1.0f,     //top left
 
-		1.0f, -1.0f, 0.0f,       1.0f, 0.0f,
-		-1.0f, 1.0f, 0.0f,       0.0f, 1.0f,
-		-1.0f, -1.0f, 0.0f,      0.0f, 0.0f
+		1.0f, -1.0f, 0.0f,       1.0f, 0.0f,     //bottom right
+		-1.0f, 1.0f, 0.0f,       0.0f, 1.0f,     //top left
+		-1.0f, -1.0f, 0.0f,      0.0f, 0.0f      //bottom left
 	};
 
 	//VAO
@@ -78,7 +78,6 @@ void GameObject::InitVertexData()
 	);
 	glEnableVertexAttribArray(1);
 
-
 }
 
 void GameObject::Start()
@@ -105,20 +104,20 @@ void GameObject::Exit()
 	}
 }
 
-void GameObject::LoadTexture(char* path, string mode)
+void GameObject::LoadTexture(char* path)
 {
 	Texture2D* pTexture = GetComponent<Texture2D>();
 	if (pTexture == nullptr)
 	{
 		pTexture = new Texture2D();
-		pTexture->Load(path, mode);
+		pTexture->Load(path);
 		_textureID = pTexture->GetID();
 		AddComponent(pTexture);
 		_textureID = pTexture->GetID();
 	}
 	else
 	{
-		pTexture->Load(path, mode);
+		pTexture->Load(path);
 		_textureID = pTexture->GetID();
 	}
 }

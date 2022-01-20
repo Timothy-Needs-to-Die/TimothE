@@ -6,7 +6,10 @@
 #include "Framebuffer.h"
 #include "Shader.h"
 #include "Scene.h"
+#include "Camera.h"
 
+#define CONTENT_BROWSER_DIRECTORY "./Resources" //sets file directory for the content browser
+#define CONSOLE_MAX_MESSAGES 500
 class Console
 {
 public:
@@ -26,8 +29,8 @@ public:
 	//Runs through the editor loop
 	void EditorLoop(Scene* currentScene, float dt, bool& editorMode, bool& paused);
 
-private:
-	//Starts the render 
+
+		//Starts the render
 	void EditorStartRender();
 
 	//Renders the scene
@@ -35,10 +38,15 @@ private:
 
 	//Ends the render
 	void EditorEndRender();
-	
+
+
+	Framebuffer* _pEditorFramebuffer;
+
+private:
+
 	//Where all ImGui code will go
 	void EditorImGui(Scene* currentScene);
-	
+
 	//ImGui
 	void ImGUISwitchRender(bool& editorMode, bool& paused);
 
@@ -47,10 +55,12 @@ private:
 
 	Window* _pWindow;
 
-	Framebuffer* _pEditorFramebuffer;
 	Shader* _pScreenShader;
 	char* _pNotesBuffer;
 
 	GameObject* _pSelectedGameObject = nullptr;
-};
 
+	void SearchFileDirectory();
+	string _mCurrentDir = CONTENT_BROWSER_DIRECTORY;
+	Camera* _pEditorCamera;
+};

@@ -45,7 +45,7 @@ private:
 
 	Window* _pWindow;
 
-	bool _inEditorMode;
+	bool _inEditorMode = false;
 	bool _devMode;
 
 	bool _running;
