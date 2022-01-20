@@ -41,6 +41,9 @@ public:
 	void CreateWindow();
 
 	void SwapBuffers();
+
+	float GetHeight() const { return _windowData._height; }
+	float GetWidth() const { return _windowData._width; }
 private:
 
 

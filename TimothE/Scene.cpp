@@ -21,16 +21,17 @@ Scene::Scene(string name)
 	GameObject* _pTestObject = new GameObject("LENNA!", ObjectType::Player);
 	_pTestObject->LoadTexture("lenna3.jpg", "linear");
 	//_pTestObject->AddComponent<BoxColliderComponent>(new BoxColliderComponent());
+	_pTestObject->LoadTexture("lenna3.jpg");
 
 	//Orde of transformations matters!!!!!
 	//First we Translate
 	//Then we rotate
 	//Then finally scale
 	_pTestObject->GetTransform()->Translate({ 100,100 });
-	_pTestObject->GetTransform()->Scale({ 32,32 });
+	_pTestObject->GetTransform()->Scale({ 320,320 });
 
 	Button* pButton = new Button("TestButton", 32, 32);
-	pButton->LoadTexture("lenna3.jpg", "linear");
+	pButton->LoadTexture("lenna3.jpg");
 
 	AddGameObject(pButton);
 	AddGameObject(_pTestObject);

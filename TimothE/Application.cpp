@@ -281,6 +281,10 @@ bool Application::OnGameWindowMouseButtonReleasedEvent(MouseButtonReleasedEvent&
 
 bool Application::OnGameWindowMouseMovedEvent(MouseMovedEvent& e)
 {
-	Input::SetMousePosition(e.GetX(), e.GetY());
+	float mouseY = e.GetY();
+
+	mouseY = _pWindow->GetHeight() - mouseY;
+
+	Input::SetMousePosition(e.GetX(), mouseY);
 	return false;
 }
