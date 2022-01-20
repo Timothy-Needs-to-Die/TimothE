@@ -62,7 +62,7 @@ public:
 	void CalculateTransformMatrix() {
 		_transformationMatrix = glm::mat4(1.0);
 		_transformationMatrix = glm::translate(_transformationMatrix, glm::vec3(_position, 0.0f));
-		_transformationMatrix = glm::rotate(_transformationMatrix, _rotation, glm::vec3(0.0f,1.0f,0.0f));
+		_transformationMatrix = glm::rotate(_transformationMatrix, glm::radians(_rotation), glm::vec3(0.0f,0.0f,1.0f));
 		_transformationMatrix = glm::scale(_transformationMatrix, glm::vec3(_size, 1.0f));
 	}
 
