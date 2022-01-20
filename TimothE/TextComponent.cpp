@@ -1,40 +1,39 @@
-#include "Text.h"
+#include "TextComponent.h"
 
-
-Text::Text()
+TextComponent::TextComponent(std::string font)
 {
-	Initialise();
+	_font = "fonts/" + font + ".ttf";
+	OnStart();
 }
 
-Text::~Text()
+TextComponent::~TextComponent()
 {
-
+	OnEnd();
 }
 
-int Text::Initialise()
+void TextComponent::OnStart()
 {
 	FT_Library ft;
 	if (FT_Init_FreeType(&ft))
 	{
 		std::cout << "ERROR::FREETYPE: Could not init FreeType Library" << std::endl;
-		return -1;
+		return;
 	}
 	FT_Face face;
-	if (FT_New_Face(ft, "fonts/arial.ttf", 0, &face))
+	if (FT_New_Face(ft, _font.c_str(), 0, &face))
 	{
 		std::cout << "ERROR::FREETYPE: Failed to load font" << std::endl;
-		return -1;
+		return;
 	}
-
 	FT_Set_Pixel_Sizes(face, 0, 48);
-
 	if (FT_Load_Char(face, 'X', FT_LOAD_RENDER))
 	{
 		std::cout << "ERROR::FREETYPE: Failed to load Glyph" << std::endl;
-		return -1;
+		return;
 	}
 
 	glPixelStorei(GL_UNPACK_ALIGNMENT, 1); // disable byte-alignment restriction
+	
 	for (unsigned char c = 0; c < 128; c++)
 	{
 		// load character gylph
@@ -70,7 +69,7 @@ int Text::Initialise()
 			glm::ivec2(face->glyph->bitmap_left, face->glyph->bitmap_top),
 			face->glyph->advance.x
 		};
-		Characters.insert(std::pair<char, Character>(c, character));
+		_characters.insert(std::pair<char, Character>(c, character));
 	}
 
 	FT_Done_Face(face);
@@ -78,42 +77,53 @@ int Text::Initialise()
 
 	glEnable(GL_BLEND);
 	glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
-
 	
-	glGenVertexArrays(1, &VAO);
-	glGenBuffers(1, &VBO);
-	glBindVertexArray(VAO);
-	glBindBuffer(GL_ARRAY_BUFFER, VBO);
+	glGenVertexArrays(1, &_VAO);
+	glGenBuffers(1, &_VBO);
+	glBindVertexArray(_VAO);
+	glBindBuffer(GL_ARRAY_BUFFER, _VBO);
 	glBufferData(GL_ARRAY_BUFFER, sizeof(float) * 6 * 4, NULL, GL_DYNAMIC_DRAW);
 	glEnableVertexAttribArray(0);
 	glVertexAttribPointer(0, 4, GL_FLOAT, GL_FALSE, 4 * sizeof(float), 0);
 	glBindBuffer(GL_ARRAY_BUFFER, 0);
 	glBindVertexArray(0);
-	
-	return 0;
 }
 
-void Text::RenderText(Shader& s, std::string text, float x, float y, float scale, glm::vec3 color)
+void TextComponent::OnEnd()
+{
+}
+
+void TextComponent::RenderText(Shader& s, std::string text, float x = 0.0f, float y = 0.0f, float scale = 1.0f, glm::vec3 color = { 1.0f, 1.0f, 1.0f })
 {
 	// activate corresponding render state
 	s.BindShader();
 	glUniform3f(glGetUniformLocation(s.GetProgramID(), "textColor"), color.x, color.y, color.z);
 	glActiveTexture(GL_TEXTURE0);
-	glBindVertexArray(VAO);
+	glBindVertexArray(_VAO);
 
 	glm::mat4 projection = glm::ortho(0.0f, 800.0f, 0.0f, 600.0f);
 	s.SetMat4("projection", projection);
+
+	int newline = 0;
+	float newlineXPos = x;
+	float newlinePadding = (this->_characters['H']._bearing.y + this->_characters['H']._bearing.y / 3);
 
 	// iterate through all characters
 	std::string::const_iterator c;
 	for (c = text.begin(); c != text.end(); c++)
 	{
-		Character ch = Characters[*c];
-		float xpos = x + ch.Bearing.x * scale;
-		float ypos = y - (ch.Size.y - ch.Bearing.y) * scale;
+		Character ch = _characters[*c];
+		if (*c == '\n')
+		{
+			newline++;
+			x = newlineXPos;
+			continue;
+		}
+		float xpos = x + ch._bearing.x * scale;
+		float ypos = y - (ch._size.y - ch._bearing.y) * scale - ((newlinePadding * scale) * newline);
 
-		float w = ch.Size.x * scale;
-		float h = ch.Size.y * scale;
+		float w = ch._size.x * scale;
+		float h = ch._size.y * scale;
 		// update VBO for each character
 		float vertices[6][4] = {
 			{ xpos,     ypos + h,   0.0f, 0.0f },
@@ -125,15 +135,15 @@ void Text::RenderText(Shader& s, std::string text, float x, float y, float scale
 			{ xpos + w, ypos + h,   1.0f, 0.0f }
 		};
 		// render glyph texture over quad
-		glBindTexture(GL_TEXTURE_2D, ch.TextureID);
+		glBindTexture(GL_TEXTURE_2D, ch._textureID);
 		// update content of VBO memory
-		glBindBuffer(GL_ARRAY_BUFFER, VBO);
+		glBindBuffer(GL_ARRAY_BUFFER, _VBO);
 		glBufferSubData(GL_ARRAY_BUFFER, 0, sizeof(vertices), vertices);
 		glBindBuffer(GL_ARRAY_BUFFER, 0);
 		// render quad
 		glDrawArrays(GL_TRIANGLES, 0, 6);
 		// now advance cursors for next glyph (note that advance is number of 1/64 pixels)
-		x += (ch.Advance >> 6) * scale; // bitshift by 6 to get value in pixels (2^6 = 64)
+		x += (ch._advance >> 6) * scale; // bitshift by 6 to get value in pixels (2^6 = 64)
 	}
 	glBindVertexArray(0);
 	glBindTexture(GL_TEXTURE_2D, 0);

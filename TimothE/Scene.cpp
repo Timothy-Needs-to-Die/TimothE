@@ -1,11 +1,11 @@
 #include "Texture2D.h"
 #include "Scene.h"
 #include <algorithm>
-#include "Text.h"
+#include "TextComponent.h"
 int Scene::nextID = 0;
 
 Shader* shader;
-Text* text;
+TextComponent* text;
 Scene::Scene(string name)
 {
 	_id = ++nextID;
@@ -35,7 +35,7 @@ Scene::Scene(string name)
 
 	shader = new Shader("txtVert.vs", "txtFrag.fs");
 	
-	text = new Text();
+	text = new TextComponent("arial");
 
 }
 
@@ -59,7 +59,8 @@ void Scene::RenderScene(Renderer* pRenderer)
 {
 	
 	pRenderer->RenderDrawables(_listOfGameObjects);
-	text->RenderText(*shader, "Wacky Text", 10.0f, 30.0f, 1.0f, glm::vec3(0.2, 1.0f, 1.0f));
+	text->RenderText(*shader, "lenna\nfopen", 10.0f, 200.0f, 1.0f, glm::vec3(0.2, 0.2f, 1.0f));
+	text->RenderText(*shader, "Wacky\nWacky", 400.0f, 200.0f, 2.0f, glm::vec3(1.0f, 0.2, 0.2f));
 }
 
 void Scene::RemoveGameObject(GameObject* gameObject)
