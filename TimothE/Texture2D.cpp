@@ -34,9 +34,9 @@ bool Texture2D::Load(string path)
 {
 	if (_ID != 0) return true;
 
-	unsigned char* data = SOIL_load_image(path.c_str(), &_width, &_height, &_channels, SOIL_LOAD_AUTO);
+	unsigned char* data = stbi_load(path.c_str(), &_width, &_height, &_channels, 0);
 
-	GenTexture(data);
+	GenerateTexture(data);
 
 	//_filePath = path;
 	//_ID = SOIL_load_OGL_texture
@@ -56,20 +56,16 @@ bool Texture2D::Load(string path)
 	return true;
 }
 
-void Texture2D::GenTexture(unsigned char* data)
+void Texture2D::GenerateTexture(unsigned char* data)
 {
-	_ID = SOIL_create_OGL_texture(
-		data,
-		&_width,
-		&_height,
-		_channels,
-		SOIL_CREATE_NEW_ID,
-		SOIL_FLAG_MIPMAPS | SOIL_FLAG_INVERT_Y | SOIL_FLAG_COMPRESS_TO_DXT
-	);
+	glBindTexture(GL_TEXTURE_2D, _ID);
+	glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, _width, _height, 0, GL_RGB, GL_UNSIGNED_BYTE, data);
+
+	SetFilterMode("linear");
 
 	glBindTexture(GL_TEXTURE_2D, _ID);
 
-	SOIL_free_image_data(data);
+	stbi_image_free(data);
 }
 
 

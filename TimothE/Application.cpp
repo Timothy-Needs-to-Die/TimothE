@@ -295,5 +295,5 @@ bool Application::OnGameWindowMouseMovedEvent(MouseMovedEvent& e)
 void Application::InitResources()
 {
 	//INITIALIZE ALL RESOURCES HERE
-	//ResourceManager::InstantiateTexture("lenna3", new Texture2D("lenna3.jpg"));
+	ResourceManager::InstantiateTexture("lenna3", "lenna3.jpg");
 }

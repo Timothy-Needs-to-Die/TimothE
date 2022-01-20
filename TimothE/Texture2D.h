@@ -54,7 +54,7 @@ public:
 	virtual void DrawEditorUI() override;
 
 private:
-	void GenTexture(unsigned char* data);
+	void GenerateTexture(unsigned char* data);
 
 	string _filePath;
 	string _UID;

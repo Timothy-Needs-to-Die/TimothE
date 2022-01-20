@@ -74,7 +74,7 @@ public:
 	int GetTextureID() { return _textureID; }
 	int GetShaderID() { return _shaderID; }
 
-	void LoadTexture(char* path);
+	void LoadTexture(Texture2D* texture);
 	void SetShader(int id) { _shaderID = id; };
 
 	void DisplayInEditor();

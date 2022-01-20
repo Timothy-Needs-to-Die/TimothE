@@ -20,7 +20,7 @@ Scene::Scene(string name)
 	t->Load("lenna3.jpg", "linear");*/
 
 	GameObject* _pTestObject = new GameObject("LENNA!", ObjectType::Player);
-	_pTestObject->LoadTexture("lenna3.jpg");
+	_pTestObject->LoadTexture(new Texture2D("lenna3.jpg"));
 
 	//Orde of transformations matters!!!!!
 	//First we Translate
@@ -30,7 +30,7 @@ Scene::Scene(string name)
 	_pTestObject->GetTransform()->Scale({ 320,320 });
 
 	GameObject* _pButtonTestingObject = new GameObject("BUTTON", ObjectType::UI);
-	_pButtonTestingObject->LoadTexture("lenna3.jpg");
+	_pButtonTestingObject->LoadTexture(new Texture2D("lenna3.jpg"));
 	_pTestObject->GetTransform()->Translate({ 100,100 });
 	_pTestObject->GetTransform()->Scale({ 320,320 });
 

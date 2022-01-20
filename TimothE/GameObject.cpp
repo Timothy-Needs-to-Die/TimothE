@@ -103,9 +103,20 @@ void GameObject::Exit()
 	}
 }
 
-void GameObject::LoadTexture(char* path)
+void GameObject::LoadTexture(Texture2D* texture)
 {
-	Texture2D* pTexture = GetComponent<Texture2D>();
+	if (texture == nullptr)
+	{
+		Console::Print("[Error] Texture is equal too nullptr!");
+		return;
+	}
+	else
+	{
+		_textureID = texture->GetID();
+		AddComponent<Texture2D>(texture);
+	}
+
+	/*Texture2D* pTexture = GetComponent<Texture2D>();
 	if (pTexture == nullptr)
 	{
 		pTexture = new Texture2D(this);
@@ -129,7 +140,7 @@ void GameObject::LoadTexture(char* path)
 		{
 			Console::Print("Unable to load texture " + std::string(path));
 		}
-	}
+	}*/
 }
 
 void GameObject::DisplayInEditor()
