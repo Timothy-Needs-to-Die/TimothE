@@ -4,6 +4,7 @@
 #include "ComponentFactory.h"
 #include "imgui.h"
 #include "Console.h"
+#include "BoxColliderComponent.h"
 
 GameObject::GameObject(string name, ObjectType tag, Transform* transform) 
 	: _name(name), _tag(tag), _pTransform(transform)
@@ -237,34 +238,3 @@ void GameObject::SetDefaultShader()
 	SetShader(_pShader);
 }
 
-template<typename T>
-T* GameObject::GetComponent()
-{
-	for (auto& comp : _pComponents) {
-		if (comp->GetType() == T::GetStaticType()) {
-			return (T*)comp;
-		}
-	}
-
-	return nullptr;
-}
-
-template<typename T>
-T* GameObject::AddComponent(T* comp)
-{
-	for (auto& c : _pComponents) {
-		if (c->GetType() == comp->GetType())
-		{
-			return comp;
-		}
-	}
-
-	_pComponents.push_back(comp);
-	return comp;
-}
-
-void GameObject::RemoveComponent(Component* comp)
-{
-	_pComponents.erase(std::find(_pComponents.begin(), _pComponents.end(), comp));
-	delete comp;
-}

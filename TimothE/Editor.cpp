@@ -1,10 +1,12 @@
 #include "Editor.h"
 #include "ImGuiManager.h"
 #include "Texture2D.h"
+#include "BoxColliderComponent.h"
 
 #include "misc/cpp/imgui_stdlib.h"
 #include "misc/cpp/imgui_stdlib.cpp"
 #include "dirent.h"
+#include "CircleCollider.h"
 
 DIR* _mDirectory;
 struct dirent* _mDirent;
@@ -76,6 +78,9 @@ void Editor::EditorImGui(Scene* currentScene)
 
 	//Inspector
 	{
+		ImGui::ShowDemoWindow();
+
+
 		ImGui::Begin("Inspector");
 
 		if (_pSelectedGameObject != nullptr)
@@ -152,11 +157,19 @@ void Editor::EditorImGui(Scene* currentScene)
 				{
 					if (ImGui::Button("Box Collider"))
 					{
-
+						BoxColliderComponent* pTest = _pSelectedGameObject->GetComponent<BoxColliderComponent>();
+						if (pTest == nullptr)
+						{
+							_pSelectedGameObject->AddComponent(new BoxColliderComponent(_pSelectedGameObject));
+						}
 					}
 					if (ImGui::Button("Circle Collider"))
 					{
-
+						CircleCollider* pTest = _pSelectedGameObject->GetComponent<CircleCollider>();
+						if (pTest == nullptr)
+						{
+							_pSelectedGameObject->AddComponent(new CircleCollider(_pSelectedGameObject));
+						}
 					}
 				}
 				if (ImGui::CollapsingHeader("AI"))
