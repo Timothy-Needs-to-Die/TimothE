@@ -7,18 +7,9 @@
 #include "Shader.h"
 #include "Scene.h"
 #include "Camera.h"
+#include "Console.h"
 
 #define CONTENT_BROWSER_DIRECTORY "./Resources" //sets file directory for the content browser
-#define CONSOLE_MAX_MESSAGES 500
-class Console
-{
-public:
-	static void Print(string message);
-	static vector<string> GetConsoleOutput() { return output; }
-
-private:
-	static vector<string> output;
-};
 
 class Editor
 {
