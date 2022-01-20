@@ -172,6 +172,10 @@
     <ClCompile Include="Transform.cpp" />
     <ClCompile Include="Window.cpp" />
   </ItemGroup>
+  <ItemGroup>
+    <None Include="fr_UIShader.frag" />
+    <None Include="vr_UIShader.vert" />
+  </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
   </ImportGroup>

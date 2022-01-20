@@ -35,6 +35,8 @@ public:
 
 	Framebuffer* _pEditorFramebuffer;
 
+	Camera* GetCamera() const { return _pEditorCamera; }
+
 private:
 
 	//Where all ImGui code will go
@@ -57,6 +59,8 @@ private:
 	void SearchFileDirectory();
 	string _mCurrentDir = CONTENT_BROWSER_DIRECTORY;
 	Camera* _pEditorCamera;
+
+	
 
 	ImVec2 _windowPos;
 	ImVec2 _windowSize;

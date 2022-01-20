@@ -1,4 +1,5 @@
 #include "Camera.h"
+#include <iostream>
 
 Camera::Camera(GLFWwindow * window, int width, int height, float fov)
 {
@@ -13,17 +14,19 @@ Camera::Camera(GLFWwindow * window, int width, int height, float fov)
 	glm::vec3 cameraDirection = glm::normalize(_mCameraPos - cameraTarget);
 	glm::vec3 cameraRight = glm::normalize(glm::cross(_mCameraUp, cameraDirection));
 
-	_mView = glm::lookAt(glm::vec3(0.0f, 0.0f, 3.0f),
+	_mView = glm::lookAt(glm::vec3(0.0f, 0.0f, 0.0f),
 		glm::vec3(0.0f, 0.0f, 0.0f),
 		glm::vec3(0.0f, 1.0f, 0.0f));
 	//sets orthographic view
-	_mProjection = glm::ortho(0.0f, (float)width / (float)height, 0.1f, 1000.0f);
+	_mProjection = glm::ortho(0.0f, (float)width, 0.0f, (float)height);
 }
 
 //updates camera lookat
 void Camera::Update(float dt)
 {
-	//PollInput(dt);
+	PollInput(dt);
+
+	std::cout << _mCameraPos.x << ", " << _mCameraPos.y << ", " << _mCameraPos.z << std::endl;
 
 	_mView = glm::lookAt(_mCameraPos, _mCameraPos + _mCameraFront, _mCameraUp);
 }
@@ -38,7 +41,7 @@ void Camera::ProcessScrollMovement(float yOffset)
 	if (_mFOV > 45.0f) {
 		_mFOV = 45.0f;
 	}
-	_mProjection = glm::perspective(glm::radians(_mFOV), (float)_mWidth / (float)_mHeight, 0.1f, 100.0f);
+	_mProjection = glm::ortho(0.0f, (float)_mWidth / (float)_mHeight, 0.1f, 100.0f);
 }
 
 //polls for movement for control
@@ -46,9 +49,9 @@ void Camera::PollInput(float dt)
 {
 	float cameraSpeed = 12.5f * dt;
 	if (glfwGetKey(_pWindow, GLFW_KEY_W) == GLFW_PRESS)
-		_mCameraPos += cameraSpeed * _mCameraFront;
+		_mCameraPos += cameraSpeed * _mCameraUp;
 	if (glfwGetKey(_pWindow, GLFW_KEY_S) == GLFW_PRESS)
-		_mCameraPos -= cameraSpeed * _mCameraFront;
+		_mCameraPos -= cameraSpeed * _mCameraUp;
 	if (glfwGetKey(_pWindow, GLFW_KEY_A) == GLFW_PRESS)
 		_mCameraPos -= glm::normalize(glm::cross(_mCameraFront, _mCameraUp)) * cameraSpeed;
 	if (glfwGetKey(_pWindow, GLFW_KEY_D) == GLFW_PRESS)

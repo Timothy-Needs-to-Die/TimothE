@@ -31,7 +31,7 @@ Scene::Scene(string name)
 
 	Button* pButton = new Button("TestButton", 32, 32);
 	pButton->LoadTexture("lenna3.jpg");
-
+	pButton->SetShader("vr_UIShader.vert", "fr_UIShader.frag");
 
 	AddGameObject(pButton);
 	AddGameObject(_pTestObject);
@@ -53,9 +53,9 @@ void Scene::Update(float deltaTime)
 	}
 }
 
-void Scene::RenderScene(Renderer* pRenderer)
+void Scene::RenderScene(Renderer* pRenderer, Camera* cam)
 {
-	pRenderer->RenderDrawables(_listOfGameObjects);
+	pRenderer->RenderDrawables(_listOfGameObjects, cam);
 }
 
 void Scene::RemoveGameObject(GameObject* gameObject)
