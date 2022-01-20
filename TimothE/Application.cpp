@@ -112,6 +112,7 @@ void Application::GameLoop()
 		double elapsed = currentTime - previousTime;
 
 		_pGameCamera->Update(elapsed);
+		
 
 		ImGuiManager::ImGuiNewFrame();
 
@@ -120,8 +121,8 @@ void Application::GameLoop()
 			GameBeginRender();
 			glEnable(GL_DEPTH_TEST);
 
-
-			GameRender();
+			_pEditor->GetCamera()->Update(elapsed);
+			GameRender(_pEditor->GetCamera());
 
 			if(!_paused)
 				GameUpdate(elapsed);
@@ -137,7 +138,7 @@ void Application::GameLoop()
 			GameBeginRender();
 			glEnable(GL_DEPTH_TEST);
 
-			GameRender();
+			GameRender(_pGameCamera);
 
 			if (_devMode) {
 				ImGUISwitchRender();
@@ -188,9 +189,9 @@ void Application::GameBeginRender()
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 }
 
-void Application::GameRender()
+void Application::GameRender(Camera* cam)
 {
-	_pCurrentScene->RenderScene(&_renderer);
+	_pCurrentScene->RenderScene(&_renderer, cam);
 }
 
 void Application::GameEndRender()

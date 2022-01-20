@@ -24,7 +24,7 @@ protected:
 	void PollInput();
 
 	void GameBeginRender();
-	void GameRender();
+	void GameRender(Camera* cam);
 	void GameEndRender();
 	void GameUpdate(float dt);
 

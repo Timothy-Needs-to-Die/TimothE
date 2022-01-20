@@ -167,4 +167,8 @@
     <ClCompile Include="Window.cpp" />
     <ClCompile Include="Console.cpp" />
   </ItemGroup>
+  <ItemGroup>
+    <None Include="fr_UIShader.frag" />
+    <None Include="vr_UIShader.vert" />
+  </ItemGroup>
 </Project>

@@ -436,13 +436,14 @@ void Editor::ConvertGameToEditorSpace()
 	glm::vec2 mousePos = glm::vec2(Input::GetMouseX(), Input::GetMouseY());
 	glm::vec2 editorPos = glm::vec2(0.0f);
 
-	//mousePos.x - editorPos.x 
-
 	editorPos.x = mousePos.x - _windowPos.x;
 	editorPos.y = mousePos.y + _windowPos.y - _windowSize.y;
 
-	//std::cout << "Game Space (" << mousePos.x << "," << mousePos.y
-		//<< ") Editor Space (" << editorPos.x << "," << editorPos.y << ")" << std::endl;
+	if (editorPos.x < 0) editorPos.x = 0.0f;
+	else if (editorPos.x > _windowSize.x) editorPos.x = _windowSize.x;
+
+	if (editorPos.y < 0) editorPos.y = 0.0f;
+	else if (editorPos.y > _windowSize.y) editorPos.y = _windowSize.y;
 
 	_mousePosInEditorSpace = editorPos;
 }
