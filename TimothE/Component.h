@@ -21,11 +21,19 @@ class GameObject;
 
 //macros to define component type in subclass
 #define BIT(x) (1<<x)
+class GameObject;
+
 class Component : ISerializable
 {
 public:
-	GameObject* gameobject;
-
+	//setter
+	void SetParent(GameObject* newparent) {
+		_parentObject = newparent;
+	}
+	// Getter
+	GameObject* Parent() {
+		return _parentObject;
+	}
 	//enum for types of components
 	enum Types
 	{
@@ -54,7 +62,7 @@ public:
 	COMPONENT_STATIC_TYPE(None)
 
 	//constructor and destructor calling start and end methods
-	Component() { }
+	Component(GameObject* pParent) : _parentObject(pParent) { }
 	~Component() {}
 
 	//virtual function for sub class of components
@@ -98,4 +106,7 @@ protected:
 	//variable for type and categories to be assigned to
 	Types _type;
 	Categories _category;
+	GameObject* _parentObject;
+
+
 };

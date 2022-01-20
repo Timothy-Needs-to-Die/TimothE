@@ -1,12 +1,18 @@
 #include "Transform.h"
 #include "imgui.h"
+#include "GameObject.h"
+#include "MemoryManager.h"
 
-Transform::Transform()
-	: _transformationMatrix(1.0f), _position(glm::vec2(0.0f)), _rotation(0.0f), _size(glm::vec2(32.0f))
+Transform::Transform(GameObject* pParent)
+	: _transformationMatrix(glm::mat4(1.0f)), _position(glm::vec2(0.0f)), _rotation(0.0f), _size(glm::vec2(32.0f)), Component(pParent)
 {
 	SetType(Component::Transform_Type);
 	SetCategory(Component::Transform_Category);
 	CalculateTransformMatrix();
+
+	editorPos = new float[2];
+	editorRot = &_rotation;
+	editorScale = new float[2];
 }
 
 void Transform::Translate(glm::vec2 newPos)
@@ -41,30 +47,30 @@ void Transform::DrawEditorUI()
 	ImGui::Text("Transform");
 
 	// get the position
-	float* pos = new float[2]{ GetPosition().x, GetPosition().y };
+	editorPos[0] = _position.x;
+	editorPos[1] = _position.y;
+
 	// create boxes to set the position
-	if (ImGui::InputFloat2("Position", pos))
+	if (ImGui::InputFloat2("Position", editorPos))
 	{
 		std::cout << "Position Set" << std::endl;
 		// set the position on the game object
-		SetPosition(pos[0], pos[1]);
+		SetPosition(editorPos[0], editorPos[1]);
 	}
-
-	float* rot = new float[2]{ GetRotation() };
-	if (ImGui::InputFloat2("Rotation", rot))
+ 
+	editorRot =  &_rotation;
+	if (ImGui::InputFloat("Rotation", editorRot))
 	{
 		//TODO: GameObject's only rotate on X axis
-		SetRotation(rot[0]);
+		SetRotation(*editorRot);
 	}
 
-	float* scale = new float[2]{ GetScale().x, GetScale().y };
-	if (ImGui::InputFloat2("Scale", scale))
+	editorScale[0] = _size.x;
+	editorScale[1] = _size.y;
+	if (ImGui::InputFloat2("Scale", editorScale))
 	{
-		SetScale(glm::vec2(scale[0], scale[1]));
+		SetScale(glm::vec2(editorScale[0], editorScale[1]));
 	}
-	delete[]pos;
-	delete[]rot;
-	delete[]scale;
 }
 
 void Transform::OnEnd()

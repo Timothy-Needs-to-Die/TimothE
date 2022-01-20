@@ -33,6 +33,7 @@ Scene::Scene(string name)
 	Button* pButton = new Button("TestButton", 32, 32);
 	pButton->LoadTexture("lenna3.jpg");
 
+
 	AddGameObject(pButton);
 	AddGameObject(_pTestObject);
 }

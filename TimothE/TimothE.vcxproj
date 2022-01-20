@@ -89,6 +89,7 @@
     <ClInclude Include="BoxColliderComponent.h" />
     <ClInclude Include="Component.h" />
     <ClInclude Include="ComponentFactory.h" />
+    <ClInclude Include="Console.h" />
     <ClInclude Include="Editor.h" />
     <ClInclude Include="Event.h" />
     <ClInclude Include="Framebuffer.h" />

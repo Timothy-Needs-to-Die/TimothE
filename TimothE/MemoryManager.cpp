@@ -39,6 +39,12 @@ void* operator new[](size_t size, Heap* heap)
 	return pStartMemBlock;
 }
 
+void* operator new[](size_t size)
+{
+	//Gets the default heap if a heap is not specified
+	return ::operator new[](size, &HeapManager::GetDefaultHeap());
+}
+
 void* operator new(size_t size)
 {
 	//Gets the default heap if a heap is not specified
