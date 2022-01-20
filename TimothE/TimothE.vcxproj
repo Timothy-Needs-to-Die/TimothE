@@ -57,7 +57,7 @@
     <ClCompile>
       <PrecompiledHeader>NotUsing</PrecompiledHeader>
       <WarningLevel>Level3</WarningLevel>
-      <AdditionalIncludeDirectories>..\Dependancies\GLFW\include;..\Dependancies\GLEW\include;..\Dependancies\glm;..\Dependancies\irrklang\include;..\Dependancies\nlohmann;..\Dependancies\freetype;..\Dependancies\imgui;..\Dependancies\imgui\backend;..\Dependancies\Fmod\inc;..\Dependancies\spdlog;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>..\Dependancies\GLFW\include;..\Dependancies\GLEW\include;..\Dependancies\glm;..\Dependancies\irrklang\include;..\Dependancies\nlohmann;..\Dependancies\freetype;..\Dependancies\imgui;..\Dependancies\imgui\backend;..\Dependancies\Fmod\inc;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <Optimization>Disabled</Optimization>
     </ClCompile>
     <Link>
