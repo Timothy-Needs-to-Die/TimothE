@@ -7,7 +7,7 @@
 class Transform : public Component
 {
 public:
-	Transform();
+	Transform(GameObject* pParent);
 
 	COMPONENT_STATIC_TYPE(Transform_Type)
 
@@ -59,6 +59,17 @@ public:
 
 	}
 
+	void CalculateTransformMatrix() {
+		_transformationMatrix = glm::mat4(1.0);
+		_transformationMatrix = glm::translate(_transformationMatrix, glm::vec3(_position, 0.0f));
+		_transformationMatrix = glm::rotate(_transformationMatrix, _rotation, glm::vec3(0.0f,1.0f,0.0f));
+		_transformationMatrix = glm::scale(_transformationMatrix, glm::vec3(_size, 1.0f));
+	}
+
+	glm::mat4 GetTransformMatrix() {
+		return _transformationMatrix;
+	}
+
 	glm::vec2 GetScale() { return _size; }
 	void SetXScale(float scale) { _size.x = scale; }
 	void SetYScale(float scale) { _size.y = scale; }
@@ -70,10 +81,14 @@ public:
 	//glm::mat4 GetTransformationMatrix() { return _transformationMatrix; };
 
 
-	glm::mat4 _transformationMatrix;
 private:
+	glm::mat4 _transformationMatrix;
 
 	glm::vec2 _position;
 	glm::vec2 _size;
 	float _rotation;
+
+	float* editorPos;
+	float* editorRot;
+	float* editorScale;
 };

@@ -38,6 +38,8 @@ void Button::Update(float deltaTime)
 	int mouseY = Input::GetMouseY();
 
 	glm::vec2 pos = GetTransform()->GetPosition();
+	_width = GetTransform()->GetScale().x;
+	_height = GetTransform()->GetScale().y;
 
 	// Check if the mouse is inside the button
 	if (mouseX > pos.x - _width && mouseX < pos.x + _width
