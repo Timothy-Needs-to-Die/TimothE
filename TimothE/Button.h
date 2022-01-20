@@ -19,15 +19,25 @@ public:
 	void Update(float deltaTime) override;
 	void Render();
 
+	void AddOnClickCall(void (*function)());
+	void RemoveOnClickCall(void (*function)());
+
 	// Getter & Setter
 	int GetWidth() { return _width; }
 	void SetWidth(int width) { _width = width; }
+
 	int GetHeight() { return _height; }
 	void SetHeight(int height) { _width = height; }
+
+	bool IsHovering() { return _isHovering; }
+	bool IsClicked() { return _isClicked; }
 
 private:	
 	int _width;
 	int _height;
+
+	bool _isHovering;
+	bool _isClicked;
 
 	vector<void(*)()> _onClickCalls;
 };
