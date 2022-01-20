@@ -5,6 +5,7 @@
 #include "misc/cpp/imgui_stdlib.h"
 #include "misc/cpp/imgui_stdlib.cpp"
 #include "dirent.h"
+#include "Input.h"
 
 DIR* _mDirectory;
 struct dirent* _mDirent;
@@ -383,27 +384,19 @@ void Editor::ImGUISwitchRender(bool& editorMode, bool& paused)
 void Editor::EditorRender()
 {
 	ImGui::Begin("Scene Window");
-	ImVec2 pos = ImGui::GetCursorScreenPos();
+	_windowPos = ImGui::GetCursorScreenPos();
 	ImGui::GetWindowDrawList()->AddImage(
 		(void*)_pEditorFramebuffer->GetTexture(),
-		pos,
-		ImVec2(pos.x + 640, pos.y + 360),
+		_windowPos,
+		ImVec2(_windowPos.x + 640, _windowPos.y + 360),
 		ImVec2(0, 1.0), ImVec2(1.0, 0));
 
+	std::cout << "Window Pos: " << _windowPos.x << ", " << _windowPos.y << std::endl;
+
+	_windowSize = ImGui::GetWindowSize();
 	ImGui::End();
 
-	//ImGui::Begin("Scene Window");
-	//ImVec2 pos = ImGui::GetCursorScreenPos();
-	//ImDrawList* drawList = ImGui::GetWindowDrawList();
-	////auto app = SSEngine::App::main;
-	////uint f_tex = app->getFrameBuffer();
-	//drawList->AddImage(
-	//	(void*)_pEditorFramebuffer->GetTexture(),
-	//	pos,
-	//	ImVec2(pos.x + 512, pos.y + 512),
-	//	ImVec2(0, 1),
-	//	ImVec2(1, 0));
-	//ImGui::End();
+	ConvertGameToEditorSpace();
 }
 
 void Editor::EditorEndRender()
@@ -411,9 +404,27 @@ void Editor::EditorEndRender()
 	_pWindow->SwapBuffers();
 }
 
+void Editor::ConvertGameToEditorSpace()
+{
+	glm::vec2 mousePos = glm::vec2(Input::GetMouseX(), Input::GetMouseY());
+	glm::vec2 editorPos = glm::vec2(0.0f);
+
+	//mousePos.x - editorPos.x 
+
+	editorPos.x = mousePos.x - _windowPos.x;
+	editorPos.y = mousePos.y + _windowPos.y - _windowSize.y;
+
+	//std::cout << "Game Space (" << mousePos.x << "," << mousePos.y
+		//<< ") Editor Space (" << editorPos.x << "," << editorPos.y << ")" << std::endl;
+
+	_mousePosInEditorSpace = editorPos;
+}
+
+
 void Editor::EditorUpdate(Scene* currentScene, float dt)
 {
 	currentScene->Update(dt);
+	ConvertGameToEditorSpace();
 }
 
 void Editor::CreateFileInContentBrowser()
