@@ -2,7 +2,7 @@
 #include "imgui.h"
 
 Transform::Transform()
-	: _transformationMatrix(1.0f), _position(glm::vec2(0.1,0.1)), _rotation(0.0f), _size(glm::vec2(300.0f))
+	: _transformationMatrix(1.0f), _position(glm::vec2(0.0f)), _rotation(0.0f), _size(glm::vec2(32.0f))
 {
 	SetType(Component::Transform_Type);
 	SetCategory(Component::Transform_Category);

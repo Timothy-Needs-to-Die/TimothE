@@ -23,7 +23,12 @@ void Button::Update(float deltaTime)
 		int mouseX = Input::GetMouseX();
 		int mouseY = Input::GetMouseY();
 
+		_width = GetTransform()->GetScale().x;
+		_height = GetTransform()->GetScale().y;
+
 		glm::vec2 pos = GetTransform()->GetPosition();
+
+		std::cout << "Mouse Pos: " << mouseX << ", " << mouseY << " Button Pos: " << pos.x << ", " << pos.y << std::endl;
 
 		if (mouseX > pos.x - _width && mouseX < pos.x + _width
 			&& mouseY > pos.y - _height && mouseY < pos.y + _height)

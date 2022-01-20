@@ -1,7 +1,7 @@
 #include "Texture2D.h"
 #include "imgui.h"
 
-Texture2D::Texture2D() : Component()
+Texture2D::Texture2D() : Component(), _ID(0)
 {
 	_UID = UID::GenerateUID();
 	SetType(Component::Texture_Type);
@@ -23,6 +23,8 @@ void Texture2D::DrawEditorUI()
 // Pass in file path, filter mode as "linear" or "nearest"
 bool Texture2D::Load(string path)
 {
+	if (_ID != 0) return true;
+
 	unsigned char* data = SOIL_load_image(path.c_str(), &_width, &_height, &_channels, SOIL_LOAD_AUTO);
 
 	GenTexture(data);

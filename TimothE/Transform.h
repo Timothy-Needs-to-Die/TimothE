@@ -64,10 +64,6 @@ public:
 		_transformationMatrix = glm::translate(_transformationMatrix, glm::vec3(_position, 0.0f));
 		_transformationMatrix = glm::rotate(_transformationMatrix, _rotation, glm::vec3(0.0f,1.0f,0.0f));
 		_transformationMatrix = glm::scale(_transformationMatrix, glm::vec3(_size, 1.0f));
-
-		//Translate(_position);
-		//Rotate(_rotation, glm::vec2(0.0,1.0));
-		//Scale(_size);
 	}
 
 	glm::mat4 GetTransformMatrix() {
