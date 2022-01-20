@@ -34,14 +34,18 @@ public:
 	bool IsHovering() { return _isHovering; }
 	bool IsClicked() { return _isClicked; }
 
+	bool IsEnabled() { return _isEnabled; }
+	void SetEnabled(bool state) { _isEnabled = state; }
 private:	
 	bool _isHovering;
 	bool _isClicked;
+	bool _isEnabled;
 
 	// OnClick Calls
 	vector<void(*)()> _onClickCalls;
 
 	// Editor UI
+	bool* _editorIsEnabled;
 };
 
 
