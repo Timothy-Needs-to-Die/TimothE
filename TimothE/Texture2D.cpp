@@ -36,22 +36,14 @@ bool Texture2D::Load(string path)
 
 	unsigned char* data = stbi_load(path.c_str(), &_width, &_height, &_channels, 0);
 
-	GenerateTexture(data);
-
-	//_filePath = path;
-	//_ID = SOIL_load_OGL_texture
-	//(
-	//	path.c_str(),
-	//	SOIL_LOAD_AUTO,
-	//	SOIL_CREATE_NEW_ID,
-	//	SOIL_FLAG_MIPMAPS | SOIL_FLAG_INVERT_Y | SOIL_FLAG_NTSC_SAFE_RGB | SOIL_FLAG_COMPRESS_TO_DXT
-	//);
-
-	///* check for an error during the load process */
-	//if (_ID == 0)
-	//{
-	//	printf("SOIL loading error: '%s'\n", SOIL_last_result());
-	//}
+	if (data != nullptr)
+	{
+		GenerateTexture(data);
+	}
+	else
+	{
+		return false;
+	}
 
 	return true;
 }
