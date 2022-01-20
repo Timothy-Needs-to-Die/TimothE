@@ -1,7 +1,9 @@
 #include "Transform.h"
 #include "imgui.h"
+#include "GameObject.h"
 
-Transform::Transform()
+Transform::Transform(GameObject* pParent)	
+	: Component(pParent)
 {
 	SetType(Component::Transform_Type);
 	SetCategory(Component::Transform_Category);
@@ -31,6 +33,7 @@ void Transform::OnStart()
 
 void Transform::OnUpdate()
 {
+	std::cout << Parent()->GetTextureID() << std::endl;
 }
 
 void Transform::DrawEditorUI()

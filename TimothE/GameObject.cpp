@@ -11,7 +11,7 @@ GameObject::GameObject(string name, ObjectType tag, Transform* transform)
 	_UID = UID::GenerateUID();
 
 	if (_pTransform == nullptr) {
-		_pTransform = new Transform();
+		_pTransform = new Transform(this);
 	}
 	AddComponent<Transform>(_pTransform);
 
@@ -110,7 +110,7 @@ void GameObject::LoadTexture(char* path, string mode)
 	Texture2D* pTexture = GetComponent<Texture2D>();
 	if (pTexture == nullptr)
 	{
-		pTexture = new Texture2D();
+		pTexture = new Texture2D(this);
 		pTexture->Load(path, mode);
 		_textureID = pTexture->GetID();
 		AddComponent(pTexture);
@@ -191,7 +191,7 @@ bool GameObject::LoadState(IStream& stream)
 
 
 		//Make instance of component
-		auto* c = ComponentFactor::GetComponent(type);
+		auto* c = ComponentFactory::GetComponent(type, this);
 		if (c == nullptr) {
 			std::cout << "Failed to load Gameobject: " << _name << " Component is null" << std::endl;
 			return false;

@@ -64,4 +64,12 @@ private:
 	void SearchFileDirectory();
 	string _mCurrentDir = CONTENT_BROWSER_DIRECTORY;
 	Camera* _pEditorCamera;
+
+	//Texture2D* pContentTextureImage = new Texture2D();
+	//Texture2D* pContentTextureScene = new Texture2D();
+	//Texture2D* pContentTextureConfig = new Texture2D();
+	//Texture2D* pContentTextureScript = new Texture2D();
+	//Texture2D* pContentTextureSound = new Texture2D();
+	//Texture2D* pContentTextureFile = new Texture2D();
+	//Texture2D* pContentTextureFolder = new Texture2D();
 };

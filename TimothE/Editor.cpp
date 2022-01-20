@@ -34,6 +34,14 @@ Editor::Editor(Window* pWindow)
 	_pEditorFramebuffer = new Framebuffer(_pScreenShader);
 
 	_pEditorCamera = new Camera(pWindow->GetGLFWWindow(), 1280, 720, 45.0f);
+
+	//pContentTextureImage->Load("Icons/ImageContent.png", "Linear");
+	//pContentTextureScene->Load("Icons/SceneContent.png", "Linear");
+	//pContentTextureConfig->Load("Icons/ConfigContent.png", "Linear");
+	//pContentTextureScript->Load("Icons/ScriptContent.png", "Linear");
+	//pContentTextureSound->Load("Icons/SoundContent.png", "Linear");
+	//pContentTextureFile->Load("Icons/FileContent.png", "Linear");
+	//pContentTextureFolder->Load("Icons/FolderContent.png", "Linear");
 }
 
 Editor::~Editor()
@@ -135,7 +143,7 @@ void Editor::EditorImGui(Scene* currentScene)
 					{
 						if (_pSelectedGameObject->GetTransform() == nullptr)
 						{
-							_pSelectedGameObject->AddComponent(new Transform());
+							_pSelectedGameObject->AddComponent(new Transform(_pSelectedGameObject));
 						}
 					}
 				}
@@ -177,7 +185,7 @@ void Editor::EditorImGui(Scene* currentScene)
 						Texture2D* tex = _pSelectedGameObject->GetComponent<Texture2D>();
 						if (tex == nullptr)
 						{
-							_pSelectedGameObject->AddComponent(new Texture2D());
+							_pSelectedGameObject->AddComponent(new Texture2D(_pSelectedGameObject));
 							_pSelectedGameObject->LoadTexture((char*)texPath.c_str(), "Linear");
 						}
 					}
@@ -334,15 +342,16 @@ void Editor::EditorImGui(Scene* currentScene)
 				tex.LoadTexture((char*)texPath.c_str(), "Linear");
 			}
 		}*/
-
+		
+		
+		string texPath = "lenna3.jpg";
+		
+		
 		//for each item in directory create new button
 		for (int i = 2; i < _mDirectoryList.size(); i++) {
 			//add image for each directory
-			ImGui::GetWindowDrawList()->AddImage(
-			(void*)_pEditorFramebuffer->GetTexture(),
-			ImVec2(ImGui::GetCursorScreenPos().x+0, ImGui::GetCursorScreenPos().y),
-			ImVec2(ImGui::GetCursorScreenPos().x + 100,
-			ImGui::GetCursorScreenPos().y + 100), ImVec2(0, 1), ImVec2(1, 0));
+			
+			//ImGui::Image((void*)pContentTextureScript->GetID(), ImVec2(100,100));
 
 			//adds button with directory name which when pressed adds its name to directory string and updates buttons
 			if (ImGui::Button(_mDirectoryList[i].c_str()))
