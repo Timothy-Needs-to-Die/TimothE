@@ -1,4 +1,4 @@
-#include "Editor.h"
+﻿#include "Editor.h"
 #include "ImGuiManager.h"
 #include "Texture2D.h"
 
@@ -116,15 +116,43 @@ void Editor::EditorImGui(Scene* currentScene)
 				}
 			}
 
-			for (Component* c : _pSelectedGameObject->GetComponents())
+			// for each component in the game object
+			for (int i = 0; i < _pSelectedGameObject->GetComponents().size(); i++)
 			{
+				Component* c = _pSelectedGameObject->GetComponents()[i];
+				// draw the UI for the current component
 				c->DrawEditorUI();
 
+				// check the current component is not transform
 				if (c->GetType() != Component::Transform_Type)
 				{
+					// add a delete button
 					if (ImGui::Button(("Delete component##" + to_string(c->GetType())).c_str()))
 					{
 						_pSelectedGameObject->RemoveComponent(c);
+					}
+					// check if i is not the first
+					if (i > 0)
+					{
+						if (_pSelectedGameObject->GetComponents()[i - 1]->GetType() != Component::Transform_Type)
+						{
+							ImGui::SameLine();
+							// add button to move the component up 
+							if (ImGui::Button("Up"))
+							{
+								_pSelectedGameObject->SwapComponents(i, i - 1);
+							}
+						}
+					}
+					// check if i is not the last
+					if (i < _pSelectedGameObject->GetComponents().size() - 1)
+					{
+						ImGui::SameLine();
+						// add button to move the component down
+						if (ImGui::Button("Down"))
+						{
+							_pSelectedGameObject->SwapComponents(i, i + 1);
+						}
 					}
 				}
 			}
@@ -180,7 +208,6 @@ void Editor::EditorImGui(Scene* currentScene)
 						Texture2D* tex = _pSelectedGameObject->GetComponent<Texture2D>();
 						if (tex == nullptr)
 						{
-							_pSelectedGameObject->AddComponent(new Texture2D(_pSelectedGameObject));
 							_pSelectedGameObject->LoadTexture(new Texture2D((char*)texPath.c_str()));
 						}
 					}
@@ -409,13 +436,14 @@ void Editor::ConvertGameToEditorSpace()
 	glm::vec2 mousePos = glm::vec2(Input::GetMouseX(), Input::GetMouseY());
 	glm::vec2 editorPos = glm::vec2(0.0f);
 
-	//mousePos.x - editorPos.x 
-
 	editorPos.x = mousePos.x - _windowPos.x;
 	editorPos.y = mousePos.y + _windowPos.y - _windowSize.y;
 
-	//std::cout << "Game Space (" << mousePos.x << "," << mousePos.y
-		//<< ") Editor Space (" << editorPos.x << "," << editorPos.y << ")" << std::endl;
+	if (editorPos.x < 0) editorPos.x = 0.0f;
+	else if (editorPos.x > _windowSize.x) editorPos.x = _windowSize.x;
+
+	if (editorPos.y < 0) editorPos.y = 0.0f;
+	else if (editorPos.y > _windowSize.y) editorPos.y = _windowSize.y;
 
 	_mousePosInEditorSpace = editorPos;
 }

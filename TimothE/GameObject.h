@@ -88,6 +88,8 @@ public:
 	virtual bool SaveState(IStream& stream) const override;
 	virtual bool LoadState(IStream& stream) override;
 	unsigned int GetVAO() const { return _vao; }
+
+	void SwapComponents(int index1, int index2);
 private:
 	string _UID;
 	string _name;

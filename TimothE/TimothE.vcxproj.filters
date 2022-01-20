@@ -172,4 +172,8 @@
     <ClCompile Include="VBO.cpp" />
     <ClCompile Include="ResourceManager.cpp" />
   </ItemGroup>
+  <ItemGroup>
+    <None Include="fr_UIShader.frag" />
+    <None Include="vr_UIShader.vert" />
+  </ItemGroup>
 </Project>

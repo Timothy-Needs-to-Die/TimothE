@@ -7,14 +7,15 @@
 #include <vector>
 #include "Texture2D.h"
 #include <gtc/type_ptr.hpp>
+#include "Camera.h"
 
 class Renderer
 {
 public:
 	Renderer() : _UID(UID::GenerateUID()) { };
 
-	void RenderDrawables(vector<GameObject*> gameObjects);
-	void Render(GameObject* gameObject);
+	void RenderDrawables(vector<GameObject*> gameObjects, Camera* cam);
+	void Render(GameObject* gameObject, Camera* cam);
 private:
 	std::string _UID;
 };

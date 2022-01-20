@@ -35,6 +35,7 @@ Scene::Scene(string name)
 	_pTestObject->GetTransform()->Scale({ 320,320 });
 
 	_pButtonTestingObject->AddComponent(new Button(_pButtonTestingObject));
+	_pButtonTestingObject->SetShader("vr_UIShader.vert", "fr_UIShader.frag");
 
 	AddGameObject(_pTestObject);
 	AddGameObject(_pButtonTestingObject);
@@ -56,9 +57,9 @@ void Scene::Update(float deltaTime)
 	}
 }
 
-void Scene::RenderScene(Renderer* pRenderer)
+void Scene::RenderScene(Renderer* pRenderer, Camera* cam)
 {
-	pRenderer->RenderDrawables(_listOfGameObjects);
+	pRenderer->RenderDrawables(_listOfGameObjects, cam);
 }
 
 void Scene::RemoveGameObject(GameObject* gameObject)

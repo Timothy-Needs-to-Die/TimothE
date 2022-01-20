@@ -14,7 +14,7 @@ public:
 	Scene(string name);
 	~Scene();
 	void Update(float deltaTime);
-	void RenderScene(Renderer* pRenderer);
+	void RenderScene(Renderer* pRenderer, Camera* cam);
 	GameObject* AddGameObject(GameObject* gameObject) { _listOfGameObjects.push_back(gameObject); return gameObject; }
 	void RemoveGameObject(GameObject* gameObject);
 	vector<GameObject*> GetGameObjects() { return _listOfGameObjects; }
