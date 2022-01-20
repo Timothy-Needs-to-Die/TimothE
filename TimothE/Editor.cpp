@@ -358,17 +358,25 @@ void Editor::EditorImGui(Scene* currentScene)
 			SearchFileDirectory();
 		}
 		
-
+		ImGui::Columns(4, NULL);
+		ImGui::Separator();
 		//for each item in directory create new button
 		for (int i = 2; i < _mDirectoryList.size(); i++) {
-			CheckFileType(_mDirectoryList[i]);
 			
+			 
+
+			//checks filetype and give it an icon
+			CheckFileType(_mDirectoryList[i]);
 
 			//adds button with directory name which when pressed adds its name to directory string and updates buttons
 			if (ImGui::Button(_mDirectoryList[i].c_str()))
 			{
 				_mCurrentDir += "/" + _mDirectoryList[i];
 				SearchFileDirectory();
+			}
+			if (i > 0 || i % 4 == 2)
+			{
+				ImGui::NextColumn();
 			}
 			//ImGui::Dummy(ImVec2(0, 80.0f));
 		}
@@ -449,7 +457,7 @@ void Editor::CheckFileType(string fileDirectory)
 	{
 		ImGui::Image((void*)pContentTextureScript->GetID(), ImVec2(100, 100));
 	}
-	else if (fileDirectory.find(".png") != std::string::npos || fileDirectory.find(".jpeg") != std::string::npos)
+	else if (fileDirectory.find(".png") != std::string::npos || fileDirectory.find(".jpg") != std::string::npos)
 	{
 		ImGui::Image((void*)pContentTextureImage->GetID(), ImVec2(100, 100));
 	}
