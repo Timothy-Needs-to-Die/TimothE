@@ -7,7 +7,7 @@
 class Transform : public Component
 {
 public:
-	Transform();
+	Transform(GameObject* pParent);
 
 	COMPONENT_STATIC_TYPE(Transform_Type)
 

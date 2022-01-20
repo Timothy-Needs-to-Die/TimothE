@@ -1,7 +1,7 @@
 #include "Texture2D.h"
 #include "imgui.h"
 
-Texture2D::Texture2D() : Component(), _ID(0)
+Texture2D::Texture2D(GameObject* pParent) : Component(pParent), _ID(0)
 {
 	_UID = UID::GenerateUID();
 	SetType(Component::Texture_Type);

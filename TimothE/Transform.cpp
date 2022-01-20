@@ -1,8 +1,9 @@
 #include "Transform.h"
 #include "imgui.h"
+#include "GameObject.h"
 
-Transform::Transform()
-	: _transformationMatrix(1.0f), _position(glm::vec2(0.0f)), _rotation(0.0f), _size(glm::vec2(32.0f))
+Transform::Transform(GameObject* pParent)
+	: _transformationMatrix(1.0f), _position(glm::vec2(0.0f)), _rotation(0.0f), _size(glm::vec2(32.0f)), Component(pParent)
 {
 	SetType(Component::Transform_Type);
 	SetCategory(Component::Transform_Category);

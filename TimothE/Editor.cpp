@@ -34,6 +34,14 @@ Editor::Editor(Window* pWindow)
 	_pEditorFramebuffer = new Framebuffer(_pScreenShader);
 
 	_pEditorCamera = new Camera(pWindow->GetGLFWWindow(), 1280, 720, 45.0f);
+
+	//pContentTextureImage->Load("Icons/ImageContent.png", "Linear");
+	//pContentTextureScene->Load("Icons/SceneContent.png", "Linear");
+	//pContentTextureConfig->Load("Icons/ConfigContent.png", "Linear");
+	//pContentTextureScript->Load("Icons/ScriptContent.png", "Linear");
+	//pContentTextureSound->Load("Icons/SoundContent.png", "Linear");
+	//pContentTextureFile->Load("Icons/FileContent.png", "Linear");
+	//pContentTextureFolder->Load("Icons/FolderContent.png", "Linear");
 }
 
 Editor::~Editor()
@@ -78,25 +86,11 @@ void Editor::EditorImGui(Scene* currentScene)
 				if (changeObject)
 				{
 					text = _pSelectedGameObject->GetName();
-					//oldName = _pSelectedGameObject->GetName();
 				}
 				if (ImGui::InputText(" ", &text, ImGuiInputTextFlags_CharsNoBlank))
 				{
 					_pSelectedGameObject->SetName(text);
 				}
-				/*if (text != oldName)
-				{
-					ImGui::SameLine();
-					if (ImGui::Button("Set name"))
-					{
-						string name = _pSelectedGameObject->GetName();
-						string newname = text;
-						string s = name + " renamed to " + newname;
-						Console::Print(s);
-						_pSelectedGameObject->SetName(text);
-						oldName = text;
-					}
-				}*/
 			}
 
 			// select object type
@@ -124,6 +118,14 @@ void Editor::EditorImGui(Scene* currentScene)
 			for (Component* c : _pSelectedGameObject->GetComponents())
 			{
 				c->DrawEditorUI();
+
+				if (c->GetType() != Component::Transform_Type)
+				{
+					if (ImGui::Button(("Delete component##" + to_string(c->GetType())).c_str()))
+					{
+						_pSelectedGameObject->RemoveComponent(c);
+					}
+				}
 			}
 
 			// add component
@@ -135,7 +137,7 @@ void Editor::EditorImGui(Scene* currentScene)
 					{
 						if (_pSelectedGameObject->GetTransform() == nullptr)
 						{
-							_pSelectedGameObject->AddComponent(new Transform());
+							_pSelectedGameObject->AddComponent(new Transform(_pSelectedGameObject));
 						}
 					}
 				}
@@ -170,7 +172,7 @@ void Editor::EditorImGui(Scene* currentScene)
 				}
 				if (ImGui::CollapsingHeader("Graphics"))
 				{
-					string texPath = "lenna3.jpg";
+					static string texPath = "lenna3.jpg";
 					ImGui::InputText("Texture path", &texPath);
 					if (ImGui::Button("Texture"))
 					{
@@ -296,6 +298,26 @@ void Editor::EditorImGui(Scene* currentScene)
 	{
 		ImGui::Begin("Content Browser");
 
+		if (ImGui::BeginPopupContextWindow())
+		{
+			if (ImGui::CollapsingHeader("New Script"))
+			{
+				static string name = "New Script";
+				if (ImGui::InputText(" ", &name, ImGuiInputTextFlags_CharsNoBlank)) {}
+				if (ImGui::MenuItem("Add"))
+				{
+					std::ofstream cppStream(_mCurrentDir + "/" + name + ".cpp");
+					cppStream.close();
+					std::ofstream hStream(_mCurrentDir + "/" + name + ".h");
+					hStream.close();
+					SearchFileDirectory();
+				}
+				
+			}
+			
+			ImGui::EndPopup();
+		}
+
 		//adds back button which removes last directory and updates options
 		if (ImGui::Button("Back"))
 		{
@@ -305,12 +327,17 @@ void Editor::EditorImGui(Scene* currentScene)
 
 		//for each item in directory create new button
 		for (int i = 2; i < _mDirectoryList.size(); i++) {
+			//add image for each directory
+			
+			//ImGui::Image((void*)pContentTextureScript->GetID(), ImVec2(100,100));
+
 			//adds button with directory name which when pressed adds its name to directory string and updates buttons
 			if (ImGui::Button(_mDirectoryList[i].c_str()))
 			{
 				_mCurrentDir += "/" + _mDirectoryList[i];
 				SearchFileDirectory();
 			}
+			ImGui::Dummy(ImVec2(0, 80.0f));
 		}
 		ImGui::End();
 	}
@@ -389,15 +416,8 @@ void Editor::EditorUpdate(Scene* currentScene, float dt)
 	currentScene->Update(dt);
 }
 
-void Console::Print(string message)
+void Editor::CreateFileInContentBrowser()
 {
-	if (output.size() > CONSOLE_MAX_MESSAGES)
-	{
-		output.erase(output.begin());
-	}
-	output.push_back(message);
-
-	// TODO: maybe add a way to remove old messages after size exceeded max size to reduce memory usage for unneeded messages
 }
 
 //creates list of directorys for the content browser
