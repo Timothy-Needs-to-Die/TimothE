@@ -418,8 +418,6 @@ void Editor::EditorRender()
 		ImVec2(_windowPos.x + 640, _windowPos.y + 360),
 		ImVec2(0, 1.0), ImVec2(1.0, 0));
 
-	std::cout << "Window Pos: " << _windowPos.x << ", " << _windowPos.y << std::endl;
-
 	_windowSize = ImGui::GetWindowSize();
 	ImGui::End();
 
