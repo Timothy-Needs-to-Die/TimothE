@@ -55,8 +55,6 @@ public:
 	int GetTextureID() { return _textureID; }
 	int GetShaderID() { return _shaderID; }
 
-
-
 	void LoadTexture(char* path, string mode);
 	void SetShader(int id) { _shaderID = id; };
 
@@ -71,6 +69,8 @@ public:
 	virtual bool SaveState(IStream& stream) const override;
 	virtual bool LoadState(IStream& stream) override;
 	unsigned int GetVAO() const { return _vao; }
+
+	void SwapComponents(int index1, int index2);
 private:
 	string _UID;
 	string _name;
