@@ -15,38 +15,33 @@ using std::vector;
 class Button : public Component
 {
 public:
-	Button(GameObject* parent, int width, int height);
+	Button(GameObject* parent);
 	~Button();
 
 	COMPONENT_STATIC_TYPE(Buttom_Type);
 
-	//void OnStart() override;
+	// Component Methods
+	void OnStart() override;
 	void OnUpdate() override;
-	//void OnEnd() override;
+	void OnEnd() override;
 	void DrawEditorUI() override;
 
-
+	// OnClick management
 	void AddOnClickCall(void (*function)());
 	void RemoveOnClickCall(void (*function)());
 
 	// Getter & Setter
-	int GetWidth() { return _width; }
-	void SetWidth(int width) { _width = width; }
-
-	int GetHeight() { return _height; }
-	void SetHeight(int height) { _width = height; }
-
 	bool IsHovering() { return _isHovering; }
 	bool IsClicked() { return _isClicked; }
 
 private:	
-	int _width;
-	int _height;
-
 	bool _isHovering;
 	bool _isClicked;
 
+	// OnClick Calls
 	vector<void(*)()> _onClickCalls;
+
+	// Editor UI
 };
 
 
