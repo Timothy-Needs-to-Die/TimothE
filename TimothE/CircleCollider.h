@@ -6,13 +6,13 @@
 #include <glm.hpp>
 #include "Component.h"
 
-class CircleCollider : public Component
+class CircleColliderComponent : public Component
 {
 public:
 	COMPONENT_STATIC_TYPE(Boxcollision_Type);
 
-	CircleCollider(GameObject* parent);
-	~CircleCollider();
+	CircleColliderComponent(GameObject* parent);
+	~CircleColliderComponent();
 
 	void OnStart() override;
 	void OnUpdate() override;
@@ -54,5 +54,4 @@ private:
 	float _radius;
 	glm::vec2 _centre;
 	bool _isTrigger;
-	Rect* bounds;
 };

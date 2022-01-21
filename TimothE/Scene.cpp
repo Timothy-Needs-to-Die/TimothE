@@ -4,6 +4,8 @@
 #include "Button.h"
 #include "StreamFile.h"
 #include "BoxColliderComponent.h"
+#include "CircleCollider.h"
+
 
 int Scene::nextID = 0;
 
@@ -19,22 +21,22 @@ Scene::Scene(string name)
 	t->Load("lenna3.jpg", "linear");*/
 
 	GameObject* _pTestObject = new GameObject("LENNA!", ObjectType::Player);
-	_pTestObject->AddComponent<BoxColliderComponent>(new BoxColliderComponent(_pTestObject));
+	_pTestObject->AddComponent<	CircleColliderComponent>(new CircleColliderComponent(_pTestObject));
 	_pTestObject->LoadTexture("lenna3.jpg");
 
 	//Orde of transformations matters!!!!!
 	//First we Translate
 	//Then we rotate
 	//Then finally scale
-	_pTestObject->GetTransform()->SetPosition(640, 360);
+	_pTestObject->GetTransform()->SetPosition(200, 400);
 
 	Button* pButton = new Button("TestButton", 32, 32);
 	pButton->LoadTexture("lenna3.jpg");
 	pButton->GetTransform()->SetPosition(640, 360);
 
 
-	AddGameObject(pButton);
-	//AddGameObject(_pTestObject);
+	//AddGameObject(pButton);
+	AddGameObject(_pTestObject);
 }
 
 Scene::~Scene()
