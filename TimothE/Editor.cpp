@@ -335,10 +335,9 @@ void Editor::EditorImGui(Scene* currentScene)
 
 		if (ImGui::BeginPopupContextWindow())
 		{
-
-			static string name = " ";
 			if (ImGui::CollapsingHeader("New Script"))
 			{
+				static string name = "New Script";
 				if (ImGui::InputText(" ", &name, ImGuiInputTextFlags_CharsNoBlank)) {}
 				if (ImGui::MenuItem("Add"))
 				{
@@ -347,16 +346,6 @@ void Editor::EditorImGui(Scene* currentScene)
 					SearchFileDirectory();
 				}
 				
-			}
-			if (ImGui::CollapsingHeader("New Scene"))
-			{
-				if (ImGui::InputText(" ", &name, ImGuiInputTextFlags_CharsNoBlank)) {}
-				if (ImGui::MenuItem("Add"))
-				{
-					CreateFileInContentBrowser(name, ".scene");
-					SearchFileDirectory();
-				}
-
 			}
 			
 			ImGui::EndPopup();
@@ -466,7 +455,7 @@ void Editor::CheckFileType(string fileDirectory)
 	//add image for each directory
 	if (fileDirectory.find(".cpp") != std::string::npos || fileDirectory.find(".h") != std::string::npos)
 	{
-		ImGui::ImageButton((void*)pContentTextureScript->GetID(), ImVec2(100, 100));
+		ImGui::Image((void*)pContentTextureScript->GetID(), ImVec2(100, 100));
 	}
 	else if (fileDirectory.find(".png") != std::string::npos || fileDirectory.find(".jpg") != std::string::npos)
 	{
