@@ -253,10 +253,10 @@ void Editor::EditorImGui(Scene* currentScene)
 					}
 					if (ImGui::Button("Circle Collider"))
 					{
-						CircleCollider* pTest = _pSelectedGameObject->GetComponent<CircleCollider>();
+						CircleColliderComponent* pTest = _pSelectedGameObject->GetComponent<CircleColliderComponent>();
 						if (pTest == nullptr)
 						{
-							_pSelectedGameObject->AddComponent(new CircleCollider(_pSelectedGameObject));
+							_pSelectedGameObject->AddComponent(new CircleColliderComponent(_pSelectedGameObject));
 						}
 					}
 				}
@@ -264,6 +264,7 @@ void Editor::EditorImGui(Scene* currentScene)
 				{
 					if (ImGui::Button("Pathfinding"))
 					{
+
 
 					}
 					if (ImGui::Button("GOAP"))
