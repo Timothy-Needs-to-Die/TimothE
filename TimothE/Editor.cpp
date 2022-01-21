@@ -2,12 +2,10 @@
 #include "ImGuiManager.h"
 #include "Texture2D.h"
 #include "BoxColliderComponent.h"
-
 #include "misc/cpp/imgui_stdlib.h"
 #include "misc/cpp/imgui_stdlib.cpp"
 #include "dirent.h"
 #include "Input.h"
-#include "CircleCollider.h"
 #include "Application.h"
 #include "imgui.h"
 

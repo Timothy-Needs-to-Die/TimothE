@@ -28,8 +28,7 @@ Scene::Scene(string name)
 
 	GameObject* _pButtonTestingObject = new GameObject("BUTTON", ObjectType::UI);
 	_pButtonTestingObject->LoadTexture(ResourceManager::GetTexture("lenna"));
-	_pTestObject->GetTransform()->Translate({ 100,100 });
-	_pTestObject->GetTransform()->Scale({ 320,320 });
+	_pTestObject->GetTransform()->SetPosition(500, 200);
 
 	_pButtonTestingObject->AddComponent(new Button(_pButtonTestingObject));
 	_pButtonTestingObject->SetShader("ui");
