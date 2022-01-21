@@ -52,7 +52,7 @@ private:
 	GameObject* _pSelectedGameObject = nullptr;
 
 	void CreateFileInContentBrowser(string name, string type);
-	void CheckFileType(string fileDirectory);
+	void AddFileToContentBrowser(string fileDirectory);
 	void SearchFileDirectory();
 	string _mCurrentDir = CONTENT_BROWSER_DIRECTORY;
 	Camera* _pEditorCamera;
