@@ -1,24 +1,39 @@
 #include "ResourceManager.h"
 
-std::map<string, Texture2D*> ResourceManager::_textures;
-std::map<string, Shader*> ResourceManager::_shaders;
-std::map<string, Scene*> ResourceManager::_scenes;
+std::map<std::string, Texture2D*> ResourceManager::_textures;
+std::map<std::string, Shader*> ResourceManager::_shaders;
+std::map<std::string, Scene*> ResourceManager::_scenes;
 
 std::string ResourceManager::_UID;
 
-void ResourceManager::InstantiateTexture(string name, string path)
+void ResourceManager::Init()
+{
+	_UID = UID::GenerateUID();
+
+	//LOAD TEXTURES
+	ResourceManager::InstantiateTexture("lenna", new Texture2D("lenna3.jpg"));
+
+	//LOAD SHADERS
+	ResourceManager::InstantiateShader("ui", new Shader("vr_UIShader.vert", "fr_UIShader.frag"));
+	ResourceManager::InstantiateShader("default", new Shader("VertexShader.vert", "FragmentShader.frag"));
+}
+
+void ResourceManager::InstantiateTexture(std::string name, Texture2D* texture)
 { 
-	Texture2D* texture = new Texture2D(path);
-	_textures[name] = texture; 
+	_textures[name] = texture;
 };
 
-void ResourceManager::InstantiateShader(string name, const char* vs, const char* fs)
+void ResourceManager::InstantiateShader(std::string name, Shader* shader)
 { 
-	Shader* shader = new Shader(vs, fs);
-	_shaders[name] = shader; 
+	_shaders[name] = shader;
 };
 
-void ResourceManager::InstantiateScene(string name, Scene* scene)
+void ResourceManager::InstantiateScene(std::string name, Scene* scene)
 { 
 	_scenes[name] = scene; 
-};
+}
+
+//void ResourceManager::InstantiateSound(std::string name, SoundStruct* sound)
+//{
+//	_sounds[name] = sound;
+//}

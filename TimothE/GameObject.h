@@ -67,8 +67,6 @@ public:
 	ObjectType GetType() { return _tag; }
 	void SetType(ObjectType tag);
 
-	void SetDefaultShader();
-
 	vector<Component*> GetComponents() { return _pComponents; }
 
 	Transform* GetTransform() { return _pTransform; }
@@ -82,8 +80,7 @@ public:
 
 	Shader* GetShader() const { return _pShader; }
 
-	void SetShader(string vs, string fs);
-	void SetShader(Shader* shader);
+	void SetShader(string name);
 
 	// Inherited via ISerializable
 	virtual bool SaveState(IStream& stream) const override;
@@ -92,14 +89,17 @@ public:
 
 	void SwapComponents(int index1, int index2);
 private:
+	//properties
 	string _UID;
 	string _name;
 	ObjectType _tag;
+
+	//components
 	vector<Component*> _pComponents;
 
-	string _vsShaderName;
-	string _fsShaderName;
+	//shaders
 	Shader* _pShader;
+	string _shaderName;
 
 	Transform* _pTransform;
 

@@ -43,9 +43,6 @@ void Application::Init(bool devMode)
 	UID::Init();
 	Input::Init();
 	HeapManager::Init();
-	ResourceManager::Init();
-
-	InitResources();
 
 	_devMode = devMode;
 
@@ -76,6 +73,8 @@ void Application::Init(bool devMode)
 	if (_devMode) {
 		ImGuiManager::CreateImGuiContext(_pWindow->GetGLFWWindow());
 	}
+
+	ResourceManager::Init();
 
 	_pCurrentScene = new Scene("Test scene");
 	_pEditor = new Editor(this, _pWindow);
@@ -297,10 +296,4 @@ bool Application::OnGameWindowMouseMovedEvent(MouseMovedEvent& e)
 
 	Input::SetMousePosition(e.GetX(), mouseY);
 	return false;
-}
-
-void Application::InitResources()
-{
-	//INITIALIZE ALL RESOURCES HERE
-	ResourceManager::InstantiateTexture("lenna3", "lenna3.jpg");
 }

@@ -5,6 +5,7 @@
 #include "AddressTranslator.h"
 #include "StreamFile.h"
 #include "Button.h"
+#include "ResourceManager.h"
 
 int Scene::nextID = 0;
 
@@ -16,11 +17,8 @@ Scene::Scene(string name)
 	/////////////
 	//TEST CODE//
 	/////////////
-	/*Texture2D* t = new Texture2D();
-	t->Load("lenna3.jpg", "linear");*/
-
 	GameObject* _pTestObject = new GameObject("LENNA!", ObjectType::Player);
-	_pTestObject->LoadTexture(new Texture2D("lenna3.jpg"));
+	_pTestObject->LoadTexture(ResourceManager::GetTexture("lenna"));
 
 	//Orde of transformations matters!!!!!
 	//First we Translate
@@ -29,12 +27,12 @@ Scene::Scene(string name)
 	_pTestObject->GetTransform()->SetPosition(640, 360);
 
 	GameObject* _pButtonTestingObject = new GameObject("BUTTON", ObjectType::UI);
-	_pButtonTestingObject->LoadTexture(new Texture2D("lenna3.jpg"));
+	_pButtonTestingObject->LoadTexture(ResourceManager::GetTexture("lenna"));
 	_pTestObject->GetTransform()->Translate({ 100,100 });
 	_pTestObject->GetTransform()->Scale({ 320,320 });
 
 	_pButtonTestingObject->AddComponent(new Button(_pButtonTestingObject));
-	_pButtonTestingObject->SetShader("vr_UIShader.vert", "fr_UIShader.frag");
+	_pButtonTestingObject->SetShader("ui");
 
 	AddGameObject(_pTestObject);
 	AddGameObject(_pButtonTestingObject);
