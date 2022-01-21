@@ -332,12 +332,13 @@ void Editor::EditorImGui(Scene* currentScene)
 	//Content Browser
 	{
 		ImGui::Begin("Content Browser");
-
 		if (ImGui::BeginPopupContextWindow())
 		{
+
+			static string name = " ";
+
 			if (ImGui::CollapsingHeader("New Script"))
 			{
-				static string name = "New Script";
 				if (ImGui::InputText(" ", &name, ImGuiInputTextFlags_CharsNoBlank)) {}
 				if (ImGui::MenuItem("Add"))
 				{
@@ -345,11 +346,22 @@ void Editor::EditorImGui(Scene* currentScene)
 					CreateFileInContentBrowser(name, ".h");
 					SearchFileDirectory();
 				}
-				
+
 			}
-			
-			ImGui::EndPopup();
-		}
+			if (ImGui::CollapsingHeader("New Scene"))
+			{
+				if (ImGui::InputText(" ", &name, ImGuiInputTextFlags_CharsNoBlank)) {}
+				if (ImGui::MenuItem("Add"))
+				{
+					CreateFileInContentBrowser(name, ".scene");
+					SearchFileDirectory();
+				}
+
+			}
+
+		ImGui::EndPopup();
+	}
+
 
 		//adds back button which removes last directory and updates options
 		if (ImGui::Button("Back"))
@@ -362,9 +374,6 @@ void Editor::EditorImGui(Scene* currentScene)
 		ImGui::Separator();
 		//for each item in directory create new button
 		for (int i = 2; i < _mDirectoryList.size(); i++) {
-			
-			 
-
 			//checks filetype and give it an icon
 			CheckFileType(_mDirectoryList[i]);
 
@@ -374,11 +383,12 @@ void Editor::EditorImGui(Scene* currentScene)
 				_mCurrentDir += "/" + _mDirectoryList[i];
 				SearchFileDirectory();
 			}
+
+			ImGui::Dummy(ImVec2(0, 20.0f));
 			if (i > 0 || i % 4 == 2)
 			{
 				ImGui::NextColumn();
 			}
-			//ImGui::Dummy(ImVec2(0, 80.0f));
 		}
 		ImGui::End();
 	}
