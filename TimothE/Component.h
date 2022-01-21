@@ -1,10 +1,10 @@
-
-
 #pragma once
 #include <string>
 #include <iostream>
 #include "Serializable.h"
 #include "Stream.h"
+
+class GameObject;
 
 /// <summary>
 ///

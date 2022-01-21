@@ -4,6 +4,7 @@
 #include "ComponentFactory.h"
 #include "imgui.h"
 #include "Console.h"
+#include "BoxColliderComponent.h"
 
 GameObject::GameObject(string name, ObjectType tag, Transform* transform) 
 	: _name(name), _tag(tag), _pTransform(transform)

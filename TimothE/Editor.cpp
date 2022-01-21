@@ -1,11 +1,13 @@
 ﻿#include "Editor.h"
 #include "ImGuiManager.h"
 #include "Texture2D.h"
+#include "BoxColliderComponent.h"
 
 #include "misc/cpp/imgui_stdlib.h"
 #include "misc/cpp/imgui_stdlib.cpp"
 #include "dirent.h"
 #include "Input.h"
+#include "CircleCollider.h"
 
 DIR* _mDirectory;
 struct dirent* _mDirent;
@@ -77,6 +79,9 @@ void Editor::EditorImGui(Scene* currentScene)
 
 	//Inspector
 	{
+		ImGui::ShowDemoWindow();
+
+
 		ImGui::Begin("Inspector");
 
 		if (_pSelectedGameObject != nullptr)
@@ -181,11 +186,19 @@ void Editor::EditorImGui(Scene* currentScene)
 				{
 					if (ImGui::Button("Box Collider"))
 					{
-
+						BoxColliderComponent* pTest = _pSelectedGameObject->GetComponent<BoxColliderComponent>();
+						if (pTest == nullptr)
+						{
+							_pSelectedGameObject->AddComponent(new BoxColliderComponent(_pSelectedGameObject));
+						}
 					}
 					if (ImGui::Button("Circle Collider"))
 					{
-
+						CircleCollider* pTest = _pSelectedGameObject->GetComponent<CircleCollider>();
+						if (pTest == nullptr)
+						{
+							_pSelectedGameObject->AddComponent(new CircleCollider(_pSelectedGameObject));
+						}
 					}
 				}
 				if (ImGui::CollapsingHeader("AI"))
@@ -417,8 +430,6 @@ void Editor::EditorRender()
 		_windowPos,
 		ImVec2(_windowPos.x + 640, _windowPos.y + 360),
 		ImVec2(0, 1.0), ImVec2(1.0, 0));
-
-	std::cout << "Window Pos: " << _windowPos.x << ", " << _windowPos.y << std::endl;
 
 	_windowSize = ImGui::GetWindowSize();
 	ImGui::End();

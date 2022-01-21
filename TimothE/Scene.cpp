@@ -26,8 +26,7 @@ Scene::Scene(string name)
 	//First we Translate
 	//Then we rotate
 	//Then finally scale
-	_pTestObject->GetTransform()->Translate({ 100,100 });
-	_pTestObject->GetTransform()->Scale({ 320,320 });
+	_pTestObject->GetTransform()->SetPosition(640, 360);
 
 	GameObject* _pButtonTestingObject = new GameObject("BUTTON", ObjectType::UI);
 	_pButtonTestingObject->LoadTexture(new Texture2D("lenna3.jpg"));
