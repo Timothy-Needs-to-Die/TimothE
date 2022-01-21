@@ -377,10 +377,14 @@ void Editor::EditorImGui(Scene* currentScene)
 			 
 
 			//checks filetype and give it an icon
-			AddFileToContentBrowser(_mDirectoryList[i]);
+			CheckFileType(_mDirectoryList[i]);
 
 			//adds button with directory name which when pressed adds its name to directory string and updates buttons
-			
+			if (ImGui::Button(_mDirectoryList[i].c_str()))
+			{
+				_mCurrentDir += "/" + _mDirectoryList[i];
+				SearchFileDirectory();
+			}
 			if (i > 0 || i % 4 == 2)
 			{
 				ImGui::NextColumn();
@@ -457,58 +461,36 @@ void Editor::CreateFileInContentBrowser(string name, string type)
 	fileStream.close();
 }
 
-void Editor::AddFileToContentBrowser(string fileDirectory)
+void Editor::CheckFileType(string fileDirectory)
 {
 	//add image for each directory
 	if (fileDirectory.find(".cpp") != std::string::npos || fileDirectory.find(".h") != std::string::npos)
 	{
-		if (ImGui::ImageButton((void*)pContentTextureScript->GetID(), ImVec2(100, 100))) {
-			//open with vs
-		}
+		ImGui::ImageButton((void*)pContentTextureScript->GetID(), ImVec2(100, 100));
 	}
 	else if (fileDirectory.find(".png") != std::string::npos || fileDirectory.find(".jpg") != std::string::npos)
 	{
-		if (ImGui::ImageButton((void*)pContentTextureImage->GetID(), ImVec2(100, 100)))
-		{
-			//open photoshop / paint
-		}
+		ImGui::Image((void*)pContentTextureImage->GetID(), ImVec2(100, 100));
 	}
 	else if (fileDirectory.find(".scene") != std::string::npos)
 	{
-		if (ImGui::ImageButton((void*)pContentTextureScene->GetID(), ImVec2(100, 100)))
-		{
-			//open scene in editor
-		}
+		ImGui::Image((void*)pContentTextureScene->GetID(), ImVec2(100, 100));
 	}
 	else if (fileDirectory.find(".ini") != std::string::npos)
 	{
-		if (ImGui::ImageButton((void*)pContentTextureConfig->GetID(), ImVec2(100, 100)))
-		{
-			//open notepad
-		}	
+		ImGui::Image((void*)pContentTextureConfig->GetID(), ImVec2(100, 100));
 	}
 	else if (fileDirectory.find(".mp3") != std::string::npos || fileDirectory.find(".wav") != std::string::npos)
 	{
-		if (ImGui::ImageButton((void*)pContentTextureSound->GetID(), ImVec2(100, 100)))
-		{
-			//play sound
-		}
-		
+		ImGui::Image((void*)pContentTextureSound->GetID(), ImVec2(100, 100));
 	}
 	else if (fileDirectory.find(".") == std::string::npos)
 	{
-		if (ImGui::ImageButton((void*)pContentTextureFolder->GetID(), ImVec2(100, 100)))
-		{
-			_mCurrentDir += "/" + fileDirectory;
-			SearchFileDirectory();
-		}
+		ImGui::Image((void*)pContentTextureFolder->GetID(), ImVec2(100, 100));
 	}
 	else
 	{
-		if (ImGui::ImageButton((void*)pContentTextureFile->GetID(), ImVec2(100, 100)))
-		{
-			//open notepad
-		}
+		ImGui::Image((void*)pContentTextureFile->GetID(), ImVec2(100, 100));
 	}
 }
 
