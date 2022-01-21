@@ -5,20 +5,21 @@
 #include "imgui.h"
 #include "Console.h"
 #include "BoxColliderComponent.h"
+#include "ResourceManager.h"
 
 GameObject::GameObject(string name, ObjectType tag, Transform* transform) 
 	: _name(name), _tag(tag), _pTransform(transform)
 {
 	_UID = UID::GenerateUID();
 
-	if (_pTransform == nullptr) {
+	if (_pTransform == nullptr)
 		_pTransform = new Transform(this);
-	}
+
 	AddComponent<Transform>(_pTransform);
 
 	InitVertexData();
 
-	SetDefaultShader();
+	SetShader("default");
 
 	Start();
 }
@@ -128,19 +129,10 @@ void GameObject::DisplayInEditor()
 
 }
 
-void GameObject::SetShader(string vs, string fs)
+void GameObject::SetShader(string name)
 {
-	_pShader = new Shader(vs,fs);
-	_shaderID = _pShader->GetProgramID();
-	_vsShaderName = vs;
-	_fsShaderName = fs;
-}
-
-void GameObject::SetShader(Shader* shader)
-{
-	_pShader = shader;
-	_vsShaderName = _pShader->GetVsPath();
-	_fsShaderName = _pShader->GetFsPath();
+	_shaderName = name;
+	_pShader = ResourceManager::GetShader(_shaderName);
 	_shaderID = _pShader->GetProgramID();
 }
 
@@ -151,9 +143,7 @@ bool GameObject::SaveState(IStream& stream) const
 
 	WriteString(stream, _UID);
 
-	WriteString(stream, _vsShaderName);
-	WriteString(stream, _fsShaderName);
-
+	WriteString(stream, _shaderName);
 
 	//Writes number of components
 	WriteInt(stream, _pComponents.size());
@@ -175,7 +165,7 @@ bool GameObject::LoadState(IStream& stream)
 
 	_UID = ReadString(stream);
 
-	SetShader(ReadString(stream), ReadString(stream));
+	SetShader(ReadString(stream));
 
 	//Reserve the amount of components
 	int noComponents = ReadInt(stream);
@@ -220,12 +210,6 @@ void GameObject::SetName(string name)
 void GameObject::SetType(ObjectType tag)
 {
 	_tag = tag;
-}
-
-void GameObject::SetDefaultShader()
-{
-	_pShader = new Shader("VertexShader.vert", "FragmentShader.frag");
-	SetShader(_pShader);
 }
 
 void GameObject::RemoveComponent(Component* comp)

@@ -39,8 +39,6 @@ private:
 	bool OnGameWindowMouseButtonReleasedEvent(MouseButtonReleasedEvent& e);
 	bool OnGameWindowMouseMovedEvent(MouseMovedEvent& e);
 
-	void InitResources();
-
 private:
 	AudioEngine* _audio;
 
