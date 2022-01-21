@@ -48,6 +48,32 @@ Scene::~Scene()
 	}
 }
 
+void Scene::SceneStart()
+{
+	for (GameObject* obj : _listOfGameObjects) {
+		obj->Start();
+	}
+}
+
+void Scene::SceneEnd()
+{
+	for (GameObject* obj : _listOfGameObjects) {
+		obj->Exit();
+	}
+}
+
+void Scene::ScenePause()
+{
+
+}
+
+void Scene::EditorUpdate()
+{
+	for (GameObject* obj : _listOfGameObjects) {
+		obj->GetTransform()->CalculateTransformMatrix();
+	}
+}
+
 void Scene::Update(float deltaTime)
 {
 	for (GameObject* obj : _listOfGameObjects)
@@ -74,11 +100,11 @@ void Scene::LoadScene(const std::string& filename)
 
 	_listOfGameObjects = std::vector<GameObject*>();
 
-	//Read in the amount of gameobjects in the scene
+	//Read in the amount of game objects in the scene
 	int amountOfGo = ReadInt(stream);
 	_listOfGameObjects.resize(amountOfGo);
 
-	//Read in the information for each gameobject
+	//Read in the information for each game object
 	for (int i = 0; i < amountOfGo; ++i) {
 		GameObject* go = new GameObject();
 		go->LoadState(stream);

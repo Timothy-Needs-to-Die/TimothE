@@ -4,10 +4,11 @@
 #include "ApplicationEvent.h"
 #include "Renderer.h"
 #include "Scene.h"
-#include "Editor.h"
 #include "MemoryManager.h"
 
 #include "AudioEngine.h"
+
+class Editor;
 
 class Application
 {
@@ -19,6 +20,8 @@ public:
 	void GameLoop();
 
 	void OnGameEvent(Event& e);
+
+	void GameStart();
 
 protected:
 	void PollInput();
@@ -48,15 +51,18 @@ private:
 
 	Window* _pWindow;
 
-	bool _inEditorMode = false;
+	bool _inEditorMode = true;
 	bool _devMode;
 
 	bool _running;
 
 	Scene* _pCurrentScene;
 
-	Editor* _pEditor;
+	class Editor* _pEditor;
 
 	bool _paused = false;
+	bool _gameRunning = false;
+
+	Camera* _pGameCamera;
 };
 

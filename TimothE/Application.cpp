@@ -21,6 +21,8 @@
 #include "Button.h"
 #include "ResourceManager.h"
 
+#include "Editor.h"
+
 #define BIND_EVENT_FN(x) std::bind(&Application::x, this, std::placeholders::_1)
 
 void GLAPIENTRY MessageCallback(GLenum source,
@@ -76,8 +78,10 @@ void Application::Init(bool devMode)
 	}
 
 	_pCurrentScene = new Scene("Test scene");
-	_pEditor = new Editor(_pWindow);
+	_pEditor = new Editor(this, _pWindow);
 	_running = true;
+
+	_pGameCamera = new Camera(_pWindow->GetGLFWWindow(), 1280, 720, 45.0f);
 }
 
 void Application::GameLoop()
@@ -98,8 +102,6 @@ void Application::GameLoop()
 
 	SoundStruct TitleSong = _audio->LoadSound("Title Song", "Resources/Sounds/Music/Title.wav", Type_Song);
 
-	Camera* _pGameCamera = new Camera(_pWindow->GetGLFWWindow(), 1280, 720, 45.0f);
-
 	//While the editor window should not close
 	while (_running) {
 		PollInput();
@@ -114,9 +116,6 @@ void Application::GameLoop()
 		double currentTime = glfwGetTime();
 		double elapsed = currentTime - previousTime;
 
-		_pGameCamera->Update(elapsed);
-		
-
 		ImGuiManager::ImGuiNewFrame();
 
 		if (_inEditorMode) {
@@ -124,11 +123,7 @@ void Application::GameLoop()
 			GameBeginRender();
 			glEnable(GL_DEPTH_TEST);
 
-			_pEditor->GetCamera()->Update(elapsed);
 			GameRender(_pEditor->GetCamera());
-
-			if(!_paused)
-				GameUpdate(elapsed);
 
 			_pEditor->_pEditorFramebuffer->UnbindFramebuffer();
 			glDisable(GL_DEPTH_TEST);
@@ -147,7 +142,7 @@ void Application::GameLoop()
 				ImGUISwitchRender();
 			}
 
-			if (!_paused)
+			if (_gameRunning && !_paused)
 				GameUpdate(elapsed);
 
 			glDisable(GL_DEPTH_TEST);
@@ -181,6 +176,14 @@ void Application::OnGameEvent(Event& e)
 	dispatcher.Dispatch<MouseMovedEvent>(BIND_EVENT_FN(OnGameWindowMouseMovedEvent));
 }
 
+void Application::GameStart()
+{
+	_pCurrentScene->SceneStart();
+	_inEditorMode = false;
+	_paused = false;
+	_gameRunning = true;
+}
+
 void Application::PollInput()
 {
 	glfwPollEvents();
@@ -204,42 +207,45 @@ void Application::GameEndRender()
 
 void Application::GameUpdate(float dt)
 {
+	_pGameCamera->Update(dt);
 	_pCurrentScene->Update(dt);
 }
 
 void Application::ImGUISwitchRender()
 {
 	{
-		ImGui::Begin("#Application Mode");
+		ImGui::Begin("#Application Mode", 0, ImGuiWindowFlags_AlwaysAutoResize);
 
-		if (ImGui::Button("Editor", ImVec2(100.0f, 30.0f))) {
+		if (ImGui::Button("Stop Playing", ImVec2(100.0f, 30.0f))) {
 			_inEditorMode = true;
-		}
-		ImGui::SameLine();
-		if (ImGui::Button("Game", ImVec2(100.0f, 30.0f))) {
-			_inEditorMode = false;
+			_gameRunning = false;
+			_paused = false;
 		}
 		ImGui::SameLine();
 		//float width = ImGui::GetWindowSize().x;
 		//ImGui::SetCursorPosX((width - 30.0f) * 0.5f); // sets play and pause button to centre of window
-		if (ImGui::Button("Play", ImVec2(50.0f, 30.0f)))
-		{
-			_paused = false;
+		if (_paused) {
+			if (ImGui::Button("Resume", ImVec2(90.0f, 30.0f)))
+			{
+				_paused = false;
+			}
 		}
+		
 		ImGui::SameLine();
-		if (ImGui::Button("Pause", ImVec2(50.0f, 30.0f)))
+		if (ImGui::Button("Pause", ImVec2(90.0f, 30.0f)))
 		{
 			_paused = true;
 		}
 		ImGui::SameLine();
 		//resets game build
-		if (ImGui::Button("Stop", ImVec2(50.0f, 30.0f)))
-		{
-			_pCurrentScene = new Scene("Test scene");
-			_paused = true;
-		}
-		ImGui::SameLine();
-		ImGui::Text(("Paused: " + to_string(_paused)).c_str());
+		//if (ImGui::Button("Stop", ImVec2(50.0f, 30.0f)))
+		//{
+		//	_inEditorMode = true;
+		//	_gameRunning = false;
+		//	_pCurrentScene = new Scene("Test scene");
+		//	_paused = false;
+		//}
+		//ImGui::SameLine();
 		ImGui::End();
 	}
 }

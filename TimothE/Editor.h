@@ -10,12 +10,14 @@
 #include "Console.h"
 #include "imgui.h"
 
+class Application;
+
 #define CONTENT_BROWSER_DIRECTORY "./Resources" //sets file directory for the content browser
 
 class Editor
 {
 public:
-	Editor(Window* pWindow);
+	Editor(Application* pApp, Window* pWindow);
 	~Editor();
 
 	//Runs through the editor loop
@@ -60,12 +62,16 @@ private:
 	string _mCurrentDir = CONTENT_BROWSER_DIRECTORY;
 	Camera* _pEditorCamera;
 
-	
+	bool tileEditorOpen;
 
 	ImVec2 _windowPos;
 	ImVec2 _windowSize;
 
 	glm::vec2 _mousePosInEditorSpace;
+
+	Texture2D* pImGuiSample;
+
+	Application* _pApplication;
 
 	//Texture2D* pContentTextureImage = new Texture2D();
 	//Texture2D* pContentTextureScene = new Texture2D();

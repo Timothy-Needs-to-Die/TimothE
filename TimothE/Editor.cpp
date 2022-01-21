@@ -8,6 +8,8 @@
 #include "dirent.h"
 #include "Input.h"
 #include "CircleCollider.h"
+#include "Application.h"
+#include "imgui.h"
 
 DIR* _mDirectory;
 struct dirent* _mDirent;
@@ -15,8 +17,8 @@ vector<string> _mDirectoryList;
 
 vector<string> Console::output = vector<string>();
 
-Editor::Editor(Window* pWindow)
-	: _pWindow(pWindow)
+Editor::Editor(Application* pApp, Window* pWindow)
+	: _pWindow(pWindow), _pApplication(pApp)
 {
 	// vertex attributes for a quad that fills the editor screen space in Normalized Device Coordinates.
 	float* quadVertices = new float[24]{
@@ -37,6 +39,9 @@ Editor::Editor(Window* pWindow)
 	_pEditorFramebuffer = new Framebuffer(_pScreenShader);
 
 	_pEditorCamera = new Camera(pWindow->GetGLFWWindow(), 1280, 720, 45.0f);
+
+	pImGuiSample = new Texture2D(NULL);
+	pImGuiSample->Load("lenna3.jpg");
 
 	//pContentTextureImage->Load("Icons/ImageContent.png", "Linear");
 	//pContentTextureScene->Load("Icons/SceneContent.png", "Linear");
@@ -60,16 +65,45 @@ void Editor::EditorLoop(Scene* currentScene, float dt, bool& editorMode, bool& p
 	EditorImGui(currentScene);
 	ImGUISwitchRender(editorMode, paused);
 
-	if(!paused)
-		EditorUpdate(currentScene, dt);
+	EditorUpdate(currentScene, dt);
 }
 
 void Editor::EditorImGui(Scene* currentScene)
 {
+	ImGui::ShowDemoWindow();
+
 	static bool changeObject = false;
 
+
+
+	//ImGui::DockSpaceOverViewport(0, ImGuiDockNodeFlags_PassthruCentralNode);
+
 	{
-		ImGui::Begin("Notes");
+		if (ImGui::BeginMainMenuBar()) {
+			if (ImGui::MenuItem("File")) {
+				if (ImGui::BeginChild("FileMenu")) {
+					if (ImGui::MenuItem("New Scene"))
+					{
+						std::cout << "New Scene" << std::endl;
+					}
+					if (ImGui::MenuItem("Load Scene")) {
+						std::cout << "Load Scene" << std::endl;
+					}
+				}
+				ImGui::EndChild();
+			}
+			if (ImGui::MenuItem("Edit")) {
+
+			}
+			if (ImGui::MenuItem("View")) {
+
+			}
+		}
+		ImGui::EndMainMenuBar();
+	}
+
+	{
+		ImGui::Begin("Notes", 0, ImGuiWindowFlags_NoMove);
 
 		string notes;
 		ImGui::InputTextMultiline("Notes", &notes, ImVec2(300.0f, 600.0f), 0, 0);
@@ -77,12 +111,37 @@ void Editor::EditorImGui(Scene* currentScene)
 		ImGui::End();
 	}
 
+	//Tile Editor
+	{
+		ImGui::Begin("Tile Editor", 0, ImGuiWindowFlags_NoMove);
+
+		//Left Panel
+		ImGui::BeginChild("Tiles", ImVec2(200, 0), true);
+
+		for (int i = 0; i < 16; ++i) {
+
+			for (int j = 0; j < 3; ++j) {
+				if (ImGui::ImageButton((void*)pImGuiSample->GetID(), ImVec2(50, 50))) {
+
+				}
+
+
+				ImGui::SameLine();
+			}
+			ImGui::NewLine();
+		}
+
+		ImGui::EndChild();
+
+		ImGui::End();
+	}
+
+
 	//Inspector
 	{
-		ImGui::ShowDemoWindow();
 
 
-		ImGui::Begin("Inspector");
+		ImGui::Begin("Inspector", 0, ImGuiWindowFlags_NoMove);
 
 		if (_pSelectedGameObject != nullptr)
 		{
@@ -233,7 +292,7 @@ void Editor::EditorImGui(Scene* currentScene)
 
 	//Hierarchy
 	{
-		ImGui::Begin("Hierarchy");
+		ImGui::Begin("Hierarchy", 0, ImGuiWindowFlags_NoMove);
 
 		if (ImGui::CollapsingHeader("Add GameObject"))
 		{
@@ -295,7 +354,7 @@ void Editor::EditorImGui(Scene* currentScene)
 
 					if (i <= index)
 					{
-						if(index > 0)
+						if (index > 0)
 							index--;
 					}
 				}
@@ -317,7 +376,7 @@ void Editor::EditorImGui(Scene* currentScene)
 
 	//Console
 	{
-		ImGui::Begin("Console");
+		ImGui::Begin("Console", 0, ImGuiWindowFlags_NoMove);
 
 		static int oldSize = 0;
 		// get output from console class
@@ -337,7 +396,7 @@ void Editor::EditorImGui(Scene* currentScene)
 
 	//Content Browser
 	{
-		ImGui::Begin("Content Browser");
+		ImGui::Begin("Content Browser", 0, ImGuiWindowFlags_NoMove);
 
 		if (ImGui::BeginPopupContextWindow())
 		{
@@ -353,9 +412,9 @@ void Editor::EditorImGui(Scene* currentScene)
 					hStream.close();
 					SearchFileDirectory();
 				}
-				
+
 			}
-			
+
 			ImGui::EndPopup();
 		}
 
@@ -369,7 +428,7 @@ void Editor::EditorImGui(Scene* currentScene)
 		//for each item in directory create new button
 		for (int i = 2; i < _mDirectoryList.size(); i++) {
 			//add image for each directory
-			
+
 			//ImGui::Image((void*)pContentTextureScript->GetID(), ImVec2(100,100));
 
 			//adds button with directory name which when pressed adds its name to directory string and updates buttons
@@ -383,7 +442,6 @@ void Editor::EditorImGui(Scene* currentScene)
 		ImGui::End();
 	}
 
-	//ImGui::ShowDemoWindow();
 }
 
 void Editor::EditorStartRender()
@@ -395,24 +453,15 @@ void Editor::EditorStartRender()
 
 void Editor::ImGUISwitchRender(bool& editorMode, bool& paused)
 {
-	ImGui::Begin("Application Mode");
+	ImGui::Begin("Application Mode", 0, ImGuiWindowFlags_NoMove);
 
-	if (ImGui::Button("Editor", ImVec2(100.0f, 30.0f))) {
-		editorMode = true;
-	}
-	ImGui::SameLine();
-	if (ImGui::Button("Game", ImVec2(100.0f, 30.0f))) {
-		editorMode = false;
-	}
-	ImGui::SameLine();
-	//float width = ImGui::GetWindowSize().x;
-	//ImGui::SetCursorPosX((width - 30.0f) * 0.5f); // sets play and pause button to centre of window
-	if (ImGui::Button("Play", ImVec2(30.0f, 30.0f)))
+	if (ImGui::Button("Play", ImVec2(90.0f, 30.0f)))
 	{
-		paused = false;
+		//paused = false;
+		_pApplication->GameStart();
 	}
 	ImGui::SameLine();
-	if (ImGui::Button("Pause", ImVec2(30.0f, 30.0f)))
+	if (ImGui::Button("Pause", ImVec2(90.0f, 30.0f)))
 	{
 		paused = true;
 	}
@@ -423,7 +472,7 @@ void Editor::ImGUISwitchRender(bool& editorMode, bool& paused)
 
 void Editor::EditorRender()
 {
-	ImGui::Begin("Scene Window");
+	ImGui::Begin("Scene Window", 0 ,ImGuiWindowFlags_NoMove);
 	_windowPos = ImGui::GetCursorScreenPos();
 	ImGui::GetWindowDrawList()->AddImage(
 		(void*)_pEditorFramebuffer->GetTexture(),
@@ -462,7 +511,7 @@ void Editor::ConvertGameToEditorSpace()
 
 void Editor::EditorUpdate(Scene* currentScene, float dt)
 {
-	currentScene->Update(dt);
+	currentScene->EditorUpdate();
 	ConvertGameToEditorSpace();
 }
 

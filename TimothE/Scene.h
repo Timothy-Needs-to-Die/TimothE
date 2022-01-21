@@ -5,14 +5,17 @@
 #include "GameObject.h"
 #include "Renderer.h"
 
-//  O.o
-using namespace std;
-
 class Scene
 {
 public:
 	Scene(string name);
 	~Scene();
+	
+	void SceneStart();
+	void SceneEnd();
+	void ScenePause();
+	void EditorUpdate();
+
 	void Update(float deltaTime);
 	void RenderScene(Renderer* pRenderer, Camera* cam);
 	GameObject* AddGameObject(GameObject* gameObject) { _listOfGameObjects.push_back(gameObject); return gameObject; }
