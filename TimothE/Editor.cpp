@@ -332,11 +332,13 @@ void Editor::EditorImGui(Scene* currentScene)
 	//Content Browser
 	{
 		ImGui::Begin("Content Browser");
+	
+		//context menu for adding new objects 
 		if (ImGui::BeginPopupContextWindow())
 		{
 
 			static string name = " ";
-
+			//makes new script with .cpp and .h files
 			if (ImGui::CollapsingHeader("New Script"))
 			{
 				if (ImGui::InputText(" ", &name, ImGuiInputTextFlags_CharsNoBlank)) {}
@@ -348,6 +350,7 @@ void Editor::EditorImGui(Scene* currentScene)
 				}
 
 			}
+			// makes new script with.scene files
 			if (ImGui::CollapsingHeader("New Scene"))
 			{
 				if (ImGui::InputText(" ", &name, ImGuiInputTextFlags_CharsNoBlank)) {}
@@ -369,7 +372,11 @@ void Editor::EditorImGui(Scene* currentScene)
 			_mCurrentDir = _mCurrentDir.substr(0, _mCurrentDir.find_last_of("\\/"));
 			SearchFileDirectory();
 		}
+		//displays directory next to button
+		ImGui::SameLine();
+		ImGui::Text(_mCurrentDir.c_str());
 		
+		//sets up a column to display the files in a grid
 		ImGui::Columns(4, NULL);
 		ImGui::Separator();
 		//for each item in directory create new button
@@ -377,14 +384,10 @@ void Editor::EditorImGui(Scene* currentScene)
 			//checks filetype and give it an icon
 			CheckFileType(_mDirectoryList[i]);
 
-			//adds button with directory name which when pressed adds its name to directory string and updates buttons
-			if (ImGui::Button(_mDirectoryList[i].c_str()))
-			{
-				_mCurrentDir += "/" + _mDirectoryList[i];
-				SearchFileDirectory();
-			}
-
+			//adds padding to files
 			ImGui::Dummy(ImVec2(0, 20.0f));
+
+			//goes to next column
 			if (i > 0 || i % 4 == 2)
 			{
 				ImGui::NextColumn();
@@ -454,42 +457,62 @@ void Editor::EditorUpdate(Scene* currentScene, float dt)
 	currentScene->Update(dt);
 }
 
+//creates new file from context menu
 void Editor::CreateFileInContentBrowser(string name, string type)
 {
 	std::ofstream fileStream(_mCurrentDir + "/" + name + type);
 	fileStream.close();
 }
 
+//checks file type and displays file in content browser
 void Editor::CheckFileType(string fileDirectory)
 {
-	//add image for each directory
+	//if file is a script
 	if (fileDirectory.find(".cpp") != std::string::npos || fileDirectory.find(".h") != std::string::npos)
 	{
 		ImGui::Image((void*)pContentTextureScript->GetID(), ImVec2(100, 100));
+		ImGui::Text(fileDirectory.c_str());
 	}
+	//if file is an image
 	else if (fileDirectory.find(".png") != std::string::npos || fileDirectory.find(".jpg") != std::string::npos)
 	{
 		ImGui::Image((void*)pContentTextureImage->GetID(), ImVec2(100, 100));
+		ImGui::Text(fileDirectory.c_str());
 	}
+	//if file is a scene
 	else if (fileDirectory.find(".scene") != std::string::npos)
 	{
 		ImGui::Image((void*)pContentTextureScene->GetID(), ImVec2(100, 100));
+		ImGui::Text(fileDirectory.c_str());
 	}
+	//file is a config file
 	else if (fileDirectory.find(".ini") != std::string::npos)
 	{
 		ImGui::Image((void*)pContentTextureConfig->GetID(), ImVec2(100, 100));
+		ImGui::Text(fileDirectory.c_str());
 	}
+	//file is a sound
 	else if (fileDirectory.find(".mp3") != std::string::npos || fileDirectory.find(".wav") != std::string::npos)
 	{
 		ImGui::Image((void*)pContentTextureSound->GetID(), ImVec2(100, 100));
+		ImGui::Text(fileDirectory.c_str());
 	}
+	//file is a folder
 	else if (fileDirectory.find(".") == std::string::npos)
 	{
 		ImGui::Image((void*)pContentTextureFolder->GetID(), ImVec2(100, 100));
+		//adds button with directory name which when pressed adds its name to directory string and updates buttons
+		if (ImGui::Button(fileDirectory.c_str()))
+		{
+			_mCurrentDir += "/" + fileDirectory;
+			SearchFileDirectory();
+		}
 	}
+	//other file types
 	else
 	{
 		ImGui::Image((void*)pContentTextureFile->GetID(), ImVec2(100, 100));
+		ImGui::Text(fileDirectory.c_str());
 	}
 }
 
