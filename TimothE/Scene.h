@@ -32,6 +32,31 @@ public:
 	static std::vector<GameObject*> GetGameObjectsByName(std::string name);
 	static std::vector<GameObject*> GetGameObjectsByType(ObjectType type);
 
+	template<typename T>
+	static T* FindObjectOfType() {
+		for (GameObject* obj : _listOfGameObjects) {
+			T* comp = obj->GetComponent<T>();
+			if (comp != nullptr)
+			{
+				return comp;
+			}
+		}
+		return nullptr;
+	}
+
+	template<typename T>
+	static std::vector<T*> FindObjectsOfType() {
+		std::vector<T*> compList;
+		for (GameObject* obj : _listOfGameObjects) {
+			T* comp = obj->GetComponent<T>();
+			if (comp != nullptr)
+			{
+				compList.emplace_back(comp);
+			}
+		}
+		return compList;
+	}
+
 private:
 	string _name;
 	int _id;
