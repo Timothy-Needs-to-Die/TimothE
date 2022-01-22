@@ -114,6 +114,7 @@
     <ClInclude Include="KeyEvent.h" />
     <ClInclude Include="MemoryManager.h" />
     <ClInclude Include="MouseEvent.h" />
+    <ClInclude Include="RBO.h" />
     <ClInclude Include="Renderer.h" />
     <ClInclude Include="ResourceManager.h" />
     <ClInclude Include="SOIL\SOIL2.h" />
@@ -170,6 +171,7 @@
     <ClCompile Include="Imgui\imgui_widgets.cpp" />
     <ClCompile Include="Input.cpp" />
     <ClCompile Include="MemoryManager.cpp" />
+    <ClCompile Include="RBO.cpp" />
     <ClCompile Include="Renderer.cpp" />
     <ClCompile Include="ResourceManager.cpp" />
     <ClCompile Include="Scene.cpp" />

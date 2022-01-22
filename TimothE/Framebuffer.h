@@ -5,6 +5,10 @@
 
 #include "Shader.h"
 
+#include "VBO.h"
+#include "VAO.h"
+#include "RBO.h"
+
 #include <iostream>
 
 //TODO: Add a way to take in a custom texture size
@@ -23,12 +27,6 @@ public:
 
 	//Unbinds this frame buffer to the opengl pipeline
 	void UnbindFramebuffer();
-
-	//Binds the quad vao attached to this frame buffer
-	void BindVAO();
-
-	//Unbinds the quad vao attached to this frame buffer
-	void UnbindVAO();
 
 	//Binds the screen shader 
 	void BindShader();
@@ -53,9 +51,11 @@ private:
 	float* _pQuadVertices;
 
 	unsigned int _fbo;
-	unsigned int _rbo;
 	unsigned int _texture;
-	unsigned int _VAO;
-	unsigned int _VBO;
+private:
+	//buffer objects
+	VAO _vao = VAO();
+	VBO _vbo = VBO();
+	RBO _rbo = RBO();
 };
 

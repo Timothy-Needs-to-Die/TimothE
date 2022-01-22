@@ -25,9 +25,10 @@ Framebuffer::Framebuffer(Shader* screenShader)
 
 Framebuffer::~Framebuffer()
 {
-	glDeleteBuffers(1, &_VAO);
-	glDeleteBuffers(1, &_VBO);
-	glDeleteRenderbuffers(1, &_rbo);
+	delete& _vao;
+	delete &_vbo;
+	delete& _rbo;
+
 	glDeleteFramebuffers(1, &_fbo);
 
 	delete[] _pQuadVertices;
@@ -37,10 +38,11 @@ Framebuffer::~Framebuffer()
 void Framebuffer::CreateFramebuffer()
 {
 	//Generate Quad VAO and VBO
-	glGenVertexArrays(1, &_VAO);
-	glGenBuffers(1, &_VBO);
-	glBindVertexArray(_VAO);
-	glBindBuffer(GL_ARRAY_BUFFER, _VBO);
+	//VAO
+	_vao.CreateVAO();
+	//VBO
+	_vbo.CreateVBO();
+
 	glBufferData(GL_ARRAY_BUFFER, 24 * sizeof(float), _pQuadVertices, GL_STATIC_DRAW);
 
 	//Vertex Positions
@@ -69,12 +71,10 @@ void Framebuffer::CreateFramebuffer()
 	// create a render buffer object for depth and stencil attachment (we won't be sampling these)
 
 	//Generate the render buffer objects
-	glGenRenderbuffers(1, &_rbo);
-	glBindRenderbuffer(GL_RENDERBUFFER, _rbo);
+	_rbo.CreateRBO();
 
 	//Adds the depth stencil attachments
-	glRenderbufferStorage(GL_RENDERBUFFER, GL_DEPTH24_STENCIL8, 1280, 720); 
-	glFramebufferRenderbuffer(GL_FRAMEBUFFER, GL_DEPTH_STENCIL_ATTACHMENT, GL_RENDERBUFFER, _rbo); 
+	_rbo.AddDepthStencil();
 	
 	// now that we actually created the frame buffer and added all attachments we want to check if it is actually complete now
 	if (glCheckFramebufferStatus(GL_FRAMEBUFFER) != GL_FRAMEBUFFER_COMPLETE)
@@ -94,16 +94,6 @@ void Framebuffer::UnbindFramebuffer()
 	glBindFramebuffer(GL_FRAMEBUFFER, 0);
 }
 
-void Framebuffer::BindVAO()
-{
-	glBindVertexArray(_VAO);
-}
-
-void Framebuffer::UnbindVAO()
-{
-	glBindVertexArray(0);
-}
-
 void Framebuffer::BindShader()
 {
 	_pScreenShader->BindShader();
@@ -111,7 +101,9 @@ void Framebuffer::BindShader()
 
 void Framebuffer::DrawFramebuffer()
 {
-	BindVAO();
+	//Bind Vertex Array
+	_vao.BindBuffer();
+
 	BindTexture();
 	glDrawArrays(GL_TRIANGLES, 0, 6);
 }

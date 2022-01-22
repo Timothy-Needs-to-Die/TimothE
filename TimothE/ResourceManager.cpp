@@ -16,6 +16,12 @@ void ResourceManager::Init()
 	//LOAD SHADERS
 	ResourceManager::InstantiateShader("ui", new Shader("vr_UIShader.vert", "fr_UIShader.frag"));
 	ResourceManager::InstantiateShader("default", new Shader("VertexShader.vert", "FragmentShader.frag"));
+
+	//LOAD SCENES
+
+	//LOAD SOUNDS
+	
+	//LOAD FONTS
 }
 
 void ResourceManager::InstantiateTexture(std::string name, Texture2D* texture)

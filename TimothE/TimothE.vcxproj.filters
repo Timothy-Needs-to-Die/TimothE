@@ -126,6 +126,7 @@
     <ClInclude Include="VAO.h" />
     <ClInclude Include="VBO.h" />
     <ClInclude Include="CircleCollider.h" />
+    <ClInclude Include="RBO.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="AddressTranslator.cpp" />
@@ -177,6 +178,7 @@
     <ClCompile Include="VAO.cpp" />
     <ClCompile Include="VBO.cpp" />
     <ClCompile Include="ResourceManager.cpp" />
+    <ClCompile Include="RBO.cpp" />
   </ItemGroup>
   <ItemGroup>
     <None Include="fr_UIShader.frag" />
