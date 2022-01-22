@@ -16,6 +16,7 @@
     <ClInclude Include="BoxColliderComponent.h" />
     <ClInclude Include="Button.h" />
     <ClInclude Include="Camera.h" />
+    <ClInclude Include="CircleCollider.h" />
     <ClInclude Include="Component.h" />
     <ClInclude Include="ComponentFactory.h" />
     <ClInclude Include="Console.h" />
@@ -121,11 +122,10 @@
     <ClInclude Include="TimothEInputCodes.h" />
     <ClInclude Include="Transform.h" />
     <ClInclude Include="UID.h" />
-    <ClInclude Include="Window.h" />
-    <ClInclude Include="Console.h" />
     <ClInclude Include="VAO.h" />
     <ClInclude Include="VBO.h" />
-    <ClInclude Include="CircleCollider.h" />
+    <ClInclude Include="Window.h" />
+    <ClInclude Include="pch.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="AddressTranslator.cpp" />
@@ -134,6 +134,7 @@
     <ClCompile Include="BoxColliderComponenet.cpp" />
     <ClCompile Include="Button.cpp" />
     <ClCompile Include="Camera.cpp" />
+    <ClCompile Include="CircleCollider.cpp" />
     <ClCompile Include="Console.cpp" />
     <ClCompile Include="Editor.cpp" />
     <ClCompile Include="Framebuffer.cpp" />
@@ -164,6 +165,7 @@
     <ClCompile Include="Input.cpp" />
     <ClCompile Include="MemoryManager.cpp" />
     <ClCompile Include="Renderer.cpp" />
+    <ClCompile Include="ResourceManager.cpp" />
     <ClCompile Include="Scene.cpp" />
     <ClCompile Include="Shader.cpp" />
     <ClCompile Include="Source.cpp" />
@@ -172,15 +174,8 @@
     <ClCompile Include="TestComponent.cpp" />
     <ClCompile Include="Texture2D.cpp" />
     <ClCompile Include="Transform.cpp" />
-    <ClCompile Include="Window.cpp" />
-    <ClCompile Include="Console.cpp" />
     <ClCompile Include="VAO.cpp" />
     <ClCompile Include="VBO.cpp" />
-    <ClCompile Include="ResourceManager.cpp" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="fr_UIShader.frag" />
-    <None Include="vr_UIShader.vert" />
-    <ClCompile Include="CircleCollider.cpp" />
+    <ClCompile Include="Window.cpp" />
   </ItemGroup>
 </Project>

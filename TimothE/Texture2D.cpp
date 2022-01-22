@@ -8,7 +8,7 @@ Texture2D::Texture2D(GameObject* pParent) : Component(pParent), _ID(0)
 	SetCategory(Component::Graphics_Category);
 }
 
-Texture2D::Texture2D(string path) : Component(), _ID(0)
+Texture2D::Texture2D(std::string path) : Component(), _ID(0)
 {
 	_UID = UID::GenerateUID();
 	SetType(Component::Texture_Type);
@@ -19,18 +19,21 @@ Texture2D::Texture2D(string path) : Component(), _ID(0)
 
 Texture2D::~Texture2D()
 {
+	//Deletes this texture
 	glDeleteTextures(1, &_ID);
 }
 
 void Texture2D::DrawEditorUI()
 {
+	//displays the texture in the editor window
 	ImGui::Text("Texture");
 	ImTextureID texID = (void*)_ID;
+	//specifies a size of 100x100 for the texture preview
 	ImGui::Image(texID, ImVec2(100.0f, 100.0f));
 }
 
 // Pass in file path, filter mode as "linear" or "nearest"
-bool Texture2D::Load(string path)
+bool Texture2D::Load(std::string path)
 {
 	if (_ID != 0) return true;
 
@@ -50,17 +53,18 @@ bool Texture2D::Load(string path)
 
 void Texture2D::GenerateTexture(unsigned char* data)
 {
+	//Binds the texture so it can be setup
 	glBindTexture(GL_TEXTURE_2D, _ID);
+
+	//Setsup the texture
 	glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, _width, _height, 0, GL_RGB, GL_UNSIGNED_BYTE, data);
 
+	//Set filtering to linear by default
 	SetFilterMode("linear");
 
-	glBindTexture(GL_TEXTURE_2D, _ID);
-
+	//Releases the memory associated with the data
 	stbi_image_free(data);
 }
-
-
 
 void Texture2D::OnStart() 
 { 
@@ -77,18 +81,38 @@ void Texture2D::OnEnd()
 
 }
 
-void Texture2D::SetFilterMode(string mode)
+void Texture2D::SetFilterMode(std::string mode)
 {
 	if (mode == "linear")
 	{
 		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
 		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
-		cout << "Linear filter mode" << endl;
 	}
 	else if (mode == "nearest")
 	{
 		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
 		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
-		cout << "Nearest filter mode" << endl;
 	}
+}
+
+// Inherited via ISerializable
+
+inline bool Texture2D::SaveState(IStream& stream) const {
+	Component::SaveState(stream);
+
+	//Save filepath
+	WriteString(stream, _filePath);
+
+	return true;
+
+}
+
+inline bool Texture2D::LoadState(IStream& stream) {
+	Component::LoadState(stream);
+
+	//Loads the texture based on the string that it reads in
+	Load(ReadString(stream));
+
+	return true;
+
 }

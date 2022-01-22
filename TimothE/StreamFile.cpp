@@ -1,90 +1,103 @@
-
 #include "StreamFile.h"
-#include <stdio.h>
-#include <assert.h>
-
 
 StreamFile::StreamFile()
-{
-	m_file = NULL;
-	m_bReadMode = false;
-	m_bWriteMode = false;
-}
+	: _pFile(NULL), _readMode(false), _writeMode(false) {}
 
 
 StreamFile::~StreamFile()
 {
+	//Closes the file automatically upon object deletion
 	Close();
 }
 
 
 bool StreamFile::OpenRead(const std::string& filename)
 {
-	if (m_file != NULL)
+	//If we do not have a file then return false
+	if (_pFile != NULL)
 		return false;
 
-	m_file = fopen(filename.c_str(), "r");
-	m_bReadMode = (m_file != NULL);
-	return m_bReadMode;
+	//opens the file for a read operations
+	_pFile = fopen(filename.c_str(), "r");
+
+	//Assigns read mode if we now have a open file
+	_readMode = (_pFile != NULL);
+	return _readMode;
 }
 
 
 bool StreamFile::OpenWrite(const std::string& filename)
 {
-	if (m_file != NULL)
+	//if we do not have a file then return false
+	if (_pFile != NULL)
 		return false;
 
-	m_file = fopen(filename.c_str(), "w");
-	m_bWriteMode = (m_file != NULL);
-	return m_bWriteMode;
+	//Opens the file for writing
+	_pFile = fopen(filename.c_str(), "w");
+
+	//Assigns write mode if we now have a open file
+	_writeMode = (_pFile != NULL);
+	return _writeMode;
 }
 
 void StreamFile::Close()
 {
-	if (m_file != NULL)
-		fclose(m_file);
+	//if we have a open file then close it
+	if (_pFile != NULL)
+		fclose(_pFile);
 
-	m_bWriteMode = false;
-	m_bReadMode = false;
+	//Sets write and read mode to false
+	_writeMode = false;
+	_readMode = false;
 }
 
 
 int StreamFile::Read(int bytes, void* pBuffer)
 {
+	//Asserts that our buffer has some data
 	assert(pBuffer != NULL);
 
-	if (!m_bReadMode)
+	//If we are not in read mode then return nothing
+	if (!_readMode)
 		return 0;
 
-	return fread(pBuffer, 1, bytes, m_file);
+	//Read the amount of data requested from the file
+	return fread(pBuffer, 1, bytes, _pFile);
 }
 
 
 int StreamFile::Write(int bytes, const void* pBuffer)
 {
+	//Asserts that we have a buffer
 	assert(pBuffer != NULL);
 
-	if (!m_bWriteMode)
+	//If we are not in write mode then return nothing
+	if (!_writeMode)
 		return 0;
 
-	return fwrite(pBuffer, 1, bytes, m_file);
+	//Write the amount of data to the buffer
+	return fwrite(pBuffer, 1, bytes, _pFile);
 }
 
 
 bool StreamFile::SetCurPos(int pos)
 {
-	if (!m_bReadMode && !m_bWriteMode)
+	//If we are not in read mode and not in write mode then return false
+	if (!_readMode && !_writeMode)
 		return false;
 
-	return (fseek(m_file, pos, SEEK_SET) == 0);
+	//Seek to the position passed in
+	return (fseek(_pFile, pos, SEEK_SET) == 0);
 }
 
 
 int StreamFile::GetCurPos()
 {
-	if (!m_bReadMode && !m_bWriteMode)
+	//If we are not in read mode and not in write mode then return false
+	if (!_readMode && !_writeMode)
 		return 0;
 
-	return ftell(m_file);
+	//Get the current cursor position
+	return ftell(_pFile);
 }
 

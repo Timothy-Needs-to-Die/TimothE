@@ -191,7 +191,7 @@ void Editor::EditorImGui(Scene* currentScene)
 				if (c->GetType() != Component::Transform_Type)
 				{
 					// add a delete button
-					if (ImGui::Button(("Delete component##" + to_string(c->GetType())).c_str()))
+					if (ImGui::Button(("Delete component##" + std::to_string(c->GetType())).c_str()))
 					{
 						_pSelectedGameObject->RemoveComponent(c);
 					}
@@ -466,7 +466,7 @@ void Editor::ImGUISwitchRender(bool& editorMode, bool& paused)
 		paused = true;
 	}
 	ImGui::SameLine();
-	ImGui::Text(("Paused: " + to_string(paused)).c_str());
+	ImGui::Text(("Paused: " + std::to_string(paused)).c_str());
 	ImGui::End();
 }
 

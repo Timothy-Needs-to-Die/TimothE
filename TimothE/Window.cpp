@@ -5,11 +5,13 @@
 
 Window::Window(unsigned int width, unsigned int height, const char* name)
 {
+	//Sets the window data struct
 	_windowData._width = width;
 	_windowData._height = height;
 	_windowData._title = name;
 }
 
+//Sets an event callback for the window
 void Window::SetEventCallback(const EventCallbackFn& callback)
 {
 	_windowData._eventCallback = callback;

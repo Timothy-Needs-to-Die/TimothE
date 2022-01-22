@@ -1,6 +1,5 @@
 #pragma once
-#include <GL/glew.h>
-#include <map>
+#include "pch.h"
 #include "UID.h"
 
 #include "Scene.h"
