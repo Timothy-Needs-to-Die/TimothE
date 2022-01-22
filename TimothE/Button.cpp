@@ -1,4 +1,5 @@
 #include "Button.h"
+#include "Scene.h"
 
 Button::Button(GameObject* parent) : Component(parent)
 {
@@ -20,6 +21,10 @@ void Button::OnStart()
 
 void Button::OnUpdate()
 {
+	GameObject* obj = Scene::GetGameObjectByName("LENNA!");
+	std::cout << obj->GetTransform()->GetPosition().x << std::endl;
+
+
 	int mouseX = Input::GetMouseX();
 	int mouseY = Input::GetMouseY();
 

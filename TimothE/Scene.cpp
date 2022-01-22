@@ -8,9 +8,12 @@
 #include "ResourceManager.h"
 
 int Scene::nextID = 0;
+std::vector<GameObject*> Scene::_listOfGameObjects;
 
 Scene::Scene(string name)
 {
+	_listOfGameObjects.clear();
+
 	_id = ++nextID;
 	_name = name;
 
@@ -93,6 +96,8 @@ void Scene::RemoveGameObject(GameObject* gameObject)
 
 void Scene::LoadScene(const std::string& filename)
 {
+	_listOfGameObjects.clear();
+
 	StreamFile stream;
 	stream.OpenRead(filename);
 
@@ -125,4 +130,58 @@ void Scene::SaveScene(const std::string& filename)
 	}
 
 	stream.Close();
+}
+
+GameObject* Scene::GetGameObjectByName(std::string name)
+{
+	for (GameObject* obj : _listOfGameObjects) {
+		if (obj->GetName() == name) {
+			return obj;
+		}
+	}
+	return nullptr;
+}
+
+GameObject* Scene::GetGameObjectByID(std::string id)
+{
+	for (GameObject* obj : _listOfGameObjects) {
+		if (obj->GetUID() == id) {
+			return obj;
+		}
+	}
+	return nullptr;
+}
+
+GameObject* Scene::GetGameObjectByType(ObjectType type)
+{
+	for (GameObject* obj : _listOfGameObjects) {
+		if (obj->GetType() == type) {
+			return obj;
+		}
+	}
+	return nullptr;
+}
+
+std::vector<GameObject*> Scene::GetGameObjectsByName(std::string name)
+{
+	std::vector<GameObject*> list;
+	for (GameObject* obj : _listOfGameObjects) {
+		if (obj->GetName() == name) {
+			list.emplace_back(obj);
+		}
+	}
+
+	return list;
+}
+
+std::vector<GameObject*> Scene::GetGameObjectsByType(ObjectType type)
+{
+	std::vector<GameObject*> list;
+	for (GameObject* obj : _listOfGameObjects) {
+		if (obj->GetType() == type) {
+			list.emplace_back(obj);
+		}
+	}
+
+	return list;
 }

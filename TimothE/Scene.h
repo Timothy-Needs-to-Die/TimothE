@@ -25,9 +25,16 @@ public:
 	void LoadScene(const std::string& filename);
 	void SaveScene(const std::string& filename);
 
+
+	static GameObject* GetGameObjectByName(std::string name);
+	static GameObject* GetGameObjectByID(std::string id);
+	static GameObject* GetGameObjectByType(ObjectType type);
+	static std::vector<GameObject*> GetGameObjectsByName(std::string name);
+	static std::vector<GameObject*> GetGameObjectsByType(ObjectType type);
+
 private:
 	string _name;
 	int _id;
 	static int nextID;
-	vector<GameObject*> _listOfGameObjects;
+	static std::vector<GameObject*> _listOfGameObjects;
 };
