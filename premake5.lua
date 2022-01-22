@@ -11,6 +11,9 @@ project "TimothE"
 	kind "ConsoleApp"
 	language "C++"
 
+	pchheader "pch.h"
+	pchsource "pch.cpp"
+
 	files {
 		"%{prj.name}/**.h",
 		"%{prj.name}/**.cpp"

@@ -1,5 +1,4 @@
 #include "CircleCollider.h"
-#include <math.h>
 
 CircleCollider::CircleCollider(GameObject* parent) : Component(parent), _radius(NULL), _centre(NULL), _isTrigger(NULL)
 {

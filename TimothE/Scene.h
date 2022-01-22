@@ -26,7 +26,7 @@ public:
 	
 	GameObject* AddGameObject(GameObject* gameObject) { _listOfGameObjects.push_back(gameObject); return gameObject; }
 	void RemoveGameObject(GameObject* gameObject);
-	vector<GameObject*> GetGameObjects() { return _listOfGameObjects; }
+	std::vector<GameObject*> GetGameObjects() { return _listOfGameObjects; }
 
 	void LoadScene(const std::string& filename);
 	void SaveScene(const std::string& filename);

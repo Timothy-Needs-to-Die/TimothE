@@ -1,6 +1,6 @@
 #pragma once
+#include "pch.h"
 #include "UID.h"
-#include <glm.hpp>
 #include "Component.h"
 
 struct Rect

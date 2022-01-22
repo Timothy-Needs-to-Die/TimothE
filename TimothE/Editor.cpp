@@ -13,9 +13,9 @@
 
 DIR* _mDirectory;
 struct dirent* _mDirent;
-vector<string> _mDirectoryList;
+std::vector<std::string> _mDirectoryList;
 
-vector<string> Console::output = vector<string>();
+std::vector<std::string> Console::output = std::vector<std::string>();
 
 Editor::Editor(Application* pApp, Window* pWindow)
 	: _pWindow(pWindow), _pApplication(pApp)
@@ -105,7 +105,7 @@ void Editor::EditorImGui(Scene* currentScene)
 	{
 		ImGui::Begin("Notes", 0, ImGuiWindowFlags_NoMove);
 
-		string notes;
+		std::string notes;
 		ImGui::InputTextMultiline("Notes", &notes, ImVec2(300.0f, 600.0f), 0, 0);
 
 		ImGui::End();
@@ -147,7 +147,7 @@ void Editor::EditorImGui(Scene* currentScene)
 		{
 			// text box to change name
 			{
-				static string text = _pSelectedGameObject->GetName();
+				static std::string text = _pSelectedGameObject->GetName();
 				if (changeObject)
 				{
 					text = _pSelectedGameObject->GetName();
@@ -273,7 +273,7 @@ void Editor::EditorImGui(Scene* currentScene)
 				}
 				if (ImGui::CollapsingHeader("Graphics"))
 				{
-					static string texPath = "lenna3.jpg";
+					static std::string texPath = "lenna3.jpg";
 					ImGui::InputText("Texture path", &texPath);
 					if (ImGui::Button("Texture"))
 					{
@@ -296,7 +296,7 @@ void Editor::EditorImGui(Scene* currentScene)
 
 		if (ImGui::CollapsingHeader("Add GameObject"))
 		{
-			static string name = "New GameObject";
+			static std::string name = "New GameObject";
 
 			ImGui::InputText("##NewGameObjectName", &name, ImGuiInputTextFlags_CharsNoBlank);
 			static ObjectType tag = ObjectType::Player;
@@ -334,7 +334,7 @@ void Editor::EditorImGui(Scene* currentScene)
 		// index of the selected object
 		static int index = 0;
 		// get vector of objects from the current scene
-		vector<GameObject*> objects = currentScene->GetGameObjects();
+		std::vector<GameObject*> objects = currentScene->GetGameObjects();
 		if (!objects.empty())
 		{
 			for (int i = 0; i < objects.size(); i++)
@@ -380,8 +380,8 @@ void Editor::EditorImGui(Scene* currentScene)
 
 		static int oldSize = 0;
 		// get output from console class
-		vector<string> consoleOut = Console::GetConsoleOutput();
-		for (string s : consoleOut)
+		std::vector<std::string> consoleOut = Console::GetConsoleOutput();
+		for (std::string s : consoleOut)
 		{
 			ImGui::Text(s.c_str());
 			if (consoleOut.size() > oldSize)
@@ -402,7 +402,7 @@ void Editor::EditorImGui(Scene* currentScene)
 		{
 			if (ImGui::CollapsingHeader("New Script"))
 			{
-				static string name = "New Script";
+				static std::string name = "New Script";
 				if (ImGui::InputText(" ", &name, ImGuiInputTextFlags_CharsNoBlank)) {}
 				if (ImGui::MenuItem("Add"))
 				{

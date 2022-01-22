@@ -14,7 +14,7 @@ public:
 	Renderer() : _UID(UID::GenerateUID()) { };
 
 	//Renders drawables for the scene from a particular camera
-	void RenderDrawables(vector<GameObject*> gameObjects, Camera* cam);
+	void RenderDrawables(std::vector<GameObject*> gameObjects, Camera* cam);
 	void Render(GameObject* gameObject, Camera* cam);
 private:
 	//Stores the UID

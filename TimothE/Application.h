@@ -1,5 +1,7 @@
 #pragma once
 
+#include "pch.h"
+
 #include "Window.h"
 #include "ApplicationEvent.h"
 #include "Renderer.h"

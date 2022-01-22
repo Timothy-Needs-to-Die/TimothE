@@ -177,5 +177,6 @@
     <ClCompile Include="VAO.cpp" />
     <ClCompile Include="VBO.cpp" />
     <ClCompile Include="Window.cpp" />
+    <ClCompile Include="pch.cpp" />
   </ItemGroup>
 </Project>

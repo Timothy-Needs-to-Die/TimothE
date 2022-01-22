@@ -7,7 +7,7 @@
 #include "BoxColliderComponent.h"
 #include "ResourceManager.h"
 
-GameObject::GameObject(string name, ObjectType tag, Transform* transform) 
+GameObject::GameObject(std::string name, ObjectType tag, Transform* transform) 
 	: _name(name), _tag(tag), _pTransform(transform)
 {
 	_UID = UID::GenerateUID();
@@ -129,7 +129,7 @@ void GameObject::DisplayInEditor()
 
 }
 
-void GameObject::SetShader(string name)
+void GameObject::SetShader(std::string name)
 {
 	_shaderName = name;
 	_pShader = ResourceManager::GetShader(_shaderName);
@@ -202,7 +202,7 @@ void GameObject::SwapComponents(int index1, int index2)
 	std::iter_swap(_pComponents.begin() + index1, _pComponents.begin() + index2);
 }
 
-void GameObject::SetName(string name)
+void GameObject::SetName(std::string name)
 {
 	_name = name;
 }

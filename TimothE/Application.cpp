@@ -1,15 +1,7 @@
-#include <GL/glew.h>
-#include <GLFW/glfw3.h>
 
 #include "Application.h"
 
-#include <iostream>
-#include <thread>
-
 #include "Input.h"
-
-#include <functional>
-#include <iostream>
 
 #include "imgui.h"
 

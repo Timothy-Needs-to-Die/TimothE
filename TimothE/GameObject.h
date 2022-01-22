@@ -49,7 +49,7 @@ public:
 	}
 	void RemoveComponent(Component* comp);
 
-	GameObject(string name = "New GameObject", ObjectType tag = ObjectType::Player, Transform* transform = nullptr);
+	GameObject(std::string name = "New GameObject", ObjectType tag = ObjectType::Player, Transform* transform = nullptr);
 	~GameObject();
 	void InitVertexData();
 
@@ -64,7 +64,7 @@ public:
 	ObjectType GetType() { return _tag; }
 	void SetType(ObjectType tag);
 
-	vector<Component*> GetComponents() { return _pComponents; }
+	std::vector<Component*> GetComponents() { return _pComponents; }
 
 	Transform* GetTransform() { return _pTransform; }
 	int GetTextureID() { return _textureID; }
@@ -92,7 +92,7 @@ private:
 	ObjectType _tag;
 
 	//components
-	vector<Component*> _pComponents;
+	std::vector<Component*> _pComponents;
 
 	//shaders
 	Shader* _pShader;

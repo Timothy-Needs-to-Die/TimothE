@@ -1,7 +1,7 @@
 #pragma once
 
-#include <gl/glew.h>
-#include <GLFW/glfw3.h>
+#include "pch.h"
+
 #include "Window.h"
 #include "Framebuffer.h"
 #include "Shader.h"
@@ -59,7 +59,7 @@ private:
 
 	void CreateFileInContentBrowser();
 	void SearchFileDirectory();
-	string _mCurrentDir = CONTENT_BROWSER_DIRECTORY;
+	std::string _mCurrentDir = CONTENT_BROWSER_DIRECTORY;
 	Camera* _pEditorCamera;
 
 	bool tileEditorOpen;
