@@ -55,7 +55,7 @@
   </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <ClCompile>
-      <PrecompiledHeader>Use</PrecompiledHeader>
+      <PrecompiledHeader>NotUsing</PrecompiledHeader>
       <PrecompiledHeaderFile>pch.h</PrecompiledHeaderFile>
       <WarningLevel>Level3</WarningLevel>
       <AdditionalIncludeDirectories>..\Dependancies\GLFW\include;..\Dependancies\GLEW\include;..\Dependancies\glm;..\Dependancies\irrklang\include;..\Dependancies\nlohmann;..\Dependancies\freetype;..\Dependancies\imgui;..\Dependancies\imgui\backend;..\Dependancies\Fmod\inc;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
