@@ -32,7 +32,7 @@ void Texture2D::DrawEditorUI()
 	ImGui::Image(texID, ImVec2(100.0f, 100.0f));
 }
 
-// Pass in file path, filter mode as "linear" or "nearest"
+// Pass in file path
 bool Texture2D::Load(std::string path)
 {
 	if (_ID != 0) return true;

@@ -34,6 +34,7 @@ public:
 
 		return nullptr;
 	}
+
 	template<typename T>
 	T* AddComponent(T* comp)
 	{

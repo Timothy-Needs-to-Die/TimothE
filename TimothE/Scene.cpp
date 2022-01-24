@@ -1,5 +1,7 @@
 #include "Texture2D.h"
 #include "Scene.h"
+#include <algorithm>
+#include "TextComponent.h"
 
 #include "AddressTranslator.h"
 #include "StreamFile.h"
@@ -9,6 +11,8 @@
 int Scene::nextID = 0;
 std::vector<GameObject*> Scene::_listOfGameObjects;
 
+Shader* shader;
+TextComponent* text;
 Scene::Scene(std::string name)
 {
 	_listOfGameObjects.clear();
@@ -22,7 +26,7 @@ Scene::Scene(std::string name)
 	GameObject* _pTestObject = new GameObject("LENNA!", ObjectType::Player);
 	_pTestObject->LoadTexture(ResourceManager::GetTexture("lenna"));
 
-	//Orde of transformations matters!!!!!
+	//Order of transformations matters!!!!!
 	//First we Translate
 	//Then we rotate
 	//Then finally scale
@@ -38,8 +42,11 @@ Scene::Scene(std::string name)
 
 	AddGameObject(_pTestObject);
 	AddGameObject(_pButtonTestingObject);
-
-
+	
+	GameObject* _pTextObj = new GameObject("TEXTOBJ", ObjectType::UI);
+	AddGameObject(_pTextObj);
+	_pTextObj->AddComponent(new TextComponent(_pTextObj, "arial"));
+	
 	//////////////////
 	//END OF TEST CODE
 	//////////////////
