@@ -29,6 +29,7 @@ public:
 	void OnStart() override;
 	void OnUpdate() override;
 	void OnEnd() override;
+	bool CollideDetect(ImVec2 objectPos);
 	//virtual void GetComponent() = 0;
 
 	virtual void DrawEditorUI() override;

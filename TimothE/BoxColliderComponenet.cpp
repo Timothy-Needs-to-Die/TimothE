@@ -48,6 +48,16 @@ void BoxColliderComponent::OnEnd()
 
 }
 
+bool BoxColliderComponent::CollideDetect(ImVec2 objectPos)
+{
+	if (objectPos.x > bounds->btmLeft && objectPos.x < bounds->btmRight
+		&& objectPos.y > bounds->topLeft && objectPos.y < bounds->topRight)
+	{
+		return true;
+	}
+	return false
+}
+
 void BoxColliderComponent::DrawEditorUI()
 {
 	ImGui::Checkbox("IsTrigger", &_isTrigger);
