@@ -23,6 +23,46 @@ enum class ObjectType
 class GameObject : public ISerializable
 {
 public:
+	//Constructor/Destructor
+	GameObject(std::string name = "New GameObject", ObjectType tag = ObjectType::Player, Transform* transform = nullptr);
+	~GameObject();
+
+	//Game Loop
+	virtual void Start();
+	virtual void Update(float deltaTime);
+	virtual void Exit();
+
+	//Data Initialisation
+	void InitVertexData();
+	void LoadTexture(Texture2D* texture);
+
+	//Display Functions
+	void DisplayInEditor();
+
+	//Get Unique Identifiers
+	std::string GetUID() { return _UID; }
+	std::string GetName() { return _name; }
+	ObjectType GetType() { return _tag; }
+	int GetTextureID() { return _textureID; }
+	int GetShaderID() { return _shaderID; }
+
+	//Set Unique Identifiers
+	void SetName(std::string name);
+	void SetType(ObjectType tag);
+
+	//Get Components
+	std::vector<Component*> GetComponents() { return _pComponents; }
+	Transform* GetTransform() { return _pTransform; }
+	Shader* GetShader() const { return _pShader; }
+
+	//Swap Components
+	void SwapComponents(int index1, int index2);
+
+	//Set Components
+	void SetShader(int id) { _shaderID = id; };
+	void SetShader(std::string name);
+
+	//Component Add/Remove
 	template<typename T>
 	T* GetComponent()
 	{
@@ -48,62 +88,30 @@ public:
 		_pComponents.push_back(comp);
 		return comp;
 	}
+
 	void RemoveComponent(Component* comp);
 
-	GameObject(std::string name = "New GameObject", ObjectType tag = ObjectType::Player, Transform* transform = nullptr);
-	~GameObject();
-	void InitVertexData();
-
-	virtual void Start();
-	virtual void Update(float deltaTime);
-	virtual void Exit();
-
-	std::string GetUID() { return _UID; }
-	std::string GetName() { return _name; }
-	void SetName(std::string name);
-
-	ObjectType GetType() { return _tag; }
-	void SetType(ObjectType tag);
-
-	std::vector<Component*> GetComponents() { return _pComponents; }
-
-	Transform* GetTransform() { return _pTransform; }
-	int GetTextureID() { return _textureID; }
-	int GetShaderID() { return _shaderID; }
-
-	void LoadTexture(Texture2D* texture);
-	void SetShader(int id) { _shaderID = id; };
-
-	void DisplayInEditor();
-
-	Shader* GetShader() const { return _pShader; }
-
-	void SetShader(std::string name);
-
-	// Inherited via ISerializable
+	//Inherited via ISerializable
 	virtual bool SaveState(IStream& stream) const override;
 	virtual bool LoadState(IStream& stream) override;
 	unsigned int GetVAO() const { return _vao; }
-
-	void SwapComponents(int index1, int index2);
 private:
-	//properties
+	//Properties (Unique Identifiers)
 	std::string _UID;
 	std::string _name;
 	ObjectType _tag;
-
-	//components
-	std::vector<Component*> _pComponents;
-
-	//shaders
-	Shader* _pShader;
-	std::string _shaderName;
-
-	Transform* _pTransform;
-
 	int _textureID = 0;
 	int _shaderID = 0;
 
+	//Components
+	std::vector<Component*> _pComponents;
+	Transform* _pTransform;
+
+	//Shaders
+	Shader* _pShader;
+	std::string _shaderName;
+
+	//Buffers
 	unsigned int _vao;
 	unsigned int _vbo;
 };
