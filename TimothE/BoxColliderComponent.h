@@ -1,6 +1,6 @@
 #pragma once
+#include "pch.h"
 #include "UID.h"
-#include <glm.hpp>
 #include "Component.h"
 
 struct Rect
@@ -29,6 +29,7 @@ public:
 	void OnStart() override;
 	void OnUpdate() override;
 	void OnEnd() override;
+	bool CollideDetect(glm::vec2 objectPos);
 	//virtual void GetComponent() = 0;
 
 	virtual void DrawEditorUI() override;

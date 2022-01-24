@@ -1,6 +1,6 @@
 #include "Renderer.h"
 
-void Renderer::RenderDrawables(vector<GameObject*> gameObjects, Camera* cam)
+void Renderer::RenderDrawables(std::vector<GameObject*> gameObjects, Camera* cam)
 {
 	for (auto& obj : gameObjects)
 	{

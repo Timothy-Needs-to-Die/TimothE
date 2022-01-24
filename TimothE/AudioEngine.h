@@ -1,10 +1,6 @@
-#include <fmod.hpp>
-#include "fmod.h"
 
-#include <string>
-#include <map>
-#include <iostream>
-#include <math.h>
+#include "pch.h"
+#include "fmod.h"
 
 enum AudioType { Type_SFX, Type_Song, Type_Count };
 

@@ -11,6 +11,7 @@ project "TimothE"
 	kind "ConsoleApp"
 	language "C++"
 
+
 	files {
 		"%{prj.name}/**.h",
 		"%{prj.name}/**.cpp"
@@ -23,6 +24,7 @@ project "TimothE"
 		"Dependancies/irrklang/include",
 		"Dependancies/nlohmann",
 		"Dependancies/freetype",
+		"Dependancies",
 		"Dependancies/imgui",
 		"Dependancies/imgui/backend",
 		"Dependancies/Fmod/inc"
@@ -31,6 +33,7 @@ project "TimothE"
 	libdirs {
 		"Dependancies/GLFW/lib-vc2019",
 		"Dependancies/GLEW/lib",
+		"Dependancies/freetype",
 		"Dependancies/irrklang/lib", 
 		"Dependancies/Fmod/lib"
 	}
@@ -42,5 +45,6 @@ project "TimothE"
 		"glew32.lib",
 		"soil2-debug.lib",
 		"soil2-debug.dll",
+		"freetype.lib",
 		"fmod_vc.lib"
 	}

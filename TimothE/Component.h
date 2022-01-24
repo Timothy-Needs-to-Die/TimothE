@@ -1,6 +1,6 @@
 #pragma once
-#include <string>
-#include <iostream>
+#include "pch.h"
+
 #include "Serializable.h"
 #include "Stream.h"
 
@@ -37,7 +37,7 @@ public:
 	//enum for types of components
 	enum Types
 	{
-		None=0,
+		None = 0,
 		Test_Type = BIT(0),
 		Transform_Type = BIT(1),
 		Sound_Type = BIT(2),
@@ -47,6 +47,7 @@ public:
 		GOAP_Type = BIT(6),
 		Texture_Type = BIT(7),
 		Buttom_Type = BIT(8),
+		Text_Type = BIT(9)
 	};
 
 	//enums for different catagories of components

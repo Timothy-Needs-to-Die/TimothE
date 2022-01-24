@@ -1,4 +1,5 @@
 #include "Button.h"
+#include "Scene.h"
 
 Button::Button(GameObject* parent) : Component(parent)
 {
@@ -42,7 +43,7 @@ void Button::OnUpdate()
 			if (Input::IsMouseButtonDown(BUTTON_1))
 			{
 				_isClicked = true;
-				cout << "Button Clicked" << endl;
+				std::cout << "Button Clicked" << std::endl;
 
 				// If we have function calls to perform when the button is clicked
 				if (!_onClickCalls.empty())
@@ -66,9 +67,6 @@ void Button::OnUpdate()
 			_isHovering = false;
 		}
 	}
-	
-	//Debug 
-	//cout << "isHovering = " << _isHovering << " isClicked = " << _isClicked << endl;
 }
 
 void Button::OnEnd()
@@ -81,7 +79,7 @@ void Button::DrawEditorUI()
 
 	if (ImGui::Checkbox("IsEnabled", _editorIsEnabled))
 	{
-		cout << "IsEnabled = " << *_editorIsEnabled << endl;
+		std::cout << "IsEnabled = " << *_editorIsEnabled << std::endl;
 		SetEnabled(*_editorIsEnabled);
 	}
 }

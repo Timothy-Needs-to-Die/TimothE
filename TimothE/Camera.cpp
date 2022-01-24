@@ -1,5 +1,4 @@
 #include "Camera.h"
-#include <iostream>
 
 Camera::Camera(GLFWwindow * window, int width, int height, float fov)
 {

@@ -1,7 +1,7 @@
 #pragma once
+#include "pch.h"
+
 #include "Shader.h"
-#include <vector>
-#include <string>
 #include "Transform.h"
 #include "Component.h"
 #include "UID.h"
@@ -10,9 +10,6 @@
 #include "BoxColliderComponent.h"
 
 class Texture2D;
-
-using std::vector;
-using std::string;
 
 enum class ObjectType
 {
@@ -37,6 +34,7 @@ public:
 
 		return nullptr;
 	}
+
 	template<typename T>
 	T* AddComponent(T* comp)
 	{
@@ -52,7 +50,7 @@ public:
 	}
 	void RemoveComponent(Component* comp);
 
-	GameObject(string name = "New GameObject", ObjectType tag = ObjectType::Player, Transform* transform = nullptr);
+	GameObject(std::string name = "New GameObject", ObjectType tag = ObjectType::Player, Transform* transform = nullptr);
 	~GameObject();
 	void InitVertexData();
 
@@ -60,14 +58,14 @@ public:
 	virtual void Update(float deltaTime);
 	virtual void Exit();
 
-	string GetUID() { return _UID; }
-	string GetName() { return _name; }
-	void SetName(string name);
+	std::string GetUID() { return _UID; }
+	std::string GetName() { return _name; }
+	void SetName(std::string name);
 
 	ObjectType GetType() { return _tag; }
 	void SetType(ObjectType tag);
 
-	vector<Component*> GetComponents() { return _pComponents; }
+	std::vector<Component*> GetComponents() { return _pComponents; }
 
 	Transform* GetTransform() { return _pTransform; }
 	int GetTextureID() { return _textureID; }
@@ -80,7 +78,7 @@ public:
 
 	Shader* GetShader() const { return _pShader; }
 
-	void SetShader(string name);
+	void SetShader(std::string name);
 
 	// Inherited via ISerializable
 	virtual bool SaveState(IStream& stream) const override;
@@ -90,16 +88,16 @@ public:
 	void SwapComponents(int index1, int index2);
 private:
 	//properties
-	string _UID;
-	string _name;
+	std::string _UID;
+	std::string _name;
 	ObjectType _tag;
 
 	//components
-	vector<Component*> _pComponents;
+	std::vector<Component*> _pComponents;
 
 	//shaders
 	Shader* _pShader;
-	string _shaderName;
+	std::string _shaderName;
 
 	Transform* _pTransform;
 
