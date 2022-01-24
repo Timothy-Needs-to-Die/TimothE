@@ -45,23 +45,23 @@ private:
 	bool OnGameWindowMouseMovedEvent(MouseMovedEvent& e);
 
 private:
-	AudioEngine* _audio;
+	AudioEngine* _pAudio;
 
-	Renderer* _renderer;
+	Renderer* _pRenderer;
 
 	Window* _pWindow;
 
-	bool _inEditorMode = true;
-	bool _devMode;
+	bool _mInEditorMode = true;
+	bool _mDevMode;
 
-	bool _running;
+	bool _mRunning;
 
 	Scene* _pCurrentScene;
 
 	class Editor* _pEditor;
 
-	bool _paused = false;
-	bool _gameRunning = false;
+	bool _mPaused = false;
+	bool _mGameRunning = false;
 
 	Camera* _pGameCamera;
 };

@@ -2,8 +2,6 @@
 #include "Scene.h"
 #include <algorithm>
 #include "TextComponent.h"
-
-#include "AddressTranslator.h"
 #include "StreamFile.h"
 #include "Button.h"
 #include "ResourceManager.h"

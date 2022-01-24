@@ -82,7 +82,6 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClInclude Include="AddressTranslator.h" />
     <ClInclude Include="Application.h" />
     <ClInclude Include="ApplicationEvent.h" />
     <ClInclude Include="AudioEngine.h" />
@@ -150,7 +149,6 @@
     <ClInclude Include="pch.h" />
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="AddressTranslator.cpp" />
     <ClCompile Include="Application.cpp" />
     <ClCompile Include="AudioEngine.cpp" />
     <ClCompile Include="BoxColliderComponenet.cpp" />

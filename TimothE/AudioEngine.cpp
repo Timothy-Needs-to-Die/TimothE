@@ -228,42 +228,7 @@ SoundStruct AudioEngine::LoadSound(const char* name, const char* filePath, Audio
 	CheckForErrors(result);
 	std::cout << "Sound Loaded: " << newSound.name << std::endl;
 	return newSound;
-
-	//Load(Type_Song, filePath);
-	//Load(soundTrack);
 }
-
-//void AudioEngine::PlaySound(SoundStruct sound)
-//{
-//	if (sound.type == Type_SFX)
-//	{
-//
-//	}
-//}
-
-//void AudioEngine::LoadSFX(const char* filePath)
-//{
-//	Load(Type_SFX, filePath); 
-//}
-
-//void AudioEngine::LoadSoundtrack(const char* filePath)
-//{
-//	SoundStruct soundTrack = SoundStruct(); 
-//	soundTrack.filePath = filePath;
-//
-//	FMOD::Sound* soundToLoad;
-//	toLoad.sound = soundToLoad;
-//
-//	FMOD_RESULT result = _fmodSystem->createSound(toLoad.filePath, FMOD_DEFAULT, 0, &soundToLoad);
-//	CheckForErrors(result);
-//
-//	//Load(Type_Song, filePath);
-//	Load(soundTrack);
-//}
-//
-//void AudioEngine::LoadSoundTrack(SoundTrack soundTrack)
-//{
-
 
 
 //Creates an audio stream.
