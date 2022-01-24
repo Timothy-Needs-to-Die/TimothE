@@ -29,14 +29,15 @@ Scene::Scene(std::string name)
 	//Then we rotate
 	//Then finally scale
 	_pTestObject->GetTransform()->SetPosition(640, 360);
-
-	GameObject* _pButtonTestingObject = new GameObject("BUTTON", ObjectType::UI);
-	_pButtonTestingObject->LoadTexture(ResourceManager::GetTexture("lenna"));
 	_pTestObject->GetTransform()->Translate({ 100,100 });
 	_pTestObject->GetTransform()->Scale({ 320,320 });
 
+	GameObject* _pButtonTestingObject = new GameObject("BUTTON", ObjectType::UI);
+	_pButtonTestingObject->LoadTexture(ResourceManager::GetTexture("lenna"));
 	_pButtonTestingObject->AddComponent(new Button(_pButtonTestingObject));
+	//_pButtonTestingObject->AddComponent(new BoxColliderComponent());
 	_pButtonTestingObject->SetShader("ui");
+
 
 	AddGameObject(_pTestObject);
 	AddGameObject(_pButtonTestingObject);

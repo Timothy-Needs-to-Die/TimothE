@@ -26,8 +26,8 @@ public:
 	void DrawEditorUI() override;
 
 	// OnClick management
-	void AddOnClickCall(void (*function)());
-	void RemoveOnClickCall(void (*function)());
+	void AddClickEvent(void (*function)());
+	void RemoveClickEvent(void (*function)());
 
 	// Getter & Setter
 	bool IsHovering() { return _isHovering; }

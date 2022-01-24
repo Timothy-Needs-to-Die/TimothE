@@ -21,9 +21,11 @@ void Button::OnStart()
 
 void Button::OnUpdate()
 {
+	// Get the mouse positions
 	int mouseX = Input::GetMouseX();
 	int mouseY = Input::GetMouseY();
 
+	// Get the position of the button through the transforms - THIS SHOULD BE HANDLED BY BOX COLLIDER 
 	Transform* transform = Parent()->GetComponent<Transform>();
 
 	glm::vec2 pos = transform->GetPosition();
@@ -43,6 +45,8 @@ void Button::OnUpdate()
 			if (Input::IsMouseButtonDown(BUTTON_1))
 			{
 				_isClicked = true;
+				
+				// debug
 				std::cout << "Button Clicked" << std::endl;
 
 				// If we have function calls to perform when the button is clicked
@@ -84,12 +88,12 @@ void Button::DrawEditorUI()
 	}
 }
 
-void Button::AddOnClickCall(void(*function)())
+void Button::AddClickEvent(void(*function)())
 {
 	_onClickCalls.push_back(function);
 }
 
-void Button::RemoveOnClickCall(void(*function)())
+void Button::RemoveClickEvent(void(*function)())
 {
 	for (int i = 0; i < _onClickCalls.size(); i++)
 	{
