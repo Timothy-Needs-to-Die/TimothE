@@ -46,7 +46,7 @@ public:
 		PathFinding_Type = BIT(5),
 		GOAP_Type = BIT(6),
 		Texture_Type = BIT(7),
-		Buttom_Type = BIT(8),
+		Button_Type = BIT(8),
 		Text_Type = BIT(9)
 	};
 
@@ -59,6 +59,7 @@ public:
 		AI_Category = BIT(3),
 		Graphics_Category = BIT(4),
 		Debug_Category = BIT(5),
+		UI_Category = BIT(6),
 	};
 
 	COMPONENT_STATIC_TYPE(None)

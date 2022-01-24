@@ -1,18 +1,32 @@
 #include "Button.h"
-#include "Scene.h"
 
 Button::Button(GameObject* parent) : Component(parent)
 {
+	SetType(Component::Button_Type);
+	SetCategory(Component::UI_Category);
+
+	// Set buttons to be enabled by default
+	_isEnabled = true;
+
 	_isClicked = false;
 	_isHovering = false;
 
-
-	_isEnabled = false;
+	// Editor UI Vars
 	_editorIsEnabled = &_isEnabled;
+
+	// If there is no box collider component, add one since the button needs one
+	if (Parent()->GetComponent<BoxColliderComponent>() == nullptr)
+	{
+		// Print to console to let the user know a new component was added
+		Console::Print("BUTTON COMPONENT: Created Component::BoxCollider as is required for Button::OnUpdate");
+		//std::cout << "BUTTON COMPONENT: created default box component for object" << std::endl;
+		Parent()->AddComponent(new BoxColliderComponent(Parent()));
+	}
 }
 
 Button::~Button()
 {
+
 }
 
 void Button::OnStart()
@@ -35,8 +49,7 @@ void Button::OnUpdate()
 	if (_isEnabled)
 	{
 		// Check if the mouse is inside the button
-		if (mouseX > pos.x - width && mouseX < pos.x + width
-			&& mouseY > pos.y - height && mouseY < pos.y + height)
+		if (Parent()->GetComponent<BoxColliderComponent>()->IsPointInside({mouseX, mouseY}))
 		{
 			// If the mouse is inside the button then we are now hovering over the button;
 			_isHovering = true;
@@ -70,7 +83,12 @@ void Button::OnUpdate()
 			// We are not hovering over the button
 			_isHovering = false;
 		}
+
+		// debug
+		//std::cout << "isHovering = " << _isHovering << " isClicked = " << _isClicked << std::endl;
 	}
+
+	//std::cout << "Mouse clicked X: " << mouseX << " Y: " << mouseY << std::endl;
 }
 
 void Button::OnEnd()
@@ -79,12 +97,13 @@ void Button::OnEnd()
 
 void Button::DrawEditorUI()
 {
-	ImGui::Text("Button");
-
-	if (ImGui::Checkbox("IsEnabled", _editorIsEnabled))
+	if (ImGui::CollapsingHeader("Button Component"))
 	{
-		std::cout << "IsEnabled = " << *_editorIsEnabled << std::endl;
-		SetEnabled(*_editorIsEnabled);
+		if (ImGui::Checkbox("IsEnabled", _editorIsEnabled))
+		{
+			std::cout << "IsEnabled = " << *_editorIsEnabled << std::endl;
+			SetEnabled(*_editorIsEnabled);
+		}
 	}
 }
 

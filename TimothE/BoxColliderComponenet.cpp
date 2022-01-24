@@ -3,20 +3,33 @@
 #include "imgui.h"
 #include "Input.h"
 
-BoxColliderComponent::BoxColliderComponent(GameObject* parent) : Component(parent), _size({ 32, 32 }), _isTrigger(NULL)
+BoxColliderComponent::BoxColliderComponent(GameObject* parent) : Component(parent)
 {
 	SetType(Component::Boxcollision_Type);
 	SetCategory(Component::Collisions_Category);
-	_centre = Parent()->GetTransform()->GetPosition();
-	bounds = new Rect((_centre.x - (_size.x)), (_centre.x + (_size.y)), 
-		(_centre.y - (_size.y)), (_centre.y + (_size.y)));
-	std::cout << "BoxCollider Component has been added - centre " << _centre.x << ", " << _centre.y << std::endl;
-	std::cout << "Bounds are -  bottomLeft: " << bounds->btmLeft << "  BottomRight: " << bounds->btmRight << "  TopLeft: " << bounds->topLeft << "  TopRight: " << bounds->topRight << std::endl;
+
+	// Set the boxcollider to be enabled by default
+	_isEnabled = true;
+
+	// Transform.GetPosition() returns the center of an object
+	glm::vec2 objectCenterPoint = Parent()->GetTransform()->GetPosition();
+	glm::vec2 objectScale = Parent()->GetTransform()->GetScale();
+	
+	
+	// Create a box around the "object"  ERROR: current *2 because transform doesnt return the true scale???
+	_boxCollider = new Rect(
+		objectCenterPoint.x - objectScale.x,	// xPos
+		objectCenterPoint.y - objectScale.y,	// yPos
+		objectScale.x * 2,						// Width
+		objectScale.y * 2);						// Height
+	
+	// Editor UI Vars
+	_editorIsEnabled = &_isEnabled;
 }
 
 BoxColliderComponent::~BoxColliderComponent()
 {
-
+	delete _boxCollider;
 }
 
 void BoxColliderComponent::OnStart()
@@ -26,21 +39,21 @@ void BoxColliderComponent::OnStart()
 
 void BoxColliderComponent::OnUpdate()
 {
-	//std::cout << "TomthE";
-	if (Input::IsMouseButtonDown(BUTTON_1))
-	{
-		int mouseX = Input::GetMouseX();
-		int mouseY = Input::GetMouseY();
+	// Update our center and size from the transform incase its moved.
+	glm::vec2 objectCenterPoint = Parent()->GetTransform()->GetPosition();
+	glm::vec2 objectScale = Parent()->GetTransform()->GetScale();
 
-		//x < 624, x > 656, y > 344, y < 376
-		if (mouseX > bounds->btmLeft && mouseX < bounds->btmRight
-			&& mouseY > bounds->topLeft && mouseY < bounds->topRight)
-		{
-			std::cout << "Mouse clicked inside the button! " << std::endl;
-		}
+	// Update our collider to the correct position
+	_boxCollider->xPos = objectCenterPoint.x - objectScale.x;
+	_boxCollider->yPos = objectCenterPoint.y - objectScale.y;
+	_boxCollider->width = objectScale.x * 2;
+	_boxCollider->height = objectScale.y * 2;
 
-		//std::cout << "Mouse clicked X: " << mouseX << " Y: " << mouseY << std::endl;
-	}
+	// debug	
+	//float mouseX = Input::GetMouseX();
+	//float mouseY = Input::GetMouseY();
+	//std::cout << IsPointInside({mouseX, mouseY}) << std::endl;
+	
 }
 
 void BoxColliderComponent::OnEnd()
@@ -48,26 +61,38 @@ void BoxColliderComponent::OnEnd()
 
 }
 
-bool BoxColliderComponent::CollideDetect(ImVec2 objectPos)
+bool BoxColliderComponent::Intersects(Rect* box)
 {
-	if (objectPos.x > bounds->btmLeft && objectPos.x < bounds->btmRight
-		&& objectPos.y > bounds->topLeft && objectPos.y < bounds->topRight)
+	if ((_boxCollider->xPos + _boxCollider->width >= box->xPos)
+		&& (box->xPos + _boxCollider->width >= _boxCollider->xPos)
+		&& (_boxCollider->yPos + _boxCollider->height >= box->yPos)
+		&& (box->yPos + _boxCollider->height >= _boxCollider->yPos))
 	{
 		return true;
 	}
-	return false
+	return false;
 }
+
+bool BoxColliderComponent::IsPointInside(glm::vec2 point)
+{
+	if (point.x > _boxCollider->xPos && point.x < _boxCollider->xPos + _boxCollider->width
+		&& point.y > _boxCollider->yPos && point.y < _boxCollider->yPos + _boxCollider->height)
+	{
+		return true;
+	}
+	return false;
+}
+
+
 
 void BoxColliderComponent::DrawEditorUI()
 {
-	ImGui::Checkbox("IsTrigger", &_isTrigger);
-
-	if (IsTrigger())
+	if (ImGui::CollapsingHeader("Box Collider Component"))
 	{
-		std::cout << "I AM A TRIGGER" << std::endl;
-	}
-	else
-	{
-		std::cout << "I AM NOT A TRIGGER" << std::endl;
+		if (ImGui::Checkbox("IsEnabled", _editorIsEnabled))
+		{
+			std::cout << "IsEnabled = " << *_editorIsEnabled << std::endl;
+			SetEnabled(*_editorIsEnabled);
+		}
 	}
 }
