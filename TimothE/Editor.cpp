@@ -41,7 +41,7 @@ Editor::Editor(Application* pApp, Window* pWindow)
 	_pEditorCamera = new Camera(pWindow->GetGLFWWindow(), 1280, 720, 45.0f);
 
 	pImGuiSample = new Texture2D(NULL);
-	pImGuiSample->Load("lenna3.jpg");
+	//pImGuiSample->Load("lenna3.jpg");
 
 	//pContentTextureImage->Load("Icons/ImageContent.png", "Linear");
 	//pContentTextureScene->Load("Icons/SceneContent.png", "Linear");
@@ -280,7 +280,7 @@ void Editor::EditorImGui(Scene* currentScene)
 						Texture2D* tex = _pSelectedGameObject->GetComponent<Texture2D>();
 						if (tex == nullptr)
 						{
-							_pSelectedGameObject->LoadTexture(new Texture2D((char*)texPath.c_str()));
+							//_pSelectedGameObject->LoadTexture(new Texture2D((char*)texPath.c_str()));
 						}
 					}
 				}

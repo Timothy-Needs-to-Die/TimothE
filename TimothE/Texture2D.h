@@ -37,8 +37,8 @@ public:
 	virtual bool SaveState(IStream& stream) const override;
 	virtual bool LoadState(IStream& stream) override;
 
-	void Bind() {
-		glBindTexture(GL_TEXTURE_2D, _ID);
+	void Bind(int slot) {
+		glBindTextureUnit(slot, _ID);
 	}
 
 private:

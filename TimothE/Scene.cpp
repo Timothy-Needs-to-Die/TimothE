@@ -25,7 +25,7 @@ Scene::Scene(std::string name)
 	//TEST CODE//
 	/////////////
 	GameObject* _pTestObject = new GameObject("LENNA!", ObjectType::Player);
-	_pTestObject->LoadTexture(ResourceManager::GetTexture("lenna"));
+	//_pTestObject->LoadTexture(ResourceManager::GetTexture("lenna"));
 
 	ResourceManager::InstantiateTexture("fish", new Texture2D("Fish.png"));
 
@@ -36,7 +36,7 @@ Scene::Scene(std::string name)
 	_pTestObject->GetTransform()->SetPosition(640, 360);
 
 	GameObject* _pButtonTestingObject = new GameObject("BUTTON", ObjectType::UI);
-	_pButtonTestingObject->LoadTexture(ResourceManager::GetTexture("lenna"));
+	//_pButtonTestingObject->LoadTexture(ResourceManager::GetTexture("lenna"));
 	_pTestObject->GetTransform()->Translate({ 100,100 });
 	_pTestObject->GetTransform()->Scale({ 320,320 });
 
@@ -106,7 +106,11 @@ void Scene::RenderScene(Renderer* pRenderer, Camera* cam)
 	//pRenderer->RenderDrawables(_listOfGameObjects, cam);
 
 	Renderer2D::BeginRender(cam);
-	Renderer2D::DrawQuad(glm::vec2(0.0f, 0.0f), glm::vec2(1.0f, 1.0f), ResourceManager::GetTexture("fish"));
+	Renderer2D::DrawQuad(glm::vec2(-300.0f, 0.0f), glm::vec2(0.5f, 0.5f), ResourceManager::GetTexture("fish"));
+	Renderer2D::DrawQuad(glm::vec2(-100.0f, 0.0f), glm::vec2(0.5f, 0.5f), ResourceManager::GetTexture("fish"));
+	Renderer2D::DrawQuad(glm::vec2(-200.0f, 0.0f), glm::vec2(0.5f, 0.5f), ResourceManager::GetTexture("fish"));
+	Renderer2D::DrawQuad(glm::vec2(200.0f, 0.0f), glm::vec2(0.5f, 0.5f), ResourceManager::GetTexture("fish"));
+	Renderer2D::DrawQuad(glm::vec2(300.0f, 0.0f), glm::vec2(0.5f, 0.5f), ResourceManager::GetTexture("fish"));
 	Renderer2D::EndRender();
 
 }

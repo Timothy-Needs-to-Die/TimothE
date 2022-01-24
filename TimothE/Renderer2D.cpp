@@ -44,12 +44,12 @@ void Renderer2D::Init()
 
 	_data.quadVertexBuffer = VBO::Create(_data.maxVertices * sizeof(QuadVertex));
 	_data.quadVertexBuffer->SetLayout({
-		{ShaderDataTypes::Float3, "a_Position"},
-		{ShaderDataTypes::Float4, "a_Color"},
-		{ShaderDataTypes::Float2, "a_TexCoord"},
-		{ShaderDataTypes::Float, "a_TexIndex"},
-		{ShaderDataTypes::Float, "a_TilingFactor"},
-		{ShaderDataTypes::Int, "a_EntityID"}
+			{ ShaderDataTypes::Float3, "a_Position"     },
+			{ ShaderDataTypes::Float4, "a_Color"        },
+			{ ShaderDataTypes::Float2, "a_TexCoord"     },
+			{ ShaderDataTypes::Float,  "a_TexIndex"     },
+			{ ShaderDataTypes::Float,  "a_TilingFactor" },
+			{ ShaderDataTypes::Int,    "a_EntityID"     }
 		});
 
 	_data.quadVertexArray->AddVertexBuffer(_data.quadVertexBuffer);
@@ -112,21 +112,22 @@ void Renderer2D::EndRender()
 
 void Renderer2D::Flush()
 {
-	if (_data.quadIndexCount == 0) return;
+	if (_data.quadIndexCount == 0) 
+		return; //Nothing to draw
 
-	unsigned int dataSize = (unsigned int)((unsigned int*)_data.quadVertexBufferPtr - (unsigned int*)_data.quadVertexBufferBase);
+	uint32_t dataSize = (uint32_t)((uint8_t*)_data.quadVertexBufferPtr - (uint8_t*)_data.quadVertexBufferBase);
 	_data.quadVertexBuffer->SetData(_data.quadVertexBufferBase, dataSize);
 
 	for (unsigned int i = 0; i < _data.textureSlotIndex; i++) {
-		_data.textureSlots[i]->Bind();
+		_data.textureSlots[i]->Bind(i);
 	}
 
 	_data.textureShader->BindShader();
 
-	unsigned int count = _data.quadVertexArray->GetIndexBuffer()->GetCount();
-	_data.quadVertexArray->GetIndexBuffer()->Bind();
-	glDrawElements(GL_TRIANGLES, count, GL_UNSIGNED_INT, nullptr);
+	//unsigned int count = _data.quadVertexArray->GetIndexBuffer()->GetCount();
+	//glDrawElements(GL_TRIANGLES, count, GL_UNSIGNED_INT, NULL);
 	//glBindTexture(GL_TEXTURE_2D, 0);
+	DrawIndexed(_data.quadVertexArray, _data.quadIndexCount);
 }
 
 void Renderer2D::DrawQuad(const glm::vec2& position, const glm::vec2& size, const glm::vec4& color)
@@ -142,12 +143,12 @@ void Renderer2D::DrawQuad(const glm::vec3& position, const glm::vec2& size, cons
 	DrawQuad(transform, color);
 }
 
-void Renderer2D::DrawQuad(const glm::vec2& position, const glm::vec2& size, Texture2D* texture, float tilingFactor, const glm::vec4& tintColor)
+void Renderer2D::DrawQuad(const glm::vec2& position, const glm::vec2& size, Texture2D* texture, float tilingFactor, glm::vec4& tintColor)
 {
 	DrawQuad({ position.x, position.y, 0.0f }, size, texture, tilingFactor, tintColor);
 }
 
-void Renderer2D::DrawQuad(const glm::vec3& position, const glm::vec2& size,  Texture2D* texture, float tilingFactor, const glm::vec4& tintColor)
+void Renderer2D::DrawQuad(const glm::vec3& position, const glm::vec2& size,  Texture2D* texture, float tilingFactor, glm::vec4& tintColor)
 {
 	glm::mat4 transform = glm::translate(glm::mat4(1.0f), position)
 		* glm::scale(glm::mat4(1.0f), { size.x, size.y, 1.0f });
@@ -166,7 +167,7 @@ void Renderer2D::DrawQuad(const glm::mat4& transform, const glm::vec4& color, in
 		{0.0f, 1.0f}
 	};
 
-	const float tillingFactor = 1.0f;
+	const float tillingFactor = 0.0f;
 
 	if (_data.quadIndexCount >= RendererData::maxIndices) {
 		NextBatch();
@@ -185,10 +186,13 @@ void Renderer2D::DrawQuad(const glm::mat4& transform, const glm::vec4& color, in
 	_data.quadIndexCount += 6;
 }
 
-void Renderer2D::DrawQuad(const glm::mat4& transform, Texture2D* texture, float tilingFactor, const glm::vec4& tintColor, int entityID)
+void Renderer2D::DrawQuad(const glm::mat4& transform, Texture2D* texture, float tilingFactor, glm::vec4& tintColor, int entityID)
 {
 	constexpr size_t quadVertexCount = 4;
-	constexpr glm::vec2 textureCoords[] = { { 0.0f, 0.0f }, { 1.0f, 0.0f }, { 1.0f, 1.0f }, { 0.0f, 1.0f } };
+	constexpr glm::vec2 textureCoords[] = { { 0.0f, 0.0f }, { 0.6f, 0.0f }, { 0.6f, 0.6f }, { 0.0f, 0.6f } };
+
+	tintColor.r = 1.0f;
+	tintColor.g = 1.0f;
 
 	if (_data.quadIndexCount >= RendererData::maxIndices)
 		NextBatch();
@@ -241,6 +245,13 @@ void Renderer2D::DrawRotatedQuad(const glm::vec2& position, const glm::vec2& siz
 
 void Renderer2D::DrawRotatedQuad(const glm::vec3& position, const glm::vec2& size, float rotation, Texture2D* texture, float tilingFactor, const glm::vec4& tintColor)
 {
+}
+
+void Renderer2D::DrawIndexed(const std::shared_ptr<VAO>& vertexArray, uint32_t indexCount)
+{
+	uint32_t count = indexCount ? indexCount : vertexArray->GetIndexBuffer()->GetCount();
+	glDrawElements(GL_TRIANGLES, count, GL_UNSIGNED_INT, nullptr);
+	glBindTexture(GL_TEXTURE_2D, 0);
 }
 
 void Renderer2D::StartBatch()

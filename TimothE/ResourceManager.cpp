@@ -11,7 +11,7 @@ void ResourceManager::Init()
 	_UID = UID::GenerateUID();
 
 	//LOAD TEXTURES
-	ResourceManager::InstantiateTexture("lenna", new Texture2D("lenna3.jpg"));
+	//ResourceManager::InstantiateTexture("lenna", new Texture2D("lenna3.jpg"));
 
 	//LOAD SHADERS
 	ResourceManager::InstantiateShader("ui", new Shader("vr_UIShader.vert", "fr_UIShader.frag"));
