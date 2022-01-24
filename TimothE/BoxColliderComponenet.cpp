@@ -24,7 +24,7 @@ void BoxColliderComponent::OnStart()
 
 }
 
-void BoxColliderComponent::OnUpdate()
+void BoxColliderComponent::OnUpdate(float deltaTime)
 {
 	//std::cout << "TomthE";
 	if (Input::IsMouseButtonDown(BUTTON_1))

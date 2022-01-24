@@ -21,6 +21,10 @@ GameObject::GameObject(std::string name, ObjectType tag, Transform* transform)
 
 	SetShader("default");
 
+	ParticleSystem* particleSystem = new ParticleSystem(100, glm::vec4(1.0f));
+	particleSystem->SetParentPos(_pTransform->GetPosition());
+	AddComponent<ParticleSystem>(particleSystem);
+
 	Start();
 }
 
@@ -93,7 +97,7 @@ void GameObject::Update(float deltaTime)
 {
 	for (Component* c : _pComponents)
 	{
-		c->OnUpdate();
+		c->OnUpdate(deltaTime);
 	}
 }
 

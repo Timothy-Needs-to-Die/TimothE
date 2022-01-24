@@ -73,6 +73,6 @@ private:
 
 	void OnStart();
 	void OnEnd();
-	void OnUpdate();
+	void OnUpdate(float deltaTime);
 };
 

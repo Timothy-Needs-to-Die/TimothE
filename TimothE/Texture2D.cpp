@@ -71,7 +71,7 @@ void Texture2D::OnStart()
 
 }
 
-void Texture2D::OnUpdate()
+void Texture2D::OnUpdate(float deltaTime)
 { 
 
 }

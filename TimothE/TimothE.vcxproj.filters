@@ -126,6 +126,7 @@
     <ClInclude Include="VBO.h" />
     <ClInclude Include="Window.h" />
     <ClInclude Include="pch.h" />
+    <ClInclude Include="ParticleSystem.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Application.cpp" />
@@ -178,5 +179,6 @@
     <ClCompile Include="VBO.cpp" />
     <ClCompile Include="Window.cpp" />
     <ClCompile Include="pch.cpp" />
+    <ClCompile Include="ParticleSystem.cpp" />
   </ItemGroup>
 </Project>
