@@ -20,6 +20,15 @@ std::vector<std::string> Console::output = std::vector<std::string>();
 Editor::Editor(Application* pApp, Window* pWindow)
 	: _pWindow(pWindow), _pApplication(pApp)
 {
+	//icon textures
+	pContentTextureScript->Load("Icons/ScriptContent.png");
+	pContentTextureImage->Load("Icons/ImageContent.png");
+	pContentTextureScene->Load("Icons/SceneContent.png");
+	pContentTextureConfig->Load("Icons/ConfigContent.png");
+	pContentTextureSound->Load("Icons/SoundContent.png");
+	pContentTextureFile->Load("Icons/FileContent.png");
+	pContentTextureFolder->Load("Icons/FolderContent.png");
+
 	// vertex attributes for a quad that fills the editor screen space in Normalized Device Coordinates.
 	float* quadVertices = new float[24]{
 		// positions   // texCoords
@@ -42,14 +51,6 @@ Editor::Editor(Application* pApp, Window* pWindow)
 
 	pImGuiSample = new Texture2D(NULL);
 	pImGuiSample->Load("lenna3.jpg");
-
-	//pContentTextureImage->Load("Icons/ImageContent.png", "Linear");
-	//pContentTextureScene->Load("Icons/SceneContent.png", "Linear");
-	//pContentTextureConfig->Load("Icons/ConfigContent.png", "Linear");
-	//pContentTextureScript->Load("Icons/ScriptContent.png", "Linear");
-	//pContentTextureSound->Load("Icons/SoundContent.png", "Linear");
-	//pContentTextureFile->Load("Icons/FileContent.png", "Linear");
-	//pContentTextureFolder->Load("Icons/FolderContent.png", "Linear");
 }
 
 Editor::~Editor()
@@ -400,9 +401,9 @@ void Editor::EditorImGui(Scene* currentScene)
 
 		if (ImGui::BeginPopupContextWindow())
 		{
+			static std::string name = " ";
 			if (ImGui::CollapsingHeader("New Script"))
 			{
-				static std::string name = "New Script";
 				if (ImGui::InputText(" ", &name, ImGuiInputTextFlags_CharsNoBlank)) {}
 				if (ImGui::MenuItem("Add"))
 				{
@@ -410,6 +411,16 @@ void Editor::EditorImGui(Scene* currentScene)
 					cppStream.close();
 					std::ofstream hStream(_mCurrentDir + "/" + name + ".h");
 					hStream.close();
+					SearchFileDirectory();
+				}
+			}
+			// makes new script with.scene files
+			if (ImGui::CollapsingHeader("New Scene"))
+			{
+				if (ImGui::InputText(" ", &name, ImGuiInputTextFlags_CharsNoBlank)) {}
+				if (ImGui::MenuItem("Add"))
+				{
+					CreateFileInContentBrowser(name, ".scene");
 					SearchFileDirectory();
 				}
 
@@ -424,18 +435,26 @@ void Editor::EditorImGui(Scene* currentScene)
 			_mCurrentDir = _mCurrentDir.substr(0, _mCurrentDir.find_last_of("\\/"));
 			SearchFileDirectory();
 		}
+		//displays directory next to button
+		ImGui::SameLine();
+		ImGui::Text(_mCurrentDir.c_str());
 
+		//sets up a column to display the files in a grid
+		ImGui::Columns(4, NULL);
+		ImGui::Separator();
 		//for each item in directory create new button
 		for (int i = 2; i < _mDirectoryList.size(); i++) {
-			//add image for each directory
 
-			//ImGui::Image((void*)pContentTextureScript->GetID(), ImVec2(100,100));
+			//checks filetype and give it an icon
+			CheckFileType(_mDirectoryList[i]);
 
-			//adds button with directory name which when pressed adds its name to directory string and updates buttons
-			if (ImGui::Button(_mDirectoryList[i].c_str()))
+			//adds padding to files
+			ImGui::Dummy(ImVec2(0, 20.0f));
+
+			//goes to next column
+			if (i > 0 || i % 4 == 2)
 			{
-				_mCurrentDir += "/" + _mDirectoryList[i];
-				SearchFileDirectory();
+				ImGui::NextColumn();
 			}
 			ImGui::Dummy(ImVec2(0, 80.0f));
 		}
@@ -515,8 +534,62 @@ void Editor::EditorUpdate(Scene* currentScene, float dt)
 	ConvertGameToEditorSpace();
 }
 
-void Editor::CreateFileInContentBrowser()
+void Editor::CreateFileInContentBrowser(std::string name, std::string type)
 {
+	std::ofstream fileStream(_mCurrentDir + "/" + name + type);
+	fileStream.close();
+}
+
+//checks file type and displays file in content browser
+void Editor::CheckFileType(std::string fileDirectory)
+{
+	//if file is a script
+	if (fileDirectory.find(".cpp") != std::string::npos || fileDirectory.find(".h") != std::string::npos)
+	{
+		ImGui::Image((void*)pContentTextureScript->GetID(), ImVec2(100, 100));
+		ImGui::Text(fileDirectory.c_str());
+	}
+	//if file is an image
+	else if (fileDirectory.find(".png") != std::string::npos || fileDirectory.find(".jpg") != std::string::npos)
+	{
+		ImGui::Image((void*)pContentTextureImage->GetID(), ImVec2(100, 100));
+		ImGui::Text(fileDirectory.c_str());
+	}
+	//if file is a scene
+	else if (fileDirectory.find(".scene") != std::string::npos)
+	{
+		ImGui::Image((void*)pContentTextureScene->GetID(), ImVec2(100, 100));
+		ImGui::Text(fileDirectory.c_str());
+	}
+	//file is a config file
+	else if (fileDirectory.find(".ini") != std::string::npos)
+	{
+		ImGui::Image((void*)pContentTextureConfig->GetID(), ImVec2(100, 100));
+		ImGui::Text(fileDirectory.c_str());
+	}
+	//file is a sound
+	else if (fileDirectory.find(".mp3") != std::string::npos || fileDirectory.find(".wav") != std::string::npos)
+	{
+		ImGui::Image((void*)pContentTextureSound->GetID(), ImVec2(100, 100));
+		ImGui::Text(fileDirectory.c_str());
+	}
+	//file is a folder
+	else if (fileDirectory.find(".") == std::string::npos)
+	{
+		ImGui::Image((void*)pContentTextureFolder->GetID(), ImVec2(100, 100));
+		//adds button with directory name which when pressed adds its name to directory string and updates buttons
+		if (ImGui::Button(fileDirectory.c_str()))
+		{
+			_mCurrentDir += "/" + fileDirectory;
+			SearchFileDirectory();
+		}
+	}
+	//other file types
+	else
+	{
+		ImGui::Image((void*)pContentTextureFile->GetID(), ImVec2(100, 100));
+		ImGui::Text(fileDirectory.c_str());
+	}
 }
 
 //creates list of directorys for the content browser

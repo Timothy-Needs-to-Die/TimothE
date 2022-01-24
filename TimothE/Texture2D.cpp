@@ -37,6 +37,8 @@ bool Texture2D::Load(std::string path)
 {
 	if (_ID != 0) return true;
 
+	glGenTextures(1, &_ID);
+
 	unsigned char* data = stbi_load(path.c_str(), &_width, &_height, &_channels, 0);
 
 	if (data != nullptr)
