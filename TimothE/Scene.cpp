@@ -23,22 +23,32 @@ Scene::Scene(std::string name)
 	/////////////
 	GameObject* _pTestObject = new GameObject("LENNA!", ObjectType::Player);
 	_pTestObject->LoadTexture(ResourceManager::GetTexture("lenna"));
+	_pTestObject->AddComponent(new BoxColliderComponent(_pTestObject));
 
 	//Order of transformations matters!!!!!
 	//First we Translate
 	//Then we rotate
 	//Then finally scale
 	_pTestObject->GetTransform()->SetPosition(640, 360);
-
-	GameObject* _pButtonTestingObject = new GameObject("BUTTON", ObjectType::UI);
-	_pButtonTestingObject->LoadTexture(ResourceManager::GetTexture("lenna"));
 	_pTestObject->GetTransform()->Translate({ 100,100 });
 	_pTestObject->GetTransform()->Scale({ 320,320 });
 
+	GameObject* _pTestObject2 = new GameObject("TESTOBJECT", ObjectType::Player);
+	_pTestObject2->LoadTexture(ResourceManager::GetTexture("lenna"));
+	_pTestObject2->AddComponent(new BoxColliderComponent(_pTestObject2));
+	_pTestObject2->GetTransform()->SetPosition(550, 360);
+	_pTestObject2->GetTransform()->Translate({ 100,100 });
+	_pTestObject2->GetTransform()->Scale({ 320,320 });
+	
+
+	GameObject* _pButtonTestingObject = new GameObject("BUTTON", ObjectType::UI);
+	_pButtonTestingObject->LoadTexture(ResourceManager::GetTexture("lenna"));
 	_pButtonTestingObject->AddComponent(new Button(_pButtonTestingObject));
+	_pButtonTestingObject->AddComponent(new BoxColliderComponent(_pButtonTestingObject));
 	_pButtonTestingObject->SetShader("ui");
 
 	AddGameObject(_pTestObject);
+	AddGameObject(_pTestObject2);
 	AddGameObject(_pButtonTestingObject);
 	
 	GameObject* _pTextObj = new GameObject("TEXTOBJ", ObjectType::UI);
@@ -93,6 +103,29 @@ void Scene::Update(float deltaTime)
 	{
 		obj->Update(deltaTime);
 	}
+
+	/////////////
+	//TEST CODE//     BOX COLISSIONS
+	/////////////
+
+	if (_listOfGameObjects[0]->GetComponent<BoxColliderComponent>()->Intersects(_listOfGameObjects[1]->GetComponent<BoxColliderComponent>()->GetCollisionRect()))
+	{
+		std::cout << "Boxes are colliding" << std::endl;
+	}
+
+	glm::vec2 pos = _listOfGameObjects[1]->GetTransform()->GetPosition();
+	if (Input::IsKeyDown(KEY_T))
+	{
+		_listOfGameObjects[1]->GetTransform()->SetPosition(pos.x + 0.5, pos.y );
+	}
+	if (Input::IsKeyDown(KEY_G))
+	{
+		_listOfGameObjects[1]->GetTransform()->SetPosition(pos.x - 0.5, pos.y );
+	}
+
+	//////////////////
+	//END OF TEST CODE
+	//////////////////
 }
 
 void Scene::RenderScene(Renderer* pRenderer, Camera* cam)
