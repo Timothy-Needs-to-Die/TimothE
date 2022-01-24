@@ -124,9 +124,6 @@ void Renderer2D::Flush()
 
 	_data.textureShader->BindShader();
 
-	//unsigned int count = _data.quadVertexArray->GetIndexBuffer()->GetCount();
-	//glDrawElements(GL_TRIANGLES, count, GL_UNSIGNED_INT, NULL);
-	//glBindTexture(GL_TEXTURE_2D, 0);
 	DrawIndexed(_data.quadVertexArray, _data.quadIndexCount);
 }
 
@@ -189,7 +186,7 @@ void Renderer2D::DrawQuad(const glm::mat4& transform, const glm::vec4& color, in
 void Renderer2D::DrawQuad(const glm::mat4& transform, Texture2D* texture, float tilingFactor, glm::vec4& tintColor, int entityID)
 {
 	constexpr size_t quadVertexCount = 4;
-	constexpr glm::vec2 textureCoords[] = { { 0.0f, 0.0f }, { 0.6f, 0.0f }, { 0.6f, 0.6f }, { 0.0f, 0.6f } };
+	constexpr glm::vec2 textureCoords[] = { { 0.0f, 0.0f }, { 1.0f, 0.0f }, { 1.0f, 1.0f }, { 0.0f, 1.0f } };
 
 	tintColor.r = 1.0f;
 	tintColor.g = 1.0f;
@@ -249,6 +246,8 @@ void Renderer2D::DrawRotatedQuad(const glm::vec3& position, const glm::vec2& siz
 
 void Renderer2D::DrawIndexed(const std::shared_ptr<VAO>& vertexArray, uint32_t indexCount)
 {
+	vertexArray->Bind();
+	vertexArray->GetIndexBuffer()->Bind();
 	uint32_t count = indexCount ? indexCount : vertexArray->GetIndexBuffer()->GetCount();
 	glDrawElements(GL_TRIANGLES, count, GL_UNSIGNED_INT, nullptr);
 	glBindTexture(GL_TEXTURE_2D, 0);

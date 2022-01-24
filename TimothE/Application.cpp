@@ -90,6 +90,7 @@ void Application::GameLoop()
 	//_pCurrentScene->LoadScene("scene1.scene");
 
 	glEnable(GL_DEPTH_TEST);
+	glEnable(GL_BLEND);
 
 	double previousTime = glfwGetTime();
 	bool STstarted = false;

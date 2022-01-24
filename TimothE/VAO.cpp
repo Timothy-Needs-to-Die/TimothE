@@ -85,7 +85,8 @@ void VAO::AddVertexBuffer(const std::shared_ptr<VBO>& vertexBuffer)
                     element.normalized ? GL_TRUE : GL_FALSE,
                     GL_FLOAT,
                     layout.GetStride(),
-                    (const void*)element.offset);
+                    (const void*)(element.offset + sizeof(float) * count * i));
+                glVertexAttribDivisor(_vertexBufferIndex, 1);
                 _vertexBufferIndex++;
                 break;
             }
@@ -102,7 +103,7 @@ void VAO::SetIndexBuffer(const std::shared_ptr<IBO>& indexBuffer)
 {
     glBindVertexArray(_rendererID);
 
+    indexBuffer->Bind();
     _indexBuffer = indexBuffer;
-    _indexBuffer->Bind();
 
 }
