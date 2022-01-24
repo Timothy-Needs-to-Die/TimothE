@@ -17,6 +17,7 @@
     <ClInclude Include="Camera.h" />
     <ClInclude Include="Component.h" />
     <ClInclude Include="ComponentFactory.h" />
+    <ClInclude Include="Dirent.h" />
     <ClInclude Include="Editor.h" />
     <ClInclude Include="Event.h" />
     <ClInclude Include="Framebuffer.h" />
@@ -111,18 +112,19 @@
     <ClInclude Include="Scene.h" />
     <ClInclude Include="Serializable.h" />
     <ClInclude Include="Shader.h" />
+    <ClInclude Include="SpriteComponent.h" />
     <ClInclude Include="Stream.h" />
     <ClInclude Include="StreamFile.h" />
+    <ClInclude Include="SubTexture2D.h" />
     <ClInclude Include="TestComponent.h" />
     <ClInclude Include="Texture2D.h" />
+    <ClInclude Include="TileMap.h" />
+    <ClInclude Include="TileMapEditor.h" />
+    <ClInclude Include="TileMapManager.h" />
     <ClInclude Include="TimothEInputCodes.h" />
     <ClInclude Include="Transform.h" />
     <ClInclude Include="UID.h" />
     <ClInclude Include="Window.h" />
-    <ClInclude Include="Button.h" />
-    <ClInclude Include="SpriteComponent.h" />
-    <ClInclude Include="SubTexture2D.h" />
-    <ClInclude Include="TileMapManager.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="AddressTranslator.cpp" />
@@ -162,15 +164,16 @@
     <ClCompile Include="Scene.cpp" />
     <ClCompile Include="Shader.cpp" />
     <ClCompile Include="Source.cpp" />
+    <ClCompile Include="SpriteComponent.cpp" />
     <ClCompile Include="StreamFile.cpp" />
     <ClCompile Include="StreamHelpers.cpp" />
+    <ClCompile Include="SubTexture2D.cpp" />
     <ClCompile Include="TestComponent.cpp" />
     <ClCompile Include="Texture2D.cpp" />
+    <ClCompile Include="TileMap.cpp" />
+    <ClCompile Include="TileMapEditor.cpp" />
+    <ClCompile Include="TileMapManager.cpp" />
     <ClCompile Include="Transform.cpp" />
     <ClCompile Include="Window.cpp" />
-    <ClCompile Include="Button.cpp" />
-    <ClCompile Include="SpriteComponent.cpp" />
-    <ClCompile Include="SubTexture2D.cpp" />
-    <ClCompile Include="TileMapManager.cpp" />
   </ItemGroup>
 </Project>

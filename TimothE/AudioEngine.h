@@ -10,12 +10,6 @@ enum AudioType { Type_SFX, Type_Song, Type_Count };
 
 struct SoundStruct {
 
-	/*SoundStruct(char* _filePath, FMOD::Sound* _sound, char* _name, AudioType _type) {
-		filePath = _filePath;
-		sound = _sound;
-		name = _name;
-		type = _type;
-	}*/
 	const char* filePath;
 	FMOD::Sound* sound;
 	const char* name;
@@ -28,8 +22,6 @@ class AudioEngine
 public:
 	AudioEngine();
 	~AudioEngine();
-
-	
 
 	// == System Functions == // 
 	void AudioUpdate(float elapsed);
@@ -52,9 +44,7 @@ public:
 	// == Core Functionality == // 
 	
 	FMOD::Sound* CreateAudioStream(const char* filePath);
-	//void LoadSFX(const char* filePath);
 	SoundStruct LoadSound(const char* name, const char* filePath, AudioType type);
-	//SoundStruct LoadSoundTrack(SoundStruct soundTrack);
 	
 	//void PlaySFX(FMOD::Sound* song);
 	void PlaySFX(SoundStruct sound, float minVolume, float maxVolume, float minPitch, float maxPitch);
@@ -74,15 +64,8 @@ public:
 	void SetSFXVolume(float volume);
 	void SetMusicVolume(float volume);
 private:
-	//Current storage for sounds in a map 
-	typedef std::map <const char*, FMOD::Sound*> SoundMap;
-
 	//Test storage
 	SoundStruct titleMusic; 
-
-	//void Load(AudioType type, const char* filePath);
-	//SoundStruct Load(SoundStruct toLoad);
-	//void Load(AudioType type, );
 
 	//Song stuff
 	FMOD::Channel* _currentSongChannel;
@@ -91,8 +74,6 @@ private:
 
 	enum FadeState{Fade_None, Fade_In, Fade_Out};
 	FadeState fade;
-
-	SoundMap _sounds[Type_Count];
 
 	FMOD::System* _fmodSystem;
 	FMOD::ChannelGroup* _master;

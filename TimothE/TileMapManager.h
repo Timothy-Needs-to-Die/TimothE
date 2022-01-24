@@ -45,14 +45,17 @@ public:
 
 	~TileMapComponent();
 	glm::vec2 mapSize;
+
 	glm::vec2 tileSize;
+
 	//Bool to show the value stored in the current grid
 	bool showValues;
 
 
-
+	//void CreateTileMap(std::string texFilePath, glm::vec2 mapSize,   );
 	void LoadTileMap(TileMap tileMap);
 	void SaveTileMap(TileMap tileMap);
+
 	int ChangeTileValue(int value, TileMapTexture);
 
 	// ============= Component Stuff ============= // 
@@ -82,5 +85,7 @@ public:
 
 private:
 	TileMap _currentEditorTileMap;
+
+	std::vector<Texture2D*> _textures; 
 };
 
