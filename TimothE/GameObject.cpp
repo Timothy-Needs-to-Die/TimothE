@@ -21,7 +21,8 @@ GameObject::GameObject(std::string name, ObjectType tag, Transform* transform)
 
 	SetShader("default");
 
-	ParticleSystem* particleSystem = new ParticleSystem(100, glm::vec4(1.0f));
+	Texture2D* t = new Texture2D("lenna3.jpg");
+	ParticleSystem* particleSystem = new ParticleSystem(100, glm::vec4(1.0f), t);
 	particleSystem->SetParentPos(_pTransform->GetPosition());
 	AddComponent<ParticleSystem>(particleSystem);
 
@@ -98,6 +99,11 @@ void GameObject::Update(float deltaTime)
 	for (Component* c : _pComponents)
 	{
 		c->OnUpdate(deltaTime);
+		if (c->GetType() == Component::ParticleSystem_Type)
+		{
+			ParticleSystem* p = (ParticleSystem*)c;
+			p->SetParentPos(_pTransform->GetPosition());
+		}
 	}
 }
 

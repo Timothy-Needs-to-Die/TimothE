@@ -6,13 +6,14 @@
 #include "Component.h"
 #include "imgui.h"
 #include "ResourceManager.h"
+#include "Transform.h"
 using std::vector;
 using std::string;
 
 class Particle
 {
 public:
-	Particle(float life, glm::vec4 colour) : _position(0.0f), _velocity(0.0f), _colour(colour), _life(life), _maxLife(life) {}
+	Particle(float life, glm::vec4 colour, Texture2D* texture);
 	~Particle() {}
 
 	float GetLife() { return _life; }
@@ -23,20 +24,28 @@ public:
 	float GetMaxLife() { return _maxLife; }
 	void SetMaxLife(float life) { _maxLife = life; }
 
-	glm::vec2 GetPosition() { return _position; }
-	void SetPosition(glm::vec2 newPos) { _position = newPos; }
+	//glm::vec2 GetPosition() { return _position; }
+	//void SetPosition(glm::vec2 newPos) { _position = newPos; }
 
 	glm::vec2 GetVelocity() { return _velocity; }
 	void SetVelocity(glm::vec2 newVelocity) { _velocity = newVelocity; }
 
 	glm::vec4 GetColour() { return _colour; }
 	void SetColour(glm::vec4 newColour) { _colour = newColour; }
+
+	Transform* GetTransform() { return _pTransform; }
+	void SetTransform(Transform* newTransform);
+
+	int GetTextureID() { return _pTexture->GetID(); }
 private:
+	Transform* _pTransform;
 	glm::vec2 _position;
 	glm::vec2 _velocity;
 	glm::vec4 _colour;
 	float _life;
 	float _maxLife;
+
+	Texture2D* _pTexture;
 
 	unsigned int _vao;
 	unsigned int _vbo;
@@ -45,7 +54,9 @@ private:
 class ParticleSystem : public Component
 {
 public:
-	ParticleSystem(int count, glm::vec4 colour);
+	COMPONENT_STATIC_TYPE(ParticleSystem_Type);
+
+	ParticleSystem(int count, glm::vec4 colour, Texture2D* texture);
 	~ParticleSystem();
 
 	//Components Overrides
@@ -67,7 +78,10 @@ private:
 	void RespawnParticle(Particle* p);
 
 	vector<Particle*> _particles;
-	const int _maxParticles;
+	int _maxParticles;
+
+	glm::vec4 _particleColour;
+	float _particleLife;
 
 	glm::vec2 _parentPos;
 
@@ -76,5 +90,7 @@ private:
 	string _shaderName;
 	Shader* _pShader;
 	int _shaderID;
+
+	Texture2D* _pTexture;
 };
 

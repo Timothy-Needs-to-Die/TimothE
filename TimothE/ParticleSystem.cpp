@@ -1,6 +1,6 @@
 #include "ParticleSystem.h"
 
-ParticleSystem::ParticleSystem(int count, glm::vec4 colour) : _maxParticles(count)
+ParticleSystem::ParticleSystem(int count, glm::vec4 colour, Texture2D* texture) : _maxParticles(count), _particleColour(colour), _pTexture(texture)
 {
 	//Sets the type and category for the component
 	SetType(Component::ParticleSystem_Type);
@@ -12,10 +12,11 @@ ParticleSystem::ParticleSystem(int count, glm::vec4 colour) : _maxParticles(coun
 
 	_parentPos = glm::vec2(0.0f);
 
-	_particles = vector<Particle*>(count);
-	for (Particle* p : _particles)
+	_particleLife = 1.0f;
+	for (int i = 0; i < count; i++)
 	{
-		p = new Particle(1.0f, colour);
+		Particle* p = new Particle(_particleLife, colour, _pTexture);
+		_particles.push_back(p);
 		RespawnParticle(p);
 	}
 }
@@ -39,7 +40,11 @@ void ParticleSystem::OnUpdate(float deltaTime)
 		if (p->GetLife() > 0.0f) // if life greater than 0, still alive so update
 		{
 			// update position
-			p->SetPosition(p->GetPosition() + (p->GetVelocity() * deltaTime));
+			glm::vec2 newPos = p->GetTransform()->GetPosition() + (p->GetVelocity() * deltaTime);
+			Transform* t = p->GetTransform();
+			t->SetPosition(newPos.x, newPos.y);
+			p->SetTransform(t);
+			//p->SetPosition(p->GetPosition() + (p->GetVelocity() * deltaTime));
 		}
 		else // life lower than 0, particle no longer alive
 		{
@@ -58,7 +63,33 @@ void ParticleSystem::OnEnd()
 void ParticleSystem::DrawEditorUI()
 {
 	ImGui::Text("Particle System");
-	//TODO: input int for number of particles
+
+	// create input field to change max amount of particles
+	static int* maxparticles = &_maxParticles;
+	if (ImGui::InputInt("Max particles", maxparticles))
+	{
+		// if the value is changed, change the number of particles in vector
+		int dif = _maxParticles - _particles.size();
+		if (_maxParticles > _particles.size())
+		{
+			for (int i = 0; i < dif; i++)
+			{
+				// add new particles
+				_particles.push_back(new Particle(_particleLife, _particleColour, _pTexture));
+			}
+		}
+		else
+		{
+			for (int i = (_particles.size() - 1); i > (_maxParticles - 1); i--)
+			{
+				// remove and delete particles exceeding max amount
+				Particle* p = _particles[i];
+				_particles.erase(_particles.begin() + i);
+				delete p;
+			}
+		}
+	}
+
 	//TODO: input float4 for colour
 	//TODO: input float for particle life
 }
@@ -83,8 +114,16 @@ void ParticleSystem::SetShader(string name)
 void ParticleSystem::RespawnParticle(Particle* p)
 {
 	// reset position and life
-	p->SetPosition(_parentPos);
+	Transform* t = p->GetTransform();
+	t->SetPosition(_parentPos.x, _parentPos.y);
+	p->SetTransform(t);
 	p->SetLife(p->GetMaxLife());
+}
+
+Particle::Particle(float life, glm::vec4 colour, Texture2D* texture) : _position(0.0f), _velocity(0.0f), _colour(colour), _life(life), _maxLife(life), _pTexture(texture)
+{
+	_pTransform = new Transform(nullptr);
+	InitVertexData();
 }
 
 void Particle::InitVertexData()
@@ -133,4 +172,9 @@ void Particle::InitVertexData()
 		(void*)(3 * sizeof(float))          // array buffer offset
 	);
 	glEnableVertexAttribArray(1);
+}
+
+void Particle::SetTransform(Transform* newTransform)
+{
+	_pTransform = newTransform;
 }
