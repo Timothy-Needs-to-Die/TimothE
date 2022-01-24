@@ -34,6 +34,10 @@ public:
 	TextComponent(GameObject* parentObject, std::string font);
 	~TextComponent();
 
+	void OnStart();
+	void OnEnd();
+	void OnUpdate();
+
 	void SetFont(std::string font);
 	void LoadFont();
 	void RenderText(Shader& s, std::string text, float x, float y, float scale, glm::vec3 color);
@@ -71,8 +75,7 @@ private:
 	glm::vec3 _color;
 	GameObject* _parentObject;
 
-	void OnStart();
-	void OnEnd();
-	void OnUpdate();
+	bool _hasInit = false;
+
 };
 

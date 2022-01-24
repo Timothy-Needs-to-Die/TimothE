@@ -121,13 +121,13 @@ void Application::GameLoop()
 			glEnable(GL_DEPTH_TEST);
 
 			GameRender(_pEditor->GetCamera());
+			_pEditor->EditorLoop(_pCurrentScene, elapsed, _mInEditorMode, _mPaused);
 
 			_pEditor->_pEditorFramebuffer->UnbindFramebuffer();
 			glDisable(GL_DEPTH_TEST);
 
 			glClear(GL_COLOR_BUFFER_BIT);
 			_pEditor->EditorRender();
-			_pEditor->EditorLoop(_pCurrentScene, elapsed, _mInEditorMode, _mPaused);
 		}
 		//update game if in game mode
 		else {

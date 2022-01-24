@@ -83,6 +83,11 @@ void Scene::EditorUpdate()
 	//Needed for the editor window to work smoothly
 	for (GameObject* obj : _listOfGameObjects) {
 		obj->GetTransform()->CalculateTransformMatrix();
+		TextComponent* tc = obj->GetComponent<TextComponent>();
+		if (tc != nullptr) {
+			tc->OnStart();
+			tc->OnUpdate();
+		}
 	}
 }
 

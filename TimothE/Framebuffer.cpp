@@ -25,10 +25,6 @@ Framebuffer::Framebuffer(Shader* screenShader)
 
 Framebuffer::~Framebuffer()
 {
-	delete& _vao;
-	delete &_vbo;
-	delete& _rbo;
-
 	glDeleteFramebuffers(1, &_fbo);
 
 	delete[] _pQuadVertices;
