@@ -186,7 +186,7 @@ void Application::GameStart()
 	_mGameRunning = true;
 }
 
-//changes scene with string directory 
+//changes scene
 void Application::ChangeScene(string newScene)
 {
 	_pCurrentScene->SaveScene("scene1.scene");
