@@ -44,7 +44,7 @@ void Camera::ProcessScrollMovement(float yOffset)
 //polls for movement for control
 void Camera::PollInput(float dt)
 {
-	float cameraSpeed = 100.0f * dt;
+	float cameraSpeed = 5.0f * dt;
 	if (glfwGetKey(_pWindow, GLFW_KEY_W) == GLFW_PRESS)
 		_mCameraPos += cameraSpeed * _mCameraUp;
 	if (glfwGetKey(_pWindow, GLFW_KEY_S) == GLFW_PRESS)

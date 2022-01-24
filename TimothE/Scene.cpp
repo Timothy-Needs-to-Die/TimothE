@@ -108,8 +108,8 @@ void Scene::RenderScene(Renderer* pRenderer, Camera* cam)
 	Renderer2D::BeginRender(cam);
 	Renderer2D::DrawQuad(glm::vec2(0.3f, 0.0f), glm::vec2(1.0f, 1.0f), ResourceManager::GetTexture("fish"));
 	Renderer2D::DrawQuad(glm::vec2(0.7f, 0.0f), glm::vec2(0.5f, 0.5f), ResourceManager::GetTexture("fish"));
-	Renderer2D::DrawQuad(glm::vec2(0.9f, 0.0f), glm::vec2(0.5f, 0.5f), ResourceManager::GetTexture("fish"));
-	Renderer2D::DrawQuad(glm::vec2(-0.3f, 0.0f), glm::vec2(0.5f, 0.5f), ResourceManager::GetTexture("fish"));
+	Renderer2D::DrawQuad(glm::vec2(0.9f, 0.0f), glm::vec2(0.5f, 0.5f), ResourceManager::GetTexture("lenna"));
+	Renderer2D::DrawQuad(glm::vec2(-0.3f, 0.0f), glm::vec2(0.5f, 0.5f), ResourceManager::GetTexture("lenna"));
 	Renderer2D::DrawQuad(glm::vec2(-0.7f, 0.0f), glm::vec2(0.5f, 0.5f), ResourceManager::GetTexture("fish"));
 	Renderer2D::EndRender();
 

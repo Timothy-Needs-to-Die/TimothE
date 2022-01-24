@@ -102,7 +102,8 @@ void Renderer2D::BeginRender(Camera* camera)
 {
 	StartBatch();
 	currentCam = camera;
-	_data.textureShader->SetMat4("projection", currentCam->ViewMat());
+	//_data.textureShader->SetMat4("projection", currentCam->ProjMat());
+	_data.textureShader->SetMat4("view", currentCam->ViewMat());
 }
 
 void Renderer2D::EndRender()
@@ -188,8 +189,9 @@ void Renderer2D::DrawQuad(const glm::mat4& transform, Texture2D* texture, float 
 	constexpr size_t quadVertexCount = 4;
 	constexpr glm::vec2 textureCoords[] = { { 0.0f, 0.0f }, { 1.0f, 0.0f }, { 1.0f, 1.0f }, { 0.0f, 1.0f } };
 
-	tintColor.r = 1.0f;
-	tintColor.g = 1.0f;
+	//tintColor.r = 1.0f;
+	//tintColor.g = 1.0f;
+	tintColor.b = 1.0f;
 
 	if (_data.quadIndexCount >= RendererData::maxIndices)
 		NextBatch();

@@ -19,6 +19,7 @@ layout (location = 3) out flat float v_TexIndex;
 layout (location = 4) out flat int v_EntityID;
 
 uniform mat4 projection;
+uniform mat4 view;
 
 void main()
 {
@@ -28,5 +29,5 @@ void main()
 	v_TexIndex = a_TexIndex;
 	v_EntityID = a_EntityID;
 
-	gl_Position = projection * vec4(a_Position, 1.0);
+	gl_Position = view * vec4(a_Position, 1.0);
 }

@@ -53,6 +53,8 @@ bool Texture2D::Load(std::string path)
 
 void Texture2D::GenerateTexture(unsigned char* data)
 {
+	glGenTextures(1, &_ID);
+
 	//Binds the texture so it can be setup
 	glBindTexture(GL_TEXTURE_2D, _ID);
 
