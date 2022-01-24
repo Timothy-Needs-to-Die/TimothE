@@ -14,12 +14,10 @@ TextComponent::TextComponent(GameObject* parentObject, std::string font) : Compo
 	SetType(Component::Types::Text_Type);
 	SetCategory(Component::Categories::Graphics_Category);
 	_parentObject = parentObject;
-	OnStart();
 }
 
 TextComponent::~TextComponent()
 {
-	OnEnd();
 }
 
 void TextComponent::DrawEditorUI()
