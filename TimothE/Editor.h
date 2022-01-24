@@ -57,7 +57,8 @@ private:
 
 	GameObject* _pSelectedGameObject = nullptr;
 
-	void CreateFileInContentBrowser();
+	void CreateFileInContentBrowser(std::string name, std::string type);
+	void CheckFileType(std::string fileDirectory);
 	void SearchFileDirectory();
 	std::string _mCurrentDir = CONTENT_BROWSER_DIRECTORY;
 	Camera* _pEditorCamera;
@@ -73,11 +74,11 @@ private:
 
 	Application* _pApplication;
 
-	//Texture2D* pContentTextureImage = new Texture2D();
-	//Texture2D* pContentTextureScene = new Texture2D();
-	//Texture2D* pContentTextureConfig = new Texture2D();
-	//Texture2D* pContentTextureScript = new Texture2D();
-	//Texture2D* pContentTextureSound = new Texture2D();
-	//Texture2D* pContentTextureFile = new Texture2D();
-	//Texture2D* pContentTextureFolder = new Texture2D();
+	Texture2D* pContentTextureImage = new Texture2D(NULL);
+	Texture2D* pContentTextureScene = new Texture2D(NULL);
+	Texture2D* pContentTextureConfig = new Texture2D(NULL);
+	Texture2D* pContentTextureScript = new Texture2D(NULL);
+	Texture2D* pContentTextureSound = new Texture2D(NULL);
+	Texture2D* pContentTextureFile = new Texture2D(NULL);
+	Texture2D* pContentTextureFolder = new Texture2D(NULL);
 };
