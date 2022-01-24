@@ -101,12 +101,20 @@ void BoxColliderComponent::DrawEditorUI()
 
 inline bool BoxColliderComponent::SaveState(IStream& stream) const {
 	Component::SaveState(stream);
-
+	WriteString(stream, std::to_string( _boxCollider->width));
+	WriteString(stream, std::to_string( _boxCollider->height));
+	WriteString(stream, std::to_string( _boxCollider->xPos));
+	WriteString(stream, std::to_string( _boxCollider->yPos));
 	return true;
 }
 
 inline bool BoxColliderComponent::LoadState(IStream& stream) {
 	Component::LoadState(stream);
-
+	Load(ReadString(stream));
 	return true;
+}
+
+void BoxColliderComponent::Load(std::string data)
+{
+	_boxCollider->width = std::stof(data);
 }

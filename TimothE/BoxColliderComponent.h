@@ -55,4 +55,5 @@ private:
 
 	// Editor UI
 	bool* _editorIsEnabled;
+	void Load(std::string data);
 };
