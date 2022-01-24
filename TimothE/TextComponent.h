@@ -1,10 +1,12 @@
 #pragma once
+
+
 #include <ft2build.h>
 #include FT_FREETYPE_H
 #include FT_GLYPH_H
 
 #include <iostream>
-#include <glm/glm.hpp>
+#include <glm.hpp>
 #include <gtc/matrix_transform.hpp>
 
 #include <GL/glew.h>

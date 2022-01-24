@@ -11,8 +11,6 @@ project "TimothE"
 	kind "ConsoleApp"
 	language "C++"
 
-	pchheader "pch.h"
-	pchsource "pch.cpp"
 
 	files {
 		"%{prj.name}/**.h",
@@ -26,9 +24,9 @@ project "TimothE"
 		"Dependancies/irrklang/include",
 		"Dependancies/nlohmann",
 		"Dependancies/freetype",
+		"Dependancies",
 		"Dependancies/imgui",
 		"Dependancies/imgui/backend",
-		"Dependancies"
 		"Dependancies/Fmod/inc"
 	}
 
@@ -47,6 +45,6 @@ project "TimothE"
 		"glew32.lib",
 		"soil2-debug.lib",
 		"soil2-debug.dll",
-		"freetype.lib"
+		"freetype.lib",
 		"fmod_vc.lib"
 	}
