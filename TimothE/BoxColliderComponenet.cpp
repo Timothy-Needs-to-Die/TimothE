@@ -55,7 +55,7 @@ bool BoxColliderComponent::CollideDetect(ImVec2 objectPos)
 	{
 		return true;
 	}
-	return false
+	return false;
 }
 
 void BoxColliderComponent::DrawEditorUI()
