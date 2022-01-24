@@ -452,6 +452,7 @@ void Editor::EditorEndRender()
 	_pWindow->SwapBuffers();
 }
 
+//update render
 void Editor::EditorUpdate(Scene* currentScene, float dt)
 {
 	currentScene->Update(dt);
