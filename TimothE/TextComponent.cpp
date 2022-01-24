@@ -11,7 +11,7 @@ TextComponent::TextComponent(GameObject* parentObject, std::string font) : Compo
 	_scale = 1.0f;
 	_color = { 1.0f, 1.0f, 1.0f };
 	_UID = UID::GenerateUID();
-	SetType(Component::Types::Texture_Type);
+	SetType(Component::Types::Text_Type);
 	SetCategory(Component::Categories::Graphics_Category);
 	_parentObject = parentObject;
 	OnStart();

@@ -42,9 +42,10 @@ Scene::Scene(std::string name)
 	
 
 	GameObject* _pButtonTestingObject = new GameObject("BUTTON", ObjectType::UI);
-	_pButtonTestingObject->LoadTexture(ResourceManager::GetTexture("lenna"));
 	_pButtonTestingObject->AddComponent(new Button(_pButtonTestingObject));
 	_pButtonTestingObject->AddComponent(new BoxColliderComponent(_pButtonTestingObject));
+	_pButtonTestingObject->AddComponent(new TextComponent(_pTestObject, "arial"));
+	_pButtonTestingObject->LoadTexture(ResourceManager::GetTexture("lenna"));
 	_pButtonTestingObject->SetShader("ui");
 
 	AddGameObject(_pTestObject);
@@ -52,8 +53,8 @@ Scene::Scene(std::string name)
 	AddGameObject(_pButtonTestingObject);
 	
 	GameObject* _pTextObj = new GameObject("TEXTOBJ", ObjectType::UI);
-	AddGameObject(_pTextObj);
 	_pTextObj->AddComponent(new TextComponent(_pTextObj, "arial"));
+	AddGameObject(_pTextObj);
 	
 	//////////////////
 	//END OF TEST CODE

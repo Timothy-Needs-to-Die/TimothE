@@ -29,7 +29,7 @@ class TextComponent : public Component
 {
 public:
 
-	COMPONENT_STATIC_TYPE(Texture_Type);
+	COMPONENT_STATIC_TYPE(Text_Type);
 
 	TextComponent(GameObject* parentObject, std::string font);
 	~TextComponent();
