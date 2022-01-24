@@ -48,7 +48,7 @@ void BoxColliderComponent::OnEnd()
 
 }
 
-bool BoxColliderComponent::CollideDetect(ImVec2 objectPos)
+bool BoxColliderComponent::CollideDetect(glm::vec2 objectPos)
 {
 	if (objectPos.x > bounds->btmLeft && objectPos.x < bounds->btmRight
 		&& objectPos.y > bounds->topLeft && objectPos.y < bounds->topRight)
