@@ -379,17 +379,17 @@ void Editor::EditorImGui(Scene* currentScene)
 	{
 		ImGui::Begin("Console", 0, ImGuiWindowFlags_NoMove);
 
-		static int oldSize = 0;
 		// get output from console class
 		std::vector<std::string> consoleOut = Console::GetConsoleOutput();
-		for (std::string s : consoleOut)
+		// convert vector to string array
+		std::string* out = &consoleOut[0];
+		if (out != nullptr)
 		{
-			ImGui::Text(s.c_str());
-			if (consoleOut.size() > oldSize)
-			{
-				ImGui::SetScrollY(ImGui::GetScrollMaxY());
-				oldSize = consoleOut.size();
-			}
+			// output as wrapped text
+			ImGui::TextWrapped(out->c_str());
+
+			// scroll to the bottom of the console window
+			ImGui::SetScrollY(ImGui::GetScrollMaxY());
 		}
 
 		ImGui::End();
