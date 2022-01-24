@@ -186,6 +186,15 @@ void Application::GameStart()
 	_mGameRunning = true;
 }
 
+//changes scene
+void Application::ChangeScene(string newScene)
+{
+	_pCurrentScene->SaveScene("scene1.scene");
+	//load scene doesnt work so this is best option
+	//_pCurrentScene->LoadScene(newScene);
+	_pCurrentScene = new Scene(newScene);
+}
+
 //polls input 
 void Application::PollInput()
 {

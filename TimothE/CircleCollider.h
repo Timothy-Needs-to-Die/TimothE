@@ -21,18 +21,9 @@ public:
 
 	virtual void DrawEditorUI() override;
 
-	virtual bool SaveState(IStream& stream) const override {
-		//Write type
-		WriteInt(stream, _type);
-
-		//Write category
-		WriteInt(stream, _category);
-
-		return true;
-	}
-	virtual bool LoadState(IStream& stream) override {
-		return true;
-	}
+	// Inherited via ISerializable
+	virtual bool SaveState(IStream& stream) const override;
+	virtual bool LoadState(IStream& stream) override;
 
 	//Sets the size of the collider using a vec2
 	void SetColliderRadius(float radius) { _radius = radius; };

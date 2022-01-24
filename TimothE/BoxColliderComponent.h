@@ -46,18 +46,9 @@ public:
 
 	Rect* GetCollisionRect() { return _boxCollider; }
 
-	virtual bool SaveState(IStream& stream) const override {
-		//Write type
-		WriteInt(stream, _type);
-
-		//Write category
-		WriteInt(stream, _category);
-
-		return true;
-	}
-	virtual bool LoadState(IStream& stream) override {
-		return true;
-	}
+	// Inherited via ISerializable
+	virtual bool SaveState(IStream& stream) const override;
+	virtual bool LoadState(IStream& stream) override;
 private:
 	bool _isEnabled;
 	Rect* _boxCollider;

@@ -24,6 +24,7 @@ public:
 	void OnGameEvent(Event& e);
 
 	void GameStart();
+	void ChangeScene(std::string newScene);
 
 protected:
 	void PollInput();

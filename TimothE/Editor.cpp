@@ -559,7 +559,10 @@ void Editor::CheckFileType(std::string fileDirectory)
 	else if (fileDirectory.find(".scene") != std::string::npos)
 	{
 		ImGui::Image((void*)pContentTextureScene->GetID(), ImVec2(100, 100));
-		ImGui::Text(fileDirectory.c_str());
+		if (ImGui::Button(fileDirectory.c_str()))
+		{
+			_pApplication->ChangeScene(fileDirectory);
+		}
 	}
 	//file is a config file
 	else if (fileDirectory.find(".ini") != std::string::npos)

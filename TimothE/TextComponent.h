@@ -47,16 +47,8 @@ public:
 	}
 
 	// Inherited via ISerializable
-	virtual bool SaveState(IStream& stream) const override {
-		Component::SaveState(stream);
-
-		return true;
-	}
-	virtual bool LoadState(IStream& stream) override {
-		Component::LoadState(stream);
-
-		return true;
-	}
+	virtual bool SaveState(IStream& stream) const override;
+	virtual bool LoadState(IStream& stream) override;
 	// Inherited via Component
 	virtual void DrawEditorUI() override;
 private:

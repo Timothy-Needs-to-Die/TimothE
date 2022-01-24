@@ -123,5 +123,19 @@ void Button::RemoveClickEvent(void(*function)())
 	}
 }
 
+// Inherited via ISerializable
+
+inline bool Button::SaveState(IStream& stream) const {
+	Component::SaveState(stream);
+
+	return true;
+}
+
+inline bool Button::LoadState(IStream& stream) {
+	Component::LoadState(stream);
+
+	return true;
+}
+
 
 

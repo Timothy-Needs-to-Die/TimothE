@@ -96,3 +96,17 @@ void BoxColliderComponent::DrawEditorUI()
 		}
 	}
 }
+
+// Inherited via ISerializable
+
+inline bool BoxColliderComponent::SaveState(IStream& stream) const {
+	Component::SaveState(stream);
+
+	return true;
+}
+
+inline bool BoxColliderComponent::LoadState(IStream& stream) {
+	Component::LoadState(stream);
+
+	return true;
+}

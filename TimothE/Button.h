@@ -36,6 +36,10 @@ public:
 
 	bool IsEnabled() { return _isEnabled; }
 	void SetEnabled(bool state) { _isEnabled = state; }
+
+	// Inherited via ISerializable
+	virtual bool SaveState(IStream& stream) const override;
+	virtual bool LoadState(IStream& stream) override;
 private:	
 	bool _isHovering;
 	bool _isClicked;

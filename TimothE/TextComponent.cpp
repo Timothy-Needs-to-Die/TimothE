@@ -197,3 +197,16 @@ void TextComponent::RenderText(Shader& s, std::string text, float x = 0.0f, floa
 	glBindVertexArray(0);
 	glBindTexture(GL_TEXTURE_2D, 0);
 }
+// Inherited via ISerializable
+
+inline bool TextComponent::SaveState(IStream& stream) const {
+	Component::SaveState(stream);
+
+	return true;
+}
+
+inline bool TextComponent::LoadState(IStream& stream) {
+	Component::LoadState(stream);
+
+	return true;
+}
