@@ -127,6 +127,9 @@
     <ClInclude Include="VBO.h" />
     <ClInclude Include="Window.h" />
     <ClInclude Include="pch.h" />
+    <ClInclude Include="Renderer2D.h" />
+    <ClInclude Include="IBO.h" />
+    <ClInclude Include="BufferLayout.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="AddressTranslator.cpp" />
@@ -180,5 +183,11 @@
     <ClCompile Include="VBO.cpp" />
     <ClCompile Include="Window.cpp" />
     <ClCompile Include="pch.cpp" />
+    <ClCompile Include="Renderer2D.cpp" />
+    <ClCompile Include="IBO.cpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="vs_Texture.vert" />
+    <None Include="fr_Texture.frag" />
   </ItemGroup>
 </Project>

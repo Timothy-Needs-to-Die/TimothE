@@ -37,6 +37,9 @@ public:
 	virtual bool SaveState(IStream& stream) const override;
 	virtual bool LoadState(IStream& stream) override;
 
+	void Bind() {
+		glBindTexture(GL_TEXTURE_2D, _ID);
+	}
 
 private:
 	void GenerateTexture(unsigned char* data);
