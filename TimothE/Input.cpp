@@ -38,7 +38,7 @@ void Input::SetMousePosition(float x, float y)
 
 bool Input::IsKeyDown(TimothEKeyCode keycode)
 {
-	return _pKeyArr[keycode] == GLFW_PRESS;
+	return _pKeyArr[keycode] == GLFW_PRESS || _pKeyArr[keycode] == GLFW_REPEAT;
 }
 
 bool Input::IsKeyHeld(TimothEKeyCode keycode)

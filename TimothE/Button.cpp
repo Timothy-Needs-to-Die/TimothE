@@ -1,18 +1,32 @@
 #include "Button.h"
-#include "Scene.h"
 
 Button::Button(GameObject* parent) : Component(parent)
 {
+	SetType(Component::Button_Type);
+	SetCategory(Component::UI_Category);
+
+	// Set buttons to be enabled by default
+	_isEnabled = true;
+
 	_isClicked = false;
 	_isHovering = false;
 
-
-	_isEnabled = false;
+	// Editor UI Vars
 	_editorIsEnabled = &_isEnabled;
+
+	// If there is no box collider component, add one since the button needs one
+	if (Parent()->GetComponent<BoxColliderComponent>() == nullptr)
+	{
+		// Print to console to let the user know a new component was added
+		Console::Print("BUTTON COMPONENT: Created Component::BoxCollider as is required for Button::OnUpdate");
+		//std::cout << "BUTTON COMPONENT: created default box component for object" << std::endl;
+		Parent()->AddComponent(new BoxColliderComponent(Parent()));
+	}
 }
 
 Button::~Button()
 {
+
 }
 
 void Button::OnStart()
@@ -21,9 +35,11 @@ void Button::OnStart()
 
 void Button::OnUpdate()
 {
+	// Get the mouse positions
 	int mouseX = Input::GetMouseX();
 	int mouseY = Input::GetMouseY();
 
+	// Get the position of the button through the transforms - THIS SHOULD BE HANDLED BY BOX COLLIDER 
 	Transform* transform = Parent()->GetComponent<Transform>();
 
 	glm::vec2 pos = transform->GetPosition();
@@ -33,8 +49,7 @@ void Button::OnUpdate()
 	if (_isEnabled)
 	{
 		// Check if the mouse is inside the button
-		if (mouseX > pos.x - width && mouseX < pos.x + width
-			&& mouseY > pos.y - height && mouseY < pos.y + height)
+		if (Parent()->GetComponent<BoxColliderComponent>()->IsPointInside({mouseX, mouseY}))
 		{
 			// If the mouse is inside the button then we are now hovering over the button;
 			_isHovering = true;
@@ -43,6 +58,8 @@ void Button::OnUpdate()
 			if (Input::IsMouseButtonDown(BUTTON_1))
 			{
 				_isClicked = true;
+				
+				// debug
 				std::cout << "Button Clicked" << std::endl;
 
 				// If we have function calls to perform when the button is clicked
@@ -66,7 +83,12 @@ void Button::OnUpdate()
 			// We are not hovering over the button
 			_isHovering = false;
 		}
+
+		// debug
+		//std::cout << "isHovering = " << _isHovering << " isClicked = " << _isClicked << std::endl;
 	}
+
+	//std::cout << "Mouse clicked X: " << mouseX << " Y: " << mouseY << std::endl;
 }
 
 void Button::OnEnd()
@@ -75,21 +97,22 @@ void Button::OnEnd()
 
 void Button::DrawEditorUI()
 {
-	ImGui::Text("Button");
-
-	if (ImGui::Checkbox("IsEnabled", _editorIsEnabled))
+	if (ImGui::CollapsingHeader("Button Component"))
 	{
-		std::cout << "IsEnabled = " << *_editorIsEnabled << std::endl;
-		SetEnabled(*_editorIsEnabled);
+		if (ImGui::Checkbox("IsEnabled", _editorIsEnabled))
+		{
+			std::cout << "IsEnabled = " << *_editorIsEnabled << std::endl;
+			SetEnabled(*_editorIsEnabled);
+		}
 	}
 }
 
-void Button::AddOnClickCall(void(*function)())
+void Button::AddClickEvent(void(*function)())
 {
 	_onClickCalls.push_back(function);
 }
 
-void Button::RemoveOnClickCall(void(*function)())
+void Button::RemoveClickEvent(void(*function)())
 {
 	for (int i = 0; i < _onClickCalls.size(); i++)
 	{

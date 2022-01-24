@@ -7,6 +7,7 @@
 #include "MouseEvent.h"
 #include "Texture2D.h"
 #include "Input.h"
+#include "Console.h"
 
 using std::string;
 using std::vector;
@@ -17,7 +18,7 @@ public:
 	Button(GameObject* parent);
 	~Button();
 
-	COMPONENT_STATIC_TYPE(Buttom_Type);
+	COMPONENT_STATIC_TYPE(Button_Type);
 
 	// Component Methods
 	void OnStart() override;
@@ -26,8 +27,8 @@ public:
 	void DrawEditorUI() override;
 
 	// OnClick management
-	void AddOnClickCall(void (*function)());
-	void RemoveOnClickCall(void (*function)());
+	void AddClickEvent(void (*function)());
+	void RemoveClickEvent(void (*function)());
 
 	// Getter & Setter
 	bool IsHovering() { return _isHovering; }
