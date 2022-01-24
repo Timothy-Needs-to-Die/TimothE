@@ -224,7 +224,7 @@ std::vector<Component*> GameObject::GetComponentsInChild()
 
 	std::cout << "[ERROR]: GameObject child does not exist." << std::endl;
 
-	return;
+	return std::vector<Component*>();
 }
 
 Component* GameObject::GetComponentInParent(Component::Types type)
@@ -255,7 +255,7 @@ std::vector<Component*> GameObject::GetComponentsInParent()
 
 	std::cout << "[ERROR]: GameObject parent does not exist." << std::endl;
 
-	return;
+	return std::vector<Component*>();
 }
 
 void GameObject::SwapComponents(int index1, int index2)
