@@ -1,8 +1,9 @@
 #include "VAO.h"
+#include "Base.h"
 
 std::shared_ptr<VAO> VAO::Create()
 {
-    return std::shared_ptr<VAO>();
+    return CreateRef<VAO>();
 }
 
 VAO::VAO()
@@ -101,7 +102,7 @@ void VAO::SetIndexBuffer(const std::shared_ptr<IBO>& indexBuffer)
 {
     glBindVertexArray(_rendererID);
 
+    _indexBuffer = indexBuffer;
     _indexBuffer->Bind();
 
-    _indexBuffer = indexBuffer;
 }

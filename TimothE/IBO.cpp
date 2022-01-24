@@ -1,4 +1,5 @@
 #include "IBO.h"
+#include "Base.h"
 
 IBO::IBO(unsigned int* indices, unsigned int count)
 	: _count(count)
@@ -18,8 +19,13 @@ void IBO::Bind() const
 {
 	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, _rendererID);
 }
-
+ 
 void IBO::Unbind() const
 {
 	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0);
+}
+
+std::shared_ptr<IBO> IBO::Create(unsigned int* indices, unsigned int count)
+{
+	return CreateRef<IBO>(indices, count);
 }

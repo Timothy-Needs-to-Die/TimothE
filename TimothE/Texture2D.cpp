@@ -36,7 +36,7 @@ void Texture2D::DrawEditorUI()
 bool Texture2D::Load(std::string path)
 {
 	if (_ID != 0) return true;
-
+	_filePath = path;
 	unsigned char* data = stbi_load(path.c_str(), &_width, &_height, &_channels, 0);
 
 	if (data != nullptr)

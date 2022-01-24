@@ -7,6 +7,7 @@
 #include "StreamFile.h"
 #include "Button.h"
 #include "ResourceManager.h"
+#include "Renderer2D.h"
 
 int Scene::nextID = 0;
 std::vector<GameObject*> Scene::_listOfGameObjects;
@@ -25,6 +26,8 @@ Scene::Scene(std::string name)
 	/////////////
 	GameObject* _pTestObject = new GameObject("LENNA!", ObjectType::Player);
 	_pTestObject->LoadTexture(ResourceManager::GetTexture("lenna"));
+
+	ResourceManager::InstantiateTexture("fish", new Texture2D("Fish.png"));
 
 	//Order of transformations matters!!!!!
 	//First we Translate
@@ -100,7 +103,12 @@ void Scene::Update(float deltaTime)
 void Scene::RenderScene(Renderer* pRenderer, Camera* cam)
 {
 	//Renders the drawable objects
-	pRenderer->RenderDrawables(_listOfGameObjects, cam);
+	//pRenderer->RenderDrawables(_listOfGameObjects, cam);
+
+	Renderer2D::BeginRender(cam);
+	Renderer2D::DrawQuad(glm::vec2(0.0f, 0.0f), glm::vec2(1.0f, 1.0f), ResourceManager::GetTexture("fish"));
+	Renderer2D::EndRender();
+
 }
 
 void Scene::RemoveGameObject(GameObject* gameObject)

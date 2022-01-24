@@ -14,6 +14,7 @@
 #include "ResourceManager.h"
 
 #include "Editor.h"
+#include "Renderer2D.h"
 
 
 #define BIND_EVENT_FN(x) std::bind(&Application::x, this, std::placeholders::_1)
@@ -68,6 +69,7 @@ void Application::Init(bool devMode)
 	}
 
 	ResourceManager::Init();
+	Renderer2D::Init();
 
 	_pCurrentScene = new Scene("Test scene");
 	_pEditor = new Editor(this, _pWindow);

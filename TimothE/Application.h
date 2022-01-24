@@ -51,7 +51,7 @@ private:
 
 	Window* _pWindow;
 
-	bool _inEditorMode = true;
+	bool _inEditorMode = false;
 	bool _devMode;
 
 	bool _running;
@@ -61,7 +61,7 @@ private:
 	class Editor* _pEditor;
 
 	bool _paused = false;
-	bool _gameRunning = false;
+	bool _gameRunning = true;
 
 	Camera* _pGameCamera;
 };

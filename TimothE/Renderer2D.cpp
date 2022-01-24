@@ -20,14 +20,14 @@ struct RendererData {
 	std::shared_ptr<VAO> quadVertexArray;
 	std::shared_ptr<VBO> quadVertexBuffer;
 	std::shared_ptr<Shader> textureShader;
-	std::shared_ptr<Texture2D> whiteTexture;
+	Texture2D* whiteTexture;
 
 	unsigned int quadIndexCount;
 	QuadVertex* quadVertexBufferBase = nullptr;
 	QuadVertex* quadVertexBufferPtr = nullptr;
 
 	//TODO: Replace 32 with a fixed size
-	std::array <std::shared_ptr<Texture2D>, 32> textureSlots;
+	std::array <Texture2D*, 32> textureSlots;
 	unsigned int textureSlotIndex = 1; //0 = white texture
 
 	glm::vec4 quadVertexPositions[4];
@@ -35,13 +35,14 @@ struct RendererData {
 
 static RendererData _data;
 
+static Camera* currentCam;
 
 
 void Renderer2D::Init()
 {
-	_data.quadVertexArray = std::make_shared<VAO>();
+	_data.quadVertexArray = VAO::Create();
 
-	_data.quadVertexBuffer = std::make_shared<VBO>(_data.maxVertices * sizeof(QuadVertex));
+	_data.quadVertexBuffer = VBO::Create(_data.maxVertices * sizeof(QuadVertex));
 	_data.quadVertexBuffer->SetLayout({
 		{ShaderDataTypes::Float3, "a_Position"},
 		{ShaderDataTypes::Float4, "a_Color"},
@@ -69,12 +70,12 @@ void Renderer2D::Init()
 		offset += 4;
 	}
 
-	std::shared_ptr<IBO> quadIB = std::make_shared<IBO>(quadIndices, _data.maxIndices);
+	std::shared_ptr<IBO> quadIB = IBO::Create(quadIndices, _data.maxIndices);
 
 	_data.quadVertexArray->SetIndexBuffer(quadIB);
 	delete[] quadIndices;
 
-	_data.whiteTexture = std::make_shared<Texture2D>("whiteTexture.png");
+	_data.whiteTexture = new Texture2D("whiteTexture.png");
 
 	unsigned int samplers[_data.maxTextureSlots];
 	for (unsigned int i = 0; i < _data.maxTextureSlots; i++) {
@@ -82,6 +83,7 @@ void Renderer2D::Init()
 	}
 
 	_data.textureShader = std::make_shared<Shader>("vs_Texture.vert", "fr_Texture.frag");
+	
 	_data.textureSlots[0] = _data.whiteTexture;
 
 	_data.quadVertexPositions[0] = { -0.5f, -0.5f, 0.0f, 1.0f };
@@ -96,9 +98,11 @@ void Renderer2D::Shutdown()
 	//delete[] _data.quadVertexBuffer;
 }
 
-void Renderer2D::BeginRender(const Camera* camera, const glm::mat4& transform)
+void Renderer2D::BeginRender(Camera* camera)
 {
 	StartBatch();
+	currentCam = camera;
+	_data.textureShader->SetMat4("projection", currentCam->ViewMat());
 }
 
 void Renderer2D::EndRender()
@@ -119,9 +123,10 @@ void Renderer2D::Flush()
 
 	_data.textureShader->BindShader();
 
-	unsigned int count = _data.quadIndexCount;
+	unsigned int count = _data.quadVertexArray->GetIndexBuffer()->GetCount();
+	_data.quadVertexArray->GetIndexBuffer()->Bind();
 	glDrawElements(GL_TRIANGLES, count, GL_UNSIGNED_INT, nullptr);
-	glBindTexture(GL_TEXTURE_2D, 0);
+	//glBindTexture(GL_TEXTURE_2D, 0);
 }
 
 void Renderer2D::DrawQuad(const glm::vec2& position, const glm::vec2& size, const glm::vec4& color)
@@ -137,12 +142,12 @@ void Renderer2D::DrawQuad(const glm::vec3& position, const glm::vec2& size, cons
 	DrawQuad(transform, color);
 }
 
-void Renderer2D::DrawQuad(const glm::vec2& position, const glm::vec2& size, const std::shared_ptr<Texture2D>& texture, float tilingFactor, const glm::vec4& tintColor)
+void Renderer2D::DrawQuad(const glm::vec2& position, const glm::vec2& size, Texture2D* texture, float tilingFactor, const glm::vec4& tintColor)
 {
 	DrawQuad({ position.x, position.y, 0.0f }, size, texture, tilingFactor, tintColor);
 }
 
-void Renderer2D::DrawQuad(const glm::vec3& position, const glm::vec2& size, const std::shared_ptr<Texture2D>& texture, float tilingFactor, const glm::vec4& tintColor)
+void Renderer2D::DrawQuad(const glm::vec3& position, const glm::vec2& size,  Texture2D* texture, float tilingFactor, const glm::vec4& tintColor)
 {
 	glm::mat4 transform = glm::translate(glm::mat4(1.0f), position)
 		* glm::scale(glm::mat4(1.0f), { size.x, size.y, 1.0f });
@@ -152,10 +157,74 @@ void Renderer2D::DrawQuad(const glm::vec3& position, const glm::vec2& size, cons
 
 void Renderer2D::DrawQuad(const glm::mat4& transform, const glm::vec4& color, int entityID)
 {
+	constexpr size_t quadVertexCount = 4;
+	const float textureIndex = 0.0f;
+	constexpr glm::vec2 textureCoords[] = {
+		{0.0f, 0.0f},
+		{1.0f, 0.0f},
+		{1.0f,1.0f},
+		{0.0f, 1.0f}
+	};
+
+	const float tillingFactor = 1.0f;
+
+	if (_data.quadIndexCount >= RendererData::maxIndices) {
+		NextBatch();
+	}
+
+	for (size_t i = 0; i < quadVertexCount; i++) {
+		_data.quadVertexBufferPtr->position = transform * _data.quadVertexPositions[i];
+		_data.quadVertexBufferPtr->color = color;
+		_data.quadVertexBufferPtr->texCoord = textureCoords[i];
+		_data.quadVertexBufferPtr->tilingFactor = tillingFactor;
+		_data.quadVertexBufferPtr->texIndex = textureIndex;
+		_data.quadVertexBufferPtr->entityID = entityID;
+		_data.quadVertexBufferPtr++;
+	}
+
+	_data.quadIndexCount += 6;
 }
 
-void Renderer2D::DrawQuad(const glm::mat4& transform, const std::shared_ptr<Texture2D>& texture, float tilingFactor, const glm::vec4& tintColor, int entityID)
+void Renderer2D::DrawQuad(const glm::mat4& transform, Texture2D* texture, float tilingFactor, const glm::vec4& tintColor, int entityID)
 {
+	constexpr size_t quadVertexCount = 4;
+	constexpr glm::vec2 textureCoords[] = { { 0.0f, 0.0f }, { 1.0f, 0.0f }, { 1.0f, 1.0f }, { 0.0f, 1.0f } };
+
+	if (_data.quadIndexCount >= RendererData::maxIndices)
+		NextBatch();
+
+	float textureIndex = 0.0f;
+	for (uint32_t i = 1; i < _data.textureSlotIndex; i++)
+	{
+		if (_data.textureSlots[i] == texture)
+		{
+			textureIndex = (float)i;
+			break;
+		}
+	}
+
+	if (textureIndex == 0.0f)
+	{
+		if (_data.textureSlotIndex >= RendererData::maxTextureSlots)
+			NextBatch();
+
+		textureIndex = (float)_data.textureSlotIndex;
+		_data.textureSlots[_data.textureSlotIndex] = texture;
+		_data.textureSlotIndex++;
+	}
+
+	for (size_t i = 0; i < quadVertexCount; i++)
+	{
+		_data.quadVertexBufferPtr->position = transform * _data.quadVertexPositions[i];
+		_data.quadVertexBufferPtr->color = tintColor;
+		_data.quadVertexBufferPtr->texCoord = textureCoords[i];
+		_data.quadVertexBufferPtr->texIndex = textureIndex;
+		_data.quadVertexBufferPtr->tilingFactor = tilingFactor;
+		_data.quadVertexBufferPtr->entityID = entityID;
+		_data.quadVertexBufferPtr++;
+	}
+
+	_data.quadIndexCount += 6;
 }
 
 void Renderer2D::DrawRotatedQuad(const glm::vec2& position, const glm::vec2& size, float rotation, const glm::vec4& color)
@@ -166,11 +235,11 @@ void Renderer2D::DrawRotatedQuad(const glm::vec3& position, const glm::vec2& siz
 {
 }
 
-void Renderer2D::DrawRotatedQuad(const glm::vec2& position, const glm::vec2& size, float rotation, const std::shared_ptr<Texture2D>& texture, float tilingFactor, const glm::vec4& tintColor)
+void Renderer2D::DrawRotatedQuad(const glm::vec2& position, const glm::vec2& size, float rotation, Texture2D* texture, float tilingFactor, const glm::vec4& tintColor)
 {
 }
 
-void Renderer2D::DrawRotatedQuad(const glm::vec3& position, const glm::vec2& size, float rotation, const std::shared_ptr<Texture2D>& texture, float tilingFactor, const glm::vec4& tintColor)
+void Renderer2D::DrawRotatedQuad(const glm::vec3& position, const glm::vec2& size, float rotation, Texture2D* texture, float tilingFactor, const glm::vec4& tintColor)
 {
 }
 

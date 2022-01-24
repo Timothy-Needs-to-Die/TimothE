@@ -84,6 +84,7 @@
     <ClInclude Include="Application.h" />
     <ClInclude Include="ApplicationEvent.h" />
     <ClInclude Include="AudioEngine.h" />
+    <ClInclude Include="Base.h" />
     <ClInclude Include="BoxColliderComponent.h" />
     <ClInclude Include="BufferLayout.h" />
     <ClInclude Include="Button.h" />

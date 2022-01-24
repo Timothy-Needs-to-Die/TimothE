@@ -1,4 +1,5 @@
 #include "VBO.h"
+#include "Base.h"
 
 VBO::VBO(unsigned int size)
 {
@@ -18,6 +19,18 @@ VBO::~VBO()
 {
 	glDeleteBuffers(1, &_rendererID);
 }
+
+std::shared_ptr<VBO> VBO::Create(unsigned int size)
+{
+	return CreateRef<VBO>(size);
+}
+
+std::shared_ptr<VBO> VBO::Create(float* vertices, unsigned int size)
+{
+	return CreateRef<VBO>(vertices, size);
+}
+
+
 
 void VBO::Bind() const
 {

@@ -13,6 +13,8 @@ public:
 
 	unsigned int GetCount() const { return _count; }
 
+	static std::shared_ptr<IBO> Create(unsigned int* indices, unsigned int count);
+
 private:
 	unsigned int _rendererID;
 	unsigned int _count;

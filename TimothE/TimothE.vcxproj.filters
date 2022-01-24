@@ -130,6 +130,7 @@
     <ClInclude Include="Renderer2D.h" />
     <ClInclude Include="IBO.h" />
     <ClInclude Include="BufferLayout.h" />
+    <ClInclude Include="Base.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="AddressTranslator.cpp" />
