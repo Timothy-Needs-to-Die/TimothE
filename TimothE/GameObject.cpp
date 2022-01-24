@@ -18,7 +18,6 @@ GameObject::GameObject(std::string name, ObjectType tag, Transform* transform)
 	AddComponent<Transform>(_pTransform);
 
 	InitVertexData();
-
 	SetShader("default");
 
 	Start();
@@ -197,6 +196,68 @@ bool GameObject::LoadState(IStream& stream)
 	return true;
 }
 
+Component* GameObject::GetComponentInChild(Component::Types type)
+{
+	if (_pChild != nullptr)
+	{
+		for (Component* c : _pChild->GetComponents())
+		{
+			if (c->GetType() == type)
+				return c;
+		}
+
+		std::cout << "[ERROR]: Component does not exist in child." << std::endl;
+
+		return nullptr;
+	}
+	else
+	{
+		std::cout << "[ERROR]: GameObject child does not exist." << std::endl;
+		return nullptr;
+	}
+}
+
+std::vector<Component*> GameObject::GetComponentsInChild()
+{
+	if (_pChild != nullptr)
+		return _pChild->GetComponents();
+
+	std::cout << "[ERROR]: GameObject child does not exist." << std::endl;
+
+	return;
+}
+
+Component* GameObject::GetComponentInParent(Component::Types type)
+{
+	if (_pParent != nullptr)
+	{
+		for (Component* c : _pParent->GetComponents())
+		{
+			if (c->GetType() == type)
+				return c;
+		}
+
+		std::cout << "[ERROR]: Component does not exist in parent." << std::endl;
+
+		return nullptr;
+	}
+	else
+	{
+		std::cout << "[ERROR]: GameObject parent does not exist." << std::endl;
+		return nullptr;
+	}
+}
+
+std::vector<Component*> GameObject::GetComponentsInParent()
+{
+	if (_pParent != nullptr)
+		return _pParent->GetComponents();
+
+	std::cout << "[ERROR]: GameObject parent does not exist." << std::endl;
+
+	return;
+}
+
 void GameObject::SwapComponents(int index1, int index2)
 {
 	std::iter_swap(_pComponents.begin() + index1, _pComponents.begin() + index2);
@@ -210,6 +271,22 @@ void GameObject::SetName(std::string name)
 void GameObject::SetType(ObjectType tag)
 {
 	_tag = tag;
+}
+
+void GameObject::SetParent(GameObject* parent)
+{
+	if(parent != nullptr)
+		parent->SetChild(this);
+
+	_pParent = parent;
+}
+
+void GameObject::SetChild(GameObject* child)
+{
+	if (child != nullptr)
+		child->SetParent(this);
+
+	_pChild = child;
 }
 
 void GameObject::RemoveComponent(Component* comp)

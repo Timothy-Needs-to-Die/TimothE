@@ -23,46 +23,93 @@ enum class ObjectType
 class GameObject : public ISerializable
 {
 public:
-	//Constructor/Destructor
+	//////////////////////////
+	//Constructor/Destructor//
+	//////////////////////////
 	GameObject(std::string name = "New GameObject", ObjectType tag = ObjectType::Player, Transform* transform = nullptr);
 	~GameObject();
 
-	//Game Loop
+	/////////////
+	//Game Loop//
+	/////////////
 	virtual void Start();
 	virtual void Update(float deltaTime);
 	virtual void Exit();
 
-	//Data Initialisation
+public:
+	///////////////////////
+	//Data Initialisation//
+	///////////////////////
 	void InitVertexData();
 	void LoadTexture(Texture2D* texture);
 
-	//Display Functions
+	/////////////////////
+	//Display Functions//
+	/////////////////////
 	void DisplayInEditor();
 
-	//Get Unique Identifiers
+public:
+	//////////////////////////
+	//Get Unique Identifiers//
+	//////////////////////////
 	std::string GetUID() { return _UID; }
 	std::string GetName() { return _name; }
 	ObjectType GetType() { return _tag; }
 	int GetTextureID() { return _textureID; }
 	int GetShaderID() { return _shaderID; }
 
-	//Set Unique Identifiers
+	//////////////////////////
+	//Set Unique Identifiers//
+	//////////////////////////
 	void SetName(std::string name);
 	void SetType(ObjectType tag);
 
-	//Get Components
+	////////////////////////
+	//Get Ownership States//
+	////////////////////////
+	GameObject* GetParent() { return _pParent; };
+	GameObject* GetChild() { return _pChild; };
+
+	////////////////////////
+	//Set Ownership States//
+	////////////////////////
+	void SetParent(GameObject* parent);
+	void SetChild(GameObject* child);
+
+public:
+	//////////////////
+	//Get Components//
+	//////////////////
 	std::vector<Component*> GetComponents() { return _pComponents; }
 	Transform* GetTransform() { return _pTransform; }
 	Shader* GetShader() const { return _pShader; }
 
-	//Swap Components
+	////////////////////////
+	//Get Child Components//
+	////////////////////////
+	Component* GetComponentInChild(Component::Types type);
+	std::vector<Component*> GetComponentsInChild();
+
+	/////////////////////////
+	//Get Parent Components//
+	/////////////////////////
+	Component* GetComponentInParent(Component::Types type);
+	std::vector<Component*> GetComponentsInParent();
+
+	///////////////////
+	//Swap Components//
+	///////////////////
 	void SwapComponents(int index1, int index2);
 
-	//Set Components
+	//////////////////
+	//Set Components//
+	//////////////////
 	void SetShader(int id) { _shaderID = id; };
 	void SetShader(std::string name);
 
-	//Component Add/Remove
+	////////////////////////////
+	//Component Get/Add/Remove//
+	////////////////////////////
 	template<typename T>
 	T* GetComponent()
 	{
@@ -91,27 +138,44 @@ public:
 
 	void RemoveComponent(Component* comp);
 
-	//Inherited via ISerializable
+public:
+	///////////////////////////////
+	//Inherited via ISerializable//
+	///////////////////////////////
 	virtual bool SaveState(IStream& stream) const override;
 	virtual bool LoadState(IStream& stream) override;
 	unsigned int GetVAO() const { return _vao; }
 private:
-	//Properties (Unique Identifiers)
+	///////////////////////////////////
+	//Properties (Unique Identifiers)//
+	///////////////////////////////////
 	std::string _UID;
 	std::string _name;
 	ObjectType _tag;
 	int _textureID = 0;
 	int _shaderID = 0;
 
-	//Components
+	/////////////
+	//Ownership//
+	/////////////
+	GameObject* _pParent = nullptr;
+	GameObject* _pChild = nullptr;
+
+	//////////////
+	//Components//
+	//////////////
 	std::vector<Component*> _pComponents;
 	Transform* _pTransform;
 
-	//Shaders
+	///////////
+	//Shaders//
+	///////////
 	Shader* _pShader;
 	std::string _shaderName;
 
-	//Buffers
+	///////////
+	//Buffers//
+	///////////
 	unsigned int _vao;
 	unsigned int _vbo;
 };
