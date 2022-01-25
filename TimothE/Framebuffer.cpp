@@ -1,13 +1,15 @@
 #include "Framebuffer.h"
+#include "Base.h"
 
-Framebuffer::Framebuffer(Shader* screenShader, float* quadVertices)
-	: _pScreenShader(screenShader), _pQuadVertices(quadVertices)
+Framebuffer::Framebuffer(Window* pWindow, Shader* screenShader, float* quadVertices)
+	: _pScreenShader(screenShader), _pQuadVertices(quadVertices), _pWindow(pWindow)
 {
 	CreateFramebuffer();
+	_vbo = VBO::Create(_pQuadVertices, 24);
 }
 
-Framebuffer::Framebuffer(Shader* screenShader)
-	: _pScreenShader(screenShader)
+Framebuffer::Framebuffer(Window* pWindow, Shader* screenShader)
+	: _pScreenShader(screenShader), _pWindow(pWindow)
 {
 	_pQuadVertices = new float[24]{
 		// positions   // texCoords
@@ -20,6 +22,7 @@ Framebuffer::Framebuffer(Shader* screenShader)
 		 1.0f,   1.0f,   1.0f, 1.0f //Top Right
 	};
 
+	_vbo = CreateRef<VBO>(_pQuadVertices, 24);
 	CreateFramebuffer();
 }
 
@@ -33,21 +36,26 @@ Framebuffer::~Framebuffer()
 
 void Framebuffer::CreateFramebuffer()
 {
-	//Generate Quad VAO and VBO
-	//VAO
-	_vao.CreateVAO();
-	//VBO
-	_vbo.CreateVBO();
+	_vbo->SetLayout({
+		{ ShaderDataTypes::Float2, "aPos"     },
+		{ ShaderDataTypes::Float2, "aTexCoords"     },
+		});
 
-	glBufferData(GL_ARRAY_BUFFER, 24 * sizeof(float), _pQuadVertices, GL_STATIC_DRAW);
+	_vao = VAO::Create();
 
-	//Vertex Positions
-	glEnableVertexAttribArray(0);
-	glVertexAttribPointer(0, 2, GL_FLOAT, GL_FALSE, 4 * sizeof(float), (void*)0);
+	_vao->AddVertexBuffer(_vbo);
 
-	//Texcoords
-	glEnableVertexAttribArray(1);
-	glVertexAttribPointer(1, 2, GL_FLOAT, GL_FALSE, 4 * sizeof(float), (void*)(2 * sizeof(float)));
+	
+
+	//glBufferData(GL_ARRAY_BUFFER, 24 * sizeof(float), _pQuadVertices, GL_STATIC_DRAW);
+	////Vertex Positions
+	//glEnableVertexAttribArray(0);
+	//glVertexAttribPointer(0, 2, GL_FLOAT, GL_FALSE, 4 * sizeof(float), (void*)0);
+	////Texcoords
+	//glEnableVertexAttribArray(1);
+	//glVertexAttribPointer(1, 2, GL_FLOAT, GL_FALSE, 4 * sizeof(float), (void*)(2 * sizeof(float)));
+
+
 
 	//Set the texture to 0
 	_pScreenShader->BindShader();
@@ -60,22 +68,23 @@ void Framebuffer::CreateFramebuffer()
 	// create a color attachment texture
 	glGenTextures(1, &_texture);
 	glBindTexture(GL_TEXTURE_2D, _texture);
-	glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, 1280, 720, 0, GL_RGB, GL_UNSIGNED_BYTE, NULL);
+	glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, _pWindow->GetWidth(), _pWindow->GetHeight(), 0, GL_RGB, GL_UNSIGNED_BYTE, NULL);
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
 	glFramebufferTexture2D(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0, GL_TEXTURE_2D, _texture, 0);
 	// create a render buffer object for depth and stencil attachment (we won't be sampling these)
 
 	//Generate the render buffer objects
-	_rbo.CreateRBO();
+	_rbo = new RBO();
+	_rbo->CreateRBO();
 
 	//Adds the depth stencil attachments
-	_rbo.AddDepthStencil();
-	
+	_rbo->AddDepthStencil();
+
 	// now that we actually created the frame buffer and added all attachments we want to check if it is actually complete now
 	if (glCheckFramebufferStatus(GL_FRAMEBUFFER) != GL_FRAMEBUFFER_COMPLETE)
 		std::cout << "ERROR::FRAMEBUFFER:: Framebuffer is not complete!" << std::endl;
-	
+
 
 	UnbindFramebuffer();
 }
@@ -98,7 +107,8 @@ void Framebuffer::BindShader()
 void Framebuffer::DrawFramebuffer()
 {
 	//Bind Vertex Array
-	_vao.BindBuffer();
+	//_vao.BindBuffer();
+	_vao->Bind();
 
 	BindTexture();
 	glDrawArrays(GL_TRIANGLES, 0, 6);

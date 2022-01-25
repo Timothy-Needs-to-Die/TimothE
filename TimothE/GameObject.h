@@ -8,8 +8,10 @@
 #include "Serializable.h"
 #include "Shader.h"
 #include "BoxColliderComponent.h"
+#include "ParticleSystem.h"
 
 class Texture2D;
+class Scene;
 
 enum class ObjectType
 {
@@ -133,6 +135,7 @@ public:
 		}
 
 		_pComponents.push_back(comp);
+		//Scene::AddedComponentHandler(this, comp);
 		return comp;
 	}
 

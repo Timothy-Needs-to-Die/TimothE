@@ -65,4 +65,3 @@ private:
 
 	Camera* _pGameCamera;
 };
-

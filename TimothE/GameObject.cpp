@@ -6,6 +6,7 @@
 #include "Console.h"
 #include "BoxColliderComponent.h"
 #include "ResourceManager.h"
+#include "Scene.h"
 
 GameObject::GameObject(std::string name, ObjectType tag, Transform* transform) 
 	: _name(name), _tag(tag), _pTransform(transform)
@@ -92,7 +93,12 @@ void GameObject::Update(float deltaTime)
 {
 	for (Component* c : _pComponents)
 	{
-		c->OnUpdate();
+		c->OnUpdate(deltaTime);
+		if (c->GetType() == Component::ParticleSystem_Type)
+		{
+			ParticleSystem* p = (ParticleSystem*)c;
+			p->SetParentTransform(_pTransform);
+		}
 	}
 }
 
@@ -285,6 +291,7 @@ void GameObject::SetChild(GameObject* child)
 
 void GameObject::RemoveComponent(Component* comp)
 {
+	Scene::RemoveComponentHandler(this, comp);
 	_pComponents.erase(std::find(_pComponents.begin(), _pComponents.end(), comp));
 	delete comp;
 }

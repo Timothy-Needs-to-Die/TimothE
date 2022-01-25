@@ -36,7 +36,7 @@ public:
 
 	void OnStart();
 	void OnEnd();
-	void OnUpdate();
+	void OnUpdate(float deltaTime);
 
 	void SetFont(std::string font);
 	void LoadFont();
@@ -76,6 +76,4 @@ private:
 	GameObject* _parentObject;
 
 	bool _hasInit = false;
-
 };
-

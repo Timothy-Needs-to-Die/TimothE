@@ -23,7 +23,7 @@ void CircleCollider::OnStart()
 
 }
 
-void CircleCollider::OnUpdate()
+void CircleCollider::OnUpdate(float deltaTime)
 {
 	//if (Input::IsMouseButtonDown(BUTTON_1))
 	//{

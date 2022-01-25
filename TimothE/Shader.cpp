@@ -16,7 +16,7 @@ Shader::~Shader()
 
 void Shader::BindShader()
 {
-    glUseProgram(GetProgramID());
+    glUseProgram(_shaderProgramID);
 }
 
 void Shader::UnbindShader()
@@ -39,6 +39,25 @@ GLuint Shader::CreateShader()
     glAttachShader(programID, vs);
     glAttachShader(programID, fs);
     glLinkProgram(programID);
+
+	glLinkProgram(programID);
+
+	GLint isLinked;
+	glGetProgramiv(programID, GL_LINK_STATUS, &isLinked);
+	if (isLinked == GL_FALSE)
+	{
+		GLint maxLength;
+		glGetProgramiv(programID, GL_INFO_LOG_LENGTH, &maxLength);
+
+		std::vector<GLchar> infoLog(maxLength);
+		glGetProgramInfoLog(programID, maxLength, &maxLength, infoLog.data());
+        std::cout << "Shader linking failed (" << _shaderSourceCode.vertexShaderSource << "):\n" << infoLog.data() << std::endl;
+
+		glDeleteProgram(programID);
+
+		glDeleteShader(vs);
+		glDeleteShader(fs);
+	}
 
     // Shaders are now linked to a program, so we no longer need them
     glDeleteShader(vs);

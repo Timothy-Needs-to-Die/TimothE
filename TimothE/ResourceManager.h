@@ -2,15 +2,16 @@
 #include "pch.h"
 #include "UID.h"
 
-#include "Scene.h"
 #include "Shader.h"
 #include "Texture2D.h"
 //#include "AudioEngine.h"
+class Scene;
 
 static class ResourceManager
 {
 public:
 	static void Init();
+	static void Shutdown();
 
 	//instantiate object functions
 	static void InstantiateTexture(std::string name, Texture2D* texture);

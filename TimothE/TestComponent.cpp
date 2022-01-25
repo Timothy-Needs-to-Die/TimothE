@@ -21,7 +21,7 @@ void TestComponent::OnStart()
 }
 
 //update
-void TestComponent::OnUpdate()
+void TestComponent::OnUpdate(float deltaTime)
 {
 	
 }

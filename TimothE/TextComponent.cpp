@@ -69,9 +69,9 @@ void TextComponent::OnEnd()
 {
 }
 
-void TextComponent::OnUpdate()
+void TextComponent::OnUpdate(float deltaTime)
 {
-	RenderText(*_shader, _text, _parentObject->GetTransform()->GetPosition().x, _parentObject->GetTransform()->GetPosition().y, _scale, _color);
+	//RenderText(*_shader, _text, _parentObject->GetTransform()->GetPosition().x, _parentObject->GetTransform()->GetPosition().y, _scale, _color);
 }
 
 void TextComponent::SetFont(std::string font)

@@ -7,6 +7,7 @@
 #include "VBO.h"
 #include "VAO.h"
 #include "RBO.h"
+#include "Window.h"
 
 #include <iostream>
 
@@ -15,9 +16,9 @@ class Framebuffer
 {
 public:
 	//Creates a frame buffer with a predefined set of vertices
-	Framebuffer(Shader* screenShader, float* quadVertices);
+	Framebuffer(Window* pWidnow, Shader* screenShader, float* quadVertices);
 	//Creates a frame buffer with a whole screen quad defined for vertices
-	Framebuffer(Shader* screenShader);
+	Framebuffer(Window* pWidnow, Shader* screenShader);
 
 	~Framebuffer();
 
@@ -27,7 +28,7 @@ public:
 	//Unbinds this frame buffer to the opengl pipeline
 	void UnbindFramebuffer();
 
-	//Binds the screen shader 
+	//Binds the screen shader
 	void BindShader();
 
 	//Draws the quad to the screen
@@ -46,6 +47,7 @@ private:
 	void CreateFramebuffer();
 
 	Shader* _pScreenShader;
+	Window* _pWindow;
 
 	float* _pQuadVertices;
 
@@ -53,8 +55,7 @@ private:
 	unsigned int _texture;
 private:
 	//buffer objects
-	VAO _vao = VAO();
-	VBO _vbo = VBO();
-	RBO _rbo = RBO();
+	std::shared_ptr<VAO> _vao;
+	std::shared_ptr<VBO> _vbo;
+	RBO* _rbo;
 };
-

@@ -18,7 +18,7 @@ public:
 
 	//Inherited Component methods
 	void OnStart() override;
-	void OnUpdate() override;
+	void OnUpdate(float deltaTime) override;
 	void OnEnd() override;
 	void DrawEditorUI() override;
 
@@ -37,6 +37,9 @@ public:
 	virtual bool SaveState(IStream& stream) const override;
 	virtual bool LoadState(IStream& stream) override;
 
+	void Bind(int slot) {
+		glBindTextureUnit(slot, _ID);
+	}
 
 private:
 	void GenerateTexture(unsigned char* data);

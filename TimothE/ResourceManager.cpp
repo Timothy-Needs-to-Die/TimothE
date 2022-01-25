@@ -1,4 +1,5 @@
 #include "ResourceManager.h"
+#include "Scene.h"
 
 std::map<std::string, Texture2D*> ResourceManager::_textures;
 std::map<std::string, Shader*> ResourceManager::_shaders;
@@ -22,6 +23,19 @@ void ResourceManager::Init()
 	//LOAD SOUNDS
 	
 	//LOAD FONTS
+}
+
+void ResourceManager::Shutdown()
+{
+	for (auto& tex : _textures)
+	{
+		unsigned int id = tex.second->GetID();
+		glDeleteTextures(1, &id);
+	}
+
+	_textures.clear();
+	_shaders.clear();
+	_scenes.clear();
 }
 
 void ResourceManager::InstantiateTexture(std::string name, Texture2D* texture)
