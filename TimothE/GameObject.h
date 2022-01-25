@@ -46,6 +46,7 @@ public:
 		}
 
 		_pComponents.push_back(comp);
+		Scene::AddedComponentHandler(this, comp);
 		return comp;
 	}
 	void RemoveComponent(Component* comp);

@@ -177,6 +177,8 @@ void Editor::EditorImGui(Scene* currentScene)
 				}
 			}
 
+			Component* componentToDelete = nullptr;
+
 			// for each component in the game object
 			for (int i = 0; i < _pSelectedGameObject->GetComponents().size(); i++)
 			{
@@ -190,7 +192,10 @@ void Editor::EditorImGui(Scene* currentScene)
 					// add a delete button
 					if (ImGui::Button(("Delete component##" + std::to_string(c->GetType())).c_str()))
 					{
-						_pSelectedGameObject->RemoveComponent(c);
+						componentToDelete = c;
+						break;
+						//_pSelectedGameObject->RemoveComponent(c);
+						
 					}
 					// check if i is not the first
 					if (i > 0)
@@ -216,6 +221,11 @@ void Editor::EditorImGui(Scene* currentScene)
 						}
 					}
 				}
+			}
+
+			if (componentToDelete != nullptr) {
+				_pSelectedGameObject->RemoveComponent(componentToDelete);
+				componentToDelete = nullptr;
 			}
 
 			// add component

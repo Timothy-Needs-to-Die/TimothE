@@ -11,6 +11,7 @@
 
 int Scene::nextID = 0;
 std::vector<GameObject*> Scene::_listOfGameObjects;
+std::vector<GameObject*> Scene::_listOfDrawableGameObjects;
 
 Shader* shader;
 TextComponent* text;
@@ -25,7 +26,7 @@ Scene::Scene(std::string name)
 	//TEST CODE//
 	/////////////
 	GameObject* _pTestObject = new GameObject("LENNA!", ObjectType::Player);
-	//_pTestObject->LoadTexture(ResourceManager::GetTexture("lenna"));
+	_pTestObject->LoadTexture(ResourceManager::GetTexture("lenna"));
 
 	ResourceManager::InstantiateTexture("fish", new Texture2D("Fish.png"));
 
@@ -36,7 +37,7 @@ Scene::Scene(std::string name)
 	_pTestObject->GetTransform()->SetPosition(640, 360);
 
 	GameObject* _pButtonTestingObject = new GameObject("BUTTON", ObjectType::UI);
-	//_pButtonTestingObject->LoadTexture(ResourceManager::GetTexture("lenna"));
+	_pButtonTestingObject->LoadTexture(ResourceManager::GetTexture("lenna"));
 	_pTestObject->GetTransform()->Translate({ 100,100 });
 	_pTestObject->GetTransform()->Scale({ 320,320 });
 
@@ -123,6 +124,15 @@ void Scene::RenderScene(Renderer* pRenderer, Camera* cam)
 	//Renderer2D::DrawQuad(glm::vec2(-0.3f, 0.0f), glm::vec2(0.5f, 0.5f), ResourceManager::GetTexture("lenna"));
 	//Renderer2D::DrawQuad(glm::vec2(-0.7f, 0.0f), glm::vec2(0.5f, 0.5f), ResourceManager::GetTexture("fish"));
 
+	for (auto& obj : _listOfDrawableGameObjects) {
+		Texture2D* objTex = obj->GetComponent<Texture2D>();
+		if (objTex != nullptr) {
+			Transform* objTransform = obj->GetTransform();
+			Renderer2D::DrawQuad(ConvertWorldToScreen(objTransform->GetPosition()), glm::vec2(1.0f), objTex);
+		}
+	}
+
+
 	for (float i = 0; i < 5; i+= 0.5f) {
 		for (float j = 0; j < 5; j+= 0.5f) {
 			Renderer2D::DrawQuad(glm::vec2{ i, j }, glm::vec2(0.5f, 0.5f), ResourceManager::GetTexture("spritesheet"), _uvSpriteCoords);
@@ -138,6 +148,35 @@ void Scene::RemoveGameObject(GameObject* gameObject)
 	_listOfGameObjects.erase(std::find(_listOfGameObjects.begin(), _listOfGameObjects.end(), gameObject));
 	delete gameObject;
 	gameObject = nullptr;
+}
+
+void Scene::AddedComponentHandler(GameObject* gameObject, Component* comp)
+{
+	//If this component is a graphics component
+	if (comp->IsInCategory(Component::Graphics_Category)) {
+		//If the Gameobject is not already in the drawables list
+		if (std::find(_listOfDrawableGameObjects.begin(), _listOfDrawableGameObjects.end(), gameObject) == _listOfDrawableGameObjects.end()) {
+			_listOfDrawableGameObjects.push_back(gameObject);
+		}
+	}
+}
+
+void Scene::RemoveComponentHandler(GameObject* gameObject, Component* comp)
+{
+	if (!comp->IsInCategory(Component::Graphics_Category)) return;
+
+	//Get all components the gameobject has
+	std::vector<Component*> goComps = gameObject->GetComponents();
+	for (auto& c : goComps) {
+		//if the current component is the one we are removing then go to next iteration
+		if (c == comp) continue;
+
+		//if the current component is a graphics category then return as the object does not need to be removed from drawables.
+		if (c->IsInCategory(Component::Graphics_Category)) return;
+	}
+
+	//remove from drawables if all graphics components have been removed
+	_listOfDrawableGameObjects.erase(std::find(_listOfDrawableGameObjects.begin(), _listOfDrawableGameObjects.end(), gameObject));
 }
 
 void Scene::LoadScene(const std::string& filename)

@@ -26,6 +26,10 @@ public:
 	
 	GameObject* AddGameObject(GameObject* gameObject) { _listOfGameObjects.push_back(gameObject); return gameObject; }
 	void RemoveGameObject(GameObject* gameObject);
+
+	static void AddedComponentHandler(GameObject* gameObject, Component* comp);
+	static void RemoveComponentHandler(GameObject* gameObject, Component* comp);
+
 	std::vector<GameObject*> GetGameObjects() { return _listOfGameObjects; }
 
 	void LoadScene(const std::string& filename);
@@ -89,4 +93,5 @@ private:
 
 	//Stores a vector of gameobjects. This is refreshed everytime a scene loads.
 	static std::vector<GameObject*> _listOfGameObjects;
+	static std::vector<GameObject*> _listOfDrawableGameObjects;
 };

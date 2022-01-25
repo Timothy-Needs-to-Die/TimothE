@@ -11,6 +11,7 @@ static class ResourceManager
 {
 public:
 	static void Init();
+	static void Shutdown();
 
 	//instantiate object functions
 	static void InstantiateTexture(std::string name, Texture2D* texture);

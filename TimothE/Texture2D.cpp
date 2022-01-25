@@ -20,7 +20,7 @@ Texture2D::Texture2D(std::string path) : Component(), _ID(0)
 Texture2D::~Texture2D()
 {
 	//Deletes this texture
-	glDeleteTextures(1, &_ID);
+	//glDeleteTextures(1, &_ID);
 }
 
 void Texture2D::DrawEditorUI()

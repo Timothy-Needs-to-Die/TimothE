@@ -214,6 +214,7 @@ void GameObject::SetType(ObjectType tag)
 
 void GameObject::RemoveComponent(Component* comp)
 {
+	Scene::RemoveComponentHandler(this, comp);
 	_pComponents.erase(std::find(_pComponents.begin(), _pComponents.end(), comp));
 	delete comp;
 }
