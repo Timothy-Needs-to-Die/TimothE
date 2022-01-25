@@ -127,6 +127,7 @@
     <ClInclude Include="VBO.h" />
     <ClInclude Include="Window.h" />
     <ClInclude Include="pch.h" />
+    <ClInclude Include="SpriteComponent.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Application.cpp" />
@@ -180,5 +181,6 @@
     <ClCompile Include="VBO.cpp" />
     <ClCompile Include="Window.cpp" />
     <ClCompile Include="pch.cpp" />
+    <ClCompile Include="SpriteComponent.cpp" />
   </ItemGroup>
 </Project>

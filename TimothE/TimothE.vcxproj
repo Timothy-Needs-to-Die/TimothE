@@ -134,6 +134,7 @@
     <ClInclude Include="Scene.h" />
     <ClInclude Include="Serializable.h" />
     <ClInclude Include="Shader.h" />
+    <ClInclude Include="SpriteComponent.h" />
     <ClInclude Include="Stream.h" />
     <ClInclude Include="StreamFile.h" />
     <ClInclude Include="TestComponent.h" />
@@ -175,6 +176,7 @@
     <ClCompile Include="Scene.cpp" />
     <ClCompile Include="Shader.cpp" />
     <ClCompile Include="Source.cpp" />
+    <ClCompile Include="SpriteComponent.cpp" />
     <ClCompile Include="StreamFile.cpp" />
     <ClCompile Include="StreamHelpers.cpp" />
     <ClCompile Include="TestComponent.cpp" />
@@ -189,4 +191,4 @@
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
   </ImportGroup>
-</Project> 
+</Project>
