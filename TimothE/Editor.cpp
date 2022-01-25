@@ -545,7 +545,7 @@ void Editor::ConvertGameToEditorSpace()
 
 void Editor::EditorUpdate(Scene* currentScene, float dt)
 {
-	currentScene->EditorUpdate();
+	currentScene->EditorUpdate(dt);
 	ConvertGameToEditorSpace();
 }
 

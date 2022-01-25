@@ -40,13 +40,13 @@ void Renderer::Render(ParticleSystem* particles, Camera* cam)
 		{
 			particleShader->BindShader();
 			glBindVertexArray(p->GetVAO());
-			particleShader->SetMat4("projection", cam->ProjMat());
+			particleShader->SetMat4("projection", cam->Proj());
 			p->GetTransform()->CalculateTransformMatrix(); // for some reason the transform matrix is not properly updated
 			glm::mat4 transform = p->GetTransform()->GetTransformMatrix();
 			particleShader->SetMat4("model", transform);
 			//particleShader->SetVec2("offset", p->GetPosition());
 			//particleShader->SetVec4("colour", p->GetColour());
-			particleShader->SetMat4("view", cam->ViewMat());
+			particleShader->SetMat4("view", cam->View());
 			glBindTexture(GL_TEXTURE_2D, p->GetTextureID());
 			glDrawArrays(GL_TRIANGLES, 0, 6);
 			glBindVertexArray(0);

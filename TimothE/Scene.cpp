@@ -115,7 +115,7 @@ void Scene::ScenePause()
 
 }
 
-void Scene::EditorUpdate()
+void Scene::EditorUpdate(float deltaTime)
 {
 	//Cycles through all gameobjects in the scene and calculates there transform.
 	//Needed for the editor window to work smoothly
@@ -124,7 +124,7 @@ void Scene::EditorUpdate()
 		TextComponent* tc = obj->GetComponent<TextComponent>();
 		if (tc != nullptr) {
 			tc->OnStart();
-			tc->OnUpdate();
+			tc->OnUpdate(deltaTime);
 		}
 	}
 }

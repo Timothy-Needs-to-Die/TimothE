@@ -19,7 +19,7 @@ public:
 	void ScenePause();
 
 	//Any updates that need to be performed in the editor. Primarily every game objects transform
-	void EditorUpdate();
+	void EditorUpdate(float deltaTime);
 
 	void Update(float deltaTime);
 	void RenderScene(Renderer* pRenderer, Camera* cam);

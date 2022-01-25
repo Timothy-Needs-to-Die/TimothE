@@ -9,7 +9,7 @@ public:
 	SpriteComponent(GameObject* parent);
 	~SpriteComponent();
 	void OnStart() override;
-	void OnUpdate() override;
+	void OnUpdate(float deltaTime) override;
 	void OnEnd() override;
 	virtual void DrawEditorUI() override;
 	bool* _editorIsEnabled;
