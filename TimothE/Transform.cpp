@@ -1,4 +1,5 @@
 #include "Transform.h"
+#include "GameObject.h"
 
 
 Transform::Transform(GameObject* pParent)
@@ -115,14 +116,31 @@ bool Transform::LoadState(IStream& stream)
 
 void Transform::CalculateTransformMatrix() 
 {
+	GameObject* parent = GetParent()->GetParent();
+
 	//Reset matrix to identity
 	_transformationMatrix = glm::mat4(1.0);
-	//translate by the position
-	_transformationMatrix = glm::translate(_transformationMatrix, glm::vec3(_position, 0.0f));
-	//rotate by the rotation
-	_transformationMatrix = glm::rotate(_transformationMatrix, glm::radians(_rotation), glm::vec3(0.0f, 0.0f, 1.0f));
-	//scale by the scale
-	_transformationMatrix = glm::scale(_transformationMatrix, glm::vec3(_size, 1.0f));
+
+	if (parent != nullptr)
+	{
+		//translate by the position
+		_transformationMatrix = glm::translate(parent->GetTransform()->GetTransformMatrix() * _transformationMatrix, glm::vec3(_position, 0.0f));
+		//rotate by the rotation
+		_transformationMatrix = glm::rotate(_transformationMatrix, glm::radians(_rotation), glm::vec3(0.0f, 0.0f, 1.0f));
+		//scale by the scale
+		_transformationMatrix = glm::scale(_transformationMatrix, glm::vec3(_size, 1.0f));
+
+		return;
+	}
+	else
+	{
+		//translate by the position
+		_transformationMatrix = glm::translate(_transformationMatrix, glm::vec3(_position, 0.0f));
+		//rotate by the rotation
+		_transformationMatrix = glm::rotate(_transformationMatrix, glm::radians(_rotation), glm::vec3(0.0f, 0.0f, 1.0f));
+		//scale by the scale
+		_transformationMatrix = glm::scale(_transformationMatrix, glm::vec3(_size, 1.0f));
+	}
 }
 
 void Transform::OnEnd()

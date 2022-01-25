@@ -22,7 +22,6 @@ class GameObject;
 
 //macros to define component type in subclass
 #define BIT(x) (1<<x)
-class GameObject;
 
 class Component : ISerializable
 {
