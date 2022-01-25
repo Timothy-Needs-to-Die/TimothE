@@ -11,6 +11,7 @@ std::vector<GameObject*> Scene::_listOfGameObjects;
 
 Shader* shader;
 TextComponent* text;
+
 Scene::Scene(std::string name)
 {
 	_listOfGameObjects.clear();
@@ -39,7 +40,16 @@ Scene::Scene(std::string name)
 	_pTestObject2->GetTransform()->SetPosition(550, 360);
 	_pTestObject2->GetTransform()->Translate({ 100,100 });
 	_pTestObject2->GetTransform()->Scale({ 320,320 });
-	
+
+	//child pos test
+	//GameObject* _pTestObject3 = new GameObject("TESTOBJECT", ObjectType::Player);
+	//_pTestObject3->LoadTexture(ResourceManager::GetTexture("lenna"));
+	//_pTestObject3->AddComponent(new BoxColliderComponent(_pTestObject3));
+	//_pTestObject3->GetTransform()->SetPosition(0, 0);
+	//_pTestObject3->GetTransform()->Translate({ 0, 0 });
+	//_pTestObject3->GetTransform()->Scale({ 320,320 });
+	//_pTestObject3->SetParent(_pTestObject2);
+	//_pTestObject2->SetChild(_pTestObject3);
 
 	GameObject* _pButtonTestingObject = new GameObject("BUTTON", ObjectType::UI);
 	_pButtonTestingObject->AddComponent(new Button(_pButtonTestingObject));
@@ -50,6 +60,7 @@ Scene::Scene(std::string name)
 
 	AddGameObject(_pTestObject);
 	AddGameObject(_pTestObject2);
+	//AddGameObject(_pTestObject3);
 	AddGameObject(_pButtonTestingObject);
 	
 	GameObject* _pTextObj = new GameObject("TEXTOBJ", ObjectType::UI);

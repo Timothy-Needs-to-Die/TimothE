@@ -5,7 +5,7 @@ CircleCollider::CircleCollider(GameObject* parent) : Component(parent), _radius(
 	SetType(Component::Boxcollision_Type);
 	SetCategory(Component::Collisions_Category);
 
-	_centre = Parent()->GetTransform()->GetPosition();
+	_centre = GetParent()->GetTransform()->GetPosition();
 	_radius = parent->GetTransform()->GetScale().x / 2;
 	bounds = new Rect((_centre.x - _radius), (_centre.x + _radius),
 		(_centre.y - _radius), (_centre.y + _radius));

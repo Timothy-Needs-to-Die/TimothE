@@ -16,8 +16,7 @@ void Renderer::Render(GameObject* gameObject, Camera* cam)
 
 	gameObject->GetShader()->SetMat4("projection", cam->ProjMat());
 
-	glm::mat4 transform = gameObject->GetTransform()->GetTransformMatrix();
-	gameObject->GetShader()->SetMat4("model", transform);
+	gameObject->GetShader()->SetMat4("model", gameObject->GetTransform()->GetTransformMatrix());
 
 	gameObject->GetShader()->SetMat4("view", cam->ViewMat());
 

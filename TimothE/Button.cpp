@@ -15,12 +15,12 @@ Button::Button(GameObject* parent) : Component(parent)
 	_editorIsEnabled = &_isEnabled;
 
 	// If there is no box collider component, add one since the button needs one
-	if (Parent()->GetComponent<BoxColliderComponent>() == nullptr)
+	if (GetParent()->GetComponent<BoxColliderComponent>() == nullptr)
 	{
 		// Print to console to let the user know a new component was added
 		Console::Print("BUTTON COMPONENT: Created Component::BoxCollider as is required for Button::OnUpdate");
 		//std::cout << "BUTTON COMPONENT: created default box component for object" << std::endl;
-		Parent()->AddComponent(new BoxColliderComponent(Parent()));
+		GetParent()->AddComponent(new BoxColliderComponent(GetParent()));
 	}
 }
 
@@ -42,14 +42,14 @@ void Button::OnUpdate()
 		int mouseY = Input::GetMouseY();
 
 		// Get the position of the button through the transforms - THIS SHOULD BE HANDLED BY BOX COLLIDER 
-		Transform* transform = Parent()->GetComponent<Transform>();
+		Transform* transform = GetParent()->GetComponent<Transform>();
 
 		glm::vec2 pos = transform->GetPosition();
 		float width = transform->GetScale().x;
 		float height = transform->GetScale().y;
 
 		// Check if the mouse is inside the button
-		if (Parent()->GetComponent<BoxColliderComponent>()->IsPointInside({mouseX, mouseY}))
+		if (GetParent()->GetComponent<BoxColliderComponent>()->IsPointInside({mouseX, mouseY}))
 		{
 			// If the mouse is inside the button then we are now hovering over the button;
 			_isHovering = true;

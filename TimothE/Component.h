@@ -27,14 +27,6 @@ class GameObject;
 class Component : ISerializable
 {
 public:
-	//setter
-	void SetParent(GameObject* newparent) {
-		_parentObject = newparent;
-	}
-	// Getter
-	GameObject* Parent() {
-		return _parentObject;
-	}
 	//enum for types of components
 	enum Types
 	{
@@ -66,7 +58,7 @@ public:
 	COMPONENT_STATIC_TYPE(None)
 
 	//constructor and destructor calling start and end methods
-	Component(GameObject* pParent) : _parentObject(pParent) { }
+	Component(GameObject* pParent) : _pParentObject(pParent) { }
 	Component() {}
 	~Component() {}
 
@@ -86,15 +78,16 @@ public:
 
 	//gets the component type and catagory
 	Categories GetCategory() const { return _category; }
-
-
-	Types GetType() const {
-		return _type;
-	}
+	Types GetType() const { return _type; }
 
 	//Set functions
 	void SetCategory(Component::Categories category) { _category = category; }
 	void SetType(Component::Types type) { _type = type; }
+
+	//setter
+	void SetParent(GameObject* parent) { _pParentObject = parent; }
+	// Getter
+	GameObject* GetParent() { return _pParentObject; }
 
 	//checks if item is in catagory and type enums
 	inline bool IsInCategory(Categories category) { return GetCategory() & category; }
@@ -121,7 +114,7 @@ protected:
 	//variable for type and categories to be assigned to
 	Types _type;
 	Categories _category;
-	GameObject* _parentObject;
+	GameObject* _pParentObject;
 
 	bool _isEnabled = true;
 	bool* _editorIsEnabled = &_isEnabled;

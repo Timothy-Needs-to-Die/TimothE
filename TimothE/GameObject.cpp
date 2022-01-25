@@ -275,17 +275,11 @@ void GameObject::SetType(ObjectType tag)
 
 void GameObject::SetParent(GameObject* parent)
 {
-	if(parent != nullptr)
-		parent->SetChild(this);
-
 	_pParent = parent;
 }
 
 void GameObject::SetChild(GameObject* child)
 {
-	if (child != nullptr)
-		child->SetParent(this);
-
 	_pChild = child;
 }
 

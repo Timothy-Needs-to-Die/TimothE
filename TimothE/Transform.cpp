@@ -36,6 +36,7 @@ void Transform::Rotate(float rotationAmount, glm::vec2 axis)
 
 void Transform::OnStart()
 {
+	
 }
 
 void Transform::OnUpdate()
@@ -105,14 +106,15 @@ bool Transform::LoadState(IStream& stream)
 
 	//Load Rotation
 	_rotation = ReadFloat(stream);
-
+	
 	//Load Scale
 	_size = ReadVec2(stream);
 
 	return true;
 }
 
-inline void Transform::CalculateTransformMatrix() {
+void Transform::CalculateTransformMatrix() 
+{
 	//Reset matrix to identity
 	_transformationMatrix = glm::mat4(1.0);
 	//translate by the position
@@ -125,4 +127,5 @@ inline void Transform::CalculateTransformMatrix() {
 
 void Transform::OnEnd()
 {
+
 }
