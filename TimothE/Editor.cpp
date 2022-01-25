@@ -273,6 +273,7 @@ void Editor::EditorImGui(Scene* currentScene)
 				}
 				if (ImGui::CollapsingHeader("Graphics"))
 				{
+					// texture component
 					static std::string texPath = "lenna3.jpg";
 					ImGui::InputText("Texture path", &texPath);
 					if (ImGui::Button("Texture"))
@@ -282,6 +283,11 @@ void Editor::EditorImGui(Scene* currentScene)
 						{
 							_pSelectedGameObject->LoadTexture(new Texture2D((char*)texPath.c_str()));
 						}
+					}
+
+					if (ImGui::Button("Particle System"))
+					{
+						_pSelectedGameObject->AddComponent<ParticleSystem>(new ParticleSystem(100, glm::vec4(1.0f), new Texture2D((char*)texPath.c_str()), _pSelectedGameObject->GetTransform()));
 					}
 				}
 			}

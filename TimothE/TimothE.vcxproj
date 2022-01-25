@@ -111,6 +111,7 @@
     <ClInclude Include="KeyEvent.h" />
     <ClInclude Include="MemoryManager.h" />
     <ClInclude Include="MouseEvent.h" />
+    <ClInclude Include="Particle.h" />
     <ClInclude Include="ParticleSystem.h" />
     <ClInclude Include="Renderer.h" />
     <ClInclude Include="ResourceManager.h" />
@@ -169,6 +170,7 @@
     <ClCompile Include="Imgui\imgui_widgets.cpp" />
     <ClCompile Include="Input.cpp" />
     <ClCompile Include="MemoryManager.cpp" />
+    <ClCompile Include="Particle.cpp" />
     <ClCompile Include="ParticleSystem.cpp" />
     <ClCompile Include="Renderer.cpp" />
     <ClCompile Include="ResourceManager.cpp" />

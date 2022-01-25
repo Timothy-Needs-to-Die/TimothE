@@ -5,7 +5,7 @@ void Renderer::RenderDrawables(std::vector<GameObject*> gameObjects, Camera* cam
 {
 	for (auto& obj : gameObjects)
 	{
-		//Render(obj, cam);
+		Render(obj, cam);
 		ParticleSystem* p = obj->GetComponent<ParticleSystem>();
 		if(p != nullptr)
 			Render(p, cam);
@@ -42,6 +42,7 @@ void Renderer::Render(ParticleSystem* particles, Camera* cam)
 			particleShader->BindShader();
 			glBindVertexArray(p->GetVAO());
 			particleShader->SetMat4("projection", cam->ProjMat());
+			p->GetTransform()->CalculateTransformMatrix(); // for some reason the transform matrix is not properly updated
 			glm::mat4 transform = p->GetTransform()->GetTransformMatrix();
 			particleShader->SetMat4("model", transform);
 			//particleShader->SetVec2("offset", p->GetPosition());
