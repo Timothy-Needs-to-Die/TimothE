@@ -52,13 +52,9 @@ Scene::Scene(std::string name)
 	
 
 	ResourceManager::InstantiateTexture("spritesheet", new Texture2D("testSheet.png"));
-
 	float sheetWidth = 2560, sheetHeight = 1664;
 	float spriteWidth = 128, spriteHeight = 128;
 	float x = 10, y = 7;
-
-
-
 	_uvSpriteCoords = new glm::vec2[4];
 	_uvSpriteCoords[0] =  glm::vec2((x * spriteWidth) / sheetWidth, (y * spriteHeight) / sheetHeight );
 	_uvSpriteCoords[1] =  glm::vec2(((x + 1) * spriteWidth) / sheetWidth, (y * spriteHeight) / sheetHeight );
@@ -121,9 +117,6 @@ void Scene::RenderScene(Renderer* pRenderer, Camera* cam)
 	//Renders the drawable objects
 	//pRenderer->RenderDrawables(_listOfGameObjects, cam);
 
-	
-
-
 	Renderer2D::BeginRender(cam);
 	Renderer2D::DrawQuad(glm::vec2(0.3f, 0.0f), glm::vec2(1.0f, 1.0f), ResourceManager::GetTexture("fish"));
 	Renderer2D::DrawQuad(glm::vec2(0.7f, 0.0f), glm::vec2(0.5f, 0.5f), ResourceManager::GetTexture("fish"));
@@ -131,7 +124,6 @@ void Scene::RenderScene(Renderer* pRenderer, Camera* cam)
 	Renderer2D::DrawQuad(glm::vec2(-0.3f, 0.0f), glm::vec2(0.5f, 0.5f), ResourceManager::GetTexture("lenna"));
 	Renderer2D::DrawQuad(glm::vec2(-0.7f, 0.0f), glm::vec2(0.5f, 0.5f), ResourceManager::GetTexture("fish"));
 	Renderer2D::EndRender();
-
 }
 
 void Scene::RemoveGameObject(GameObject* gameObject)

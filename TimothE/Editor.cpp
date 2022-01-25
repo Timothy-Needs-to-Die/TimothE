@@ -20,25 +20,14 @@ std::vector<std::string> Console::output = std::vector<std::string>();
 Editor::Editor(Application* pApp, Window* pWindow)
 	: _pWindow(pWindow), _pApplication(pApp)
 {
-	// vertex attributes for a quad that fills the editor screen space in Normalized Device Coordinates.
-	float* quadVertices = new float[24]{
-		// positions   // texCoords
-		-0.65f,  -0.6f,  0.0f, 0.0f,
-		-0.65f,   0.82f,	0.0f, 1.0f,
-		 0.6f,   0.82f,	1.0f, 1.0f,
-
-		 0.6f,  -0.6f,  1.0f, 0.0f,
-		-0.65f,  -0.6f,	0.0f, 0.0f,
-		 0.6f,   0.82f,   1.0f, 1.0f
-	};
-
 	//Creates the screen shader for the framebuffer
 	_pScreenShader = new Shader("fbVert.vs", "fbFrag.fs");
 
 	//Creates the editor framebuffer
-	_pEditorFramebuffer = new Framebuffer(_pScreenShader);
+	_pEditorFramebuffer = new Framebuffer(_pWindow, _pScreenShader);
 
-	float aspectRatio = 1280.0f / 720.0f;
+	
+	float aspectRatio = pWindow->GetWidth() / pWindow->GetHeight();
 	float zoomLevel = 1.0f;
 
 	float left = -aspectRatio * zoomLevel;
@@ -485,7 +474,7 @@ void Editor::EditorRender()
 	ImGui::GetWindowDrawList()->AddImage(
 		(void*)_pEditorFramebuffer->GetTexture(),
 		_windowPos,
-		ImVec2(_windowPos.x + 640, _windowPos.y + 360),
+		ImVec2(_windowPos.x + _pWindow->GetWidth() / 2.0f, _windowPos.y + _pWindow->GetHeight() / 2.0f),
 		ImVec2(0, 1.0), ImVec2(1.0, 0));
 
 	_windowSize = ImGui::GetWindowSize();

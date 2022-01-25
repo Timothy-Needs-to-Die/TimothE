@@ -3,17 +3,16 @@
 #include "pch.h"
 
 #include "Shader.h"
-
-#include <iostream>
+#include "Window.h"
 
 //TODO: Add a way to take in a custom texture size
 class Framebuffer
 {
 public:
 	//Creates a frame buffer with a predefined set of vertices
-	Framebuffer(Shader* screenShader, float* quadVertices);
+	Framebuffer(Window* pWidnow, Shader* screenShader, float* quadVertices);
 	//Creates a frame buffer with a whole screen quad defined for vertices
-	Framebuffer(Shader* screenShader);
+	Framebuffer(Window* pWidnow, Shader* screenShader);
 
 	~Framebuffer();
 
@@ -48,6 +47,7 @@ private:
 	void CreateFramebuffer();
 
 	Shader* _pScreenShader;
+	Window* _pWindow;
 
 	float* _pQuadVertices;
 
