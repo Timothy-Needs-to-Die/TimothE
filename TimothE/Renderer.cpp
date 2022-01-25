@@ -14,12 +14,12 @@ void Renderer::Render(GameObject* gameObject, Camera* cam)
 	
 	glBindVertexArray(gameObject->GetVAO());
 
-	gameObject->GetShader()->SetMat4("projection", cam->ProjMat());
+	gameObject->GetShader()->SetMat4("projection", cam->Proj());
 
 	glm::mat4 transform = gameObject->GetTransform()->GetTransformMatrix();
 	gameObject->GetShader()->SetMat4("model", transform);
 
-	gameObject->GetShader()->SetMat4("view", cam->ViewMat());
+	gameObject->GetShader()->SetMat4("view", cam->View());
 
 	glBindTexture(GL_TEXTURE_2D, gameObject->GetTextureID());
 

@@ -102,8 +102,7 @@ void Renderer2D::BeginRender(Camera* camera)
 {
 	StartBatch();
 	currentCam = camera;
-	//_data.textureShader->SetMat4("projection", currentCam->ProjMat());
-	_data.textureShader->SetMat4("view", currentCam->ViewMat());
+	_data.textureShader->SetMat4("view", currentCam->ViewProj());
 }
 
 void Renderer2D::EndRender()
@@ -143,9 +142,6 @@ void Renderer2D::DrawQuad(const glm::vec3& position, const glm::vec2& size, cons
 
 void Renderer2D::DrawQuad(const glm::vec2& position, const glm::vec2& size, Texture2D* texture, glm::vec2* uvCoordinates, float tilingFactor, glm::vec4& tintColor)
 {
-	if (uvCoordinates != nullptr) {
-		std::cout << uvCoordinates[0].x << std::endl;
-	}
 	DrawQuad({ position.x, position.y, 0.0f }, size, texture, uvCoordinates, tilingFactor, tintColor);
 }
 

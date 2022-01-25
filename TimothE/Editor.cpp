@@ -38,7 +38,15 @@ Editor::Editor(Application* pApp, Window* pWindow)
 	//Creates the editor framebuffer
 	_pEditorFramebuffer = new Framebuffer(_pScreenShader);
 
-	_pEditorCamera = new Camera(pWindow->GetGLFWWindow(), 1280, 720, 45.0f);
+	float aspectRatio = 1280.0f / 720.0f;
+	float zoomLevel = 1.0f;
+
+	float left = -aspectRatio * zoomLevel;
+	float right = aspectRatio * zoomLevel;
+	float bottom = -zoomLevel;
+	float top = zoomLevel;
+
+	_pEditorCamera = new Camera(left, right, bottom, top);
 
 	pImGuiSample = new Texture2D(NULL);
 	//pImGuiSample->Load("lenna3.jpg");

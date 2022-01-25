@@ -53,17 +53,17 @@ Scene::Scene(std::string name)
 
 	ResourceManager::InstantiateTexture("spritesheet", new Texture2D("testSheet.png"));
 
-	unsigned int sheetWidth = 2560, sheetHeight = 1664;
-	unsigned int spriteWidth = 128, spriteHeight = 128;
-	unsigned int x = 10, y = 7;
+	float sheetWidth = 2560, sheetHeight = 1664;
+	float spriteWidth = 128, spriteHeight = 128;
+	float x = 10, y = 7;
 
 
 
 	_uvSpriteCoords = new glm::vec2[4];
-	_uvSpriteCoords[0] =  glm::vec2(((float)x * (float)spriteWidth) / (float)sheetWidth, ((float)y * (float)spriteHeight) / (float)sheetHeight );
-	_uvSpriteCoords[1] =  glm::vec2((((float)x + 1) * (float)spriteWidth) / (float)sheetWidth, ((float)y * (float)spriteHeight) / (float)sheetHeight );
-	_uvSpriteCoords[2] =  glm::vec2((((float)x + 1) * (float)spriteWidth) / (float)sheetWidth, (((float)y + 1) * (float)spriteHeight) / (float)sheetHeight );
-	_uvSpriteCoords[3] =  glm::vec2(((float)x * (float)spriteWidth) / (float)sheetWidth, (((float)y + 1) * (float)spriteHeight) / (float)sheetHeight );
+	_uvSpriteCoords[0] =  glm::vec2((x * spriteWidth) / sheetWidth, (y * spriteHeight) / sheetHeight );
+	_uvSpriteCoords[1] =  glm::vec2(((x + 1) * spriteWidth) / sheetWidth, (y * spriteHeight) / sheetHeight );
+	_uvSpriteCoords[2] =  glm::vec2(((x + 1) * spriteWidth) / sheetWidth, ((y + 1) * spriteHeight) / sheetHeight );
+	_uvSpriteCoords[3] =  glm::vec2((x * spriteWidth) / sheetWidth, ((y + 1) * spriteHeight) / sheetHeight );
 	std::cout << _uvSpriteCoords[0].x << std::endl;
 
 	//////////////////
@@ -127,7 +127,7 @@ void Scene::RenderScene(Renderer* pRenderer, Camera* cam)
 	Renderer2D::BeginRender(cam);
 	Renderer2D::DrawQuad(glm::vec2(0.3f, 0.0f), glm::vec2(1.0f, 1.0f), ResourceManager::GetTexture("fish"));
 	Renderer2D::DrawQuad(glm::vec2(0.7f, 0.0f), glm::vec2(0.5f, 0.5f), ResourceManager::GetTexture("fish"));
-	Renderer2D::DrawQuad(glm::vec2(0.9f, 0.0f), glm::vec2(1.0f, 1.0f), ResourceManager::GetTexture("spritesheet"), _uvSpriteCoords);
+	Renderer2D::DrawQuad(glm::vec2(0.9f, 0.0f), glm::vec2(0.45f, 0.45f), ResourceManager::GetTexture("spritesheet"), _uvSpriteCoords);
 	Renderer2D::DrawQuad(glm::vec2(-0.3f, 0.0f), glm::vec2(0.5f, 0.5f), ResourceManager::GetTexture("lenna"));
 	Renderer2D::DrawQuad(glm::vec2(-0.7f, 0.0f), glm::vec2(0.5f, 0.5f), ResourceManager::GetTexture("fish"));
 	Renderer2D::EndRender();

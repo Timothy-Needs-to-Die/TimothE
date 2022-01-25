@@ -75,7 +75,17 @@ void Application::Init(bool devMode)
 	_pEditor = new Editor(this, _pWindow);
 	_running = true;
 
-	_pGameCamera = new Camera(_pWindow->GetGLFWWindow(), 1280, 720, 45.0f);
+
+	//_pGameCamera = new Camera(_pWindow->GetGLFWWindow(), 1280, 720, 45.0f);
+	float aspectRatio = 1280.0f / 720.0f;
+	float zoomLevel = 1.0f;
+
+	float left = -aspectRatio * zoomLevel;
+	float right = aspectRatio * zoomLevel;
+	float bottom = -zoomLevel;
+	float top = zoomLevel;
+
+	_pGameCamera = new Camera(left, right, bottom, top);
 }
 
 void Application::GameLoop()
