@@ -34,20 +34,20 @@ void Button::OnStart()
 }
 
 void Button::OnUpdate()
-{
-	// Get the mouse positions
-	int mouseX = Input::GetMouseX();
-	int mouseY = Input::GetMouseY();
-
-	// Get the position of the button through the transforms - THIS SHOULD BE HANDLED BY BOX COLLIDER 
-	Transform* transform = Parent()->GetComponent<Transform>();
-
-	glm::vec2 pos = transform->GetPosition();
-	float width = transform->GetScale().x;
-	float height = transform->GetScale().y;
-
-	if (_isEnabled)
+{	
+	if (Component::IsEnabled())
 	{
+		// Get the mouse positions
+		int mouseX = Input::GetMouseX();
+		int mouseY = Input::GetMouseY();
+
+		// Get the position of the button through the transforms - THIS SHOULD BE HANDLED BY BOX COLLIDER 
+		Transform* transform = Parent()->GetComponent<Transform>();
+
+		glm::vec2 pos = transform->GetPosition();
+		float width = transform->GetScale().x;
+		float height = transform->GetScale().y;
+
 		// Check if the mouse is inside the button
 		if (Parent()->GetComponent<BoxColliderComponent>()->IsPointInside({mouseX, mouseY}))
 		{
@@ -99,11 +99,7 @@ void Button::DrawEditorUI()
 {
 	if (ImGui::CollapsingHeader("Button Component"))
 	{
-		if (ImGui::Checkbox("IsEnabled", _editorIsEnabled))
-		{
-			std::cout << "IsEnabled = " << *_editorIsEnabled << std::endl;
-			SetEnabled(*_editorIsEnabled);
-		}
+		Component::DrawEditorUI();
 	}
 }
 

@@ -3,6 +3,7 @@
 
 #include "Serializable.h"
 #include "Stream.h"
+#include "imgui.h"
 
 class GameObject;
 
@@ -75,7 +76,13 @@ public:
 	virtual void OnEnd() = 0;
 	//virtual void GetComponent() = 0;
 
-	virtual void DrawEditorUI() = 0;
+	virtual void DrawEditorUI() {
+		if (ImGui::Checkbox("IsEnabled", _editorIsEnabled))
+		{
+			std::cout << "IsEnabled = " << *_editorIsEnabled << std::endl;
+			SetEnabled(*_editorIsEnabled);
+		}
+	}
 
 	//gets the component type and catagory
 	Categories GetCategory() const { return _category; }
@@ -106,11 +113,16 @@ public:
 	virtual bool LoadState(IStream& stream) override {
 		return true;
 	}
+
+	// IsEnabled Get & Set
+	bool IsEnabled() { return _isEnabled; }
+	void SetEnabled(bool state) { _isEnabled = state; }
 protected:
 	//variable for type and categories to be assigned to
 	Types _type;
 	Categories _category;
 	GameObject* _parentObject;
 
-
+	bool _isEnabled = true;
+	bool* _editorIsEnabled = &_isEnabled;
 };

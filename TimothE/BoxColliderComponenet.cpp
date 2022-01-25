@@ -39,21 +39,23 @@ void BoxColliderComponent::OnStart()
 
 void BoxColliderComponent::OnUpdate()
 {
-	// Update our center and size from the transform incase its moved.
-	glm::vec2 objectCenterPoint = Parent()->GetTransform()->GetPosition();
-	glm::vec2 objectScale = Parent()->GetTransform()->GetScale();
+	if (Component::IsEnabled())
+	{
+		// Update our center and size from the transform incase its moved.
+		glm::vec2 objectCenterPoint = Parent()->GetTransform()->GetPosition();
+		glm::vec2 objectScale = Parent()->GetTransform()->GetScale();
 
-	// Update our collider to the correct position
-	_boxCollider->xPos = objectCenterPoint.x - objectScale.x;
-	_boxCollider->yPos = objectCenterPoint.y - objectScale.y;
-	_boxCollider->width = objectScale.x * 2;
-	_boxCollider->height = objectScale.y * 2;
+		// Update our collider to the correct position
+		_boxCollider->xPos = objectCenterPoint.x - objectScale.x;
+		_boxCollider->yPos = objectCenterPoint.y - objectScale.y;
+		_boxCollider->width = objectScale.x * 2;
+		_boxCollider->height = objectScale.y * 2;
 
-	// debug	
-	//float mouseX = Input::GetMouseX();
-	//float mouseY = Input::GetMouseY();
-	//std::cout << IsPointInside({mouseX, mouseY}) << std::endl;
-	
+		// debug	
+		//float mouseX = Input::GetMouseX();
+		//float mouseY = Input::GetMouseY();
+		//std::cout << IsPointInside({mouseX, mouseY}) << std::endl;
+	}
 }
 
 void BoxColliderComponent::OnEnd()
@@ -63,22 +65,28 @@ void BoxColliderComponent::OnEnd()
 
 bool BoxColliderComponent::Intersects(Rect* box)
 {
-	if ((_boxCollider->xPos + _boxCollider->width >= box->xPos)
-		&& (box->xPos + _boxCollider->width >= _boxCollider->xPos)
-		&& (_boxCollider->yPos + _boxCollider->height >= box->yPos)
-		&& (box->yPos + _boxCollider->height >= _boxCollider->yPos))
+	if (Component::IsEnabled())
 	{
-		return true;
+		if ((_boxCollider->xPos + _boxCollider->width >= box->xPos)
+			&& (box->xPos + _boxCollider->width >= _boxCollider->xPos)
+			&& (_boxCollider->yPos + _boxCollider->height >= box->yPos)
+			&& (box->yPos + _boxCollider->height >= _boxCollider->yPos))
+		{
+			return true;
+		}
 	}
 	return false;
 }
 
 bool BoxColliderComponent::IsPointInside(glm::vec2 point)
 {
-	if (point.x > _boxCollider->xPos && point.x < _boxCollider->xPos + _boxCollider->width
-		&& point.y > _boxCollider->yPos && point.y < _boxCollider->yPos + _boxCollider->height)
+	if (Component::IsEnabled())
 	{
-		return true;
+		if (point.x > _boxCollider->xPos && point.x < _boxCollider->xPos + _boxCollider->width
+			&& point.y > _boxCollider->yPos && point.y < _boxCollider->yPos + _boxCollider->height)
+		{
+			return true;
+		}
 	}
 	return false;
 }
@@ -89,10 +97,6 @@ void BoxColliderComponent::DrawEditorUI()
 {
 	if (ImGui::CollapsingHeader("Box Collider Component"))
 	{
-		if (ImGui::Checkbox("IsEnabled", _editorIsEnabled))
-		{
-			std::cout << "IsEnabled = " << *_editorIsEnabled << std::endl;
-			SetEnabled(*_editorIsEnabled);
-		}
+		Component::DrawEditorUI();
 	}
 }
