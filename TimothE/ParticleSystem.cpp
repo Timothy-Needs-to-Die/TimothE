@@ -89,6 +89,11 @@ void ParticleSystem::DrawEditorUI()
 					delete p;
 				}
 			}
+
+			for (Particle* p : _particles)
+			{
+				p->ResetParticle();
+			}
 		}
 
 		// add a radio button to choose whether particles use textures or colour
@@ -108,6 +113,7 @@ void ParticleSystem::DrawEditorUI()
 				for (Particle* p : _particles)
 				{
 					p->SetColour(glm::vec4(colour[0], colour[1], colour[2], colour[3]));
+					p->ResetParticle();
 				}
 			}
 		}
@@ -119,6 +125,7 @@ void ParticleSystem::DrawEditorUI()
 			for (Particle* p : _particles)
 			{
 				p->SetLife(particleLife);
+				p->ResetParticle();
 			}
 		}
 
@@ -128,32 +135,35 @@ void ParticleSystem::DrawEditorUI()
 			for (Particle* p : _particles)
 			{
 				p->SetAngle(angle);
+				p->ResetParticle();
 			}
 		}
-		//ImGui::SameLine();
+		ImGui::SameLine();
 
-		//static bool randomDir = true;
-		//static bool oldRandomDir = randomDir;
-		//static float angleRange = 10.0f;
-		//ImGui::Checkbox("Use random direction", &randomDir);
-		//if (randomDir)
-		//{
-		//	if (oldRandomDir != randomDir) // oldrandomdir is used so that this is only done once (until it is changed again) to avoid unnecessary looping
-		//	{
-		//		for (Particle* p : _particles)
-		//		{
-		//			p->ToggleRandomDirection(randomDir);
-		//		}
-		//	}
-		//	if (ImGui::SliderAngle("Random direction range", &angleRange, 0))
-		//	{
-		//		for (Particle* p : _particles)
-		//		{
-		//			p->SetAngleRange(angleRange);
-		//		}
-		//	}
-		//	oldRandomDir = randomDir;
-		//}
+		static bool randomDir = true;
+		static bool oldRandomDir = randomDir;
+		static float angleRange = 10.0f;
+		ImGui::Checkbox("Use random direction", &randomDir);
+		if (randomDir)
+		{
+			if (oldRandomDir != randomDir) // oldrandomdir is used so that this is only done once (until it is changed again) to avoid unnecessary looping
+			{
+				for (Particle* p : _particles)
+				{
+					p->ToggleRandomDirection(randomDir);
+					p->ResetParticle();
+				}
+			}
+			if (ImGui::SliderAngle("Random direction range", &angleRange, 0))
+			{
+				for (Particle* p : _particles)
+				{
+					p->SetAngleRange(angleRange);
+					p->ResetParticle();
+				}
+			}
+			oldRandomDir = randomDir;
+		}
 
 		static float speed = 1.0f;
 		if (ImGui::InputFloat("Speed", &speed))
@@ -161,6 +171,7 @@ void ParticleSystem::DrawEditorUI()
 			for (Particle* p : _particles)
 			{
 				p->SetSpeed(speed);
+				p->ResetParticle();
 			}
 		}
 	}

@@ -46,7 +46,7 @@ public:
 	/// <summary> the angle for the particles to move in </summary>
 	void SetAngle(float angle);
 	/// <summary> whether or not particles will move in a random direction in range </summary>
-	void ToggleRandomDirection(bool random);
+	void ToggleRandomDirection(bool useRand);
 	/// <summary> the range that particles can be when random </summary>
 	void SetAngleRange(float range);
 	void SetSpeed(float speed);
@@ -61,4 +61,6 @@ private:
 	unsigned int _vao;
 	unsigned int _vbo;
 	Transform* _pParentTransform;
+	bool _useRandomDirection;
+	float _angleRange;
 };

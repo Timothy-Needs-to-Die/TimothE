@@ -1,6 +1,7 @@
 #include "Particle.h"
+#include <random>
 
-Particle::Particle(float life, glm::vec4 colour, Texture2D* texture, Transform* parentTransform) : _movementVec(0.0f), _colour(colour), _currentLife(life), _maxLife(life), _pTexture(texture), _pParentTransform(parentTransform), _speed(1.0f)
+Particle::Particle(float life, glm::vec4 colour, Texture2D* texture, Transform* parentTransform) : _movementVec(0.0f), _colour(colour), _currentLife(life), _maxLife(life), _pTexture(texture), _pParentTransform(parentTransform), _speed(1.0f), _useRandomDirection(true), _angleRange(10.0f)
 {
 	_pTransform = new Transform(nullptr);
 	InitVertexData();
@@ -74,6 +75,8 @@ void Particle::ResetParticle()
 {
 	_pTransform->SetPosition(_pParentTransform->GetPosition().x, _pParentTransform->GetPosition().y);
 	_currentLife = _maxLife;
+	float randAngle = (((float)rand() / RAND_MAX) * _angleRange);
+	SetAngle(randAngle);
 }
 
 void Particle::SetVelocity(glm::vec2 newVelocity)
@@ -105,12 +108,14 @@ void Particle::SetAngle(float angle)
 	_movementVec = vec * _speed;
 }
 
-void Particle::ToggleRandomDirection(bool random)
+void Particle::ToggleRandomDirection(bool useRand)
 {
+	_useRandomDirection = useRand;
 }
 
 void Particle::SetAngleRange(float range)
 {
+	_angleRange = range;
 }
 
 void Particle::SetSpeed(float speed)
@@ -118,5 +123,5 @@ void Particle::SetSpeed(float speed)
 	_speed = speed;
 
 	glm::vec2 vec = glm::normalize(_movementVec);
-	vec = vec * _speed;
+	_movementVec = vec * _speed;
 }
