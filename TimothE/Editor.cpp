@@ -29,25 +29,24 @@ Editor::Editor(Application* pApp, Window* pWindow)
 	pContentTextureFile->Load("Icons/FileContent.png");
 	pContentTextureFolder->Load("Icons/FolderContent.png");
 
-	// vertex attributes for a quad that fills the editor screen space in Normalized Device Coordinates.
-	float* quadVertices = new float[24]{
-		// positions   // texCoords
-		-0.65f,  -0.6f,  0.0f, 0.0f,
-		-0.65f,   0.82f,	0.0f, 1.0f,
-		 0.6f,   0.82f,	1.0f, 1.0f,
 
-		 0.6f,  -0.6f,  1.0f, 0.0f,
-		-0.65f,  -0.6f,	0.0f, 0.0f,
-		 0.6f,   0.82f,   1.0f, 1.0f
-	};
 
 	//Creates the screen shader for the framebuffer
 	_pScreenShader = new Shader("fbVert.vs", "fbFrag.fs");
 
 	//Creates the editor framebuffer
-	_pEditorFramebuffer = new Framebuffer(_pScreenShader);
+	_pEditorFramebuffer = new Framebuffer(_pWindow, _pScreenShader);
 
-	_pEditorCamera = new Camera(pWindow->GetGLFWWindow(), 1280, 720, 45.0f);
+
+	float aspectRatio = pWindow->GetWidth() / pWindow->GetHeight();
+	float zoomLevel = 1.0f;
+
+	float left = -aspectRatio * zoomLevel;
+	float right = aspectRatio * zoomLevel;
+	float bottom = -zoomLevel;
+	float top = zoomLevel;
+
+	_pEditorCamera = new Camera(left, right, bottom, top);
 
 	pImGuiSample = new Texture2D(NULL);
 	pImGuiSample->Load("lenna3.jpg");
@@ -181,6 +180,8 @@ void Editor::EditorImGui(Scene* currentScene)
 				}
 			}
 
+			Component* componentToDelete = nullptr;
+
 			// for each component in the game object
 			for (int i = 0; i < _pSelectedGameObject->GetComponents().size(); i++)
 			{
@@ -194,7 +195,10 @@ void Editor::EditorImGui(Scene* currentScene)
 					// add a delete button
 					if (ImGui::Button(("Delete component##" + std::to_string(c->GetType())).c_str()))
 					{
-						_pSelectedGameObject->RemoveComponent(c);
+						componentToDelete = c;
+						break;
+						//_pSelectedGameObject->RemoveComponent(c);
+
 					}
 					// check if i is not the first
 					if (i > 0)
@@ -202,7 +206,7 @@ void Editor::EditorImGui(Scene* currentScene)
 						if (_pSelectedGameObject->GetComponents()[i - 1]->GetType() != Component::Transform_Type)
 						{
 							ImGui::SameLine();
-							// add button to move the component up 
+							// add button to move the component up
 							if (ImGui::Button("Up"))
 							{
 								_pSelectedGameObject->SwapComponents(i, i - 1);
@@ -220,6 +224,11 @@ void Editor::EditorImGui(Scene* currentScene)
 						}
 					}
 				}
+			}
+
+			if (componentToDelete != nullptr) {
+				_pSelectedGameObject->RemoveComponent(componentToDelete);
+				componentToDelete = nullptr;
 			}
 
 			// add component
@@ -281,7 +290,7 @@ void Editor::EditorImGui(Scene* currentScene)
 						Texture2D* tex = _pSelectedGameObject->GetComponent<Texture2D>();
 						if (tex == nullptr)
 						{
-							_pSelectedGameObject->LoadTexture(new Texture2D((char*)texPath.c_str()));
+							//_pSelectedGameObject->LoadTexture(new Texture2D((char*)texPath.c_str()));
 						}
 					}
 				}
@@ -496,7 +505,7 @@ void Editor::EditorRender()
 	ImGui::GetWindowDrawList()->AddImage(
 		(void*)_pEditorFramebuffer->GetTexture(),
 		_windowPos,
-		ImVec2(_windowPos.x + 640, _windowPos.y + 360),
+		ImVec2(_windowPos.x + _pWindow->GetWidth() / 2.0f, _windowPos.y + _pWindow->GetHeight() / 2.0f),
 		ImVec2(0, 1.0), ImVec2(1.0, 0));
 
 	_windowSize = ImGui::GetWindowSize();

@@ -24,6 +24,19 @@ void ResourceManager::Init()
 	//LOAD FONTS
 }
 
+void ResourceManager::Shutdown()
+{
+	for (auto& tex : _textures)
+	{
+		unsigned int id = tex.second->GetID();
+		glDeleteTextures(1, &id);
+	}
+
+	_textures.clear();
+	_shaders.clear();
+	_scenes.clear();
+}
+
 void ResourceManager::InstantiateTexture(std::string name, Texture2D* texture)
 { 
 	_textures[name] = texture;

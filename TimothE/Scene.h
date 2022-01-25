@@ -26,6 +26,10 @@ public:
 	
 	GameObject* AddGameObject(GameObject* gameObject) { _listOfGameObjects.push_back(gameObject); return gameObject; }
 	void RemoveGameObject(GameObject* gameObject);
+
+	static void AddedComponentHandler(GameObject* gameObject, Component* comp);
+	static void RemoveComponentHandler(GameObject* gameObject, Component* comp);
+
 	std::vector<GameObject*> GetGameObjects() { return _listOfGameObjects; }
 
 	void LoadScene(const std::string& filename);
@@ -37,6 +41,11 @@ public:
 	static GameObject* GetGameObjectByType(ObjectType type);
 	static std::vector<GameObject*> GetGameObjectsByName(std::string name);
 	static std::vector<GameObject*> GetGameObjectsByType(ObjectType type);
+
+	glm::vec2 ConvertWorldToScreen(glm::vec2 inPos) {
+		glm::vec2 outPos{ inPos.x / 1920.0f, inPos.y / 1080.0f };
+		return outPos;
+	}
 
 	/////////////
 	//DO NOT MOVE
@@ -80,6 +89,9 @@ private:
 	//Stores the next id for the scene
 	static int nextID;
 
+	glm::vec2* _uvSpriteCoords;
+
 	//Stores a vector of gameobjects. This is refreshed everytime a scene loads.
 	static std::vector<GameObject*> _listOfGameObjects;
+	static std::vector<GameObject*> _listOfDrawableGameObjects;
 };

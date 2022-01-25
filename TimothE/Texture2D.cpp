@@ -20,7 +20,7 @@ Texture2D::Texture2D(std::string path) : Component(), _ID(0)
 Texture2D::~Texture2D()
 {
 	//Deletes this texture
-	glDeleteTextures(1, &_ID);
+	//glDeleteTextures(1, &_ID);
 }
 
 void Texture2D::DrawEditorUI()
@@ -36,9 +36,7 @@ void Texture2D::DrawEditorUI()
 bool Texture2D::Load(std::string path)
 {
 	if (_ID != 0) return true;
-
-	glGenTextures(1, &_ID);
-
+	_filePath = path;
 	unsigned char* data = stbi_load(path.c_str(), &_width, &_height, &_channels, 0);
 
 	if (data != nullptr)
@@ -55,6 +53,8 @@ bool Texture2D::Load(std::string path)
 
 void Texture2D::GenerateTexture(unsigned char* data)
 {
+	glGenTextures(1, &_ID);
+
 	//Binds the texture so it can be setup
 	glBindTexture(GL_TEXTURE_2D, _ID);
 
@@ -67,7 +67,7 @@ void Texture2D::GenerateTexture(unsigned char* data)
 	{
 		glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, _width, _height, 0, GL_RGBA, GL_UNSIGNED_BYTE, data);
 	}
-	
+
 
 	//Set filtering to linear by default
 	SetFilterMode("linear");
@@ -76,18 +76,18 @@ void Texture2D::GenerateTexture(unsigned char* data)
 	stbi_image_free(data);
 }
 
-void Texture2D::OnStart() 
-{ 
+void Texture2D::OnStart()
+{
 
 }
 
 void Texture2D::OnUpdate()
-{ 
+{
 
 }
 
 void Texture2D::OnEnd()
-{ 
+{
 
 }
 

@@ -23,6 +23,7 @@
 #include <vector>
 #include <unordered_map>
 #include <map>
+#include <array>
 
 //Threading
 #include <mutex>
