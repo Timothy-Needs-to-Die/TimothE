@@ -124,6 +124,7 @@ void ParticleSystem::DrawEditorUI()
 		{
 			for (Particle* p : _particles)
 			{
+				p->SetMaxLife(particleLife);
 				p->SetLife(particleLife);
 				p->ResetParticle();
 			}
