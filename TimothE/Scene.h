@@ -38,6 +38,11 @@ public:
 	static std::vector<GameObject*> GetGameObjectsByName(std::string name);
 	static std::vector<GameObject*> GetGameObjectsByType(ObjectType type);
 
+	glm::vec2 ConvertWorldToScreen(glm::vec2 inPos) {
+		glm::vec2 outPos{ inPos.x / 1920.0f, inPos.y / 1080.0f };
+		return outPos;
+	}
+
 	/////////////
 	//DO NOT MOVE
 	/////////////

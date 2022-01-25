@@ -86,10 +86,15 @@ void Renderer2D::Init()
 	
 	_data.textureSlots[0] = _data.whiteTexture;
 
-	_data.quadVertexPositions[0] = { -0.5f, -0.5f, 0.0f, 1.0f };
-	_data.quadVertexPositions[1] = { 0.5f, -0.5f, 0.0f, 1.0f };
-	_data.quadVertexPositions[2] = { 0.5f,  0.5f, 0.0f, 1.0f };
-	_data.quadVertexPositions[3] = { -0.5f,  0.5f, 0.0f, 1.0f };
+	//_data.quadVertexPositions[0] = { -0.5f, -0.5f, 0.0f, 1.0f };
+	//_data.quadVertexPositions[1] = { 0.5f, -0.5f, 0.0f, 1.0f };
+	//_data.quadVertexPositions[2] = { 0.5f,  0.5f, 0.0f, 1.0f };
+	//_data.quadVertexPositions[3] = { -0.5f,  0.5f, 0.0f, 1.0f };
+
+	_data.quadVertexPositions[0] = { 0.0f, 0.0f, 0.0f, 1.0f };
+	_data.quadVertexPositions[1] = { 1.0f, 0.0f, 0.0f, 1.0f };
+	_data.quadVertexPositions[2] = { 1.0f,  1.0f, 0.0f, 1.0f };
+	_data.quadVertexPositions[3] = { 0.0f,  1.0f, 0.0f, 1.0f };
 
 }
 

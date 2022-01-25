@@ -85,6 +85,7 @@ void Application::Init(bool devMode)
 	float top = zoomLevel;
 
 	_pGameCamera = new Camera(left, right, bottom, top);
+	_pGameCamera->SetCameraSpeed(5.0f);
 }
 
 void Application::GameLoop()
