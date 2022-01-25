@@ -1,4 +1,5 @@
 #include "ResourceManager.h"
+#include "Scene.h"
 
 std::map<std::string, Texture2D*> ResourceManager::_textures;
 std::map<std::string, Shader*> ResourceManager::_shaders;

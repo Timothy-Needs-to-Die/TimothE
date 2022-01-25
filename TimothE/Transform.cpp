@@ -39,7 +39,7 @@ void Transform::OnStart()
 	
 }
 
-void Transform::OnUpdate()
+void Transform::OnUpdate(float deltaTime)
 {
 	//Calculates the transform matrix
 	CalculateTransformMatrix();

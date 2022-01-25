@@ -77,5 +77,8 @@ private:
 
 	bool _hasInit = false;
 
+	void OnStart();
+	void OnEnd();
+	void OnUpdate(float deltaTime);
 };
 

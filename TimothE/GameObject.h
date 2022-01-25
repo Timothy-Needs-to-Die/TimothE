@@ -8,6 +8,7 @@
 #include "Serializable.h"
 #include "Shader.h"
 #include "BoxColliderComponent.h"
+#include "ParticleSystem.h"
 
 class Texture2D;
 class Scene;

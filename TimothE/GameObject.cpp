@@ -93,7 +93,12 @@ void GameObject::Update(float deltaTime)
 {
 	for (Component* c : _pComponents)
 	{
-		c->OnUpdate();
+		c->OnUpdate(deltaTime);
+		if (c->GetType() == Component::ParticleSystem_Type)
+		{
+			ParticleSystem* p = (ParticleSystem*)c;
+			p->SetParentTransform(_pTransform);
+		}
 	}
 }
 

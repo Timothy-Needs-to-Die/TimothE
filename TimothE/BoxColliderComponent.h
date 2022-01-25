@@ -31,7 +31,7 @@ public:
 
 	// Component Methods
 	void OnStart() override;
-	void OnUpdate() override;
+	void OnUpdate(float deltaTime) override;
 	void OnEnd() override;
 	virtual void DrawEditorUI() override;
 	//virtual void GetComponent() = 0;

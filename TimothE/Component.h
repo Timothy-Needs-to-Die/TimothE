@@ -40,7 +40,8 @@ public:
 		GOAP_Type = BIT(6),
 		Texture_Type = BIT(7),
 		Button_Type = BIT(8),
-		Text_Type = BIT(9)
+		Text_Type = BIT(9),
+		ParticleSystem_Type = BIT(10)
 	};
 
 	//enums for different catagories of components
@@ -64,7 +65,7 @@ public:
 
 	//virtual function for sub class of components
 	virtual void OnStart() = 0;
-	virtual void OnUpdate() = 0;
+	virtual void OnUpdate(float deltaTime) = 0;
 	virtual void OnEnd() = 0;
 	//virtual void GetComponent() = 0;
 
