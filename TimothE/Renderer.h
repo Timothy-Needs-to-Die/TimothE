@@ -16,7 +16,6 @@ public:
 	//Renders drawables for the scene from a particular camera
 	void RenderDrawables(std::vector<GameObject*> gameObjects, Camera* cam);
 	void Render(GameObject* gameObject, Camera* cam);
-	void Render(ParticleSystem* particles, Camera* cam);
 private:
 	//Stores the UID
 	std::string _UID;

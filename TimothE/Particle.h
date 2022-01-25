@@ -39,7 +39,7 @@ public:
 	Transform* GetTransform() { return _pTransform; }
 	void SetTransform(Transform* newTransform);
 
-	int GetTextureID() { return _pTexture->GetID(); }
+	Texture2D* GetTexture() { return _pTexture; }
 
 	void SetParentTransform(Transform* parentTransform);
 
