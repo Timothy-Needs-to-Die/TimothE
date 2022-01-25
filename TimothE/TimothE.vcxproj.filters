@@ -12,7 +12,9 @@
     <ClInclude Include="Application.h" />
     <ClInclude Include="ApplicationEvent.h" />
     <ClInclude Include="AudioEngine.h" />
+    <ClInclude Include="Base.h" />
     <ClInclude Include="BoxColliderComponent.h" />
+    <ClInclude Include="BufferLayout.h" />
     <ClInclude Include="Button.h" />
     <ClInclude Include="Camera.h" />
     <ClInclude Include="CircleCollider.h" />
@@ -26,6 +28,7 @@
     <ClInclude Include="GameObject.h" />
     <ClInclude Include="Heap.h" />
     <ClInclude Include="HeapManager.h" />
+    <ClInclude Include="IBO.h" />
     <ClInclude Include="ImGuiManager.h" />
     <ClInclude Include="Imgui\imconfig.h">
       <Filter>Imgui</Filter>
@@ -60,6 +63,7 @@
     <ClInclude Include="MouseEvent.h" />
     <ClInclude Include="RBO.h" />
     <ClInclude Include="Renderer.h" />
+    <ClInclude Include="Renderer2D.h" />
     <ClInclude Include="ResourceManager.h" />
     <ClInclude Include="SOIL\SOIL2.h">
       <Filter>SOIL</Filter>
@@ -115,6 +119,7 @@
     <ClInclude Include="Scene.h" />
     <ClInclude Include="Serializable.h" />
     <ClInclude Include="Shader.h" />
+    <ClInclude Include="SpriteComponent.h" />
     <ClInclude Include="Stream.h" />
     <ClInclude Include="StreamFile.h" />
     <ClInclude Include="TestComponent.h" />
@@ -127,7 +132,6 @@
     <ClInclude Include="VBO.h" />
     <ClInclude Include="Window.h" />
     <ClInclude Include="pch.h" />
-    <ClInclude Include="SpriteComponent.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Application.cpp" />
@@ -142,6 +146,7 @@
     <ClCompile Include="GameObject.cpp" />
     <ClCompile Include="Heap.cpp" />
     <ClCompile Include="HeapManager.cpp" />
+    <ClCompile Include="IBO.cpp" />
     <ClCompile Include="Imgui\imgui.cpp">
       <Filter>Imgui</Filter>
     </ClCompile>
@@ -167,10 +172,12 @@
     <ClCompile Include="MemoryManager.cpp" />
     <ClCompile Include="RBO.cpp" />
     <ClCompile Include="Renderer.cpp" />
+    <ClCompile Include="Renderer2D.cpp" />
     <ClCompile Include="ResourceManager.cpp" />
     <ClCompile Include="Scene.cpp" />
     <ClCompile Include="Shader.cpp" />
     <ClCompile Include="Source.cpp" />
+    <ClCompile Include="SpriteComponent.cpp" />
     <ClCompile Include="StreamFile.cpp" />
     <ClCompile Include="StreamHelpers.cpp" />
     <ClCompile Include="TestComponent.cpp" />
@@ -181,6 +188,5 @@
     <ClCompile Include="VBO.cpp" />
     <ClCompile Include="Window.cpp" />
     <ClCompile Include="pch.cpp" />
-    <ClCompile Include="SpriteComponent.cpp" />
   </ItemGroup>
 </Project>

@@ -10,6 +10,7 @@
 #include "BoxColliderComponent.h"
 
 class Texture2D;
+class Scene;
 
 enum class ObjectType
 {
@@ -133,7 +134,7 @@ public:
 		}
 
 		_pComponents.push_back(comp);
-		Scene::AddedComponentHandler(this, comp);
+		//Scene::AddedComponentHandler(this, comp);
 		return comp;
 	}
 

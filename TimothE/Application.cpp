@@ -7,6 +7,7 @@
 #include "Button.h"
 #include "ResourceManager.h"
 #include "Editor.h"
+#include "Renderer2D.h"
 
 #define BIND_EVENT_FN(x) std::bind(&Application::x, this, std::placeholders::_1)
 
@@ -23,7 +24,7 @@ void GLAPIENTRY MessageCallback(GLenum source,
 		type, severity, message);
 }
 
-//initialises application
+//initializes application
 void Application::Init(bool devMode)
 {
 	UID::Init();
@@ -42,7 +43,7 @@ void Application::Init(bool devMode)
 	glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 3);
 	glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 3);
 
-	_pWindow = new Window(1280, 720, "ThymeoWthE");
+	_pWindow = new Window(1920, 1080, "ThymeoWthE");
 
 	_pWindow->SetEventCallback(BIND_EVENT_FN(OnGameEvent));
 	_pWindow->CreateWindow();
@@ -66,11 +67,20 @@ void Application::Init(bool devMode)
 	//initialises resource manager
 	ResourceManager::Init();
 
+	Renderer2D::Init();
+
 	//initialises editor with scene
 	_pCurrentScene = new Scene("Test scene");
 	_pEditor = new Editor(this, _pWindow);
 	_mRunning = true;
-	_pGameCamera = new Camera(_pWindow->GetGLFWWindow(), 1280, 720, 45.0f);
+
+	float aspectRatio = _pWindow->GetWidth() / _pWindow->GetHeight();
+	float zoomLevel = 1.0f;
+	float left = -aspectRatio * zoomLevel;
+	float right = aspectRatio * zoomLevel;
+	float bottom = -zoomLevel;
+	float top = zoomLevel;
+	_pGameCamera = new Camera(left,right,top,bottom);
 }
 
 //game loop update

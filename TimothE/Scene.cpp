@@ -172,7 +172,7 @@ void Scene::RenderScene(Renderer* pRenderer, Camera* cam)
 	//Renderer2D::DrawQuad(glm::vec2(-0.3f, 0.0f), glm::vec2(0.5f, 0.5f), ResourceManager::GetTexture("lenna"));
 	//Renderer2D::DrawQuad(glm::vec2(-0.7f, 0.0f), glm::vec2(0.5f, 0.5f), ResourceManager::GetTexture("fish"));
 
-	for (auto& obj : _listOfDrawableGameObjects) {
+	for (auto& obj : _listOfGameObjects) {
 		Texture2D* objTex = obj->GetComponent<Texture2D>();
 		if (objTex != nullptr) {
 			Transform* objTransform = obj->GetTransform();

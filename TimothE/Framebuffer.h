@@ -55,7 +55,7 @@ private:
 	unsigned int _texture;
 private:
 	//buffer objects
-	VAO _vao = VAO();
-	VBO _vbo = VBO();
-	RBO _rbo = RBO();
+	std::shared_ptr<VAO> _vao;
+	std::shared_ptr<VBO> _vbo;
+	RBO* _rbo;
 };

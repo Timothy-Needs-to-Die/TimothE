@@ -16,6 +16,7 @@ void RBO::CreateRBO()
 void RBO::AddDepthStencil()
 {
 	//Adds the depth stencil attachments
-	glRenderbufferStorage(GL_RENDERBUFFER, GL_DEPTH24_STENCIL8, 1280, 720);
+	//TODO: Link this to window size
+	glRenderbufferStorage(GL_RENDERBUFFER, GL_DEPTH24_STENCIL8, 1920, 1080);
 	glFramebufferRenderbuffer(GL_FRAMEBUFFER, GL_DEPTH_STENCIL_ATTACHMENT, GL_RENDERBUFFER, _ID);
 }

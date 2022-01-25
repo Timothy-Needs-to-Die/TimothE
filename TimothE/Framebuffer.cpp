@@ -1,9 +1,11 @@
 #include "Framebuffer.h"
+#include "Base.h"
 
 Framebuffer::Framebuffer(Window* pWindow, Shader* screenShader, float* quadVertices)
 	: _pScreenShader(screenShader), _pQuadVertices(quadVertices), _pWindow(pWindow)
 {
 	CreateFramebuffer();
+	_vbo = VBO::Create(_pQuadVertices, 24);
 }
 
 Framebuffer::Framebuffer(Window* pWindow, Shader* screenShader)
@@ -20,6 +22,7 @@ Framebuffer::Framebuffer(Window* pWindow, Shader* screenShader)
 		 1.0f,   1.0f,   1.0f, 1.0f //Top Right
 	};
 
+	_vbo = CreateRef<VBO>(_pQuadVertices, 24);
 	CreateFramebuffer();
 }
 
@@ -33,21 +36,26 @@ Framebuffer::~Framebuffer()
 
 void Framebuffer::CreateFramebuffer()
 {
-	//Generate Quad VAO and VBO
-	//VAO
-	_vao.CreateVAO();
-	//VBO
-	_vbo.CreateVBO();
+	_vbo->SetLayout({
+		{ ShaderDataTypes::Float2, "aPos"     },
+		{ ShaderDataTypes::Float2, "aTexCoords"     },
+		});
 
-	glBufferData(GL_ARRAY_BUFFER, 24 * sizeof(float), _pQuadVertices, GL_STATIC_DRAW);
+	_vao = VAO::Create();
 
-	//Vertex Positions
-	glEnableVertexAttribArray(0);
-	glVertexAttribPointer(0, 2, GL_FLOAT, GL_FALSE, 4 * sizeof(float), (void*)0);
+	_vao->AddVertexBuffer(_vbo);
 
-	//Texcoords
-	glEnableVertexAttribArray(1);
-	glVertexAttribPointer(1, 2, GL_FLOAT, GL_FALSE, 4 * sizeof(float), (void*)(2 * sizeof(float)));
+	
+
+	//glBufferData(GL_ARRAY_BUFFER, 24 * sizeof(float), _pQuadVertices, GL_STATIC_DRAW);
+	////Vertex Positions
+	//glEnableVertexAttribArray(0);
+	//glVertexAttribPointer(0, 2, GL_FLOAT, GL_FALSE, 4 * sizeof(float), (void*)0);
+	////Texcoords
+	//glEnableVertexAttribArray(1);
+	//glVertexAttribPointer(1, 2, GL_FLOAT, GL_FALSE, 4 * sizeof(float), (void*)(2 * sizeof(float)));
+
+
 
 	//Set the texture to 0
 	_pScreenShader->BindShader();
@@ -67,10 +75,11 @@ void Framebuffer::CreateFramebuffer()
 	// create a render buffer object for depth and stencil attachment (we won't be sampling these)
 
 	//Generate the render buffer objects
-	_rbo.CreateRBO();
+	_rbo = new RBO();
+	_rbo->CreateRBO();
 
 	//Adds the depth stencil attachments
-	_rbo.AddDepthStencil();
+	_rbo->AddDepthStencil();
 
 	// now that we actually created the frame buffer and added all attachments we want to check if it is actually complete now
 	if (glCheckFramebufferStatus(GL_FRAMEBUFFER) != GL_FRAMEBUFFER_COMPLETE)
@@ -98,7 +107,8 @@ void Framebuffer::BindShader()
 void Framebuffer::DrawFramebuffer()
 {
 	//Bind Vertex Array
-	_vao.BindBuffer();
+	//_vao.BindBuffer();
+	_vao->Bind();
 
 	BindTexture();
 	glDrawArrays(GL_TRIANGLES, 0, 6);

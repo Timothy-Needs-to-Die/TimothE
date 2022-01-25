@@ -6,6 +6,7 @@
 #include "Console.h"
 #include "BoxColliderComponent.h"
 #include "ResourceManager.h"
+#include "Scene.h"
 
 GameObject::GameObject(std::string name, ObjectType tag, Transform* transform) 
 	: _name(name), _tag(tag), _pTransform(transform)
