@@ -1,6 +1,6 @@
 #include "Particle.h"
 
-Particle::Particle(float life, glm::vec4 colour, Texture2D* texture, Transform* parentTransform) : _velocity(0.0f), _colour(colour), _life(life), _maxLife(life), _pTexture(texture), _pParentTransform(parentTransform)
+Particle::Particle(float life, glm::vec4 colour, Texture2D* texture, Transform* parentTransform) : _movementVec(0.0f), _colour(colour), _currentLife(life), _maxLife(life), _pTexture(texture), _pParentTransform(parentTransform), _speed(1.0f)
 {
 	_pTransform = new Transform(nullptr);
 	InitVertexData();
@@ -8,10 +8,8 @@ Particle::Particle(float life, glm::vec4 colour, Texture2D* texture, Transform* 
 
 void Particle::Update(float deltaTime)
 {
-	glm::vec2 newPos = _pTransform->GetPosition() + glm::vec2(10);// (_velocity * deltaTime);
+	glm::vec2 newPos = _pTransform->GetPosition() + (_movementVec * deltaTime);
 	_pTransform->SetPosition(newPos.x, newPos.y);
-	glm::mat4 mat = _pTransform->GetTransformMatrix();
-	//
 }
 
 void Particle::InitVertexData()
@@ -62,10 +60,30 @@ void Particle::InitVertexData()
 	glEnableVertexAttribArray(1);
 }
 
+void Particle::SetLife(float newLife)
+{
+	_currentLife = newLife;
+}
+
+void Particle::SetMaxLife(float life)
+{
+	_maxLife = life;
+}
+
 void Particle::ResetParticle()
 {
 	_pTransform->SetPosition(_pParentTransform->GetPosition().x, _pParentTransform->GetPosition().y);
-	_life = _maxLife;
+	_currentLife = _maxLife;
+}
+
+void Particle::SetVelocity(glm::vec2 newVelocity)
+{
+	_movementVec = newVelocity;
+}
+
+void Particle::SetColour(glm::vec4 newColour)
+{
+	_colour = newColour;
 }
 
 void Particle::SetTransform(Transform* newTransform)
@@ -76,4 +94,29 @@ void Particle::SetTransform(Transform* newTransform)
 void Particle::SetParentTransform(Transform* parentTransform)
 {
 	parentTransform = parentTransform;
+}
+
+void Particle::SetAngle(float angle)
+{
+	glm::vec2 vec;
+	vec.x = cos(angle);
+	vec.y = sin(angle);
+	vec = glm::normalize(vec);
+	_movementVec = vec * _speed;
+}
+
+void Particle::ToggleRandomDirection(bool random)
+{
+}
+
+void Particle::SetAngleRange(float range)
+{
+}
+
+void Particle::SetSpeed(float speed)
+{
+	_speed = speed;
+
+	glm::vec2 vec = glm::normalize(_movementVec);
+	vec = vec * _speed;
 }

@@ -60,37 +60,110 @@ void ParticleSystem::DrawEditorUI()
 {
 	ImGui::Text("Particle System");
 
-	// create input field to change max amount of particles
-	static int* maxparticles = &_maxParticles;
-	if (ImGui::InputInt("Max particles", maxparticles))
+	if (ImGui::CollapsingHeader("Settings"))
 	{
-		if (_maxParticles < 0)
-			_maxParticles = 0;
-
-		// if the value is changed, change the number of particles in vector
-		int dif = _maxParticles - _particles.size();
-		if (_maxParticles > _particles.size())
+		// create input field to change max amount of particles
+		static int* maxparticles = &_maxParticles;
+		if (ImGui::InputInt("Max particles", maxparticles))
 		{
-			for (int i = 0; i < dif; i++)
+			if (_maxParticles < 0)
+				_maxParticles = 0;
+
+			// if the value is changed, change the number of particles in vector
+			int dif = _maxParticles - _particles.size();
+			if (_maxParticles > _particles.size())
 			{
-				// add new particles
-				_particles.push_back(new Particle(_particleLife, _particleColour, _pTexture, _pParentTransform));
+				for (int i = 0; i < dif; i++)
+				{
+					// add new particles
+					_particles.push_back(new Particle(_particleLife, _particleColour, _pTexture, _pParentTransform));
+				}
 			}
+			else
+			{
+				for (int i = (_particles.size() - 1); i > (_maxParticles - 1); i--)
+				{
+					// remove and delete particles exceeding max amount
+					Particle* p = _particles[i];
+					_particles.erase(_particles.begin() + i);
+					delete p;
+				}
+			}
+		}
+
+		// add a radio button to choose whether particles use textures or colour
+		static int texOrColour = 0;
+		static float colour[4]{ 1.0f,1.0f,1.0f,1.0f };
+		ImGui::RadioButton("Texture", &texOrColour, 0);
+		ImGui::SameLine();
+		ImGui::RadioButton("Colour", &texOrColour, 1);
+		if (texOrColour == 0) // put this after to have these under the radio buttons, not between
+		{
+			// TODO: set texture
 		}
 		else
 		{
-			for (int i = (_particles.size() - 1); i > (_maxParticles - 1); i--)
+			if (ImGui::InputFloat4("Particle colour", colour))
 			{
-				// remove and delete particles exceeding max amount
-				Particle* p = _particles[i];
-				_particles.erase(_particles.begin() + i);
-				delete p;
+				for (Particle* p : _particles)
+				{
+					p->SetColour(glm::vec4(colour[0], colour[1], colour[2], colour[3]));
+				}
+			}
+		}
+
+		// add an input field to change the particle life
+		static float particleLife = 1.0f;
+		if (ImGui::InputFloat("Particle life", &particleLife))
+		{
+			for (Particle* p : _particles)
+			{
+				p->SetLife(particleLife);
+			}
+		}
+
+		static float angle = 0.0f;
+		if (ImGui::SliderAngle("Movement angle", &angle, 0))
+		{
+			for (Particle* p : _particles)
+			{
+				p->SetAngle(angle);
+			}
+		}
+		//ImGui::SameLine();
+
+		//static bool randomDir = true;
+		//static bool oldRandomDir = randomDir;
+		//static float angleRange = 10.0f;
+		//ImGui::Checkbox("Use random direction", &randomDir);
+		//if (randomDir)
+		//{
+		//	if (oldRandomDir != randomDir) // oldrandomdir is used so that this is only done once (until it is changed again) to avoid unnecessary looping
+		//	{
+		//		for (Particle* p : _particles)
+		//		{
+		//			p->ToggleRandomDirection(randomDir);
+		//		}
+		//	}
+		//	if (ImGui::SliderAngle("Random direction range", &angleRange, 0))
+		//	{
+		//		for (Particle* p : _particles)
+		//		{
+		//			p->SetAngleRange(angleRange);
+		//		}
+		//	}
+		//	oldRandomDir = randomDir;
+		//}
+
+		static float speed = 1.0f;
+		if (ImGui::InputFloat("Speed", &speed))
+		{
+			for (Particle* p : _particles)
+			{
+				p->SetSpeed(speed);
 			}
 		}
 	}
-
-	//TODO: input float4 for colour
-	//TODO: input float for particle life
 }
 
 void ParticleSystem::CanRespawnParticles(bool toggle)
