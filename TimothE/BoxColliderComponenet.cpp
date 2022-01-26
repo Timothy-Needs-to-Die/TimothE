@@ -65,8 +65,10 @@ void BoxColliderComponent::OnEnd()
 
 bool BoxColliderComponent::Intersects(Rect* box)
 {
+	// If its not enabled we dont want to perform any checks
 	if (Component::IsEnabled())
 	{
+		// Checks if the boxes intersect with each other
 		if ((_boxCollider->xPos + _boxCollider->width >= box->xPos)
 			&& (box->xPos + _boxCollider->width >= _boxCollider->xPos)
 			&& (_boxCollider->yPos + _boxCollider->height >= box->yPos)
@@ -80,8 +82,10 @@ bool BoxColliderComponent::Intersects(Rect* box)
 
 bool BoxColliderComponent::IsPointInside(glm::vec2 point)
 {
+	// If its not enabled we dont want to perform any checks
 	if (Component::IsEnabled())
 	{
+		// Checks if the given point is inside of the box
 		if (point.x > _boxCollider->xPos && point.x < _boxCollider->xPos + _boxCollider->width
 			&& point.y > _boxCollider->yPos && point.y < _boxCollider->yPos + _boxCollider->height)
 		{
@@ -95,8 +99,10 @@ bool BoxColliderComponent::IsPointInside(glm::vec2 point)
 
 void BoxColliderComponent::DrawEditorUI()
 {
+	// Draw the title 
 	if (ImGui::CollapsingHeader("Box Collider Component"))
 	{
+		// Draw IsEnabled checkbox
 		Component::DrawEditorUI();
 	}
 }

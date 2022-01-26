@@ -47,6 +47,7 @@ public:
 	//Display Functions//
 	/////////////////////
 	void DisplayInEditor();
+	void DrawEditorUI();
 
 public:
 	//////////////////////////
@@ -106,6 +107,19 @@ public:
 	//////////////////
 	void SetShader(int id) { _shaderID = id; };
 	void SetShader(std::string name);
+
+	///////////////////
+	//Get/Set Enabled//
+	///////////////////
+	bool IsEnabled() { return _isEnabled; }
+	void SetEnabled(bool state) 
+	{
+		/*for (auto& comp : _pComponents) 
+		{
+			comp->SetEnabled(state);
+		}*/
+		_isEnabled = state; 
+	}
 
 	////////////////////////////
 	//Component Get/Add/Remove//
@@ -178,4 +192,10 @@ private:
 	///////////
 	unsigned int _vao;
 	unsigned int _vbo;
+
+	////////////////////
+	//Enabled/Disabled//
+	////////////////////
+	bool _isEnabled;
+	bool* _editorIsEnabled;
 };

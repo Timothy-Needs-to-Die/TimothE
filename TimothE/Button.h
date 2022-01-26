@@ -27,6 +27,7 @@ public:
 	void DrawEditorUI() override;
 
 	// OnClick management
+	
 	void AddClickEvent(void (*function)());
 	void RemoveClickEvent(void (*function)());
 

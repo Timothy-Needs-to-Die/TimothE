@@ -79,7 +79,7 @@ public:
 	virtual void DrawEditorUI() {
 		if (ImGui::Checkbox("IsEnabled", _editorIsEnabled))
 		{
-			std::cout << "IsEnabled = " << *_editorIsEnabled << std::endl;
+			//std::cout << "IsEnabled = " << *_editorIsEnabled << std::endl;
 			SetEnabled(*_editorIsEnabled);
 		}
 	}

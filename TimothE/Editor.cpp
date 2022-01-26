@@ -140,8 +140,6 @@ void Editor::EditorImGui(Scene* currentScene)
 
 	//Inspector
 	{
-
-
 		ImGui::Begin("Inspector", 0, ImGuiWindowFlags_NoMove);
 
 		if (_pSelectedGameObject != nullptr)
@@ -158,6 +156,8 @@ void Editor::EditorImGui(Scene* currentScene)
 					_pSelectedGameObject->SetName(text);
 				}
 			}
+
+			_pSelectedGameObject->DrawEditorUI();
 
 			// select object type
 			if (ImGui::CollapsingHeader("Object Type"))

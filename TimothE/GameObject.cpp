@@ -20,6 +20,10 @@ GameObject::GameObject(std::string name, ObjectType tag, Transform* transform)
 	InitVertexData();
 	SetShader("default");
 
+	// Default enable gameobjects
+	_isEnabled = true;
+	_editorIsEnabled = &_isEnabled;
+
 	Start();
 }
 
@@ -90,9 +94,12 @@ void GameObject::Start()
 
 void GameObject::Update(float deltaTime)
 {
-	for (Component* c : _pComponents)
+	if (_isEnabled)
 	{
-		c->OnUpdate();
+		for (Component* c : _pComponents)
+		{
+			c->OnUpdate();
+		}
 	}
 }
 
@@ -122,10 +129,25 @@ void GameObject::DisplayInEditor()
 {
 	ImGui::Text(_name.c_str());
 
+	if (ImGui::Checkbox("IsEnabled", _editorIsEnabled))
+	{
+		std::cout << "IsEnabled = " << *_editorIsEnabled << std::endl;
+		SetEnabled(*_editorIsEnabled);
+	}
+
 	for (auto& comp : _pComponents) {
 		comp->DrawEditorUI();
 	}
 
+}
+
+void GameObject::DrawEditorUI()
+{
+	if (ImGui::Checkbox("IsEnabled", _editorIsEnabled))
+	{
+		std::cout << "IsEnabled = " << *_editorIsEnabled << std::endl;
+		SetEnabled(*_editorIsEnabled);
+	}
 }
 
 void GameObject::SetShader(std::string name)
