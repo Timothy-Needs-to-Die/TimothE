@@ -14,21 +14,8 @@ ParticleSystem::ParticleSystem(int count, glm::vec4 colour, Texture2D* texture, 
 	/*Particle* p = new Particle(_particleLife, _particleColour, _pTexture, _pParentTransform);
 	p->ResetParticle();
 	_particles.push_back(p);*/
-	
-	for (int i = 0; i < _maxParticles; i++)
-	{
-		// create new particle
-		Particle* p = new Particle(_particleLife, _particleColour, _pTexture, _pParentTransform);
-		// add to vector
-		_particles.push_back(p);
-		p->ResetParticle();
-		if (i > 0)
-		{
-			// set to disabled (life < 0 makes it not render + setting to not respawn makes it stay like that)
-			p->SetLife(-1.0f);
-			p->SetCanRespawn(false);
-		}
-	}
+
+	CreateParticles();
 }
 
 ParticleSystem::~ParticleSystem()
@@ -96,9 +83,7 @@ void ParticleSystem::OnEnd()
 
 void ParticleSystem::DrawEditorUI()
 {
-	ImGui::Text("Particle System");
-
-	if (ImGui::CollapsingHeader("Settings"))
+	if (ImGui::CollapsingHeader("Particle System"))
 	{
 		// create input field to change max amount of particles
 		static int* maxparticles = &_maxParticles;
@@ -209,7 +194,7 @@ void ParticleSystem::DrawEditorUI()
 		}
 		
 		// movement angle
-		static float angle = 0.0f;
+		static float angle;
 		if (ImGui::SliderAngle("Movement angle", &angle, 0))
 		{
 			_creatingParticles = true;
@@ -322,5 +307,24 @@ void ParticleSystem::Fire()
 	for (Particle* p : _particles)
 	{
 		p->ResetParticle();
+	}
+}
+
+void ParticleSystem::CreateParticles()
+{
+	_creatingParticles = true;
+	for (int i = 0; i < _maxParticles; i++)
+	{
+		// create new particle
+		Particle* p = new Particle(_particleLife, _particleColour, _pTexture, _pParentTransform);
+		// add to vector
+		_particles.push_back(p);
+		p->ResetParticle();
+		if (i > 0)
+		{
+			// set to disabled (life < 0 makes it not render + setting to not respawn makes it stay like that)
+			p->SetLife(-1.0f);
+			p->SetCanRespawn(false);
+		}
 	}
 }
