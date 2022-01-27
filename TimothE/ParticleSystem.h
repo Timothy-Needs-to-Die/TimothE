@@ -41,19 +41,18 @@ private:
 	vector<Particle*> _particles;
 	int _maxParticles;
 
+	bool _creatingParticles;
+	float _spawnDelay;
+
 	glm::vec4 _particleColour;
 	float _particleLife;
 
 	Transform* _pParentTransform;
-
-	bool _canRespawn;
 
 	string _shaderName;
 	Shader* _pShader;
 	int _shaderID;
 
 	Texture2D* _pTexture;
-
-	bool _continuous;
 };
 

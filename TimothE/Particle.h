@@ -53,6 +53,9 @@ public:
 
 	bool GetUsingTexture() { return _usingTexture; }
 	void SetUsingTexture(bool useTexture);
+
+	bool GetCanRespawn() { return _canRespawn; }
+	void SetCanRespawn(bool canRespawn);
 private:
 	Transform* _pTransform;
 	glm::vec2 _movementVec;
@@ -68,4 +71,5 @@ private:
 	float _angleRange;
 	float _angle;
 	bool _usingTexture;
+	bool _canRespawn;
 };

@@ -134,3 +134,8 @@ void Particle::SetUsingTexture(bool useTexture)
 {
 	_usingTexture = useTexture;
 }
+
+void Particle::SetCanRespawn(bool canRespawn)
+{
+	_canRespawn = canRespawn;
+}
