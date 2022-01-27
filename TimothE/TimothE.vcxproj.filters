@@ -134,6 +134,7 @@
     <ClInclude Include="pch.h" />
     <ClInclude Include="ParticleSystem.h" />
     <ClInclude Include="Particle.h" />
+    <ClInclude Include="CameraManager.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Application.cpp" />
@@ -192,5 +193,6 @@
     <ClCompile Include="pch.cpp" />
     <ClCompile Include="ParticleSystem.cpp" />
     <ClCompile Include="Particle.cpp" />
+    <ClCompile Include="CameraManager.cpp" />
   </ItemGroup>
 </Project>
