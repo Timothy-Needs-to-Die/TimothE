@@ -72,19 +72,8 @@ Scene::Scene(std::string name)
 	GameObject* _pTextObj = new GameObject("TEXTOBJ", ObjectType::UI);
 	_pTextObj->AddComponent(new TextComponent(_pTextObj, "arial"));
 	AddGameObject(_pTextObj);
-	
 
 	ResourceManager::InstantiateTexture("spritesheet", new Texture2D("testSheet.png"));
-	float sheetWidth = 2560, sheetHeight = 1664;
-	float spriteWidth = 128, spriteHeight = 128;
-	float x = 10, y = 7;
-	_uvSpriteCoords = new glm::vec2[4];
-	_uvSpriteCoords[0] =  glm::vec2((x * spriteWidth) / sheetWidth, (y * spriteHeight) / sheetHeight );
-	_uvSpriteCoords[1] =  glm::vec2(((x + 1) * spriteWidth) / sheetWidth, (y * spriteHeight) / sheetHeight );
-	_uvSpriteCoords[2] =  glm::vec2(((x + 1) * spriteWidth) / sheetWidth, ((y + 1) * spriteHeight) / sheetHeight );
-	_uvSpriteCoords[3] =  glm::vec2((x * spriteWidth) / sheetWidth, ((y + 1) * spriteHeight) / sheetHeight );
-	std::cout << _uvSpriteCoords[0].x << std::endl;
-
 	//////////////////
 	//END OF TEST CODE
 	//////////////////

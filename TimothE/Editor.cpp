@@ -530,7 +530,6 @@ void Editor::ConvertGameToEditorSpace()
 void Editor::EditorUpdate(Scene* currentScene, float dt)
 {
 	currentScene->EditorUpdate(dt);
-	ConvertGameToEditorSpace();
 }
 
 void Editor::CreateFileInContentBrowser(std::string name, std::string type)

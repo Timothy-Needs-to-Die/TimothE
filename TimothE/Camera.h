@@ -22,11 +22,15 @@ public:
 
 	void RecalculateViewMatrix();
 
+	void PrintInfo() {
+		std::cout << "Camera: " << _cameraPos.x << ", " << _cameraPos.y << ", " << _cameraPos.z << std::endl;
+	}
+
 private:
 	void PollInput(float dt);
 
 private:
-	glm::vec3 _cameraPos = glm::vec3(0.0f, 0.0f, -1.0f);
+	glm::vec3 _cameraPos;
 	float _rotation;
 
 	float _cameraSpeed = 10.0f;

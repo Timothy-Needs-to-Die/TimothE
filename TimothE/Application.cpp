@@ -82,7 +82,7 @@ void Application::Init(bool devMode)
 	float right = aspectRatio * zoomLevel;
 	float bottom = -zoomLevel;
 	float top = zoomLevel;
-	_pGameCamera = new Camera(left,right,top,bottom);
+	_pGameCamera = new Camera(left, right, top, bottom);
 	_pGameCamera->SetCameraSpeed(2.5f);
 
 	_pTilemap = new TileMap();
@@ -111,7 +111,7 @@ void Application::GameLoop()
 	double previousTime = glfwGetTime();
 
 	//SoundStruct TitleSong = _audio->LoadSound("Title Song", "Resources/Sounds/Music/Title.wav", Type_Song);
-	
+
 	float aspectRatio = _pWindow->GetWidth() / _pWindow->GetHeight();
 	float zoomLevel = 1.0f;
 
@@ -121,7 +121,7 @@ void Application::GameLoop()
 	float top = zoomLevel;
 
 	Camera* _pGameCamera = new Camera(left, right, bottom, top);
-	
+
 	//While the editor window should not close
 	while (_mRunning) {
 		PollInput();
@@ -135,8 +135,8 @@ void Application::GameLoop()
 		//}
 
 		//deltatime update
-		double currentTime = glfwGetTime();
-		double elapsed = currentTime - previousTime;
+		double deltaTime = glfwGetTime();
+		double elapsed = deltaTime - previousTime;
 
 		//imgui update frame
 		ImGuiManager::ImGuiNewFrame();
@@ -145,19 +145,14 @@ void Application::GameLoop()
 		if (_mInEditorMode) {
 			_pEditor->_pEditorFramebuffer->BindFramebuffer();
 			GameBeginRender();
-			glEnable(GL_DEPTH_TEST);
 
-			_pTilemap->RenderMap(_pEditor->GetCamera());
 			GameRender(_pEditor->GetCamera());
 			_pEditor->EditorLoop(_pCurrentScene, elapsed, _mInEditorMode, _mPaused);
 
-			glm::vec3 camPos = _pEditor->GetCamera()->Position();
-			std::cout << "Editor Camera: " << camPos.x << ", " << camPos.y << ", " << camPos.z << std::endl;
+			_pEditor->GetCamera()->PrintInfo();
 
 			_pEditor->_pEditorFramebuffer->UnbindFramebuffer();
-			glDisable(GL_DEPTH_TEST);
 
-			glClear(GL_COLOR_BUFFER_BIT);
 			_pEditor->EditorRender();
 		}
 		//update game if in game mode
@@ -165,28 +160,24 @@ void Application::GameLoop()
 			GameBeginRender();
 			//glEnable(GL_DEPTH_TEST);
 
-			_pTilemap->RenderMap(_pGameCamera);
 			GameRender(_pGameCamera);
+			
+			_pGameCamera->PrintInfo();
 
-			glm::vec3 camPos = _pGameCamera->Position();
-			std::cout << "Game Camera: " << camPos.x << ", " << camPos.y << ", " << camPos.z << std::endl;
-
-			if (_mGameRunning && !_mPaused)
+			if (_mGameRunning && !_mPaused) {
 				GameUpdate(elapsed);
+			}
 
 			if (_mDevMode) {
 				ImGUISwitchRender();
 			}
-
-
-			//glDisable(GL_DEPTH_TEST);
-			//glClear(GL_COLOR_BUFFER_BIT);
 		}
+
 		ImGuiManager::ImGuiEndFrame();
 
 		_pWindow->SwapBuffers();
 
-		previousTime = currentTime;
+		previousTime = deltaTime;
 	}
 
 	//saves scene
@@ -239,13 +230,8 @@ void Application::GameBeginRender()
 //render game 
 void Application::GameRender(Camera* cam)
 {
+	_pTilemap->RenderMap(cam);
 	_pCurrentScene->RenderScene(_pRenderer, cam);
-}
-
-//ends game render
-void Application::GameEndRender()
-{
-	_pWindow->SwapBuffers();
 }
 
 //updates game scene

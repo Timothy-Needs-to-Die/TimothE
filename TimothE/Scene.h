@@ -89,9 +89,7 @@ private:
 	//Stores the next id for the scene
 	static int nextID;
 
-	glm::vec2* _uvSpriteCoords;
-
-	//Stores a vector of gameobjects. This is refreshed everytime a scene loads.
+	//Stores a vector of game objects. This is refreshed every time a scene loads.
 	static std::vector<GameObject*> _listOfGameObjects;
 	static std::vector<GameObject*> _listOfDrawableGameObjects;
 };

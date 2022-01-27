@@ -91,6 +91,7 @@ void GameObject::Start()
 
 void GameObject::Update(float deltaTime)
 {
+	_pTransform->CalculateTransformMatrix();
 	for (Component* c : _pComponents)
 	{
 		c->OnUpdate(deltaTime);
