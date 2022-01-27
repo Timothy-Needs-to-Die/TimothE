@@ -32,6 +32,17 @@ glm::vec2 ReadVec2(IStream& stream) {
 	return v;
 }
 
+glm::vec4 ReadVec4(IStream& stream)
+{
+	glm::vec4 v;
+	v.x = ReadFloat(stream);
+	v.y = ReadFloat(stream);
+	v.z = ReadFloat(stream);
+	v.w = ReadFloat(stream);
+
+	return v;
+}
+
 //writes an integer to the stream
 bool WriteInt(IStream& stream, int n) {
 	int numWritten = stream.Write(sizeof(int), &n);
@@ -58,4 +69,9 @@ bool WriteString(IStream& stream, const std::string& str) {
 //Writes a glm::vec2 to the stream (this performs two WriteFloat operations)
 bool WriteVec2(IStream& stream, glm::vec2 v) {
 	return(WriteFloat(stream, v.x) && WriteFloat(stream, v.y));
+}
+
+bool WriteVec4(IStream& stream, glm::vec4 v)
+{
+	return WriteFloat(stream, v.x) && WriteFloat(stream, v.y) && WriteFloat(stream, v.z) && WriteFloat(stream, v.w);
 }

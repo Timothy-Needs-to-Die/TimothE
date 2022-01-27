@@ -20,9 +20,11 @@ int ReadInt(IStream& stream);
 float ReadFloat(IStream& stream);
 std::string ReadString(IStream& stream);
 glm::vec2 ReadVec2(IStream& stream);
+glm::vec4 ReadVec4(IStream& stream);
 
 //Write operations
 bool WriteInt(IStream& stream, int n);
 bool WriteFloat(IStream& stream, float f);
 bool WriteString(IStream& stream, const std::string& str);
 bool WriteVec2(IStream& stream, glm::vec2 v);
+bool WriteVec4(IStream& stream, glm::vec4 v);

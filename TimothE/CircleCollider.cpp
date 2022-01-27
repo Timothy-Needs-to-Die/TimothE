@@ -7,10 +7,6 @@ CircleCollider::CircleCollider(GameObject* parent) : Component(parent), _radius(
 
 	_centre = GetParent()->GetTransform()->GetPosition();
 	_radius = parent->GetTransform()->GetScale().x / 2;
-	bounds = new Rect((_centre.x - _radius), (_centre.x + _radius),
-		(_centre.y - _radius), (_centre.y + _radius));
-	std::cout << "BoxCollider Component has been added - centre " << _centre.x << ", " << _centre.y << std::endl;
-	std::cout << "BoxCollider Component has been added - radius " << _radius;
 }
 
 CircleCollider::~CircleCollider()

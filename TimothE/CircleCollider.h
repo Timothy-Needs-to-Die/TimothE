@@ -22,15 +22,21 @@ public:
 	virtual void DrawEditorUI() override;
 
 	virtual bool SaveState(IStream& stream) const override {
-		//Write type
-		WriteInt(stream, _type);
+		Component::SaveState(stream);
 
-		//Write category
-		WriteInt(stream, _category);
+		WriteFloat(stream, _radius);
+		WriteVec2(stream, _centre);
+		WriteInt(stream, (int)_isTrigger);
 
 		return true;
 	}
 	virtual bool LoadState(IStream& stream) override {
+		Component::LoadState(stream);
+
+		_radius = ReadFloat(stream);
+		_centre = ReadVec2(stream);
+		_isTrigger = (bool)ReadInt(stream);
+
 		return true;
 	}
 
@@ -54,5 +60,4 @@ private:
 	float _radius;
 	glm::vec2 _centre;
 	bool _isTrigger;
-	Rect* bounds;
 };

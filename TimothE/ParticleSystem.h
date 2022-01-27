@@ -34,6 +34,37 @@ public:
 
 	Shader* GetShader() const { return _pShader; }
 	void SetShader(string name);
+
+	virtual bool SaveState(IStream& stream) const override {
+		Component::SaveState(stream);
+
+		WriteInt(stream, _maxParticles);
+		
+		WriteVec4(stream, _particleColour);
+
+		WriteInt(stream, (bool)_canRespawn);
+
+		WriteString(stream, _shaderName);
+
+		//TODO: this depends on a texture component something needs to be done about supporting this
+
+
+		return true;
+	}
+
+
+	virtual bool LoadState(IStream& stream) override {
+		Component::LoadState(stream);
+
+		_maxParticles = ReadInt(stream);
+		_particleColour = ReadVec4(stream);
+		_canRespawn = (bool)ReadInt(stream);
+		_shaderName = ReadString(stream);
+
+		return true;
+	}
+
+
 private:
 	vector<Particle*> _particles;
 	int _maxParticles;
