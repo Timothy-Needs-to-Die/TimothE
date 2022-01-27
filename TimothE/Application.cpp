@@ -83,6 +83,7 @@ void Application::Init(bool devMode)
 	float bottom = -zoomLevel;
 	float top = zoomLevel;
 	_pGameCamera = new Camera(left,right,top,bottom);
+	_pGameCamera->SetCameraSpeed(2.5f);
 
 	_pTilemap = new TileMap();
 	_pTilemap->AddTileAt(0, 3, 5, 2);
@@ -150,6 +151,9 @@ void Application::GameLoop()
 			GameRender(_pEditor->GetCamera());
 			_pEditor->EditorLoop(_pCurrentScene, elapsed, _mInEditorMode, _mPaused);
 
+			glm::vec3 camPos = _pEditor->GetCamera()->Position();
+			std::cout << "Editor Camera: " << camPos.x << ", " << camPos.y << ", " << camPos.z << std::endl;
+
 			_pEditor->_pEditorFramebuffer->UnbindFramebuffer();
 			glDisable(GL_DEPTH_TEST);
 
@@ -159,10 +163,14 @@ void Application::GameLoop()
 		//update game if in game mode
 		else {
 			GameBeginRender();
-			glEnable(GL_DEPTH_TEST);
+			//glEnable(GL_DEPTH_TEST);
 
-			//_pTilemap->RenderMap(_pGameCamera);
+			_pTilemap->RenderMap(_pGameCamera);
 			GameRender(_pGameCamera);
+
+			glm::vec3 camPos = _pGameCamera->Position();
+			std::cout << "Game Camera: " << camPos.x << ", " << camPos.y << ", " << camPos.z << std::endl;
+
 			if (_mGameRunning && !_mPaused)
 				GameUpdate(elapsed);
 
@@ -171,8 +179,8 @@ void Application::GameLoop()
 			}
 
 
-			glDisable(GL_DEPTH_TEST);
-			glClear(GL_COLOR_BUFFER_BIT);
+			//glDisable(GL_DEPTH_TEST);
+			//glClear(GL_COLOR_BUFFER_BIT);
 		}
 		ImGuiManager::ImGuiEndFrame();
 
