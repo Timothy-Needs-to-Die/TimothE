@@ -50,6 +50,9 @@ public:
 	/// <summary> the range that particles can be when random </summary>
 	void SetAngleRange(float range);
 	void SetSpeed(float speed);
+
+	bool GetUsingTexture() { return _usingTexture; }
+	void SetUsingTexture(bool useTexture);
 private:
 	Transform* _pTransform;
 	glm::vec2 _movementVec;
@@ -64,4 +67,5 @@ private:
 	bool _useRandomDirection;
 	float _angleRange;
 	float _angle;
+	bool _usingTexture;
 };

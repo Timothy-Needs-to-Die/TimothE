@@ -1,5 +1,6 @@
 #include "Texture2D.h"
 #include "imgui.h"
+#include "misc/cpp/imgui_stdlib.h"
 
 Texture2D::Texture2D(GameObject* pParent) : Component(pParent), _ID(0)
 {
@@ -30,12 +31,20 @@ void Texture2D::DrawEditorUI()
 	ImTextureID texID = (void*)_ID;
 	//specifies a size of 100x100 for the texture preview
 	ImGui::Image(texID, ImVec2(100.0f, 100.0f));
+
+	static std::string texPath = "path";
+	ImGui::InputText("##TexturePath", &texPath);
+	ImGui::SameLine();
+	if (ImGui::Button("Set texture"))
+	{
+		Load(texPath);
+	}
 }
 
 // Pass in file path
 bool Texture2D::Load(std::string path)
 {
-	if (_ID != 0) return true;
+	//if (_ID != 0) return true;
 	_filePath = path;
 	unsigned char* data = stbi_load(path.c_str(), &_width, &_height, &_channels, 0);
 

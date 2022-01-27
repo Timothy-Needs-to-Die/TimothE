@@ -1,4 +1,5 @@
 #include "ParticleSystem.h"
+#include "misc/cpp/imgui_stdlib.h"
 
 ParticleSystem::ParticleSystem(int count, glm::vec4 colour, Texture2D* texture, Transform* parentTransform) : _maxParticles(count), _particleColour(colour), _pTexture(texture), _pParentTransform(parentTransform)
 {
@@ -97,14 +98,45 @@ void ParticleSystem::DrawEditorUI()
 		}
 
 		// add a radio button to choose whether particles use textures or colour
-		static int texOrColour = 0;
+		static int texOrColour = (int)_particles[0]->GetUsingTexture();
 		static float colour[4]{ 1.0f,1.0f,1.0f,1.0f };
-		ImGui::RadioButton("Texture", &texOrColour, 0);
-		ImGui::SameLine();
-		ImGui::RadioButton("Colour", &texOrColour, 1);
-		if (texOrColour == 0) // put this after to have these under the radio buttons, not between
+		if (ImGui::RadioButton("Texture", &texOrColour, 1))
 		{
-			// TODO: set texture
+			for (Particle* p : _particles)
+			{
+				p->SetUsingTexture(true);
+			}
+		}
+		ImGui::SameLine();
+		if (ImGui::RadioButton("Colour", &texOrColour, 0))
+		{
+			for (Particle* p : _particles)
+			{
+				p->SetUsingTexture(false);
+			}
+		}
+		if (texOrColour == 1) // put this after to have these under the radio buttons, not between
+		{
+			if (ImGui::CollapsingHeader("Particle texture"))
+			{
+				ImTextureID texID = (void*)_particles[0]->GetTexture()->GetID();
+				ImGui::Image(texID, ImVec2(50.0f, 50.0f));
+
+				static std::string texPath = "lenna3.jpg";
+				ImGui::InputText("##ParticleTexturePath", &texPath);
+				ImGui::SameLine();
+				if (ImGui::Button("Set texture"))
+				{
+					for (Particle* p : _particles)
+					{
+						Texture2D* tex = p->GetTexture();
+						if (tex != nullptr)
+						{
+							p->GetTexture()->Load(texPath);
+						}
+					}
+				}
+			}
 		}
 		else
 		{

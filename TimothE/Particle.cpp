@@ -1,7 +1,7 @@
 #include "Particle.h"
 #include <random>
 
-Particle::Particle(float life, glm::vec4 colour, Texture2D* texture, Transform* parentTransform) : _movementVec(0.0f), _colour(colour), _currentLife(life), _maxLife(life), _pTexture(texture), _pParentTransform(parentTransform), _speed(1.0f), _useRandomDirection(true), _angleRange(10.0f), _angle(0.0f)
+Particle::Particle(float life, glm::vec4 colour, Texture2D* texture, Transform* parentTransform) : _movementVec(0.0f), _colour(colour), _currentLife(life), _maxLife(life), _pTexture(texture), _pParentTransform(parentTransform), _speed(1.0f), _useRandomDirection(true), _angleRange(10.0f), _angle(0.0f), _usingTexture(true)
 {
 	_pTransform = new Transform(nullptr);
 	InitVertexData();
@@ -128,4 +128,9 @@ void Particle::SetSpeed(float speed)
 
 	glm::vec2 vec = glm::normalize(_movementVec);
 	_movementVec = vec * _speed;
+}
+
+void Particle::SetUsingTexture(bool useTexture)
+{
+	_usingTexture = useTexture;
 }
