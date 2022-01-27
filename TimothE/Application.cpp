@@ -86,9 +86,9 @@ void Application::Init(bool devMode)
 
 	_pTilemap = new TileMap();
 	_pTilemap->AddTileAt(0, 3, 5, 2);
-	_pTilemap->AddTileAt(0, 4, 5, 18);
-	_pTilemap->AddTileAt(0, 6, 5, 35);
-	_pTilemap->AddTileAt(0, 7, 5, 50);
+	_pTilemap->AddTileAt(0, 4, 5, 3);
+	_pTilemap->AddTileAt(0, 6, 5, 4);
+	_pTilemap->AddTileAt(0, 3, 5, 258);
 
 }
 
@@ -111,9 +111,15 @@ void Application::GameLoop()
 
 	//SoundStruct TitleSong = _audio->LoadSound("Title Song", "Resources/Sounds/Music/Title.wav", Type_Song);
 	
+	float aspectRatio = _pWindow->GetWidth() / _pWindow->GetHeight();
+	float zoomLevel = 1.0f;
 
+	float left = -aspectRatio * zoomLevel;
+	float right = aspectRatio * zoomLevel;
+	float bottom = -zoomLevel;
+	float top = zoomLevel;
 
-	Camera* _pGameCamera = new Camera(-1.7, 1.7, -1.0, 1.0);
+	Camera* _pGameCamera = new Camera(left, right, bottom, top);
 	
 	//While the editor window should not close
 	while (_mRunning) {
@@ -155,17 +161,18 @@ void Application::GameLoop()
 			GameBeginRender();
 			glEnable(GL_DEPTH_TEST);
 
-			_pTilemap->RenderMap(_pGameCamera);
+			//_pTilemap->RenderMap(_pGameCamera);
 			GameRender(_pGameCamera);
+			if (_mGameRunning && !_mPaused)
+				GameUpdate(elapsed);
 
 			if (_mDevMode) {
 				ImGUISwitchRender();
 			}
 
-			if (_mGameRunning && !_mPaused)
-				GameUpdate(elapsed);
 
 			glDisable(GL_DEPTH_TEST);
+			glClear(GL_COLOR_BUFFER_BIT);
 		}
 		ImGuiManager::ImGuiEndFrame();
 
@@ -217,7 +224,7 @@ void Application::PollInput()
 //clears and adds background
 void Application::GameBeginRender()
 {
-	_pWindow->SetWindowColour(0.3f, 1.0f, 0.0f, 1.0f);
+	_pWindow->SetWindowColour(0.0f, 0.0f, 0.0f, 1.0f);
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 }
 

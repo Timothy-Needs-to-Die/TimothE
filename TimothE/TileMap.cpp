@@ -4,12 +4,29 @@
 //TODO: Size details
 TileMap::TileMap()
 {
-	_mapSize = glm::vec2(16.0f, 16.0f);
+	//TODO: Add a system to change how many tiles per unit
+
+
+	_tileDimensions = { 256.0f, 256.0f };
+	_mapSize = glm::vec2(_tileDimensions.x / tilesPerUnit, _tileDimensions.y / tilesPerUnit);
 	_tileSize = glm::vec2(128.0f);
 	_spritemapSize = glm::vec2(2560.0f, 1664.0f);
-	_tiles.resize(_mapSize.x * _mapSize.y);
+	_tiles.resize(_tileDimensions.x * _tileDimensions.y);
+
+	xGapBetweenTiles = 1.0f / 4.0f;
+	yGapBetweenTiles = 1.0f / 4.0f;
 
 	//CreateTileMap();
+
+	scale = 1.0f / tilesPerUnit;
+
+
+	_noTcCoords = new glm::vec2[4];
+	_noTcCoords[0] = glm::vec2((0 * _tileSize.x) / _spritemapSize.x, (0 * _tileSize.y) / _spritemapSize.y);
+	_noTcCoords[1] = glm::vec2(((0 + 1) * _tileSize.x) / _spritemapSize.x, (0 * _tileSize.y) / _spritemapSize.y);
+	_noTcCoords[2] = glm::vec2(((0 + 1) * _tileSize.x) / _spritemapSize.x, ((0 + 1) * _tileSize.y) / _spritemapSize.y);
+	_noTcCoords[3] = glm::vec2((0 * _tileSize.x) / _spritemapSize.x, ((0 + 1) * _tileSize.y) / _spritemapSize.y);
+
 }
 
 TileMap::~TileMap()
@@ -64,24 +81,6 @@ void TileMap::DeleteAllLayers()
 
 void TileMap::AddTileAt(unsigned int layer, unsigned int x, unsigned int y, unsigned int index)
 {
-	//auto texturePointer = ResourceManager::GetTexture(_textureName);
-	//if (!texturePointer)
-	//{
-	//	std::cout << "Unable to create tilemap: Texture was not found in resouce manager" << std::endl;
-	//}
-
-	//int x = (texturePointer->GetWidth() / _tileSize.x);
-	//int y = (texturePointer->GetHeight() / _tileSize.y);
-	//
-	//int tu = index % x;
-	//int tv;
-	//
-	//if (y % 2 == 0)
-	//	tv = index / y;
-	//else
-	//	tv = index / (y - 1);
-
-
 	TileData newTile;
 	newTile.xIndex = x;
 	newTile.yIndex = y;
@@ -107,6 +106,8 @@ void TileMap::AddTileAt(unsigned int layer, unsigned int x, unsigned int y, unsi
 	_tiles[index] = newTile;
 
 	std::cout << "Tile placed at: (X: " << worldPos.x << " Y: " << worldPos.y << ")" << std::endl;
+	glm::vec2 screenPos = ConvertWorldToScreen(worldPos);
+	std::cout << "In Screen space: (X: " << screenPos.x << " Y: " << screenPos.y << ")" << std::endl;
 }
 
 int TileMap::GetTileWidth() const
@@ -164,12 +165,22 @@ void TileMap::Clear()
 
 void TileMap::RenderMap(Camera* cam)
 {
+	glm::vec3 camPos = cam->Position();
+	float extents = 4.0f;
 	Renderer2D::BeginRender(cam);
 
-	for (auto& t : _tiles) {
-		if (t.uvCoords != nullptr) {
-		Renderer2D::DrawQuad(ConvertWorldToScreen(t.worldPos), { 0.5f, 0.5f }, ResourceManager::GetTexture("spritesheet"), t.uvCoords);
+	for (float y = 0; y < _mapSize.y; y+= yGapBetweenTiles) {
+		for (float x = 0; x < _mapSize.x; x += xGapBetweenTiles) {
+			if (x < camPos.x - extents || x > camPos.x + extents || y < camPos.y - extents || y > camPos.y + extents) {
+				continue;
+			}
 
+			int index = (int)(y * tilesPerUnit) * (_tileDimensions.y) + (int)(x * tilesPerUnit);
+			if (_tiles[index].uvCoords == nullptr) {
+				Renderer2D::DrawQuad({ x,y }, { scale, scale }, ResourceManager::GetTexture("spritesheet"), _noTcCoords);
+			}
+
+			Renderer2D::DrawQuad({ x,y }, { scale,scale }, ResourceManager::GetTexture("spritesheet"), _tiles[index].uvCoords);
 		}
 	}
 

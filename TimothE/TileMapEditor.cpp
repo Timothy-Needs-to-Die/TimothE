@@ -161,18 +161,18 @@ void TileMapEditor::CreateTileMap()
 
 	ImGui::NewLine();
 
-	//Collidable Toggle
-	//if (_selectedTile._tileIndex >= 0 && _selectedTile._tileIndex < sprites.size())
-	//{
-	//	ImGui::Text("Tile %d Collidable?", _selectedTile._tileIndex);
-	//	ImGui::SameLine();
+	/*Collidable Toggle
+	if (_selectedTile._tileIndex >= 0 && _selectedTile._tileIndex < sprites.size())
+	{
+		ImGui::Text("Tile %d Collidable?", _selectedTile._tileIndex);
+		ImGui::SameLine();
 
-	//	if (ImGui::Button("Yes"))
-	//		collidableInfo[_selectedTile._tileIndex] = true;
-	//	ImGui::SameLine();
-	//	if (ImGui::Button("No"))
-	//		collidableInfo[_selectedTile._tileIndex] = false;
-	//}
+		if (ImGui::Button("Yes"))
+			collidableInfo[_selectedTile._tileIndex] = true;
+		ImGui::SameLine();
+		if (ImGui::Button("No"))
+			collidableInfo[_selectedTile._tileIndex] = false;
+	}*/
 
 	//if (_selectedTile == nullptr) return;
 

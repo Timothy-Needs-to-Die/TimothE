@@ -62,11 +62,19 @@ private:
 	//VAO Vertex Array
 	glm::vec2 _mapSize;
 	glm::vec2 _tileSize;
+	glm::vec2 _tileDimensions;
 	glm::vec2 _spritemapSize;
 	std::string _textureName;
 	std::string _tileMapFile;
+	float xGapBetweenTiles;
+	float yGapBetweenTiles;
 
 	std::vector<TileData> _tiles;
+
+	glm::vec2* _noTcCoords;
+
+	int tilesPerUnit = 4;
+	float scale = 1.0f;
 
 
 };

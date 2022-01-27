@@ -166,13 +166,6 @@ void Scene::Update(float deltaTime)
 void Scene::RenderScene(Renderer* pRenderer, Camera* cam)
 {
 	Renderer2D::BeginRender(cam);
-	//glm::vec2 testPos{ 1920.0f, 1080.0f };
-	//glm::vec2 testPos2{ 960.0f, 540.0f };
-	//Renderer2D::DrawQuad(glm::vec2(0.3f, 0.0f), glm::vec2(1.0f, 1.0f), ResourceManager::GetTexture("fish"));
-	//Renderer2D::DrawQuad(ConvertWorldToScreen(testPos2), glm::vec2(0.5f, 0.5f), ResourceManager::GetTexture("fish"));
-	//Renderer2D::DrawQuad(ConvertWorldToScreen(testPos), glm::vec2(0.45f, 0.45f), ResourceManager::GetTexture("spritesheet"), _uvSpriteCoords);
-	//Renderer2D::DrawQuad(glm::vec2(-0.3f, 0.0f), glm::vec2(0.5f, 0.5f), ResourceManager::GetTexture("lenna"));
-	//Renderer2D::DrawQuad(glm::vec2(-0.7f, 0.0f), glm::vec2(0.5f, 0.5f), ResourceManager::GetTexture("fish"));
 
 	for (auto& obj : _listOfGameObjects) {
 		Texture2D* objTex = obj->GetComponent<Texture2D>();
@@ -195,13 +188,6 @@ void Scene::RenderScene(Renderer* pRenderer, Camera* cam)
 			}
 		}
 	}
-
-
-	//for (float i = 0; i < 5; i+= 0.5f) {
-	//	for (float j = 0; j < 5; j+= 0.5f) {
-	//		Renderer2D::DrawQuad(glm::vec2{ i, j }, glm::vec2(0.5f, 0.5f), ResourceManager::GetTexture("spritesheet"), _uvSpriteCoords);
-	//	}
-	//}
 
 	Renderer2D::EndRender();
 }

@@ -47,6 +47,7 @@ Editor::Editor(Application* pApp, Window* pWindow)
 	float top = zoomLevel;
 
 	_pEditorCamera = new Camera(left, right, bottom, top);
+	_pEditorCamera->SetCameraSpeed(1.5f);
 
 	pImGuiSample = new Texture2D(NULL);
 	pImGuiSample->Load("lenna3.jpg");
