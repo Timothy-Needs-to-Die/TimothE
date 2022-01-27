@@ -207,7 +207,7 @@ void Editor::EditorImGui(Scene* currentScene)
 						{
 							ImGui::SameLine();
 							// add button to move the component up
-							if (ImGui::Button("Up"))
+							if (ImGui::Button(("Up##component" + std::to_string(i)).c_str()))
 							{
 								_pSelectedGameObject->SwapComponents(i, i - 1);
 							}
@@ -218,7 +218,7 @@ void Editor::EditorImGui(Scene* currentScene)
 					{
 						ImGui::SameLine();
 						// add button to move the component down
-						if (ImGui::Button("Down"))
+						if (ImGui::Button(("Down##component" + std::to_string(i)).c_str()))
 						{
 							_pSelectedGameObject->SwapComponents(i, i + 1);
 						}
