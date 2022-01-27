@@ -44,7 +44,7 @@ void Application::Init(bool devMode)
 	glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 4);
 	glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 4);
 
-	_pWindow = new Window(1920, 1080, "ThymeoWthE");
+	_pWindow = new Window(1920, 1080, "Timothe Game Engine");
 
 	_pWindow->SetEventCallback(BIND_EVENT_FN(OnGameEvent));
 	_pWindow->CreateWindow();
@@ -65,12 +65,12 @@ void Application::Init(bool devMode)
 		ImGuiManager::CreateImGuiContext(_pWindow->GetGLFWWindow());
 	}
 
-	//initialises resource manager
+	//initializes resource manager
 	ResourceManager::Init();
 
 	Renderer2D::Init();
 
-	//initialises editor with scene
+	//initializes editor with scene
 	_pCurrentScene = new Scene("Test scene");
 	_pEditor = new Editor(this, _pWindow);
 	_mRunning = true;
@@ -81,10 +81,11 @@ void Application::Init(bool devMode)
 	float right = aspectRatio * zoomLevel;
 	float bottom = -zoomLevel;
 	float top = zoomLevel;
-	_pGameCamera = new Camera(left, right, top, bottom);
+	_pGameCamera = new Camera(left, right, bottom, top);
 	_pGameCamera->SetCameraSpeed(2.5f);
 
 	_pTilemap = new TileMap();
+	//Layer, X sprite index, y sprite index, index for placement
 	_pTilemap->AddTileAt(0, 3, 5, 2);
 	_pTilemap->AddTileAt(0, 4, 5, 3);
 	_pTilemap->AddTileAt(0, 6, 5, 4);
@@ -110,16 +111,7 @@ void Application::GameLoop()
 	double previousTime = glfwGetTime();
 
 	//SoundStruct TitleSong = _audio->LoadSound("Title Song", "Resources/Sounds/Music/Title.wav", Type_Song);
-
-	float aspectRatio = _pWindow->GetWidth() / _pWindow->GetHeight();
-	float zoomLevel = 1.0f;
-
-	float left = -aspectRatio * zoomLevel;
-	float right = aspectRatio * zoomLevel;
-	float bottom = -zoomLevel;
-	float top = zoomLevel;
-
-	Camera* _pGameCamera = new Camera(left, right, bottom, top);
+	
 
 	//While the editor window should not close
 	while (_mRunning) {
@@ -130,7 +122,6 @@ void Application::GameLoop()
 		//{
 		//	//_audio->PlaySong(TitleSong);
 		//	STstarted = true;
-		//
 		//}
 
 		//deltatime update
@@ -157,7 +148,6 @@ void Application::GameLoop()
 		//update game if in game mode
 		else {
 			GameBeginRender();
-			//glEnable(GL_DEPTH_TEST);
 
 			GameRender(_pGameCamera);
 			
@@ -189,7 +179,6 @@ void Application::GameLoop()
 
 	//Prints the memory status and reports and memory leaks
 	HeapManager::ReportMemoryLeaks(memBookmark);
-
 }
 
 //run events
@@ -240,7 +229,7 @@ void Application::GameUpdate(float dt)
 	_pCurrentScene->Update(dt);
 }
 
-//stop and play buttons switches play stattes
+//stop and play buttons switches play states
 void Application::ImGUISwitchRender()
 {
 	{
