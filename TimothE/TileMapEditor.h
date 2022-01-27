@@ -34,6 +34,7 @@ private:
 	std::string _textureName;
 	glm::vec2 _mapSize;
 	glm::vec2 _tileSize;
+	std::string _name;
 
 	SelectedTile _selectedTile;
 

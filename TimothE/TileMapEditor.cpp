@@ -15,6 +15,41 @@ void TileMapEditor::DisplayEditorGUI(GLFWwindow* window)
 		CreateTileMap(window);
 }
 
+void TileMapEditor::AcquireData()
+{
+	static char infoName[50];
+	ImGui::Begin("Tile Map Info");
+	ImGui::InputText("Tile Map NMame", infoName, 50);
+	ImGui::InputFloat("Tile count X", &_mapSize.x);
+	ImGui::InputFloat("Tile Count Y", &_mapSize.y);
+	ImGui::InputFloat("Tile Size X", &_tileSize.x);
+	ImGui::InputFloat("Tile Size Y", &_tileSize.y);
+	ImGui::Text("Selected Texture Atlas: %s", _textureName.c_str());
+
+	//TODO - Get a list of the loaded textures for the current map
+	for (const auto& x : /*GetTextureList() */)
+	{
+		_textureName = x.first;
+	}
+
+	ImGui::Separator();
+	if (ImGui::Button("Start"))
+	{
+		if (_mapSize.x >= 1 && _mapSize.y >= 1 && _tileSize.x > 0 && _tileSize.y > 0 && !_textureName.empty() && infoName[0] != '\0')
+		{
+			_name = std::string(infoName);
+			_hasTileData = true;
+		}
+	}
+
+	if (ImGui::Button("Close"))
+	{
+		_hasTileData = false;
+		_isActive = false;
+	}
+	ImGui::End();
+}
+
 //Sets the data in the tileMap object that the editor will be editing
 //Along with setting up the ImGui window for the editor 
 void TileMapEditor::CreateTileMap(GLFWwindow* window)
@@ -92,7 +127,7 @@ void TileMapEditor::CreateTileMap(GLFWwindow* window)
 			if (ImGui::ImageButton(s))
 			{
 				_selectedTile.sprite = s;
-				_selectedTile.sprite.SetColor(Colour(255, 255, 255, 128));
+				_selectedTile.sprite.SetColor(Colour(255, 255, 255, 128)); //TODO - Colour change for hover over
 				_selectedTile._tileIndex = i * x + j;
 			}
 			ImGui::PopID();
@@ -188,6 +223,52 @@ void TileMapEditor::CreateTileMap(GLFWwindow* window)
 	glm::vec2 mousePos = Input::GetMousePos();
 	//ImGui::GetMou
 
+	//TODO: Mouse position to tilemap editor positon and draw call
+
+
+
+}
+
+void TileMapEditor::SaveTileMap(const TileMap& map, const std::vector<bool>& collisionInfo)
+{
+	using nlohmann::json;
+	
+	json root;
+
+	auto layers = json::array();
+	
+	for (const auto& layer : map.GetTileData())
+	{
+		auto x = json::object();
+		auto data = json::array();
+		for (auto tileIndex : layer)
+		{
+			data.push_back(layer);
+		}
+		x["DATA"] = std::move(data);
+		layers.push_back(x);
+	}
+
+	auto col = json::object();
+	for (int i = 0; i < collisionInfo.size(); i++)
+	{
+		col[std::to_string(i)] = collisionInfo[i];
+	}
+
+	root["WIDTH"] = map.GetTileWidth();
+	root["HEIGHT"] = map.GetTileHeight();
+
+	root["TILE_WIDTH"] = map.GetTileSize().x;
+	root["TILE_HEIGHT"] = map.GetTileSize().y;
+
+	root["LAYERS"] = std::move(layers);
+	root["COLLIDABLE_INFO"] = collisionInfo;
+	root["TEXTURE_NAME"] = map.GetTextureName();
+
+	std::ofstream fileToWrite(map.GetName() + ".json");
+	fileToWrite << root;
+
+	std::cout << "Successfully saved tileMap to json file" << std::endl;
 
 
 }

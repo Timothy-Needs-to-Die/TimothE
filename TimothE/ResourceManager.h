@@ -19,7 +19,7 @@ public:
 	void InstantiateScene(std::string name, Scene* scene) { _scenes[name] = scene; };
 
 	//get functions
-	Texture2D* GetTexture(std::string name) { return _textures[name]; };
+	static Texture2D* GetTexture(std::string name) { return _textures[name]; };
 	Shader* GetShader(std::string name) { return _shaders[name]; };
 	Scene* GetScene(std::string name) { return _scenes[name]; };
 
