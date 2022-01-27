@@ -1,7 +1,7 @@
 #pragma once
 #include "pch.h"
 #include "GameObject.h"
-#include "Renderer.h"
+#include "Camera.h"
 
 class Scene
 {
@@ -22,7 +22,7 @@ public:
 	void EditorUpdate(float deltaTime);
 
 	void Update(float deltaTime);
-	void RenderScene(Renderer* pRenderer, Camera* cam);
+	void RenderScene(Camera* cam);
 	
 	GameObject* AddGameObject(GameObject* gameObject) { _listOfGameObjects.push_back(gameObject); return gameObject; }
 	void RemoveGameObject(GameObject* gameObject);

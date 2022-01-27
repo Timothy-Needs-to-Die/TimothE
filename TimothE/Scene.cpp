@@ -152,7 +152,7 @@ void Scene::Update(float deltaTime)
 	//////////////////
 }
 
-void Scene::RenderScene(Renderer* pRenderer, Camera* cam)
+void Scene::RenderScene(Camera* cam)
 {
 	Renderer2D::BeginRender(cam);
 

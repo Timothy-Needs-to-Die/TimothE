@@ -37,7 +37,7 @@ public:
 	std::string GetName() const;
 	void FillLayer(unsigned int layer, int tileIndex);
 
-	//Returns the hight and witdh of the tiles themselves
+	//Returns the hight and width of the tiles themselves
 	glm::vec2 GetTileSize() const;
 
 	void SetTileSize(glm::vec2 tileSize);
@@ -55,7 +55,6 @@ public:
 	}
 
 	void RenderMap(Camera* cam);
-	//const std::vector<std::vector<int>>& GetTileData() const;
 
 
 private:

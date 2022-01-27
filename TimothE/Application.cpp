@@ -34,7 +34,6 @@ void Application::Init(bool devMode)
 	HeapManager::Init();
 
 	_mDevMode = devMode;
-	_pRenderer = new Renderer();
 
 	//checks if glfw initialsed
 	if (!glfwInit()) {
@@ -42,8 +41,8 @@ void Application::Init(bool devMode)
 	}
 
 	//sets up new window
-	glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 3);
-	glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 3);
+	glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 4);
+	glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 4);
 
 	_pWindow = new Window(1920, 1080, "ThymeoWthE");
 
@@ -231,7 +230,7 @@ void Application::GameBeginRender()
 void Application::GameRender(Camera* cam)
 {
 	_pTilemap->RenderMap(cam);
-	_pCurrentScene->RenderScene(_pRenderer, cam);
+	_pCurrentScene->RenderScene(cam);
 }
 
 //updates game scene

@@ -117,7 +117,6 @@
     <ClInclude Include="RBO.h" />
     <ClInclude Include="Particle.h" />
     <ClInclude Include="ParticleSystem.h" />
-    <ClInclude Include="Renderer.h" />
     <ClInclude Include="Renderer2D.h" />
     <ClInclude Include="ResourceManager.h" />
     <ClInclude Include="SOIL\SOIL2.h" />
@@ -184,7 +183,6 @@
     <ClCompile Include="RBO.cpp" />
     <ClCompile Include="Particle.cpp" />
     <ClCompile Include="ParticleSystem.cpp" />
-    <ClCompile Include="Renderer.cpp" />
     <ClCompile Include="Renderer2D.cpp" />
     <ClCompile Include="ResourceManager.cpp" />
     <ClCompile Include="Scene.cpp" />

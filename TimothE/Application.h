@@ -4,7 +4,6 @@
 
 #include "Window.h"
 #include "ApplicationEvent.h"
-#include "Renderer.h"
 #include "Scene.h"
 #include "MemoryManager.h"
 
@@ -46,8 +45,6 @@ private:
 
 private:
 	AudioEngine* _pAudio;
-
-	Renderer* _pRenderer;
 
 	Window* _pWindow;
 
