@@ -37,7 +37,42 @@ public:
 
 	void RespawnParticles(Particle* p);
 	void Fire();
+
+	virtual bool SaveState(IStream& stream) const override {
+		Component::SaveState(stream);
+
+		WriteInt(stream, _maxParticles);
+		
+		WriteVec4(stream, _particleColour);
+
+		WriteString(stream, _shaderName);
+
+		WriteVec4(stream, _particleColour);
+
+		WriteFloat(stream, _particleLife);
+
+		//TODO: this depends on a texture component something needs to be done about supporting this
+
+		return true;
+	}
+
+	virtual bool LoadState(IStream& stream) override {
+		Component::LoadState(stream);
+
+		_maxParticles = ReadInt(stream);
+		_particleColour = ReadVec4(stream);
+		_shaderName = ReadString(stream);
+		_particleColour = ReadVec4(stream);
+		_particleLife = ReadFloat(stream);
+
+		CreateParticles();
+
+		return true;
+	}
+
 private:
+	void CreateParticles();
+
 	vector<Particle*> _particles;
 	int _maxParticles;
 

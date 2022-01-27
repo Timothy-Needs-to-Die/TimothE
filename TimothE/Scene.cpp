@@ -24,7 +24,9 @@ Scene::Scene(std::string name)
 	/////////////
 	//TEST CODE//
 	/////////////
-	GameObject* _pTestObject = new GameObject("LENNA!", ObjectType::Player);
+
+	Heap* gameObjectHeap = HeapManager::CreateHeap("GameObject", "Root");
+	GameObject* _pTestObject = new(gameObjectHeap) GameObject("LENNA!", ObjectType::Player);
 	_pTestObject->LoadTexture(ResourceManager::GetTexture("lenna"));
 	_pTestObject->AddComponent(new BoxColliderComponent(_pTestObject));
 
@@ -75,7 +77,7 @@ Scene::Scene(std::string name)
 	ResourceManager::InstantiateTexture("spritesheet", new Texture2D("testSheet.png"));
 	float sheetWidth = 2560, sheetHeight = 1664;
 	float spriteWidth = 128, spriteHeight = 128;
-	float x = 10, y = 7;
+	float x = 0, y = 14;
 	_uvSpriteCoords = new glm::vec2[4];
 	_uvSpriteCoords[0] =  glm::vec2((x * spriteWidth) / sheetWidth, (y * spriteHeight) / sheetHeight );
 	_uvSpriteCoords[1] =  glm::vec2(((x + 1) * spriteWidth) / sheetWidth, (y * spriteHeight) / sheetHeight );

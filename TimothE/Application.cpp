@@ -80,7 +80,7 @@ void Application::Init(bool devMode)
 	float right = aspectRatio * zoomLevel;
 	float bottom = -zoomLevel;
 	float top = zoomLevel;
-	_pGameCamera = new Camera(left,right,top,bottom);
+	_pGameCamera = new Camera(left,right,bottom,top);
 }
 
 //game loop update
