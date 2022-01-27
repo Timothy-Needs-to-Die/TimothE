@@ -50,6 +50,8 @@ Editor::Editor(Application* pApp, Window* pWindow)
 
 	pImGuiSample = new Texture2D(NULL);
 	pImGuiSample->Load("lenna3.jpg");
+
+	pTileMapEditor = new TileMapEditor();
 }
 
 Editor::~Editor()
@@ -113,27 +115,8 @@ void Editor::EditorImGui(Scene* currentScene)
 
 	//Tile Editor
 	{
-		ImGui::Begin("Tile Editor", 0, ImGuiWindowFlags_NoMove);
-
-		//Left Panel
-		ImGui::BeginChild("Tiles", ImVec2(200, 0), true);
-
-		for (int i = 0; i < 16; ++i) {
-
-			for (int j = 0; j < 3; ++j) {
-				if (ImGui::ImageButton((void*)pImGuiSample->GetID(), ImVec2(50, 50))) {
-
-				}
-
-
-				ImGui::SameLine();
-			}
-			ImGui::NewLine();
-		}
-
-		ImGui::EndChild();
-
-		ImGui::End();
+		pTileMapEditor->EnableEditor();
+		pTileMapEditor->DisplayEditorGUI();
 	}
 
 

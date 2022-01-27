@@ -1,9 +1,18 @@
+#pragma once
 #include <vector>
 #include <string>
 #include <glm.hpp>
 #include <nlohmann/json.hpp>
 
 #include "ResourceManager.h"
+
+
+struct TileData {
+	int xIndex;
+	int yIndex;
+	int layer;
+	glm::vec2 worldPos;
+};
 
 
 class TileMap
@@ -16,7 +25,7 @@ public:
 	void CreateNewLayer();
 	void DeleteAllLayers();
 
-	void AddTileAt
+	void AddTileAt(unsigned int layer, unsigned int i, unsigned int j, unsigned int index);
 
 	//Returns the width and height of the WHOLE TILE MAP
 	int GetTileWidth() const;
@@ -38,7 +47,7 @@ public:
 	void Clear();
 	
 	void RenderMap() const;
-	const std::vector<std::vector<int>>& GetTileData() const;
+	//const std::vector<std::vector<int>>& GetTileData() const;
 
 	unsigned int GetLayerCount();
 
@@ -48,6 +57,8 @@ private:
 	glm::vec2 _tileSize;
 	std::string _textureName;
 	std::string _tileMapFile;
+
+	std::vector<TileData> _tiles;
 
 
 };

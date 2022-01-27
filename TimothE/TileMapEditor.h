@@ -10,19 +10,27 @@
 #include <string>
 //#include "glm.hpp"
 
+#pragma once
+
+struct SelectedTile
+{
+	//Sprite sprite;
+	int tileX;
+	int tileY;
+
+	unsigned int currentLayer = 0;
+	unsigned int _tileIndex = -1; //-1 if no tile is present upon click
+};
+
 class TileMapEditor
 {
 public:
-	struct SelectedTile
-	{
-		Texture2D currentTexture;
-		Sprite sprite;
-		unsigned int currentLayer = 0;
-		unsigned int _tileIndex = -1; //-1 if no tile is present upon click
-	};
+
 
 	void EnableEditor();
 	void DisplayEditorGUI();
+
+	TileMapEditor();
 
 private:
 	
@@ -37,6 +45,8 @@ private:
 	std::string _name;
 
 	SelectedTile _selectedTile;
+
+	
 
 	void AcquireData();
 	void CreateTileMap();

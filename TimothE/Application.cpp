@@ -9,6 +9,7 @@
 #include "ResourceManager.h"
 #include "Editor.h"
 #include "Renderer2D.h"
+#include "TileMap.h"
 
 #define BIND_EVENT_FN(x) std::bind(&Application::x, this, std::placeholders::_1)
 
@@ -82,6 +83,14 @@ void Application::Init(bool devMode)
 	float bottom = -zoomLevel;
 	float top = zoomLevel;
 	_pGameCamera = new Camera(left,right,top,bottom);
+
+	//TileMap tm = TileMap();
+	//
+	//tm.AddTileAt(0, 4, 5, 2);
+	//tm.AddTileAt(0, 4, 5, 18);
+	//tm.AddTileAt(0, 4, 5, 35);
+	//tm.AddTileAt(0, 4, 5, 50);
+
 }
 
 //game loop update
@@ -104,19 +113,20 @@ void Application::GameLoop()
 	//SoundStruct TitleSong = _audio->LoadSound("Title Song", "Resources/Sounds/Music/Title.wav", Type_Song);
 	
 
-	Camera* _pGameCamera = new Camera(_pWindow->GetGLFWWindow(), 1280, 720, 45.0f);
+
+	Camera* _pGameCamera = new Camera(-1.7, 1.7, -1.0, 1.0);
 	
 	//While the editor window should not close
 	while (_mRunning) {
 		PollInput();
 
 		//plays sounds
-		if (STstarted == false)
-		{
-			//_audio->PlaySong(TitleSong);
-			STstarted = true;
-
-		}
+		//if (STstarted == false)
+		//{
+		//	//_audio->PlaySong(TitleSong);
+		//	STstarted = true;
+		//
+		//}
 
 		//deltatime update
 		double currentTime = glfwGetTime();
