@@ -6,3 +6,13 @@ The Timothe Engine is a 2D simulation role-playing engine built to assist in the
 The engine is making use of the OpenGL 3.3 application programming interface (API) to perform rendering and handle graphics.
 
 This engine is a WORK IN PROGRESS
+
+The libraries currently being used within the engine are:
+
+- GFLW
+- GLEW
+- OpenGL 3.3
+- ImGui-docker branch
+- FMOD
+- FreeType
+- GLM
