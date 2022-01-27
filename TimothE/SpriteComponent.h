@@ -15,12 +15,16 @@ public:
 	bool* _editorIsEnabled;
 
 	void SetPosition(glm::vec2);
-	glm::vec2 GetPosition();
-	void SetSpriteSheetPosition(glm::vec2);
-	glm::vec2 GetSpriteSheetPosition();
+	glm::vec2 GetPosition() { return glm::vec2(_mPosX, _mPosY); };
+	void SetSpriteSheetScale(glm::vec2);
+	glm::vec2 GetSpriteSheetScale() { return glm::vec2(_mSheetWidth, _mSheetHeight); };
+	void SetSpriteScale(glm::vec2);
+	glm::vec2 GetSpriteScale() { return glm::vec2(_mSpriteWidth, _mSpriteHeight); };
 	void SetSprite(Texture2D* sprite);
-	Texture2D* GetSprite();
+	Texture2D* GetSprite() { return _pSprite; };
 
+	void SetUVCoords();
+	void SetUVCoords(glm::vec2 topLeft, glm::vec2 topRight, glm::vec2 bottomLeft, glm::vec2 bottomRight);
 
 	virtual bool SaveState(IStream& stream) const override {
 		return true;
@@ -29,10 +33,10 @@ public:
 		return true;
 	}
 private:
-	float _mPosX;
-	float _mPosY;
-	int _mSpriteSheetPosX;
-	int _mSpriteSheetPosY;
+	float _mPosX, _mPosY;
+	float _mSheetWidth, _mSheetHeight;
+	int _mSpriteWidth, _mSpriteHeight;
 	Texture2D* _pSprite;
+	glm::vec2* _pUVSpriteCoords;
 };
 
