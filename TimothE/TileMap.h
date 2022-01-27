@@ -16,6 +16,8 @@ public:
 	void CreateNewLayer();
 	void DeleteAllLayers();
 
+	void AddTileAt
+
 	//Returns the width and height of the WHOLE TILE MAP
 	int GetTileWidth() const;
 	int GetTileHeight() const;

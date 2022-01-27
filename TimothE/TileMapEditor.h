@@ -1,5 +1,5 @@
-#include <GLFW/glfw3.h>
-#include <gl/glew.h>
+//#include <GLFW/glfw3.h>
+//#include <gl/glew.h>
 #include <nlohmann/json.hpp>
 #include "imgui.h"
 #include "TileMap.h"
@@ -22,7 +22,7 @@ public:
 	};
 
 	void EnableEditor();
-	void DisplayEditorGUI(GLFWwindow* window);
+	void DisplayEditorGUI();
 
 private:
 	
@@ -39,7 +39,7 @@ private:
 	SelectedTile _selectedTile;
 
 	void AcquireData();
-	void CreateTileMap(GLFWwindow* window);
+	void CreateTileMap();
 	void SaveTileMap(const TileMap& map, const std::vector<bool>& collisionInfo);
 
 };

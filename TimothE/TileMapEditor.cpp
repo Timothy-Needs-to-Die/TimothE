@@ -5,14 +5,14 @@ void TileMapEditor::EnableEditor()
 	_isActive = true;
 }
 
-void TileMapEditor::DisplayEditorGUI(GLFWwindow* window)
+void TileMapEditor::DisplayEditorGUI()
 {
 	if (!_isActive)
 		return;
 	if (!_hasTileData)
 		return;
 	else
-		CreateTileMap(window);
+		CreateTileMap();
 }
 
 void TileMapEditor::AcquireData()
@@ -52,7 +52,7 @@ void TileMapEditor::AcquireData()
 
 //Sets the data in the tileMap object that the editor will be editing
 //Along with setting up the ImGui window for the editor 
-void TileMapEditor::CreateTileMap(GLFWwindow* window)
+void TileMapEditor::CreateTileMap()
 {
 	static bool gridLinesCreated = false;
 	static bool spriteArrayCreated = false;
@@ -97,8 +97,8 @@ void TileMapEditor::CreateTileMap(GLFWwindow* window)
 		textures.clear();
 
 		const auto& tex = ResourceManager::GetTexture(_textureName);
-		auto sizeX = tex.GetWidth();
-		auto sizeY = tex.GetHeight();
+		auto sizeX = tex->GetWidth();
+		auto sizeY = tex->GetHeight();
 
 		x = sizeX / _tileSize.x;
 		y = sizeY / _tileSize.y;
