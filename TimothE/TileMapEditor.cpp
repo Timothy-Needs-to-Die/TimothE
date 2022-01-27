@@ -180,14 +180,14 @@ void TileMapEditor::CreateTileMap()
 	ImGui::Separator();
 	ImGui::Text("CurrentLayer: %d", _selectedTile.currentLayer);
 	ImGui::Separator();
-	for (auto i = 0; i < mapToCreate.GetLayerCount(); i++)
-	{
-		auto str = "Layer " + std::to_string(i);
-		if (ImGui::Selectable(str.c_str()))
-		{
-			_selectedTile.currentLayer = i;
-		}
-	}
+	//for (auto i = 0; i < mapToCreate.GetLayerCount(); i++)
+	//{
+	//	auto str = "Layer " + std::to_string(i);
+	//	if (ImGui::Selectable(str.c_str()))
+	//	{
+	//		_selectedTile.currentLayer = i;
+	//	}
+	//}
 	ImGui::Separator();
 	
 	if (ImGui::Button("Fill"))
@@ -249,10 +249,10 @@ void TileMapEditor::CreateTileMap()
 
 	//TODO: Mouse position to tilemap editor positon and draw call
 	
-	//mapToCreate.AddTileAt(0, 4, 5, 2);
-	//mapToCreate.AddTileAt(0, 4, 5, 18);
-	//mapToCreate.AddTileAt(0, 4, 5, 35);
-	//mapToCreate.AddTileAt(0, 4, 5, 50);
+	mapToCreate.AddTileAt(0, 4, 5, 2);
+	mapToCreate.AddTileAt(0, 4, 5, 18);
+	mapToCreate.AddTileAt(0, 4, 5, 35);
+	mapToCreate.AddTileAt(0, 4, 5, 50);
 }
 
 void TileMapEditor::SaveTileMap(const TileMap& map, const std::vector<bool>& collisionInfo)

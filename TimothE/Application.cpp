@@ -84,12 +84,11 @@ void Application::Init(bool devMode)
 	float top = zoomLevel;
 	_pGameCamera = new Camera(left,right,top,bottom);
 
-	//TileMap tm = TileMap();
-	//
-	//tm.AddTileAt(0, 4, 5, 2);
-	//tm.AddTileAt(0, 4, 5, 18);
-	//tm.AddTileAt(0, 4, 5, 35);
-	//tm.AddTileAt(0, 4, 5, 50);
+	_pTilemap = new TileMap();
+	_pTilemap->AddTileAt(0, 3, 5, 2);
+	_pTilemap->AddTileAt(0, 4, 5, 18);
+	_pTilemap->AddTileAt(0, 6, 5, 35);
+	_pTilemap->AddTileAt(0, 7, 5, 50);
 
 }
 
@@ -141,6 +140,7 @@ void Application::GameLoop()
 			GameBeginRender();
 			glEnable(GL_DEPTH_TEST);
 
+			_pTilemap->RenderMap(_pEditor->GetCamera());
 			GameRender(_pEditor->GetCamera());
 			_pEditor->EditorLoop(_pCurrentScene, elapsed, _mInEditorMode, _mPaused);
 
@@ -155,6 +155,7 @@ void Application::GameLoop()
 			GameBeginRender();
 			glEnable(GL_DEPTH_TEST);
 
+			_pTilemap->RenderMap(_pGameCamera);
 			GameRender(_pGameCamera);
 
 			if (_mDevMode) {

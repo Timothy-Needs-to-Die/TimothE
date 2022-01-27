@@ -1,8 +1,14 @@
 #include "TileMap.h"
+#include "Renderer2D.h"
 
+//TODO: Size details
 TileMap::TileMap()
 {
-	_tiles.resize(16 * 16);
+	_mapSize = glm::vec2(16.0f, 16.0f);
+	_tileSize = glm::vec2(128.0f);
+	_spritemapSize = glm::vec2(2560.0f, 1664.0f);
+	_tiles.resize(_mapSize.x * _mapSize.y);
+
 	//CreateTileMap();
 }
 
@@ -56,13 +62,13 @@ void TileMap::DeleteAllLayers()
 {
 }
 
-void TileMap::AddTileAt(unsigned int layer, unsigned int i, unsigned int j, unsigned int index)
+void TileMap::AddTileAt(unsigned int layer, unsigned int x, unsigned int y, unsigned int index)
 {
-	auto texturePointer = ResourceManager::GetTexture(_textureName);
-	if (!texturePointer)
-	{
-		std::cout << "Unable to create tilemap: Texture was not found in resouce manager" << std::endl;
-	}
+	//auto texturePointer = ResourceManager::GetTexture(_textureName);
+	//if (!texturePointer)
+	//{
+	//	std::cout << "Unable to create tilemap: Texture was not found in resouce manager" << std::endl;
+	//}
 
 	//int x = (texturePointer->GetWidth() / _tileSize.x);
 	//int y = (texturePointer->GetHeight() / _tileSize.y);
@@ -77,30 +83,30 @@ void TileMap::AddTileAt(unsigned int layer, unsigned int i, unsigned int j, unsi
 
 
 	TileData newTile;
-	newTile.xIndex = i;
-	newTile.yIndex = j;
+	newTile.xIndex = x;
+	newTile.yIndex = y;
 	newTile.layer = layer;
 
 	glm::vec2 worldPos;
 
-	//TODO: abstract this out
-	int tileSize = 32;
-	int mapWidth = 16;
-	int mapHeight = 16;
+	int divisibleX = index / _mapSize.x;
 
-	int divisibleX = index / mapWidth;
+	int tI = index - (_mapSize.x * divisibleX);
 
-	int tI = index - (mapWidth * divisibleX);
+	worldPos.x = (float)tI * (float) _tileSize.x;
+	worldPos.y = (float)divisibleX * _tileSize.y;
 
-	worldPos.x = (float)tI * (float)tileSize;
-	worldPos.y = (float)divisibleX * tileSize;
+	newTile.uvCoords = new glm::vec2[4];
+	newTile.uvCoords[0] = glm::vec2((x * _tileSize.x) / _spritemapSize.x, (y * _tileSize.y) / _spritemapSize.y);
+	newTile.uvCoords[1] = glm::vec2(((x + 1) * _tileSize.x) / _spritemapSize.x, (y * _tileSize.y) / _spritemapSize.y);
+	newTile.uvCoords[2] = glm::vec2(((x + 1) * _tileSize.x) / _spritemapSize.x, ((y + 1) * _tileSize.y) / _spritemapSize.y);
+	newTile.uvCoords[3] = glm::vec2((x * _tileSize.x) / _spritemapSize.x, ((y + 1) * _tileSize.y) / _spritemapSize.y);
+
+	newTile.worldPos = worldPos;
 
 	_tiles[index] = newTile;
 
 	std::cout << "Tile placed at: (X: " << worldPos.x << " Y: " << worldPos.y << ")" << std::endl;
-
-
-
 }
 
 int TileMap::GetTileWidth() const
@@ -156,13 +162,16 @@ void TileMap::Clear()
 {
 }
 
-void TileMap::RenderMap() const
+void TileMap::RenderMap(Camera* cam)
 {
-}
+	Renderer2D::BeginRender(cam);
 
+	for (auto& t : _tiles) {
+		if (t.uvCoords != nullptr) {
+		Renderer2D::DrawQuad(ConvertWorldToScreen(t.worldPos), { 0.5f, 0.5f }, ResourceManager::GetTexture("spritesheet"), t.uvCoords);
 
+		}
+	}
 
-unsigned int TileMap::GetLayerCount()
-{
-	return 0;
+	Renderer2D::EndRender();
 }

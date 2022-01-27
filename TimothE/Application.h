@@ -9,6 +9,7 @@
 #include "MemoryManager.h"
 
 #include "AudioEngine.h"
+#include "TileMap.h"
 
 class Editor;
 
@@ -64,4 +65,6 @@ private:
 	bool _mGameRunning = false;
 
 	Camera* _pGameCamera;
+
+	TileMap* _pTilemap;
 };

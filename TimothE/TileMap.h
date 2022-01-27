@@ -4,6 +4,7 @@
 #include <glm.hpp>
 #include <nlohmann/json.hpp>
 
+#include "Camera.h"
 #include "ResourceManager.h"
 
 
@@ -12,6 +13,8 @@ struct TileData {
 	int yIndex;
 	int layer;
 	glm::vec2 worldPos;
+
+	glm::vec2* uvCoords;
 };
 
 
@@ -25,7 +28,7 @@ public:
 	void CreateNewLayer();
 	void DeleteAllLayers();
 
-	void AddTileAt(unsigned int layer, unsigned int i, unsigned int j, unsigned int index);
+	void AddTileAt(unsigned int layer, unsigned int x, unsigned int y, unsigned int index);
 
 	//Returns the width and height of the WHOLE TILE MAP
 	int GetTileWidth() const;
@@ -46,15 +49,20 @@ public:
 	
 	void Clear();
 	
-	void RenderMap() const;
+	glm::vec2 ConvertWorldToScreen(glm::vec2 inPos) {
+		glm::vec2 outPos{ inPos.x / 1920.0f, inPos.y / 1080.0f };
+		return outPos;
+	}
+
+	void RenderMap(Camera* cam);
 	//const std::vector<std::vector<int>>& GetTileData() const;
 
-	unsigned int GetLayerCount();
 
 private:
 	//VAO Vertex Array
 	glm::vec2 _mapSize;
 	glm::vec2 _tileSize;
+	glm::vec2 _spritemapSize;
 	std::string _textureName;
 	std::string _tileMapFile;
 

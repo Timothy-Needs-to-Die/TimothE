@@ -197,11 +197,11 @@ void Scene::RenderScene(Renderer* pRenderer, Camera* cam)
 	}
 
 
-	for (float i = 0; i < 5; i+= 0.5f) {
-		for (float j = 0; j < 5; j+= 0.5f) {
-			Renderer2D::DrawQuad(glm::vec2{ i, j }, glm::vec2(0.5f, 0.5f), ResourceManager::GetTexture("spritesheet"), _uvSpriteCoords);
-		}
-	}
+	//for (float i = 0; i < 5; i+= 0.5f) {
+	//	for (float j = 0; j < 5; j+= 0.5f) {
+	//		Renderer2D::DrawQuad(glm::vec2{ i, j }, glm::vec2(0.5f, 0.5f), ResourceManager::GetTexture("spritesheet"), _uvSpriteCoords);
+	//	}
+	//}
 
 	Renderer2D::EndRender();
 }
