@@ -34,6 +34,9 @@ public:
 
 	Shader* GetShader() const { return _pShader; }
 	void SetShader(string name);
+
+	void ResetParticle(Particle* p);
+	void Fire();
 private:
 	vector<Particle*> _particles;
 	int _maxParticles;
@@ -50,5 +53,7 @@ private:
 	int _shaderID;
 
 	Texture2D* _pTexture;
+
+	bool _continuous;
 };
 

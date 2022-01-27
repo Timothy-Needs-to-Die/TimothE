@@ -1,7 +1,7 @@
 #include "ParticleSystem.h"
 #include "misc/cpp/imgui_stdlib.h"
 
-ParticleSystem::ParticleSystem(int count, glm::vec4 colour, Texture2D* texture, Transform* parentTransform) : _maxParticles(count), _particleColour(colour), _pTexture(texture), _pParentTransform(parentTransform)
+ParticleSystem::ParticleSystem(int count, glm::vec4 colour, Texture2D* texture, Transform* parentTransform) : _maxParticles(count), _particleColour(colour), _pTexture(texture), _pParentTransform(parentTransform), _continuous(true)
 {
 	//Sets the type and category for the component
 	SetType(Component::ParticleSystem_Type);
@@ -47,7 +47,7 @@ void ParticleSystem::OnUpdate(float deltaTime)
 		{
 			if (_canRespawn)
 			{
-				p->ResetParticle();
+				ResetParticle(p);
 			}
 		}
 	}
@@ -93,7 +93,7 @@ void ParticleSystem::DrawEditorUI()
 
 			for (Particle* p : _particles)
 			{
-				p->ResetParticle();
+				ResetParticle(p);
 			}
 		}
 
@@ -145,7 +145,7 @@ void ParticleSystem::DrawEditorUI()
 				for (Particle* p : _particles)
 				{
 					p->SetColour(glm::vec4(colour[0], colour[1], colour[2], colour[3]));
-					p->ResetParticle();
+					ResetParticle(p);
 				}
 			}
 		}
@@ -158,7 +158,7 @@ void ParticleSystem::DrawEditorUI()
 			{
 				p->SetMaxLife(particleLife);
 				p->SetLife(particleLife);
-				p->ResetParticle();
+				ResetParticle(p);
 			}
 		}
 		
@@ -169,7 +169,7 @@ void ParticleSystem::DrawEditorUI()
 			for (Particle* p : _particles)
 			{
 				p->SetAngle(angle);
-				p->ResetParticle();
+				ResetParticle(p);
 			}
 		}
 		ImGui::SameLine();
@@ -186,7 +186,7 @@ void ParticleSystem::DrawEditorUI()
 				for (Particle* p : _particles)
 				{
 					p->ToggleRandomDirection(randomDir);
-					p->ResetParticle();
+					ResetParticle(p);
 				}
 			}
 			if (ImGui::SliderAngle("Random direction range", &angleRange, 0))
@@ -194,7 +194,7 @@ void ParticleSystem::DrawEditorUI()
 				for (Particle* p : _particles)
 				{
 					p->SetAngleRange(angleRange);
-					p->ResetParticle();
+					ResetParticle(p);
 				}
 			}
 			oldRandomDir = randomDir;
@@ -207,7 +207,7 @@ void ParticleSystem::DrawEditorUI()
 			for (Particle* p : _particles)
 			{
 				p->SetSpeed(speed);
-				p->ResetParticle();
+				ResetParticle(p);
 			}
 		}
 
@@ -224,6 +224,10 @@ void ParticleSystem::DrawEditorUI()
 				p->GetTransform()->SetScale(glm::vec2(scale[0], scale[1]));
 			}
 		}
+
+		// sets whether or not particles will automatically respawn after 'dying'
+		static bool* continuous = &_continuous;
+		ImGui::Checkbox("Continuous", continuous);
 	}
 }
 
@@ -242,4 +246,20 @@ void ParticleSystem::SetShader(string name)
 	_shaderName = name;
 	_pShader = ResourceManager::GetShader(_shaderName);
 	_shaderID = _pShader->GetProgramID();
+}
+
+void ParticleSystem::ResetParticle(Particle* p)
+{
+	if (_continuous)
+	{
+		p->ResetParticle();
+	}
+}
+
+void ParticleSystem::Fire()
+{
+	for (Particle* p : _particles)
+	{
+		p->ResetParticle();
+	}
 }
