@@ -45,6 +45,8 @@ public:
 
 	/// <summary> the angle for the particles to move in </summary>
 	void SetAngle(float angle);
+	/// <summary> turns angle into vector </summary>
+	glm::vec2 CreateVector(float angle);
 	/// <summary> whether or not particles will move in a random direction in range </summary>
 	void ToggleRandomDirection(bool useRand);
 	/// <summary> the range that particles can be when random </summary>

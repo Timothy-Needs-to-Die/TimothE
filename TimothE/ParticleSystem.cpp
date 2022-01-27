@@ -62,6 +62,7 @@ void ParticleSystem::OnUpdate(float deltaTime)
 				{
 					p->SetCanRespawn(true);
 				}
+				creatingIndex = 0;
 			}
 
 			timer = 0.0f;
@@ -130,7 +131,7 @@ void ParticleSystem::DrawEditorUI()
 			_creatingParticles = true;
 			for (Particle* p : _particles)
 			{
-				ResetParticle(p);
+				RespawnParticles(p);
 			}
 		}
 
@@ -177,15 +178,21 @@ void ParticleSystem::DrawEditorUI()
 		}
 		else
 		{
-			if (ImGui::InputFloat4("Particle colour", colour))
+			static float oldWidth = ImGui::CalcItemWidth();
+			if (ImGui::CollapsingHeader("Particle colour"))
 			{
-				_creatingParticles = true;
-				for (Particle* p : _particles)
+				ImGui::PushItemWidth(200);
+				if (ImGui::ColorPicker4("Particle colour", colour))
 				{
-					p->SetColour(glm::vec4(colour[0], colour[1], colour[2], colour[3]));
-					ResetParticle(p);
+					_creatingParticles = true;
+					for (Particle* p : _particles)
+					{
+						p->SetColour(glm::vec4(colour[0], colour[1], colour[2], colour[3]));
+						RespawnParticles(p);
+					}
 				}
 			}
+			ImGui::PushItemWidth(oldWidth);
 		}
 
 		// add an input field to change the particle life
@@ -197,7 +204,7 @@ void ParticleSystem::DrawEditorUI()
 			{
 				p->SetMaxLife(particleLife);
 				p->SetLife(particleLife);
-				ResetParticle(p);
+				RespawnParticles(p);
 			}
 		}
 		
@@ -209,7 +216,7 @@ void ParticleSystem::DrawEditorUI()
 			for (Particle* p : _particles)
 			{
 				p->SetAngle(angle);
-				ResetParticle(p);
+				RespawnParticles(p);
 			}
 		}
 		ImGui::SameLine();
@@ -227,7 +234,7 @@ void ParticleSystem::DrawEditorUI()
 				for (Particle* p : _particles)
 				{
 					p->ToggleRandomDirection(randomDir);
-					ResetParticle(p);
+					RespawnParticles(p);
 				}
 			}
 			if (ImGui::SliderAngle("Random direction range", &angleRange, 0))
@@ -236,7 +243,7 @@ void ParticleSystem::DrawEditorUI()
 				for (Particle* p : _particles)
 				{
 					p->SetAngleRange(angleRange);
-					ResetParticle(p);
+					RespawnParticles(p);
 				}
 			}
 			oldRandomDir = randomDir;
@@ -250,7 +257,7 @@ void ParticleSystem::DrawEditorUI()
 			for (Particle* p : _particles)
 			{
 				p->SetSpeed(speed);
-				ResetParticle(p);
+				RespawnParticles(p);
 			}
 		}
 
@@ -260,7 +267,7 @@ void ParticleSystem::DrawEditorUI()
 		// copy scale to array for imgui
 		static float scale[2] = { pScale->x, pScale->y };
 		// create input field and set the scale once edited
-		if (ImGui::InputFloat2("Scale", scale))
+		if (ImGui::InputFloat2("Scale##ParticleSystem", scale))
 		{
 			for (Particle* p : _particles)
 			{
@@ -300,7 +307,7 @@ void ParticleSystem::SetShader(string name)
 	_shaderID = _pShader->GetProgramID();
 }
 
-void ParticleSystem::ResetParticle(Particle* p)
+void ParticleSystem::RespawnParticles(Particle* p)
 {
 	if (p->GetCanRespawn())
 	{

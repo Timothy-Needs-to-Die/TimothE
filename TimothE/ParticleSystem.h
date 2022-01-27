@@ -35,7 +35,7 @@ public:
 	Shader* GetShader() const { return _pShader; }
 	void SetShader(string name);
 
-	void ResetParticle(Particle* p);
+	void RespawnParticles(Particle* p);
 	void Fire();
 private:
 	vector<Particle*> _particles;

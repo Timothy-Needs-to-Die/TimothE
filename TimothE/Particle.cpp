@@ -79,7 +79,7 @@ void Particle::ResetParticle()
 	// create a random angle in range
 	float randAngle = (((float)rand() / RAND_MAX) * _angleRange);
 	float angle = _angle + (randAngle - (_angleRange * 0.5f));
-	SetAngle(angle);
+	_movementVec = CreateVector(angle) * _speed;
 }
 
 void Particle::SetVelocity(glm::vec2 newVelocity)
@@ -105,11 +105,16 @@ void Particle::SetParentTransform(Transform* parentTransform)
 void Particle::SetAngle(float angle)
 {
 	_angle = angle;
+	_movementVec = CreateVector(_angle) * _speed;
+}
+
+glm::vec2 Particle::CreateVector(float angle)
+{
 	glm::vec2 vec;
 	vec.x = cos(angle);
 	vec.y = sin(angle);
 	vec = glm::normalize(vec);
-	_movementVec = vec * _speed;
+	return vec;
 }
 
 void Particle::ToggleRandomDirection(bool useRand)

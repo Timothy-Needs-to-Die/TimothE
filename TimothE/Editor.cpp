@@ -224,6 +224,8 @@ void Editor::EditorImGui(Scene* currentScene)
 						}
 					}
 				}
+
+				ImGui::Separator();
 			}
 
 			if (componentToDelete != nullptr) {
