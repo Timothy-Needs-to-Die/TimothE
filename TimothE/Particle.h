@@ -63,4 +63,5 @@ private:
 	Transform* _pParentTransform;
 	bool _useRandomDirection;
 	float _angleRange;
+	float _angle;
 };

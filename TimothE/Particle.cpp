@@ -1,7 +1,7 @@
 #include "Particle.h"
 #include <random>
 
-Particle::Particle(float life, glm::vec4 colour, Texture2D* texture, Transform* parentTransform) : _movementVec(0.0f), _colour(colour), _currentLife(life), _maxLife(life), _pTexture(texture), _pParentTransform(parentTransform), _speed(1.0f), _useRandomDirection(true), _angleRange(10.0f)
+Particle::Particle(float life, glm::vec4 colour, Texture2D* texture, Transform* parentTransform) : _movementVec(0.0f), _colour(colour), _currentLife(life), _maxLife(life), _pTexture(texture), _pParentTransform(parentTransform), _speed(1.0f), _useRandomDirection(true), _angleRange(10.0f), _angle(0.0f)
 {
 	_pTransform = new Transform(nullptr);
 	InitVertexData();
@@ -75,8 +75,11 @@ void Particle::ResetParticle()
 {
 	_pTransform->SetPosition(_pParentTransform->GetPosition().x, _pParentTransform->GetPosition().y);
 	_currentLife = _maxLife;
+
+	// create a random angle in range
 	float randAngle = (((float)rand() / RAND_MAX) * _angleRange);
-	SetAngle(randAngle);
+	float angle = _angle + (randAngle - (_angleRange * 0.5f));
+	SetAngle(angle);
 }
 
 void Particle::SetVelocity(glm::vec2 newVelocity)
@@ -101,6 +104,7 @@ void Particle::SetParentTransform(Transform* parentTransform)
 
 void Particle::SetAngle(float angle)
 {
+	_angle = angle;
 	glm::vec2 vec;
 	vec.x = cos(angle);
 	vec.y = sin(angle);

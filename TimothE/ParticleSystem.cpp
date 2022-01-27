@@ -129,7 +129,8 @@ void ParticleSystem::DrawEditorUI()
 				p->ResetParticle();
 			}
 		}
-
+		
+		// movement angle
 		static float angle = 0.0f;
 		if (ImGui::SliderAngle("Movement angle", &angle, 0))
 		{
@@ -141,10 +142,11 @@ void ParticleSystem::DrawEditorUI()
 		}
 		ImGui::SameLine();
 
+		// random direction
 		static bool randomDir = true;
 		static bool oldRandomDir = randomDir;
-		static float angleRange = 10.0f;
-		ImGui::Checkbox("Use random direction", &randomDir);
+		static float angleRange = 0.0f;
+		ImGui::Checkbox("Random", &randomDir);
 		if (randomDir)
 		{
 			if (oldRandomDir != randomDir) // oldrandomdir is used so that this is only done once (until it is changed again) to avoid unnecessary looping
@@ -166,6 +168,7 @@ void ParticleSystem::DrawEditorUI()
 			oldRandomDir = randomDir;
 		}
 
+		// change speed
 		static float speed = 1.0f;
 		if (ImGui::InputFloat("Speed", &speed))
 		{
@@ -173,6 +176,20 @@ void ParticleSystem::DrawEditorUI()
 			{
 				p->SetSpeed(speed);
 				p->ResetParticle();
+			}
+		}
+
+		// scale
+		// scale is applied to all particles, so only need to get the first one to see what scale they are currently
+		static glm::vec2* pScale = &_particles[0]->GetTransform()->GetScale();
+		// copy scale to array for imgui
+		static float scale[2] = { pScale->x, pScale->y };
+		// create input field and set the scale once edited
+		if (ImGui::InputFloat2("Scale", scale))
+		{
+			for (Particle* p : _particles)
+			{
+				p->GetTransform()->SetScale(glm::vec2(scale[0], scale[1]));
 			}
 		}
 	}
