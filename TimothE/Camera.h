@@ -1,76 +1,39 @@
-
-
 #pragma once
 
-#include <GLFW/glfw3.h>
-
-#include <glm.hpp>
-#include <gtc/matrix_transform.hpp>
-#include <gtc/type_ptr.hpp>
+#include "pch.h"
+#include "Input.h"
 
 class Camera
 {
 public:
-	Camera(GLFWwindow* window, int width, int height, float fov);
-
+	Camera(float left, float right, float bottom, float top);
 
 	void Update(float dt);
 
-	float* Proj() {
-		return glm::value_ptr(_mProjection);
-	}
+	glm::mat4 Proj() { return _projection; }
+	glm::mat4 View() { return _view; }
+	glm::mat4 ViewProj() { return _viewProj; }
+	glm::vec3 Position() { return _cameraPos; }
 
-	float* View() {
-		return glm::value_ptr(_mView);
-	}
-
-	float* Position() {
-		return glm::value_ptr(_mCameraPos);
-	}
-
-	glm::mat4 ProjMat() {
-		return _mProjection;
-	}
-
-	glm::mat4 ViewMat() {
-		return _mView;
-	}
-
-	glm::vec3 PositionVec() {
-		return _mCameraPos;
-	}
-
-	float* Front() {
-		return glm::value_ptr(_mCameraFront);
-	}
+	void SetCameraSpeed(float speed) { _cameraSpeed = speed; }
+	float GetCameraSpeed() const { return _cameraSpeed; }
 
 	void ProcessScrollMovement(float yOffset);
 
-	float _mPitch = 0.0f;
-	float _mYaw = -90.0f;
-
-	float _mFOV = 45.0f;
+	void RecalculateViewMatrix();
 
 private:
 	void PollInput(float dt);
 
 private:
-	glm::vec3 _mCameraPos = glm::vec3(0.0f, 0.0f, 3.0f);
-	glm::vec3 _mCameraFront = glm::vec3(0.0f, 0.0f, -1.0f);
-	glm::vec3 _mCameraUp = glm::vec3(0.0f, 1.0f, 0.0f);
+	glm::vec3 _cameraPos = glm::vec3(0.0f, 0.0f, -1.0f);
+	float _rotation;
 
-	glm::vec3 _mCameraTarget;
-	glm::vec3 _mCameraDirection;
+	float _cameraSpeed = 10.0f;
 
+	glm::mat4 _projection;
+	glm::mat4 _view;
+	glm::mat4 _viewProj;
 
-	glm::vec3 _mCameraRight;
-
-	glm::mat4 _mProjection;
-	glm::mat4 _mView;
-
-	int _mWidth;
-	int _mHeight;
-
-	GLFWwindow* _pWindow;
 };
 

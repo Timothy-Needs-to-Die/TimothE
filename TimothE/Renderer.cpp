@@ -1,29 +1,24 @@
 #include "Renderer.h"
 
-void Renderer::Initialize()
-{
-	
-}
-
-void Renderer::RenderDrawables(vector<GameObject*> gameObjects)
+void Renderer::RenderDrawables(std::vector<GameObject*> gameObjects, Camera* cam)
 {
 	for (auto& obj : gameObjects)
 	{
-		Render(obj);
+		Render(obj, cam);
 	}
 }
 
-void Renderer::Render(GameObject* gameObject)
+void Renderer::Render(GameObject* gameObject, Camera* cam)
 {
 	gameObject->GetShader()->BindShader();
 	
 	glBindVertexArray(gameObject->GetVAO());
 
-	glm::mat4 projection = glm::ortho(0.0f, 1280.0f, 0.0f, 720.0f, -1.0f, 1.0f);
-	gameObject->GetShader()->SetMat4("projection", projection);
+	gameObject->GetShader()->SetMat4("projection", cam->Proj());
 
-	glm::mat4 transform = gameObject->GetTransform()->_transformationMatrix;
-	gameObject->GetShader()->SetMat4("transform", transform);
+	gameObject->GetShader()->SetMat4("model", gameObject->GetTransform()->GetTransformMatrix());
+
+	gameObject->GetShader()->SetMat4("view", cam->View());
 
 	glBindTexture(GL_TEXTURE_2D, gameObject->GetTextureID());
 

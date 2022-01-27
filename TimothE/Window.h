@@ -1,13 +1,6 @@
 #pragma once
 
-#include <GLFW/glfw3.h>
-#include <GL/glew.h>
-
-#include <functional>
-#include <iostream>
-#include <memory>
-#include <utility>
-#include <algorithm>
+#include "pch.h"
 
 #include "Event.h"
 
@@ -31,16 +24,23 @@ public:
 	//Gets the GLFWwindow associated with this Window class
 	GLFWwindow* GetGLFWWindow() const { return _pWindow; }
 
+	//Sets an event callback for the window
 	void SetEventCallback(const EventCallbackFn& callback);
 
+	//Sets the background colour of the window
 	void SetWindowColour(float r, float g, float b, float a);
 
+	//Handles GLFW closing and termination behavior
 	void DestroyWindow();
 
 	//Creates a GLFWwindow with the passed in width, height and name.
 	void CreateWindow();
 
+	//Swaps the front and back buffers of the window
 	void SwapBuffers();
+
+	float GetHeight() const { return _windowData._height; }
+	float GetWidth() const { return _windowData._width; }
 private:
 
 

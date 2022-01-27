@@ -3,21 +3,23 @@
 #include "Stream.h"
 #include "ComponentFactory.h"
 #include "imgui.h"
+#include "Console.h"
+#include "BoxColliderComponent.h"
+#include "ResourceManager.h"
+#include "Scene.h"
 
-
-GameObject::GameObject(string name, ObjectType tag, Transform* transform) 
+GameObject::GameObject(std::string name, ObjectType tag, Transform* transform) 
 	: _name(name), _tag(tag), _pTransform(transform)
 {
 	_UID = UID::GenerateUID();
 
-	if (_pTransform == nullptr) {
-		_pTransform = new Transform();
-	}
+	if (_pTransform == nullptr)
+		_pTransform = new Transform(this);
+
 	AddComponent<Transform>(_pTransform);
 
 	InitVertexData();
-
-	SetDefaultShader();
+	SetShader("default");
 
 	Start();
 }
@@ -77,7 +79,6 @@ void GameObject::InitVertexData()
 		(void*)(3 * sizeof(float))          // array buffer offset
 	);
 	glEnableVertexAttribArray(1);
-
 }
 
 void GameObject::Start()
@@ -92,7 +93,12 @@ void GameObject::Update(float deltaTime)
 {
 	for (Component* c : _pComponents)
 	{
-		c->OnUpdate();
+		c->OnUpdate(deltaTime);
+		if (c->GetType() == Component::ParticleSystem_Type)
+		{
+			ParticleSystem* p = (ParticleSystem*)c;
+			p->SetParentTransform(_pTransform);
+		}
 	}
 }
 
@@ -104,21 +110,17 @@ void GameObject::Exit()
 	}
 }
 
-void GameObject::LoadTexture(char* path)
+void GameObject::LoadTexture(Texture2D* texture)
 {
-	Texture2D* pTexture = GetComponent<Texture2D>();
-	if (pTexture == nullptr)
+	if (texture == nullptr)
 	{
-		pTexture = new Texture2D();
-		pTexture->Load(path);
-		_textureID = pTexture->GetID();
-		AddComponent(pTexture);
-		_textureID = pTexture->GetID();
+		Console::Print("[Error] Texture is equal too nullptr!");
+		return;
 	}
 	else
 	{
-		pTexture->Load(path);
-		_textureID = pTexture->GetID();
+		_textureID = texture->GetID();
+		AddComponent<Texture2D>(texture);
 	}
 }
 
@@ -132,19 +134,10 @@ void GameObject::DisplayInEditor()
 
 }
 
-void GameObject::SetShader(string vs, string fs)
+void GameObject::SetShader(std::string name)
 {
-	_pShader = new Shader(vs,fs);
-	_shaderID = _pShader->GetProgramID();
-	_vsShaderName = vs;
-	_fsShaderName = fs;
-}
-
-void GameObject::SetShader(Shader* shader)
-{
-	_pShader = shader;
-	_vsShaderName = _pShader->GetVsPath();
-	_fsShaderName = _pShader->GetFsPath();
+	_shaderName = name;
+	_pShader = ResourceManager::GetShader(_shaderName);
 	_shaderID = _pShader->GetProgramID();
 }
 
@@ -155,9 +148,7 @@ bool GameObject::SaveState(IStream& stream) const
 
 	WriteString(stream, _UID);
 
-	WriteString(stream, _vsShaderName);
-	WriteString(stream, _fsShaderName);
-
+	WriteString(stream, _shaderName);
 
 	//Writes number of components
 	WriteInt(stream, _pComponents.size());
@@ -179,7 +170,7 @@ bool GameObject::LoadState(IStream& stream)
 
 	_UID = ReadString(stream);
 
-	SetShader(ReadString(stream), ReadString(stream));
+	SetShader(ReadString(stream));
 
 	//Reserve the amount of components
 	int noComponents = ReadInt(stream);
@@ -190,7 +181,7 @@ bool GameObject::LoadState(IStream& stream)
 
 
 		//Make instance of component
-		auto* c = ComponentFactor::GetComponent(type);
+		auto* c = ComponentFactory::GetComponent(type, this);
 		if (c == nullptr) {
 			std::cout << "Failed to load Gameobject: " << _name << " Component is null" << std::endl;
 			return false;
@@ -211,7 +202,74 @@ bool GameObject::LoadState(IStream& stream)
 	return true;
 }
 
-void GameObject::SetName(string name)
+Component* GameObject::GetComponentInChild(Component::Types type)
+{
+	if (_pChild != nullptr)
+	{
+		for (Component* c : _pChild->GetComponents())
+		{
+			if (c->GetType() == type)
+				return c;
+		}
+
+		std::cout << "[ERROR]: Component does not exist in child." << std::endl;
+
+		return nullptr;
+	}
+	else
+	{
+		std::cout << "[ERROR]: GameObject child does not exist." << std::endl;
+		return nullptr;
+	}
+}
+
+std::vector<Component*> GameObject::GetComponentsInChild()
+{
+	if (_pChild != nullptr)
+		return _pChild->GetComponents();
+
+	std::cout << "[ERROR]: GameObject child does not exist." << std::endl;
+
+	return std::vector<Component*>();
+}
+
+Component* GameObject::GetComponentInParent(Component::Types type)
+{
+	if (_pParent != nullptr)
+	{
+		for (Component* c : _pParent->GetComponents())
+		{
+			if (c->GetType() == type)
+				return c;
+		}
+
+		std::cout << "[ERROR]: Component does not exist in parent." << std::endl;
+
+		return nullptr;
+	}
+	else
+	{
+		std::cout << "[ERROR]: GameObject parent does not exist." << std::endl;
+		return nullptr;
+	}
+}
+
+std::vector<Component*> GameObject::GetComponentsInParent()
+{
+	if (_pParent != nullptr)
+		return _pParent->GetComponents();
+
+	std::cout << "[ERROR]: GameObject parent does not exist." << std::endl;
+
+	return std::vector<Component*>();
+}
+
+void GameObject::SwapComponents(int index1, int index2)
+{
+	std::iter_swap(_pComponents.begin() + index1, _pComponents.begin() + index2);
+}
+
+void GameObject::SetName(std::string name)
 {
 	_name = name;
 }
@@ -221,34 +279,19 @@ void GameObject::SetType(ObjectType tag)
 	_tag = tag;
 }
 
-void GameObject::SetDefaultShader()
+void GameObject::SetParent(GameObject* parent)
 {
-	_pShader = new Shader("VertexShader.vert", "FragmentShader.frag");
-	SetShader(_pShader);
+	_pParent = parent;
 }
 
-template<typename T>
-T* GameObject::GetComponent()
+void GameObject::SetChild(GameObject* child)
 {
-	for (auto& comp : _pComponents) {
-		if (comp->GetType() == T::GetStaticType()) {
-			return (T*)comp;
-		}
-	}
-
-	return nullptr;
+	_pChild = child;
 }
 
-template<typename T>
-T* GameObject::AddComponent(T* comp)
+void GameObject::RemoveComponent(Component* comp)
 {
-	for (auto& c : _pComponents) {
-		if (c->GetType() == comp->GetType())
-		{
-			return comp;
-		}
-	}
-
-	_pComponents.push_back(comp);
-	return comp;
+	Scene::RemoveComponentHandler(this, comp);
+	_pComponents.erase(std::find(_pComponents.begin(), _pComponents.end(), comp));
+	delete comp;
 }

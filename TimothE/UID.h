@@ -1,12 +1,6 @@
 #pragma once
 
-#include <string>
-#include <time.h>
-#include <ctime>
-#include <iostream>
-#include <memory>
-#include <sstream>
-#include <mutex>
+#include "pch.h"
 
 /*
 UUIDs are written in 5 groups of hexadecimal digits separated by hyphens.
@@ -22,10 +16,6 @@ public:
 	}
 
 	static std::string GenerateUID() {
-		//Ensures thread safety and that two threads could not get the same id timestamp.
-		std::mutex locker;
-		locker.lock();
-
 		std::string uuid;
 
 		//convert the current system time to string
@@ -56,8 +46,6 @@ public:
 
 		castedResult.clear();
 		lastEight.clear();
-
-		locker.unlock();
 
 		return uuid;
 	}

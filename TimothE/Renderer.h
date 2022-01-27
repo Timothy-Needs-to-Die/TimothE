@@ -1,17 +1,22 @@
 #pragma once
 
-#include <GL/glew.h>
+#include "pch.h"
+
 #include "GameObject.h"
 #include "Shader.h"
-#include <iostream>
-#include <vector>
 #include "Texture2D.h"
-#include <gtc/type_ptr.hpp>
+#include "Camera.h"
 
 class Renderer
 {
 public:
-	static void Initialize();
-	void RenderDrawables(vector<GameObject*> gameObjects);
-	void Render(GameObject* gameObject);
+	//Generates a uid for the renderer
+	Renderer() : _UID(UID::GenerateUID()) { };
+
+	//Renders drawables for the scene from a particular camera
+	void RenderDrawables(std::vector<GameObject*> gameObjects, Camera* cam);
+	void Render(GameObject* gameObject, Camera* cam);
+private:
+	//Stores the UID
+	std::string _UID;
 };

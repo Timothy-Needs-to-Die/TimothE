@@ -1,45 +1,123 @@
 #include "Button.h"
 
-
-Button::Button(string name, int width, int height) : GameObject(name, ObjectType::UI)
+Button::Button(GameObject* parent) : Component(parent)
 {
-	//have to divide by two, because the origin is at centre
-	//so _width goes from the origin to a side of the square
-	//meaning that the scaled width is equal to 2 * width
-	_width = width / 2;
-	_height = height / 2;
-	GetTransform()->Scale({ _width, _height });
+	SetType(Component::Button_Type);
+	SetCategory(Component::UI_Category);
+
+	// Set buttons to be enabled by default
+	_isEnabled = true;
+
+	_isClicked = false;
+	_isHovering = false;
+
+	// Editor UI Vars
+	_editorIsEnabled = &_isEnabled;
+
+	// If there is no box collider component, add one since the button needs one
+	if (GetParent()->GetComponent<BoxColliderComponent>() == nullptr)
+	{
+		// Print to console to let the user know a new component was added
+		Console::Print("BUTTON COMPONENT: Created Component::BoxCollider as is required for Button::OnUpdate");
+		//std::cout << "BUTTON COMPONENT: created default box component for object" << std::endl;
+		GetParent()->AddComponent(new BoxColliderComponent(GetParent()));
+	}
 }
 
 Button::~Button()
 {
+
 }
 
-void Button::Update(float deltaTime)
+void Button::OnStart()
 {
-	//TODO: Bounds checking on cursor in button
-	if ( Input::IsMouseButtonDown(BUTTON_1)) 
+}
+
+void Button::OnUpdate(float deltaTime)
+{	
+	if (Component::IsEnabled())
 	{
+		// Get the mouse positions
 		int mouseX = Input::GetMouseX();
 		int mouseY = Input::GetMouseY();
 
-		glm::vec2 pos = GetTransform()->GetPosition();
+		// Get the position of the button through the transforms - THIS SHOULD BE HANDLED BY BOX COLLIDER 
+		Transform* transform = GetParent()->GetComponent<Transform>();
 
-		if (mouseX > pos.x - _width && mouseX < pos.x + _width
-			&& mouseY > pos.y - _height && mouseY < pos.y + _height)
+		glm::vec2 pos = transform->GetPosition();
+		float width = transform->GetScale().x;
+		float height = transform->GetScale().y;
+
+		// Check if the mouse is inside the button
+		if (GetParent()->GetComponent<BoxColliderComponent>()->IsPointInside({mouseX, mouseY}))
 		{
-			std::cout << "Mouse clicked inside the button! " << std::endl;
+			// If the mouse is inside the button then we are now hovering over the button;
+			_isHovering = true;
+
+			// Check if the button is now being clicked
+			if (Input::IsMouseButtonDown(BUTTON_1))
+			{
+				_isClicked = true;
+				
+				// debug
+				std::cout << "Button Clicked" << std::endl;
+
+				// If we have function calls to perform when the button is clicked
+				if (!_onClickCalls.empty())
+				{
+					// Perform them all
+					for (int i = 0; i < _onClickCalls.size(); i++)
+					{
+						_onClickCalls[i]();
+					}
+				}
+			}
+			else
+			{
+				// We are not clicking the button
+				_isClicked = false;
+			}
 		}
-		
-		//std::cout << "Mouse clicked X: " << mouseX << " Y: " << mouseY << std::endl;
+		else
+		{
+			// We are not hovering over the button
+			_isHovering = false;
+		}
+
+		// debug
+		//std::cout << "isHovering = " << _isHovering << " isClicked = " << _isClicked << std::endl;
 	}
 
-	GameObject::Update(deltaTime);
+	//std::cout << "Mouse clicked X: " << mouseX << " Y: " << mouseY << std::endl;
 }
 
-void Button::Render()
+void Button::OnEnd()
 {
-
 }
+
+void Button::DrawEditorUI()
+{
+	if (ImGui::CollapsingHeader("Button Component"))
+	{
+		Component::DrawEditorUI();
+	}
+}
+
+void Button::AddClickEvent(void(*function)())
+{
+	_onClickCalls.push_back(function);
+}
+
+void Button::RemoveClickEvent(void(*function)())
+{
+	for (int i = 0; i < _onClickCalls.size(); i++)
+	{
+		if (_onClickCalls[i] == function)
+		{
+			_onClickCalls.erase(_onClickCalls.begin() + i);
+		}
+	}
+}
+
 
 

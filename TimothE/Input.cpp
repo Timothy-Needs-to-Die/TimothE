@@ -17,7 +17,8 @@ void Input::Init()
 void Input::SetKey(TimothEKeyCode keycode, TimothEInputState state)
 {
 	//Check that the desired key code is within the array
-	assert(keycode <= KEY_LAST&& keycode >= KEY_FIRST);
+	if (keycode > KEY_LAST || keycode < KEY_FIRST)
+		return;
 
 	_pKeyArr[keycode] = state;
 }
@@ -25,7 +26,8 @@ void Input::SetKey(TimothEKeyCode keycode, TimothEInputState state)
 void Input::SetMouseButton(TimothEMouseCode button, TimothEInputState state)
 {
 	//Checks that the desired mouse button is within the array
-	assert(button <= BUTTON_LAST && button >= BUTTON_FIRST);
+	if (button > BUTTON_LAST || button < BUTTON_FIRST)
+		return;
 
 	_pMouseArr[button] = state;
 }
@@ -38,7 +40,7 @@ void Input::SetMousePosition(float x, float y)
 
 bool Input::IsKeyDown(TimothEKeyCode keycode)
 {
-	return _pKeyArr[keycode] == GLFW_PRESS;
+	return _pKeyArr[keycode] == GLFW_PRESS || _pKeyArr[keycode] == GLFW_REPEAT;
 }
 
 bool Input::IsKeyHeld(TimothEKeyCode keycode)

@@ -2,15 +2,9 @@
 
 #include <gl/glew.h>
 
-#include <string>
-#include <iostream>
-#include <sstream>
-#include <fstream>
+#include "pch.h"
 
-#include <glm.hpp>
-#include <gtc/matrix_transform.hpp>
-#include <gtc/type_ptr.hpp>
-
+//Structure to hold the source code for the shaders
 struct ShaderSourceCode {
 	std::string vertexShaderSource;
 	std::string fragmentShaderSource;
@@ -19,14 +13,12 @@ struct ShaderSourceCode {
 class Shader
 {
 public:
+	//Constructor for taking in a vertex shader and a fragment shader path
 	Shader(const std::string& vsPath, const std::string& fsPath);
 	~Shader();
 
+	//Getters
 	unsigned int GetProgramID() const { return (unsigned int)_shaderProgramID; }
-
-	void BindShader();
-	void UnbindShader();
-
 	std::string GetVsPath() const { return _vertexShaderPath; }
 	std::string GetFsPath() const { return _fragmentShaderPath; }
 
@@ -47,14 +39,24 @@ public:
 	void SetMat2(const std::string& name, const glm::mat2& mat) const;
 	void SetMat3(const std::string& name, const glm::mat3& mat) const;
 	void SetMat4(const std::string& name, const glm::mat4& mat) const;
+	
+	//GL Handlers
+	void BindShader();
+	void UnbindShader();
 private:
+	//Creates a shader based on the current data
 	GLuint CreateShader();
+	//Compiles a shader based on the type passed in and the source code
 	GLuint CompileShader(GLenum sType, const std::string& source);
 	ShaderSourceCode GetShadersFromFile();
 private:
+	//Stores the shader id
 	GLuint _shaderProgramID;
+
+	//Stores the source code for the shaders
 	ShaderSourceCode _shaderSourceCode;
 
+	//Stores the filepaths to each shader
 	std::string _vertexShaderPath;
 	std::string _fragmentShaderPath;
 };

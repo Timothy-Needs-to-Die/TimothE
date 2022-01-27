@@ -1,95 +1,128 @@
 #include "Texture2D.h"
 #include "imgui.h"
 
-Texture2D::Texture2D() : Component()
+Texture2D::Texture2D(GameObject* pParent) : Component(pParent), _ID(0)
 {
 	_UID = UID::GenerateUID();
 	SetType(Component::Texture_Type);
 	SetCategory(Component::Graphics_Category);
 } 
 
+Texture2D::Texture2D(std::string path) : Component(), _ID(0)
+{
+	_UID = UID::GenerateUID();
+	SetType(Component::Texture_Type);
+	SetCategory(Component::Graphics_Category);
+
+	Load(path);
+}
+
 Texture2D::~Texture2D()
 {
-	glDeleteTextures(1, &_ID);
+	//Deletes this texture
+	//glDeleteTextures(1, &_ID);
 }
 
 void Texture2D::DrawEditorUI()
 {
+	//displays the texture in the editor window
 	ImGui::Text("Texture");
 	ImTextureID texID = (void*)_ID;
+	//specifies a size of 100x100 for the texture preview
 	ImGui::Image(texID, ImVec2(100.0f, 100.0f));
 }
 
-// Pass in file path, filter mode as "linear" or "nearest"
-bool Texture2D::Load(string path)
+// Pass in file path
+bool Texture2D::Load(std::string path)
 {
-	unsigned char* data = SOIL_load_image(path.c_str(), &_width, &_height, &_channels, SOIL_LOAD_AUTO);
+	if (_ID != 0) return true;
+	_filePath = path;
+	unsigned char* data = stbi_load(path.c_str(), &_width, &_height, &_channels, 0);
 
-	GenTexture(data);
-
-	//_filePath = path;
-	//_ID = SOIL_load_OGL_texture
-	//(
-	//	path.c_str(),
-	//	SOIL_LOAD_AUTO,
-	//	SOIL_CREATE_NEW_ID,
-	//	SOIL_FLAG_MIPMAPS | SOIL_FLAG_INVERT_Y | SOIL_FLAG_NTSC_SAFE_RGB | SOIL_FLAG_COMPRESS_TO_DXT
-	//);
-
-	///* check for an error during the load process */
-	//if (_ID == 0)
-	//{
-	//	printf("SOIL loading error: '%s'\n", SOIL_last_result());
-	//}
+	if (data != nullptr)
+	{
+		GenerateTexture(data);
+	}
+	else
+	{
+		return false;
+	}
 
 	return true;
 }
 
-void Texture2D::GenTexture(unsigned char* data)
+void Texture2D::GenerateTexture(unsigned char* data)
 {
-	_ID = SOIL_create_OGL_texture(
-		data,
-		&_width,
-		&_height,
-		_channels,
-		SOIL_CREATE_NEW_ID,
-		SOIL_FLAG_MIPMAPS | SOIL_FLAG_INVERT_Y | SOIL_FLAG_COMPRESS_TO_DXT
-	);
+	glGenTextures(1, &_ID);
 
+	//Binds the texture so it can be setup
 	glBindTexture(GL_TEXTURE_2D, _ID);
 
-	SOIL_free_image_data(data);
+	//Setsup the texture
+	if (_channels == 3)
+	{
+		glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, _width, _height, 0, GL_RGB, GL_UNSIGNED_BYTE, data);
+	}
+	else if (_channels == 4)
+	{
+		glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, _width, _height, 0, GL_RGBA, GL_UNSIGNED_BYTE, data);
+	}
+
+
+	//Set filtering to linear by default
+	SetFilterMode("linear");
+
+	//Releases the memory associated with the data
+	stbi_image_free(data);
 }
 
-
-
-void Texture2D::OnStart() 
-{ 
+void Texture2D::OnStart()
+{
 
 }
 
-void Texture2D::OnUpdate()
-{ 
+void Texture2D::OnUpdate(float deltaTime)
+{
 
 }
 
 void Texture2D::OnEnd()
-{ 
+{
 
 }
 
-void Texture2D::SetFilterMode(string mode)
+void Texture2D::SetFilterMode(std::string mode)
 {
 	if (mode == "linear")
 	{
 		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
 		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
-		cout << "Linear filter mode" << endl;
 	}
 	else if (mode == "nearest")
 	{
 		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
 		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
-		cout << "Nearest filter mode" << endl;
 	}
+}
+
+// Inherited via ISerializable
+
+inline bool Texture2D::SaveState(IStream& stream) const {
+	Component::SaveState(stream);
+
+	//Save filepath
+	WriteString(stream, _filePath);
+
+	return true;
+
+}
+
+inline bool Texture2D::LoadState(IStream& stream) {
+	Component::LoadState(stream);
+
+	//Loads the texture based on the string that it reads in
+	Load(ReadString(stream));
+
+	return true;
+
 }

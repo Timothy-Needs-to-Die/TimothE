@@ -1,46 +1,25 @@
 #pragma once
 #include "Component.h"
 
-class GameObject;
 
 class TestComponent : public Component
 {
 public:
-	TestComponent() {
-		SetType(Component::Types::Test_Type);
-		SetCategory(Component::Categories::Debug_Category);
-	}
+	TestComponent(GameObject* pParent);
 
 	COMPONENT_STATIC_TYPE(Test_Type)
 
-	TestComponent(GameObject* _mParentObject);
 	~TestComponent();
 	void OnStart() override;
-	void OnUpdate() override;
+	void OnUpdate(float deltaTime) override;
 	void OnEnd() override;
-	void Test(int x, int y);
+	virtual void DrawEditorUI() override;
 
-	GameObject* _parentObject;
-	void SetGameObject(GameObject* newparent) {
-		_parentObject = newparent;
-	}
-	// Getter
-	GameObject* GetGameObject() {
-		return _parentObject;
-	}
+	void Test(int x, int y);
+	
 
 	// Inherited via ISerializable
-	virtual bool SaveState(IStream& stream) const override {
-		Component::SaveState(stream);
-
-		return true;
-	}
-	virtual bool LoadState(IStream& stream) override {
-		Component::LoadState(stream);
-
-		return true;
-	}
-	// Inherited via Component
-	virtual void DrawEditorUI() override;
+	virtual bool SaveState(IStream& stream) const override;
+	virtual bool LoadState(IStream& stream) override;
 };
 

@@ -1,30 +1,58 @@
 #pragma once
 
+#include "pch.h"
 #include "GameObject.h"
+#include "Component.h"
+#include "Transform.h"
 #include "MouseEvent.h"
 #include "Texture2D.h"
 #include "Input.h"
+#include "Console.h"
 
 using std::string;
+using std::vector;
 
-class Button : public GameObject
+class Button : public Component
 {
 public:
-	Button(string name, int width, int height);
+	Button(GameObject* parent);
 	~Button();
 
-	void Update(float deltaTime) override;
-	void Render();
+	COMPONENT_STATIC_TYPE(Button_Type);
+
+	// Component Methods
+	void OnStart() override;
+	void OnUpdate(float deltaTime) override;
+	void OnEnd() override;
+	void DrawEditorUI() override;
+
+	// OnClick management
+	void AddClickEvent(void (*function)());
+	void RemoveClickEvent(void (*function)());
 
 	// Getter & Setter
-	int GetWidth() { return _width; }
-	void SetWidth(int width) { _width = width; }
-	int GetHeight() { return _height; }
-	void SetHeight(int height) { _width = height; }
+	bool IsHovering() { return _isHovering; }
+	bool IsClicked() { return _isClicked; }
 
 private:	
-	int _width;
-	int _height;
+	bool _isHovering;
+	bool _isClicked;
+
+	// OnClick Calls
+	vector<void(*)()> _onClickCalls;
+
 
 };
 
+
+/*
+	Button:
+		OnHoverering
+		Functions for adding and removing onClickCalls
+		EditorUI function
+
+	Different textures for clicked, idle, hovered?
+	Text, text colors, icons
+
+	Enable Disable buttons. Toggle Buttons?
+*/

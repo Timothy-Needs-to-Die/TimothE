@@ -1,15 +1,9 @@
 #include "TestComponent.h"
-#include "GameObject.h"
 
-#include <iostream>
-
-
-TestComponent::TestComponent(GameObject* parentObject) : Component()
+TestComponent::TestComponent(GameObject* pParent) : Component(pParent)
 {
 	SetType(Component::Types::Test_Type);
 	SetCategory(Component::Categories::Debug_Category);
-	_parentObject = parentObject;
-	//calls method on creation
 	OnStart();
 }
 
@@ -27,9 +21,9 @@ void TestComponent::OnStart()
 }
 
 //update
-void TestComponent::OnUpdate()
+void TestComponent::OnUpdate(float deltaTime)
 {
-
+	
 }
 
 //end
@@ -42,6 +36,20 @@ void TestComponent::OnEnd()
 void TestComponent::Test(int x,int y)
 {
 
+}
+
+// Inherited via ISerializable
+
+inline bool TestComponent::SaveState(IStream& stream) const {
+	Component::SaveState(stream);
+
+	return true;
+}
+
+inline bool TestComponent::LoadState(IStream& stream) {
+	Component::LoadState(stream);
+
+	return true;
 }
 
 void TestComponent::DrawEditorUI()

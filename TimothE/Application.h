@@ -1,13 +1,16 @@
 #pragma once
 
+#include "pch.h"
+
 #include "Window.h"
 #include "ApplicationEvent.h"
 #include "Renderer.h"
 #include "Scene.h"
-#include "Editor.h"
 #include "MemoryManager.h"
 
 #include "AudioEngine.h"
+
+class Editor;
 
 class Application
 {
@@ -20,11 +23,13 @@ public:
 
 	void OnGameEvent(Event& e);
 
+	void GameStart();
+
 protected:
 	void PollInput();
 
 	void GameBeginRender();
-	void GameRender();
+	void GameRender(Camera* cam);
 	void GameEndRender();
 	void GameUpdate(float dt);
 
@@ -39,21 +44,24 @@ private:
 	bool OnGameWindowMouseButtonReleasedEvent(MouseButtonReleasedEvent& e);
 	bool OnGameWindowMouseMovedEvent(MouseMovedEvent& e);
 
-	AudioEngine* _audio;
+private:
+	AudioEngine* _pAudio;
 
-	Renderer _renderer;
+	Renderer* _pRenderer;
 
 	Window* _pWindow;
 
-	bool _inEditorMode = false;
-	bool _devMode;
+	bool _mInEditorMode = true;
+	bool _mDevMode;
 
-	bool _running;
+	bool _mRunning;
 
 	Scene* _pCurrentScene;
 
-	Editor* _pEditor;
+	class Editor* _pEditor;
 
-	bool _paused = false;
+	bool _mPaused = false;
+	bool _mGameRunning = false;
+
+	Camera* _pGameCamera;
 };
-

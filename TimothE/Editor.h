@@ -1,29 +1,23 @@
 #pragma once
 
-#include <gl/glew.h>
-#include <GLFW/glfw3.h>
+#include "pch.h"
+
 #include "Window.h"
 #include "Framebuffer.h"
 #include "Shader.h"
 #include "Scene.h"
 #include "Camera.h"
+#include "Console.h"
+#include "imgui.h"
+
+class Application;
 
 #define CONTENT_BROWSER_DIRECTORY "./Resources" //sets file directory for the content browser
-#define CONSOLE_MAX_MESSAGES 500
-class Console
-{
-public:
-	static void Print(string message);
-	static vector<string> GetConsoleOutput() { return output; }
-
-private:
-	static vector<string> output;
-};
 
 class Editor
 {
 public:
-	Editor(Window* pWindow);
+	Editor(Application* pApp, Window* pWindow);
 	~Editor();
 
 	//Runs through the editor loop
@@ -39,8 +33,11 @@ public:
 	//Ends the render
 	void EditorEndRender();
 
+	void ConvertGameToEditorSpace();
 
 	Framebuffer* _pEditorFramebuffer;
+
+	Camera* GetCamera() const { return _pEditorCamera; }
 
 private:
 
@@ -60,7 +57,28 @@ private:
 
 	GameObject* _pSelectedGameObject = nullptr;
 
+	void CreateFileInContentBrowser(std::string name, std::string type);
+	void CheckFileType(std::string fileDirectory);
 	void SearchFileDirectory();
-	string _mCurrentDir = CONTENT_BROWSER_DIRECTORY;
+	std::string _mCurrentDir = CONTENT_BROWSER_DIRECTORY;
 	Camera* _pEditorCamera;
+
+	bool tileEditorOpen;
+
+	ImVec2 _windowPos;
+	ImVec2 _windowSize;
+
+	glm::vec2 _mousePosInEditorSpace;
+
+	Texture2D* pImGuiSample;
+
+	Application* _pApplication;
+
+	Texture2D* pContentTextureImage = new Texture2D(NULL);
+	Texture2D* pContentTextureScene = new Texture2D(NULL);
+	Texture2D* pContentTextureConfig = new Texture2D(NULL);
+	Texture2D* pContentTextureScript = new Texture2D(NULL);
+	Texture2D* pContentTextureSound = new Texture2D(NULL);
+	Texture2D* pContentTextureFile = new Texture2D(NULL);
+	Texture2D* pContentTextureFolder = new Texture2D(NULL);
 };

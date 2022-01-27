@@ -216,9 +216,6 @@ SoundStruct AudioEngine::LoadSound(const char* name, const char* filePath, Audio
 	CheckForErrors(result);
 	std::cout << "Sound Loaded: " << newSound.name << std::endl;
 	return newSound;
-
-	//Load(Type_Song, filePath);
-	//Load(soundTrack);
 }
 
 
