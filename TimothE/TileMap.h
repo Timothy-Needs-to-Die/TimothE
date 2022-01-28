@@ -28,7 +28,7 @@ public:
 	void CreateNewLayer();
 	void DeleteAllLayers();
 
-	void AddTileAt(unsigned int layer, unsigned int x, unsigned int y, unsigned int index);
+	void AddTileAt(unsigned int layer, unsigned int x, unsigned int y, Camera* cam);
 
 	//Returns the width and height of the WHOLE TILE MAP
 	int GetTileWidth() const;
@@ -59,21 +59,21 @@ public:
 
 private:
 	//VAO Vertex Array
-	glm::vec2 _mapSize;
+	glm::vec2 _mapSizeInScreenUnits;
 	glm::vec2 _tileSize;
-	glm::vec2 _tileDimensions;
-	glm::vec2 _spritemapSize;
+	glm::vec2 _mapDimensions;
+	glm::vec2 _spritemapResolution;
 	std::string _textureName;
 	std::string _tileMapFile;
-	float xGapBetweenTiles;
-	float yGapBetweenTiles;
+	float _xGapBetweenTiles;
+	float _yGapBetweenTiles;
 
 	std::vector<TileData> _tiles;
 
 	glm::vec2* _noTcCoords;
 
-	int tilesPerUnit = 4;
-	float scale = 1.0f;
+	int _tilesPerUnit = 4;
+	float _tileScale = 1.0f;
 
 
 };

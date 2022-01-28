@@ -144,7 +144,7 @@ void TextComponent::LoadFont()
 	FT_Done_FreeType(ft);
 }
 
-void TextComponent::RenderText(Shader& s, std::string text, float x = 0.0f, float y = 0.0f, float scale = 1.0f, glm::vec3 color = { 1.0f, 1.0f, 1.0f })
+void TextComponent::RenderText(Shader& s, std::string text, float x = 0.0f, float y = 0.0f, float _tileScale = 1.0f, glm::vec3 color = { 1.0f, 1.0f, 1.0f })
 {
 	// activate corresponding render state
 	s.BindShader();
@@ -170,11 +170,11 @@ void TextComponent::RenderText(Shader& s, std::string text, float x = 0.0f, floa
 			x = newlineXPos;
 			continue;
 		}
-		float xpos = x + ch._bearing.x * scale;
-		float ypos = y - (ch._size.y - ch._bearing.y) * scale - ((newlinePadding * scale) * newline);
+		float xpos = x + ch._bearing.x * _tileScale;
+		float ypos = y - (ch._size.y - ch._bearing.y) * _tileScale - ((newlinePadding * _tileScale) * newline);
 
-		float w = ch._size.x * scale;
-		float h = ch._size.y * scale;
+		float w = ch._size.x * _tileScale;
+		float h = ch._size.y * _tileScale;
 		// update VBO for each character
 		float vertices[6][4] = {
 			{ xpos,     ypos + h,   0.0f, 0.0f },
@@ -194,7 +194,7 @@ void TextComponent::RenderText(Shader& s, std::string text, float x = 0.0f, floa
 		// render quad
 		glDrawArrays(GL_TRIANGLES, 0, 6);
 		// now advance cursors for next glyph (note that advance is number of 1/64 pixels)
-		x += (ch._advance >> 6) * scale; // bitshift by 6 to get value in pixels (2^6 = 64)
+		x += (ch._advance >> 6) * _tileScale; // bitshift by 6 to get value in pixels (2^6 = 64)
 	}
 	glBindVertexArray(0);
 	glBindTexture(GL_TEXTURE_2D, 0);

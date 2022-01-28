@@ -86,11 +86,6 @@ void Application::Init(bool devMode)
 
 	_pTilemap = new TileMap();
 	//Layer, X sprite index, y sprite index, index for placement
-	_pTilemap->AddTileAt(0, 3, 5, 2);
-	_pTilemap->AddTileAt(0, 4, 5, 3);
-	_pTilemap->AddTileAt(0, 6, 5, 4);
-	_pTilemap->AddTileAt(0, 3, 5, 258);
-
 }
 
 //game loop update
@@ -139,7 +134,11 @@ void Application::GameLoop()
 			GameRender(_pEditor->GetCamera());
 			_pEditor->EditorLoop(_pCurrentScene, elapsed, _mInEditorMode, _mPaused);
 
-			_pEditor->GetCamera()->PrintInfo();
+			if (Input::IsMouseButtonDown(BUTTON_LEFT)) {
+				_pTilemap->AddTileAt(0, 3, 5, _pEditor->GetCamera());
+			}
+
+			//_pEditor->GetCamera()->PrintInfo();
 
 			_pEditor->_pEditorFramebuffer->UnbindFramebuffer();
 
@@ -151,7 +150,7 @@ void Application::GameLoop()
 
 			GameRender(_pGameCamera);
 			
-			_pGameCamera->PrintInfo();
+			//_pGameCamera->PrintInfo();
 
 			if (_mGameRunning && !_mPaused) {
 				GameUpdate(elapsed);
@@ -178,7 +177,7 @@ void Application::GameLoop()
 	_pWindow->DestroyWindow();
 
 	//Prints the memory status and reports and memory leaks
-	HeapManager::ReportMemoryLeaks(memBookmark);
+	//HeapManager::ReportMemoryLeaks(memBookmark);
 }
 
 //run events

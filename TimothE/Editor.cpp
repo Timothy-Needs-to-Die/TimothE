@@ -524,6 +524,8 @@ void Editor::ConvertGameToEditorSpace()
 	else if (editorPos.y > _windowSize.y) editorPos.y = _windowSize.y;
 
 	_mousePosInEditorSpace = editorPos;
+
+	Input::SetEditorMousePos(_mousePosInEditorSpace.x, _mousePosInEditorSpace.y);
 }
 
 

@@ -17,10 +17,9 @@ void TileMapEditor::DisplayEditorGUI()
 
 
 TileMapEditor::TileMapEditor()
-	: _textureName("spritesheet"), _mapName("boop"), _hasTileData(false), _mapSize(20.0f, 13.0f), _tileSize(32.0f)
+	: _textureName("spritesheet"), _mapName("boop"), _hasTileData(false), _mapSizeInScreenUnits(20.0f, 13.0f), _tileSize(32.0f)
 {
 	_selectedTile = SelectedTile();
-	std::cout << "Dont delete me : (" << std::endl;
 	_textureName = "spritesheet";
 }
 
@@ -29,8 +28,8 @@ void TileMapEditor::AcquireData()
 	static char infoName[50];
 	ImGui::Begin("Tile Map Info");
 	ImGui::InputText("Tile Map Name", infoName, 50);
-	ImGui::InputFloat("Tile count X", &_mapSize.x);
-	ImGui::InputFloat("Tile Count Y", &_mapSize.y);
+	ImGui::InputFloat("Tile count X", &_mapSizeInScreenUnits.x);
+	ImGui::InputFloat("Tile Count Y", &_mapSizeInScreenUnits.y);
 	ImGui::InputFloat("Tile Size X", &_tileSize.x);
 	ImGui::InputFloat("Tile Size Y", &_tileSize.y);
 	ImGui::Text("Selected Texture Atlas: %s", _textureName.c_str());
@@ -44,7 +43,7 @@ void TileMapEditor::AcquireData()
 	ImGui::Separator();
 	if (ImGui::Button("Start"))
 	{
-		if (_mapSize.x >= 1 && _mapSize.y >= 1 && _tileSize.x > 0 && _tileSize.y > 0 && !_textureName.empty() && infoName[0] != '\0')
+		if (_mapSizeInScreenUnits.x >= 1 && _mapSizeInScreenUnits.y >= 1 && _tileSize.x > 0 && _tileSize.y > 0 && !_textureName.empty() && infoName[0] != '\0')
 		{
 			_name = std::string(infoName);
 			_hasTileData = true;
@@ -66,8 +65,8 @@ void TileMapEditor::CreateTileMap()
 	static bool gridLinesCreated = false;
 	static bool spriteArrayCreated = false;
 
-	int x = _mapSize.x;
-	int y = _mapSize.y;
+	int x = _mapSizeInScreenUnits.x;
+	int y = _mapSizeInScreenUnits.y;
 
 	//static VAO VERTEX ARRAY gridLines;
 	//static std::vector<Sprite> sprites;
@@ -81,7 +80,7 @@ void TileMapEditor::CreateTileMap()
 	{
 		mapToCreate.SetTileSize(_tileSize);
 		mapToCreate.SetPosition(0.0f, 0.0f);
-		mapToCreate.SetTileMapSize(_mapSize);
+		mapToCreate.SetTileMapSize(_mapSizeInScreenUnits);
 		mapToCreate.SetMapName(_mapName);
 		mapToCreate.SetTextureName(_textureName);
 		mapToCreate.CreateNewLayer();
@@ -127,13 +126,6 @@ void TileMapEditor::CreateTileMap()
 
 	float sheetWidth = 2560, sheetHeight = 1664;
 	float spriteWidth = 128, spriteHeight = 128;
-	//float x = 10, y = 7;
-	//_uvSpriteCoords = new glm::vec2[4];
-	//_uvSpriteCoords[0] = glm::vec2((x * spriteWidth) / sheetWidth, (y * spriteHeight) / sheetHeight); //bottom left
-	//_uvSpriteCoords[1] = glm::vec2(((x + 1) * spriteWidth) / sheetWidth, (y * spriteHeight) / sheetHeight); //bottom right
-	//_uvSpriteCoords[2] = glm::vec2(((x + 1) * spriteWidth) / sheetWidth, ((y + 1) * spriteHeight) / sheetHeight); //top right
-	//_uvSpriteCoords[3] = glm::vec2((x * spriteWidth) / sheetWidth, ((y + 1) * spriteHeight) / sheetHeight); //top left
-	//std::cout << _uvSpriteCoords[0].x << std::endl;
 
 	const auto& tex = ResourceManager::GetTexture(_textureName);
 	ImGui::Begin("Select Tile");
@@ -249,10 +241,10 @@ void TileMapEditor::CreateTileMap()
 
 	//TODO: Mouse position to tilemap editor positon and draw call
 	
-	mapToCreate.AddTileAt(0, 4, 5, 2);
-	mapToCreate.AddTileAt(0, 4, 5, 18);
-	mapToCreate.AddTileAt(0, 4, 5, 35);
-	mapToCreate.AddTileAt(0, 4, 5, 50);
+	//mapToCreate.AddTileAt(0, 4, 5, 2);
+	//mapToCreate.AddTileAt(0, 4, 5, 18);
+	//mapToCreate.AddTileAt(0, 4, 5, 35);
+	//mapToCreate.AddTileAt(0, 4, 5, 50);
 }
 
 void TileMapEditor::SaveTileMap(const TileMap& map, const std::vector<bool>& collisionInfo)

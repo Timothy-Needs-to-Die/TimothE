@@ -47,20 +47,16 @@ void Camera::PollInput(float dt)
 		float xOffset = -sin(glm::radians(_rotation)) * _cameraSpeed * dt;
 		_cameraPos.x += xOffset;
 		_cameraPos.y += yOffset;
-		std::cout << "X: " << xOffset << " Y: " << yOffset << std::endl;
 	}
 	if (Input::IsKeyDown(KEY_S)) {
-		std::cout << "S" << std::endl;
 		_cameraPos.x -= -sin(glm::radians(_rotation)) * _cameraSpeed * dt;
 		_cameraPos.y -= cos(glm::radians(_rotation)) * _cameraSpeed * dt;
 	}
 	if (Input::IsKeyDown(KEY_A)) {
-		std::cout << "A" << std::endl;
 		_cameraPos.x -= cos(glm::radians(_rotation)) * _cameraSpeed * dt;
 		_cameraPos.y -= sin(glm::radians(_rotation)) * _cameraSpeed * dt;
 	}
 	if (Input::IsKeyDown(KEY_D)) {
-		std::cout << "D" << std::endl;
 		_cameraPos.x += cos(glm::radians(_rotation)) * _cameraSpeed * dt;
 		_cameraPos.y += sin(glm::radians(_rotation)) * _cameraSpeed * dt;
 	}

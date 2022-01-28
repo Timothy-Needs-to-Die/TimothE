@@ -40,7 +40,7 @@ private:
 	bool _hasTileData;
 	std::string _mapName;
 	std::string _textureName;
-	glm::vec2 _mapSize;
+	glm::vec2 _mapSizeInScreenUnits;
 	glm::vec2 _tileSize;
 	std::string _name;
 
