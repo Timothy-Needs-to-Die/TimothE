@@ -15,6 +15,7 @@ public:
 	glm::mat4 ViewProj() { return _viewProj; }
 	glm::vec3 Position() { return _cameraPos; }
 
+	void SetPosition(glm::vec3 pos) { _cameraPos = pos; }
 	void SetCameraSpeed(float speed) { _cameraSpeed = speed; }
 	float GetCameraSpeed() const { return _cameraSpeed; }
 

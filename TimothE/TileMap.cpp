@@ -7,7 +7,7 @@ TileMap::TileMap()
 	//TODO: Add a system to change how many tiles per unit
 
 
-	_mapDimensions = { 256.0f, 256.0f };
+	_mapDimensions = { 14.0f, 8.0f };
 	_mapSizeInScreenUnits = glm::vec2(_mapDimensions.x / _tilesPerUnit, _mapDimensions.y / _tilesPerUnit);
 	_tileSize = glm::vec2(128.0f);
 	_spritemapResolution = glm::vec2(2560.0f, 1664.0f);
@@ -20,13 +20,11 @@ TileMap::TileMap()
 
 	_tileScale = 1.0f / _tilesPerUnit;
 
-
 	_noTcCoords = new glm::vec2[4];
 	_noTcCoords[0] = glm::vec2((0 * _tileSize.x) / _spritemapResolution.x, (0 * _tileSize.y) / _spritemapResolution.y);
 	_noTcCoords[1] = glm::vec2(((0 + 1) * _tileSize.x) / _spritemapResolution.x, (0 * _tileSize.y) / _spritemapResolution.y);
 	_noTcCoords[2] = glm::vec2(((0 + 1) * _tileSize.x) / _spritemapResolution.x, ((0 + 1) * _tileSize.y) / _spritemapResolution.y);
 	_noTcCoords[3] = glm::vec2((0 * _tileSize.x) / _spritemapResolution.x, ((0 + 1) * _tileSize.y) / _spritemapResolution.y);
-
 }
 
 TileMap::~TileMap()
@@ -82,57 +80,59 @@ void TileMap::DeleteAllLayers()
 void TileMap::AddTileAt(unsigned int layer, unsigned int x, unsigned int y, Camera* cam)
 {
 	glm::vec2 mousePos = Input::GetEditorMousePos();
-	mousePos.x /= (960.0f / 2.0f);
-	mousePos.y /= (520.0f / 2.0f);
-
-	glm::vec2 camPos = cam->Position();
-
-	if (camPos.x < 0.0f)
-	{
-		camPos.x = 0.0f;
-		mousePos.x = 0.0f;
-	}
-	else if (camPos.x > _mapSizeInScreenUnits.x) {
-		camPos.x = _mapSizeInScreenUnits.x;
-		mousePos.x = _mapSizeInScreenUnits.x;
-	}
-
-	if (camPos.y < 0.0f) {
-		camPos.y = 0.0f;
-		mousePos.y = 0.0f;
-	}
-	else if (camPos.y > _mapSizeInScreenUnits.y) {
-		camPos.y = _mapSizeInScreenUnits.y;
-		mousePos.y = _mapSizeInScreenUnits.y;
-	}
-	//if (camPos.x > 1.7f) {
-	//	camPos.x -= 1.7f;
-	//
-	//}
-	//if (camPos.y > 1.0f) {
-	//	camPos.y -= 1.0f;
-	//}
-
-	if (mousePos.x < 0.5f) {
-		mousePos.x = (camPos.x / 2.0f) - mousePos.x;
-	}
-	else {
-		mousePos.x = (camPos.x / 2.0f) + mousePos.x;
-	}
-
-	if (mousePos.y < 0.5f) {
-		mousePos.y = (camPos.y / 2.0f) + mousePos.y;
-	}
-	else {
-		mousePos.y = (camPos.y / 2.0f) - mousePos.y;
-	}
-
 	std::cout << "Mouse Position: " << mousePos.x << ", " << mousePos.y << std::endl;
-	std::cout << "Camera Position: " << camPos.x << ", " << camPos.y << std::endl;
 
-	glm::vec2 worldPos = mousePos;
+	glm::vec2 camPos = { cam->Position().x, cam->Position().y };
+	camPos -= glm::vec2(1.78f, 1.0f);
+	
 
-	int index = (int)(worldPos.y * _tilesPerUnit) * (_mapDimensions.y) + (int)(worldPos.x * _tilesPerUnit);
+	//Convert camera to pixel space
+	glm::vec2 cameraInPixels = { camPos.x * 960.0f, camPos.y * 540.0f };
+	std::cout << "Camera in pixels: " << cameraInPixels.x << ", " << cameraInPixels.y << std::endl;
+
+	//Transform camera position with the mouse position
+	glm::vec2 cameraConvertedToMouse = cameraInPixels + (mousePos);
+	std::cout << "Camera converted to mouse: " << cameraConvertedToMouse.x << ", " << cameraConvertedToMouse.y << std::endl;
+
+	//Convert these coordinates into tile coordinates
+	glm::vec2 convertedCoords = { cameraConvertedToMouse.x / 960.0f, cameraConvertedToMouse.y / 540.0f };
+	convertedCoords *= 4.0f;
+	std::cout << "Converted coords: " << convertedCoords.x << ", " << convertedCoords.y << std::endl;
+
+
+	//std::cout << "Mouse Pos in Screen Coordinates: " << mousePos.x << ", " << mousePos.y << std::endl;
+	//if (camPos.x < 0.0f)
+	//{
+	//	camPos.x = 0.0f;
+	//	mousePos.x = 0.0f;
+	//}
+	//else if (camPos.x > _mapSizeInScreenUnits.x) {
+	//	camPos.x = _mapSizeInScreenUnits.x;
+	//	mousePos.x = _mapSizeInScreenUnits.x;
+	//}
+	//
+	//if (camPos.y < 0.0f) {
+	//	camPos.y = 0.0f;
+	//	mousePos.y = 0.0f;
+	//}
+	//else if (camPos.y > _mapSizeInScreenUnits.y) {
+	//	camPos.y = _mapSizeInScreenUnits.y;
+	//	mousePos.y = _mapSizeInScreenUnits.y;
+	//}
+	//mousePos.x *= _tileScale;
+	//mousePos.y *= _tileScale;
+	//mousePos += (camPos - glm::vec2(1.78, 1.0f));
+	//std::cout << "Mouse Position: " << mousePos.x << ", " << mousePos.y << std::endl;
+	//std::cout << "Camera Position: " << camPos.x << ", " << camPos.y << std::endl;
+
+	glm::vec2 worldPos = convertedCoords;
+	std::cout << "World Position: (X: " << worldPos.x << " Y: " << worldPos.y << ")" << std::endl;
+
+	//int index = (int)(worldPos.y * (float)_tilesPerUnit) * _mapDimensions.y + (worldPos.x * (float)_tilesPerUnit);
+	int index = _mapDimensions.x * (int)(worldPos.y * 4) + (int)(worldPos.x * 4);
+	if(index < 0) index = 0;
+	std::cout << "Index: " << index << std::endl;
+	if (index > _mapDimensions.x * _mapDimensions.y) index = _mapDimensions.x * _mapDimensions.y;
 
 	TileData newTile;
 	newTile.xIndex = x;
@@ -143,15 +143,8 @@ void TileMap::AddTileAt(unsigned int layer, unsigned int x, unsigned int y, Came
 	newTile.uvCoords[1] = glm::vec2(((x + 1) * _tileSize.x) / _spritemapResolution.x, (y * _tileSize.y) / _spritemapResolution.y);
 	newTile.uvCoords[2] = glm::vec2(((x + 1) * _tileSize.x) / _spritemapResolution.x, ((y + 1) * _tileSize.y) / _spritemapResolution.y);
 	newTile.uvCoords[3] = glm::vec2((x * _tileSize.x) / _spritemapResolution.x, ((y + 1) * _tileSize.y) / _spritemapResolution.y);
-	newTile.worldPos = worldPos;
-
-	std::cout << "Index: " << index << std::endl;
-
 	_tiles[index] = newTile;
 
-	std::cout << "World Position: (X: " << worldPos.x << " Y: " << worldPos.y << ")" << std::endl;
-	//glm::vec2 screenPos = ConvertWorldToScreen(worldPos);
-	//std::cout << "In Screen space: (X: " << screenPos.x << " Y: " << screenPos.y << ")" << std::endl;
 }
 
 int TileMap::GetTileWidth() const
@@ -218,10 +211,11 @@ void TileMap::RenderMap(Camera* cam)
 			if (x < camPos.x - extents || x > camPos.x + extents || y < camPos.y - extents || y > camPos.y + extents) {
 				continue;
 			}
-
-			int index = (int)(y * _tilesPerUnit) * (_mapDimensions.y) + (int)(x * _tilesPerUnit);
+			//int index = (y * (float)_tilesPerUnit) * _mapDimensions.y + (x * (float)_tilesPerUnit);
+			int index = _mapDimensions.x * (int)(y * 4) + (int)(x * 4);
 			if (_tiles[index].uvCoords == nullptr) {
 				Renderer2D::DrawQuad({ x,y }, { _tileScale, _tileScale }, ResourceManager::GetTexture("spritesheet"), _noTcCoords);
+				continue;
 			}
 
 			Renderer2D::DrawQuad({ x,y }, { _tileScale,_tileScale }, ResourceManager::GetTexture("spritesheet"), _tiles[index].uvCoords);

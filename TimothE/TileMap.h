@@ -12,7 +12,6 @@ struct TileData {
 	int xIndex;
 	int yIndex;
 	int layer;
-	glm::vec2 worldPos;
 
 	glm::vec2* uvCoords;
 };
