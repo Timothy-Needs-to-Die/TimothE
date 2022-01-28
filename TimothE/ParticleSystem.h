@@ -25,7 +25,7 @@ public:
 	void OnEnd() override;
 	void DrawEditorUI() override;
 
-	void CanRespawnParticles(bool toggle);
+	void SetCanRespawnParticles(bool toggle);
 
 	Transform* GetParentPos() { return _pParentTransform; }
 	void SetParentTransform(Transform* parentTransform);
@@ -35,8 +35,12 @@ public:
 	Shader* GetShader() const { return _pShader; }
 	void SetShader(string name);
 
-	void RespawnParticles(Particle* p);
-	void Fire();
+	void RespawnParticle(Particle* p, bool active);
+	void StartConstant();
+	void Burst();
+	void Stop();
+
+	void SetActive(bool active);
 
 	virtual bool SaveState(IStream& stream) const override {
 		Component::SaveState(stream);

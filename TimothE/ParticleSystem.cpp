@@ -9,11 +9,10 @@ ParticleSystem::ParticleSystem(int count, glm::vec4 colour, Texture2D* texture, 
 
 	SetShader("default");
 
-	_creatingParticles = true;
+	// creatingparticles enables the process of spawning new particles after a delay to make them come out at a constant rate
+	_creatingParticles = false;
+	// spawndelay is the delay between enabling new particles
 	_spawnDelay = _particleLife / _maxParticles;
-	/*Particle* p = new Particle(_particleLife, _particleColour, _pTexture, _pParentTransform);
-	p->ResetParticle();
-	_particles.push_back(p);*/
 
 	CreateParticles();
 }
@@ -35,7 +34,7 @@ void ParticleSystem::OnUpdate(float deltaTime)
 		timer += deltaTime;
 		if (timer >= _spawnDelay)
 		{
-			static int creatingIndex = 1;
+			static int creatingIndex = 0;
 			if (creatingIndex < _maxParticles)
 			{
 				_particles[creatingIndex]->SetCanRespawn(true);
@@ -116,7 +115,7 @@ void ParticleSystem::DrawEditorUI()
 			_creatingParticles = true;
 			for (Particle* p : _particles)
 			{
-				RespawnParticles(p);
+				RespawnParticle(p, false);
 			}
 		}
 
@@ -148,7 +147,7 @@ void ParticleSystem::DrawEditorUI()
 				static std::string texPath = "lenna3.jpg";
 				ImGui::InputText("##ParticleTexturePath", &texPath);
 				ImGui::SameLine();
-				if (ImGui::Button("Set texture"))
+				if (ImGui::Button("Set texture##ParticleSystem"))
 				{
 					for (Particle* p : _particles)
 					{
@@ -173,7 +172,7 @@ void ParticleSystem::DrawEditorUI()
 					for (Particle* p : _particles)
 					{
 						p->SetColour(glm::vec4(colour[0], colour[1], colour[2], colour[3]));
-						RespawnParticles(p);
+						RespawnParticle(p, false);
 					}
 				}
 			}
@@ -189,7 +188,7 @@ void ParticleSystem::DrawEditorUI()
 			{
 				p->SetMaxLife(particleLife);
 				p->SetLife(particleLife);
-				RespawnParticles(p);
+				RespawnParticle(p, false);
 			}
 		}
 		
@@ -201,7 +200,7 @@ void ParticleSystem::DrawEditorUI()
 			for (Particle* p : _particles)
 			{
 				p->SetAngle(angle);
-				RespawnParticles(p);
+				RespawnParticle(p, false);
 			}
 		}
 		ImGui::SameLine();
@@ -219,7 +218,7 @@ void ParticleSystem::DrawEditorUI()
 				for (Particle* p : _particles)
 				{
 					p->ToggleRandomDirection(randomDir);
-					RespawnParticles(p);
+					RespawnParticle(p, false);
 				}
 			}
 			if (ImGui::SliderAngle("Random direction range", &angleRange, 0))
@@ -228,7 +227,7 @@ void ParticleSystem::DrawEditorUI()
 				for (Particle* p : _particles)
 				{
 					p->SetAngleRange(angleRange);
-					RespawnParticles(p);
+					RespawnParticle(p, false);
 				}
 			}
 			oldRandomDir = randomDir;
@@ -242,7 +241,7 @@ void ParticleSystem::DrawEditorUI()
 			for (Particle* p : _particles)
 			{
 				p->SetSpeed(speed);
-				RespawnParticles(p);
+				RespawnParticle(p, false);
 			}
 		}
 
@@ -260,19 +259,25 @@ void ParticleSystem::DrawEditorUI()
 			}
 		}
 
-		//// sets whether or not particles will automatically respawn after 'dying'
-		//static bool canRespawn = _particles[0]->GetCanRespawn();
-		//if (ImGui::Checkbox("Auto respawn", &canRespawn))
-		//{
-		//	for (Particle* p : _particles)
-		//	{
-		//		p->SetCanRespawn(canRespawn);
-		//	}
-		//}
+		// start and stop buttons
+		if (ImGui::Button("Constant"))
+		{
+			StartConstant();
+		}
+		ImGui::SameLine();
+		if (ImGui::Button("Burst"))
+		{
+			Burst();
+		}
+		ImGui::SameLine();
+		if (ImGui::Button("Stop"))
+		{
+			Stop();
+		}
 	}
 }
 
-void ParticleSystem::CanRespawnParticles(bool toggle)
+void ParticleSystem::SetCanRespawnParticles(bool toggle)
 {
 	for (Particle* p : _particles)
 	{
@@ -292,39 +297,63 @@ void ParticleSystem::SetShader(string name)
 	_shaderID = _pShader->GetProgramID();
 }
 
-void ParticleSystem::RespawnParticles(Particle* p)
+/// <summary> resets the particle. if set to inactive will disable respawns and life to -1 </summary>
+void ParticleSystem::RespawnParticle(Particle* p, bool active)
 {
 	if (p->GetCanRespawn())
 	{
 		p->ResetParticle();
-		p->SetLife(-1.0f);
-		p->SetCanRespawn(false);
+		if (!active)
+		{
+			// set to disabled (life < 0 makes it not render + setting to not respawn makes it stay like that)
+			p->SetLife(-1.0f);
+			p->SetCanRespawn(false);
+		}
 	}
 }
 
-void ParticleSystem::Fire()
+void ParticleSystem::StartConstant()
 {
+	_creatingParticles = true;
+	for (Particle* p : _particles)
+	{
+		RespawnParticle(p, false);
+	}
+}
+
+void ParticleSystem::Burst()
+{
+	_creatingParticles = false;
+	SetActive(true);
+}
+
+void ParticleSystem::Stop()
+{
+	SetActive(false);
+}
+
+void ParticleSystem::SetActive(bool active)
+{
+	// set active, which enables or disables respawning
 	for (Particle* p : _particles)
 	{
 		p->ResetParticle();
+		p->SetCanRespawn(active);
+		if (!active)
+		{
+			p->SetLife(-1.0f);
+		}
 	}
 }
 
 void ParticleSystem::CreateParticles()
 {
-	_creatingParticles = true;
 	for (int i = 0; i < _maxParticles; i++)
 	{
 		// create new particle
 		Particle* p = new Particle(_particleLife, _particleColour, _pTexture, _pParentTransform);
 		// add to vector
 		_particles.push_back(p);
-		p->ResetParticle();
-		if (i > 0)
-		{
-			// set to disabled (life < 0 makes it not render + setting to not respawn makes it stay like that)
-			p->SetLife(-1.0f);
-			p->SetCanRespawn(false);
-		}
+		RespawnParticle(p, false);
 	}
 }
