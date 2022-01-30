@@ -18,6 +18,8 @@ public:
 	void SetPosition(glm::vec3 pos) { _cameraPos = pos; }
 	void SetCameraSpeed(float speed) { _cameraSpeed = speed; }
 	float GetCameraSpeed() const { return _cameraSpeed; }
+	float GetAspectRatio() const { return _aspectRatio; }
+	float GetZoomLevel() const { return _zoomLevel; }
 
 	void ProcessScrollMovement(float yOffset);
 
@@ -35,6 +37,8 @@ private:
 	float _rotation;
 
 	float _cameraSpeed = 10.0f;
+	float _aspectRatio;
+	float _zoomLevel;
 
 	glm::mat4 _projection;
 	glm::mat4 _view;

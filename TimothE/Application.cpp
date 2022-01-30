@@ -126,6 +126,8 @@ void Application::GameLoop()
 		//imgui update frame
 		ImGuiManager::ImGuiNewFrame();
 
+		_pTilemap->UpdateLogic(_pEditor->GetCamera());
+
 		//update editor if in editor mode
 		if (_mInEditorMode) {
 			_pEditor->_pEditorFramebuffer->BindFramebuffer();

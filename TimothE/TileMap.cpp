@@ -2,12 +2,10 @@
 #include "Renderer2D.h"
 
 //TODO: Size details
+//TODO: Add a system to change how many tiles per unit
 TileMap::TileMap()
 {
-	//TODO: Add a system to change how many tiles per unit
-
-
-	_mapDimensions = { 14.0f, 8.0f };
+	_mapDimensions = { 28.0f, 16.0f };
 	_mapSizeInScreenUnits = glm::vec2(_mapDimensions.x / _tilesPerUnit, _mapDimensions.y / _tilesPerUnit);
 	_tileSize = glm::vec2(128.0f);
 	_spritemapResolution = glm::vec2(2560.0f, 1664.0f);
@@ -15,8 +13,6 @@ TileMap::TileMap()
 
 	_xGapBetweenTiles = 1.0f / _tilesPerUnit;
 	_yGapBetweenTiles = 1.0f / _tilesPerUnit;
-
-	//CreateTileMap();
 
 	_tileScale = 1.0f / _tilesPerUnit;
 
@@ -77,56 +73,15 @@ void TileMap::DeleteAllLayers()
 {
 }
 
+void TileMap::UpdateLogic(Camera* cam)
+{
+	_currentTile = MousePosToTile(cam);
+	_currentTileIndex = _mapDimensions.x * (int)(_currentTile.y * 4) + (int)(_currentTile.x * 4);
+}
+
 void TileMap::AddTileAt(unsigned int layer, unsigned int x, unsigned int y, Camera* cam)
 {
-	glm::vec2 mousePos = Input::GetEditorMousePos();
-	std::cout << "Mouse Position: " << mousePos.x << ", " << mousePos.y << std::endl;
-
-	glm::vec2 camPos = { cam->Position().x, cam->Position().y };
-	camPos -= glm::vec2(1.78f, 1.0f);
-	
-
-	//Convert camera to pixel space
-	glm::vec2 cameraInPixels = { camPos.x * 960.0f, camPos.y * 540.0f };
-	std::cout << "Camera in pixels: " << cameraInPixels.x << ", " << cameraInPixels.y << std::endl;
-
-	//Transform camera position with the mouse position
-	glm::vec2 cameraConvertedToMouse = cameraInPixels + (mousePos);
-	std::cout << "Camera converted to mouse: " << cameraConvertedToMouse.x << ", " << cameraConvertedToMouse.y << std::endl;
-
-	//Convert these coordinates into tile coordinates
-	glm::vec2 convertedCoords = { cameraConvertedToMouse.x / 960.0f, cameraConvertedToMouse.y / 540.0f };
-	convertedCoords *= 4.0f;
-	std::cout << "Converted coords: " << convertedCoords.x << ", " << convertedCoords.y << std::endl;
-
-
-	//std::cout << "Mouse Pos in Screen Coordinates: " << mousePos.x << ", " << mousePos.y << std::endl;
-	//if (camPos.x < 0.0f)
-	//{
-	//	camPos.x = 0.0f;
-	//	mousePos.x = 0.0f;
-	//}
-	//else if (camPos.x > _mapSizeInScreenUnits.x) {
-	//	camPos.x = _mapSizeInScreenUnits.x;
-	//	mousePos.x = _mapSizeInScreenUnits.x;
-	//}
-	//
-	//if (camPos.y < 0.0f) {
-	//	camPos.y = 0.0f;
-	//	mousePos.y = 0.0f;
-	//}
-	//else if (camPos.y > _mapSizeInScreenUnits.y) {
-	//	camPos.y = _mapSizeInScreenUnits.y;
-	//	mousePos.y = _mapSizeInScreenUnits.y;
-	//}
-	//mousePos.x *= _tileScale;
-	//mousePos.y *= _tileScale;
-	//mousePos += (camPos - glm::vec2(1.78, 1.0f));
-	//std::cout << "Mouse Position: " << mousePos.x << ", " << mousePos.y << std::endl;
-	//std::cout << "Camera Position: " << camPos.x << ", " << camPos.y << std::endl;
-
-	glm::vec2 worldPos = convertedCoords;
-	std::cout << "World Position: (X: " << worldPos.x << " Y: " << worldPos.y << ")" << std::endl;
+	glm::vec2 worldPos = MousePosToTile(cam);
 
 	//int index = (int)(worldPos.y * (float)_tilesPerUnit) * _mapDimensions.y + (worldPos.x * (float)_tilesPerUnit);
 	int index = _mapDimensions.x * (int)(worldPos.y * 4) + (int)(worldPos.x * 4);
@@ -144,7 +99,6 @@ void TileMap::AddTileAt(unsigned int layer, unsigned int x, unsigned int y, Came
 	newTile.uvCoords[2] = glm::vec2(((x + 1) * _tileSize.x) / _spritemapResolution.x, ((y + 1) * _tileSize.y) / _spritemapResolution.y);
 	newTile.uvCoords[3] = glm::vec2((x * _tileSize.x) / _spritemapResolution.x, ((y + 1) * _tileSize.y) / _spritemapResolution.y);
 	_tiles[index] = newTile;
-
 }
 
 int TileMap::GetTileWidth() const
@@ -174,6 +128,102 @@ void TileMap::FillLayer(unsigned int layer, int tileIndex)
 glm::vec2 TileMap::GetTileSize() const
 {
 	return glm::vec2();
+}
+
+glm::vec2 TileMap::MousePosToTile(Camera* cam)
+{
+	//Get the mouse position in editor
+	glm::vec2 mousePos = Input::GetEditorMousePos();
+	//std::cout << "Mouse Position: " << mousePos.x << ", " << mousePos.y << std::endl;
+
+	glm::vec2 windowSize = { 960.0f, 540.0f };
+
+	//Get the camera's position and offset it by the camera aspect ratio (X) and zoom level (y)
+	glm::vec2 camPos = { cam->Position().x, cam->Position().y };
+	camPos -= glm::vec2(cam->GetAspectRatio(), cam->GetZoomLevel());
+
+	//Convert camera to pixel space
+	glm::vec2 cameraInPixels = camPos * windowSize;
+	//std::cout << "Camera in pixels: " << cameraInPixels.x << ", " << cameraInPixels.y << std::endl;
+
+	//Transform camera position with the mouse position
+	glm::vec2 cameraConvertedToMouse = cameraInPixels + mousePos;
+	//std::cout << "Camera converted to mouse: " << cameraConvertedToMouse.x << ", " << cameraConvertedToMouse.y << std::endl;
+
+	//Convert these coordinates into world space coordinates
+	glm::vec2 convertedCoords = cameraConvertedToMouse / windowSize;
+	//std::cout << "Converted coords in world space: " << convertedCoords.x << ", " << convertedCoords.y << std::endl;
+	//Convert into tile space
+	convertedCoords *= _tilesPerUnit / 2.0f;
+	//Offset the size of each tile
+	//convertedCoords -= _tileScale / 2.0f;
+
+	float lowerBoundX = floor(convertedCoords.x);
+	float lowerBoundY = floor(convertedCoords.y);
+
+	float remainingX = convertedCoords.x - lowerBoundX;
+	float remainingY = convertedCoords.y - lowerBoundY;
+
+	if (remainingX == 0.0f) {
+		convertedCoords.x = lowerBoundX;
+	}
+	else if (remainingX < 0.25f) {
+		convertedCoords.x = lowerBoundX + 0.25f;
+	}
+	else if (remainingX < 0.5f) {
+		convertedCoords.x = lowerBoundX + 0.5f;
+	}
+	else if (remainingX < 0.75f) {
+		convertedCoords.x = lowerBoundX + 0.75f;
+	}
+	else {
+		convertedCoords.x = lowerBoundX + 1.0f;
+	}
+
+	if (remainingY == 0.0f) {
+		convertedCoords.y = lowerBoundY;
+	}
+	else if (remainingY < 0.25f) {
+		convertedCoords.y = lowerBoundY + 0.25f;
+	}
+	else if (remainingY < 0.5f) {
+		convertedCoords.y = lowerBoundY + 0.5f;
+	}
+	else if (remainingY < 0.75f) {
+		convertedCoords.y = lowerBoundY + 0.75f;
+	}
+	else {
+		convertedCoords.y = lowerBoundY + 1.0f;
+	}
+
+	if (convertedCoords.x > _mapSizeInScreenUnits.x) convertedCoords.x = _mapSizeInScreenUnits.x;
+
+
+	//std::cout << "Converted coords: " << convertedCoords.x << ", " << convertedCoords.y << std::endl;
+
+	
+
+	//return convertedCoords;
+
+	glm::vec2 processedCam = camPos * windowSize;
+
+	glm::vec2 attempt2 = camPos + (mousePos / windowSize);
+	//attempt2 += camPos;
+	attempt2.x = attempt2.x;
+	attempt2.y = attempt2.y * (_tilesPerUnit / 2);
+
+	if (attempt2.x > _mapSizeInScreenUnits.x) {
+		std::cout << "Greater than the map X size" << std::endl;
+		attempt2.x = _mapSizeInScreenUnits.x  - _tileScale;
+	}
+	if (attempt2.y > _mapSizeInScreenUnits.y) {
+		std::cout << "Greater than the map Y size" << std::endl;
+		attempt2.y = _mapSizeInScreenUnits.y - _tileScale;
+		//attempt2.x -= _tileScale;
+	}
+
+	return attempt2;
+
 }
 
 void TileMap::SetTileSize(glm::vec2 tileSize)
@@ -213,6 +263,13 @@ void TileMap::RenderMap(Camera* cam)
 			}
 			//int index = (y * (float)_tilesPerUnit) * _mapDimensions.y + (x * (float)_tilesPerUnit);
 			int index = _mapDimensions.x * (int)(y * 4) + (int)(x * 4);
+
+			if (index == _currentTileIndex) {
+				Renderer2D::DrawQuad({ x,y }, { _tileScale, _tileScale }, ResourceManager::GetTexture("spritesheet"), _noTcCoords, 1.0f, glm::vec4(1.0f, 0.0f, 0.0f, 1.0f));
+				continue;
+			}
+			
+
 			if (_tiles[index].uvCoords == nullptr) {
 				Renderer2D::DrawQuad({ x,y }, { _tileScale, _tileScale }, ResourceManager::GetTexture("spritesheet"), _noTcCoords);
 				continue;

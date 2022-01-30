@@ -26,6 +26,7 @@ public:
 	void CreateTileMap();
 	void CreateNewLayer();
 	void DeleteAllLayers();
+	void UpdateLogic(Camera* cam);
 
 	void AddTileAt(unsigned int layer, unsigned int x, unsigned int y, Camera* cam);
 
@@ -38,6 +39,8 @@ public:
 
 	//Returns the hight and width of the tiles themselves
 	glm::vec2 GetTileSize() const;
+
+	glm::vec2 MousePosToTile(Camera* cam);
 
 	void SetTileSize(glm::vec2 tileSize);
 	void SetPosition(float x, float y);
@@ -66,6 +69,9 @@ private:
 	std::string _tileMapFile;
 	float _xGapBetweenTiles;
 	float _yGapBetweenTiles;
+
+	glm::vec2 _currentTile;
+	int _currentTileIndex;
 
 	std::vector<TileData> _tiles;
 

@@ -29,8 +29,6 @@ Editor::Editor(Application* pApp, Window* pWindow)
 	pContentTextureFile->Load("Icons/FileContent.png");
 	pContentTextureFolder->Load("Icons/FolderContent.png");
 
-
-
 	//Creates the screen shader for the framebuffer
 	_pScreenShader = new Shader("fbVert.vs", "fbFrag.fs");
 
@@ -77,10 +75,6 @@ void Editor::EditorImGui(Scene* currentScene)
 	ImGui::ShowDemoWindow();
 
 	static bool changeObject = false;
-
-
-
-	//ImGui::DockSpaceOverViewport(0, ImGuiDockNodeFlags_PassthruCentralNode);
 
 	{
 		if (ImGui::BeginMainMenuBar()) {
@@ -500,6 +494,8 @@ void Editor::EditorRender()
 		ImVec2(0, 1.0), ImVec2(1.0, 0));
 
 	_windowSize = ImGui::GetWindowSize();
+	if (_windowSize.y > _pWindow->GetHeight() / 2.0f) _windowSize.y = _pWindow->GetHeight() / 2.0f;
+
 	ImGui::End();
 
 	ConvertGameToEditorSpace();
