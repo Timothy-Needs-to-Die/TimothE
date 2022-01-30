@@ -34,7 +34,7 @@ void TileMap::CreateTileMap() {
 		std::cout << "Unable to open file" << _tileMapFile << std::endl;
 		return;
 	}
-	json root; 
+	json root;
 	file >> root;
 
 	_tileSize.x = root["TILE_WIDTH"];
@@ -84,7 +84,7 @@ void TileMap::AddTileAt(unsigned int layer, unsigned int x, unsigned int y, Came
 	glm::vec2 worldPos = MousePosToTile(cam);
 
 	int index = _mapDimensions.x * (int)(worldPos.y * 4) + (int)(worldPos.x * 4);
-	if(index < 0) index = 0;
+	if (index < 0) index = 0;
 	if (index > _mapDimensions.x * _mapDimensions.y) index = _mapDimensions.x * _mapDimensions.y;
 
 	TileData newTile;
@@ -130,56 +130,6 @@ glm::vec2 TileMap::GetTileSize() const
 
 glm::vec2 TileMap::MousePosToTile(Camera* cam)
 {
-	////Convert camera to pixel space
-	//glm::vec2 cameraInPixels = camPos * windowSize;
-	////std::cout << "Camera in pixels: " << cameraInPixels.x << ", " << cameraInPixels.y << std::endl;
-	////Transform camera position with the mouse position
-	//glm::vec2 cameraConvertedToMouse = cameraInPixels + mousePos;
-	////std::cout << "Camera converted to mouse: " << cameraConvertedToMouse.x << ", " << cameraConvertedToMouse.y << std::endl;
-	////Convert these coordinates into world space coordinates
-	//glm::vec2 convertedCoords = cameraConvertedToMouse / windowSize;
-	////std::cout << "Converted coords in world space: " << convertedCoords.x << ", " << convertedCoords.y << std::endl;
-	////Convert into tile space
-	//convertedCoords *= _tilesPerUnit / 2.0f;
-	////Offset the size of each tile
-	////convertedCoords -= _tileScale / 2.0f;
-	//float lowerBoundX = floor(convertedCoords.x);
-	//float lowerBoundY = floor(convertedCoords.y);
-	//float remainingX = convertedCoords.x - lowerBoundX;
-	//float remainingY = convertedCoords.y - lowerBoundY;
-	//if (remainingX == 0.0f) {
-	//	convertedCoords.x = lowerBoundX;
-	//}
-	//else if (remainingX < 0.25f) {
-	//	convertedCoords.x = lowerBoundX + 0.25f;
-	//}
-	//else if (remainingX < 0.5f) {
-	//	convertedCoords.x = lowerBoundX + 0.5f;
-	//}
-	//else if (remainingX < 0.75f) {
-	//	convertedCoords.x = lowerBoundX + 0.75f;
-	//}
-	//else {
-	//	convertedCoords.x = lowerBoundX + 1.0f;
-	//}
-	//if (remainingY == 0.0f) {
-	//	convertedCoords.y = lowerBoundY;
-	//}
-	//else if (remainingY < 0.25f) {
-	//	convertedCoords.y = lowerBoundY + 0.25f;
-	//}
-	//else if (remainingY < 0.5f) {
-	//	convertedCoords.y = lowerBoundY + 0.5f;
-	//}
-	//else if (remainingY < 0.75f) {
-	//	convertedCoords.y = lowerBoundY + 0.75f;
-	//}
-	//else {
-	//	convertedCoords.y = lowerBoundY + 1.0f;
-	//}
-	//if (convertedCoords.x > _mapSizeInScreenUnits.x) convertedCoords.x = _mapSizeInScreenUnits.x;
-	//std::cout << "Converted coords: " << convertedCoords.x << ", " << convertedCoords.y << std::endl;
-
 	//Get the mouse position in editor Range: (0 - 960, 0 - 540)
 	glm::vec2 mousePos = Input::GetEditorMousePos();
 	//std::cout << "Mouse Position: " << mousePos.x << ", " << mousePos.y << std::endl;
@@ -191,14 +141,38 @@ glm::vec2 TileMap::MousePosToTile(Camera* cam)
 	glm::vec2 camPos = cam->PositionXY();
 	camPos -= cam->Size();
 
-	
 	glm::vec2 attempt2 = (camPos / 2.0f) + (mousePos / windowSize);
-	attempt2.x = attempt2.x;
-	attempt2.y = attempt2.y * (_tilesPerUnit / 2);
+	attempt2.x = attempt2.x * (_tilesPerUnit / 2.0f);
+	if (mousePos.x < 120.0f) {
+		attempt2.x += _tileScale * 0.5f;
+	}
+	else if (mousePos.x < 240.0f) {
+		attempt2.x += _tileScale * 1.5f;
+	}
+	else if (mousePos.x < 360.0f) {
+		attempt2.x += _tileScale * 2.5f;
+	}
+	else if (mousePos.x < 480.0f) {
+		attempt2.x += _tileScale * 3.0f;
+	}
+	else if (mousePos.x < 600.0f) {
+		attempt2.x += _tileScale * 3.5f;
+	}
+	else if (mousePos.x < 720.0f) {
+		attempt2.x += _tileScale * 4.5f;
+	}
+	else if (mousePos.x < 840.0f) {
+		attempt2.x += _tileScale * 5.5f;
+	}
+	else
+	{
+		attempt2.x += _tileScale * 6.0f;
+	}
+	attempt2.y = attempt2.y * (_tilesPerUnit / 2.0f);
 
 	if (attempt2.x > _mapSizeInScreenUnits.x) {
 		//Puts tile on upmost index
-		attempt2.x = _mapSizeInScreenUnits.x  - _tileScale;
+		attempt2.x = _mapSizeInScreenUnits.x - _tileScale;
 	}
 	if (attempt2.y > _mapSizeInScreenUnits.y) {
 		//Puts tile on furthest right index
@@ -206,7 +180,6 @@ glm::vec2 TileMap::MousePosToTile(Camera* cam)
 	}
 
 	return attempt2;
-
 }
 
 void TileMap::SetTileSize(glm::vec2 tileSize)
@@ -239,7 +212,7 @@ void TileMap::RenderMap(Camera* cam)
 	float extents = 4.0f;
 	Renderer2D::BeginRender(cam);
 
-	for (float y = 0; y < _mapSizeInScreenUnits.y; y+= _yGapBetweenTiles) {
+	for (float y = 0; y < _mapSizeInScreenUnits.y; y += _yGapBetweenTiles) {
 		for (float x = 0; x < _mapSizeInScreenUnits.x; x += _xGapBetweenTiles) {
 			if (x < camPos.x - extents || x > camPos.x + extents || y < camPos.y - extents || y > camPos.y + extents) {
 				continue;
@@ -251,7 +224,7 @@ void TileMap::RenderMap(Camera* cam)
 				Renderer2D::DrawQuad({ x,y }, { _tileScale, _tileScale }, ResourceManager::GetTexture("spritesheet"), _noTcCoords, 1.0f, glm::vec4(1.0f, 0.0f, 0.0f, 1.0f));
 				continue;
 			}
-			
+
 
 			if (_tiles[index].uvCoords == nullptr) {
 				Renderer2D::DrawQuad({ x,y }, { _tileScale, _tileScale }, ResourceManager::GetTexture("spritesheet"), _noTcCoords);
