@@ -41,7 +41,8 @@ public:
 		Texture_Type = BIT(7),
 		Button_Type = BIT(8),
 		Text_Type = BIT(9),
-		ParticleSystem_Type = BIT(10)
+		ParticleSystem_Type = BIT(10),
+		TileMap_Type = BIT(11)
 	};
 
 	//enums for different catagories of components

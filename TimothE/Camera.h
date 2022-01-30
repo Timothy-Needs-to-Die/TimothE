@@ -15,21 +15,33 @@ public:
 	glm::mat4 ViewProj() { return _viewProj; }
 	glm::vec3 Position() { return _cameraPos; }
 
+	void SetPosition(glm::vec3 pos) { _cameraPos = pos; }
 	void SetCameraSpeed(float speed) { _cameraSpeed = speed; }
 	float GetCameraSpeed() const { return _cameraSpeed; }
+	float GetAspectRatio() const { return _aspectRatio; }
+	float GetZoomLevel() const { return _zoomLevel; }
 
 	void ProcessScrollMovement(float yOffset);
 
 	void RecalculateViewMatrix();
 
+	glm::vec2 PositionXY() const { return { _cameraPos.x, _cameraPos.y }; }
+	glm::vec2 Size() const { return { _aspectRatio, _zoomLevel }; }
+
+	void PrintInfo() {
+		std::cout << "Camera: " << _cameraPos.x << ", " << _cameraPos.y << ", " << _cameraPos.z << std::endl;
+	}
+
 private:
 	void PollInput(float dt);
 
 private:
-	glm::vec3 _cameraPos = glm::vec3(0.0f, 0.0f, -1.0f);
+	glm::vec3 _cameraPos;
 	float _rotation;
 
 	float _cameraSpeed = 10.0f;
+	float _aspectRatio;
+	float _zoomLevel;
 
 	glm::mat4 _projection;
 	glm::mat4 _view;

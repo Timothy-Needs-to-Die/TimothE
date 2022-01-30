@@ -7,7 +7,7 @@ Texture2D::Texture2D(GameObject* pParent) : Component(pParent), _ID(0)
 	_UID = UID::GenerateUID();
 	SetType(Component::Texture_Type);
 	SetCategory(Component::Graphics_Category);
-}
+} 
 
 Texture2D::Texture2D(std::string path) : Component(), _ID(0)
 {

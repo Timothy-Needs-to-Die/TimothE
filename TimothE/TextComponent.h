@@ -22,7 +22,9 @@ public:
 	void SetFont(std::string font);
 
 	void GetFontsInFile();
-	
+
+	void LoadFont();
+	void RenderText(Shader& s, std::string text, float x, float y, float _tileScale, glm::vec3 color);
 
 	void SetGameObject(GameObject* newparent) {
 		_parentObject = newparent;

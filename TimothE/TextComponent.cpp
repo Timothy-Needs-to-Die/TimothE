@@ -24,7 +24,7 @@ void TextComponent::DrawEditorUI()
 {
 	if (ImGui::CollapsingHeader("Text"))
 	{
-		
+
 		ImGui::InputText("TextInput", &_text);
 		//TODO: fix the size of the array so that it's dynamic with any fonts added to the font file
 		const char* items[13];
@@ -70,6 +70,7 @@ void TextComponent::SetFont(std::string font)
 }
 
 void TextComponent::GetFontsInFile()
+void TextComponent::RenderText(Shader& s, std::string text, float x = 0.0f, float y = 0.0f, float _tileScale = 1.0f, glm::vec3 color = { 1.0f, 1.0f, 1.0f })
 {
 	std::ofstream fileStream("./fonts");
 	_fonts.clear();
@@ -87,5 +88,34 @@ void TextComponent::GetFontsInFile()
 			}
 		}
 		closedir(directory);
+			newline++;
+			x = newlineXPos;
+			continue;
+		}
+		float xpos = x + ch._bearing.x * _tileScale;
+		float ypos = y - (ch._size.y - ch._bearing.y) * _tileScale - ((newlinePadding * _tileScale) * newline);
+
+		float w = ch._size.x * _tileScale;
+		float h = ch._size.y * _tileScale;
+		// update VBO for each character
+		float vertices[6][4] = {
+			{ xpos,     ypos + h,   0.0f, 0.0f },
+			{ xpos,     ypos,       0.0f, 1.0f },
+			{ xpos + w, ypos,       1.0f, 1.0f },
+
+			{ xpos,     ypos + h,   0.0f, 0.0f },
+			{ xpos + w, ypos,       1.0f, 1.0f },
+			{ xpos + w, ypos + h,   1.0f, 0.0f }
+		};
+		// render glyph texture over quad
+		glBindTexture(GL_TEXTURE_2D, ch._textureID);
+		// update content of VBO memory
+		glBindBuffer(GL_ARRAY_BUFFER, _VBO);
+		glBufferSubData(GL_ARRAY_BUFFER, 0, sizeof(vertices), vertices);
+		glBindBuffer(GL_ARRAY_BUFFER, 0);
+		// render quad
+		glDrawArrays(GL_TRIANGLES, 0, 6);
+		// now advance cursors for next glyph (note that advance is number of 1/64 pixels)
+		x += (ch._advance >> 6) * _tileScale; // bitshift by 6 to get value in pixels (2^6 = 64)
 	}
 }

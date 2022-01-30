@@ -4,11 +4,11 @@
 
 #include "Window.h"
 #include "ApplicationEvent.h"
-#include "Renderer.h"
 #include "Scene.h"
 #include "MemoryManager.h"
 
 #include "AudioEngine.h"
+#include "TileMap.h"
 
 class Editor;
 
@@ -30,7 +30,6 @@ protected:
 
 	void GameBeginRender();
 	void GameRender(Camera* cam);
-	void GameEndRender();
 	void GameUpdate(float dt);
 
 	void ImGUISwitchRender();
@@ -62,4 +61,6 @@ private:
 	bool _mGameRunning = false;
 
 	Camera* _pGameCamera;
+
+	TileMap* _pTilemap;
 };

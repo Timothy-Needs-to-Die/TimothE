@@ -9,6 +9,8 @@
 #include "Camera.h"
 #include "Console.h"
 #include "imgui.h"
+#include "TileMapEditor.h"
+
 
 class Application;
 
@@ -71,6 +73,8 @@ private:
 	Texture2D* pImGuiSample;
 
 	Application* _pApplication;
+
+	TileMapEditor* pTileMapEditor;
 
 	Texture2D* pContentTextureImage = new Texture2D(NULL);
 	Texture2D* pContentTextureScene = new Texture2D(NULL);

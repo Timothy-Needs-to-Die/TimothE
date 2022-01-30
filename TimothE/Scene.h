@@ -1,7 +1,7 @@
 #pragma once
 #include "pch.h"
 #include "GameObject.h"
-#include "Renderer.h"
+#include "Camera.h"
 
 class Scene
 {
@@ -22,7 +22,7 @@ public:
 	void EditorUpdate(float deltaTime);
 
 	void Update(float deltaTime);
-	void RenderScene(Renderer* pRenderer, Camera* cam);
+	void RenderScene(Camera* cam);
 	
 	GameObject* AddGameObject(GameObject* gameObject) { _listOfGameObjects.push_back(gameObject); return gameObject; }
 	void RemoveGameObject(GameObject* gameObject);
@@ -89,9 +89,7 @@ private:
 	//Stores the next id for the scene
 	static int nextID;
 
-	glm::vec2* _uvSpriteCoords;
-
-	//Stores a vector of gameobjects. This is refreshed everytime a scene loads.
+	//Stores a vector of game objects. This is refreshed every time a scene loads.
 	static std::vector<GameObject*> _listOfGameObjects;
 	static std::vector<GameObject*> _listOfDrawableGameObjects;
 };

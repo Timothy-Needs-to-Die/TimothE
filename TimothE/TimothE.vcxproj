@@ -118,7 +118,6 @@
     <ClInclude Include="RBO.h" />
     <ClInclude Include="Particle.h" />
     <ClInclude Include="ParticleSystem.h" />
-    <ClInclude Include="Renderer.h" />
     <ClInclude Include="Renderer2D.h" />
     <ClInclude Include="ResourceManager.h" />
     <ClInclude Include="SOIL\SOIL2.h" />
@@ -144,9 +143,13 @@
     <ClInclude Include="SpriteComponent.h" />
     <ClInclude Include="Stream.h" />
     <ClInclude Include="StreamFile.h" />
+    <ClInclude Include="SubTexture2D.h" />
     <ClInclude Include="TestComponent.h" />
     <ClInclude Include="TextComponent.h" />
     <ClInclude Include="Texture2D.h" />
+    <ClInclude Include="TileMap.h" />
+    <ClInclude Include="TileMapEditor.h" />
+    <ClInclude Include="TileMapManager.h" />
     <ClInclude Include="TimothEInputCodes.h" />
     <ClInclude Include="Transform.h" />
     <ClInclude Include="UID.h" />
@@ -182,7 +185,6 @@
     <ClCompile Include="RBO.cpp" />
     <ClCompile Include="Particle.cpp" />
     <ClCompile Include="ParticleSystem.cpp" />
-    <ClCompile Include="Renderer.cpp" />
     <ClCompile Include="Renderer2D.cpp" />
     <ClCompile Include="ResourceManager.cpp" />
     <ClCompile Include="Scene.cpp" />
@@ -191,9 +193,13 @@
     <ClCompile Include="SpriteComponent.cpp" />
     <ClCompile Include="StreamFile.cpp" />
     <ClCompile Include="StreamHelpers.cpp" />
+    <ClCompile Include="SubTexture2D.cpp" />
     <ClCompile Include="TestComponent.cpp" />
     <ClCompile Include="TextComponent.cpp" />
     <ClCompile Include="Texture2D.cpp" />
+    <ClCompile Include="TileMap.cpp" />
+    <ClCompile Include="TileMapEditor.cpp" />
+    <ClCompile Include="TileMapManager.cpp" />
     <ClCompile Include="Transform.cpp" />
     <ClCompile Include="VAO.cpp" />
     <ClCompile Include="VBO.cpp" />

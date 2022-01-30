@@ -191,25 +191,13 @@ void AudioEngine::SetGroupPitch(FMOD::ChannelGroup* group, float value) {
 	CheckForErrors(result);
 }
 
-
-
 // ================================================================================ //
 
 // ============================== Core Functionality ============================== // 
 //CreateAndLoad loads a sound file into memory and populates the '_sounds' map with the sound data
 //Loading sounds into memory is ideal for most ingame sounds as they will be used multiple times
 //void AudioEngine::Load(AudioType type, const char* filePath)
-//{
-//	//Ensure the correct sound is being loaded
-//	//if (_sounds[type].find(filePath) != _sounds[type].end()) return;
-//
-//	FMOD::Sound* soundToLoad;
-//	FMOD_RESULT result = _fmodSystem->createSound(filePath, FMOD_DEFAULT, 0, &soundToLoad);
-//	CheckForErrors(result);
-//	
-//	_sounds[type].insert(std::make_pair(filePath, soundToLoad));
-//	std::cout << "Sountrack loaded from path: " << filePath << std::endl;
-//}
+
 
 SoundStruct AudioEngine::LoadSound(const char* name, const char* filePath, AudioType type)
 {
@@ -243,22 +231,11 @@ FMOD::Sound* AudioEngine::CreateAudioStream( const char* filePath)
 }
 
 
-
-////This play sound method is useful for simple one shot sounds that do not need any modification 
-//void AudioEngine::PlaySFX(FMOD::Sound* sound)
-//{
-//	FMOD_RESULT result = _fmodSystem->playSound(sound, NULL, false, 0);
-//	CheckForErrors(result);
-//}
-
 //Play sound effects
 //Pass in values for min and max pitch to allow for slight variations in pitch for repeating sounds (footsteps, attacks etc)
 void AudioEngine::PlaySFX(SoundStruct sound, float minVolume, float maxVolume, float minPitch, float maxPitch)
 {
-  //check that the SFX exists, returns if not found
-	/*SoundMap::iterator sound = _sounds[Type_SFX].find(path);
-	if (sound == _sounds[Type_SFX].end()) return;*/
-
+  
 	//Calculate random value between pitch in the desired range
 	float volume = RandomBetween(minVolume, maxVolume);
 	float pitch = RandomBetween(minPitch, maxPitch);
@@ -276,21 +253,6 @@ void AudioEngine::PlaySFX(SoundStruct sound, float minVolume, float maxVolume, f
 
 void AudioEngine::PlaySong(SoundStruct sound)
 {
-	
-	////Ignore if the song is allready playing
-	//if (_currentSongPath == filePath) return;
-	//
-	////If a song is playing, stop this song and set the next song 
-	//if (_currentSongChannel != 0) {
-	//	StopSongs();
-	//	_nextSongPath = filePath;
-	//	return;
-	//}
-	////Find the correct song in the corresponding sound map : REPLACE WITH RESOURCE MANAGER IMPLEMENTATION
-	//SoundMap::iterator songToPlay = _sounds[Type_Song].find(filePath);
-
-
-	/*if (songToPlay == _sounds[Type_Song].end()) return;*/
 
 	//Start playing song with volume set to 0 then fade in 
 	_currentSongPath = sound.filePath;

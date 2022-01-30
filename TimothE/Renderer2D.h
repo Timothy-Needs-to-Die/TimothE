@@ -20,6 +20,7 @@ public:
 
 	//Draw Quads
 	static void DrawQuad(const glm::vec2& position, const glm::vec2& size, const glm::vec4& color);
+
 	static void DrawQuad(const glm::vec3& position, const glm::vec2& size, const glm::vec4& color);
 	static void DrawQuad(const glm::vec2& position, const glm::vec2& size, Texture2D* texture, glm::vec2* uvCoordinates = nullptr, float tilingFactor = 1.0f,  glm::vec4& tintColor = glm::vec4(1.0f));
 	static void DrawQuad(const glm::vec3& position, const glm::vec2& size, Texture2D* texture, glm::vec2* uvCoordinates = nullptr, float tilingFactor = 1.0f,  glm::vec4& tintColor = glm::vec4(1.0f));

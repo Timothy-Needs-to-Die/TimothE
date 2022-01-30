@@ -3942,13 +3942,13 @@ static void TranslateWindow(ImGuiWindow* window, const ImVec2& delta)
     window->DC.CursorMaxPos += delta;
 }
 
-static void ScaleWindow(ImGuiWindow* window, float scale)
+static void ScaleWindow(ImGuiWindow* window, float _tileScale)
 {
     ImVec2 origin = window->Viewport->Pos;
-    window->Pos = ImFloor((window->Pos - origin) * scale + origin);
-    window->Size = ImFloor(window->Size * scale);
-    window->SizeFull = ImFloor(window->SizeFull * scale);
-    window->ContentSize = ImFloor(window->ContentSize * scale);
+    window->Pos = ImFloor((window->Pos - origin) * _tileScale + origin);
+    window->Size = ImFloor(window->Size * _tileScale);
+    window->SizeFull = ImFloor(window->SizeFull * _tileScale);
+    window->ContentSize = ImFloor(window->ContentSize * _tileScale);
 }
 
 static bool IsWindowActiveAndVisible(ImGuiWindow* window)
@@ -4114,14 +4114,14 @@ void ImGui::UpdateMouseWheel()
     {
         StartLockWheelingWindow(window);
         const float new_font_scale = ImClamp(window->FontWindowScale + g.IO.MouseWheel * 0.10f, 0.50f, 2.50f);
-        const float scale = new_font_scale / window->FontWindowScale;
+        const float _tileScale = new_font_scale / window->FontWindowScale;
         window->FontWindowScale = new_font_scale;
         if (window == window->RootWindow)
         {
-            const ImVec2 offset = window->Size * (1.0f - scale) * (g.IO.MousePos - window->Pos) / window->Size;
+            const ImVec2 offset = window->Size * (1.0f - _tileScale) * (g.IO.MousePos - window->Pos) / window->Size;
             SetWindowPos(window, window->Pos + offset, 0);
-            window->Size = ImFloor(window->Size * scale);
-            window->SizeFull = ImFloor(window->SizeFull * scale);
+            window->Size = ImFloor(window->Size * _tileScale);
+            window->SizeFull = ImFloor(window->SizeFull * _tileScale);
         }
         return;
     }
@@ -5025,9 +5025,9 @@ void ImGui::Render()
         // (note we scale cursor by current viewport/monitor, however Windows 10 for its own hardware cursor seems to be using a different scale factor)
         if (mouse_cursor_size.x > 0.0f && mouse_cursor_size.y > 0.0f && first_render_of_frame)
         {
-            float scale = g.Style.MouseCursorScale * viewport->DpiScale;
-            if (viewport->GetMainRect().Overlaps(ImRect(g.IO.MousePos, g.IO.MousePos + ImVec2(mouse_cursor_size.x + 2, mouse_cursor_size.y + 2) * scale)))
-                RenderMouseCursor(GetForegroundDrawList(viewport), g.IO.MousePos, scale, g.MouseCursor, IM_COL32_WHITE, IM_COL32_BLACK, IM_COL32(0, 0, 0, 48));
+            float _tileScale = g.Style.MouseCursorScale * viewport->DpiScale;
+            if (viewport->GetMainRect().Overlaps(ImRect(g.IO.MousePos, g.IO.MousePos + ImVec2(mouse_cursor_size.x + 2, mouse_cursor_size.y + 2) * _tileScale)))
+                RenderMouseCursor(GetForegroundDrawList(viewport), g.IO.MousePos, _tileScale, g.MouseCursor, IM_COL32_WHITE, IM_COL32_BLACK, IM_COL32(0, 0, 0, 48));
         }
 
         // Add foreground ImDrawList (for each active viewport)
@@ -7761,12 +7761,12 @@ ImVec2 ImGui::GetFontTexUvWhitePixel()
     return GImGui->DrawListSharedData.TexUvWhitePixel;
 }
 
-void ImGui::SetWindowFontScale(float scale)
+void ImGui::SetWindowFontScale(float _tileScale)
 {
-    IM_ASSERT(scale > 0.0f);
+    IM_ASSERT(_tileScale > 0.0f);
     ImGuiContext& g = *GImGui;
     ImGuiWindow* window = GetCurrentWindow();
-    window->FontWindowScale = scale;
+    window->FontWindowScale = _tileScale;
     g.FontSize = g.DrawListSharedData.FontSize = window->CalcFontSize();
 }
 
@@ -12320,18 +12320,18 @@ void ImGui::TranslateWindowsInViewport(ImGuiViewportP* viewport, const ImVec2& o
 }
 
 // Scale all windows (position, size). Use when e.g. changing DPI. (This is a lossy operation!)
-void ImGui::ScaleWindowsInViewport(ImGuiViewportP* viewport, float scale)
+void ImGui::ScaleWindowsInViewport(ImGuiViewportP* viewport, float _tileScale)
 {
     ImGuiContext& g = *GImGui;
     if (viewport->Window)
     {
-        ScaleWindow(viewport->Window, scale);
+        ScaleWindow(viewport->Window, _tileScale);
     }
     else
     {
         for (int i = 0; i != g.Windows.Size; i++)
             if (g.Windows[i]->Viewport == viewport)
-                ScaleWindow(g.Windows[i], scale);
+                ScaleWindow(g.Windows[i], _tileScale);
     }
 }
 
@@ -17160,8 +17160,8 @@ void ImGui::DebugRenderViewportThumbnail(ImDrawList* draw_list, ImGuiViewportP* 
     ImGuiContext& g = *GImGui;
     ImGuiWindow* window = g.CurrentWindow;
 
-    ImVec2 scale = bb.GetSize() / viewport->Size;
-    ImVec2 off = bb.Min - viewport->Pos * scale;
+    ImVec2 _tileScale = bb.GetSize() / viewport->Size;
+    ImVec2 off = bb.Min - viewport->Pos * _tileScale;
     float alpha_mul = (viewport->Flags & ImGuiViewportFlags_Minimized) ? 0.30f : 1.00f;
     window->DrawList->AddRectFilled(bb.Min, bb.Max, ImGui::GetColorU32(ImGuiCol_Border, alpha_mul * 0.40f));
     for (int i = 0; i != g.Windows.Size; i++)
@@ -17174,8 +17174,8 @@ void ImGui::DebugRenderViewportThumbnail(ImDrawList* draw_list, ImGuiViewportP* 
 
         ImRect thumb_r = thumb_window->Rect();
         ImRect title_r = thumb_window->TitleBarRect();
-        thumb_r = ImRect(ImFloor(off + thumb_r.Min * scale), ImFloor(off +  thumb_r.Max * scale));
-        title_r = ImRect(ImFloor(off + title_r.Min * scale), ImFloor(off +  ImVec2(title_r.Max.x, title_r.Min.y) * scale) + ImVec2(0,5)); // Exaggerate title bar height
+        thumb_r = ImRect(ImFloor(off + thumb_r.Min * _tileScale), ImFloor(off +  thumb_r.Max * _tileScale));
+        title_r = ImRect(ImFloor(off + title_r.Min * _tileScale), ImFloor(off +  ImVec2(title_r.Max.x, title_r.Min.y) * _tileScale) + ImVec2(0,5)); // Exaggerate title bar height
         thumb_r.ClipWithFull(bb);
         title_r.ClipWithFull(bb);
         const bool window_is_focused = (g.NavWindow && thumb_window->RootWindowForTitleBarHighlight == g.NavWindow->RootWindowForTitleBarHighlight);
