@@ -83,10 +83,8 @@ void TileMap::AddTileAt(unsigned int layer, unsigned int x, unsigned int y, Came
 {
 	glm::vec2 worldPos = MousePosToTile(cam);
 
-	//int index = (int)(worldPos.y * (float)_tilesPerUnit) * _mapDimensions.y + (worldPos.x * (float)_tilesPerUnit);
 	int index = _mapDimensions.x * (int)(worldPos.y * 4) + (int)(worldPos.x * 4);
 	if(index < 0) index = 0;
-	std::cout << "Index: " << index << std::endl;
 	if (index > _mapDimensions.x * _mapDimensions.y) index = _mapDimensions.x * _mapDimensions.y;
 
 	TileData newTile;
@@ -132,94 +130,79 @@ glm::vec2 TileMap::GetTileSize() const
 
 glm::vec2 TileMap::MousePosToTile(Camera* cam)
 {
-	//Get the mouse position in editor
+	////Convert camera to pixel space
+	//glm::vec2 cameraInPixels = camPos * windowSize;
+	////std::cout << "Camera in pixels: " << cameraInPixels.x << ", " << cameraInPixels.y << std::endl;
+	////Transform camera position with the mouse position
+	//glm::vec2 cameraConvertedToMouse = cameraInPixels + mousePos;
+	////std::cout << "Camera converted to mouse: " << cameraConvertedToMouse.x << ", " << cameraConvertedToMouse.y << std::endl;
+	////Convert these coordinates into world space coordinates
+	//glm::vec2 convertedCoords = cameraConvertedToMouse / windowSize;
+	////std::cout << "Converted coords in world space: " << convertedCoords.x << ", " << convertedCoords.y << std::endl;
+	////Convert into tile space
+	//convertedCoords *= _tilesPerUnit / 2.0f;
+	////Offset the size of each tile
+	////convertedCoords -= _tileScale / 2.0f;
+	//float lowerBoundX = floor(convertedCoords.x);
+	//float lowerBoundY = floor(convertedCoords.y);
+	//float remainingX = convertedCoords.x - lowerBoundX;
+	//float remainingY = convertedCoords.y - lowerBoundY;
+	//if (remainingX == 0.0f) {
+	//	convertedCoords.x = lowerBoundX;
+	//}
+	//else if (remainingX < 0.25f) {
+	//	convertedCoords.x = lowerBoundX + 0.25f;
+	//}
+	//else if (remainingX < 0.5f) {
+	//	convertedCoords.x = lowerBoundX + 0.5f;
+	//}
+	//else if (remainingX < 0.75f) {
+	//	convertedCoords.x = lowerBoundX + 0.75f;
+	//}
+	//else {
+	//	convertedCoords.x = lowerBoundX + 1.0f;
+	//}
+	//if (remainingY == 0.0f) {
+	//	convertedCoords.y = lowerBoundY;
+	//}
+	//else if (remainingY < 0.25f) {
+	//	convertedCoords.y = lowerBoundY + 0.25f;
+	//}
+	//else if (remainingY < 0.5f) {
+	//	convertedCoords.y = lowerBoundY + 0.5f;
+	//}
+	//else if (remainingY < 0.75f) {
+	//	convertedCoords.y = lowerBoundY + 0.75f;
+	//}
+	//else {
+	//	convertedCoords.y = lowerBoundY + 1.0f;
+	//}
+	//if (convertedCoords.x > _mapSizeInScreenUnits.x) convertedCoords.x = _mapSizeInScreenUnits.x;
+	//std::cout << "Converted coords: " << convertedCoords.x << ", " << convertedCoords.y << std::endl;
+
+	//Get the mouse position in editor Range: (0 - 960, 0 - 540)
 	glm::vec2 mousePos = Input::GetEditorMousePos();
 	//std::cout << "Mouse Position: " << mousePos.x << ", " << mousePos.y << std::endl;
 
+	//size of the editor window
 	glm::vec2 windowSize = { 960.0f, 540.0f };
 
-	//Get the camera's position and offset it by the camera aspect ratio (X) and zoom level (y)
-	glm::vec2 camPos = { cam->Position().x, cam->Position().y };
-	camPos -= glm::vec2(cam->GetAspectRatio(), cam->GetZoomLevel());
-
-	//Convert camera to pixel space
-	glm::vec2 cameraInPixels = camPos * windowSize;
-	//std::cout << "Camera in pixels: " << cameraInPixels.x << ", " << cameraInPixels.y << std::endl;
-
-	//Transform camera position with the mouse position
-	glm::vec2 cameraConvertedToMouse = cameraInPixels + mousePos;
-	//std::cout << "Camera converted to mouse: " << cameraConvertedToMouse.x << ", " << cameraConvertedToMouse.y << std::endl;
-
-	//Convert these coordinates into world space coordinates
-	glm::vec2 convertedCoords = cameraConvertedToMouse / windowSize;
-	//std::cout << "Converted coords in world space: " << convertedCoords.x << ", " << convertedCoords.y << std::endl;
-	//Convert into tile space
-	convertedCoords *= _tilesPerUnit / 2.0f;
-	//Offset the size of each tile
-	//convertedCoords -= _tileScale / 2.0f;
-
-	float lowerBoundX = floor(convertedCoords.x);
-	float lowerBoundY = floor(convertedCoords.y);
-
-	float remainingX = convertedCoords.x - lowerBoundX;
-	float remainingY = convertedCoords.y - lowerBoundY;
-
-	if (remainingX == 0.0f) {
-		convertedCoords.x = lowerBoundX;
-	}
-	else if (remainingX < 0.25f) {
-		convertedCoords.x = lowerBoundX + 0.25f;
-	}
-	else if (remainingX < 0.5f) {
-		convertedCoords.x = lowerBoundX + 0.5f;
-	}
-	else if (remainingX < 0.75f) {
-		convertedCoords.x = lowerBoundX + 0.75f;
-	}
-	else {
-		convertedCoords.x = lowerBoundX + 1.0f;
-	}
-
-	if (remainingY == 0.0f) {
-		convertedCoords.y = lowerBoundY;
-	}
-	else if (remainingY < 0.25f) {
-		convertedCoords.y = lowerBoundY + 0.25f;
-	}
-	else if (remainingY < 0.5f) {
-		convertedCoords.y = lowerBoundY + 0.5f;
-	}
-	else if (remainingY < 0.75f) {
-		convertedCoords.y = lowerBoundY + 0.75f;
-	}
-	else {
-		convertedCoords.y = lowerBoundY + 1.0f;
-	}
-
-	if (convertedCoords.x > _mapSizeInScreenUnits.x) convertedCoords.x = _mapSizeInScreenUnits.x;
-
-
-	//std::cout << "Converted coords: " << convertedCoords.x << ", " << convertedCoords.y << std::endl;
+	//Get the camera's position and offset it by the camera's size
+	glm::vec2 camPos = cam->PositionXY();
+	camPos -= cam->Size();
 
 	
-
-	//return convertedCoords;
-
-	glm::vec2 processedCam = camPos * windowSize;
-
-	glm::vec2 attempt2 = camPos + (mousePos / windowSize);
-	//attempt2 += camPos;
+	glm::vec2 attempt2 = (camPos / 2.0f) + (mousePos / windowSize);
 	attempt2.x = attempt2.x;
 	attempt2.y = attempt2.y * (_tilesPerUnit / 2);
 
 	if (attempt2.x > _mapSizeInScreenUnits.x) {
-		std::cout << "Greater than the map X size" << std::endl;
+		//Puts tile on upmost index
 		attempt2.x = _mapSizeInScreenUnits.x  - _tileScale;
 	}
 	if (attempt2.y > _mapSizeInScreenUnits.y) {
-		std::cout << "Greater than the map Y size" << std::endl;
+		//Puts tile on furthest right index
 		attempt2.y = _mapSizeInScreenUnits.y - _tileScale;
-		//attempt2.x -= _tileScale;
 	}
 
 	return attempt2;

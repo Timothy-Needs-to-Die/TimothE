@@ -25,6 +25,9 @@ public:
 
 	void RecalculateViewMatrix();
 
+	glm::vec2 PositionXY() const { return { _cameraPos.x, _cameraPos.y }; }
+	glm::vec2 Size() const { return { _aspectRatio, _zoomLevel }; }
+
 	void PrintInfo() {
 		std::cout << "Camera: " << _cameraPos.x << ", " << _cameraPos.y << ", " << _cameraPos.z << std::endl;
 	}
