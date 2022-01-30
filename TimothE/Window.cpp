@@ -3,9 +3,8 @@
 
 #include <iostream>
 
-Window::Window(unsigned int width, unsigned int height, const char* name)
+void Window::Init(unsigned int width, unsigned int height, const char* name)
 {
-	//Sets the window data struct
 	_windowData._width = width;
 	_windowData._height = height;
 	_windowData._title = name;
@@ -143,3 +142,7 @@ void Window::SwapBuffers()
 {
 	glfwSwapBuffers(_pWindow);
 }
+
+GLFWwindow* Window::_pWindow;
+
+Window::WindowData Window::_windowData;

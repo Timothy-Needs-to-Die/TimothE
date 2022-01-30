@@ -49,8 +49,6 @@ private:
 
 	Renderer* _pRenderer;
 
-	Window* _pWindow;
-
 	bool _mInEditorMode = true;
 	bool _mDevMode;
 

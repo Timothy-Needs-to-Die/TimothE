@@ -17,8 +17,8 @@ std::vector<std::string> _mDirectoryList;
 
 std::vector<std::string> Console::output = std::vector<std::string>();
 
-Editor::Editor(Application* pApp, Window* pWindow)
-	: _pWindow(pWindow), _pApplication(pApp)
+Editor::Editor(Application* pApp)
+	:  _pApplication(pApp)
 {
 	//icon textures
 	pContentTextureScript->Load("Icons/ScriptContent.png");
@@ -35,10 +35,10 @@ Editor::Editor(Application* pApp, Window* pWindow)
 	_pScreenShader = new Shader("fbVert.vs", "fbFrag.fs");
 
 	//Creates the editor framebuffer
-	_pEditorFramebuffer = new Framebuffer(_pWindow, _pScreenShader);
+	_pEditorFramebuffer = new Framebuffer(_pScreenShader);
 
 
-	float aspectRatio = pWindow->GetWidth() / pWindow->GetHeight();
+	float aspectRatio = Window::GetAspectRatio();
 	float zoomLevel = 1.0f;
 
 	float left = -aspectRatio * zoomLevel;
@@ -73,10 +73,6 @@ void Editor::EditorImGui(Scene* currentScene)
 	ImGui::ShowDemoWindow();
 
 	static bool changeObject = false;
-
-
-
-	//ImGui::DockSpaceOverViewport(0, ImGuiDockNodeFlags_PassthruCentralNode);
 
 	{
 		if (ImGui::BeginMainMenuBar()) {
@@ -513,7 +509,7 @@ void Editor::EditorRender()
 	ImGui::GetWindowDrawList()->AddImage(
 		(void*)_pEditorFramebuffer->GetTexture(),
 		_windowPos,
-		ImVec2(_windowPos.x + _pWindow->GetWidth() / 2.0f, _windowPos.y + _pWindow->GetHeight() / 2.0f),
+		ImVec2(_windowPos.x + Window::GetWidth() / 2.0f, _windowPos.y + Window::GetHeight() / 2.0f),
 		ImVec2(0, 1.0), ImVec2(1.0, 0));
 
 	_windowSize = ImGui::GetWindowSize();
@@ -524,7 +520,7 @@ void Editor::EditorRender()
 
 void Editor::EditorEndRender()
 {
-	_pWindow->SwapBuffers();
+	Window::SwapBuffers();
 }
 
 void Editor::ConvertGameToEditorSpace()

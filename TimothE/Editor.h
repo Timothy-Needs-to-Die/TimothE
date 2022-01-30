@@ -17,7 +17,7 @@ class Application;
 class Editor
 {
 public:
-	Editor(Application* pApp, Window* pWindow);
+	Editor(Application* pApp);
 	~Editor();
 
 	//Runs through the editor loop
@@ -49,8 +49,6 @@ private:
 
 	//Editor update loop
 	void EditorUpdate(Scene* currentScene, float dt);
-
-	Window* _pWindow;
 
 	Shader* _pScreenShader;
 	char* _pNotesBuffer;

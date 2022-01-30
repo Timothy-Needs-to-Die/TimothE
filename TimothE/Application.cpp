@@ -43,10 +43,10 @@ void Application::Init(bool devMode)
 	glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 3);
 	glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 3);
 
-	_pWindow = new Window(1920, 1080, "ThymeoWthE");
+	Window::Init(1920, 1080, "ThymeoWthE");
 
-	_pWindow->SetEventCallback(BIND_EVENT_FN(OnGameEvent));
-	_pWindow->CreateWindow();
+	Window::SetEventCallback(BIND_EVENT_FN(OnGameEvent));
+	Window::CreateWindow();
 
 	//checks glew initialises
 	GLint GlewInitResult = glewInit();
@@ -61,7 +61,7 @@ void Application::Init(bool devMode)
 	glDebugMessageCallback(MessageCallback, 0);
 
 	if (_mDevMode) {
-		ImGuiManager::CreateImGuiContext(_pWindow->GetGLFWWindow());
+		ImGuiManager::CreateImGuiContext(Window::GetGLFWWindow());
 	}
 
 	//initialises resource manager
@@ -71,10 +71,10 @@ void Application::Init(bool devMode)
 
 	//initialises editor with scene
 	_pCurrentScene = new Scene("Test scene");
-	_pEditor = new Editor(this, _pWindow);
+	_pEditor = new Editor(this);
 	_mRunning = true;
 
-	float aspectRatio = _pWindow->GetWidth() / _pWindow->GetHeight();
+	float aspectRatio = Window::GetAspectRatio();
 	float zoomLevel = 1.0f;
 	float left = -aspectRatio * zoomLevel;
 	float right = aspectRatio * zoomLevel;
@@ -157,7 +157,7 @@ void Application::GameLoop()
 		}
 		ImGuiManager::ImGuiEndFrame();
 
-		_pWindow->SwapBuffers();
+		Window::SwapBuffers();
 
 		previousTime = currentTime;
 	}
@@ -168,7 +168,7 @@ void Application::GameLoop()
 	//delete 
 	ImGuiManager::DestroyImGui();
 	delete _pEditor;
-	_pWindow->DestroyWindow();
+	Window::DestroyWindow();
 
 	//Prints the memory status and reports and memory leaks
 	HeapManager::ReportMemoryLeaks(memBookmark);
@@ -205,7 +205,7 @@ void Application::PollInput()
 //clears and adds background
 void Application::GameBeginRender()
 {
-	_pWindow->SetWindowColour(0.3f, 1.0f, 0.0f, 1.0f);
+	Window::SetWindowColour(0.3f, 1.0f, 0.0f, 1.0f);
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 }
 
@@ -218,7 +218,7 @@ void Application::GameRender(Camera* cam)
 //ends game render
 void Application::GameEndRender()
 {
-	_pWindow->SwapBuffers();
+	Window::SwapBuffers();
 }
 
 //updates game scene
@@ -310,7 +310,7 @@ bool Application::OnGameWindowMouseMovedEvent(MouseMovedEvent& e)
 {
 	float mouseY = e.GetY();
 
-	mouseY = _pWindow->GetHeight() - mouseY;
+	mouseY = Window::GetHeight() - mouseY;
 
 	Input::SetMousePosition(e.GetX(), mouseY);
 	return false;
