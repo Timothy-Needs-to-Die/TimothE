@@ -16,12 +16,12 @@ public:
 	static void Init(unsigned int width, unsigned int height, const char* name);
 
 	//Gets the GLFWwindow associated with this Window class
-	static GLFWwindow* GetGLFWWindow() { return _pWindow; }
+	static GLFWwindow* GetGLFWWindow();
 
-	static glm::vec2 GetWindowSize() { glm::vec2(_windowData._width, _windowData._height); }
-	static glm::vec2 GetHalfWindowSize() { glm::vec2(_windowData._width / 2.0f, _windowData._height / 2.0f); }
+	static glm::vec2 GetWindowSize();
+	static glm::vec2 GetHalfWindowSize();
 
-	static float GetAspectRatio() {return  _windowData._width / _windowData._height; }
+	static float GetAspectRatio();
 
 	//Sets an event callback for the window
 	static void SetEventCallback(const EventCallbackFn& callback);
@@ -38,8 +38,8 @@ public:
 	//Swaps the front and back buffers of the window
 	static void SwapBuffers();
 
-	static float GetHeight() { return _windowData._height; }
-	static float GetWidth() { return _windowData._width; }
+	static float GetHeight();
+	static float GetWidth();
 private:
 
 

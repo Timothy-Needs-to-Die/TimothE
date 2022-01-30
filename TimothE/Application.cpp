@@ -223,13 +223,6 @@ void Application::GameRender(Camera* cam)
 	_pCurrentScene->RenderScene(cam);
 }
 
-//ends game render
-void Application::GameEndRender()
-{
-	Window::SwapBuffers();
-
-}
-
 //updates game scene
 void Application::GameUpdate(float dt)
 {

@@ -5,9 +5,30 @@
 
 void Window::Init(unsigned int width, unsigned int height, const char* name)
 {
+	_windowData = WindowData();
 	_windowData._width = width;
 	_windowData._height = height;
 	_windowData._title = name;
+}
+
+GLFWwindow* Window::GetGLFWWindow()
+{
+	return _pWindow;
+}
+
+glm::vec2 Window::GetWindowSize()
+{
+	return glm::vec2(_windowData._width, _windowData._height);
+}
+
+glm::vec2 Window::GetHalfWindowSize()
+{
+	return glm::vec2(_windowData._width / 2.0f, _windowData._height / 2.0f);
+}
+
+float Window::GetAspectRatio()
+{
+	return  (float)_windowData._width / (float)_windowData._height;
 }
 
 //Sets an event callback for the window
@@ -141,6 +162,16 @@ void Window::CreateWindow()
 void Window::SwapBuffers()
 {
 	glfwSwapBuffers(_pWindow);
+}
+
+float Window::GetHeight()
+{
+	return _windowData._height;
+}
+
+float Window::GetWidth()
+{
+	return _windowData._width;
 }
 
 GLFWwindow* Window::_pWindow;

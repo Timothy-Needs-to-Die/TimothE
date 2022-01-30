@@ -46,8 +46,6 @@ private:
 private:
 	AudioEngine* _pAudio;
 
-	Renderer* _pRenderer;
-
 	bool _mInEditorMode = true;
 	bool _mDevMode;
 

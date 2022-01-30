@@ -496,7 +496,7 @@ void Editor::EditorRender()
 		ImVec2(0, 1.0), ImVec2(1.0, 0));
 
 	_windowSize = ImGui::GetWindowSize();
-	if (_windowSize.y > _pWindow->GetHeight() / 2.0f) _windowSize.y = _pWindow->GetHeight() / 2.0f;
+	if (_windowSize.y > Window::GetHeight() / 2.0f) _windowSize.y = Window::GetHeight() / 2.0f;
 
 	ImGui::End();
 
