@@ -14,7 +14,7 @@ class Particle
 {
 public:
 	Particle(float life, glm::vec4 colour, Texture2D* texture, Transform* parentTransform);
-	~Particle() {}
+	~Particle();
 
 	void Update(float deltaTime);
 	void ResetParticle();
@@ -40,6 +40,7 @@ public:
 	void SetTransform(Transform* newTransform);
 
 	Texture2D* GetTexture() { return _pTexture; }
+	void SetTexture(Texture2D* newTexture);
 
 	void SetParentTransform(Transform* parentTransform);
 

@@ -20,7 +20,13 @@ ParticleSystem::ParticleSystem(int count, glm::vec4 colour, Texture2D* texture, 
 
 ParticleSystem::~ParticleSystem()
 {
-	
+	for (Particle* p : _particles)
+	{
+		delete(p);
+	}
+	delete(_pParentTransform);
+	delete(_pTexture);
+	delete(_pShader);
 }
 
 void ParticleSystem::OnStart()
@@ -151,12 +157,11 @@ void ParticleSystem::DrawEditorUI()
 				ImGui::SameLine();
 				if (ImGui::Button("Set texture##ParticleSystem"))
 				{
-					for (Particle* p : _particles)
+					if (_pTexture->Load(texPath))
 					{
-						Texture2D* tex = p->GetTexture();
-						if (tex != nullptr)
+						for (Particle* p : _particles)
 						{
-							p->GetTexture()->Load(texPath);
+							p->SetTexture(_pTexture);
 						}
 					}
 				}

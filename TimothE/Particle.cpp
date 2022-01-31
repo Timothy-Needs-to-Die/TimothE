@@ -7,6 +7,13 @@ Particle::Particle(float life, glm::vec4 colour, Texture2D* texture, Transform* 
 	InitVertexData();
 }
 
+Particle::~Particle()
+{
+	delete(_pParentTransform);
+	delete(_pTexture);
+	delete(_pTransform);
+}
+
 void Particle::Update(float deltaTime)
 {
 	glm::vec2 newPos = _pTransform->GetPosition() + (_movementVec * deltaTime);
@@ -95,6 +102,15 @@ void Particle::SetColour(glm::vec4 newColour)
 void Particle::SetTransform(Transform* newTransform)
 {
 	_pTransform = newTransform;
+}
+
+void Particle::SetTexture(Texture2D* newTexture)
+{
+	if (newTexture != nullptr)
+	{
+		//delete(_pTexture);
+		_pTexture = newTexture;
+	}
 }
 
 void Particle::SetParentTransform(Transform* parentTransform)
