@@ -27,7 +27,6 @@ public:
 
 	void SetCanRespawnParticles(bool toggle);
 
-	Transform* GetParentPos() { return _pParentTransform; }
 	void SetParentTransform(Transform* parentTransform);
 
 	vector<Particle*> GetParticles() { return _particles; }
@@ -55,6 +54,12 @@ public:
 
 		WriteFloat(stream, _particleLife);
 
+		WriteFloat(stream, _creatingParticles);
+
+		WriteFloat(stream, _speed);
+
+		WriteFloat(stream, _spawnDelay);
+
 		//TODO: this depends on a texture component something needs to be done about supporting this
 
 		return true;
@@ -68,6 +73,9 @@ public:
 		_shaderName = ReadString(stream);
 		_particleColour = ReadVec4(stream);
 		_particleLife = ReadFloat(stream);
+		_creatingParticles = ReadFloat(stream);
+		_speed = ReadFloat(stream);
+		_spawnDelay = ReadFloat(stream);
 
 		CreateParticles();
 
@@ -76,6 +84,7 @@ public:
 
 private:
 	void CreateParticles();
+	void UpdateSpawnDelay();
 
 	vector<Particle*> _particles;
 	int _maxParticles;
@@ -93,5 +102,9 @@ private:
 	int _shaderID;
 
 	Texture2D* _pTexture;
+
+	float _speed;
+
+	float _deltaTime;
 };
 

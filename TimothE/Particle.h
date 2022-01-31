@@ -51,6 +51,8 @@ public:
 	void ToggleRandomDirection(bool useRand);
 	/// <summary> the range that particles can be when random </summary>
 	void SetAngleRange(float range);
+
+	float GetSpeed() { return _speed; }
 	void SetSpeed(float speed);
 
 	bool GetUsingTexture() { return _usingTexture; }

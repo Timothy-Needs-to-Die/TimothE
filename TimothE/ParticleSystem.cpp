@@ -1,7 +1,8 @@
 #include "ParticleSystem.h"
 #include "misc/cpp/imgui_stdlib.h"
+#include "Console.h"
 
-ParticleSystem::ParticleSystem(int count, glm::vec4 colour, Texture2D* texture, Transform* parentTransform) : _maxParticles(count), _particleColour(colour), _pTexture(texture), _pParentTransform(parentTransform), _particleLife(1.0f)
+ParticleSystem::ParticleSystem(int count, glm::vec4 colour, Texture2D* texture, Transform* parentTransform) : _maxParticles(count), _particleColour(colour), _pTexture(texture), _particleLife(1.0f), _speed(1.0f), _deltaTime(0.016f)
 {
 	//Sets the type and category for the component
 	SetType(Component::ParticleSystem_Type);
@@ -11,8 +12,8 @@ ParticleSystem::ParticleSystem(int count, glm::vec4 colour, Texture2D* texture, 
 
 	// creatingparticles enables the process of spawning new particles after a delay to make them come out at a constant rate
 	_creatingParticles = false;
-	// spawndelay is the delay between enabling new particles
-	_spawnDelay = _particleLife / _maxParticles;
+
+	SetParentTransform(parentTransform);
 
 	CreateParticles();
 }
@@ -28,6 +29,8 @@ void ParticleSystem::OnStart()
 
 void ParticleSystem::OnUpdate(float deltaTime)
 {
+	_deltaTime = deltaTime;
+
 	if (_creatingParticles)
 	{
 		static float timer = 0.0f;
@@ -121,7 +124,6 @@ void ParticleSystem::DrawEditorUI()
 
 		// add a radio button to choose whether particles use textures or colour
 		static int texOrColour = (int)_particles[0]->GetUsingTexture();
-		static float colour[4]{ 1.0f,1.0f,1.0f,1.0f };
 		if (ImGui::RadioButton("Texture", &texOrColour, 1))
 		{
 			for (Particle* p : _particles)
@@ -162,34 +164,30 @@ void ParticleSystem::DrawEditorUI()
 		}
 		else
 		{
-			static float oldWidth = ImGui::CalcItemWidth();
-			if (ImGui::CollapsingHeader("Particle colour"))
+			static float colour[4]{ 1.0f,1.0f,1.0f,1.0f };
+			if (ImGui::ColorEdit4("Particle Colour", colour))
 			{
-				ImGui::PushItemWidth(200);
-				if (ImGui::ColorPicker4("Particle colour", colour))
+				_creatingParticles = true;
+				for (Particle* p : _particles)
 				{
-					_creatingParticles = true;
-					for (Particle* p : _particles)
-					{
-						p->SetColour(glm::vec4(colour[0], colour[1], colour[2], colour[3]));
-						RespawnParticle(p, false);
-					}
+					p->SetColour(glm::vec4(colour[0], colour[1], colour[2], colour[3]));
+					RespawnParticle(p, false);
 				}
 			}
-			ImGui::PushItemWidth(oldWidth);
 		}
 
 		// add an input field to change the particle life
-		static float particleLife = 1.0f;
-		if (ImGui::InputFloat("Particle life", &particleLife))
+		static float* particleLife = &_particleLife;
+		if (ImGui::InputFloat("Particle life", particleLife))
 		{
 			_creatingParticles = true;
 			for (Particle* p : _particles)
 			{
-				p->SetMaxLife(particleLife);
-				p->SetLife(particleLife);
+				p->SetMaxLife(*particleLife);
+				p->SetLife(*particleLife);
 				RespawnParticle(p, false);
 			}
+			UpdateSpawnDelay();
 		}
 		
 		// movement angle
@@ -234,15 +232,16 @@ void ParticleSystem::DrawEditorUI()
 		}
 
 		// change speed
-		static float speed = 1.0f;
-		if (ImGui::InputFloat("Speed", &speed))
+		static float* speed = &_speed;
+		if (ImGui::InputFloat("Speed", speed))
 		{
 			_creatingParticles = true;
 			for (Particle* p : _particles)
 			{
-				p->SetSpeed(speed);
+				p->SetSpeed(*speed);
 				RespawnParticle(p, false);
 			}
+			UpdateSpawnDelay();
 		}
 
 		// scale
@@ -288,6 +287,12 @@ void ParticleSystem::SetCanRespawnParticles(bool toggle)
 void ParticleSystem::SetParentTransform(Transform* parentTransform)
 {
 	_pParentTransform = parentTransform;
+
+	//// transform position is the lower left, so this sets particles to emit from centre
+	//glm::vec2 pos = _pParentTransform->GetPosition();
+	//pos.x = pos.x + (pos.x * 0.5f);
+	//pos.y = pos.y + (pos.y * 0.5f);
+	//_pParentTransform->SetPosition(pos.x, pos.y);
 }
 
 void ParticleSystem::SetShader(string name)
@@ -356,4 +361,19 @@ void ParticleSystem::CreateParticles()
 		_particles.push_back(p);
 		RespawnParticle(p, false);
 	}
+	
+	UpdateSpawnDelay();
+}
+
+void ParticleSystem::UpdateSpawnDelay()
+{
+	// spawndelay is the delay between enabling new particles
+
+	float speed = _speed * _deltaTime;
+	// time * speed = distance
+	float distance = _particleLife * speed;
+	// divide by number of particles to find distance per particle
+	distance = distance / _particles.size();
+	// distance / speed = time
+	_spawnDelay = distance / speed;
 }

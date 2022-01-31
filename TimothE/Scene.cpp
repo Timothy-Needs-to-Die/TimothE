@@ -163,7 +163,7 @@ void Scene::RenderScene(Camera* cam)
 		Texture2D* objTex = obj->GetComponent<Texture2D>();
 		if (objTex != nullptr) {
 			Transform* objTransform = obj->GetTransform();
-			Renderer2D::DrawQuad(ConvertWorldToScreen(objTransform->GetPosition()), glm::vec2(1.0f), objTex);
+			Renderer2D::DrawQuad(ConvertWorldToScreen(objTransform->GetPosition()), objTransform->GetScale(), objTex);
 		}
 		ParticleSystem* particleSys = obj->GetComponent<ParticleSystem>();
 		if (particleSys != nullptr)
@@ -179,12 +179,12 @@ void Scene::RenderScene(Camera* cam)
 						objTex = p->GetTexture();
 						if (objTex != nullptr)
 						{
-							Renderer2D::DrawQuad(ConvertWorldToScreen(t->GetPosition()), glm::vec2(1.0f), objTex);
+							Renderer2D::DrawQuad(ConvertWorldToScreen(t->GetPosition()), t->GetScale(), objTex);
 						}
 					}
 					else
 					{
-						Renderer2D::DrawQuad(ConvertWorldToScreen(t->GetPosition()), glm::vec2(1.0f), p->GetColour());
+						Renderer2D::DrawQuad(ConvertWorldToScreen(t->GetPosition()), t->GetScale(), p->GetColour());
 					}
 				}
 			}
