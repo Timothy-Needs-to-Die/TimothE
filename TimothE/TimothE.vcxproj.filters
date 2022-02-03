@@ -139,6 +139,7 @@
     <ClInclude Include="Particle.h" />
     <ClInclude Include="Font.h" />
     <ClInclude Include="OpenGLError.h" />
+    <ClInclude Include="Quad.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Application.cpp" />

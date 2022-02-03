@@ -7,6 +7,7 @@
 #include "VBO.h"
 #include "IBO.h"
 #include "Shader.h"
+#include "Quad.h"
 
 class Renderer2D
 {
@@ -19,6 +20,8 @@ public:
 	static void Flush();
 
 	//Draw Quads
+	static void DrawQuad(const Quad& quad, const glm::vec4& color);
+	static void DrawQuad(const Quad& quad, Texture2D* texture, glm::vec2* uvCoordinates = nullptr);
 	static void DrawQuad(const glm::vec2& position, const glm::vec2& size, const glm::vec4& color);
 
 	static void DrawQuad(const glm::vec3& position, const glm::vec2& size, const glm::vec4& color);

@@ -77,6 +77,8 @@ public:
 	void SetParent(GameObject* parent);
 	void SetChild(GameObject* child);
 
+
+	void AddedComponent(Component* comp);
 public:
 	//////////////////
 	//Get Components//
@@ -134,7 +136,7 @@ public:
 		}
 
 		_pComponents.push_back(comp);
-		//Scene::AddedComponentHandler(this, comp);
+		AddedComponent(comp);
 		return comp;
 	}
 

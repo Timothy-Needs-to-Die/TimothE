@@ -1,7 +1,6 @@
 #include "Texture2D.h"
 #include "imgui.h"
 #include "misc/cpp/imgui_stdlib.h"
-#include "OpenGLError.h"
 
 Texture2D::Texture2D(GameObject* pParent) : Component(pParent), _ID(0)
 {

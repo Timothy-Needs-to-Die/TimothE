@@ -35,6 +35,7 @@ struct RendererData {
 };
 
 static RendererData _data;
+static RendererData _uiData;
 
 static Camera* currentCam;
 
@@ -238,6 +239,16 @@ void Renderer2D::DrawQuad(const glm::mat4& transform, Texture2D* texture, glm::v
 	}
 
 	_data.quadIndexCount += 6;
+}
+
+void Renderer2D::DrawQuad(const Quad& quad, const glm::vec4& color)
+{
+	DrawQuad(quad.position, quad.size, color);
+}
+
+void Renderer2D::DrawQuad(const Quad& quad, Texture2D* texture, glm::vec2* uvCoordinates /*= nullptr*/)
+{
+	DrawQuad(quad.position, quad.size, texture, uvCoordinates);
 }
 
 void Renderer2D::DrawRotatedQuad(const glm::vec2& position, const glm::vec2& size, float rotation, const glm::vec4& color)

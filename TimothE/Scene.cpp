@@ -159,35 +159,11 @@ void Scene::RenderScene(Camera* cam)
 {
 	Renderer2D::BeginRender(cam);
 
-	for (auto& obj : _listOfGameObjects) {
+	for (auto& obj : _listOfDrawableGameObjects) {
+		//TODO: Text won't render here as it uses its own internal texture data. 
 		Texture2D* objTex = obj->GetComponent<Texture2D>();
 		if (objTex != nullptr) {
-			Transform* objTransform = obj->GetTransform();
-			Renderer2D::DrawQuad(ConvertWorldToScreen(objTransform->GetPosition()), glm::vec2(1.0f), objTex);
-		}
-		ParticleSystem* particleSys = obj->GetComponent<ParticleSystem>();
-		if (particleSys != nullptr)
-		{
-			vector<Particle*> particles = obj->GetComponent<ParticleSystem>()->GetParticles();
-			for (Particle* p : particles)
-			{
-				if (p->GetLife() > 0.0f)
-				{
-					Transform* t = p->GetTransform();
-					if (p->GetUsingTexture())
-					{
-						objTex = p->GetTexture();
-						if (objTex != nullptr)
-						{
-							Renderer2D::DrawQuad(ConvertWorldToScreen(t->GetPosition()), glm::vec2(1.0f), objTex);
-						}
-					}
-					else
-					{
-						Renderer2D::DrawQuad(ConvertWorldToScreen(t->GetPosition()), glm::vec2(1.0f), p->GetColour());
-					}
-				}
-			}
+			Renderer2D::DrawQuad(ConvertWorldToScreen(obj->GetTransform()->GetPosition()), glm::vec2(1.0f), obj->GetComponent<Texture2D>());
 		}
 	}
 

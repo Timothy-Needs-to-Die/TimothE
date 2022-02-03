@@ -222,7 +222,7 @@ void Application::GameBeginRender()
 //render game
 void Application::GameRender(Camera* cam)
 {
-	_pTilemap->RenderMap(cam);
+	//_pTilemap->RenderMap(cam);
 	_pCurrentScene->RenderScene(cam);
 }
 

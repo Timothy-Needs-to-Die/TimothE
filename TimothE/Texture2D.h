@@ -6,6 +6,7 @@
 #include "Component.h"
 
 #include "SOIL/stb_image.h"
+#include "OpenGLError.h"
 
 class Texture2D : public Component
 {
@@ -38,7 +39,7 @@ public:
 	virtual bool LoadState(IStream& stream) override;
 
 	void Bind(int slot) {
-		glBindTextureUnit(slot, _ID);
+		GLCall(glBindTextureUnit(slot, _ID));
 	}
 
 private:
