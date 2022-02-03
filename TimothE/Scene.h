@@ -2,6 +2,7 @@
 #include "pch.h"
 #include "GameObject.h"
 #include "Camera.h"
+#include "Window.h"
 
 class Scene
 {
@@ -43,7 +44,7 @@ public:
 	static std::vector<GameObject*> GetGameObjectsByType(ObjectType type);
 
 	glm::vec2 ConvertWorldToScreen(glm::vec2 inPos) {
-		glm::vec2 outPos{ inPos.x / 1920.0f, inPos.y / 1080.0f };
+		glm::vec2 outPos{ inPos.x / Window::GetWidth(), inPos.y / Window::GetHeight() };
 		return outPos;
 	}
 

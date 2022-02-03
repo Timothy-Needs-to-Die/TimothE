@@ -101,7 +101,7 @@ void Application::GameLoop()
 	_pAudio = new AudioEngine;
 
 	//enables depth in opengl
-	GLCall(glEnable(GL_DEPTH_TEST));
+	//GLCall(glEnable(GL_DEPTH_TEST));
 
 	//time update
 	double previousTime = glfwGetTime();
@@ -222,7 +222,7 @@ void Application::GameBeginRender()
 //render game
 void Application::GameRender(Camera* cam)
 {
-	//_pTilemap->RenderMap(cam);
+	_pTilemap->RenderMap(cam);
 	_pCurrentScene->RenderScene(cam);
 }
 

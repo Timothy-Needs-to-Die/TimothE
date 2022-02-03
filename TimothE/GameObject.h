@@ -71,6 +71,11 @@ public:
 	GameObject* GetParent() { return _pParent; };
 	GameObject* GetChild() { return _pChild; };
 
+
+	ObjectType GetObjectType() const { return _tag; }
+	ObjectType SetObjectType(ObjectType type) { _tag = type; }
+
+
 	////////////////////////
 	//Set Ownership States//
 	////////////////////////

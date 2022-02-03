@@ -38,26 +38,15 @@ Scene::Scene(std::string name)
 	//First we Translate
 	//Then we rotate
 	//Then finally scale
-	_pTestObject->GetTransform()->SetPosition(640, 360);
-	_pTestObject->GetTransform()->Translate({ 100,100 });
-	_pTestObject->GetTransform()->Scale({ 320,320 });
+	_pTestObject->GetTransform()->SetPosition(0.0f, 0.0f);
+	_pTestObject->GetTransform()->SetScale({0.2f, 0.2f});
 
-	GameObject* _pTestObject2 = new GameObject("TESTOBJECT", ObjectType::Player);
+	GameObject* _pTestObject2 = new GameObject("In World Object", ObjectType::Player);
 	_pTestObject2->LoadTexture(ResourceManager::GetTexture("lenna"));
 	_pTestObject2->AddComponent(new BoxColliderComponent(_pTestObject2));
 	_pTestObject2->GetTransform()->SetPosition(550, 360);
-	_pTestObject2->GetTransform()->Translate({ 100,100 });
-	_pTestObject2->GetTransform()->Scale({ 320,320 });
+	_pTestObject2->GetTransform()->SetScale({ 0.2f,0.2f });
 
-	//child pos test
-	//GameObject* _pTestObject3 = new GameObject("TESTOBJECT", ObjectType::Player);
-	//_pTestObject3->LoadTexture(ResourceManager::GetTexture("lenna"));
-	//_pTestObject3->AddComponent(new BoxColliderComponent(_pTestObject3));
-	//_pTestObject3->GetTransform()->SetPosition(0, 0);
-	//_pTestObject3->GetTransform()->Translate({ 0, 0 });
-	//_pTestObject3->GetTransform()->Scale({ 320,320 });
-	//_pTestObject3->SetParent(_pTestObject2);
-	//_pTestObject2->SetChild(_pTestObject3);
 
 	GameObject* _pButtonTestingObject = new GameObject("BUTTON", ObjectType::UI);
 	_pButtonTestingObject->AddComponent(new Button(_pButtonTestingObject));
@@ -65,14 +54,17 @@ Scene::Scene(std::string name)
 	_pButtonTestingObject->AddComponent(new TextComponent(_pTestObject));
 	_pButtonTestingObject->LoadTexture(ResourceManager::GetTexture("lenna"));
 	_pButtonTestingObject->SetShader("ui");
+	_pButtonTestingObject->GetTransform()->SetPosition(0.0f, 0.0f);
+	_pButtonTestingObject->GetTransform()->SetScale({ 0.2f, 0.2f });
+	_pButtonTestingObject->SetType(ObjectType::UI);
 
 	AddGameObject(_pTestObject);
 	AddGameObject(_pTestObject2);
-	//AddGameObject(_pTestObject3);
 	AddGameObject(_pButtonTestingObject);
 
 	GameObject* _pTextObj = new GameObject("TEXTOBJ", ObjectType::UI);
 	_pTextObj->AddComponent(new TextComponent(_pTextObj));
+	_pTextObj->SetType(ObjectType::UI);
 	AddGameObject(_pTextObj);
 
 	ResourceManager::InstantiateTexture("spritesheet", new Texture2D("testSheet.png"));
@@ -162,8 +154,16 @@ void Scene::RenderScene(Camera* cam)
 	for (auto& obj : _listOfDrawableGameObjects) {
 		//TODO: Text won't render here as it uses its own internal texture data. 
 		Texture2D* objTex = obj->GetComponent<Texture2D>();
+
 		if (objTex != nullptr) {
-			Renderer2D::DrawQuad(ConvertWorldToScreen(obj->GetTransform()->GetPosition()), glm::vec2(1.0f), obj->GetComponent<Texture2D>());
+			if (obj->GetObjectType() == ObjectType::UI) {
+			Renderer2D::DrawUIQuad(obj->GetTransform()->GetPosition(),
+				obj->GetTransform()->GetScale(), obj->GetComponent<Texture2D>());
+			}
+			else {
+				Renderer2D::DrawQuad(ConvertWorldToScreen(obj->GetTransform()->GetPosition()),
+					obj->GetTransform()->GetScale(), objTex);
+			}
 		}
 	}
 
