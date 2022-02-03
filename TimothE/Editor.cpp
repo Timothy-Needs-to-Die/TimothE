@@ -161,6 +161,9 @@ void Editor::EditorImGui(Scene* currentScene)
 				{
 					_pSelectedGameObject->SetType(ObjectType::PickUp);
 				}
+				if (ImGui::RadioButton("UI", &index, 4)) {
+					_pSelectedGameObject->SetType(ObjectType::UI);
+				}
 			}
 
 			Component* componentToDelete = nullptr;
