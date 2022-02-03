@@ -6,6 +6,7 @@
 #include "ApplicationEvent.h"
 #include "Scene.h"
 #include "MemoryManager.h"
+#include "CameraManager.h"
 
 #include "AudioEngine.h"
 #include "TileMap.h"
@@ -59,6 +60,7 @@ private:
 	bool _mGameRunning = false;
 
 	Camera* _pGameCamera;
+	CameraManager* _pCameraManager;
 
 	TileMap* _pTilemap;
 };

@@ -6,11 +6,15 @@ class CameraManager
 {
 public:
 	Camera* _pMainCamera;
-	std::vector<Camera*> cameras;
-	Camera* currentCamera;
+	std::vector<Camera*> _pCameras;
+	Camera* _pcurrentCamera;
 
-	CameraManager();
+	CameraManager(Camera* mainCamera);
 	~CameraManager();
+	void SetCamera(int cameraID); //-1 for main camera
+	void SetToMainCamera();
+	void RemoveCamera(int cameraID);
+	void AddCamera(Camera* newCamera);
 	//Camera GetCamera() {return };
 
 private:

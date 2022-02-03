@@ -83,6 +83,7 @@ void Application::Init(bool devMode)
 	float top = zoomLevel;
 	_pGameCamera = new Camera(left, right, bottom, top);
 	_pGameCamera->SetCameraSpeed(2.5f);
+	_pCameraManager = new CameraManager(_pGameCamera);
 
 	_pTilemap = new TileMap();
 	//Layer, X sprite index, y sprite index, index for placement
@@ -150,7 +151,7 @@ void Application::GameLoop()
 		else {
 			GameBeginRender();
 
-			GameRender(_pGameCamera);
+			GameRender(_pCameraManager->_pcurrentCamera);
 
 			//_pGameCamera->PrintInfo();
 
@@ -226,7 +227,7 @@ void Application::GameRender(Camera* cam)
 //updates game scene
 void Application::GameUpdate(float dt)
 {
-	_pGameCamera->Update(dt);
+	_pCameraManager->_pcurrentCamera->Update(dt);
 	_pCurrentScene->Update(dt);
 }
 
