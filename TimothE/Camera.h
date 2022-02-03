@@ -6,7 +6,7 @@
 class Camera
 {
 public:
-	Camera(float left, float right, float bottom, float top);
+	Camera(float left, float right, float bottom, float top, std::string name);
 
 	void Update(float dt);
 
@@ -31,7 +31,7 @@ public:
 	void PrintInfo() {
 		std::cout << "Camera: " << _cameraPos.x << ", " << _cameraPos.y << ", " << _cameraPos.z << std::endl;
 	}
-
+	std::string _mName;
 private:
 	void PollInput(float dt);
 
@@ -46,6 +46,8 @@ private:
 	glm::mat4 _projection;
 	glm::mat4 _view;
 	glm::mat4 _viewProj;
+
+	
 
 };
 

@@ -44,7 +44,7 @@ Editor::Editor(Application* pApp)
 	float bottom = -zoomLevel;
 	float top = zoomLevel;
 
-	_pEditorCamera = new Camera(left, right, bottom, top);
+	_pEditorCamera = new Camera(left, right, bottom, top, "Editor Camera");
 	_pEditorCamera->SetCameraSpeed(1.5f);
 	_pEditorCamera->SetPosition({ 1.78f, 1.0f, -1.0f });
 

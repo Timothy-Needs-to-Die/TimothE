@@ -2,7 +2,7 @@
 #include "Camera.h"
 #include <vector>
 
-class CameraManager
+static class CameraManager
 {
 public:
 	Camera* _pMainCamera;
@@ -12,11 +12,15 @@ public:
 	CameraManager(Camera* mainCamera);
 	~CameraManager();
 	void SetCamera(int cameraID); //-1 for main camera
+	void SetCamera(std::string cameraID);
 	void SetToMainCamera();
 	void RemoveCamera(int cameraID);
+	void RemoveCamera(std::string cameraID);
 	void AddCamera(Camera* newCamera);
-	//Camera GetCamera() {return };
-
-private:
+	//gets camera
+	Camera* GetCamera(int cameraID) { return _pCameras.at(cameraID); }
+	Camera* GetCamera(std::string cameraID) { }//return _pCameras.at(cameraID);
 };
+
+
 

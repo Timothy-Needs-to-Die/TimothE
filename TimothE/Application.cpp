@@ -81,10 +81,11 @@ void Application::Init(bool devMode)
 	float right = aspectRatio * zoomLevel;
 	float bottom = -zoomLevel;
 	float top = zoomLevel;
-	_pGameCamera = new Camera(left, right, bottom, top);
+	_pGameCamera = new Camera(left, right, bottom, top, "Main Camera");
 	_pGameCamera->SetCameraSpeed(2.5f);
 	_pCameraManager = new CameraManager(_pGameCamera);
-
+	//_pCameraManager->_pCameras = _pCurrentScene->FindObjectsOfType<Camera>();
+	
 	_pTilemap = new TileMap();
 	//Layer, X sprite index, y sprite index, index for placement
 }

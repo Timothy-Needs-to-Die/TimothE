@@ -1,6 +1,6 @@
 #include "Camera.h"
 
-Camera::Camera(float left, float right, float bottom, float top)
+Camera::Camera(float left, float right, float bottom, float top, std::string name)
 {
 	std::cout << "Camera created" << std::endl;
 	_cameraPos = glm::vec3(0.0f, 0.0f, -1.0f);
