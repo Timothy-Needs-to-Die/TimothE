@@ -24,6 +24,7 @@ void GLAPIENTRY MessageCallback(GLenum source,
 	fprintf(stderr, "GL CALLBACK: %s type = 0x%x, severity = 0x%x, message = %s\n",
 		(type == GL_DEBUG_TYPE_ERROR ? "** GL ERROR **" : ""),
 		type, severity, message);
+
 }
 
 //initializes application
@@ -58,8 +59,8 @@ void Application::Init(bool devMode)
 	}
 
 	//enables debug messages
-	glEnable(GL_DEBUG_OUTPUT);
-	glDebugMessageCallback(MessageCallback, 0);
+	GLCall(glEnable(GL_DEBUG_OUTPUT));
+	//GLCall(glDebugMessageCallback(MessageCallback, 0));
 
 	if (_mDevMode) {
 		ImGuiManager::CreateImGuiContext(Window::GetGLFWWindow());
@@ -100,7 +101,7 @@ void Application::GameLoop()
 	_pAudio = new AudioEngine;
 
 	//enables depth in opengl
-	glEnable(GL_DEPTH_TEST);
+	GLCall(glEnable(GL_DEPTH_TEST));
 
 	//time update
 	double previousTime = glfwGetTime();
@@ -213,7 +214,7 @@ void Application::PollInput()
 void Application::GameBeginRender()
 {
 	Window::SetWindowColour(0.3f, 1.0f, 0.0f, 1.0f);
-	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+	GLCall(glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT));
 }
 
 //render game

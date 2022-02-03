@@ -9,6 +9,7 @@
 
 #include "AudioEngine.h"
 #include "TileMap.h"
+#include "OpenGLError.h"
 
 class Editor;
 

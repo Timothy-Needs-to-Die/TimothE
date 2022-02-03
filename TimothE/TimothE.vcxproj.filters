@@ -138,6 +138,7 @@
     <ClInclude Include="ParticleSystem.h" />
     <ClInclude Include="Particle.h" />
     <ClInclude Include="Font.h" />
+    <ClInclude Include="OpenGLError.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Application.cpp" />

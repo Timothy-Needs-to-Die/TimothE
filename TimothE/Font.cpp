@@ -1,7 +1,10 @@
 #include "Font.h"
+#include "OpenGLError.h"
 
 Font::Font(std::string font)
 {
+	_name = font;
+
 	FT_Library ft;
 	if (FT_Init_FreeType(&ft))
 	{
@@ -21,7 +24,8 @@ Font::Font(std::string font)
 		return;
 	}
 
-	glPixelStorei(GL_UNPACK_ALIGNMENT, 1); // disable byte-alignment restriction
+	// disable byte-alignment restriction
+	GLCall(glPixelStorei(GL_UNPACK_ALIGNMENT, 1));
 
 	for (unsigned char c = 0; c < 128; c++)
 	{
@@ -33,9 +37,9 @@ Font::Font(std::string font)
 		}
 		// generate texture
 		unsigned int texture;
-		glGenTextures(1, &texture);
-		glBindTexture(GL_TEXTURE_2D, texture);
-		glTexImage2D(
+		GLCall(glGenTextures(1, &texture));
+		GLCall(glBindTexture(GL_TEXTURE_2D, texture));
+		GLCall(glTexImage2D(
 			GL_TEXTURE_2D,
 			0,
 			GL_RED,
@@ -45,12 +49,12 @@ Font::Font(std::string font)
 			GL_RED,
 			GL_UNSIGNED_BYTE,
 			face->glyph->bitmap.buffer
-		);
+		));
 		// set texture options
-		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP);
-		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP);
-		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
-		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+		GLCall(glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP));
+		GLCall(glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP));
+		GLCall(glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR));
+		GLCall(glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR));
 		// now store character for later use
 		Character character = {
 			texture,
@@ -64,18 +68,18 @@ Font::Font(std::string font)
 	FT_Done_Face(face);
 	FT_Done_FreeType(ft);
 
-	glEnable(GL_BLEND);
-	glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+	GLCall(glEnable(GL_BLEND));
+	GLCall(glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA));
 
-	glGenVertexArrays(1, &_VAO);
-	glGenBuffers(1, &_VBO);
-	glBindVertexArray(_VAO);
-	glBindBuffer(GL_ARRAY_BUFFER, _VBO);
-	glBufferData(GL_ARRAY_BUFFER, sizeof(float) * 6 * 4, NULL, GL_DYNAMIC_DRAW);
-	glEnableVertexAttribArray(0);
-	glVertexAttribPointer(0, 4, GL_FLOAT, GL_FALSE, 4 * sizeof(float), 0);
-	glBindBuffer(GL_ARRAY_BUFFER, 0);
-	glBindVertexArray(0);
+	GLCall(glGenVertexArrays(1, &_VAO));
+	GLCall(glGenBuffers(1, &_VBO));
+	GLCall(glBindVertexArray(_VAO));
+	GLCall(glBindBuffer(GL_ARRAY_BUFFER, _VBO));
+	GLCall(glBufferData(GL_ARRAY_BUFFER, sizeof(float) * 6 * 4, NULL, GL_DYNAMIC_DRAW));
+	GLCall(glEnableVertexAttribArray(0));
+	GLCall(glVertexAttribPointer(0, 4, GL_FLOAT, GL_FALSE, 4 * sizeof(float), 0));
+	GLCall(glBindBuffer(GL_ARRAY_BUFFER, 0));
+	GLCall(glBindVertexArray(0));
 }
 
 Font::~Font()
@@ -84,11 +88,20 @@ Font::~Font()
 
 void Font::RenderText(Shader& s, std::string text, float x = 0.0f, float y = 0.0f, float scale = 1.0f, glm::vec3 color = { 1.0f, 1.0f, 1.0f })
 {
+	if (_VBO == 0) {
+		std::cout << "[Error: Font::RenderText]: VBO associated with font: " << _name << " is 0" << std::endl;
+		return;
+	}
+	if (_VAO == 0) {
+		std::cout << "[Error: Font::RenderText]: VAO associated with font: " << _name << " is 0" << std::endl;
+		return;
+	}
+
 	// activate corresponding render state
 	s.BindShader();
-	glUniform3f(glGetUniformLocation(s.GetProgramID(), "textColor"), color.x, color.y, color.z);
-	glActiveTexture(GL_TEXTURE0);
-	glBindVertexArray(_VAO);
+	GLCall(glUniform3f(glGetUniformLocation(s.GetProgramID(), "textColor"), color.x, color.y, color.z));
+	GLCall(glActiveTexture(GL_TEXTURE0));
+	GLCall(glBindVertexArray(_VAO));
 
 	glm::mat4 projection = glm::ortho(0.0f, 800.0f, 0.0f, 600.0f);
 	s.SetMat4("projection", projection);
@@ -124,16 +137,16 @@ void Font::RenderText(Shader& s, std::string text, float x = 0.0f, float y = 0.0
 			{ xpos + w, ypos + h,   1.0f, 0.0f }
 		};
 		// render glyph texture over quad
-		glBindTexture(GL_TEXTURE_2D, ch._textureID);
+		GLCall(glBindTexture(GL_TEXTURE_2D, ch._textureID));
 		// update content of VBO memory
-		glBindBuffer(GL_ARRAY_BUFFER, _VBO);
-		glBufferSubData(GL_ARRAY_BUFFER, 0, sizeof(vertices), vertices);
-		glBindBuffer(GL_ARRAY_BUFFER, 0);
+		GLCall(glBindBuffer(GL_ARRAY_BUFFER, _VBO));
+		GLCall(glBufferSubData(GL_ARRAY_BUFFER, 0, sizeof(vertices), vertices));
+		GLCall(glBindBuffer(GL_ARRAY_BUFFER, 0));
 		// render quad
-		glDrawArrays(GL_TRIANGLES, 0, 6);
+		GLCall(glDrawArrays(GL_TRIANGLES, 0, 6));
 		// now advance cursors for next glyph (note that advance is number of 1/64 pixels)
 		x += (ch._advance >> 6) * scale; // bitshift by 6 to get value in pixels (2^6 = 64)
 	}
-	glBindVertexArray(0);
-	glBindTexture(GL_TEXTURE_2D, 0);
+	GLCall(glBindVertexArray(0));
+	GLCall(glBindTexture(GL_TEXTURE_2D, 0));
 }

@@ -462,7 +462,7 @@ void Editor::EditorImGui(Scene* currentScene)
 void Editor::EditorStartRender()
 {
 	_pEditorFramebuffer->BindFramebuffer();
-	glEnable(GL_DEPTH_TEST);
+	GLCall(glEnable(GL_DEPTH_TEST));
 	_pEditorFramebuffer->BindShader();
 }
 

@@ -1,4 +1,5 @@
 #include "Renderer2D.h"
+#include "OpenGLError.h"
 
 struct QuadVertex {
 	glm::vec3 position;
@@ -85,11 +86,6 @@ void Renderer2D::Init()
 	_data.textureShader = std::make_shared<Shader>("vs_Texture.vert", "fr_Texture.frag");
 	
 	_data.textureSlots[0] = _data.whiteTexture;
-
-	//_data.quadVertexPositions[0] = { -0.5f, -0.5f, 0.0f, 1.0f };
-	//_data.quadVertexPositions[1] = { 0.5f, -0.5f, 0.0f, 1.0f };
-	//_data.quadVertexPositions[2] = { 0.5f,  0.5f, 0.0f, 1.0f };
-	//_data.quadVertexPositions[3] = { -0.5f,  0.5f, 0.0f, 1.0f };
 
 	_data.quadVertexPositions[0] = { 0.0f, 0.0f, 0.0f, 1.0f };
 	_data.quadVertexPositions[1] = { 1.0f, 0.0f, 0.0f, 1.0f };
@@ -265,8 +261,8 @@ void Renderer2D::DrawIndexed(const std::shared_ptr<VAO>& vertexArray, uint32_t i
 	vertexArray->Bind();
 	vertexArray->GetIndexBuffer()->Bind();
 	uint32_t count = indexCount ? indexCount : vertexArray->GetIndexBuffer()->GetCount();
-	glDrawElements(GL_TRIANGLES, count, GL_UNSIGNED_INT, nullptr);
-	glBindTexture(GL_TEXTURE_2D, 0);
+	GLCall(glDrawElements(GL_TRIANGLES, count, GL_UNSIGNED_INT, nullptr));
+	GLCall(glBindTexture(GL_TEXTURE_2D, 0));
 }
 
 void Renderer2D::StartBatch()

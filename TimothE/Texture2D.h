@@ -28,7 +28,7 @@ public:
 	GLuint GetID() const { return _ID; }
 
 	//Sets the filter mode for the texture
-	void SetFilterMode(std::string mode);
+	void SetFilterMode(GLenum mode);
 
 	//Loads an image from file into a texture. Returns true if successful or false if not
 	bool Load(std::string path);

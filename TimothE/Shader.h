@@ -39,7 +39,9 @@ public:
 	void SetMat2(const std::string& name, const glm::mat2& mat) const;
 	void SetMat3(const std::string& name, const glm::mat3& mat) const;
 	void SetMat4(const std::string& name, const glm::mat4& mat) const;
-	
+
+	int GetLocation(const std::string& name) const;
+
 	//GL Handlers
 	void BindShader();
 	void UnbindShader();
