@@ -1,15 +1,15 @@
 #include "Framebuffer.h"
 #include "Base.h"
 
-Framebuffer::Framebuffer(Window* pWindow, Shader* screenShader, float* quadVertices)
-	: _pScreenShader(screenShader), _pQuadVertices(quadVertices), _pWindow(pWindow)
+Framebuffer::Framebuffer(Shader* screenShader, float* quadVertices)
+	: _pScreenShader(screenShader), _pQuadVertices(quadVertices)
 {
 	CreateFramebuffer();
 	_vbo = VBO::Create(_pQuadVertices, 24);
 }
 
-Framebuffer::Framebuffer(Window* pWindow, Shader* screenShader)
-	: _pScreenShader(screenShader), _pWindow(pWindow)
+Framebuffer::Framebuffer(Shader* screenShader)
+	: _pScreenShader(screenShader)
 {
 	_pQuadVertices = new float[24]{
 		// positions   // texCoords
@@ -45,18 +45,6 @@ void Framebuffer::CreateFramebuffer()
 
 	_vao->AddVertexBuffer(_vbo);
 
-	
-
-	//glBufferData(GL_ARRAY_BUFFER, 24 * sizeof(float), _pQuadVertices, GL_STATIC_DRAW);
-	////Vertex Positions
-	//glEnableVertexAttribArray(0);
-	//glVertexAttribPointer(0, 2, GL_FLOAT, GL_FALSE, 4 * sizeof(float), (void*)0);
-	////Texcoords
-	//glEnableVertexAttribArray(1);
-	//glVertexAttribPointer(1, 2, GL_FLOAT, GL_FALSE, 4 * sizeof(float), (void*)(2 * sizeof(float)));
-
-
-
 	//Set the texture to 0
 	_pScreenShader->BindShader();
 	_pScreenShader->SetInt("screenTexture", 0);
@@ -68,7 +56,7 @@ void Framebuffer::CreateFramebuffer()
 	// create a color attachment texture
 	glGenTextures(1, &_texture);
 	glBindTexture(GL_TEXTURE_2D, _texture);
-	glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, _pWindow->GetWidth(), _pWindow->GetHeight(), 0, GL_RGB, GL_UNSIGNED_BYTE, NULL);
+	glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, Window::GetWidth(), Window::GetHeight(), 0, GL_RGB, GL_UNSIGNED_BYTE, NULL);
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
 	glFramebufferTexture2D(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0, GL_TEXTURE_2D, _texture, 0);
@@ -107,7 +95,6 @@ void Framebuffer::BindShader()
 void Framebuffer::DrawFramebuffer()
 {
 	//Bind Vertex Array
-	//_vao.BindBuffer();
 	_vao->Bind();
 
 	BindTexture();

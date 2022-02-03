@@ -22,7 +22,7 @@ project "TimothE"
 		"Dependancies/GLEW/include",
 		"Dependancies/glm",
 		"Dependancies/irrklang/include",
-		"Dependancies/nlohmann",
+		"Dependancies/",
 		"Dependancies/freetype",
 		"Dependancies",
 		"Dependancies/imgui",

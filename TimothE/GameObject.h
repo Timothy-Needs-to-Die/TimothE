@@ -42,7 +42,6 @@ public:
 	///////////////////////
 	//Data Initialisation//
 	///////////////////////
-	void InitVertexData();
 	void LoadTexture(Texture2D* texture);
 
 	/////////////////////
@@ -147,7 +146,6 @@ public:
 	///////////////////////////////
 	virtual bool SaveState(IStream& stream) const override;
 	virtual bool LoadState(IStream& stream) override;
-	unsigned int GetVAO() const { return _vao; }
 private:
 	///////////////////////////////////
 	//Properties (Unique Identifiers)//
@@ -175,10 +173,4 @@ private:
 	///////////
 	Shader* _pShader;
 	std::string _shaderName;
-
-	///////////
-	//Buffers//
-	///////////
-	unsigned int _vao;
-	unsigned int _vbo;
 };

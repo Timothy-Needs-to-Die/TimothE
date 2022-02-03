@@ -17,8 +17,8 @@ std::vector<std::string> _mDirectoryList;
 
 std::vector<std::string> Console::output = std::vector<std::string>();
 
-Editor::Editor(Application* pApp, Window* pWindow)
-	: _pWindow(pWindow), _pApplication(pApp)
+Editor::Editor(Application* pApp)
+	:  _pApplication(pApp)
 {
 	//icon textures
 	pContentTextureScript->Load("Icons/ScriptContent.png");
@@ -29,16 +29,14 @@ Editor::Editor(Application* pApp, Window* pWindow)
 	pContentTextureFile->Load("Icons/FileContent.png");
 	pContentTextureFolder->Load("Icons/FolderContent.png");
 
-
-
 	//Creates the screen shader for the framebuffer
 	_pScreenShader = new Shader("fbVert.vs", "fbFrag.fs");
 
 	//Creates the editor framebuffer
-	_pEditorFramebuffer = new Framebuffer(_pWindow, _pScreenShader);
+	_pEditorFramebuffer = new Framebuffer(_pScreenShader);
 
 
-	float aspectRatio = pWindow->GetWidth() / pWindow->GetHeight();
+	float aspectRatio = Window::GetAspectRatio();
 	float zoomLevel = 1.0f;
 
 	float left = -aspectRatio * zoomLevel;
@@ -47,9 +45,13 @@ Editor::Editor(Application* pApp, Window* pWindow)
 	float top = zoomLevel;
 
 	_pEditorCamera = new Camera(left, right, bottom, top);
+	_pEditorCamera->SetCameraSpeed(1.5f);
+	_pEditorCamera->SetPosition({ 1.78f, 1.0f, -1.0f });
 
 	pImGuiSample = new Texture2D(NULL);
 	pImGuiSample->Load("lenna3.jpg");
+
+	pTileMapEditor = new TileMapEditor();
 }
 
 Editor::~Editor()
@@ -73,10 +75,6 @@ void Editor::EditorImGui(Scene* currentScene)
 	ImGui::ShowDemoWindow();
 
 	static bool changeObject = false;
-
-
-
-	//ImGui::DockSpaceOverViewport(0, ImGuiDockNodeFlags_PassthruCentralNode);
 
 	{
 		if (ImGui::BeginMainMenuBar()) {
@@ -113,27 +111,8 @@ void Editor::EditorImGui(Scene* currentScene)
 
 	//Tile Editor
 	{
-		ImGui::Begin("Tile Editor", 0, ImGuiWindowFlags_NoMove);
-
-		//Left Panel
-		ImGui::BeginChild("Tiles", ImVec2(200, 0), true);
-
-		for (int i = 0; i < 16; ++i) {
-
-			for (int j = 0; j < 3; ++j) {
-				if (ImGui::ImageButton((void*)pImGuiSample->GetID(), ImVec2(50, 50))) {
-
-				}
-
-
-				ImGui::SameLine();
-			}
-			ImGui::NewLine();
-		}
-
-		ImGui::EndChild();
-
-		ImGui::End();
+		pTileMapEditor->EnableEditor();
+		pTileMapEditor->DisplayEditorGUI();
 	}
 
 
@@ -207,7 +186,7 @@ void Editor::EditorImGui(Scene* currentScene)
 						{
 							ImGui::SameLine();
 							// add button to move the component up
-							if (ImGui::Button("Up"))
+							if (ImGui::Button(("Up##component" + std::to_string(i)).c_str()))
 							{
 								_pSelectedGameObject->SwapComponents(i, i - 1);
 							}
@@ -218,12 +197,14 @@ void Editor::EditorImGui(Scene* currentScene)
 					{
 						ImGui::SameLine();
 						// add button to move the component down
-						if (ImGui::Button("Down"))
+						if (ImGui::Button(("Down##component" + std::to_string(i)).c_str()))
 						{
 							_pSelectedGameObject->SwapComponents(i, i + 1);
 						}
 					}
 				}
+
+				ImGui::Separator();
 			}
 
 			if (componentToDelete != nullptr) {
@@ -291,7 +272,7 @@ void Editor::EditorImGui(Scene* currentScene)
 						Texture2D* tex = _pSelectedGameObject->GetComponent<Texture2D>();
 						if (tex == nullptr)
 						{
-							//_pSelectedGameObject->LoadTexture(new Texture2D((char*)texPath.c_str()));
+							_pSelectedGameObject->LoadTexture(new Texture2D((char*)texPath.c_str()));
 						}
 					}
 
@@ -511,10 +492,12 @@ void Editor::EditorRender()
 	ImGui::GetWindowDrawList()->AddImage(
 		(void*)_pEditorFramebuffer->GetTexture(),
 		_windowPos,
-		ImVec2(_windowPos.x + _pWindow->GetWidth() / 2.0f, _windowPos.y + _pWindow->GetHeight() / 2.0f),
+		ImVec2(_windowPos.x + Window::GetWidth() / 2.0f, _windowPos.y + Window::GetHeight() / 2.0f),
 		ImVec2(0, 1.0), ImVec2(1.0, 0));
 
 	_windowSize = ImGui::GetWindowSize();
+	if (_windowSize.y > Window::GetHeight() / 2.0f) _windowSize.y = Window::GetHeight() / 2.0f;
+
 	ImGui::End();
 
 	ConvertGameToEditorSpace();
@@ -522,7 +505,7 @@ void Editor::EditorRender()
 
 void Editor::EditorEndRender()
 {
-	_pWindow->SwapBuffers();
+	Window::SwapBuffers();
 }
 
 void Editor::ConvertGameToEditorSpace()
@@ -540,13 +523,14 @@ void Editor::ConvertGameToEditorSpace()
 	else if (editorPos.y > _windowSize.y) editorPos.y = _windowSize.y;
 
 	_mousePosInEditorSpace = editorPos;
+
+	Input::SetEditorMousePos(_mousePosInEditorSpace.x, _mousePosInEditorSpace.y);
 }
 
 
 void Editor::EditorUpdate(Scene* currentScene, float dt)
 {
 	currentScene->EditorUpdate(dt);
-	ConvertGameToEditorSpace();
 }
 
 void Editor::CreateFileInContentBrowser(std::string name, std::string type)

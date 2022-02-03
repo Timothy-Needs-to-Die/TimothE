@@ -7,6 +7,8 @@
 #include "ResourceManager.h"
 #include "Renderer2D.h"
 
+#include "SubTexture2D.h"
+
 int Scene::nextID = 0;
 std::vector<GameObject*> Scene::_listOfGameObjects;
 std::vector<GameObject*> Scene::_listOfDrawableGameObjects;
@@ -60,7 +62,7 @@ Scene::Scene(std::string name)
 	GameObject* _pButtonTestingObject = new GameObject("BUTTON", ObjectType::UI);
 	_pButtonTestingObject->AddComponent(new Button(_pButtonTestingObject));
 	_pButtonTestingObject->AddComponent(new BoxColliderComponent(_pButtonTestingObject));
-	_pButtonTestingObject->AddComponent(new TextComponent(_pTestObject, "arial"));
+	_pButtonTestingObject->AddComponent(new TextComponent(_pTestObject));
 	_pButtonTestingObject->LoadTexture(ResourceManager::GetTexture("lenna"));
 	_pButtonTestingObject->SetShader("ui");
 
@@ -68,22 +70,12 @@ Scene::Scene(std::string name)
 	AddGameObject(_pTestObject2);
 	//AddGameObject(_pTestObject3);
 	AddGameObject(_pButtonTestingObject);
-	
+
 	GameObject* _pTextObj = new GameObject("TEXTOBJ", ObjectType::UI);
-	_pTextObj->AddComponent(new TextComponent(_pTextObj, "arial"));
+	_pTextObj->AddComponent(new TextComponent(_pTextObj));
 	AddGameObject(_pTextObj);
-	
 
 	ResourceManager::InstantiateTexture("spritesheet", new Texture2D("testSheet.png"));
-	float sheetWidth = 2560, sheetHeight = 1664;
-	float spriteWidth = 128, spriteHeight = 128;
-	float x = 0, y = 14;
-	_uvSpriteCoords = new glm::vec2[4];
-	_uvSpriteCoords[0] =  glm::vec2((x * spriteWidth) / sheetWidth, (y * spriteHeight) / sheetHeight );
-	_uvSpriteCoords[1] =  glm::vec2(((x + 1) * spriteWidth) / sheetWidth, (y * spriteHeight) / sheetHeight );
-	_uvSpriteCoords[2] =  glm::vec2(((x + 1) * spriteWidth) / sheetWidth, ((y + 1) * spriteHeight) / sheetHeight );
-	_uvSpriteCoords[3] =  glm::vec2((x * spriteWidth) / sheetWidth, ((y + 1) * spriteHeight) / sheetHeight );
-	std::cout << _uvSpriteCoords[0].x << std::endl;
 
 	//////////////////
 	//END OF TEST CODE
@@ -163,16 +155,9 @@ void Scene::Update(float deltaTime)
 	//////////////////
 }
 
-void Scene::RenderScene(Renderer* pRenderer, Camera* cam)
+void Scene::RenderScene(Camera* cam)
 {
 	Renderer2D::BeginRender(cam);
-	//glm::vec2 testPos{ 1920.0f, 1080.0f };
-	//glm::vec2 testPos2{ 960.0f, 540.0f };
-	//Renderer2D::DrawQuad(glm::vec2(0.3f, 0.0f), glm::vec2(1.0f, 1.0f), ResourceManager::GetTexture("fish"));
-	//Renderer2D::DrawQuad(ConvertWorldToScreen(testPos2), glm::vec2(0.5f, 0.5f), ResourceManager::GetTexture("fish"));
-	//Renderer2D::DrawQuad(ConvertWorldToScreen(testPos), glm::vec2(0.45f, 0.45f), ResourceManager::GetTexture("spritesheet"), _uvSpriteCoords);
-	//Renderer2D::DrawQuad(glm::vec2(-0.3f, 0.0f), glm::vec2(0.5f, 0.5f), ResourceManager::GetTexture("lenna"));
-	//Renderer2D::DrawQuad(glm::vec2(-0.7f, 0.0f), glm::vec2(0.5f, 0.5f), ResourceManager::GetTexture("fish"));
 
 	for (auto& obj : _listOfGameObjects) {
 		Texture2D* objTex = obj->GetComponent<Texture2D>();
@@ -186,20 +171,23 @@ void Scene::RenderScene(Renderer* pRenderer, Camera* cam)
 			vector<Particle*> particles = obj->GetComponent<ParticleSystem>()->GetParticles();
 			for (Particle* p : particles)
 			{
-				objTex = p->GetTexture();
-				if (objTex != nullptr)
+				if (p->GetLife() > 0.0f)
 				{
 					Transform* t = p->GetTransform();
-					Renderer2D::DrawQuad(ConvertWorldToScreen(t->GetPosition()), glm::vec2(1.0f), objTex);
+					if (p->GetUsingTexture())
+					{
+						objTex = p->GetTexture();
+						if (objTex != nullptr)
+						{
+							Renderer2D::DrawQuad(ConvertWorldToScreen(t->GetPosition()), glm::vec2(1.0f), objTex);
+						}
+					}
+					else
+					{
+						Renderer2D::DrawQuad(ConvertWorldToScreen(t->GetPosition()), glm::vec2(1.0f), p->GetColour());
+					}
 				}
 			}
-		}
-	}
-
-
-	for (float i = 0; i < 5; i+= 0.5f) {
-		for (float j = 0; j < 5; j+= 0.5f) {
-			Renderer2D::DrawQuad(glm::vec2{ i, j }, glm::vec2(0.5f, 0.5f), ResourceManager::GetTexture("spritesheet"), _uvSpriteCoords);
 		}
 	}
 

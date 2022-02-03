@@ -25,7 +25,7 @@ public:
 	void OnEnd() override;
 	void DrawEditorUI() override;
 
-	void CanRespawnParticles(bool toggle);
+	void SetCanRespawnParticles(bool toggle);
 
 	Transform* GetParentPos() { return _pParentTransform; }
 	void SetParentTransform(Transform* parentTransform);
@@ -35,6 +35,13 @@ public:
 	Shader* GetShader() const { return _pShader; }
 	void SetShader(string name);
 
+	void RespawnParticle(Particle* p, bool active);
+	void StartConstant();
+	void Burst();
+	void Stop();
+
+	void SetActive(bool active);
+
 	virtual bool SaveState(IStream& stream) const override {
 		Component::SaveState(stream);
 
@@ -42,39 +49,44 @@ public:
 		
 		WriteVec4(stream, _particleColour);
 
-		WriteInt(stream, (bool)_canRespawn);
-
 		WriteString(stream, _shaderName);
+
+		WriteVec4(stream, _particleColour);
+
+		WriteFloat(stream, _particleLife);
 
 		//TODO: this depends on a texture component something needs to be done about supporting this
 
-
 		return true;
 	}
-
 
 	virtual bool LoadState(IStream& stream) override {
 		Component::LoadState(stream);
 
 		_maxParticles = ReadInt(stream);
 		_particleColour = ReadVec4(stream);
-		_canRespawn = (bool)ReadInt(stream);
 		_shaderName = ReadString(stream);
+		_particleColour = ReadVec4(stream);
+		_particleLife = ReadFloat(stream);
+
+		CreateParticles();
 
 		return true;
 	}
 
-
 private:
+	void CreateParticles();
+
 	vector<Particle*> _particles;
 	int _maxParticles;
+
+	bool _creatingParticles;
+	float _spawnDelay;
 
 	glm::vec4 _particleColour;
 	float _particleLife;
 
 	Transform* _pParentTransform;
-
-	bool _canRespawn;
 
 	string _shaderName;
 	Shader* _pShader;

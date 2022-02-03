@@ -18,7 +18,6 @@ GameObject::GameObject(std::string name, ObjectType tag, Transform* transform)
 
 	AddComponent<Transform>(_pTransform);
 
-	InitVertexData();
 	SetShader("default");
 
 	Start();
@@ -31,54 +30,6 @@ GameObject::~GameObject()
 	{
 		delete(c);
 	}
-}
-
-void GameObject::InitVertexData()
-{
-	float vertexData[]{
-		//position               //texture coords
-		1.0f, -1.0f, 0.0f,       1.0f, 0.0f,     //bottom right
-		1.0f, 1.0f, 0.0f,        1.0f, 1.0f,     //top right
-		-1.0f, 1.0f, 0.0f,       0.0f, 1.0f,     //top left
-
-		1.0f, -1.0f, 0.0f,       1.0f, 0.0f,     //bottom right
-		-1.0f, 1.0f, 0.0f,       0.0f, 1.0f,     //top left
-		-1.0f, -1.0f, 0.0f,      0.0f, 0.0f      //bottom left
-	};
-
-	//VAO
-	glGenVertexArrays(1, &_vao);
-
-	//VBO
-	// Generate 1 buffer, put the resulting identifier in vertexbuffer
-	glGenBuffers(1, &_vbo);
-
-	glBindVertexArray(_vao);
-	// This will identify our vertex buffer
-	// The following commands will talk about our 'vertexbuffer' buffer
-	glBindBuffer(GL_ARRAY_BUFFER, _vbo);
-	// Give our vertices to OpenGL.
-	glBufferData(GL_ARRAY_BUFFER, sizeof(vertexData), vertexData, GL_STATIC_DRAW);
-
-	glVertexAttribPointer(
-		0,                  // attribute 0. No particular reason for 0, but must match the layout in the shader.
-		3,                  // size
-		GL_FLOAT,           // type
-		GL_FALSE,           // normalized?
-		5 * sizeof(float),                  // stride
-		(void*)0            // array buffer offset
-	);
-	glEnableVertexAttribArray(0);
-
-	glVertexAttribPointer(
-		1,
-		2,                  // size
-		GL_FLOAT,           // type
-		GL_FALSE,           // normalized?
-		5 * sizeof(float),                  // stride
-		(void*)(3 * sizeof(float))          // array buffer offset
-	);
-	glEnableVertexAttribArray(1);
 }
 
 void GameObject::Start()

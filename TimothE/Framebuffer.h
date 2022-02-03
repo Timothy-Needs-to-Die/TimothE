@@ -16,9 +16,9 @@ class Framebuffer
 {
 public:
 	//Creates a frame buffer with a predefined set of vertices
-	Framebuffer(Window* pWidnow, Shader* screenShader, float* quadVertices);
+	Framebuffer(Shader* screenShader, float* quadVertices);
 	//Creates a frame buffer with a whole screen quad defined for vertices
-	Framebuffer(Window* pWidnow, Shader* screenShader);
+	Framebuffer(Shader* screenShader);
 
 	~Framebuffer();
 
@@ -47,7 +47,6 @@ private:
 	void CreateFramebuffer();
 
 	Shader* _pScreenShader;
-	Window* _pWindow;
 
 	float* _pQuadVertices;
 

@@ -1,28 +1,9 @@
 #pragma once
 
-
-#include <ft2build.h>
-#include FT_FREETYPE_H
-#include FT_GLYPH_H
-
-#include <iostream>
-#include <glm.hpp>
-#include <gtc/matrix_transform.hpp>
-
-#include <GL/glew.h>
-#include <GLFW/glfw3.h>
-#include <map>
+#include "Font.h"
 #include "Shader.h"
 #include "GameObject.h"
 #include "Component.h"
-
-struct Character
-{
-	unsigned int _textureID; // ID handle of the glyph texture
-	glm::ivec2 _size;		// Size of glyph
-	glm::ivec2 _bearing;		// Offset from baseline to left/top of glyph
-	unsigned int _advance;	// Offset to advance to next glyph
-};
 
 
 class TextComponent : public Component
@@ -31,7 +12,7 @@ public:
 
 	COMPONENT_STATIC_TYPE(Text_Type);
 
-	TextComponent(GameObject* parentObject, std::string font);
+	TextComponent(GameObject* parentObject);
 	~TextComponent();
 
 	void OnStart();
@@ -39,8 +20,11 @@ public:
 	void OnUpdate(float deltaTime);
 
 	void SetFont(std::string font);
+
+	void GetFontsInFile();
+
 	void LoadFont();
-	void RenderText(Shader& s, std::string text, float x, float y, float scale, glm::vec3 color);
+	void RenderText(Shader& s, std::string text, float x, float y, float _tileScale, glm::vec3 color);
 
 	void SetGameObject(GameObject* newparent) {
 		_parentObject = newparent;
@@ -65,10 +49,9 @@ public:
 	virtual void DrawEditorUI() override;
 private:
 	std::string _UID;
-	unsigned int _VAO, _VBO;
-	std::map<char, Character> _characters;
-	std::string _font;
-	std::string _fontPath;
+
+	Font* _font;
+	std::vector<std::string> _fonts;
 	std::string _text;
 	Shader* _shader;
 	float _scale;
