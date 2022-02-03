@@ -124,8 +124,6 @@ void Editor::EditorImGui(Scene* currentScene)
 
 	//Inspector
 	{
-
-
 		ImGui::Begin("Inspector", 0, ImGuiWindowFlags_NoMove);
 
 		if (_pSelectedGameObject != nullptr)

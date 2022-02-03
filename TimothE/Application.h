@@ -38,11 +38,12 @@ protected:
 private:
 	//Event Handlers
 	bool OnWindowClose(WindowCloseEvent& e);
-	bool OnWindowKeyPressedEvent(KeyPressedEvent& e);
-	bool OnWindowKeyReleasedEvent(KeyReleasedEvent& e);
-	bool OnWindowMouseButtonPressedEvent(MouseButtonPressedEvent& e);
-	bool OnWindowMouseButtonReleasedEvent(MouseButtonReleasedEvent& e);
-	bool OnWindowMouseMovedEvent(MouseMovedEvent& e);
+	bool OnKeyPressedEvent(KeyPressedEvent& e);
+	bool OnKeyReleasedEvent(KeyReleasedEvent& e);
+	bool OnMouseButtonPressedEvent(MouseButtonPressedEvent& e);
+	bool OnMouseButtonReleasedEvent(MouseButtonReleasedEvent& e);
+	bool OnMouseMovedEvent(MouseMovedEvent& e);
+	bool OnMouseScrolledEvent(MouseScrolledEvent& e);
 	bool OnWindowResize(WindowResizeEvent& e);
 
 private:

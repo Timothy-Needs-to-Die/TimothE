@@ -188,12 +188,13 @@ void Application::OnGameEvent(Event& e)
 {
 	EventDispatcher dispatcher(e);
 	dispatcher.Dispatch<WindowCloseEvent>(BIND_EVENT_FN(OnWindowClose));
-	dispatcher.Dispatch<KeyPressedEvent>(BIND_EVENT_FN(OnWindowKeyPressedEvent));
-	dispatcher.Dispatch<KeyReleasedEvent>(BIND_EVENT_FN(OnWindowKeyReleasedEvent));
-	dispatcher.Dispatch<MouseButtonPressedEvent>(BIND_EVENT_FN(OnWindowMouseButtonPressedEvent));
-	dispatcher.Dispatch<MouseButtonReleasedEvent>(BIND_EVENT_FN(OnWindowMouseButtonReleasedEvent));
-	dispatcher.Dispatch<MouseMovedEvent>(BIND_EVENT_FN(OnWindowMouseMovedEvent));
+	dispatcher.Dispatch<KeyPressedEvent>(BIND_EVENT_FN(OnKeyPressedEvent));
+	dispatcher.Dispatch<KeyReleasedEvent>(BIND_EVENT_FN(OnKeyReleasedEvent));
+	dispatcher.Dispatch<MouseButtonPressedEvent>(BIND_EVENT_FN(OnMouseButtonPressedEvent));
+	dispatcher.Dispatch<MouseButtonReleasedEvent>(BIND_EVENT_FN(OnMouseButtonReleasedEvent));
+	dispatcher.Dispatch<MouseMovedEvent>(BIND_EVENT_FN(OnMouseMovedEvent));
 	dispatcher.Dispatch<WindowResizeEvent>(BIND_EVENT_FN(OnWindowResize));
+	dispatcher.Dispatch<MouseScrolledEvent>(BIND_EVENT_FN(OnMouseScrolledEvent));
 }
 
 //on game start start game state
@@ -273,7 +274,7 @@ bool Application::OnWindowClose(WindowCloseEvent& e)
 }
 
 //input event for given input
-bool Application::OnWindowKeyPressedEvent(KeyPressedEvent& e)
+bool Application::OnKeyPressedEvent(KeyPressedEvent& e)
 {
 	//1: Is marked as GLFW repeat value
 	if (e.GetRepeatCount() == 1) {
@@ -289,35 +290,42 @@ bool Application::OnWindowKeyPressedEvent(KeyPressedEvent& e)
 }
 
 //when key is released return true
-bool Application::OnWindowKeyReleasedEvent(KeyReleasedEvent& e)
+bool Application::OnKeyReleasedEvent(KeyReleasedEvent& e)
 {
 	Input::SetKey((TimothEKeyCode)e.GetKeyCode(), RELEASE);
 	return true;
 }
 
 //when key is pressed return true
-bool Application::OnWindowMouseButtonPressedEvent(MouseButtonPressedEvent& e)
+bool Application::OnMouseButtonPressedEvent(MouseButtonPressedEvent& e)
 {
 	Input::SetMouseButton((TimothEMouseCode)e.GetMouseButton(), PRESSED);
 	return true;
 }
 
 //when mouse button is released return true
-bool Application::OnWindowMouseButtonReleasedEvent(MouseButtonReleasedEvent& e)
+bool Application::OnMouseButtonReleasedEvent(MouseButtonReleasedEvent& e)
 {
 	Input::SetMouseButton((TimothEMouseCode)e.GetMouseButton(), RELEASE);
 	return true;
 }
 
 //if mouse is moved return false
-bool Application::OnWindowMouseMovedEvent(MouseMovedEvent& e)
+bool Application::OnMouseMovedEvent(MouseMovedEvent& e)
 {
 	float mouseY = e.GetY();
 
 	mouseY = Window::GetHeight() - mouseY;
 
 	Input::SetMousePosition(e.GetX(), mouseY);
-	return false;
+	return true;
+}
+
+bool Application::OnMouseScrolledEvent(MouseScrolledEvent& e)
+{
+	_pEditor->GetCamera()->OnMouseScrolled(e.GetOffsetY());
+
+	return true;
 }
 
 bool Application::OnWindowResize(WindowResizeEvent& e)

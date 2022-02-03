@@ -6,7 +6,7 @@
 //TODO: Add a system to change how many tiles per unit
 TileMap::TileMap()
 {
-	_mapDimensions = { 28.0f, 16.0f };
+	_mapDimensions = { 1024.0f, 1024.0f };
 	_mapSizeInScreenUnits = glm::vec2(_mapDimensions.x / _tilesPerUnit, _mapDimensions.y / _tilesPerUnit);
 	_tileSize = glm::vec2(128.0f);
 	_spritemapResolution = glm::vec2(2560.0f, 1664.0f);
@@ -142,45 +142,45 @@ glm::vec2 TileMap::MousePosToTile(Camera* cam)
 	glm::vec2 camPos = cam->PositionXY();
 	camPos -= cam->Size();
 
-	glm::vec2 attempt2 = (camPos / 2.0f) + (mousePos / windowSize);
-	attempt2.x = attempt2.x * (_tilesPerUnit / 2.0f);
+	glm::vec2 convertedPosition = (camPos / 2.0f) + (mousePos / windowSize);
+	convertedPosition.x = convertedPosition.x * (_tilesPerUnit / 2.0f);
 	if (mousePos.x < windowSize.x / 8.0f) {
-		attempt2.x += _tileScale * 0.5f;
+		convertedPosition.x += _tileScale * 0.5f;
 	}
 	else if (mousePos.x < windowSize.x / 4.0f) {
-		attempt2.x += _tileScale * 1.5f;
+		convertedPosition.x += _tileScale * 1.5f;
 	}
 	else if (mousePos.x < windowSize.x / 8.0f + ((windowSize.x / 8.0f) * 2)) {
-		attempt2.x += _tileScale * 2.5f;
+		convertedPosition.x += _tileScale * 2.5f;
 	}
 	else if (mousePos.x < windowSize.x / 2.0f) {
-		attempt2.x += _tileScale * 3.0f;
+		convertedPosition.x += _tileScale * 3.0f;
 	}
 	else if (mousePos.x < windowSize.x / 2.0f + (windowSize.x / 8.0f)) {
-		attempt2.x += _tileScale * 3.5f;
+		convertedPosition.x += _tileScale * 3.5f;
 	}
 	else if (mousePos.x < windowSize.x / 2.0f + (windowSize.x / 4.0f)) {
-		attempt2.x += _tileScale * 4.5f;
+		convertedPosition.x += _tileScale * 4.5f;
 	}
 	else if (mousePos.x < windowSize.x / 2.0f + ((windowSize.x / 8.0f) * 3)) {
-		attempt2.x += _tileScale * 5.5f;
+		convertedPosition.x += _tileScale * 5.5f;
 	}
 	else
 	{
-		attempt2.x += _tileScale * 6.0f;
+		convertedPosition.x += _tileScale * 6.0f;
 	}
-	attempt2.y = attempt2.y * (_tilesPerUnit / 2.0f);
+	convertedPosition.y = convertedPosition.y * (_tilesPerUnit / 2.0f);
 
-	if (attempt2.x > _mapSizeInScreenUnits.x) {
+	if (convertedPosition.x > _mapSizeInScreenUnits.x) {
 		//Puts tile on upmost index
-		attempt2.x = _mapSizeInScreenUnits.x - _tileScale;
+		convertedPosition.x = _mapSizeInScreenUnits.x - _tileScale;
 	}
-	if (attempt2.y > _mapSizeInScreenUnits.y) {
+	if (convertedPosition.y > _mapSizeInScreenUnits.y) {
 		//Puts tile on furthest right index
-		attempt2.y = _mapSizeInScreenUnits.y - _tileScale;
+		convertedPosition.y = _mapSizeInScreenUnits.y - _tileScale;
 	}
 
-	return attempt2;
+	return convertedPosition;
 }
 
 void TileMap::SetTileSize(glm::vec2 tileSize)
@@ -210,7 +210,7 @@ void TileMap::Clear()
 void TileMap::RenderMap(Camera* cam)
 {
 	glm::vec3 camPos = cam->Position();
-	float extents = 4.0f;
+	float extents = cam->GetAspectRatio() * cam->GetZoomLevel() * 2.0f;
 	Renderer2D::BeginRender(cam);
 
 	for (float y = 0; y < _mapSizeInScreenUnits.y; y += _yGapBetweenTiles) {

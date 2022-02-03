@@ -24,24 +24,18 @@ void Camera::OnResize(float width, float height)
 	SetProjection(-_aspectRatio * _zoomLevel, _aspectRatio * _zoomLevel, -_zoomLevel, _zoomLevel);
 }
 
+void Camera::OnMouseScrolled(float yOffset)
+{
+	_zoomLevel -= yOffset * 0.25f;
+	_zoomLevel = std::max(_zoomLevel, 0.25f); //Max Zoom In
+	_zoomLevel = std::min(_zoomLevel, 5.0f); //Max Zoom Out (higher values than 5.0 can cause lag when rendering tile maps)
+	SetProjection(-_aspectRatio * _zoomLevel, _aspectRatio * _zoomLevel, -_zoomLevel, _zoomLevel);
+}
+
 void Camera::SetProjection(float left, float right, float bottom, float top)
 {
 	_projection = glm::ortho(left, right, bottom, top);
 	_viewProj = _projection * _view;
-}
-
-//changes FOV when scrolling
-void Camera::ProcessScrollMovement(float yOffset)
-{
-	//_mFOV -= yOffset;
-	//if (_mFOV < 1.0f) {
-	//	_mFOV = 1.0f;
-	//}
-	//if (_mFOV > 45.0f) {
-	//	_mFOV = 45.0f;
-	//}
-	//TODO: Reimplement
-	//_mProjection = glm::ortho(0.0f, (float)_mWidth / (float)_mHeight, 0.1f, 100.0f);
 }
 
 void Camera::RecalculateViewMatrix()
