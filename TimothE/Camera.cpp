@@ -18,6 +18,18 @@ void Camera::Update(float dt)
 	RecalculateViewMatrix();
 }
 
+void Camera::OnResize(float width, float height)
+{
+	_aspectRatio = width / height;
+	SetProjection(-_aspectRatio * _zoomLevel, _aspectRatio * _zoomLevel, -_zoomLevel, _zoomLevel);
+}
+
+void Camera::SetProjection(float left, float right, float bottom, float top)
+{
+	_projection = glm::ortho(left, right, bottom, top);
+	_viewProj = _projection * _view;
+}
+
 //changes FOV when scrolling
 void Camera::ProcessScrollMovement(float yOffset)
 {

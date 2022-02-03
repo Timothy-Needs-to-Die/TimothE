@@ -187,12 +187,13 @@ void Application::GameLoop()
 void Application::OnGameEvent(Event& e)
 {
 	EventDispatcher dispatcher(e);
-	dispatcher.Dispatch<WindowCloseEvent>(BIND_EVENT_FN(OnGameWindowClose));
-	dispatcher.Dispatch<KeyPressedEvent>(BIND_EVENT_FN(OnGameWindowKeyPressedEvent));
-	dispatcher.Dispatch<KeyReleasedEvent>(BIND_EVENT_FN(OnGameWindowKeyReleasedEvent));
-	dispatcher.Dispatch<MouseButtonPressedEvent>(BIND_EVENT_FN(OnGameWindowMouseButtonPressedEvent));
-	dispatcher.Dispatch<MouseButtonReleasedEvent>(BIND_EVENT_FN(OnGameWindowMouseButtonReleasedEvent));
-	dispatcher.Dispatch<MouseMovedEvent>(BIND_EVENT_FN(OnGameWindowMouseMovedEvent));
+	dispatcher.Dispatch<WindowCloseEvent>(BIND_EVENT_FN(OnWindowClose));
+	dispatcher.Dispatch<KeyPressedEvent>(BIND_EVENT_FN(OnWindowKeyPressedEvent));
+	dispatcher.Dispatch<KeyReleasedEvent>(BIND_EVENT_FN(OnWindowKeyReleasedEvent));
+	dispatcher.Dispatch<MouseButtonPressedEvent>(BIND_EVENT_FN(OnWindowMouseButtonPressedEvent));
+	dispatcher.Dispatch<MouseButtonReleasedEvent>(BIND_EVENT_FN(OnWindowMouseButtonReleasedEvent));
+	dispatcher.Dispatch<MouseMovedEvent>(BIND_EVENT_FN(OnWindowMouseMovedEvent));
+	dispatcher.Dispatch<WindowResizeEvent>(BIND_EVENT_FN(OnWindowResize));
 }
 
 //on game start start game state
@@ -264,7 +265,7 @@ void Application::ImGUISwitchRender()
 }
 
 //closes game window
-bool Application::OnGameWindowClose(WindowCloseEvent& e)
+bool Application::OnWindowClose(WindowCloseEvent& e)
 {
 	std::cout << "Game Window: " << e.ToString() << std::endl;
 	_mRunning = false;
@@ -272,7 +273,7 @@ bool Application::OnGameWindowClose(WindowCloseEvent& e)
 }
 
 //input event for given input
-bool Application::OnGameWindowKeyPressedEvent(KeyPressedEvent& e)
+bool Application::OnWindowKeyPressedEvent(KeyPressedEvent& e)
 {
 	//1: Is marked as GLFW repeat value
 	if (e.GetRepeatCount() == 1) {
@@ -288,28 +289,28 @@ bool Application::OnGameWindowKeyPressedEvent(KeyPressedEvent& e)
 }
 
 //when key is released return true
-bool Application::OnGameWindowKeyReleasedEvent(KeyReleasedEvent& e)
+bool Application::OnWindowKeyReleasedEvent(KeyReleasedEvent& e)
 {
 	Input::SetKey((TimothEKeyCode)e.GetKeyCode(), RELEASE);
 	return true;
 }
 
 //when key is pressed return true
-bool Application::OnGameWindowMouseButtonPressedEvent(MouseButtonPressedEvent& e)
+bool Application::OnWindowMouseButtonPressedEvent(MouseButtonPressedEvent& e)
 {
 	Input::SetMouseButton((TimothEMouseCode)e.GetMouseButton(), PRESSED);
 	return true;
 }
 
 //when mouse button is released return true
-bool Application::OnGameWindowMouseButtonReleasedEvent(MouseButtonReleasedEvent& e)
+bool Application::OnWindowMouseButtonReleasedEvent(MouseButtonReleasedEvent& e)
 {
 	Input::SetMouseButton((TimothEMouseCode)e.GetMouseButton(), RELEASE);
 	return true;
 }
 
 //if mouse is moved return false
-bool Application::OnGameWindowMouseMovedEvent(MouseMovedEvent& e)
+bool Application::OnWindowMouseMovedEvent(MouseMovedEvent& e)
 {
 	float mouseY = e.GetY();
 
@@ -317,4 +318,12 @@ bool Application::OnGameWindowMouseMovedEvent(MouseMovedEvent& e)
 
 	Input::SetMousePosition(e.GetX(), mouseY);
 	return false;
+}
+
+bool Application::OnWindowResize(WindowResizeEvent& e)
+{
+	_pGameCamera->OnResize((float)e.GetWidth(), (float)e.GetHeight());
+	_pEditor->GetCamera()->OnResize((float)e.GetWidth(), (float)e.GetHeight());
+
+	return true;
 }

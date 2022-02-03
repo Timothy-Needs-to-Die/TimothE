@@ -72,6 +72,12 @@ void Editor::EditorLoop(Scene* currentScene, float dt, bool& editorMode, bool& p
 
 void Editor::EditorImGui(Scene* currentScene)
 {
+	static ImGuiWindowFlags flags = ImGuiWindowFlags_NoDecoration | ImGuiWindowFlags_NoMove | ImGuiWindowFlags_NoResize | ImGuiWindowFlags_NoSavedSettings;
+
+	const ImGuiViewport* viewport = ImGui::GetMainViewport();
+	ImGui::SetNextWindowPos(true ? viewport->WorkPos : viewport->Pos);
+	ImGui::SetNextWindowSize(true ? viewport->WorkSize : viewport->Size);
+
 	ImGui::ShowDemoWindow();
 
 	static bool changeObject = false;

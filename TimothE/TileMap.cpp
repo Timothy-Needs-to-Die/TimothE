@@ -1,5 +1,6 @@
 #include "TileMap.h"
 #include "Renderer2D.h"
+#include "Window.h"
 
 //TODO: Size details
 //TODO: Add a system to change how many tiles per unit
@@ -135,7 +136,7 @@ glm::vec2 TileMap::MousePosToTile(Camera* cam)
 	//std::cout << "Mouse Position: " << mousePos.x << ", " << mousePos.y << std::endl;
 
 	//size of the editor window
-	glm::vec2 windowSize = { 960.0f, 540.0f };
+	glm::vec2 windowSize = Window::GetHalfWindowSize();
 
 	//Get the camera's position and offset it by the camera's size
 	glm::vec2 camPos = cam->PositionXY();
@@ -143,25 +144,25 @@ glm::vec2 TileMap::MousePosToTile(Camera* cam)
 
 	glm::vec2 attempt2 = (camPos / 2.0f) + (mousePos / windowSize);
 	attempt2.x = attempt2.x * (_tilesPerUnit / 2.0f);
-	if (mousePos.x < 120.0f) {
+	if (mousePos.x < windowSize.x / 8.0f) {
 		attempt2.x += _tileScale * 0.5f;
 	}
-	else if (mousePos.x < 240.0f) {
+	else if (mousePos.x < windowSize.x / 4.0f) {
 		attempt2.x += _tileScale * 1.5f;
 	}
-	else if (mousePos.x < 360.0f) {
+	else if (mousePos.x < windowSize.x / 8.0f + ((windowSize.x / 8.0f) * 2)) {
 		attempt2.x += _tileScale * 2.5f;
 	}
-	else if (mousePos.x < 480.0f) {
+	else if (mousePos.x < windowSize.x / 2.0f) {
 		attempt2.x += _tileScale * 3.0f;
 	}
-	else if (mousePos.x < 600.0f) {
+	else if (mousePos.x < windowSize.x / 2.0f + (windowSize.x / 8.0f)) {
 		attempt2.x += _tileScale * 3.5f;
 	}
-	else if (mousePos.x < 720.0f) {
+	else if (mousePos.x < windowSize.x / 2.0f + (windowSize.x / 4.0f)) {
 		attempt2.x += _tileScale * 4.5f;
 	}
-	else if (mousePos.x < 840.0f) {
+	else if (mousePos.x < windowSize.x / 2.0f + ((windowSize.x / 8.0f) * 3)) {
 		attempt2.x += _tileScale * 5.5f;
 	}
 	else

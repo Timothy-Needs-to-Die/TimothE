@@ -37,12 +37,13 @@ protected:
 
 private:
 	//Event Handlers
-	bool OnGameWindowClose(WindowCloseEvent& e);
-	bool OnGameWindowKeyPressedEvent(KeyPressedEvent& e);
-	bool OnGameWindowKeyReleasedEvent(KeyReleasedEvent& e);
-	bool OnGameWindowMouseButtonPressedEvent(MouseButtonPressedEvent& e);
-	bool OnGameWindowMouseButtonReleasedEvent(MouseButtonReleasedEvent& e);
-	bool OnGameWindowMouseMovedEvent(MouseMovedEvent& e);
+	bool OnWindowClose(WindowCloseEvent& e);
+	bool OnWindowKeyPressedEvent(KeyPressedEvent& e);
+	bool OnWindowKeyReleasedEvent(KeyReleasedEvent& e);
+	bool OnWindowMouseButtonPressedEvent(MouseButtonPressedEvent& e);
+	bool OnWindowMouseButtonReleasedEvent(MouseButtonReleasedEvent& e);
+	bool OnWindowMouseMovedEvent(MouseMovedEvent& e);
+	bool OnWindowResize(WindowResizeEvent& e);
 
 private:
 	AudioEngine* _pAudio;
