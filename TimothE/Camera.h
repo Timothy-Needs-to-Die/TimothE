@@ -2,13 +2,16 @@
 
 #include "pch.h"
 #include "Input.h"
+#include "Component.h"
 
-class Camera
+class Camera : public Component
 {
 public:
-	Camera(float left, float right, float bottom, float top);
+	Camera(float left, float right, float bottom, float top, std::string name, GameObject* parent);
 
-	void Update(float dt);
+	void OnStart() override;
+	void OnUpdate(float deltaTime) override;
+	void OnEnd() override;
 
 	glm::mat4 Proj() { return _projection; }
 	glm::mat4 View() { return _view; }
@@ -33,7 +36,7 @@ public:
 	void PrintInfo() {
 		std::cout << "Camera: " << _cameraPos.x << ", " << _cameraPos.y << ", " << _cameraPos.z << std::endl;
 	}
-
+	std::string _mName;
 private:
 	void PollInput(float dt);
 
@@ -48,6 +51,8 @@ private:
 	glm::mat4 _projection;
 	glm::mat4 _view;
 	glm::mat4 _viewProj;
+
+	
 
 };
 
