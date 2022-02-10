@@ -141,6 +141,7 @@
     <ClInclude Include="OpenGLError.h" />
     <ClInclude Include="Quad.h" />
     <ClInclude Include="Physics.h" />
+    <ClInclude Include="ColliderBase.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Application.cpp" />
@@ -204,5 +205,6 @@
     <ClCompile Include="Particle.cpp" />
     <ClCompile Include="Font.cpp" />
     <ClCompile Include="Physics.cpp" />
+    <ClCompile Include="ColliderBase.cpp" />
   </ItemGroup>
 </Project>

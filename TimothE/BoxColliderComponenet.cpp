@@ -3,7 +3,7 @@
 #include "imgui.h"
 #include "Input.h"
 
-BoxColliderComponent::BoxColliderComponent(GameObject* parent) : Component(parent)
+BoxColliderComponent::BoxColliderComponent(GameObject* parent) : ColliderBase(parent)
 {
 	SetType(Component::Boxcollision_Type);
 	SetCategory(Component::Collisions_Category);

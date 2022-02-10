@@ -18,7 +18,7 @@ public:
 	static bool Intersects(glm::vec2 p, CircleCollider* c1);
 
 private:
-	static void HandleCollision(Transform* t1, Transform* t2);
+	static void HandleCollision(ColliderBase* c1, ColliderBase* c2);
 
 
 

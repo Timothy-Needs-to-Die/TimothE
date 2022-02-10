@@ -11,7 +11,7 @@ bool Physics::Intersects(BoxColliderComponent* b1, BoxColliderComponent* b2)
 		(r2->yPos + r1->height >= r1->yPos)) 
 	{
 		if (!b1->IsTrigger() && !b2->IsTrigger()) {
-			HandleCollision(b1->GetParent()->GetTransform(), b2->GetParent()->GetTransform());
+			HandleCollision(b1, b2);
 		}
 		else {
 			if (b1->IsTrigger()) {
@@ -50,7 +50,7 @@ bool Physics::Intersects(BoxColliderComponent* b1, CircleCollider* c1)
 	if (distance <= cr) {
 
 		if (!b1->IsTrigger() && !c1->IsTrigger()) {
-			HandleCollision(b1->GetParent()->GetTransform(), c1->GetParent()->GetTransform());
+			HandleCollision(b1, c1);
 		}
 		else {
 			if (b1->IsTrigger()) {
@@ -91,7 +91,7 @@ bool Physics::Intersects(CircleCollider* c1, CircleCollider* c2)
 
 	if (distance <= c1r + c2r) {
 		if (!c2->IsTrigger() && !c1->IsTrigger()) {
-			HandleCollision(c2->GetParent()->GetTransform(), c1->GetParent()->GetTransform());
+			HandleCollision(c2, c1);
 		}
 		else {
 			if (c2->IsTrigger()) {
@@ -120,24 +120,25 @@ bool Physics::Intersects(CircleCollider* c1, glm::vec2 p)
 	return false;
 }
 
-void Physics::HandleCollision(Transform* t1, Transform* t2)
+void Physics::HandleCollision(ColliderBase* c1, ColliderBase* c2)
 {
-
+	c1->Collided();
+	c2->Collided();
 }
 
 
 //Handlers for different orders of paramaters, just helps with usability
 bool Physics::Intersects(CircleCollider* c1, BoxColliderComponent* b1)
 {
-	Intersects(b1, c1);
+	return Intersects(b1, c1);
 }
 bool Physics::Intersects(glm::vec2 p, BoxColliderComponent* b1)
 {
-	Intersects(b1, p);
+	return Intersects(b1, p);
 }
 bool Physics::Intersects(glm::vec2 p, CircleCollider* c1)
 {
-	Intersects(c1, p);
+	return Intersects(c1, p);
 }
 
 

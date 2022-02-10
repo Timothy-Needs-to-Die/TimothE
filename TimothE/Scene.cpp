@@ -6,8 +6,10 @@
 #include "Button.h"
 #include "ResourceManager.h"
 #include "Renderer2D.h"
+#include "Physics.h"
 
 #include "SubTexture2D.h"
+#include "CircleCollider.h"
 
 int Scene::nextID = 0;
 std::vector<GameObject*> Scene::_listOfGameObjects;
@@ -41,11 +43,12 @@ Scene::Scene(std::string name)
 	_pTestObject->GetTransform()->SetPosition(0.0f, 0.0f);
 	_pTestObject->GetTransform()->SetScale({0.2f, 0.2f});
 
-	GameObject* _pTestObject2 = new GameObject("In World Object", ObjectType::Player);
+	_pTestObject2 = new GameObject("In World Object", ObjectType::Player);
 	_pTestObject2->LoadTexture(ResourceManager::GetTexture("lenna"));
 	_pTestObject2->AddComponent(new BoxColliderComponent(_pTestObject2));
-	_pTestObject2->GetTransform()->SetPosition(550, 360);
-	_pTestObject2->GetTransform()->SetScale({ 0.2f,0.2f });
+	_pTestObject2->GetTransform()->SetPosition(1.2f, 1.0f);
+	_pTestObject2->GetTransform()->SetScale({ 0.4f,0.4f });
+	_pTestObject2->GetComponent<BoxColliderComponent>()->SetTrigger(true);
 
 
 	GameObject* _pButtonTestingObject = new GameObject("BUTTON", ObjectType::UI);
@@ -58,9 +61,20 @@ Scene::Scene(std::string name)
 	_pButtonTestingObject->GetTransform()->SetScale({ 0.2f, 0.2f });
 	_pButtonTestingObject->SetType(ObjectType::UI);
 
+	_pCircleTest = new GameObject("Circle Collision Test");
+	_pCircleTest->AddComponent(new CircleCollider(_pCircleTest))->AddTriggerEvent(&CircleBoxTest);
+	_pCircleTest->LoadTexture(ResourceManager::GetTexture("lenna"));
+	_pCircleTest->GetTransform()->SetPosition(1.0f, 1.0f);
+	_pCircleTest->GetTransform()->SetScale({ 0.5f,0.5f });
+	_pCircleTest->GetComponent<CircleCollider>()->SetTrigger(true);
+	
+
+	
+
 	AddGameObject(_pTestObject);
 	AddGameObject(_pTestObject2);
 	AddGameObject(_pButtonTestingObject);
+	AddGameObject(_pCircleTest);
 
 	GameObject* _pTextObj = new GameObject("TEXTOBJ", ObjectType::UI);
 	_pTextObj->AddComponent(new TextComponent(_pTextObj));
@@ -142,6 +156,8 @@ void Scene::Update(float deltaTime)
 		_listOfGameObjects[1]->GetTransform()->SetPosition(pos.x - 0.5, pos.y );
 	}
 
+	Physics::Intersects(_pCircleTest->GetComponent<CircleCollider>(), _pTestObject2->GetComponent<BoxColliderComponent>());
+
 	//////////////////
 	//END OF TEST CODE
 	//////////////////
@@ -161,13 +177,18 @@ void Scene::RenderScene(Camera* cam)
 					obj->GetTransform()->GetScale(), obj->GetComponent<Texture2D>());
 			}
 			else {
-				Renderer2D::DrawQuad(ConvertWorldToScreen(obj->GetTransform()->GetPosition()),
+				Renderer2D::DrawQuad(obj->GetTransform()->GetPosition(),
 					obj->GetTransform()->GetScale(), objTex);
 			}
 		}
 	}
 
 	Renderer2D::EndRender();
+}
+
+void Scene::CircleBoxTest()
+{
+	std::cout << "Circle Box Collision" << std::endl;
 }
 
 void Scene::RemoveGameObject(GameObject* gameObject)

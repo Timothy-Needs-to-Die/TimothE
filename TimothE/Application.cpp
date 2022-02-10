@@ -329,9 +329,7 @@ bool Application::OnMouseMovedEvent(MouseMovedEvent& e)
 	mouseX *= 2.0f;
 	mouseX += 1.0f;
 
-	
-
-	std::cout << "Mouse (" << mouseX << ", " << mouseY << ")" << std::endl;
+	//std::cout << "Mouse (" << mouseX << ", " << mouseY << ")" << std::endl;
 
 	Input::SetMousePosition(mouseX, mouseY);
 	return true;
