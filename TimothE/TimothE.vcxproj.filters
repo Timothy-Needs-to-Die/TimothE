@@ -140,6 +140,7 @@
     <ClInclude Include="Font.h" />
     <ClInclude Include="OpenGLError.h" />
     <ClInclude Include="Quad.h" />
+    <ClInclude Include="Physics.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Application.cpp" />
@@ -202,5 +203,6 @@
     <ClCompile Include="ParticleSystem.cpp" />
     <ClCompile Include="Particle.cpp" />
     <ClCompile Include="Font.cpp" />
+    <ClCompile Include="Physics.cpp" />
   </ItemGroup>
 </Project>

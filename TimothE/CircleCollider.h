@@ -44,6 +44,7 @@ public:
 	void SetColliderRadius(float radius) { _radius = radius; };
 	//Gets the size of the collider as a vec2
 	float GetColliderSize() { return _radius; };
+	glm::vec2 GetPosition() { return _pParentObject->GetTransform()->GetPosition(); }
 
 	/*
 	* if the collider is a trigger, an interaction/encounter could occur
