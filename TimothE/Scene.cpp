@@ -52,7 +52,7 @@ Scene::Scene(std::string name)
 	_pButtonTestingObject->AddComponent(new Button(_pButtonTestingObject));
 	_pButtonTestingObject->AddComponent(new BoxColliderComponent(_pButtonTestingObject));
 	_pButtonTestingObject->AddComponent(new TextComponent(_pTestObject));
-	_pButtonTestingObject->LoadTexture(ResourceManager::GetTexture("lenna"));
+	_pButtonTestingObject->LoadTexture(ResourceManager::GetTexture("fish"));
 	_pButtonTestingObject->SetShader("ui");
 	_pButtonTestingObject->GetTransform()->SetPosition(0.0f, 0.0f);
 	_pButtonTestingObject->GetTransform()->SetScale({ 0.2f, 0.2f });
@@ -157,8 +157,8 @@ void Scene::RenderScene(Camera* cam)
 
 		if (objTex != nullptr) {
 			if (obj->GetObjectType() == ObjectType::UI) {
-			Renderer2D::DrawUIQuad(obj->GetTransform()->GetPosition(),
-				obj->GetTransform()->GetScale(), obj->GetComponent<Texture2D>());
+				Renderer2D::DrawUIQuad(obj->GetTransform()->GetPosition(),
+					obj->GetTransform()->GetScale(), obj->GetComponent<Texture2D>());
 			}
 			else {
 				Renderer2D::DrawQuad(ConvertWorldToScreen(obj->GetTransform()->GetPosition()),

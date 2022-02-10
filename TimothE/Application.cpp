@@ -314,10 +314,26 @@ bool Application::OnMouseButtonReleasedEvent(MouseButtonReleasedEvent& e)
 bool Application::OnMouseMovedEvent(MouseMovedEvent& e)
 {
 	float mouseY = e.GetY();
+	float mouseX = e.GetX();
 
 	mouseY = Window::GetHeight() - mouseY;
+	
+	mouseY /= Window::GetHeight();
+	mouseX /= Window::GetWidth();
 
-	Input::SetMousePosition(e.GetX(), mouseY);
+	mouseY -= 1.0f;
+	mouseY *= 2.0f;
+	mouseY += 1.0f;
+
+	mouseX -= 1.0f;
+	mouseX *= 2.0f;
+	mouseX += 1.0f;
+
+	
+
+	std::cout << "Mouse (" << mouseX << ", " << mouseY << ")" << std::endl;
+
+	Input::SetMousePosition(mouseX, mouseY);
 	return true;
 }
 

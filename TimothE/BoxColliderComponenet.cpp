@@ -42,14 +42,14 @@ void BoxColliderComponent::OnUpdate(float deltaTime)
 	if (Component::IsEnabled())
 	{
 		// Update our center and size from the transform incase its moved.
-		glm::vec2 objectCenterPoint = GetParent()->GetTransform()->GetPosition();
-		glm::vec2 objectScale = GetParent()->GetTransform()->GetScale();
+		glm::vec2 position = _pParentObject->GetTransform()->GetPosition();
+		glm::vec2 scale = _pParentObject->GetTransform()->GetScale();
 
 		// Update our collider to the correct position
-		_boxCollider->xPos = objectCenterPoint.x - objectScale.x;
-		_boxCollider->yPos = objectCenterPoint.y - objectScale.y;
-		_boxCollider->width = objectScale.x * 2;
-		_boxCollider->height = objectScale.y * 2;
+		_boxCollider->xPos = position.x;
+		_boxCollider->yPos = position.y;
+		_boxCollider->width = scale.x;
+		_boxCollider->height = scale.y;
 
 		// debug	
 		//float mouseX = Input::GetMouseX();
