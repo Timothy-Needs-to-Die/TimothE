@@ -280,6 +280,19 @@ void Editor::EditorImGui(Scene* currentScene)
 					{
 						_pSelectedGameObject->AddComponent<ParticleSystem>(new ParticleSystem(100, glm::vec4(1.0f), new Texture2D((char*)texPath.c_str()), _pSelectedGameObject->GetTransform()));
 					}
+
+					if (ImGui::Button("Camera"))
+					{
+						float aspectRatio = Window::GetAspectRatio();
+						float zoomLevel = 1.0f;
+
+						float left = -aspectRatio * zoomLevel;
+						float right = aspectRatio * zoomLevel;
+						float bottom = -zoomLevel;
+						float top = zoomLevel;
+						_pSelectedGameObject->AddComponent<Camera>(new Camera(left, right, bottom, top, _pSelectedGameObject->GetName(), _pSelectedGameObject));
+						
+					}
 				}
 			}
 		}
