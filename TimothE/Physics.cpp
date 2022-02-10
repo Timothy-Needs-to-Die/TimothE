@@ -10,7 +10,18 @@ bool Physics::Intersects(BoxColliderComponent* b1, BoxColliderComponent* b2)
 		(r1->yPos + r1->height >= r2->yPos) &&
 		(r2->yPos + r1->height >= r1->yPos)) 
 	{
-		HandleCollision(b1->GetParent()->GetTransform(), b2->GetParent()->GetTransform());
+		if (!b1->IsTrigger() && !b2->IsTrigger()) {
+			HandleCollision(b1->GetParent()->GetTransform(), b2->GetParent()->GetTransform());
+		}
+		else {
+			if (b1->IsTrigger()) {
+				b1->Triggered();
+			}
+			if (b2->IsTrigger()) {
+				b2->Triggered();
+			}
+		}
+
 		return true;
 	}
 	return false;
@@ -37,7 +48,18 @@ bool Physics::Intersects(BoxColliderComponent* b1, CircleCollider* c1)
 	float distance = sqrt((distX * distX) + (distY * distY));
 
 	if (distance <= cr) {
-		HandleCollision(b1->GetParent()->GetTransform(), c1->GetParent()->GetTransform());
+
+		if (!b1->IsTrigger() && !c1->IsTrigger()) {
+			HandleCollision(b1->GetParent()->GetTransform(), c1->GetParent()->GetTransform());
+		}
+		else {
+			if (b1->IsTrigger()) {
+				b1->Triggered();
+			}
+			if (c1->IsTrigger()) {
+				c1->Triggered();
+			}
+		}
 		return true;
 	}
 
@@ -68,7 +90,17 @@ bool Physics::Intersects(CircleCollider* c1, CircleCollider* c2)
 	float distance = sqrt((distX * distX) + (distY * distY));
 
 	if (distance <= c1r + c2r) {
-		HandleCollision(c1->GetParent()->GetTransform(), c2->GetParent()->GetTransform());
+		if (!c2->IsTrigger() && !c1->IsTrigger()) {
+			HandleCollision(c2->GetParent()->GetTransform(), c1->GetParent()->GetTransform());
+		}
+		else {
+			if (c2->IsTrigger()) {
+				c2->Triggered();
+			}
+			if (c1->IsTrigger()) {
+				c1->Triggered();
+			}
+		}
 		return true;
 	}
 	return false;
@@ -76,7 +108,16 @@ bool Physics::Intersects(CircleCollider* c1, CircleCollider* c2)
 
 bool Physics::Intersects(CircleCollider* c1, glm::vec2 p)
 {
+	glm::vec2 cp = c1->GetPosition();
 
+	float distX = p.x - cp.x;
+	float distY = p.y - cp.y;
+	float distance = sqrt((distX * distX) + (distY * distY));
+
+	if (distance < c1->GetColliderSize()) {
+		return true;
+	}
+	return false;
 }
 
 void Physics::HandleCollision(Transform* t1, Transform* t2)

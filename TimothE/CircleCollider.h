@@ -4,9 +4,9 @@
 #include "Input.h"
 #include "UID.h"
 #include "pch.h"
-#include "Component.h"
+#include "ColliderBase.h"
 
-class CircleCollider : public Component
+class CircleCollider : public ColliderBase
 {
 public:
 	COMPONENT_STATIC_TYPE(Boxcollision_Type);
@@ -46,19 +46,8 @@ public:
 	float GetColliderSize() { return _radius; };
 	glm::vec2 GetPosition() { return _pParentObject->GetTransform()->GetPosition(); }
 
-	/*
-	* if the collider is a trigger, an interaction/encounter could occur
-	* if not set to a trigger, then typical collisions take place
-	*/
 
-	//Sets the collider to be a trigger or not
-	void SetTrigger(bool isTrigger) { _isTrigger = isTrigger; };
-	//Checks to see if the collider is a trigger
-	bool IsTrigger() {
-		return _isTrigger;
-	};
 private:
 	float _radius;
 	glm::vec2 _centre;
-	bool _isTrigger;
 };
