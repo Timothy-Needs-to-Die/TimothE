@@ -1,7 +1,9 @@
 #include "Camera.h"
 
-Camera::Camera(float left, float right, float bottom, float top, std::string name)
+Camera::Camera(float left, float right, float bottom, float top, std::string name, GameObject* parent) : Component(parent)
 {
+	SetType(Component::Camera_Type);
+	SetCategory(Component::Graphics_Category);
 	std::cout << "Camera created" << std::endl;
 	_cameraPos = glm::vec3(0.0f, 0.0f, -1.0f);
 	_view = glm::mat4(1.0f);
@@ -11,8 +13,13 @@ Camera::Camera(float left, float right, float bottom, float top, std::string nam
 	_zoomLevel = abs(bottom);
 	RecalculateViewMatrix();
 }
-
-void Camera::Update(float dt)
+void Camera::OnStart()
+{
+}
+void Camera::OnEnd()
+{
+}
+void Camera::OnUpdate(float dt)
 {
 	PollInput(dt);
 	RecalculateViewMatrix();

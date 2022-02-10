@@ -81,9 +81,11 @@ void Application::Init(bool devMode)
 	float right = aspectRatio * zoomLevel;
 	float bottom = -zoomLevel;
 	float top = zoomLevel;
-	_pGameCamera = new Camera(left, right, bottom, top, "Main Camera");
+	_pGameCamera = new Camera(left, right, bottom, top, "Main Camera", NULL);
+	
 	_pGameCamera->SetCameraSpeed(2.5f);
 	_pCameraManager = new CameraManager(_pGameCamera);
+	
 	//_pCameraManager->_pCameras = _pCurrentScene->FindObjectsOfType<Camera>();
 	
 	_pTilemap = new TileMap();
@@ -228,7 +230,7 @@ void Application::GameRender(Camera* cam)
 //updates game scene
 void Application::GameUpdate(float dt)
 {
-	_pCameraManager->_pcurrentCamera->Update(dt);
+	_pCameraManager->_pcurrentCamera->OnUpdate(dt);
 	_pCurrentScene->Update(dt);
 }
 

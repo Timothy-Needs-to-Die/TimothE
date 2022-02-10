@@ -2,13 +2,16 @@
 
 #include "pch.h"
 #include "Input.h"
+#include "Component.h"
 
-class Camera
+class Camera : public Component
 {
 public:
-	Camera(float left, float right, float bottom, float top, std::string name);
+	Camera(float left, float right, float bottom, float top, std::string name, GameObject* parent);
 
-	void Update(float dt);
+	void OnStart() override;
+	void OnUpdate(float deltaTime) override;
+	void OnEnd() override;
 
 	glm::mat4 Proj() { return _projection; }
 	glm::mat4 View() { return _view; }
