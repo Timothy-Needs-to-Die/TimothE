@@ -292,7 +292,6 @@ void Editor::EditorImGui(Scene* currentScene)
 					{
 						float aspectRatio = Window::GetAspectRatio();
 						float zoomLevel = 1.0f;
-
 						float left = -aspectRatio * zoomLevel;
 						float right = aspectRatio * zoomLevel;
 						float bottom = -zoomLevel;

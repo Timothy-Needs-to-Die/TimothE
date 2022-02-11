@@ -12,6 +12,7 @@ public:
 	void OnStart() override;
 	void OnUpdate(float deltaTime) override;
 	void OnEnd() override;
+	void DrawEditorUI() override;
 
 	glm::mat4 Proj() { return _projection; }
 	glm::mat4 View() { return _view; }
@@ -51,6 +52,7 @@ private:
 	glm::mat4 _projection;
 	glm::mat4 _view;
 	glm::mat4 _viewProj;
+	float x, y, z = 0;
 
 	
 

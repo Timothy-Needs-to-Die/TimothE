@@ -86,8 +86,7 @@ void Application::Init(bool devMode)
 
 	_pGameCamera->SetCameraSpeed(2.5f);
 	_pCameraManager = new CameraManager(_pGameCamera);
-
-	//_pCameraManager->_pCameras = _pCurrentScene->FindObjectsOfType<Camera>();
+	_pCameraManager->_pCameras = _pCurrentScene->FindObjectsOfType<Camera>();
 
 	_pTilemap = new TileMap();
 	//Layer, X sprite index, y sprite index, index for placement
@@ -233,7 +232,18 @@ void Application::GameRender(Camera* cam)
 //updates game scene
 void Application::GameUpdate(float dt)
 {
+	_pCameraManager->_pCameras = _pCurrentScene->FindObjectsOfType<Camera>();
 	_pCameraManager->_pcurrentCamera->OnUpdate(dt);
+
+	//TEST CAMERA MANAGER DELETE
+	if (Input::IsKeyDown(KEY_U))
+	{
+		_pCameraManager->SetCamera(-1);
+	}
+	if (Input::IsKeyDown(KEY_I))
+	{
+		_pCameraManager->SetCamera(0);
+	}
 	_pCurrentScene->Update(dt);
 }
 
