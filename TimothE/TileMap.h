@@ -22,7 +22,7 @@ public:
 	void DeleteAllLayers();
 	void UpdateLogic(Camera* cam);
 
-	void AddTileAt(unsigned int layer, unsigned int x, unsigned int y, Camera* cam);
+	void AddTileAt(unsigned int layer, unsigned int x, unsigned int y, Camera* cam, bool shouldCollide = false);
 
 	//Returns the width and height of the WHOLE TILE MAP
 	int GetTileWidth() const;

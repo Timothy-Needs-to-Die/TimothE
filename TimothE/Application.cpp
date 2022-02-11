@@ -140,7 +140,10 @@ void Application::GameLoop()
 			_pEditor->EditorLoop(_pCurrentScene, elapsed, _mInEditorMode, _mPaused);
 
 			if (Input::IsMouseButtonDown(BUTTON_LEFT)) {
-				_pTilemap->AddTileAt(0, 3, 5, _pEditor->GetCamera());
+				_pTilemap->AddTileAt(0, 3, 5, _pEditor->GetCamera(), true);
+			}
+			else if (Input::IsMouseButtonDown(BUTTON_RIGHT)) {
+				_pTilemap->AddTileAt(0, 0, 0, _pEditor->GetCamera(), false);
 			}
 
 			//_pEditor->GetCamera()->PrintInfo();

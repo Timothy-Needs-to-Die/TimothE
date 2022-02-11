@@ -86,7 +86,7 @@ void TileMap::UpdateLogic(Camera* cam)
 	_currentTileIndex = _mapDimensions.x * (int)(_currentTile.y * 4) + (int)(_currentTile.x * 4);
 }
 
-void TileMap::AddTileAt(unsigned int layer, unsigned int x, unsigned int y, Camera* cam)
+void TileMap::AddTileAt(unsigned int layer, unsigned int x, unsigned int y, Camera* cam, bool shouldCollide)
 {
 	glm::vec2 worldPos = MousePosToTile(cam);
 
@@ -105,7 +105,7 @@ void TileMap::AddTileAt(unsigned int layer, unsigned int x, unsigned int y, Came
 	newTile.xIndex = x;
 	newTile.yIndex = y;
 	newTile.layer = layer;
-	newTile.collidable = true;
+	newTile.collidable = shouldCollide;
 	newTile.size = _xGapBetweenTiles;
 	newTile.colXPos = colPos.x;
 	newTile.colYPos = colPos.y;
