@@ -1,5 +1,15 @@
 #include "Physics.h"
 
+void Physics::SetupScenePhysics()
+{
+	std::vector<ColliderBase*> colliders = Scene::FindObjectsOfType<ColliderBase>();
+	std::cout << "No. Of Colliders: " << colliders.size() << std::endl;
+
+	if (colliders.size() == 1) return;
+
+
+}
+
 bool Physics::Intersects(BoxColliderComponent* b1, BoxColliderComponent* b2)
 {
 	Rect* r1 = b1->GetCollisionRect();
@@ -58,6 +68,8 @@ bool Physics::Intersects(BoxColliderComponent* b1, BoxColliderComponent* b2)
 		return true;
 	}
 	return false;
+
+	
 }
 
 bool Physics::Intersects(BoxColliderComponent* b1, CircleCollider* c1)
@@ -155,13 +167,6 @@ bool Physics::Intersects(CircleCollider* c1, glm::vec2 p)
 
 bool Physics::Intersects(ColQuad& a, ColQuad& b)
 {
-	//(player1.x < player2.x + player2.width &&
-	//	player1.x + player1.width > player2.x &&
-	//	player1.y < player2.y + player2.height &&
-	//	player1.y + player1.height > player2.y)
-
-	//std::cout << "Intersect" << std::endl;
-
 	if ((a.pos.x < b.pos.x + b.size.x) &&
 		(a.pos.x + a.size.x > b.pos.x) &&
 		(a.pos.y < b.pos.y + b.size.y) &&

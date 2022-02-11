@@ -6,7 +6,6 @@
 #include "Button.h"
 #include "ResourceManager.h"
 #include "Renderer2D.h"
-#include "Physics.h"
 
 #include "SubTexture2D.h"
 #include "CircleCollider.h"
@@ -46,10 +45,12 @@ Scene::Scene(std::string name, TileMap* pTilemap)
 
 	_pTestObject2 = new GameObject("In World Object", ObjectType::Player);
 	_pTestObject2->LoadTexture(ResourceManager::GetTexture("lenna"));
-	_pTestObject2->AddComponent(new BoxColliderComponent(_pTestObject2));
+	_pTestObject2->AddComponent(new BoxColliderComponent(_pTestObject2))->SetTrigger(true);
 	_pTestObject2->GetTransform()->SetPosition(1.2f, 1.0f);
 	_pTestObject2->GetTransform()->SetScale({ 0.4f,0.4f });
-	_pTestObject2->GetComponent<BoxColliderComponent>()->SetTrigger(true);
+	
+	//TODO: This will cause a crash currently as colliders need to be modified down to a single class
+	//_pTestObject2->GetComponent<BoxColliderComponent>()->SetTrigger(true);
 
 
 	GameObject* _pButtonTestingObject = new GameObject("BUTTON", ObjectType::UI);
@@ -197,6 +198,13 @@ void Scene::RenderScene(Camera* cam)
 void Scene::CircleBoxTest()
 {
 	std::cout << "Circle Box Collision" << std::endl;
+}
+
+GameObject* Scene::AddGameObject(GameObject* gameObject)
+{
+	_listOfGameObjects.push_back(gameObject);
+	Physics::SetupScenePhysics();
+	return gameObject;
 }
 
 void Scene::RemoveGameObject(GameObject* gameObject)

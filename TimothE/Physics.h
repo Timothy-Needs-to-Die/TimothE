@@ -4,6 +4,7 @@
 #include "BoxColliderComponent.h"
 #include "CircleCollider.h"
 #include "Transform.h"
+#include "Scene.h"
 
 struct CollisionData {
 	glm::vec2 collisionNormal;
@@ -18,6 +19,7 @@ struct ColQuad {
 class Physics
 {
 public:
+	static void SetupScenePhysics();
 	static bool Intersects(ColQuad& a, ColQuad& b);
 	static bool Intersects(BoxColliderComponent* b1, BoxColliderComponent* b2);
 	static bool Intersects(BoxColliderComponent* b1, CircleCollider* c1);
