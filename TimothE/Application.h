@@ -62,8 +62,5 @@ private:
 	bool _mPaused = false;
 	bool _mGameRunning = false;
 
-	Camera* _pGameCamera;
-	CameraManager* _pCameraManager;
-
 	TileMap* _pTilemap;
 };

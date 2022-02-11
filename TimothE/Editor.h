@@ -38,9 +38,6 @@ public:
 	void ConvertGameToEditorSpace();
 
 	Framebuffer* _pEditorFramebuffer;
-
-	Camera* GetCamera() const { return _pEditorCamera; }
-
 private:
 
 	//Where all ImGui code will go
@@ -61,7 +58,6 @@ private:
 	void CheckFileType(std::string fileDirectory);
 	void SearchFileDirectory();
 	std::string _mCurrentDir = CONTENT_BROWSER_DIRECTORY;
-	Camera* _pEditorCamera;
 
 	bool tileEditorOpen;
 

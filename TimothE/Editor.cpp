@@ -44,9 +44,6 @@ Editor::Editor(Application* pApp)
 	float bottom = -zoomLevel;
 	float top = zoomLevel;
 
-	_pEditorCamera = new Camera(left, right, bottom, top, "Editor Camera", NULL);
-	_pEditorCamera->SetCameraSpeed(1.5f);
-	_pEditorCamera->SetPosition({ 1.78f, 1.0f, -1.0f });
 
 	pImGuiSample = new Texture2D(NULL);
 	pImGuiSample->Load("lenna3.jpg");
@@ -62,7 +59,7 @@ Editor::~Editor()
 
 void Editor::EditorLoop(Scene* currentScene, float dt, bool& editorMode, bool& paused)
 {
-	_pEditorCamera->OnUpdate(dt);
+	CameraManager::GetCamera("Editor")->OnUpdate(dt);
 
 	EditorImGui(currentScene);
 	ImGUISwitchRender(editorMode, paused);
@@ -542,7 +539,7 @@ void Editor::ConvertGameToEditorSpace()
 
 
 	cPos /= _windowSize;
-	glm::vec2 clampExtents = _pEditorCamera->Size();
+	glm::vec2 clampExtents = CameraManager::GetCamera("Editor")->Size();
 
 	cPos *= clampExtents * 2.0f;
 	cPos -= clampExtents;

@@ -1,4 +1,5 @@
 #include "PlayerMovement.h"
+#include "CameraManager.h"
 
 void PlayerMovement::OnStart()
 {
@@ -50,6 +51,7 @@ void PlayerMovement::OnUpdate(float deltaTime)
 	}
 
 	transform->SetPosition(newPos.x, newPos.y);
+	CameraManager::GetCamera(-1)->SetPosition({ newPos.x, newPos.y, -1.0f });
 }
 
 void PlayerMovement::OnEnd()

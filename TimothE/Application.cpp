@@ -75,20 +75,17 @@ void Application::Init(bool devMode)
 
 	//initializes editor with scene
 	_pCurrentScene = new Scene("Test scene", _pTilemap);
-	_pEditor = new Editor(this);
 	_mRunning = true;
 
-	float aspectRatio = Window::GetAspectRatio();
-	float zoomLevel = 1.0f;
-	float left = -aspectRatio * zoomLevel;
-	float right = aspectRatio * zoomLevel;
-	float bottom = -zoomLevel;
-	float top = zoomLevel;
-	_pGameCamera = new Camera(left, right, bottom, top, "Main Camera", NULL);
+	CameraManager::Init();
+	CameraManager::MainCamera()->SetCameraSpeed(2.0f);
 
-	_pGameCamera->SetCameraSpeed(2.0f);
-	_pCameraManager = new CameraManager(_pGameCamera);
+	CameraManager::AddCamera("Editor");
+	CameraManager::GetCamera("Editor")->SetPosition({ 1.78f, 1.0f, -1.0f });
 
+	CameraManager::SetToMainCamera();
+
+	_pEditor = new Editor(this);
 	//_pCameraManager->_pCameras = _pCurrentScene->FindObjectsOfType<Camera>();
 
 	//Layer, X sprite index, y sprite index, index for placement
@@ -132,21 +129,21 @@ void Application::GameLoop()
 		//imgui update frame
 		ImGuiManager::ImGuiNewFrame();
 
-		_pTilemap->UpdateLogic(_pEditor->GetCamera());
+		_pTilemap->UpdateLogic(CameraManager::GetCamera("Editor"));
 
 		//update editor if in editor mode
 		if (_mInEditorMode) {
 			_pEditor->_pEditorFramebuffer->BindFramebuffer();
 			GameBeginRender();
 
-			GameRender(_pEditor->GetCamera());
+			GameRender(CameraManager::GetCamera("Editor"));
 			_pEditor->EditorLoop(_pCurrentScene, elapsed, _mInEditorMode, _mPaused);
 
 			if (Input::IsMouseButtonDown(BUTTON_LEFT)) {
-				_pTilemap->AddTileAt(0, 3, 5, _pEditor->GetCamera(), true);
+				_pTilemap->AddTileAt(0, 3, 5, CameraManager::GetCamera("Editor"), true);
 			}
 			else if (Input::IsMouseButtonDown(BUTTON_RIGHT)) {
-				_pTilemap->AddTileAt(0, 0, 0, _pEditor->GetCamera(), false);
+				_pTilemap->AddTileAt(0, 0, 0, CameraManager::GetCamera("Editor"), false);
 			}
 
 			//_pEditor->GetCamera()->PrintInfo();
@@ -159,7 +156,7 @@ void Application::GameLoop()
 		else {
 			GameBeginRender();
 
-			GameRender(_pCameraManager->_pcurrentCamera);
+			GameRender(CameraManager::CurrentCamera());
 
 			//_pGameCamera->PrintInfo();
 
@@ -237,7 +234,7 @@ void Application::GameRender(Camera* cam)
 //updates game scene
 void Application::GameUpdate(float dt)
 {
-	_pCameraManager->_pcurrentCamera->OnUpdate(dt);
+	CameraManager::CurrentCamera()->OnUpdate(dt);
 	_pCurrentScene->Update(dt);
 }
 
@@ -345,15 +342,14 @@ bool Application::OnMouseMovedEvent(MouseMovedEvent& e)
 
 bool Application::OnMouseScrolledEvent(MouseScrolledEvent& e)
 {
-	_pEditor->GetCamera()->OnMouseScrolled(e.GetOffsetY());
+	CameraManager::GetCamera("Editor")->OnMouseScrolled(e.GetOffsetY());
 
 	return true;
 }
 
 bool Application::OnWindowResize(WindowResizeEvent& e)
 {
-	_pGameCamera->OnResize((float)e.GetWidth(), (float)e.GetHeight());
-	_pEditor->GetCamera()->OnResize((float)e.GetWidth(), (float)e.GetHeight());
+	CameraManager::ResizeCameras((float)e.GetWidth(), (float)e.GetHeight());
 
 	return true;
 }
