@@ -8,7 +8,7 @@ class Camera : public Component
 {
 public:
 	Camera(float left, float right, float bottom, float top, std::string name, GameObject* parent);
-
+	COMPONENT_STATIC_TYPE(Camera_Type);
 	void OnStart() override;
 	void OnUpdate(float deltaTime) override;
 	void OnEnd() override;
