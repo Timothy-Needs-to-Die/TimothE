@@ -4,6 +4,9 @@
 #include "Transform.h"
 #include "GameObject.h"
 #include "Input.h"
+#include "TileData.h"
+#include "TileMap.h"
+#include "Physics.h"
 
 class PlayerMovement : public Component
 {
@@ -14,9 +17,16 @@ public:
 		SetType(Types::PlayerMovement);
 	}
 
+	void SetTileMap(TileMap* pTileMap) {
+		_pTileMap = pTileMap;
+	}
+
 	// Inherited via Component
 	virtual void OnStart() override;
 	virtual void OnUpdate(float deltaTime) override;
 	virtual void OnEnd() override;
+
+private:
+	TileMap* _pTileMap;
 };
 

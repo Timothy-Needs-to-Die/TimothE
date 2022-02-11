@@ -6,15 +6,9 @@
 
 #include "Camera.h"
 #include "ResourceManager.h"
+#include "TileData.h"
 
 
-struct TileData {
-	int xIndex;
-	int yIndex;
-	int layer;
-
-	glm::vec2* uvCoords;
-};
 
 
 class TileMap
@@ -48,6 +42,7 @@ public:
 	void SetMapName(std::string name);
 	void SetTextureName(std::string name);
 	
+	TileData* GetTileAtWorldPos(glm::vec2 worldPos);
 	
 	void Clear();
 	

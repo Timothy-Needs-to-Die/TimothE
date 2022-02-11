@@ -143,6 +143,7 @@
     <ClInclude Include="Physics.h" />
     <ClInclude Include="ColliderBase.h" />
     <ClInclude Include="PlayerMovement.h" />
+    <ClInclude Include="TileData.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Application.cpp" />

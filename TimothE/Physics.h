@@ -10,9 +10,15 @@ struct CollisionData {
 	float penetration;
 };
 
+struct ColQuad {
+	glm::vec2 pos;
+	glm::vec2 size;
+};
+
 class Physics
 {
 public:
+	static bool Intersects(ColQuad& a, ColQuad& b);
 	static bool Intersects(BoxColliderComponent* b1, BoxColliderComponent* b2);
 	static bool Intersects(BoxColliderComponent* b1, CircleCollider* c1);
 	static bool Intersects(CircleCollider* c1, BoxColliderComponent* b1);

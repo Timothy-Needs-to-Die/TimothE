@@ -19,7 +19,7 @@ std::vector<GameObject*> Scene::_listOfDrawableGameObjects;
 Shader* shader;
 TextComponent* text;
 
-Scene::Scene(std::string name)
+Scene::Scene(std::string name, TileMap* pTilemap)
 {
 	_listOfGameObjects.clear();
 
@@ -74,6 +74,7 @@ Scene::Scene(std::string name)
 	_pPlayer->LoadTexture(ResourceManager::GetTexture("lenna"));
 	_pPlayer->GetTransform()->SetScale({ 0.25f, 0.25f });
 	_pPlayer->AddComponent(new BoxColliderComponent(_pPlayer));
+	_pPlayer->GetComponent<PlayerMovement>()->SetTileMap(pTilemap);
 	
 
 	AddGameObject(_pTestObject);

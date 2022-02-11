@@ -71,8 +71,10 @@ void Application::Init(bool devMode)
 
 	Renderer2D::Init();
 
+	_pTilemap = new TileMap();
+
 	//initializes editor with scene
-	_pCurrentScene = new Scene("Test scene");
+	_pCurrentScene = new Scene("Test scene", _pTilemap);
 	_pEditor = new Editor(this);
 	_mRunning = true;
 
@@ -83,9 +85,9 @@ void Application::Init(bool devMode)
 	float bottom = -zoomLevel;
 	float top = zoomLevel;
 	_pGameCamera = new Camera(left, right, bottom, top);
-	_pGameCamera->SetCameraSpeed(2.5f);
+	_pGameCamera->SetCameraSpeed(2.0f);
 
-	_pTilemap = new TileMap();
+
 	//Layer, X sprite index, y sprite index, index for placement
 }
 
@@ -229,7 +231,7 @@ void Application::GameRender(Camera* cam)
 //updates game scene
 void Application::GameUpdate(float dt)
 {
-	//_pGameCamera->Update(dt);
+	_pGameCamera->Update(dt);
 	_pCurrentScene->Update(dt);
 }
 

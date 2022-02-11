@@ -90,14 +90,25 @@ void TileMap::AddTileAt(unsigned int layer, unsigned int x, unsigned int y, Came
 {
 	glm::vec2 worldPos = MousePosToTile(cam);
 
-	int index = _mapDimensions.x * (int)(worldPos.y * 4) + (int)(worldPos.x * 4);
+	int index = _mapDimensions.x * (int)(worldPos.y * _tilesPerUnit) + (int)(worldPos.x * _tilesPerUnit);
 	if (index < 0) index = 0;
 	if (index > _mapDimensions.x * _mapDimensions.y) index = _mapDimensions.x * _mapDimensions.y;
+
+	int xTiles = worldPos.x * _tilesPerUnit;
+	int yTiles = worldPos.y * _tilesPerUnit;
+
+	float xPos = (float)xTiles * _tileScale;
+	float yPos = (float)yTiles * _tileScale;
+	glm::vec2 colPos = glm::vec2(xPos, yPos);
 
 	TileData newTile;
 	newTile.xIndex = x;
 	newTile.yIndex = y;
 	newTile.layer = layer;
+	newTile.collidable = true;
+	newTile.size = _xGapBetweenTiles;
+	newTile.colXPos = colPos.x;
+	newTile.colYPos = colPos.y;
 	newTile.uvCoords = new glm::vec2[4];
 	newTile.uvCoords[0] = glm::vec2((x * _tileSize.x) / _spritemapResolution.x, (y * _tileSize.y) / _spritemapResolution.y);
 	newTile.uvCoords[1] = glm::vec2(((x + 1) * _tileSize.x) / _spritemapResolution.x, (y * _tileSize.y) / _spritemapResolution.y);
@@ -137,15 +148,6 @@ glm::vec2 TileMap::GetTileSize() const
 
 glm::vec2 TileMap::MousePosToTile(Camera* cam)
 {
-	//Get the mouse position in editor Range: (0 - 960, 0 - 540)
-	//std::cout << "Mouse Position: " << mousePos.x << ", " << mousePos.y << std::endl;
-
-	//size of the editor window
-	//glm::vec2 windowSize = Window::GetHalfWindowSize();
-
-	//Get the camera's position and offset it by the camera's size
-	//camPos -= cam->Size() / 2.0f;
-
 	glm::vec2 mousePos = Input::GetEditorMousePos();
 	glm::vec2 camPos = cam->PositionXY();
 	glm::vec2 convertedPosition = camPos + mousePos;
@@ -157,34 +159,6 @@ glm::vec2 TileMap::MousePosToTile(Camera* cam)
 		std::cout << a << std::endl;
 	}
 
-	//convertedPosition.x = convertedPosition.x * (_tilesPerUnit / 2.0f);
-	//if (mousePos.x < windowSize.x / 8.0f) {
-	//	convertedPosition.x += _tileScale * 0.5f;
-	//}
-	//else if (mousePos.x < windowSize.x / 4.0f) {
-	//	convertedPosition.x += _tileScale * 1.5f;
-	//}
-	//else if (mousePos.x < windowSize.x / 8.0f + ((windowSize.x / 8.0f) * 2)) {
-	//	convertedPosition.x += _tileScale * 2.5f;
-	//}
-	//else if (mousePos.x < windowSize.x / 2.0f) {
-	//	convertedPosition.x += _tileScale * 3.0f;
-	//}
-	//else if (mousePos.x < windowSize.x / 2.0f + (windowSize.x / 8.0f)) {
-	//	convertedPosition.x += _tileScale * 3.5f;
-	//}
-	//else if (mousePos.x < windowSize.x / 2.0f + (windowSize.x / 4.0f)) {
-	//	convertedPosition.x += _tileScale * 4.5f;
-	//}
-	//else if (mousePos.x < windowSize.x / 2.0f + ((windowSize.x / 8.0f) * 3)) {
-	//	convertedPosition.x += _tileScale * 5.5f;
-	//}
-	//else
-	//{
-	//	convertedPosition.x += _tileScale * 6.0f;
-	//}
-	//convertedPosition.y = convertedPosition.y * (_tilesPerUnit / 2.0f);
-
 	if (convertedPosition.x > _mapSizeInScreenUnits.x) {
 		//Puts tile on upmost index
 		convertedPosition.x = _mapSizeInScreenUnits.x - _tileScale;
@@ -194,9 +168,9 @@ glm::vec2 TileMap::MousePosToTile(Camera* cam)
 		convertedPosition.y = _mapSizeInScreenUnits.y - _tileScale;
 	}
 	
-	std::cout << "Camera Pos: " << camPos << std::endl;
-	std::cout << "Mouse Pos: " << mousePos << std::endl;
-	std::cout << "Converted Pos: " << convertedPosition << std::endl << std::endl;
+	//std::cout << "Camera Pos: " << camPos << std::endl;
+	//std::cout << "Mouse Pos: " << mousePos << std::endl;
+	//std::cout << "Converted Pos: " << convertedPosition << std::endl << std::endl;
 
 	return convertedPosition;
 }
@@ -221,6 +195,15 @@ void TileMap::SetTextureName(std::string name)
 {
 }
 
+TileData* TileMap::GetTileAtWorldPos(glm::vec2 worldPos)
+{
+	int index = _mapDimensions.x * (int)(worldPos.y * _tilesPerUnit) + (int)(worldPos.x * _tilesPerUnit);
+	if (index < 0) index = 0;
+	if (index > _mapDimensions.x * _mapDimensions.y) index = _mapDimensions.x * _mapDimensions.y;
+
+	return &_tiles[index];
+}
+
 void TileMap::Clear()
 {
 }
@@ -236,7 +219,6 @@ void TileMap::RenderMap(Camera* cam)
 			if (x < camPos.x - extents || x > camPos.x + extents || y < camPos.y - extents || y > camPos.y + extents) {
 				continue;
 			}
-			//int index = (y * (float)_tilesPerUnit) * _mapDimensions.y + (x * (float)_tilesPerUnit);
 			int index = _mapDimensions.x * (int)(y * 4) + (int)(x * 4);
 
 			if (index == _currentTileIndex) {

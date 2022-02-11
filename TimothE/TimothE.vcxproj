@@ -152,6 +152,7 @@
     <ClInclude Include="TestComponent.h" />
     <ClInclude Include="TextComponent.h" />
     <ClInclude Include="Texture2D.h" />
+    <ClInclude Include="TileData.h" />
     <ClInclude Include="TileMap.h" />
     <ClInclude Include="TileMapEditor.h" />
     <ClInclude Include="TileMapManager.h" />

@@ -153,6 +153,25 @@ bool Physics::Intersects(CircleCollider* c1, glm::vec2 p)
 	return false;
 }
 
+bool Physics::Intersects(ColQuad& a, ColQuad& b)
+{
+	//(player1.x < player2.x + player2.width &&
+	//	player1.x + player1.width > player2.x &&
+	//	player1.y < player2.y + player2.height &&
+	//	player1.y + player1.height > player2.y)
+
+	//std::cout << "Intersect" << std::endl;
+
+	if ((a.pos.x < b.pos.x + b.size.x) &&
+		(a.pos.x + a.size.x > b.pos.x) &&
+		(a.pos.y < b.pos.y + b.size.y) &&
+		(a.pos.y + a.size.y > b.pos.y))
+	{
+		return true;
+	}
+	return false;
+}
+
 void Physics::HandleCollision(ColliderBase* c1, ColliderBase* c2)
 {
 	c1->Collided();

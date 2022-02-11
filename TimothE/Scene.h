@@ -3,11 +3,12 @@
 #include "GameObject.h"
 #include "Camera.h"
 #include "Window.h"
+#include "TileMap.h"
 
 class Scene
 {
 public:
-	Scene(std::string name);
+	Scene(std::string name, TileMap* pTilemap);
 	~Scene();
 	
 	//Triggers the gameobjects start methods
