@@ -43,7 +43,8 @@ public:
 		Text_Type = BIT(9),
 		ParticleSystem_Type = BIT(10),
 		TileMap_Type = BIT(11),
-		Camera_Type = BIT(12)
+		Camera_Type = BIT(12),
+		PlayerMovement = BIT(13)
 	};
 
 	//enums for different catagories of components
