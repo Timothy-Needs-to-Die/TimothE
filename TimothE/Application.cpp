@@ -83,12 +83,12 @@ void Application::Init(bool devMode)
 	float bottom = -zoomLevel;
 	float top = zoomLevel;
 	_pGameCamera = new Camera(left, right, bottom, top, "Main Camera", NULL);
-	
+
 	_pGameCamera->SetCameraSpeed(2.5f);
 	_pCameraManager = new CameraManager(_pGameCamera);
-	
+
 	//_pCameraManager->_pCameras = _pCurrentScene->FindObjectsOfType<Camera>();
-	
+
 	_pTilemap = new TileMap();
 	//Layer, X sprite index, y sprite index, index for placement
 }
@@ -321,7 +321,7 @@ bool Application::OnMouseMovedEvent(MouseMovedEvent& e)
 	float mouseX = e.GetX();
 
 	mouseY = Window::GetHeight() - mouseY;
-	
+
 	mouseY /= Window::GetHeight();
 	mouseX /= Window::GetWidth();
 
@@ -333,9 +333,7 @@ bool Application::OnMouseMovedEvent(MouseMovedEvent& e)
 	mouseX *= 2.0f;
 	mouseX += 1.0f;
 
-	
-
-	std::cout << "Mouse (" << mouseX << ", " << mouseY << ")" << std::endl;
+	//std::cout << "Mouse (" << mouseX << ", " << mouseY << ")" << std::endl;
 
 	Input::SetMousePosition(mouseX, mouseY);
 	return true;

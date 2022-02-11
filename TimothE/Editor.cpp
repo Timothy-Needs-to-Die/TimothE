@@ -495,14 +495,16 @@ void Editor::ImGUISwitchRender(bool& editorMode, bool& paused)
 void Editor::EditorRender()
 {
 	ImGui::Begin("Scene Window", 0 ,ImGuiWindowFlags_NoMove);
-	_windowPos = ImGui::GetCursorScreenPos();
+	ImVec2 wp = ImGui::GetCursorScreenPos();
+	_windowPos = { wp.x,wp.y };
 	ImGui::GetWindowDrawList()->AddImage(
 		(void*)_pEditorFramebuffer->GetTexture(),
-		_windowPos,
+		wp,
 		ImVec2(_windowPos.x + Window::GetWidth() / 2.0f, _windowPos.y + Window::GetHeight() / 2.0f),
 		ImVec2(0, 1.0), ImVec2(1.0, 0));
 
-	_windowSize = ImGui::GetWindowSize();
+	ImVec2 ws = ImGui::GetWindowSize();
+	_windowSize = { ws.x, ws.y };
 	if (_windowSize.y > Window::GetHeight() / 2.0f) _windowSize.y = Window::GetHeight() / 2.0f;
 
 	ImGui::End();
@@ -520,18 +522,43 @@ void Editor::ConvertGameToEditorSpace()
 	glm::vec2 mousePos = glm::vec2(Input::GetMouseX(), Input::GetMouseY());
 	glm::vec2 editorPos = glm::vec2(0.0f);
 
-	editorPos.x = mousePos.x - _windowPos.x;
-	editorPos.y = mousePos.y + _windowPos.y - _windowSize.y;
+	//editorPos.x = mousePos.x - _windowPos.x;
+	//editorPos.y = mousePos.y + _windowPos.y - _windowSize.y;
 
-	if (editorPos.x < 0) editorPos.x = 0.0f;
-	else if (editorPos.x > _windowSize.x) editorPos.x = _windowSize.x;
+	//if (editorPos.x < 0) editorPos.x = 0.0f;
+	//else if (editorPos.x > _windowSize.x) editorPos.x = _windowSize.x;
 
-	if (editorPos.y < 0) editorPos.y = 0.0f;
-	else if (editorPos.y > _windowSize.y) editorPos.y = _windowSize.y;
+	//if (editorPos.y < 0) editorPos.y = 0.0f;
+	//else if (editorPos.y > _windowSize.y) editorPos.y = _windowSize.y;
 
-	_mousePosInEditorSpace = editorPos;
+	//_mousePosInEditorSpace = editorPos;
 
-	Input::SetEditorMousePos(_mousePosInEditorSpace.x, _mousePosInEditorSpace.y);
+	//std::cout << "Window Pos: " << _windowPos.x << " " << _windowPos.y << std::endl;
+	editorPos = { _windowPos.x, _windowPos.y };
+
+	ImVec2 edMousePos = ImGui::GetMousePos();
+
+	glm::vec2 cPos = { edMousePos.x - editorPos.x, edMousePos.y - editorPos.y };
+
+
+	cPos /= _windowSize;
+	glm::vec2 clampExtents = _pEditorCamera->Size();
+
+	cPos *= clampExtents * 2.0f;
+	cPos -= clampExtents;
+
+	//Invert Y axis
+	cPos.y *= -1.0f;
+
+
+	if (cPos.x < -clampExtents.x) cPos.x = -clampExtents.x;
+	else if (cPos.x > clampExtents.x) cPos.x = clampExtents.x;
+
+	if (cPos.y < -clampExtents.y) cPos.y = -clampExtents.y;
+	else if (cPos.y > clampExtents.y) cPos.y = clampExtents.y;
+
+	_mousePosInEditorSpace = cPos;
+	Input::SetEditorMousePos(cPos.x, cPos.y);
 }
 
 

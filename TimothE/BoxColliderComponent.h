@@ -2,6 +2,7 @@
 #include "pch.h"
 #include "UID.h"
 #include "Component.h"
+#include "ColliderBase.h"
 
 struct Rect
 {
@@ -19,7 +20,7 @@ struct Rect
 	}
 }; 
 
-class BoxColliderComponent : public Component		
+class BoxColliderComponent : public ColliderBase		
 {
 public:
 
@@ -72,6 +73,7 @@ public:
 	}
 private:
 	bool _isEnabled;
+
 	Rect* _boxCollider;
 
 	// Editor UI

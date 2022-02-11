@@ -25,6 +25,8 @@ public:
 	void Update(float deltaTime);
 	void RenderScene(Camera* cam);
 	
+	static void CircleBoxTest();
+
 	GameObject* AddGameObject(GameObject* gameObject) { _listOfGameObjects.push_back(gameObject); return gameObject; }
 	void RemoveGameObject(GameObject* gameObject);
 
@@ -93,4 +95,8 @@ private:
 	//Stores a vector of game objects. This is refreshed every time a scene loads.
 	static std::vector<GameObject*> _listOfGameObjects;
 	static std::vector<GameObject*> _listOfDrawableGameObjects;
+
+	GameObject* _pCircleTest;
+	GameObject* _pTestObject2;
+	GameObject* _pPlayer;
 };

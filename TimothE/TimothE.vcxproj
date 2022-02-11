@@ -90,6 +90,7 @@
     <ClInclude Include="Camera.h" />
     <ClInclude Include="CameraManager.h" />
     <ClInclude Include="CircleCollider.h" />
+    <ClInclude Include="ColliderBase.h" />
     <ClInclude Include="Component.h" />
     <ClInclude Include="ComponentFactory.h" />
     <ClInclude Include="Console.h" />
@@ -117,6 +118,8 @@
     <ClInclude Include="MemoryManager.h" />
     <ClInclude Include="MouseEvent.h" />
     <ClInclude Include="OpenGLError.h" />
+    <ClInclude Include="Physics.h" />
+    <ClInclude Include="PlayerMovement.h" />
     <ClInclude Include="Quad.h" />
     <ClInclude Include="RBO.h" />
     <ClInclude Include="Particle.h" />
@@ -169,6 +172,7 @@
     <ClCompile Include="Camera.cpp" />
     <ClCompile Include="CameraManager.cpp" />
     <ClCompile Include="CircleCollider.cpp" />
+    <ClCompile Include="ColliderBase.cpp" />
     <ClCompile Include="Console.cpp" />
     <ClCompile Include="Editor.cpp" />
     <ClCompile Include="Font.cpp" />
@@ -186,6 +190,8 @@
     <ClCompile Include="Imgui\imgui_widgets.cpp" />
     <ClCompile Include="Input.cpp" />
     <ClCompile Include="MemoryManager.cpp" />
+    <ClCompile Include="Physics.cpp" />
+    <ClCompile Include="PlayerMovement.cpp" />
     <ClCompile Include="RBO.cpp" />
     <ClCompile Include="Particle.cpp" />
     <ClCompile Include="ParticleSystem.cpp" />
