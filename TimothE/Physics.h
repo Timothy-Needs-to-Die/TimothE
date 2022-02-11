@@ -5,6 +5,11 @@
 #include "CircleCollider.h"
 #include "Transform.h"
 
+struct CollisionData {
+	glm::vec2 collisionNormal;
+	float penetration;
+};
+
 class Physics
 {
 public:

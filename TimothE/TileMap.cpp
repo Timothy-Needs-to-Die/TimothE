@@ -2,6 +2,12 @@
 #include "Renderer2D.h"
 #include "Window.h"
 
+
+std::ostream& operator<<(std::ostream& os, glm::vec2 v) {
+	os << "X: " << v.x << " Y: " << v.y;
+	return os;
+}
+
 //TODO: Size details
 //TODO: Add a system to change how many tiles per unit
 TileMap::TileMap()
@@ -132,44 +138,52 @@ glm::vec2 TileMap::GetTileSize() const
 glm::vec2 TileMap::MousePosToTile(Camera* cam)
 {
 	//Get the mouse position in editor Range: (0 - 960, 0 - 540)
-	glm::vec2 mousePos = Input::GetEditorMousePos();
 	//std::cout << "Mouse Position: " << mousePos.x << ", " << mousePos.y << std::endl;
 
 	//size of the editor window
-	glm::vec2 windowSize = Window::GetHalfWindowSize();
+	//glm::vec2 windowSize = Window::GetHalfWindowSize();
 
 	//Get the camera's position and offset it by the camera's size
-	glm::vec2 camPos = cam->PositionXY();
-	camPos -= cam->Size();
+	//camPos -= cam->Size() / 2.0f;
 
-	glm::vec2 convertedPosition = (camPos / 2.0f) + (mousePos / windowSize);
-	convertedPosition.x = convertedPosition.x * (_tilesPerUnit / 2.0f);
-	if (mousePos.x < windowSize.x / 8.0f) {
-		convertedPosition.x += _tileScale * 0.5f;
+	glm::vec2 mousePos = Input::GetEditorMousePos();
+	glm::vec2 camPos = cam->PositionXY();
+	glm::vec2 convertedPosition = camPos + mousePos;
+
+
+	if (Input::IsKeyDown(KEY_Z)) {
+		int a = 4;
+
+		std::cout << a << std::endl;
 	}
-	else if (mousePos.x < windowSize.x / 4.0f) {
-		convertedPosition.x += _tileScale * 1.5f;
-	}
-	else if (mousePos.x < windowSize.x / 8.0f + ((windowSize.x / 8.0f) * 2)) {
-		convertedPosition.x += _tileScale * 2.5f;
-	}
-	else if (mousePos.x < windowSize.x / 2.0f) {
-		convertedPosition.x += _tileScale * 3.0f;
-	}
-	else if (mousePos.x < windowSize.x / 2.0f + (windowSize.x / 8.0f)) {
-		convertedPosition.x += _tileScale * 3.5f;
-	}
-	else if (mousePos.x < windowSize.x / 2.0f + (windowSize.x / 4.0f)) {
-		convertedPosition.x += _tileScale * 4.5f;
-	}
-	else if (mousePos.x < windowSize.x / 2.0f + ((windowSize.x / 8.0f) * 3)) {
-		convertedPosition.x += _tileScale * 5.5f;
-	}
-	else
-	{
-		convertedPosition.x += _tileScale * 6.0f;
-	}
-	convertedPosition.y = convertedPosition.y * (_tilesPerUnit / 2.0f);
+
+	//convertedPosition.x = convertedPosition.x * (_tilesPerUnit / 2.0f);
+	//if (mousePos.x < windowSize.x / 8.0f) {
+	//	convertedPosition.x += _tileScale * 0.5f;
+	//}
+	//else if (mousePos.x < windowSize.x / 4.0f) {
+	//	convertedPosition.x += _tileScale * 1.5f;
+	//}
+	//else if (mousePos.x < windowSize.x / 8.0f + ((windowSize.x / 8.0f) * 2)) {
+	//	convertedPosition.x += _tileScale * 2.5f;
+	//}
+	//else if (mousePos.x < windowSize.x / 2.0f) {
+	//	convertedPosition.x += _tileScale * 3.0f;
+	//}
+	//else if (mousePos.x < windowSize.x / 2.0f + (windowSize.x / 8.0f)) {
+	//	convertedPosition.x += _tileScale * 3.5f;
+	//}
+	//else if (mousePos.x < windowSize.x / 2.0f + (windowSize.x / 4.0f)) {
+	//	convertedPosition.x += _tileScale * 4.5f;
+	//}
+	//else if (mousePos.x < windowSize.x / 2.0f + ((windowSize.x / 8.0f) * 3)) {
+	//	convertedPosition.x += _tileScale * 5.5f;
+	//}
+	//else
+	//{
+	//	convertedPosition.x += _tileScale * 6.0f;
+	//}
+	//convertedPosition.y = convertedPosition.y * (_tilesPerUnit / 2.0f);
 
 	if (convertedPosition.x > _mapSizeInScreenUnits.x) {
 		//Puts tile on upmost index
@@ -179,6 +193,10 @@ glm::vec2 TileMap::MousePosToTile(Camera* cam)
 		//Puts tile on furthest right index
 		convertedPosition.y = _mapSizeInScreenUnits.y - _tileScale;
 	}
+	
+	std::cout << "Camera Pos: " << camPos << std::endl;
+	std::cout << "Mouse Pos: " << mousePos << std::endl;
+	std::cout << "Converted Pos: " << convertedPosition << std::endl << std::endl;
 
 	return convertedPosition;
 }

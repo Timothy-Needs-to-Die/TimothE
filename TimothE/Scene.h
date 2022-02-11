@@ -98,4 +98,5 @@ private:
 
 	GameObject* _pCircleTest;
 	GameObject* _pTestObject2;
+	GameObject* _pPlayer;
 };

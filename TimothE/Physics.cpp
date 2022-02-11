@@ -5,12 +5,45 @@ bool Physics::Intersects(BoxColliderComponent* b1, BoxColliderComponent* b2)
 	Rect* r1 = b1->GetCollisionRect();
 	Rect* r2 = b2->GetCollisionRect();
 
+	glm::vec2 n = { r1->xPos - r2->xPos, r1->yPos - r2->yPos };
+
+	float r1Extents = r1->width / 2;
+	float r2Extents = r2->width / 2;
+	float xOverlap = r1Extents + r2Extents - abs(n.x);
+
 	if ((r1->xPos + r1->width >= r2->xPos) &&
 		(r2->xPos + r1->width >= r1->xPos) &&
 		(r1->yPos + r1->height >= r2->yPos) &&
 		(r2->yPos + r1->height >= r1->yPos)) 
 	{
 		if (!b1->IsTrigger() && !b2->IsTrigger()) {
+			CollisionData col;
+
+			r1Extents = r1->height / 2;
+			r2Extents = r2->height / 2;
+			float yOverlap = r1Extents + r2Extents - abs(n.y);
+
+			if (yOverlap > 0) {
+				if (n.x < 0) {
+					col.collisionNormal = { -1.0f,0.0f };
+				}
+				else {
+					col.collisionNormal = { 0.0f,0.0f };
+				}
+				col.penetration = xOverlap;
+			}
+			else
+			{
+				if (n.y < 0) {
+					col.collisionNormal = { 0.0f,-1.0f };
+				}
+				else
+				{
+					col.collisionNormal = { 0.0f,1.0f };
+				}
+				col.penetration = yOverlap;
+			}
+
 			HandleCollision(b1, b2);
 		}
 		else {
@@ -50,7 +83,7 @@ bool Physics::Intersects(BoxColliderComponent* b1, CircleCollider* c1)
 	if (distance <= cr) {
 
 		if (!b1->IsTrigger() && !c1->IsTrigger()) {
-			HandleCollision(b1, c1);
+			//HandleCollision(b1, c1);
 		}
 		else {
 			if (b1->IsTrigger()) {
@@ -91,7 +124,7 @@ bool Physics::Intersects(CircleCollider* c1, CircleCollider* c2)
 
 	if (distance <= c1r + c2r) {
 		if (!c2->IsTrigger() && !c1->IsTrigger()) {
-			HandleCollision(c2, c1);
+			//HandleCollision(c2, c1);
 		}
 		else {
 			if (c2->IsTrigger()) {
@@ -140,5 +173,3 @@ bool Physics::Intersects(glm::vec2 p, CircleCollider* c1)
 {
 	return Intersects(c1, p);
 }
-
-

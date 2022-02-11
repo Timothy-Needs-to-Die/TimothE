@@ -118,6 +118,7 @@
     <ClInclude Include="MouseEvent.h" />
     <ClInclude Include="OpenGLError.h" />
     <ClInclude Include="Physics.h" />
+    <ClInclude Include="PlayerMovement.h" />
     <ClInclude Include="Quad.h" />
     <ClInclude Include="RBO.h" />
     <ClInclude Include="Particle.h" />
@@ -188,6 +189,7 @@
     <ClCompile Include="Input.cpp" />
     <ClCompile Include="MemoryManager.cpp" />
     <ClCompile Include="Physics.cpp" />
+    <ClCompile Include="PlayerMovement.cpp" />
     <ClCompile Include="RBO.cpp" />
     <ClCompile Include="Particle.cpp" />
     <ClCompile Include="ParticleSystem.cpp" />

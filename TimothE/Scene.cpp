@@ -10,6 +10,7 @@
 
 #include "SubTexture2D.h"
 #include "CircleCollider.h"
+#include "PlayerMovement.h"
 
 int Scene::nextID = 0;
 std::vector<GameObject*> Scene::_listOfGameObjects;
@@ -62,19 +63,24 @@ Scene::Scene(std::string name)
 	_pButtonTestingObject->SetType(ObjectType::UI);
 
 	_pCircleTest = new GameObject("Circle Collision Test");
-	_pCircleTest->AddComponent(new CircleCollider(_pCircleTest))->AddTriggerEvent(&CircleBoxTest);
+	//_pCircleTest->AddComponent(new CircleCollider(_pCircleTest))->AddTriggerEvent(&CircleBoxTest);
 	_pCircleTest->LoadTexture(ResourceManager::GetTexture("lenna"));
 	_pCircleTest->GetTransform()->SetPosition(1.0f, 1.0f);
 	_pCircleTest->GetTransform()->SetScale({ 0.5f,0.5f });
-	_pCircleTest->GetComponent<CircleCollider>()->SetTrigger(true);
+	//_pCircleTest->GetComponent<CircleCollider>()->SetTrigger(true);
 	
-
+	_pPlayer = new GameObject("Player", ObjectType::Player);
+	_pPlayer->AddComponent<PlayerMovement>(new PlayerMovement(_pPlayer));
+	_pPlayer->LoadTexture(ResourceManager::GetTexture("lenna"));
+	_pPlayer->GetTransform()->SetScale({ 0.25f, 0.25f });
+	_pPlayer->AddComponent(new BoxColliderComponent(_pPlayer));
 	
 
 	AddGameObject(_pTestObject);
 	AddGameObject(_pTestObject2);
 	AddGameObject(_pButtonTestingObject);
 	AddGameObject(_pCircleTest);
+	AddGameObject(_pPlayer);
 
 	GameObject* _pTextObj = new GameObject("TEXTOBJ", ObjectType::UI);
 	_pTextObj->AddComponent(new TextComponent(_pTextObj));
@@ -156,7 +162,8 @@ void Scene::Update(float deltaTime)
 		_listOfGameObjects[1]->GetTransform()->SetPosition(pos.x - 0.5, pos.y );
 	}
 
-	Physics::Intersects(_pCircleTest->GetComponent<CircleCollider>(), _pTestObject2->GetComponent<BoxColliderComponent>());
+	//Physics::Intersects(_pCircleTest->GetComponent<CircleCollider>(), _pTestObject2->GetComponent<BoxColliderComponent>());
+
 
 	//////////////////
 	//END OF TEST CODE

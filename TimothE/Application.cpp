@@ -229,7 +229,7 @@ void Application::GameRender(Camera* cam)
 //updates game scene
 void Application::GameUpdate(float dt)
 {
-	_pGameCamera->Update(dt);
+	//_pGameCamera->Update(dt);
 	_pCurrentScene->Update(dt);
 }
 
