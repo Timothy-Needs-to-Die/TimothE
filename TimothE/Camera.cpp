@@ -20,6 +20,30 @@ void Camera::OnStart()
 void Camera::OnEnd()
 {
 }
+void Camera::DrawEditorUI()
+{
+	
+	//displays the texture in the editor window
+	ImGui::Text("Camera");
+	if (ImGui::Checkbox("IsEnabled", _editorIsEnabled))
+	{
+		std::cout << "IsEnabled = " << *_editorIsEnabled << std::endl;
+		SetEnabled(*_editorIsEnabled);
+	}
+	ImGui::Text("Aspect Ratio"); ImGui::SameLine();
+	ImGui::InputFloat("Aspect Ratio", &_aspectRatio);
+	ImGui::Text("Zoom"); ImGui::SameLine();
+	ImGui::InputFloat("Zoom", &_zoomLevel);
+	
+	ImGui::Text("Position");
+	ImGui::InputFloat("X", &x);
+	ImGui::InputFloat("Y", &y);
+	ImGui::InputFloat("Z", &z);
+	ImGui::Text("Rotation"); ImGui::SameLine();
+	ImGui::InputFloat("Rotation", &_rotation);
+	SetPosition(glm::vec3(x,y,z));
+}
+
 void Camera::OnUpdate(float dt)
 {
 	PollInput(dt);

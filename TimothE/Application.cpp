@@ -88,6 +88,7 @@ void Application::Init(bool devMode)
 	_pEditor = new Editor(this);
 	//_pCameraManager->_pCameras = _pCurrentScene->FindObjectsOfType<Camera>();
 
+
 	//Layer, X sprite index, y sprite index, index for placement
 }
 
