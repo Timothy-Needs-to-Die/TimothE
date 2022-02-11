@@ -84,9 +84,12 @@ void Application::Init(bool devMode)
 	float right = aspectRatio * zoomLevel;
 	float bottom = -zoomLevel;
 	float top = zoomLevel;
-	_pGameCamera = new Camera(left, right, bottom, top);
-	_pGameCamera->SetCameraSpeed(2.0f);
+	_pGameCamera = new Camera(left, right, bottom, top, "Main Camera", NULL);
 
+	_pGameCamera->SetCameraSpeed(2.0f);
+	_pCameraManager = new CameraManager(_pGameCamera);
+
+	//_pCameraManager->_pCameras = _pCurrentScene->FindObjectsOfType<Camera>();
 
 	//Layer, X sprite index, y sprite index, index for placement
 }
@@ -156,7 +159,7 @@ void Application::GameLoop()
 		else {
 			GameBeginRender();
 
-			GameRender(_pGameCamera);
+			GameRender(_pCameraManager->_pcurrentCamera);
 
 			//_pGameCamera->PrintInfo();
 
@@ -234,7 +237,7 @@ void Application::GameRender(Camera* cam)
 //updates game scene
 void Application::GameUpdate(float dt)
 {
-	_pGameCamera->Update(dt);
+	_pCameraManager->_pcurrentCamera->OnUpdate(dt);
 	_pCurrentScene->Update(dt);
 }
 
@@ -322,7 +325,7 @@ bool Application::OnMouseMovedEvent(MouseMovedEvent& e)
 	float mouseX = e.GetX();
 
 	mouseY = Window::GetHeight() - mouseY;
-	
+
 	mouseY /= Window::GetHeight();
 	mouseX /= Window::GetWidth();
 
