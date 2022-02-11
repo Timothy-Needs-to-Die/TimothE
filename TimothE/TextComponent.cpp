@@ -59,7 +59,7 @@ void TextComponent::OnEnd()
 
 void TextComponent::OnUpdate(float deltaTime)
 {
-	_font->RenderText(*_shader, _text, _parentObject->GetTransform()->GetPosition().x, _parentObject->GetTransform()->GetPosition().y, _scale, _color);
+	//_font->RenderText(*_shader, _text, _parentObject->GetTransform()->GetPosition().x, _parentObject->GetTransform()->GetPosition().y, _scale, _color);
 }
 
 void TextComponent::SetFont(std::string font)
@@ -91,5 +91,5 @@ void TextComponent::GetFontsInFile() {
 
 void TextComponent::RenderText(Shader& s, std::string text, float x = 0.0f, float y = 0.0f, float _tileScale = 1.0f, glm::vec3 color = { 1.0f, 1.0f, 1.0f })
 {
-	_font->RenderText(s, text, x, y, _tileScale, color);
+	//_font->RenderText(s, text, x, y, _tileScale, color);
 }

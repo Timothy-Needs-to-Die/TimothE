@@ -6,8 +6,11 @@
 #include "Button.h"
 #include "ResourceManager.h"
 #include "Renderer2D.h"
+#include "Physics.h"
 
 #include "SubTexture2D.h"
+#include "CircleCollider.h"
+#include "PlayerMovement.h"
 
 int Scene::nextID = 0;
 std::vector<GameObject*> Scene::_listOfGameObjects;
@@ -38,41 +41,50 @@ Scene::Scene(std::string name)
 	//First we Translate
 	//Then we rotate
 	//Then finally scale
-	_pTestObject->GetTransform()->SetPosition(640, 360);
-	_pTestObject->GetTransform()->Translate({ 100,100 });
-	_pTestObject->GetTransform()->Scale({ 320,320 });
+	_pTestObject->GetTransform()->SetPosition(0.0f, 0.0f);
+	_pTestObject->GetTransform()->SetScale({0.2f, 0.2f});
 
-	GameObject* _pTestObject2 = new GameObject("TESTOBJECT", ObjectType::Player);
+	_pTestObject2 = new GameObject("In World Object", ObjectType::Player);
 	_pTestObject2->LoadTexture(ResourceManager::GetTexture("lenna"));
 	_pTestObject2->AddComponent(new BoxColliderComponent(_pTestObject2));
-	_pTestObject2->GetTransform()->SetPosition(550, 360);
-	_pTestObject2->GetTransform()->Translate({ 100,100 });
-	_pTestObject2->GetTransform()->Scale({ 320,320 });
+	_pTestObject2->GetTransform()->SetPosition(1.2f, 1.0f);
+	_pTestObject2->GetTransform()->SetScale({ 0.4f,0.4f });
+	_pTestObject2->GetComponent<BoxColliderComponent>()->SetTrigger(true);
 
-	//child pos test
-	//GameObject* _pTestObject3 = new GameObject("TESTOBJECT", ObjectType::Player);
-	//_pTestObject3->LoadTexture(ResourceManager::GetTexture("lenna"));
-	//_pTestObject3->AddComponent(new BoxColliderComponent(_pTestObject3));
-	//_pTestObject3->GetTransform()->SetPosition(0, 0);
-	//_pTestObject3->GetTransform()->Translate({ 0, 0 });
-	//_pTestObject3->GetTransform()->Scale({ 320,320 });
-	//_pTestObject3->SetParent(_pTestObject2);
-	//_pTestObject2->SetChild(_pTestObject3);
 
 	GameObject* _pButtonTestingObject = new GameObject("BUTTON", ObjectType::UI);
 	_pButtonTestingObject->AddComponent(new Button(_pButtonTestingObject));
 	_pButtonTestingObject->AddComponent(new BoxColliderComponent(_pButtonTestingObject));
 	_pButtonTestingObject->AddComponent(new TextComponent(_pTestObject));
-	_pButtonTestingObject->LoadTexture(ResourceManager::GetTexture("lenna"));
+	_pButtonTestingObject->LoadTexture(ResourceManager::GetTexture("fish"));
 	_pButtonTestingObject->SetShader("ui");
+	_pButtonTestingObject->GetTransform()->SetPosition(0.0f, 0.0f);
+	_pButtonTestingObject->GetTransform()->SetScale({ 0.2f, 0.2f });
+	_pButtonTestingObject->SetType(ObjectType::UI);
+
+	_pCircleTest = new GameObject("Circle Collision Test");
+	//_pCircleTest->AddComponent(new CircleCollider(_pCircleTest))->AddTriggerEvent(&CircleBoxTest);
+	_pCircleTest->LoadTexture(ResourceManager::GetTexture("lenna"));
+	_pCircleTest->GetTransform()->SetPosition(1.0f, 1.0f);
+	_pCircleTest->GetTransform()->SetScale({ 0.5f,0.5f });
+	//_pCircleTest->GetComponent<CircleCollider>()->SetTrigger(true);
+	
+	_pPlayer = new GameObject("Player", ObjectType::Player);
+	_pPlayer->AddComponent<PlayerMovement>(new PlayerMovement(_pPlayer));
+	_pPlayer->LoadTexture(ResourceManager::GetTexture("lenna"));
+	_pPlayer->GetTransform()->SetScale({ 0.25f, 0.25f });
+	_pPlayer->AddComponent(new BoxColliderComponent(_pPlayer));
+	
 
 	AddGameObject(_pTestObject);
 	AddGameObject(_pTestObject2);
-	//AddGameObject(_pTestObject3);
 	AddGameObject(_pButtonTestingObject);
+	AddGameObject(_pCircleTest);
+	AddGameObject(_pPlayer);
 
 	GameObject* _pTextObj = new GameObject("TEXTOBJ", ObjectType::UI);
 	_pTextObj->AddComponent(new TextComponent(_pTextObj));
+	_pTextObj->SetType(ObjectType::UI);
 	AddGameObject(_pTextObj);
 
 	ResourceManager::InstantiateTexture("spritesheet", new Texture2D("testSheet.png"));
@@ -150,6 +162,9 @@ void Scene::Update(float deltaTime)
 		_listOfGameObjects[1]->GetTransform()->SetPosition(pos.x - 0.5, pos.y );
 	}
 
+	//Physics::Intersects(_pCircleTest->GetComponent<CircleCollider>(), _pTestObject2->GetComponent<BoxColliderComponent>());
+
+
 	//////////////////
 	//END OF TEST CODE
 	//////////////////
@@ -159,39 +174,28 @@ void Scene::RenderScene(Camera* cam)
 {
 	Renderer2D::BeginRender(cam);
 
-	for (auto& obj : _listOfGameObjects) {
+	for (auto& obj : _listOfDrawableGameObjects) {
+		//TODO: Text won't render here as it uses its own internal texture data. 
 		Texture2D* objTex = obj->GetComponent<Texture2D>();
+
 		if (objTex != nullptr) {
-			Transform* objTransform = obj->GetTransform();
-			Renderer2D::DrawQuad(ConvertWorldToScreen(objTransform->GetPosition()), glm::vec2(1.0f), objTex);
-		}
-		ParticleSystem* particleSys = obj->GetComponent<ParticleSystem>();
-		if (particleSys != nullptr)
-		{
-			vector<Particle*> particles = obj->GetComponent<ParticleSystem>()->GetParticles();
-			for (Particle* p : particles)
-			{
-				if (p->GetLife() > 0.0f)
-				{
-					Transform* t = p->GetTransform();
-					if (p->GetUsingTexture())
-					{
-						objTex = p->GetTexture();
-						if (objTex != nullptr)
-						{
-							Renderer2D::DrawQuad(ConvertWorldToScreen(t->GetPosition()), glm::vec2(1.0f), objTex);
-						}
-					}
-					else
-					{
-						Renderer2D::DrawQuad(ConvertWorldToScreen(t->GetPosition()), glm::vec2(1.0f), p->GetColour());
-					}
-				}
+			if (obj->GetObjectType() == ObjectType::UI) {
+				Renderer2D::DrawUIQuad(obj->GetTransform()->GetPosition(),
+					obj->GetTransform()->GetScale(), obj->GetComponent<Texture2D>());
+			}
+			else {
+				Renderer2D::DrawQuad(obj->GetTransform()->GetPosition(),
+					obj->GetTransform()->GetScale(), objTex);
 			}
 		}
 	}
 
 	Renderer2D::EndRender();
+}
+
+void Scene::CircleBoxTest()
+{
+	std::cout << "Circle Box Collision" << std::endl;
 }
 
 void Scene::RemoveGameObject(GameObject* gameObject)

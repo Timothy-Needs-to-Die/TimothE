@@ -240,6 +240,11 @@ void GameObject::SetChild(GameObject* child)
 	_pChild = child;
 }
 
+void GameObject::AddedComponent(Component* comp)
+{
+	Scene::AddedComponentHandler(this, comp);
+}
+
 void GameObject::RemoveComponent(Component* comp)
 {
 	Scene::RemoveComponentHandler(this, comp);

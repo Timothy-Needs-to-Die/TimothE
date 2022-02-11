@@ -1,11 +1,18 @@
 #include "TileMap.h"
 #include "Renderer2D.h"
+#include "Window.h"
+
+
+std::ostream& operator<<(std::ostream& os, glm::vec2 v) {
+	os << "X: " << v.x << " Y: " << v.y;
+	return os;
+}
 
 //TODO: Size details
 //TODO: Add a system to change how many tiles per unit
 TileMap::TileMap()
 {
-	_mapDimensions = { 28.0f, 16.0f };
+	_mapDimensions = { 1024.0f, 1024.0f };
 	_mapSizeInScreenUnits = glm::vec2(_mapDimensions.x / _tilesPerUnit, _mapDimensions.y / _tilesPerUnit);
 	_tileSize = glm::vec2(128.0f);
 	_spritemapResolution = glm::vec2(2560.0f, 1664.0f);
@@ -131,55 +138,67 @@ glm::vec2 TileMap::GetTileSize() const
 glm::vec2 TileMap::MousePosToTile(Camera* cam)
 {
 	//Get the mouse position in editor Range: (0 - 960, 0 - 540)
-	glm::vec2 mousePos = Input::GetEditorMousePos();
 	//std::cout << "Mouse Position: " << mousePos.x << ", " << mousePos.y << std::endl;
 
 	//size of the editor window
-	glm::vec2 windowSize = { 960.0f, 540.0f };
+	//glm::vec2 windowSize = Window::GetHalfWindowSize();
 
 	//Get the camera's position and offset it by the camera's size
+	//camPos -= cam->Size() / 2.0f;
+
+	glm::vec2 mousePos = Input::GetEditorMousePos();
 	glm::vec2 camPos = cam->PositionXY();
-	camPos -= cam->Size();
+	glm::vec2 convertedPosition = camPos + mousePos;
 
-	glm::vec2 attempt2 = (camPos / 2.0f) + (mousePos / windowSize);
-	attempt2.x = attempt2.x * (_tilesPerUnit / 2.0f);
-	if (mousePos.x < 120.0f) {
-		attempt2.x += _tileScale * 0.5f;
-	}
-	else if (mousePos.x < 240.0f) {
-		attempt2.x += _tileScale * 1.5f;
-	}
-	else if (mousePos.x < 360.0f) {
-		attempt2.x += _tileScale * 2.5f;
-	}
-	else if (mousePos.x < 480.0f) {
-		attempt2.x += _tileScale * 3.0f;
-	}
-	else if (mousePos.x < 600.0f) {
-		attempt2.x += _tileScale * 3.5f;
-	}
-	else if (mousePos.x < 720.0f) {
-		attempt2.x += _tileScale * 4.5f;
-	}
-	else if (mousePos.x < 840.0f) {
-		attempt2.x += _tileScale * 5.5f;
-	}
-	else
-	{
-		attempt2.x += _tileScale * 6.0f;
-	}
-	attempt2.y = attempt2.y * (_tilesPerUnit / 2.0f);
 
-	if (attempt2.x > _mapSizeInScreenUnits.x) {
+	if (Input::IsKeyDown(KEY_Z)) {
+		int a = 4;
+
+		std::cout << a << std::endl;
+	}
+
+	//convertedPosition.x = convertedPosition.x * (_tilesPerUnit / 2.0f);
+	//if (mousePos.x < windowSize.x / 8.0f) {
+	//	convertedPosition.x += _tileScale * 0.5f;
+	//}
+	//else if (mousePos.x < windowSize.x / 4.0f) {
+	//	convertedPosition.x += _tileScale * 1.5f;
+	//}
+	//else if (mousePos.x < windowSize.x / 8.0f + ((windowSize.x / 8.0f) * 2)) {
+	//	convertedPosition.x += _tileScale * 2.5f;
+	//}
+	//else if (mousePos.x < windowSize.x / 2.0f) {
+	//	convertedPosition.x += _tileScale * 3.0f;
+	//}
+	//else if (mousePos.x < windowSize.x / 2.0f + (windowSize.x / 8.0f)) {
+	//	convertedPosition.x += _tileScale * 3.5f;
+	//}
+	//else if (mousePos.x < windowSize.x / 2.0f + (windowSize.x / 4.0f)) {
+	//	convertedPosition.x += _tileScale * 4.5f;
+	//}
+	//else if (mousePos.x < windowSize.x / 2.0f + ((windowSize.x / 8.0f) * 3)) {
+	//	convertedPosition.x += _tileScale * 5.5f;
+	//}
+	//else
+	//{
+	//	convertedPosition.x += _tileScale * 6.0f;
+	//}
+	//convertedPosition.y = convertedPosition.y * (_tilesPerUnit / 2.0f);
+
+	if (convertedPosition.x > _mapSizeInScreenUnits.x) {
 		//Puts tile on upmost index
-		attempt2.x = _mapSizeInScreenUnits.x - _tileScale;
+		convertedPosition.x = _mapSizeInScreenUnits.x - _tileScale;
 	}
-	if (attempt2.y > _mapSizeInScreenUnits.y) {
+	if (convertedPosition.y > _mapSizeInScreenUnits.y) {
 		//Puts tile on furthest right index
-		attempt2.y = _mapSizeInScreenUnits.y - _tileScale;
+		convertedPosition.y = _mapSizeInScreenUnits.y - _tileScale;
 	}
+	
+	std::cout << "Camera Pos: " << camPos << std::endl;
+	std::cout << "Mouse Pos: " << mousePos << std::endl;
+	std::cout << "Converted Pos: " << convertedPosition << std::endl << std::endl;
 
-	return attempt2;
+	return convertedPosition;
 }
 
 void TileMap::SetTileSize(glm::vec2 tileSize)
@@ -209,7 +228,7 @@ void TileMap::Clear()
 void TileMap::RenderMap(Camera* cam)
 {
 	glm::vec3 camPos = cam->Position();
-	float extents = 4.0f;
+	float extents = cam->GetAspectRatio() * cam->GetZoomLevel() * 2.0f;
 	Renderer2D::BeginRender(cam);
 
 	for (float y = 0; y < _mapSizeInScreenUnits.y; y += _yGapBetweenTiles) {

@@ -62,24 +62,24 @@ bool Texture2D::Load(std::string path)
 
 void Texture2D::GenerateTexture(unsigned char* data)
 {
-	glGenTextures(1, &_ID);
+	GLCall(glGenTextures(1, &_ID));
 
 	//Binds the texture so it can be setup
-	glBindTexture(GL_TEXTURE_2D, _ID);
+	GLCall(glBindTexture(GL_TEXTURE_2D, _ID));
 
 	//Setsup the texture
 	if (_channels == 3)
 	{
-		glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, _width, _height, 0, GL_RGB, GL_UNSIGNED_BYTE, data);
+		GLCall(glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, _width, _height, 0, GL_RGB, GL_UNSIGNED_BYTE, data));
 	}
 	else if (_channels == 4)
 	{
-		glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, _width, _height, 0, GL_RGBA, GL_UNSIGNED_BYTE, data);
+		GLCall(glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, _width, _height, 0, GL_RGBA, GL_UNSIGNED_BYTE, data));
 	}
 
 
 	//Set filtering to linear by default
-	SetFilterMode("linear");
+	SetFilterMode(GL_LINEAR);
 
 	//Releases the memory associated with the data
 	stbi_image_free(data);
@@ -100,18 +100,10 @@ void Texture2D::OnEnd()
 
 }
 
-void Texture2D::SetFilterMode(std::string mode)
+void Texture2D::SetFilterMode(GLenum filter)
 {
-	if (mode == "linear")
-	{
-		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
-		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
-	}
-	else if (mode == "nearest")
-	{
-		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
-		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
-	}
+	GLCall(glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, filter));
+	GLCall(glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, filter));
 }
 
 // Inherited via ISerializable

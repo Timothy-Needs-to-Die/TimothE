@@ -24,7 +24,9 @@ public:
 	float GetAspectRatio() const { return _aspectRatio; }
 	float GetZoomLevel() const { return _zoomLevel; }
 
-	void ProcessScrollMovement(float yOffset);
+	void OnResize(float width, float height);
+	void OnMouseScrolled(float yOffset);
+	void SetProjection(float left, float right, float bottom, float top);
 
 	void RecalculateViewMatrix();
 

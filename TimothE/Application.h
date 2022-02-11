@@ -10,6 +10,7 @@
 
 #include "AudioEngine.h"
 #include "TileMap.h"
+#include "OpenGLError.h"
 
 class Editor;
 
@@ -37,12 +38,14 @@ protected:
 
 private:
 	//Event Handlers
-	bool OnGameWindowClose(WindowCloseEvent& e);
-	bool OnGameWindowKeyPressedEvent(KeyPressedEvent& e);
-	bool OnGameWindowKeyReleasedEvent(KeyReleasedEvent& e);
-	bool OnGameWindowMouseButtonPressedEvent(MouseButtonPressedEvent& e);
-	bool OnGameWindowMouseButtonReleasedEvent(MouseButtonReleasedEvent& e);
-	bool OnGameWindowMouseMovedEvent(MouseMovedEvent& e);
+	bool OnWindowClose(WindowCloseEvent& e);
+	bool OnKeyPressedEvent(KeyPressedEvent& e);
+	bool OnKeyReleasedEvent(KeyReleasedEvent& e);
+	bool OnMouseButtonPressedEvent(MouseButtonPressedEvent& e);
+	bool OnMouseButtonReleasedEvent(MouseButtonReleasedEvent& e);
+	bool OnMouseMovedEvent(MouseMovedEvent& e);
+	bool OnMouseScrolledEvent(MouseScrolledEvent& e);
+	bool OnWindowResize(WindowResizeEvent& e);
 
 private:
 	AudioEngine* _pAudio;

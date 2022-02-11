@@ -2,6 +2,7 @@
 #include "pch.h"
 #include "GameObject.h"
 #include "Camera.h"
+#include "Window.h"
 
 class Scene
 {
@@ -24,6 +25,8 @@ public:
 	void Update(float deltaTime);
 	void RenderScene(Camera* cam);
 	
+	static void CircleBoxTest();
+
 	GameObject* AddGameObject(GameObject* gameObject) { _listOfGameObjects.push_back(gameObject); return gameObject; }
 	void RemoveGameObject(GameObject* gameObject);
 
@@ -43,7 +46,7 @@ public:
 	static std::vector<GameObject*> GetGameObjectsByType(ObjectType type);
 
 	glm::vec2 ConvertWorldToScreen(glm::vec2 inPos) {
-		glm::vec2 outPos{ inPos.x / 1920.0f, inPos.y / 1080.0f };
+		glm::vec2 outPos{ inPos.x / Window::GetWidth(), inPos.y / Window::GetHeight() };
 		return outPos;
 	}
 
@@ -92,4 +95,8 @@ private:
 	//Stores a vector of game objects. This is refreshed every time a scene loads.
 	static std::vector<GameObject*> _listOfGameObjects;
 	static std::vector<GameObject*> _listOfDrawableGameObjects;
+
+	GameObject* _pCircleTest;
+	GameObject* _pTestObject2;
+	GameObject* _pPlayer;
 };

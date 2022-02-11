@@ -65,8 +65,8 @@ private:
 
 	bool tileEditorOpen;
 
-	ImVec2 _windowPos;
-	ImVec2 _windowSize;
+	glm::vec2 _windowPos;
+	glm::vec2 _windowSize;
 
 	glm::vec2 _mousePosInEditorSpace;
 

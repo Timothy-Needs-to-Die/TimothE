@@ -1,5 +1,6 @@
 #include "ResourceManager.h"
 #include "Scene.h"
+#include "OpenGLError.h"
 
 std::map<std::string, Texture2D*> ResourceManager::_textures;
 std::map<std::string, Shader*> ResourceManager::_shaders;
@@ -30,7 +31,7 @@ void ResourceManager::Shutdown()
 	for (auto& tex : _textures)
 	{
 		unsigned int id = tex.second->GetID();
-		glDeleteTextures(1, &id);
+		GLCall(glDeleteTextures(1, &id));
 	}
 
 	_textures.clear();

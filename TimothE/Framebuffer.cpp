@@ -1,5 +1,6 @@
 #include "Framebuffer.h"
 #include "Base.h"
+#include "OpenGLError.h"
 
 Framebuffer::Framebuffer(Shader* screenShader, float* quadVertices)
 	: _pScreenShader(screenShader), _pQuadVertices(quadVertices)
@@ -28,7 +29,7 @@ Framebuffer::Framebuffer(Shader* screenShader)
 
 Framebuffer::~Framebuffer()
 {
-	glDeleteFramebuffers(1, &_fbo);
+	GLCall(glDeleteFramebuffers(1, &_fbo));
 
 	delete[] _pQuadVertices;
 	_pQuadVertices = nullptr;
@@ -50,16 +51,16 @@ void Framebuffer::CreateFramebuffer()
 	_pScreenShader->SetInt("screenTexture", 0);
 
 	//Generate frame buffer objects
-	glGenFramebuffers(1, &_fbo);
+	GLCall(glGenFramebuffers(1, &_fbo));
 	BindFramebuffer();
 
 	// create a color attachment texture
-	glGenTextures(1, &_texture);
-	glBindTexture(GL_TEXTURE_2D, _texture);
-	glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, Window::GetWidth(), Window::GetHeight(), 0, GL_RGB, GL_UNSIGNED_BYTE, NULL);
-	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
-	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
-	glFramebufferTexture2D(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0, GL_TEXTURE_2D, _texture, 0);
+	GLCall(glGenTextures(1, &_texture));
+	GLCall(glBindTexture(GL_TEXTURE_2D, _texture));
+	GLCall(glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, Window::GetWidth(), Window::GetHeight(), 0, GL_RGB, GL_UNSIGNED_BYTE, NULL));
+	GLCall(glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR));
+	GLCall(glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR));
+	GLCall(glFramebufferTexture2D(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0, GL_TEXTURE_2D, _texture, 0));
 	// create a render buffer object for depth and stencil attachment (we won't be sampling these)
 
 	//Generate the render buffer objects
@@ -79,12 +80,12 @@ void Framebuffer::CreateFramebuffer()
 
 void Framebuffer::BindFramebuffer()
 {
-	glBindFramebuffer(GL_FRAMEBUFFER, _fbo);
+	GLCall(glBindFramebuffer(GL_FRAMEBUFFER, _fbo));
 }
 
 void Framebuffer::UnbindFramebuffer()
 {
-	glBindFramebuffer(GL_FRAMEBUFFER, 0);
+	GLCall(glBindFramebuffer(GL_FRAMEBUFFER, 0));
 }
 
 void Framebuffer::BindShader()
@@ -98,10 +99,10 @@ void Framebuffer::DrawFramebuffer()
 	_vao->Bind();
 
 	BindTexture();
-	glDrawArrays(GL_TRIANGLES, 0, 6);
+	GLCall(glDrawArrays(GL_TRIANGLES, 0, 6));
 }
 
 void Framebuffer::BindTexture()
 {
-	glBindTexture(GL_TEXTURE_2D, _texture);
+	GLCall(glBindTexture(GL_TEXTURE_2D, _texture));
 }

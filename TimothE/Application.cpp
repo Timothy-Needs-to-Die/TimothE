@@ -24,6 +24,7 @@ void GLAPIENTRY MessageCallback(GLenum source,
 	fprintf(stderr, "GL CALLBACK: %s type = 0x%x, severity = 0x%x, message = %s\n",
 		(type == GL_DEBUG_TYPE_ERROR ? "** GL ERROR **" : ""),
 		type, severity, message);
+
 }
 
 //initializes application
@@ -58,8 +59,8 @@ void Application::Init(bool devMode)
 	}
 
 	//enables debug messages
-	glEnable(GL_DEBUG_OUTPUT);
-	glDebugMessageCallback(MessageCallback, 0);
+	GLCall(glEnable(GL_DEBUG_OUTPUT));
+	//GLCall(glDebugMessageCallback(MessageCallback, 0));
 
 	if (_mDevMode) {
 		ImGuiManager::CreateImGuiContext(Window::GetGLFWWindow());
@@ -82,12 +83,12 @@ void Application::Init(bool devMode)
 	float bottom = -zoomLevel;
 	float top = zoomLevel;
 	_pGameCamera = new Camera(left, right, bottom, top, "Main Camera", NULL);
-	
+
 	_pGameCamera->SetCameraSpeed(2.5f);
 	_pCameraManager = new CameraManager(_pGameCamera);
-	
+
 	//_pCameraManager->_pCameras = _pCurrentScene->FindObjectsOfType<Camera>();
-	
+
 	_pTilemap = new TileMap();
 	//Layer, X sprite index, y sprite index, index for placement
 }
@@ -104,7 +105,7 @@ void Application::GameLoop()
 	_pAudio = new AudioEngine;
 
 	//enables depth in opengl
-	glEnable(GL_DEPTH_TEST);
+	//GLCall(glEnable(GL_DEPTH_TEST));
 
 	//time update
 	double previousTime = glfwGetTime();
@@ -190,12 +191,14 @@ void Application::GameLoop()
 void Application::OnGameEvent(Event& e)
 {
 	EventDispatcher dispatcher(e);
-	dispatcher.Dispatch<WindowCloseEvent>(BIND_EVENT_FN(OnGameWindowClose));
-	dispatcher.Dispatch<KeyPressedEvent>(BIND_EVENT_FN(OnGameWindowKeyPressedEvent));
-	dispatcher.Dispatch<KeyReleasedEvent>(BIND_EVENT_FN(OnGameWindowKeyReleasedEvent));
-	dispatcher.Dispatch<MouseButtonPressedEvent>(BIND_EVENT_FN(OnGameWindowMouseButtonPressedEvent));
-	dispatcher.Dispatch<MouseButtonReleasedEvent>(BIND_EVENT_FN(OnGameWindowMouseButtonReleasedEvent));
-	dispatcher.Dispatch<MouseMovedEvent>(BIND_EVENT_FN(OnGameWindowMouseMovedEvent));
+	dispatcher.Dispatch<WindowCloseEvent>(BIND_EVENT_FN(OnWindowClose));
+	dispatcher.Dispatch<KeyPressedEvent>(BIND_EVENT_FN(OnKeyPressedEvent));
+	dispatcher.Dispatch<KeyReleasedEvent>(BIND_EVENT_FN(OnKeyReleasedEvent));
+	dispatcher.Dispatch<MouseButtonPressedEvent>(BIND_EVENT_FN(OnMouseButtonPressedEvent));
+	dispatcher.Dispatch<MouseButtonReleasedEvent>(BIND_EVENT_FN(OnMouseButtonReleasedEvent));
+	dispatcher.Dispatch<MouseMovedEvent>(BIND_EVENT_FN(OnMouseMovedEvent));
+	dispatcher.Dispatch<WindowResizeEvent>(BIND_EVENT_FN(OnWindowResize));
+	dispatcher.Dispatch<MouseScrolledEvent>(BIND_EVENT_FN(OnMouseScrolledEvent));
 }
 
 //on game start start game state
@@ -217,7 +220,7 @@ void Application::PollInput()
 void Application::GameBeginRender()
 {
 	Window::SetWindowColour(0.3f, 1.0f, 0.0f, 1.0f);
-	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+	GLCall(glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT));
 }
 
 //render game
@@ -267,7 +270,7 @@ void Application::ImGUISwitchRender()
 }
 
 //closes game window
-bool Application::OnGameWindowClose(WindowCloseEvent& e)
+bool Application::OnWindowClose(WindowCloseEvent& e)
 {
 	std::cout << "Game Window: " << e.ToString() << std::endl;
 	_mRunning = false;
@@ -275,7 +278,7 @@ bool Application::OnGameWindowClose(WindowCloseEvent& e)
 }
 
 //input event for given input
-bool Application::OnGameWindowKeyPressedEvent(KeyPressedEvent& e)
+bool Application::OnKeyPressedEvent(KeyPressedEvent& e)
 {
 	//1: Is marked as GLFW repeat value
 	if (e.GetRepeatCount() == 1) {
@@ -291,33 +294,62 @@ bool Application::OnGameWindowKeyPressedEvent(KeyPressedEvent& e)
 }
 
 //when key is released return true
-bool Application::OnGameWindowKeyReleasedEvent(KeyReleasedEvent& e)
+bool Application::OnKeyReleasedEvent(KeyReleasedEvent& e)
 {
 	Input::SetKey((TimothEKeyCode)e.GetKeyCode(), RELEASE);
 	return true;
 }
 
 //when key is pressed return true
-bool Application::OnGameWindowMouseButtonPressedEvent(MouseButtonPressedEvent& e)
+bool Application::OnMouseButtonPressedEvent(MouseButtonPressedEvent& e)
 {
 	Input::SetMouseButton((TimothEMouseCode)e.GetMouseButton(), PRESSED);
 	return true;
 }
 
 //when mouse button is released return true
-bool Application::OnGameWindowMouseButtonReleasedEvent(MouseButtonReleasedEvent& e)
+bool Application::OnMouseButtonReleasedEvent(MouseButtonReleasedEvent& e)
 {
 	Input::SetMouseButton((TimothEMouseCode)e.GetMouseButton(), RELEASE);
 	return true;
 }
 
 //if mouse is moved return false
-bool Application::OnGameWindowMouseMovedEvent(MouseMovedEvent& e)
+bool Application::OnMouseMovedEvent(MouseMovedEvent& e)
 {
 	float mouseY = e.GetY();
+	float mouseX = e.GetX();
 
 	mouseY = Window::GetHeight() - mouseY;
 
-	Input::SetMousePosition(e.GetX(), mouseY);
-	return false;
+	mouseY /= Window::GetHeight();
+	mouseX /= Window::GetWidth();
+
+	mouseY -= 1.0f;
+	mouseY *= 2.0f;
+	mouseY += 1.0f;
+
+	mouseX -= 1.0f;
+	mouseX *= 2.0f;
+	mouseX += 1.0f;
+
+	//std::cout << "Mouse (" << mouseX << ", " << mouseY << ")" << std::endl;
+
+	Input::SetMousePosition(mouseX, mouseY);
+	return true;
+}
+
+bool Application::OnMouseScrolledEvent(MouseScrolledEvent& e)
+{
+	_pEditor->GetCamera()->OnMouseScrolled(e.GetOffsetY());
+
+	return true;
+}
+
+bool Application::OnWindowResize(WindowResizeEvent& e)
+{
+	_pGameCamera->OnResize((float)e.GetWidth(), (float)e.GetHeight());
+	_pEditor->GetCamera()->OnResize((float)e.GetWidth(), (float)e.GetHeight());
+
+	return true;
 }

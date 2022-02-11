@@ -37,19 +37,8 @@ void Button::OnUpdate(float deltaTime)
 {	
 	if (Component::IsEnabled())
 	{
-		// Get the mouse positions
-		int mouseX = Input::GetMouseX();
-		int mouseY = Input::GetMouseY();
-
-		// Get the position of the button through the transforms - THIS SHOULD BE HANDLED BY BOX COLLIDER 
-		Transform* transform = GetParent()->GetComponent<Transform>();
-
-		glm::vec2 pos = transform->GetPosition();
-		float width = transform->GetScale().x;
-		float height = transform->GetScale().y;
-
 		// Check if the mouse is inside the button
-		if (GetParent()->GetComponent<BoxColliderComponent>()->IsPointInside({mouseX, mouseY}))
+		if (GetParent()->GetComponent<BoxColliderComponent>()->IsPointInside(Input::GetMousePos()))
 		{
 			// If the mouse is inside the button then we are now hovering over the button;
 			_isHovering = true;
@@ -58,7 +47,7 @@ void Button::OnUpdate(float deltaTime)
 			if (Input::IsMouseButtonDown(BUTTON_1))
 			{
 				_isClicked = true;
-				
+
 				// debug
 				std::cout << "Button Clicked" << std::endl;
 
@@ -83,12 +72,7 @@ void Button::OnUpdate(float deltaTime)
 			// We are not hovering over the button
 			_isHovering = false;
 		}
-
-		// debug
-		//std::cout << "isHovering = " << _isHovering << " isClicked = " << _isClicked << std::endl;
 	}
-
-	//std::cout << "Mouse clicked X: " << mouseX << " Y: " << mouseY << std::endl;
 }
 
 void Button::OnEnd()

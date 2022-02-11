@@ -1,7 +1,7 @@
 #include "Window.h"
 
+#include "OpenGLError.h"
 
-#include <iostream>
 
 void Window::Init(unsigned int width, unsigned int height, const char* name)
 {
@@ -43,8 +43,8 @@ void Window::SetWindowColour(float r, float g, float b, float a)
 	glfwMakeContextCurrent(_pWindow);
 
 	//Sets background colour and clears the colour buffer bit
-	glClearColor(r,g,b,a);
-	glClear(GL_COLOR_BUFFER_BIT);
+	GLCall(glClearColor(r,g,b,a));
+	GLCall(glClear(GL_COLOR_BUFFER_BIT));
 }
 
 void Window::DestroyWindow()

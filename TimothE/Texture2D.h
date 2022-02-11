@@ -6,6 +6,7 @@
 #include "Component.h"
 
 #include "SOIL/stb_image.h"
+#include "OpenGLError.h"
 
 class Texture2D : public Component
 {
@@ -28,7 +29,7 @@ public:
 	GLuint GetID() const { return _ID; }
 
 	//Sets the filter mode for the texture
-	void SetFilterMode(std::string mode);
+	void SetFilterMode(GLenum mode);
 
 	//Loads an image from file into a texture. Returns true if successful or false if not
 	bool Load(std::string path);
@@ -38,7 +39,7 @@ public:
 	virtual bool LoadState(IStream& stream) override;
 
 	void Bind(int slot) {
-		glBindTextureUnit(slot, _ID);
+		GLCall(glBindTextureUnit(slot, _ID));
 	}
 
 private:
