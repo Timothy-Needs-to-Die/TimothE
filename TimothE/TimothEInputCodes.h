@@ -1,6 +1,6 @@
 #pragma once
 
-#include <GLFW/glfw3.h>
+#include "pch.h"
 
 //Holds all of the key codes that can be used
 enum TimothEKeyCode {

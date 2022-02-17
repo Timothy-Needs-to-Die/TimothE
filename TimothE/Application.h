@@ -1,13 +1,18 @@
 #pragma once
 
+#include "pch.h"
+
 #include "Window.h"
 #include "ApplicationEvent.h"
-#include "Renderer.h"
 #include "Scene.h"
-#include "Editor.h"
 #include "MemoryManager.h"
+#include "CameraManager.h"
 
 #include "AudioEngine.h"
+#include "TileMap.h"
+#include "OpenGLError.h"
+
+class Editor;
 
 class Application
 {
@@ -20,40 +25,42 @@ public:
 
 	void OnGameEvent(Event& e);
 
+	void GameStart();
+
 protected:
 	void PollInput();
 
 	void GameBeginRender();
-	void GameRender();
-	void GameEndRender();
+	void GameRender(Camera* cam);
 	void GameUpdate(float dt);
 
 	void ImGUISwitchRender();
 
 private:
 	//Event Handlers
-	bool OnGameWindowClose(WindowCloseEvent& e);
-	bool OnGameWindowKeyPressedEvent(KeyPressedEvent& e);
-	bool OnGameWindowKeyReleasedEvent(KeyReleasedEvent& e);
-	bool OnGameWindowMouseButtonPressedEvent(MouseButtonPressedEvent& e);
-	bool OnGameWindowMouseButtonReleasedEvent(MouseButtonReleasedEvent& e);
-	bool OnGameWindowMouseMovedEvent(MouseMovedEvent& e);
+	bool OnWindowClose(WindowCloseEvent& e);
+	bool OnKeyPressedEvent(KeyPressedEvent& e);
+	bool OnKeyReleasedEvent(KeyReleasedEvent& e);
+	bool OnMouseButtonPressedEvent(MouseButtonPressedEvent& e);
+	bool OnMouseButtonReleasedEvent(MouseButtonReleasedEvent& e);
+	bool OnMouseMovedEvent(MouseMovedEvent& e);
+	bool OnMouseScrolledEvent(MouseScrolledEvent& e);
+	bool OnWindowResize(WindowResizeEvent& e);
 
-	AudioEngine* _audio;
+private:
+	AudioEngine* _pAudio;
 
-	Renderer _renderer;
+	bool _mInEditorMode = true;
+	bool _mDevMode;
 
-	Window* _pWindow;
-
-	bool _inEditorMode;
-	bool _devMode;
-
-	bool _running;
+	bool _mRunning;
 
 	Scene* _pCurrentScene;
 
-	Editor* _pEditor;
+	class Editor* _pEditor;
 
-	bool _paused = false;
+	bool _mPaused = false;
+	bool _mGameRunning = false;
+
+	TileMap* _pTilemap;
 };
-

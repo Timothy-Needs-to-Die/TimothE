@@ -1,6 +1,6 @@
 #include "Console.h"
 
-void Console::Print(string message)
+void Console::Print(std::string message)
 {
 	if (output.size() > CONSOLE_MAX_MESSAGES)
 	{

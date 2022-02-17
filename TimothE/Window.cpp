@@ -1,15 +1,37 @@
 #include "Window.h"
 
+#include "OpenGLError.h"
 
-#include <iostream>
 
-Window::Window(unsigned int width, unsigned int height, const char* name)
+void Window::Init(unsigned int width, unsigned int height, const char* name)
 {
+	_windowData = WindowData();
 	_windowData._width = width;
 	_windowData._height = height;
 	_windowData._title = name;
 }
 
+GLFWwindow* Window::GetGLFWWindow()
+{
+	return _pWindow;
+}
+
+glm::vec2 Window::GetWindowSize()
+{
+	return glm::vec2(_windowData._width, _windowData._height);
+}
+
+glm::vec2 Window::GetHalfWindowSize()
+{
+	return glm::vec2(_windowData._width / 2.0f, _windowData._height / 2.0f);
+}
+
+float Window::GetAspectRatio()
+{
+	return  (float)_windowData._width / (float)_windowData._height;
+}
+
+//Sets an event callback for the window
 void Window::SetEventCallback(const EventCallbackFn& callback)
 {
 	_windowData._eventCallback = callback;
@@ -21,8 +43,8 @@ void Window::SetWindowColour(float r, float g, float b, float a)
 	glfwMakeContextCurrent(_pWindow);
 
 	//Sets background colour and clears the colour buffer bit
-	glClearColor(r,g,b,a);
-	glClear(GL_COLOR_BUFFER_BIT);
+	GLCall(glClearColor(r,g,b,a));
+	GLCall(glClear(GL_COLOR_BUFFER_BIT));
 }
 
 void Window::DestroyWindow()
@@ -141,3 +163,17 @@ void Window::SwapBuffers()
 {
 	glfwSwapBuffers(_pWindow);
 }
+
+float Window::GetHeight()
+{
+	return _windowData._height;
+}
+
+float Window::GetWidth()
+{
+	return _windowData._width;
+}
+
+GLFWwindow* Window::_pWindow;
+
+Window::WindowData Window::_windowData;

@@ -1,76 +1,60 @@
-
-
 #pragma once
 
-#include <GLFW/glfw3.h>
+#include "pch.h"
+#include "Input.h"
+#include "Component.h"
 
-#include <glm.hpp>
-#include <gtc/matrix_transform.hpp>
-#include <gtc/type_ptr.hpp>
-
-class Camera
+class Camera : public Component
 {
 public:
-	Camera(GLFWwindow* window, int width, int height, float fov);
+	Camera(float left, float right, float bottom, float top, std::string name, GameObject* parent);
+	COMPONENT_STATIC_TYPE(Camera_Type);
+	void OnStart() override;
+	void OnUpdate(float deltaTime) override;
+	void OnEnd() override;
+	void DrawEditorUI() override;
 
+	glm::mat4 Proj() { return _projection; }
+	glm::mat4 View() { return _view; }
+	glm::mat4 ViewProj() { return _viewProj; }
+	glm::vec3 Position() { return _cameraPos; }
 
-	void Update(float dt);
+	void SetPosition(glm::vec3 pos) { _cameraPos = pos; }
+	void SetCameraSpeed(float speed) { _cameraSpeed = speed; }
+	float GetCameraSpeed() const { return _cameraSpeed; }
+	float GetAspectRatio() const { return _aspectRatio; }
+	float GetZoomLevel() const { return _zoomLevel; }
 
-	float* Proj() {
-		return glm::value_ptr(_mProjection);
+	void OnResize(float width, float height);
+	void OnMouseScrolled(float yOffset);
+	void SetProjection(float left, float right, float bottom, float top);
+
+	void RecalculateViewMatrix();
+
+	glm::vec2 PositionXY() const { return { _cameraPos.x, _cameraPos.y }; }
+	glm::vec2 Size() const { return { _aspectRatio, _zoomLevel }; }
+
+	void PrintInfo() {
+		std::cout << "Camera: " << _cameraPos.x << ", " << _cameraPos.y << ", " << _cameraPos.z << std::endl;
 	}
-
-	float* View() {
-		return glm::value_ptr(_mView);
-	}
-
-	float* Position() {
-		return glm::value_ptr(_mCameraPos);
-	}
-
-	glm::mat4 ProjMat() {
-		return _mProjection;
-	}
-
-	glm::mat4 ViewMat() {
-		return _mView;
-	}
-
-	glm::vec3 PositionVec() {
-		return _mCameraPos;
-	}
-
-	float* Front() {
-		return glm::value_ptr(_mCameraFront);
-	}
-
-	void ProcessScrollMovement(float yOffset);
-
-	float _mPitch = 0.0f;
-	float _mYaw = -90.0f;
-
-	float _mFOV = 45.0f;
-
+	std::string _mName;
 private:
 	void PollInput(float dt);
 
 private:
-	glm::vec3 _mCameraPos = glm::vec3(0.0f, 0.0f, 3.0f);
-	glm::vec3 _mCameraFront = glm::vec3(0.0f, 0.0f, -1.0f);
-	glm::vec3 _mCameraUp = glm::vec3(0.0f, 1.0f, 0.0f);
+	glm::vec3 _cameraPos;
+	float _rotation;
 
-	glm::vec3 _mCameraTarget;
-	glm::vec3 _mCameraDirection;
+	float _cameraSpeed = 10.0f;
+	float _aspectRatio;
+	float _zoomLevel;
 
+	glm::mat4 _projection;
+	glm::mat4 _view;
+	glm::mat4 _viewProj;
+	float x, y, z = 0;
 
-	glm::vec3 _mCameraRight;
+	
 
-	glm::mat4 _mProjection;
-	glm::mat4 _mView;
-
-	int _mWidth;
-	int _mHeight;
-
-	GLFWwindow* _pWindow;
 };
 

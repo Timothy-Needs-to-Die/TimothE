@@ -1,48 +1,56 @@
-#include <GL/glew.h>
-#include <GLFW/glfw3.h>
-
 #include "Application.h"
-
-#include <iostream>
-#include <thread>
-
 #include "Input.h"
-
-#include <functional>
-#include <iostream>
-
 #include "imgui.h"
-
 #include "UID.h"
-
 #include "ImGuiManager.h"
-
 #include "Texture2D.h"
+#include "SubTexture2D.h"
 #include "Button.h"
+#include "ResourceManager.h"
+#include "Editor.h"
+#include "Renderer2D.h"
+#include "TileMap.h"
 
 #define BIND_EVENT_FN(x) std::bind(&Application::x, this, std::placeholders::_1)
 
+void GLAPIENTRY MessageCallback(GLenum source,
+	GLenum type,
+	GLuint id,
+	GLenum severity,
+	GLsizei length,
+	const GLchar* message,
+	const void* userParam)
+{
+	fprintf(stderr, "GL CALLBACK: %s type = 0x%x, severity = 0x%x, message = %s\n",
+		(type == GL_DEBUG_TYPE_ERROR ? "** GL ERROR **" : ""),
+		type, severity, message);
+
+}
+
+//initializes application
 void Application::Init(bool devMode)
 {
 	UID::Init();
 	Input::Init();
-	Renderer::Initialize();
 	HeapManager::Init();
 
-	_devMode = devMode;
+	_mDevMode = devMode;
 
+	//checks if glfw initialsed
 	if (!glfwInit()) {
 		std::cout << "[ERROR: Application::Init()]: glfw failed to initialize" << std::endl;
 	}
 
-	glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 3);
-	glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 3);
+	//sets up new window
+	glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 4);
+	glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 4);
 
-	_pWindow = new Window(1280, 720, "ThymeoWthE");
+	Window::Init(1920, 1080, "ThymeoWthE");
 
-	_pWindow->SetEventCallback(BIND_EVENT_FN(OnGameEvent));
-	_pWindow->CreateWindow();
+	Window::SetEventCallback(BIND_EVENT_FN(OnGameEvent));
+	Window::CreateWindow();
 
+	//checks glew initialises
 	GLint GlewInitResult = glewInit();
 	if (GlewInitResult != GLEW_OK)
 	{
@@ -50,15 +58,41 @@ void Application::Init(bool devMode)
 		exit(EXIT_FAILURE);
 	}
 
-	if (_devMode) {
-		ImGuiManager::CreateImGuiContext(_pWindow->GetGLFWWindow());
+	//enables debug messages
+	GLCall(glEnable(GL_DEBUG_OUTPUT));
+	//GLCall(glDebugMessageCallback(MessageCallback, 0));
+
+	if (_mDevMode) {
+		ImGuiManager::CreateImGuiContext(Window::GetGLFWWindow());
 	}
 
-	_pCurrentScene = new Scene("Test scene");
-	_pEditor = new Editor(_pWindow);
-	_running = true;
+	//initializes resource manager
+	ResourceManager::Init();
+
+	Renderer2D::Init();
+
+	_pTilemap = new TileMap();
+
+	//initializes editor with scene
+	_pCurrentScene = new Scene("Test scene", _pTilemap);
+	_mRunning = true;
+
+	CameraManager::Init();
+	CameraManager::MainCamera()->SetCameraSpeed(2.0f);
+
+	CameraManager::AddCamera("Editor");
+	CameraManager::GetCamera("Editor")->SetPosition({ 1.78f, 1.0f, -1.0f });
+
+	CameraManager::SetToMainCamera();
+
+	_pEditor = new Editor(this);
+	//_pCameraManager->_pCameras = _pCurrentScene->FindObjectsOfType<Camera>();
+
+
+	//Layer, X sprite index, y sprite index, index for placement
 }
 
+//game loop update
 void Application::GameLoop()
 {
 	//TODO: Setup build process for game only
@@ -66,173 +100,193 @@ void Application::GameLoop()
 	//Intial mem bookmark
 	int memBookmark = HeapManager::GetMemoryBookmark();
 
-	_audio = new AudioEngine;
+	//creates new audio engine
+	_pAudio = new AudioEngine;
 
-	//_pCurrentScene->LoadScene("scene1.scene");
+	//enables depth in opengl
+	//GLCall(glEnable(GL_DEPTH_TEST));
 
-
+	//time update
 	double previousTime = glfwGetTime();
-	bool STstarted = false;
 
-	SoundStruct TitleSong = _audio->LoadSound("Title Song", "Resources/Sounds/Music/Title.wav", Type_Song);
+	//SoundStruct TitleSong = _audio->LoadSound("Title Song", "Resources/Sounds/Music/Title.wav", Type_Song);
 
-	Camera* _pGameCamera = new Camera(_pWindow->GetGLFWWindow(), 1280, 720, 45.0f);
 
 	//While the editor window should not close
-	while (_running) {
+	while (_mRunning) {
 		PollInput();
 
-		if (STstarted == false)
-		{
-			//_audio->PlaySong(TitleSong);
-			STstarted = true;
+		//plays sounds
+		//if (STstarted == false)
+		//{
+		//	//_audio->PlaySong(TitleSong);
+		//	STstarted = true;
+		//}
 
-		}
+		//deltatime update
+		double deltaTime = glfwGetTime();
+		double elapsed = deltaTime - previousTime;
 
-		double currentTime = glfwGetTime();
-		double elapsed = currentTime - previousTime;
+		//imgui update frame
+		ImGuiManager::ImGuiNewFrame();
 
+		_pTilemap->UpdateLogic(CameraManager::GetCamera("Editor"));
 
-		_pGameCamera->Update(elapsed);
-
-		if (_inEditorMode) {
+		//update editor if in editor mode
+		if (_mInEditorMode) {
 			_pEditor->_pEditorFramebuffer->BindFramebuffer();
-			glEnable(GL_DEPTH);
-
 			GameBeginRender();
 
-			GameRender();
+			GameRender(CameraManager::GetCamera("Editor"));
+			_pEditor->EditorLoop(_pCurrentScene, elapsed, _mInEditorMode, _mPaused);
+
+			if (Input::IsMouseButtonDown(BUTTON_LEFT)) {
+				_pTilemap->AddTileAt(0, 3, 5, CameraManager::GetCamera("Editor"), true);
+			}
+			else if (Input::IsMouseButtonDown(BUTTON_RIGHT)) {
+				_pTilemap->AddTileAt(0, 0, 0, CameraManager::GetCamera("Editor"), false);
+			}
+
+			//_pEditor->GetCamera()->PrintInfo();
 
 			_pEditor->_pEditorFramebuffer->UnbindFramebuffer();
 
-			ImGuiManager::ImGuiNewFrame();
-			
-			glDisable(GL_DEPTH);
-
 			_pEditor->EditorRender();
-			_pEditor->EditorLoop(_pCurrentScene, elapsed, _inEditorMode, _paused);
-			ImGuiManager::ImGuiEndFrame();
-
-			_pEditor->EditorEndRender();
 		}
+		//update game if in game mode
 		else {
 			GameBeginRender();
 
-			GameRender();
+			GameRender(CameraManager::CurrentCamera());
 
-			if (_devMode) {
-				ImGuiManager::ImGuiNewFrame();
-				ImGUISwitchRender();
-				ImGuiManager::ImGuiEndFrame();
+			//_pGameCamera->PrintInfo();
+
+			if (_mGameRunning && !_mPaused) {
+				GameUpdate(elapsed);
 			}
 
-			GameEndRender();
-
-			if(!_paused)
-				GameUpdate(elapsed);
+			if (_mDevMode) {
+				ImGUISwitchRender();
+			}
 		}
 
-		previousTime = currentTime;
+		ImGuiManager::ImGuiEndFrame();
+
+		Window::SwapBuffers();
+
+		previousTime = deltaTime;
 	}
+
+	//saves scene
 	_pCurrentScene->SaveScene("scene1.scene");
 
+	//delete
 	ImGuiManager::DestroyImGui();
 	delete _pEditor;
-	_pWindow->DestroyWindow();
+	Window::DestroyWindow();
 
 	//Prints the memory status and reports and memory leaks
-	HeapManager::ReportMemoryLeaks(memBookmark);
-
+	//HeapManager::ReportMemoryLeaks(memBookmark);
 }
 
-
+//run events
 void Application::OnGameEvent(Event& e)
 {
 	EventDispatcher dispatcher(e);
-	dispatcher.Dispatch<WindowCloseEvent>(BIND_EVENT_FN(OnGameWindowClose));
-	dispatcher.Dispatch<KeyPressedEvent>(BIND_EVENT_FN(OnGameWindowKeyPressedEvent));
-	dispatcher.Dispatch<KeyReleasedEvent>(BIND_EVENT_FN(OnGameWindowKeyReleasedEvent));
-	dispatcher.Dispatch<MouseButtonPressedEvent>(BIND_EVENT_FN(OnGameWindowMouseButtonPressedEvent));
-	dispatcher.Dispatch<MouseButtonReleasedEvent>(BIND_EVENT_FN(OnGameWindowMouseButtonReleasedEvent));
-	dispatcher.Dispatch<MouseMovedEvent>(BIND_EVENT_FN(OnGameWindowMouseMovedEvent));
+	dispatcher.Dispatch<WindowCloseEvent>(BIND_EVENT_FN(OnWindowClose));
+	dispatcher.Dispatch<KeyPressedEvent>(BIND_EVENT_FN(OnKeyPressedEvent));
+	dispatcher.Dispatch<KeyReleasedEvent>(BIND_EVENT_FN(OnKeyReleasedEvent));
+	dispatcher.Dispatch<MouseButtonPressedEvent>(BIND_EVENT_FN(OnMouseButtonPressedEvent));
+	dispatcher.Dispatch<MouseButtonReleasedEvent>(BIND_EVENT_FN(OnMouseButtonReleasedEvent));
+	dispatcher.Dispatch<MouseMovedEvent>(BIND_EVENT_FN(OnMouseMovedEvent));
+	dispatcher.Dispatch<WindowResizeEvent>(BIND_EVENT_FN(OnWindowResize));
+	dispatcher.Dispatch<MouseScrolledEvent>(BIND_EVENT_FN(OnMouseScrolledEvent));
 }
 
+//on game start start game state
+void Application::GameStart()
+{
+	_pCurrentScene->SceneStart();
+	_mInEditorMode = false;
+	_mPaused = false;
+	_mGameRunning = true;
+}
+
+//polls input
 void Application::PollInput()
 {
 	glfwPollEvents();
 }
 
+//clears and adds background
 void Application::GameBeginRender()
 {
-	_pWindow->SetWindowColour(0.3f, 1.0f, 0.0f, 1.0f);
+	Window::SetWindowColour(0.3f, 1.0f, 0.0f, 1.0f);
+	GLCall(glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT));
 }
 
-void Application::GameRender()
+//render game
+void Application::GameRender(Camera* cam)
 {
-	_pCurrentScene->RenderScene(&_renderer);
+	_pTilemap->RenderMap(cam);
+	_pCurrentScene->RenderScene(cam);
 }
 
-void Application::GameEndRender()
-{
-	_pWindow->SwapBuffers();
-}
-
+//updates game scene
 void Application::GameUpdate(float dt)
 {
+	CameraManager::CurrentCamera()->OnUpdate(dt);
 	_pCurrentScene->Update(dt);
-
 }
 
+//stop and play buttons switches play states
 void Application::ImGUISwitchRender()
 {
 	{
-		ImGui::Begin("#Application Mode");
+		//sets up window for application mode
+		ImGui::Begin("#Application Mode", 0, ImGuiWindowFlags_AlwaysAutoResize);
+		//stop playing button changes game back to editor mode
+		if (ImGui::Button("Stop Playing", ImVec2(100.0f, 30.0f))) {
+			_mInEditorMode = true;
+			_mGameRunning = false;
+			_mPaused = false;
+		}
+		ImGui::SameLine();
+		//unpauses game
+		if (_mPaused) {
+			if (ImGui::Button("Resume", ImVec2(90.0f, 30.0f)))
+			{
+				_mPaused = false;
+			}
+		}
+		ImGui::SameLine();
 
-		if (ImGui::Button("Editor", ImVec2(100.0f, 30.0f))) {
-			_inEditorMode = true;
-		}
-		ImGui::SameLine();
-		if (ImGui::Button("Game", ImVec2(100.0f, 30.0f))) {
-			_inEditorMode = false;
-		}
-		ImGui::SameLine();
-		//float width = ImGui::GetWindowSize().x;
-		//ImGui::SetCursorPosX((width - 30.0f) * 0.5f); // sets play and pause button to centre of window
-		if (ImGui::Button("Play", ImVec2(50.0f, 30.0f)))
+		//pause button
+		if (ImGui::Button("Pause", ImVec2(90.0f, 30.0f)))
 		{
-			_paused = false;
+			_mPaused = true;
 		}
 		ImGui::SameLine();
-		if (ImGui::Button("Pause", ImVec2(50.0f, 30.0f)))
-		{
-			_paused = true;
-		}
-		ImGui::SameLine();
-		//resets game build
-		if (ImGui::Button("Stop", ImVec2(50.0f, 30.0f)))
-		{
-			_pCurrentScene = new Scene("Test scene");
-			_paused = true;
-		}
-		ImGui::SameLine();
-		ImGui::Text(("Paused: " + to_string(_paused)).c_str());
 		ImGui::End();
 	}
 }
 
-bool Application::OnGameWindowClose(WindowCloseEvent& e)
+//closes game window
+bool Application::OnWindowClose(WindowCloseEvent& e)
 {
 	std::cout << "Game Window: " << e.ToString() << std::endl;
-	_running = false;
+	_mRunning = false;
 	return true;
 }
 
-bool Application::OnGameWindowKeyPressedEvent(KeyPressedEvent& e)
+//input event for given input
+bool Application::OnKeyPressedEvent(KeyPressedEvent& e)
 {
 	//1: Is marked as GLFW repeat value
 	if (e.GetRepeatCount() == 1) {
 		Input::SetKey((TimothEKeyCode)e.GetKeyCode(), HELD);
 	}
+	//else for button pressed quickly
 	else
 	{
 		Input::SetKey((TimothEKeyCode)e.GetKeyCode(), PRESSED);
@@ -241,26 +295,62 @@ bool Application::OnGameWindowKeyPressedEvent(KeyPressedEvent& e)
 	return true;
 }
 
-bool Application::OnGameWindowKeyReleasedEvent(KeyReleasedEvent& e)
+//when key is released return true
+bool Application::OnKeyReleasedEvent(KeyReleasedEvent& e)
 {
 	Input::SetKey((TimothEKeyCode)e.GetKeyCode(), RELEASE);
 	return true;
 }
 
-bool Application::OnGameWindowMouseButtonPressedEvent(MouseButtonPressedEvent& e)
+//when key is pressed return true
+bool Application::OnMouseButtonPressedEvent(MouseButtonPressedEvent& e)
 {
 	Input::SetMouseButton((TimothEMouseCode)e.GetMouseButton(), PRESSED);
 	return true;
 }
 
-bool Application::OnGameWindowMouseButtonReleasedEvent(MouseButtonReleasedEvent& e)
+//when mouse button is released return true
+bool Application::OnMouseButtonReleasedEvent(MouseButtonReleasedEvent& e)
 {
 	Input::SetMouseButton((TimothEMouseCode)e.GetMouseButton(), RELEASE);
 	return true;
 }
 
-bool Application::OnGameWindowMouseMovedEvent(MouseMovedEvent& e)
+//if mouse is moved return false
+bool Application::OnMouseMovedEvent(MouseMovedEvent& e)
 {
-	Input::SetMousePosition(e.GetX(), e.GetY());
-	return false;
+	float mouseY = e.GetY();
+	float mouseX = e.GetX();
+
+	mouseY = Window::GetHeight() - mouseY;
+
+	mouseY /= Window::GetHeight();
+	mouseX /= Window::GetWidth();
+
+	mouseY -= 1.0f;
+	mouseY *= 2.0f;
+	mouseY += 1.0f;
+
+	mouseX -= 1.0f;
+	mouseX *= 2.0f;
+	mouseX += 1.0f;
+
+	//std::cout << "Mouse (" << mouseX << ", " << mouseY << ")" << std::endl;
+
+	Input::SetMousePosition(mouseX, mouseY);
+	return true;
+}
+
+bool Application::OnMouseScrolledEvent(MouseScrolledEvent& e)
+{
+	CameraManager::GetCamera("Editor")->OnMouseScrolled(e.GetOffsetY());
+
+	return true;
+}
+
+bool Application::OnWindowResize(WindowResizeEvent& e)
+{
+	CameraManager::ResizeCameras((float)e.GetWidth(), (float)e.GetHeight());
+
+	return true;
 }

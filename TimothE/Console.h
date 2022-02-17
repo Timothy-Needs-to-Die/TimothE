@@ -1,19 +1,15 @@
 #pragma once
 
-#include <vector>
-#include <string>
-#include <iostream>
-using std::string;
-using std::vector;
+#include "pch.h"
 
 #define CONSOLE_MAX_MESSAGES 500
 
 class Console
 {
 public:
-	static void Print(string message);
-	static vector<string> GetConsoleOutput() { return output; }
+	static void Print(std::string message);
+	static std::vector<std::string> GetConsoleOutput() { return output; }
 
 private:
-	static vector<string> output;
+	static std::vector<std::string> output;
 };

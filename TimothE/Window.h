@@ -1,13 +1,6 @@
 #pragma once
 
-#include <GLFW/glfw3.h>
-#include <GL/GL.h>
-
-#include <functional>
-#include <iostream>
-#include <memory>
-#include <utility>
-#include <algorithm>
+#include "pch.h"
 
 #include "Event.h"
 
@@ -20,32 +13,38 @@ class Window
 public:
 	using EventCallbackFn = std::function<void(Event&)>;
 
-	/// <summary>
-	/// Constructor for creating a window.
-	/// </summary>
-	/// <param name="width">The width of the window</param>
-	/// <param name="height">The height of the window</param>
-	/// <param name="name">The name of the window</param>
-	Window(unsigned int width, unsigned int height, const char* name);
+	static void Init(unsigned int width, unsigned int height, const char* name);
 
 	//Gets the GLFWwindow associated with this Window class
-	GLFWwindow* GetGLFWWindow() const { return _pWindow; }
+	static GLFWwindow* GetGLFWWindow();
 
-	void SetEventCallback(const EventCallbackFn& callback);
+	static glm::vec2 GetWindowSize();
+	static glm::vec2 GetHalfWindowSize();
 
-	void SetWindowColour(float r, float g, float b, float a);
+	static float GetAspectRatio();
 
-	void DestroyWindow();
+	//Sets an event callback for the window
+	static void SetEventCallback(const EventCallbackFn& callback);
+
+	//Sets the background colour of the window
+	static void SetWindowColour(float r, float g, float b, float a);
+
+	//Handles GLFW closing and termination behavior
+	static void DestroyWindow();
 
 	//Creates a GLFWwindow with the passed in width, height and name.
-	void CreateWindow();
+	static void CreateWindow();
 
-	void SwapBuffers();
+	//Swaps the front and back buffers of the window
+	static void SwapBuffers();
+
+	static float GetHeight();
+	static float GetWidth();
 private:
 
 
 private:
-	GLFWwindow* _pWindow;
+	static GLFWwindow* _pWindow;
 
 	struct WindowData
 	{
@@ -55,6 +54,6 @@ private:
 		EventCallbackFn _eventCallback;
 	};
 
-	WindowData _windowData;
+	static WindowData _windowData;
 };
 

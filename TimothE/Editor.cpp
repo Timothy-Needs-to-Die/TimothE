@@ -1,40 +1,33 @@
 ﻿#include "Editor.h"
 #include "ImGuiManager.h"
 #include "Texture2D.h"
+#include "BoxColliderComponent.h"
 
 #include "misc/cpp/imgui_stdlib.h"
 #include "misc/cpp/imgui_stdlib.cpp"
 #include "dirent.h"
+#include "Input.h"
+#include "CircleCollider.h"
+#include "Application.h"
+#include "imgui.h"
 
 DIR* _mDirectory;
 struct dirent* _mDirent;
-vector<string> _mDirectoryList;
+std::vector<std::string> _mDirectoryList;
 
-vector<string> Console::output = vector<string>();
+std::vector<std::string> Console::output = std::vector<std::string>();
 
-Editor::Editor(Window* pWindow)
-	: _pWindow(pWindow)
+Editor::Editor(Application* pApp)
+	:  _pApplication(pApp)
 {
-
-	pContentTextureScript->Load("Icons/ScriptContent.png", "Linear");
-	pContentTextureImage->Load("Icons/ImageContent.png", "Linear");
-	pContentTextureScene->Load("Icons/SceneContent.png", "Linear");
-	pContentTextureConfig->Load("Icons/ConfigContent.png", "Linear");
-	pContentTextureSound->Load("Icons/SoundContent.png", "Linear");
-	pContentTextureFile->Load("Icons/FileContent.png", "Linear");
-	pContentTextureFolder->Load("Icons/FolderContent.png", "Linear");
-
-	// vertex attributes for a quad that fills the editor screen space in Normalized Device Coordinates.
-	float* quadVertices = new float[24]{
-		// positions   // texCoords
-		-0.65f,  -0.6f,  0.0f, 0.0f,
-		-0.65f,   0.82f,	0.0f, 1.0f,
-		 0.6f,   0.82f,	1.0f, 1.0f,
-
-		 0.6f,  -0.6f,  1.0f, 0.0f,
-		-0.65f,  -0.6f,	0.0f, 0.0f,
-		 0.6f,   0.82f,   1.0f, 1.0f
-	};
+	//icon textures
+	pContentTextureScript->Load("Icons/ScriptContent.png");
+	pContentTextureImage->Load("Icons/ImageContent.png");
+	pContentTextureScene->Load("Icons/SceneContent.png");
+	pContentTextureConfig->Load("Icons/ConfigContent.png");
+	pContentTextureSound->Load("Icons/SoundContent.png");
+	pContentTextureFile->Load("Icons/FileContent.png");
+	pContentTextureFolder->Load("Icons/FolderContent.png");
 
 	//Creates the screen shader for the framebuffer
 	_pScreenShader = new Shader("fbVert.vs", "fbFrag.fs");
@@ -42,14 +35,20 @@ Editor::Editor(Window* pWindow)
 	//Creates the editor framebuffer
 	_pEditorFramebuffer = new Framebuffer(_pScreenShader);
 
-	_pEditorCamera = new Camera(pWindow->GetGLFWWindow(), 1280, 720, 45.0f);
 
-	
-	
-	
-	
-	
-	
+	float aspectRatio = Window::GetAspectRatio();
+	float zoomLevel = 1.0f;
+
+	float left = -aspectRatio * zoomLevel;
+	float right = aspectRatio * zoomLevel;
+	float bottom = -zoomLevel;
+	float top = zoomLevel;
+
+
+	pImGuiSample = new Texture2D(NULL);
+	pImGuiSample->Load("lenna3.jpg");
+
+	pTileMapEditor = new TileMapEditor();
 }
 
 Editor::~Editor()
@@ -60,37 +59,75 @@ Editor::~Editor()
 
 void Editor::EditorLoop(Scene* currentScene, float dt, bool& editorMode, bool& paused)
 {
-	_pEditorCamera->Update(dt);
+	CameraManager::GetCamera("Editor")->OnUpdate(dt);
 
 	EditorImGui(currentScene);
 	ImGUISwitchRender(editorMode, paused);
 
-	if(!paused)
-		EditorUpdate(currentScene, dt);
+	EditorUpdate(currentScene, dt);
 }
 
 void Editor::EditorImGui(Scene* currentScene)
 {
+	static ImGuiWindowFlags flags = ImGuiWindowFlags_NoDecoration | ImGuiWindowFlags_NoMove | ImGuiWindowFlags_NoResize | ImGuiWindowFlags_NoSavedSettings;
+
+	const ImGuiViewport* viewport = ImGui::GetMainViewport();
+	ImGui::SetNextWindowPos(true ? viewport->WorkPos : viewport->Pos);
+	ImGui::SetNextWindowSize(true ? viewport->WorkSize : viewport->Size);
+
+	ImGui::ShowDemoWindow();
+
 	static bool changeObject = false;
 
 	{
-		ImGui::Begin("Notes");
+		if (ImGui::BeginMainMenuBar()) {
+			if (ImGui::MenuItem("File")) {
+				if (ImGui::BeginChild("FileMenu")) {
+					if (ImGui::MenuItem("New Scene"))
+					{
+						std::cout << "New Scene" << std::endl;
+					}
+					if (ImGui::MenuItem("Load Scene")) {
+						std::cout << "Load Scene" << std::endl;
+					}
+				}
+				ImGui::EndChild();
+			}
+			if (ImGui::MenuItem("Edit")) {
 
-		string notes;
+			}
+			if (ImGui::MenuItem("View")) {
+
+			}
+		}
+		ImGui::EndMainMenuBar();
+	}
+
+	{
+		ImGui::Begin("Notes", 0, ImGuiWindowFlags_NoMove);
+
+		std::string notes;
 		ImGui::InputTextMultiline("Notes", &notes, ImVec2(300.0f, 600.0f), 0, 0);
 
 		ImGui::End();
 	}
 
+	//Tile Editor
+	{
+		pTileMapEditor->EnableEditor();
+		pTileMapEditor->DisplayEditorGUI();
+	}
+
+
 	//Inspector
 	{
-		ImGui::Begin("Inspector");
+		ImGui::Begin("Inspector", 0, ImGuiWindowFlags_NoMove);
 
 		if (_pSelectedGameObject != nullptr)
 		{
 			// text box to change name
 			{
-				static string text = _pSelectedGameObject->GetName();
+				static std::string text = _pSelectedGameObject->GetName();
 				if (changeObject)
 				{
 					text = _pSelectedGameObject->GetName();
@@ -121,7 +158,12 @@ void Editor::EditorImGui(Scene* currentScene)
 				{
 					_pSelectedGameObject->SetType(ObjectType::PickUp);
 				}
+				if (ImGui::RadioButton("UI", &index, 4)) {
+					_pSelectedGameObject->SetType(ObjectType::UI);
+				}
 			}
+
+			Component* componentToDelete = nullptr;
 
 			// for each component in the game object
 			for (int i = 0; i < _pSelectedGameObject->GetComponents().size(); i++)
@@ -134,9 +176,12 @@ void Editor::EditorImGui(Scene* currentScene)
 				if (c->GetType() != Component::Transform_Type)
 				{
 					// add a delete button
-					if (ImGui::Button(("Delete component##" + to_string(c->GetType())).c_str()))
+					if (ImGui::Button(("Delete component##" + std::to_string(c->GetType())).c_str()))
 					{
-						_pSelectedGameObject->RemoveComponent(c);
+						componentToDelete = c;
+						break;
+						//_pSelectedGameObject->RemoveComponent(c);
+
 					}
 					// check if i is not the first
 					if (i > 0)
@@ -144,8 +189,8 @@ void Editor::EditorImGui(Scene* currentScene)
 						if (_pSelectedGameObject->GetComponents()[i - 1]->GetType() != Component::Transform_Type)
 						{
 							ImGui::SameLine();
-							// add button to move the component up 
-							if (ImGui::Button("Up"))
+							// add button to move the component up
+							if (ImGui::Button(("Up##component" + std::to_string(i)).c_str()))
 							{
 								_pSelectedGameObject->SwapComponents(i, i - 1);
 							}
@@ -156,12 +201,19 @@ void Editor::EditorImGui(Scene* currentScene)
 					{
 						ImGui::SameLine();
 						// add button to move the component down
-						if (ImGui::Button("Down"))
+						if (ImGui::Button(("Down##component" + std::to_string(i)).c_str()))
 						{
 							_pSelectedGameObject->SwapComponents(i, i + 1);
 						}
 					}
 				}
+
+				ImGui::Separator();
+			}
+
+			if (componentToDelete != nullptr) {
+				_pSelectedGameObject->RemoveComponent(componentToDelete);
+				componentToDelete = nullptr;
 			}
 
 			// add component
@@ -188,11 +240,19 @@ void Editor::EditorImGui(Scene* currentScene)
 				{
 					if (ImGui::Button("Box Collider"))
 					{
-
+						BoxColliderComponent* pTest = _pSelectedGameObject->GetComponent<BoxColliderComponent>();
+						if (pTest == nullptr)
+						{
+							_pSelectedGameObject->AddComponent(new BoxColliderComponent(_pSelectedGameObject));
+						}
 					}
 					if (ImGui::Button("Circle Collider"))
 					{
-
+						CircleCollider* pTest = _pSelectedGameObject->GetComponent<CircleCollider>();
+						if (pTest == nullptr)
+						{
+							_pSelectedGameObject->AddComponent(new CircleCollider(_pSelectedGameObject));
+						}
 					}
 				}
 				if (ImGui::CollapsingHeader("AI"))
@@ -208,15 +268,33 @@ void Editor::EditorImGui(Scene* currentScene)
 				}
 				if (ImGui::CollapsingHeader("Graphics"))
 				{
-					static string texPath = "lenna3.jpg";
+					// texture component
+					static std::string texPath = "lenna3.jpg";
 					ImGui::InputText("Texture path", &texPath);
 					if (ImGui::Button("Texture"))
 					{
 						Texture2D* tex = _pSelectedGameObject->GetComponent<Texture2D>();
 						if (tex == nullptr)
 						{
-							_pSelectedGameObject->LoadTexture((char*)texPath.c_str(), "Linear");
+							_pSelectedGameObject->LoadTexture(new Texture2D((char*)texPath.c_str()));
 						}
+					}
+
+					if (ImGui::Button("Particle System"))
+					{
+						_pSelectedGameObject->AddComponent<ParticleSystem>(new ParticleSystem(100, glm::vec4(1.0f), new Texture2D((char*)texPath.c_str()), _pSelectedGameObject->GetTransform()));
+					}
+
+					if (ImGui::Button("Camera"))
+					{
+						float aspectRatio = Window::GetAspectRatio();
+						float zoomLevel = 1.0f;
+						float left = -aspectRatio * zoomLevel;
+						float right = aspectRatio * zoomLevel;
+						float bottom = -zoomLevel;
+						float top = zoomLevel;
+						_pSelectedGameObject->AddComponent<Camera>(new Camera(left, right, bottom, top, _pSelectedGameObject->GetName(), _pSelectedGameObject));
+						
 					}
 				}
 			}
@@ -227,11 +305,11 @@ void Editor::EditorImGui(Scene* currentScene)
 
 	//Hierarchy
 	{
-		ImGui::Begin("Hierarchy");
+		ImGui::Begin("Hierarchy", 0, ImGuiWindowFlags_NoMove);
 
 		if (ImGui::CollapsingHeader("Add GameObject"))
 		{
-			static string name = "New GameObject";
+			static std::string name = "New GameObject";
 
 			ImGui::InputText("##NewGameObjectName", &name, ImGuiInputTextFlags_CharsNoBlank);
 			static ObjectType tag = ObjectType::Player;
@@ -269,7 +347,7 @@ void Editor::EditorImGui(Scene* currentScene)
 		// index of the selected object
 		static int index = 0;
 		// get vector of objects from the current scene
-		vector<GameObject*> objects = currentScene->GetGameObjects();
+		std::vector<GameObject*> objects = currentScene->GetGameObjects();
 		if (!objects.empty())
 		{
 			for (int i = 0; i < objects.size(); i++)
@@ -289,7 +367,7 @@ void Editor::EditorImGui(Scene* currentScene)
 
 					if (i <= index)
 					{
-						if(index > 0)
+						if (index > 0)
 							index--;
 					}
 				}
@@ -311,19 +389,19 @@ void Editor::EditorImGui(Scene* currentScene)
 
 	//Console
 	{
-		ImGui::Begin("Console");
+		ImGui::Begin("Console", 0, ImGuiWindowFlags_NoMove);
 
-		static int oldSize = 0;
 		// get output from console class
-		vector<string> consoleOut = Console::GetConsoleOutput();
-		for (string s : consoleOut)
+		std::vector<std::string> consoleOut = Console::GetConsoleOutput();
+		// convert vector to string array
+		std::string* out = &consoleOut[0];
+		if (out != nullptr)
 		{
-			ImGui::Text(s.c_str());
-			if (consoleOut.size() > oldSize)
-			{
-				ImGui::SetScrollY(ImGui::GetScrollMaxY());
-				oldSize = consoleOut.size();
-			}
+			// output as wrapped text
+			ImGui::TextWrapped(out->c_str());
+
+			// scroll to the bottom of the console window
+			ImGui::SetScrollY(ImGui::GetScrollMaxY());
 		}
 
 		ImGui::End();
@@ -331,24 +409,22 @@ void Editor::EditorImGui(Scene* currentScene)
 
 	//Content Browser
 	{
-		ImGui::Begin("Content Browser");
-	
-		//context menu for adding new objects 
+		ImGui::Begin("Content Browser", 0, ImGuiWindowFlags_NoMove);
+
 		if (ImGui::BeginPopupContextWindow())
 		{
-
-			static string name = " ";
-			//makes new script with .cpp and .h files
+			static std::string name = " ";
 			if (ImGui::CollapsingHeader("New Script"))
 			{
 				if (ImGui::InputText(" ", &name, ImGuiInputTextFlags_CharsNoBlank)) {}
 				if (ImGui::MenuItem("Add"))
 				{
-					CreateFileInContentBrowser(name, ".cpp");
-					CreateFileInContentBrowser(name, ".h");
+					std::ofstream cppStream(_mCurrentDir + "/" + name + ".cpp");
+					cppStream.close();
+					std::ofstream hStream(_mCurrentDir + "/" + name + ".h");
+					hStream.close();
 					SearchFileDirectory();
 				}
-
 			}
 			// makes new script with.scene files
 			if (ImGui::CollapsingHeader("New Scene"))
@@ -362,9 +438,8 @@ void Editor::EditorImGui(Scene* currentScene)
 
 			}
 
-		ImGui::EndPopup();
-	}
-
+			ImGui::EndPopup();
+		}
 
 		//adds back button which removes last directory and updates options
 		if (ImGui::Button("Back"))
@@ -375,12 +450,13 @@ void Editor::EditorImGui(Scene* currentScene)
 		//displays directory next to button
 		ImGui::SameLine();
 		ImGui::Text(_mCurrentDir.c_str());
-		
+
 		//sets up a column to display the files in a grid
 		ImGui::Columns(4, NULL);
 		ImGui::Separator();
 		//for each item in directory create new button
 		for (int i = 2; i < _mDirectoryList.size(); i++) {
+
 			//checks filetype and give it an icon
 			CheckFileType(_mDirectoryList[i]);
 
@@ -392,81 +468,122 @@ void Editor::EditorImGui(Scene* currentScene)
 			{
 				ImGui::NextColumn();
 			}
+			ImGui::Dummy(ImVec2(0, 80.0f));
 		}
 		ImGui::End();
 	}
 
-	//ImGui::ShowDemoWindow();
 }
 
 void Editor::EditorStartRender()
 {
 	_pEditorFramebuffer->BindFramebuffer();
-	glEnable(GL_DEPTH_TEST);
+	GLCall(glEnable(GL_DEPTH_TEST));
 	_pEditorFramebuffer->BindShader();
 }
 
 void Editor::ImGUISwitchRender(bool& editorMode, bool& paused)
 {
-	ImGui::Begin("Application Mode");
+	ImGui::Begin("Application Mode", 0, ImGuiWindowFlags_NoMove);
 
-	if (ImGui::Button("Editor", ImVec2(100.0f, 30.0f))) {
-		editorMode = true;
-	}
-	ImGui::SameLine();
-	if (ImGui::Button("Game", ImVec2(100.0f, 30.0f))) {
-		editorMode = false;
-	}
-	ImGui::SameLine();
-	//float width = ImGui::GetWindowSize().x;
-	//ImGui::SetCursorPosX((width - 30.0f) * 0.5f); // sets play and pause button to centre of window
-	if (ImGui::Button("Play", ImVec2(30.0f, 30.0f)))
+	if (ImGui::Button("Play", ImVec2(90.0f, 30.0f)))
 	{
-		paused = false;
+		//paused = false;
+		_pApplication->GameStart();
 	}
 	ImGui::SameLine();
-	if (ImGui::Button("Pause", ImVec2(30.0f, 30.0f)))
+	if (ImGui::Button("Pause", ImVec2(90.0f, 30.0f)))
 	{
 		paused = true;
 	}
 	ImGui::SameLine();
-	ImGui::Text(("Paused: " + to_string(paused)).c_str());
+	ImGui::Text(("Paused: " + std::to_string(paused)).c_str());
 	ImGui::End();
 }
 
 void Editor::EditorRender()
 {
-	ImGui::Begin("Scene Window");
-
+	ImGui::Begin("Scene Window", 0 ,ImGuiWindowFlags_NoMove);
+	ImVec2 wp = ImGui::GetCursorScreenPos();
+	_windowPos = { wp.x,wp.y };
 	ImGui::GetWindowDrawList()->AddImage(
 		(void*)_pEditorFramebuffer->GetTexture(),
-		ImVec2(ImGui::GetCursorScreenPos()),
-		ImVec2(ImGui::GetCursorScreenPos().x + 800,
-			ImGui::GetCursorScreenPos().y + 450), ImVec2(0, 1), ImVec2(1, 0));
+		wp,
+		ImVec2(_windowPos.x + Window::GetWidth() / 2.0f, _windowPos.y + Window::GetHeight() / 2.0f),
+		ImVec2(0, 1.0), ImVec2(1.0, 0));
+
+	ImVec2 ws = ImGui::GetWindowSize();
+	_windowSize = { ws.x, ws.y };
+	if (_windowSize.y > Window::GetHeight() / 2.0f) _windowSize.y = Window::GetHeight() / 2.0f;
 
 	ImGui::End();
+
+	ConvertGameToEditorSpace();
 }
 
 void Editor::EditorEndRender()
 {
-	_pWindow->SwapBuffers();
+	Window::SwapBuffers();
 }
 
-//update render
+void Editor::ConvertGameToEditorSpace()
+{
+	glm::vec2 mousePos = glm::vec2(Input::GetMouseX(), Input::GetMouseY());
+	glm::vec2 editorPos = glm::vec2(0.0f);
+
+	//editorPos.x = mousePos.x - _windowPos.x;
+	//editorPos.y = mousePos.y + _windowPos.y - _windowSize.y;
+
+	//if (editorPos.x < 0) editorPos.x = 0.0f;
+	//else if (editorPos.x > _windowSize.x) editorPos.x = _windowSize.x;
+
+	//if (editorPos.y < 0) editorPos.y = 0.0f;
+	//else if (editorPos.y > _windowSize.y) editorPos.y = _windowSize.y;
+
+	//_mousePosInEditorSpace = editorPos;
+
+	//std::cout << "Window Pos: " << _windowPos.x << " " << _windowPos.y << std::endl;
+	editorPos = { _windowPos.x, _windowPos.y };
+
+	ImVec2 edMousePos = ImGui::GetMousePos();
+
+	glm::vec2 cPos = { edMousePos.x - editorPos.x, edMousePos.y - editorPos.y };
+
+
+	cPos /= _windowSize;
+	glm::vec2 clampExtents = CameraManager::GetCamera("Editor")->Size();
+
+	cPos *= clampExtents * 2.0f;
+	cPos -= clampExtents;
+
+	//Invert Y axis
+	cPos.y *= -1.0f;
+
+
+	if (cPos.x < -clampExtents.x) cPos.x = -clampExtents.x;
+	else if (cPos.x > clampExtents.x) cPos.x = clampExtents.x;
+
+	if (cPos.y < -clampExtents.y) cPos.y = -clampExtents.y;
+	else if (cPos.y > clampExtents.y) cPos.y = clampExtents.y;
+
+	_mousePosInEditorSpace = cPos;
+	Input::SetEditorMousePos(cPos.x, cPos.y);
+}
+
+
 void Editor::EditorUpdate(Scene* currentScene, float dt)
 {
-	currentScene->Update(dt);
+	currentScene->EditorUpdate(dt);
 }
 
-//creates new file from context menu
-void Editor::CreateFileInContentBrowser(string name, string type)
+void Editor::CreateFileInContentBrowser(std::string name, std::string type)
 {
 	std::ofstream fileStream(_mCurrentDir + "/" + name + type);
 	fileStream.close();
 }
 
 //checks file type and displays file in content browser
-void Editor::CheckFileType(string fileDirectory)
+void Editor::CheckFileType(std::string fileDirectory)
 {
 	//if file is a script
 	if (fileDirectory.find(".cpp") != std::string::npos || fileDirectory.find(".h") != std::string::npos)
