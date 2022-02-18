@@ -13,7 +13,12 @@ struct CollisionData {
 
 struct ColQuad {
 	glm::vec2 pos;
+	glm::vec2 max;
 	glm::vec2 size;
+
+	void CalculateMax() {
+		max = pos + size;
+	}
 };
 
 class Physics
