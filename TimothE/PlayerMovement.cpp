@@ -9,7 +9,8 @@ void PlayerMovement::OnStart()
 void PlayerMovement::OnUpdate(float deltaTime)
 {
 	Transform* transform = _pParentObject->GetTransform();
-	glm::vec2 newPos = transform->GetPosition();
+	glm::vec2 originalPosition = transform->GetPosition();
+	glm::vec2 newPos = originalPosition;
 
 	if (Input::IsKeyDown(KEY_W)) {
 		newPos.y += 2.0f * deltaTime;
@@ -44,7 +45,21 @@ void PlayerMovement::OnUpdate(float deltaTime)
 
 			if (tile->collidable) {
 				if (Physics::Intersects(playerQuad, tileQuad)) {
-					newPos = transform->GetPosition();
+
+					float dx1 = tileQuad.pos.x -(playerQuad.pos.x + playerQuad.size.x);
+					float dx2 = (tileQuad.pos.x + tileQuad.size.x) - playerQuad.pos.x;
+					float dy1 = tileQuad.pos.y - (playerQuad.pos.y + playerQuad.size.y);
+					float dy2 = (tileQuad.pos.y + tileQuad.size.y) - playerQuad.pos.y;
+
+					float dx = (abs(dx1) < abs(dx2)) ? dx1 : dx2;
+					float dy = (abs(dy1) < abs(dy2)) ? dy1 : dy2;
+
+					if (abs(dx) <= abs(dy)) {
+						newPos.x += dx;
+					}
+					else if (abs(dy) <= abs(dx)) {
+						newPos.y += dy;
+					}
 				}
 			}
 		}
