@@ -110,6 +110,8 @@ bool Transform::LoadState(IStream& stream)
 	//Load Scale
 	_size = ReadVec2(stream);
 
+	CalculateTransformMatrix();
+
 	return true;
 }
 

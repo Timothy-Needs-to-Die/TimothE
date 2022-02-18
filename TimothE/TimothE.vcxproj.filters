@@ -17,7 +17,6 @@
     <ClInclude Include="BufferLayout.h" />
     <ClInclude Include="Button.h" />
     <ClInclude Include="Camera.h" />
-    <ClInclude Include="CircleCollider.h" />
     <ClInclude Include="Component.h" />
     <ClInclude Include="ComponentFactory.h" />
     <ClInclude Include="Console.h" />
@@ -144,6 +143,7 @@
     <ClInclude Include="ColliderBase.h" />
     <ClInclude Include="PlayerMovement.h" />
     <ClInclude Include="TileData.h" />
+    <ClInclude Include="CameraManager.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Application.cpp" />
@@ -151,7 +151,6 @@
     <ClCompile Include="BoxColliderComponenet.cpp" />
     <ClCompile Include="Button.cpp" />
     <ClCompile Include="Camera.cpp" />
-    <ClCompile Include="CircleCollider.cpp" />
     <ClCompile Include="Console.cpp" />
     <ClCompile Include="Editor.cpp" />
     <ClCompile Include="Framebuffer.cpp" />
@@ -209,5 +208,6 @@
     <ClCompile Include="Physics.cpp" />
     <ClCompile Include="ColliderBase.cpp" />
     <ClCompile Include="PlayerMovement.cpp" />
+    <ClCompile Include="CameraManager.cpp" />
   </ItemGroup>
 </Project>

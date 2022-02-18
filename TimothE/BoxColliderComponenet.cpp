@@ -5,7 +5,7 @@
 
 BoxColliderComponent::BoxColliderComponent(GameObject* parent) : ColliderBase(parent)
 {
-	SetType(Component::Collider);
+	SetType(Component::Boxcollision_Type);
 	SetCategory(Component::Collisions_Category);
 
 	// Set the boxcollider to be enabled by default

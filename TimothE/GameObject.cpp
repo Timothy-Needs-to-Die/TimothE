@@ -130,19 +130,24 @@ bool GameObject::LoadState(IStream& stream)
 		Component::Types type = (Component::Types)ReadInt(stream);
 		Component::Categories cat = (Component::Categories)ReadInt(stream);
 
-
-		//Make instance of component
-		auto* c = ComponentFactory::GetComponent(type, this);
-		if (c == nullptr) {
-			std::cout << "Failed to load Gameobject: " << _name << " Component is null" << std::endl;
-			return false;
+		if (type == Component::Transform_Type) {
+			_pTransform->LoadState(stream);
 		}
+		else
+		{
+			//Make instance of component
+			auto* c = ComponentFactory::GetComponent(type, this);
+			if (c == nullptr) {
+				std::cout << "Failed to load Gameobject: " << _name << " Component is null" << std::endl;
+				return false;
+			}
 
-		//Read instance
-		c->LoadState(stream);
+			//Read instance
+			c->LoadState(stream);
 
-		//Set component
-		AddComponent(c);
+			//Set component
+			AddComponent(c);
+		}
 	}
 
 	Texture2D* texture = GetComponent<Texture2D>();

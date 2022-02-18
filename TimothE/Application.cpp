@@ -111,6 +111,7 @@ void Application::GameLoop()
 
 	//SoundStruct TitleSong = _audio->LoadSound("Title Song", "Resources/Sounds/Music/Title.wav", Type_Song);
 
+	_pCurrentScene->LoadScene("scene1.scene");
 
 	//While the editor window should not close
 	while (_mRunning) {
@@ -131,6 +132,7 @@ void Application::GameLoop()
 		ImGuiManager::ImGuiNewFrame();
 
 		_pTilemap->UpdateLogic(CameraManager::GetCamera("Editor"));
+
 
 		//update editor if in editor mode
 		if (_mInEditorMode) {

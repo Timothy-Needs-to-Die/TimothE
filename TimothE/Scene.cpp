@@ -8,7 +8,6 @@
 #include "Renderer2D.h"
 
 #include "SubTexture2D.h"
-#include "CircleCollider.h"
 #include "PlayerMovement.h"
 
 int Scene::nextID = 0;
@@ -36,10 +35,6 @@ Scene::Scene(std::string name, TileMap* pTilemap)
 
 	ResourceManager::InstantiateTexture("fish", new Texture2D("Fish.png"));
 
-	//Order of transformations matters!!!!!
-	//First we Translate
-	//Then we rotate
-	//Then finally scale
 	_pTestObject->GetTransform()->SetPosition(0.0f, 0.0f);
 	_pTestObject->GetTransform()->SetScale({0.2f, 0.2f});
 
@@ -49,9 +44,6 @@ Scene::Scene(std::string name, TileMap* pTilemap)
 	_pTestObject2->GetTransform()->SetPosition(1.2f, 1.0f);
 	_pTestObject2->GetTransform()->SetScale({ 0.4f,0.4f });
 	
-	//TODO: This will cause a crash currently as colliders need to be modified down to a single class
-	//_pTestObject2->GetComponent<BoxColliderComponent>()->SetTrigger(true);
-
 
 	GameObject* _pButtonTestingObject = new GameObject("BUTTON", ObjectType::UI);
 	_pButtonTestingObject->AddComponent(new Button(_pButtonTestingObject));
@@ -62,13 +54,6 @@ Scene::Scene(std::string name, TileMap* pTilemap)
 	_pButtonTestingObject->GetTransform()->SetPosition(0.0f, 0.0f);
 	_pButtonTestingObject->GetTransform()->SetScale({ 0.2f, 0.2f });
 	_pButtonTestingObject->SetType(ObjectType::UI);
-
-	_pCircleTest = new GameObject("Circle Collision Test");
-	//_pCircleTest->AddComponent(new CircleCollider(_pCircleTest))->AddTriggerEvent(&CircleBoxTest);
-	_pCircleTest->LoadTexture(ResourceManager::GetTexture("lenna"));
-	_pCircleTest->GetTransform()->SetPosition(1.0f, 1.0f);
-	_pCircleTest->GetTransform()->SetScale({ 0.5f,0.5f });
-	//_pCircleTest->GetComponent<CircleCollider>()->SetTrigger(true);
 	
 	_pPlayer = new GameObject("Player", ObjectType::Player);
 	_pPlayer->AddComponent<PlayerMovement>(new PlayerMovement(_pPlayer));
@@ -76,12 +61,19 @@ Scene::Scene(std::string name, TileMap* pTilemap)
 	_pPlayer->GetTransform()->SetScale({ 0.25f, 0.25f });
 	_pPlayer->AddComponent(new BoxColliderComponent(_pPlayer));
 	_pPlayer->GetComponent<PlayerMovement>()->SetTileMap(pTilemap);
-	
 
+	_pTriggerBox = new GameObject("Trigger Box", ObjectType::NPC);
+	_pTriggerBox->GetTransform()->SetScale({ 1.0f, 1.0f });
+	_pTriggerBox->GetTransform()->SetPosition( 2.0f, 1.0f );
+	_pTriggerBox->LoadTexture(ResourceManager::GetTexture("fish"));
+	_pTriggerBox->AddComponent<BoxColliderComponent>(new BoxColliderComponent(_pTriggerBox));
+	_pTriggerBox->GetComponent<BoxColliderComponent>()->SetTrigger(true);
+	_pTriggerBox->GetComponent<BoxColliderComponent>()->AddTriggerEvent(&SceneBox);
+	
+	AddGameObject(_pTriggerBox);
 	AddGameObject(_pTestObject);
 	AddGameObject(_pTestObject2);
 	AddGameObject(_pButtonTestingObject);
-	AddGameObject(_pCircleTest);
 	AddGameObject(_pPlayer);
 
 	GameObject* _pTextObj = new GameObject("TEXTOBJ", ObjectType::UI);
@@ -90,6 +82,8 @@ Scene::Scene(std::string name, TileMap* pTilemap)
 	AddGameObject(_pTextObj);
 
 	ResourceManager::InstantiateTexture("spritesheet", new Texture2D("testSheet.png"));
+
+	_pTilemap = pTilemap;
 
 	//////////////////
 	//END OF TEST CODE
@@ -149,10 +143,10 @@ void Scene::Update(float deltaTime)
 	//TEST CODE//     BOX COLISSIONS
 	/////////////
 
-	if (_listOfGameObjects[0]->GetComponent<BoxColliderComponent>()->Intersects(_listOfGameObjects[1]->GetComponent<BoxColliderComponent>()->GetCollisionRect()))
-	{
-		std::cout << "Boxes are colliding" << std::endl;
-	}
+	//if (_listOfGameObjects[0]->GetComponent<BoxColliderComponent>()->Intersects(_listOfGameObjects[1]->GetComponent<BoxColliderComponent>()->GetCollisionRect()))
+	//{
+	//	std::cout << "Boxes are colliding" << std::endl;
+	//}
 
 	glm::vec2 pos = _listOfGameObjects[1]->GetTransform()->GetPosition();
 	if (Input::IsKeyDown(KEY_T))
@@ -166,6 +160,7 @@ void Scene::Update(float deltaTime)
 
 	//Physics::Intersects(_pCircleTest->GetComponent<CircleCollider>(), _pTestObject2->GetComponent<BoxColliderComponent>());
 
+	Physics::Intersects(_pTriggerBox->GetComponent<BoxColliderComponent>(), _pPlayer->GetComponent<BoxColliderComponent>());
 
 	//////////////////
 	//END OF TEST CODE
@@ -198,6 +193,11 @@ void Scene::RenderScene(Camera* cam)
 void Scene::CircleBoxTest()
 {
 	std::cout << "Circle Box Collision" << std::endl;
+}
+
+void Scene::SceneBox()
+{
+	std::cout << "Collide with scene transfer" << std::endl;
 }
 
 GameObject* Scene::AddGameObject(GameObject* gameObject)
@@ -267,6 +267,8 @@ void Scene::LoadScene(const std::string& filename)
 		go->LoadState(stream);
 		_listOfGameObjects[i] = go;
 	}
+
+	FindObjectOfType<PlayerMovement>()->SetTileMap(_pTilemap);
 
 	stream.Close();
 }

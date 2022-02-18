@@ -7,7 +7,6 @@
 #include "misc/cpp/imgui_stdlib.cpp"
 #include "dirent.h"
 #include "Input.h"
-#include "CircleCollider.h"
 #include "Application.h"
 #include "imgui.h"
 
@@ -246,14 +245,7 @@ void Editor::EditorImGui(Scene* currentScene)
 							_pSelectedGameObject->AddComponent(new BoxColliderComponent(_pSelectedGameObject));
 						}
 					}
-					if (ImGui::Button("Circle Collider"))
-					{
-						CircleCollider* pTest = _pSelectedGameObject->GetComponent<CircleCollider>();
-						if (pTest == nullptr)
-						{
-							_pSelectedGameObject->AddComponent(new CircleCollider(_pSelectedGameObject));
-						}
-					}
+					
 				}
 				if (ImGui::CollapsingHeader("AI"))
 				{

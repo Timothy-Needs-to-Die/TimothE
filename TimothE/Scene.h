@@ -28,6 +28,7 @@ public:
 	void RenderScene(Camera* cam);
 	
 	static void CircleBoxTest();
+	static void SceneBox();
 
 	GameObject* AddGameObject(GameObject* gameObject);
 	void RemoveGameObject(GameObject* gameObject);
@@ -101,4 +102,6 @@ private:
 	GameObject* _pCircleTest;
 	GameObject* _pTestObject2;
 	GameObject* _pPlayer;
+	GameObject* _pTriggerBox;
+	TileMap* _pTilemap;
 };
