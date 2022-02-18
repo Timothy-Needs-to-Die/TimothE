@@ -2,7 +2,7 @@
 
 CircleCollider::CircleCollider(GameObject* parent) : ColliderBase(parent), _radius(NULL), _centre(NULL)
 {
-	SetType(Component::Boxcollision_Type);
+	SetType(Component::Collider);
 	SetCategory(Component::Collisions_Category);
 
 	_centre = GetParent()->GetTransform()->GetPosition();

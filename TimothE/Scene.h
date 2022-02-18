@@ -4,6 +4,7 @@
 #include "Camera.h"
 #include "Window.h"
 #include "TileMap.h"
+#include "Physics.h"
 
 class Scene
 {
@@ -28,7 +29,7 @@ public:
 	
 	static void CircleBoxTest();
 
-	GameObject* AddGameObject(GameObject* gameObject) { _listOfGameObjects.push_back(gameObject); return gameObject; }
+	GameObject* AddGameObject(GameObject* gameObject);
 	void RemoveGameObject(GameObject* gameObject);
 
 	static void AddedComponentHandler(GameObject* gameObject, Component* comp);

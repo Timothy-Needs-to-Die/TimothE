@@ -7,6 +7,8 @@ class ColliderBase : public Component
 public:
 	ColliderBase(GameObject* parent) : Component(parent) {}
 
+	COMPONENT_STATIC_TYPE(Collider)
+
 	void Triggered();
 	void Collided();
 

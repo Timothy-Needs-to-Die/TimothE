@@ -9,7 +9,7 @@
 class CircleCollider : public ColliderBase
 {
 public:
-	COMPONENT_STATIC_TYPE(Boxcollision_Type);
+	COMPONENT_STATIC_TYPE(Collider);
 
 	CircleCollider(GameObject* parent);
 	~CircleCollider();
