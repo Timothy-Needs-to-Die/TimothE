@@ -34,6 +34,7 @@ Scene::Scene(std::string name, TileMap* pTilemap)
 	_pTestObject->AddComponent(new BoxColliderComponent(_pTestObject));
 
 	ResourceManager::InstantiateTexture("fish", new Texture2D("Fish.png"));
+	ResourceManager::InstantiateTexture("character", new Texture2D("Resources/Images/Spritesheets/SpritesheetTest.png"));
 
 	_pTestObject->GetTransform()->SetPosition(0.0f, 0.0f);
 	_pTestObject->GetTransform()->SetScale({0.2f, 0.2f});
@@ -81,7 +82,7 @@ Scene::Scene(std::string name, TileMap* pTilemap)
 	_pTextObj->SetType(ObjectType::UI);
 	AddGameObject(_pTextObj);
 
-	ResourceManager::InstantiateTexture("spritesheet", new Texture2D("testSheet.png"));
+	//ResourceManager::InstantiateTexture("spritesheet", new Texture2D("testSheet.png"));
 
 	_pTilemap = pTilemap;
 

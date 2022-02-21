@@ -12,7 +12,7 @@ std::ostream& operator<<(std::ostream& os, glm::vec2 v) {
 //TODO: Add a system to change how many tiles per unit
 TileMap::TileMap()
 {
-	_mapDimensions = { 1024.0f, 1024.0f };
+	_mapDimensions = { 20.0f, 20.0f };
 	_mapSizeInScreenUnits = glm::vec2(_mapDimensions.x / _tilesPerUnit, _mapDimensions.y / _tilesPerUnit);
 	_tileSize = glm::vec2(128.0f);
 	_spritemapResolution = glm::vec2(2560.0f, 1664.0f);
@@ -28,6 +28,7 @@ TileMap::TileMap()
 	_noTcCoords[1] = glm::vec2(((0 + 1) * _tileSize.x) / _spritemapResolution.x, (0 * _tileSize.y) / _spritemapResolution.y);
 	_noTcCoords[2] = glm::vec2(((0 + 1) * _tileSize.x) / _spritemapResolution.x, ((0 + 1) * _tileSize.y) / _spritemapResolution.y);
 	_noTcCoords[3] = glm::vec2((0 * _tileSize.x) / _spritemapResolution.x, ((0 + 1) * _tileSize.y) / _spritemapResolution.y);
+
 }
 
 TileMap::~TileMap()
@@ -109,11 +110,10 @@ void TileMap::AddTileAt(unsigned int layer, unsigned int x, unsigned int y, Came
 	newTile.size = _xGapBetweenTiles;
 	newTile.colXPos = colPos.x;
 	newTile.colYPos = colPos.y;
-	newTile.uvCoords = new glm::vec2[4];
-	newTile.uvCoords[0] = glm::vec2((x * _tileSize.x) / _spritemapResolution.x, (y * _tileSize.y) / _spritemapResolution.y);
-	newTile.uvCoords[1] = glm::vec2(((x + 1) * _tileSize.x) / _spritemapResolution.x, (y * _tileSize.y) / _spritemapResolution.y);
-	newTile.uvCoords[2] = glm::vec2(((x + 1) * _tileSize.x) / _spritemapResolution.x, ((y + 1) * _tileSize.y) / _spritemapResolution.y);
-	newTile.uvCoords[3] = glm::vec2((x * _tileSize.x) / _spritemapResolution.x, ((y + 1) * _tileSize.y) / _spritemapResolution.y);
+
+
+	newTile._pSpritesheet = _pSpritesheet;
+	newTile._pSprite = _pSpritesheet->GetSpriteAtIndex(_pSpritesheet->GetSheetHeight() * y + x);
 	_tiles[index] = newTile;
 }
 
@@ -151,13 +151,6 @@ glm::vec2 TileMap::MousePosToTile(Camera* cam)
 	glm::vec2 mousePos = Input::GetEditorMousePos();
 	glm::vec2 camPos = cam->PositionXY();
 	glm::vec2 convertedPosition = camPos + mousePos;
-
-
-	if (Input::IsKeyDown(KEY_Z)) {
-		int a = 4;
-
-		std::cout << a << std::endl;
-	}
 
 	if (convertedPosition.x > _mapSizeInScreenUnits.x) {
 		//Puts tile on upmost index
@@ -227,12 +220,12 @@ void TileMap::RenderMap(Camera* cam)
 			}
 
 
-			if (_tiles[index].uvCoords == nullptr) {
+			if (_tiles[index]._pSprite == nullptr) {
 				Renderer2D::DrawQuad({ x,y }, { _tileScale, _tileScale }, ResourceManager::GetTexture("spritesheet"), _noTcCoords);
 				continue;
 			}
 
-			Renderer2D::DrawQuad({ x,y }, { _tileScale,_tileScale }, ResourceManager::GetTexture("spritesheet"), _tiles[index].uvCoords);
+			Renderer2D::DrawQuad({ x,y }, { _tileScale,_tileScale }, _tiles[index]._pSprite->GetTexture(), _tiles[index]._pSprite->GetTexCoords());
 		}
 	}
 

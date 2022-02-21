@@ -1,5 +1,7 @@
 #pragma once
 #include "pch.h"
+#include "SpriteSheet.h"
+#include "Sprite.h"
 
 struct TileData {
 	int xIndex;
@@ -11,5 +13,6 @@ struct TileData {
 	float colXPos;
 	float colYPos;
 
-	glm::vec2* uvCoords;
+	Sprite* _pSprite;
+	SpriteSheet* _pSpritesheet;
 };

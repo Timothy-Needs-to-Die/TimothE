@@ -11,6 +11,7 @@
 #include "AudioEngine.h"
 #include "TileMap.h"
 #include "OpenGLError.h"
+#include "SpriteSheet.h"
 
 class Editor;
 
@@ -63,4 +64,5 @@ private:
 	bool _mGameRunning = false;
 
 	TileMap* _pTilemap;
+	SpriteSheet* _pSpritesheet;
 };

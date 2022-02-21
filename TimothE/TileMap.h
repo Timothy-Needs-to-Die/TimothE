@@ -22,6 +22,10 @@ public:
 	void DeleteAllLayers();
 	void UpdateLogic(Camera* cam);
 
+	void SetSpriteSheet(SpriteSheet* spritesheet) {
+		_pSpritesheet = spritesheet;
+	}
+
 	void AddTileAt(unsigned int layer, unsigned int x, unsigned int y, Camera* cam, bool shouldCollide = false);
 
 	//Returns the width and height of the WHOLE TILE MAP
@@ -68,13 +72,13 @@ private:
 	glm::vec2 _currentTile;
 	int _currentTileIndex;
 
+	SpriteSheet* _pSpritesheet;
+
 	std::vector<TileData> _tiles;
 
 	glm::vec2* _noTcCoords;
 
 	int _tilesPerUnit = 4;
 	float _tileScale = 1.0f;
-
-
 };
 

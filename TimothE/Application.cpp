@@ -71,7 +71,11 @@ void Application::Init(bool devMode)
 
 	Renderer2D::Init();
 
+	Texture2D* texture = new Texture2D("testSheet.png");
+	ResourceManager::InstantiateTexture("spritesheet", texture);
 	_pTilemap = new TileMap();
+	_pSpritesheet = new SpriteSheet(texture, 128, 128);
+	_pTilemap->SetSpriteSheet(_pSpritesheet);
 
 	//initializes editor with scene
 	_pCurrentScene = new Scene("Test scene", _pTilemap);
