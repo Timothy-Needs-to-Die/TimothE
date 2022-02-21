@@ -24,10 +24,10 @@ TileMap::TileMap()
 	_tileScale = 1.0f / _tilesPerUnit;
 
 	_noTcCoords = new glm::vec2[4];
-	_noTcCoords[0] = glm::vec2((0 * _tileSize.x) / _spritemapResolution.x, (0 * _tileSize.y) / _spritemapResolution.y);
-	_noTcCoords[1] = glm::vec2(((0 + 1) * _tileSize.x) / _spritemapResolution.x, (0 * _tileSize.y) / _spritemapResolution.y);
-	_noTcCoords[2] = glm::vec2(((0 + 1) * _tileSize.x) / _spritemapResolution.x, ((0 + 1) * _tileSize.y) / _spritemapResolution.y);
-	_noTcCoords[3] = glm::vec2((0 * _tileSize.x) / _spritemapResolution.x, ((0 + 1) * _tileSize.y) / _spritemapResolution.y);
+	_noTcCoords[0] = glm::vec2((1 * _tileSize.x) / _spritemapResolution.x, (11 * _tileSize.y) / _spritemapResolution.y);
+	_noTcCoords[1] = glm::vec2(((1 + 1) * _tileSize.x) / _spritemapResolution.x, (11 * _tileSize.y) / _spritemapResolution.y);
+	_noTcCoords[2] = glm::vec2(((1 + 1) * _tileSize.x) / _spritemapResolution.x, ((11 + 1) * _tileSize.y) / _spritemapResolution.y);
+	_noTcCoords[3] = glm::vec2((1 * _tileSize.x) / _spritemapResolution.x, ((11 + 1) * _tileSize.y) / _spritemapResolution.y);
 
 }
 
@@ -113,7 +113,7 @@ void TileMap::AddTileAt(unsigned int layer, unsigned int x, unsigned int y, Came
 
 
 	newTile._pSpritesheet = _pSpritesheet;
-	newTile._pSprite = _pSpritesheet->GetSpriteAtIndex(_pSpritesheet->GetSheetHeight() * y + x);
+	newTile._pSprite = _pSpritesheet->GetSpriteAtIndex(_pSpritesheet->GetSheetWidth() * y + x);
 	_tiles[index] = newTile;
 }
 

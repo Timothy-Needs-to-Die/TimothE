@@ -71,7 +71,7 @@ void Application::Init(bool devMode)
 
 	Renderer2D::Init();
 
-	Texture2D* texture = new Texture2D("testSheet.png");
+	Texture2D* texture = new Texture2D("testSheet.png", true);
 	ResourceManager::InstantiateTexture("spritesheet", texture);
 	_pTilemap = new TileMap();
 	_pSpritesheet = new SpriteSheet(texture, 128, 128);
@@ -115,7 +115,7 @@ void Application::GameLoop()
 
 	//SoundStruct TitleSong = _audio->LoadSound("Title Song", "Resources/Sounds/Music/Title.wav", Type_Song);
 
-	_pCurrentScene->LoadScene("scene1.scene");
+	//_pCurrentScene->LoadScene("scene1.scene");
 
 	//While the editor window should not close
 	while (_mRunning) {
@@ -227,7 +227,7 @@ void Application::PollInput()
 //clears and adds background
 void Application::GameBeginRender()
 {
-	Window::SetWindowColour(0.3f, 1.0f, 0.0f, 1.0f);
+	Window::SetWindowColour(0.0f, 0.0f, 0.0f, 1.0f);
 	GLCall(glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT));
 }
 

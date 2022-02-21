@@ -45,7 +45,8 @@ public:
 		TileMap_Type = BIT(11),
 		Camera_Type = BIT(12),
 		Collider = BIT(13),
-		PlayerMovement = BIT(14)
+		PlayerMovement = BIT(14),
+		SpriteType
 	};
 
 	//enums for different catagories of components

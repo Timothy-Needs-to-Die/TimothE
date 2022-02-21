@@ -146,6 +146,7 @@
     <ClInclude Include="CameraManager.h" />
     <ClInclude Include="SpriteSheet.h" />
     <ClInclude Include="Sprite.h" />
+    <ClInclude Include="AnimatedSpritesheet.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Application.cpp" />
@@ -213,5 +214,6 @@
     <ClCompile Include="CameraManager.cpp" />
     <ClCompile Include="SpriteSheet.cpp" />
     <ClCompile Include="Sprite.cpp" />
+    <ClCompile Include="AnimatedSpritesheet.cpp" />
   </ItemGroup>
 </Project>

@@ -2,7 +2,7 @@
 
 SpriteComponent::SpriteComponent(GameObject* parent) : Component(parent)
 {
-	SetType(Component::Texture_Type);
+	SetType(Component::SpriteType);
 	SetCategory(Component::Graphics_Category);
 	//sets default coord
 	_pUVSpriteCoords = new glm::vec2[4];
@@ -11,7 +11,7 @@ SpriteComponent::SpriteComponent(GameObject* parent) : Component(parent)
 	_pUVSpriteCoords[2] = glm::vec2(1,1);
 	_pUVSpriteCoords[3] = glm::vec2(0,1);
 	//creates new texture sprite
-	_pSprite = new Texture2D(parent);
+	//_pSprite = new Texture2D(parent);
 }
 
 
@@ -38,7 +38,7 @@ void SpriteComponent::SetSpriteScale(glm::vec2 scale)
 }
 
 //sets sprite
-void SpriteComponent::SetSprite(Texture2D* sprite)
+void SpriteComponent::SetSprite(Sprite* sprite)
 {
 	_pSprite = sprite;
 }
@@ -81,7 +81,7 @@ void SpriteComponent::DrawEditorUI()
 {
 	if (ImGui::CollapsingHeader("Sprite"))
 	{
-		ImGui::Image((void*)_pSprite->GetID(), ImVec2(100, 100));
+		ImGui::Image((void*)_pSprite->GetTexture()->GetID(), ImVec2(100, 100));
 		float editorPos[1];
 		ImGui::InputFloat2("Position", editorPos);
 		SetPosition(glm::vec2(editorPos[0], editorPos[1]));

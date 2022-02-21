@@ -32,7 +32,7 @@ SpriteSheet::SpriteSheet(Texture2D* texture, int spriteWidth, int spriteHeight)
 			uvCoords[3].y = ((y + 1) * (float)_spriteHeight) / (float)_sheetHeightInPixels;
 
 			Sprite* sprite = new Sprite(_pTexture, uvCoords);
-			_sprites[_sheetHeight * y + x] = sprite;
+			_sprites[_sheetWidth * y + x] = sprite;
 		}
 	}
 }

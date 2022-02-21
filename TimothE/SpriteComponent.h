@@ -1,10 +1,12 @@
 #pragma once
 #include "Component.h"
 #include "Texture2D.h"
+#include "Sprite.h"
 
 class SpriteComponent : public Component
 {
 public:
+	COMPONENT_STATIC_TYPE(SpriteType)
 
 	SpriteComponent(GameObject* parent);
 	~SpriteComponent();
@@ -20,8 +22,8 @@ public:
 	glm::vec2 GetSpriteSheetScale() { return glm::vec2(_mSheetWidth, _mSheetHeight); };
 	void SetSpriteScale(glm::vec2);
 	glm::vec2 GetSpriteScale() { return glm::vec2(_mSpriteWidth, _mSpriteHeight); };
-	void SetSprite(Texture2D* sprite);
-	Texture2D* GetSprite() { return _pSprite; };
+	void SetSprite(Sprite* sprite);
+	Sprite* GetSprite() { return _pSprite; };
 
 	void SetUVCoords();
 	void SetUVCoords(glm::vec2 topLeft, glm::vec2 topRight, glm::vec2 bottomLeft, glm::vec2 bottomRight);
@@ -33,10 +35,12 @@ public:
 		return true;
 	}
 private:
+	Sprite* _pSprite;
+
 	float _mPosX, _mPosY;
 	float _mSheetWidth, _mSheetHeight;
 	int _mSpriteWidth, _mSpriteHeight;
-	Texture2D* _pSprite;
+	//Texture2D* _pSprite;
 	glm::vec2* _pUVSpriteCoords;
 };
 

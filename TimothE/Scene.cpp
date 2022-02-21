@@ -9,6 +9,7 @@
 
 #include "SubTexture2D.h"
 #include "PlayerMovement.h"
+#include "SpriteComponent.h"
 
 int Scene::nextID = 0;
 std::vector<GameObject*> Scene::_listOfGameObjects;
@@ -34,7 +35,7 @@ Scene::Scene(std::string name, TileMap* pTilemap)
 	_pTestObject->AddComponent(new BoxColliderComponent(_pTestObject));
 
 	ResourceManager::InstantiateTexture("fish", new Texture2D("Fish.png"));
-	ResourceManager::InstantiateTexture("character", new Texture2D("Resources/Images/Spritesheets/SpritesheetTest.png"));
+	ResourceManager::InstantiateTexture("character", new Texture2D("Resources/Images/Spritesheets/AlexTest.png", true));
 
 	_pTestObject->GetTransform()->SetPosition(0.0f, 0.0f);
 	_pTestObject->GetTransform()->SetScale({0.2f, 0.2f});
@@ -58,8 +59,13 @@ Scene::Scene(std::string name, TileMap* pTilemap)
 	
 	_pPlayer = new GameObject("Player", ObjectType::Player);
 	_pPlayer->AddComponent<PlayerMovement>(new PlayerMovement(_pPlayer));
-	_pPlayer->LoadTexture(ResourceManager::GetTexture("lenna"));
-	_pPlayer->GetTransform()->SetScale({ 0.25f, 0.25f });
+
+
+	//_pPlayer->LoadTexture(ResourceManager::GetTexture("character"));
+	_pPlayer->GetTransform()->SetScale({ 0.2f, 0.45f });
+	_pAnimSheet = new AnimatedSpritesheet(ResourceManager::GetTexture("character"), 16, 32);
+	SpriteComponent* sc = _pPlayer->AddComponent<SpriteComponent>(new SpriteComponent(_pPlayer));
+	sc->SetSprite(_pAnimSheet->GetSpriteAtIndex(0));
 	_pPlayer->AddComponent(new BoxColliderComponent(_pPlayer));
 	_pPlayer->GetComponent<PlayerMovement>()->SetTileMap(pTilemap);
 
@@ -140,6 +146,18 @@ void Scene::Update(float deltaTime)
 		obj->Update(deltaTime);
 	}
 
+	timer += deltaTime;
+	if (timer >= duration) {
+		timer = 0.0f;
+
+		SpriteComponent* sc = _pPlayer->GetComponent<SpriteComponent>();
+		sc->SetSprite(_pAnimSheet->GetSpriteAtIndex(iteration));
+		iteration++;
+		if (iteration == 8) {
+			iteration = 0;
+		}
+	}
+
 	/////////////
 	//TEST CODE//     BOX COLISSIONS
 	/////////////
@@ -187,6 +205,10 @@ void Scene::RenderScene(Camera* cam)
 			}
 		}
 	}
+
+	Renderer2D::DrawQuad(_pPlayer->GetTransform()->GetPosition(),
+		_pPlayer->GetTransform()->GetScale(), ResourceManager::GetTexture("character"),
+		_pPlayer->GetComponent<SpriteComponent>()->GetSprite()->GetTexCoords());
 
 	Renderer2D::EndRender();
 }

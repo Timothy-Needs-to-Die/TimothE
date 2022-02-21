@@ -32,7 +32,9 @@ void PlayerMovement::OnUpdate(float deltaTime)
 
 	ColQuad playerQuad;
 	playerQuad.pos = newPos;
-	playerQuad.size = { 0.25f, 0.25f };
+	
+	playerQuad.size = _pParentObject->GetTransform()->GetScale();
+	playerQuad.size.y /= 2.0f;
 	playerQuad.CalculateMax();
 
 	for (float x = newPos.x - 0.25f; x <= newPos.x + 0.25f; x += 0.25f) {

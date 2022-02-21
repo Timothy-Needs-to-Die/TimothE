@@ -5,6 +5,7 @@
 #include "Window.h"
 #include "TileMap.h"
 #include "Physics.h"
+#include "AnimatedSpritesheet.h"
 
 class Scene
 {
@@ -92,6 +93,10 @@ private:
 	//Stores an id for the scene
 	int _id;
 
+	float duration = 0.5f;
+	float timer = 0.0f;
+	int iteration = 0;
+
 	//Stores the next id for the scene
 	static int nextID;
 
@@ -104,4 +109,5 @@ private:
 	GameObject* _pPlayer;
 	GameObject* _pTriggerBox;
 	TileMap* _pTilemap;
+	AnimatedSpritesheet* _pAnimSheet;
 };

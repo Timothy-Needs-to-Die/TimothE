@@ -9,13 +9,13 @@ Texture2D::Texture2D(GameObject* pParent) : Component(pParent), _ID(0)
 	SetCategory(Component::Graphics_Category);
 } 
 
-Texture2D::Texture2D(std::string path) : Component(), _ID(0)
+Texture2D::Texture2D(std::string path, bool flip) : Component(), _ID(0)
 {
 	_UID = UID::GenerateUID();
 	SetType(Component::Texture_Type);
 	SetCategory(Component::Graphics_Category);
 
-	Load(path);
+	Load(path,flip);
 }
 
 Texture2D::~Texture2D()
@@ -42,10 +42,11 @@ void Texture2D::DrawEditorUI()
 }
 
 // Pass in file path
-bool Texture2D::Load(std::string path)
+bool Texture2D::Load(std::string path, bool flip)
 {
 	//if (_ID != 0) return true;
 	_filePath = path;
+	stbi_set_flip_vertically_on_load(flip);
 	unsigned char* data = stbi_load(path.c_str(), &_width, &_height, &_channels, 0);
 
 	if (data != nullptr)
@@ -79,7 +80,7 @@ void Texture2D::GenerateTexture(unsigned char* data)
 
 
 	//Set filtering to linear by default
-	SetFilterMode(GL_LINEAR);
+	SetFilterMode(GL_NEAREST);
 
 	//Releases the memory associated with the data
 	stbi_image_free(data);

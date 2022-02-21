@@ -18,7 +18,7 @@ public:
 	int GetSpriteHeight() const { return _spriteHeight; }
 
 	Sprite* GetSpriteAtIndex(int index) { return _sprites[index]; }
-private:
+protected:
 	//Number of sprites on the spritesheet
 	int _numOfSprites;
 
