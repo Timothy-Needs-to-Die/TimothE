@@ -114,6 +114,7 @@
     <ClInclude Include="Imgui\imstb_textedit.h" />
     <ClInclude Include="Imgui\imstb_truetype.h" />
     <ClInclude Include="Input.h" />
+    <ClInclude Include="Inspector.h" />
     <ClInclude Include="KeyEvent.h" />
     <ClInclude Include="MemoryManager.h" />
     <ClInclude Include="MouseEvent.h" />
@@ -190,6 +191,7 @@
     <ClCompile Include="Imgui\imgui_tables.cpp" />
     <ClCompile Include="Imgui\imgui_widgets.cpp" />
     <ClCompile Include="Input.cpp" />
+    <ClCompile Include="Inspector.cpp" />
     <ClCompile Include="MemoryManager.cpp" />
     <ClCompile Include="Physics.cpp" />
     <ClCompile Include="PlayerMovement.cpp" />

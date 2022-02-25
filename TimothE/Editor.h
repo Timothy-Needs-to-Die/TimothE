@@ -8,6 +8,7 @@
 #include "Scene.h"
 #include "Camera.h"
 #include "Console.h"
+#include "Inspector.h"
 #include "imgui.h"
 #include "TileMapEditor.h"
 

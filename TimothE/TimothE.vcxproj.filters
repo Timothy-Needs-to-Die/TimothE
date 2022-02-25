@@ -144,6 +144,8 @@
     <ClInclude Include="ColliderBase.h" />
     <ClInclude Include="PlayerMovement.h" />
     <ClInclude Include="TileData.h" />
+    <ClInclude Include="CameraManager.h" />
+    <ClInclude Include="Inspector.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Application.cpp" />
@@ -209,5 +211,7 @@
     <ClCompile Include="Physics.cpp" />
     <ClCompile Include="ColliderBase.cpp" />
     <ClCompile Include="PlayerMovement.cpp" />
+    <ClCompile Include="CameraManager.cpp" />
+    <ClCompile Include="Inspector.cpp" />
   </ItemGroup>
 </Project>

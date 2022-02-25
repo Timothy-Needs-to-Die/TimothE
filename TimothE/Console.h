@@ -1,6 +1,7 @@
 #pragma once
 
 #include "pch.h"
+#include "imgui.h"
 
 #define CONSOLE_MAX_MESSAGES 500
 
@@ -8,6 +9,7 @@ class Console
 {
 public:
 	static void Print(std::string message);
+	static void EditorUI();
 	static std::vector<std::string> GetConsoleOutput() { return output; }
 
 private:
