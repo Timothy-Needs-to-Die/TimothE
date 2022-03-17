@@ -70,8 +70,6 @@ private:
 
 	Application* _pApplication;
 
-	TileMapEditor* pTileMapEditor;
-
 	Texture2D* pContentTextureImage = new Texture2D(NULL);
 	Texture2D* pContentTextureScene = new Texture2D(NULL);
 	Texture2D* pContentTextureConfig = new Texture2D(NULL);

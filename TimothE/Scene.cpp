@@ -18,7 +18,7 @@ std::vector<GameObject*> Scene::_listOfDrawableGameObjects;
 Shader* shader;
 TextComponent* text;
 
-Scene::Scene(std::string name, TileMap* pTilemap)
+Scene::Scene(std::string name)
 {
 	_listOfGameObjects.clear();
 
@@ -67,7 +67,7 @@ Scene::Scene(std::string name, TileMap* pTilemap)
 	SpriteComponent* sc = _pPlayer->AddComponent<SpriteComponent>(new SpriteComponent(_pPlayer));
 	sc->SetSprite(_pAnimSheet->GetSpriteAtIndex(0));
 	_pPlayer->AddComponent(new BoxColliderComponent(_pPlayer));
-	_pPlayer->GetComponent<PlayerMovement>()->SetTileMap(pTilemap);
+	//_pPlayer->GetComponent<PlayerMovement>()->SetTileMap(pTilemap);
 
 	_pTriggerBox = new GameObject("Trigger Box", ObjectType::NPC);
 	_pTriggerBox->GetTransform()->SetScale({ 1.0f, 1.0f });
@@ -90,7 +90,10 @@ Scene::Scene(std::string name, TileMap* pTilemap)
 
 	//ResourceManager::InstantiateTexture("spritesheet", new Texture2D("testSheet.png"));
 
-	_pTilemap = pTilemap;
+
+	_pTilemap = new TileMap();
+	_pSpritesheet = new SpriteSheet(ResourceManager::GetTexture("spritesheet"), 128, 128);
+	_pTilemap->SetSpriteSheet(_pSpritesheet);
 
 	//////////////////
 	//END OF TEST CODE
@@ -189,6 +192,8 @@ void Scene::Update(float deltaTime)
 void Scene::RenderScene(Camera* cam)
 {
 	Renderer2D::BeginRender(cam);
+
+	_pTilemap->RenderMap(cam);
 
 	for (auto& obj : _listOfDrawableGameObjects) {
 		//TODO: Text won't render here as it uses its own internal texture data. 
@@ -291,7 +296,7 @@ void Scene::LoadScene(const std::string& filename)
 		_listOfGameObjects[i] = go;
 	}
 
-	FindObjectOfType<PlayerMovement>()->SetTileMap(_pTilemap);
+	//FindObjectOfType<PlayerMovement>()->SetTileMap(_pTilemap);
 
 	stream.Close();
 }

@@ -1,29 +1,33 @@
 #include "TileMapEditor.h"
 
+
+bool TileMapEditor::_hasTileData = false;
+bool TileMapEditor::_isActive = false;
+std::string TileMapEditor::_mapName = "testSheet.png";
+std::string TileMapEditor::_textureName = "spritesheet";
+glm::vec2 TileMapEditor::_mapSizeInScreenUnits = glm::vec2(32.0);
+glm::vec2 TileMapEditor::_tileSize = glm::vec2(32.0);
+std::string TileMapEditor::_name;
+SelectedTile TileMapEditor::_selectedTile;
+
 void TileMapEditor::EnableEditor()
 {
 	_isActive = true;
 }
 
-void TileMapEditor::DisplayEditorGUI()
+void TileMapEditor::Update(TileMap* pTilemap)
 {
 	if (!_isActive)
 		return;
 	if (!_hasTileData)
-		AcquireData();
+		AcquireData(pTilemap);
 	else
-		CreateTileMap();
+		CreateTileMap(pTilemap);
+
+	pTilemap->UpdateLogic(CameraManager::CurrentCamera());
 }
 
-
-TileMapEditor::TileMapEditor()
-	: _textureName("spritesheet"), _mapName("boop"), _hasTileData(false), _mapSizeInScreenUnits(20.0f, 13.0f), _tileSize(32.0f)
-{
-	_selectedTile = SelectedTile();
-	_textureName = "spritesheet";
-}
-
-void TileMapEditor::AcquireData()
+void TileMapEditor::AcquireData(TileMap* pTilemap)
 {
 	static char infoName[50];
 	ImGui::Begin("Tile Map Info");
@@ -39,6 +43,8 @@ void TileMapEditor::AcquireData()
 	//{
 	//	_textureName = x.first;
 	//}
+
+
 
 	ImGui::Separator();
 	if (ImGui::Button("Start"))
@@ -60,13 +66,13 @@ void TileMapEditor::AcquireData()
 
 //Sets the data in the tileMap object that the editor will be editing
 //Along with setting up the ImGui window for the editor 
-void TileMapEditor::CreateTileMap()
+void TileMapEditor::CreateTileMap(TileMap* pTilemap)
 {
 	static bool gridLinesCreated = false;
 	static bool spriteArrayCreated = false;
 
-	int x = _mapSizeInScreenUnits.x;
-	int y = _mapSizeInScreenUnits.y;
+	int x = pTilemap->GetSpriteSheet()->GetSheetWidth();
+	int y = pTilemap->GetSpriteSheet()->GetSheetHeight();
 
 	//static VAO VERTEX ARRAY gridLines;
 	//static std::vector<Sprite> sprites;
@@ -124,127 +130,145 @@ void TileMapEditor::CreateTileMap()
 	}
 
 
-	float sheetWidth = 2560, sheetHeight = 1664;
-	float spriteWidth = 128, spriteHeight = 128;
+	float sheetWidth = pTilemap->GetSpriteSheet()->GetPixelWidth();
+	float sheetHeight = pTilemap->GetSpriteSheet()->GetPixelHeight();
+	float spriteWidth = pTilemap->GetSpriteSheet()->GetSpriteWidth();
+	float spriteHeight = pTilemap->GetSpriteSheet()->GetSpriteHeight();
 
 	const auto& tex = ResourceManager::GetTexture(_textureName);
-	ImGui::Begin("Select Tile");
-	for (auto i = 0; i < y; i++)
-	{
-		for (auto j = 0; j < x; j++)
-		{
-			 ImVec2 bl = ImVec2((j * spriteWidth) / sheetWidth, (i * spriteHeight) / sheetHeight);
-			 ImVec2 tr = ImVec2(((j + 1) * spriteWidth) / sheetWidth, ((i + 1) * spriteHeight) / sheetHeight);
+	ImGui::Begin("Tilemap Editor");
+	
 
-			ImGui::PushID(i * x + j);
-			if (ImGui::ImageButton((void*)tex->GetID(), ImVec2(32,32), bl, tr))
+	{
+		ImGui::BeginChild("Select Tile", ImVec2(ImGui::GetContentRegionAvail().x * 0.5f, 260));
+		for (auto i = 0; i < y; i++)
+		{
+			for (auto j = 0; j < x; j++)
 			{
-				_selectedTile.tileX = j;
-				_selectedTile.tileY = i;
-				std::cout << "Selected: " << i << ", " << j << std::endl;
-				//_selectedTile.sprite.SetColor(Colour(255, 255, 255, 128)); //TODO - Colour change for hover over
-				_selectedTile._tileIndex = i * x + j;
+				ImVec2 bl = ImVec2(((j)*spriteWidth) / sheetWidth, (i * spriteHeight) / sheetHeight);
+				ImVec2 tr = ImVec2(((j + 1) * spriteWidth) / sheetWidth, ((i + 1) * spriteHeight) / sheetHeight);
+
+				ImGui::PushID(i * x + j);
+				if (ImGui::ImageButton((void*)tex->GetID(), ImVec2(32, 32), tr, bl))
+				{
+					_selectedTile.tileX = j;
+					_selectedTile.tileY = i;
+					std::cout << "Selected: " << i << ", " << j << std::endl;
+					_selectedTile._tileIndex = i * x + j;
+				}
+				ImGui::PopID();
+				//ImGui::SameLine();
 			}
-			ImGui::PopID();
-			ImGui::SameLine();
+			ImGui::NewLine();
 		}
+		ImGui::EndChild();
+	}
+
+	ImGui::SameLine();
+	{
+		ImGui::BeginChild("Tile Settings", ImVec2(0, 260));
+
 		ImGui::NewLine();
-	}
 
-	ImGui::NewLine();
-
-	/*Collidable Toggle
-	if (_selectedTile._tileIndex >= 0 && _selectedTile._tileIndex < sprites.size())
-	{
-		ImGui::Text("Tile %d Collidable?", _selectedTile._tileIndex);
-		ImGui::SameLine();
-
-		if (ImGui::Button("Yes"))
-			collidableInfo[_selectedTile._tileIndex] = true;
-		ImGui::SameLine();
-		if (ImGui::Button("No"))
-			collidableInfo[_selectedTile._tileIndex] = false;
-	}*/
-
-	//if (_selectedTile == nullptr) return;
-
-	//Layer Selection
-	ImGui::Separator();
-	ImGui::Text("CurrentLayer: %d", _selectedTile.currentLayer);
-	ImGui::Separator();
-	//for (auto i = 0; i < mapToCreate.GetLayerCount(); i++)
-	//{
-	//	auto str = "Layer " + std::to_string(i);
-	//	if (ImGui::Selectable(str.c_str()))
-	//	{
-	//		_selectedTile.currentLayer = i;
-	//	}
-	//}
-	ImGui::Separator();
-	
-	if (ImGui::Button("Fill"))
-	{
-		if (_selectedTile._tileIndex >=0)
+		/*Collidable Toggle
+		if (_selectedTile._tileIndex >= 0 && _selectedTile._tileIndex < sprites.size())
 		{
-			mapToCreate.FillLayer(_selectedTile.currentLayer, _selectedTile._tileIndex);
+			ImGui::Text("Tile %d Collidable?", _selectedTile._tileIndex);
+			ImGui::SameLine();
+
+			if (ImGui::Button("Yes"))
+				collidableInfo[_selectedTile._tileIndex] = true;
+			ImGui::SameLine();
+			if (ImGui::Button("No"))
+				collidableInfo[_selectedTile._tileIndex] = false;
+		}*/
+
+		//if (_selectedTile == nullptr) return;
+
+		//Layer Selection
+		ImGui::Separator();
+		ImGui::Text("CurrentLayer: %d", _selectedTile.currentLayer);
+		ImGui::Separator();
+		//for (auto i = 0; i < mapToCreate.GetLayerCount(); i++)
+		//{
+		//	auto str = "Layer " + std::to_string(i);
+		//	if (ImGui::Selectable(str.c_str()))
+		//	{
+		//		_selectedTile.currentLayer = i;
+		//	}
+		//}
+		ImGui::Separator();
+
+		if (ImGui::Button("Fill"))
+		{
+			if (_selectedTile._tileIndex >= 0)
+			{
+				mapToCreate.FillLayer(_selectedTile.currentLayer, _selectedTile._tileIndex);
+			}
 		}
-	}
 
-	//Add Layer Button
-	ImGui::SameLine();
-	if (ImGui::Button("Add Layer"))
-	{
-		mapToCreate.CreateNewLayer();
-	}
+		//Add Layer Button
+		ImGui::SameLine();
+		if (ImGui::Button("Add Layer"))
+		{
+			mapToCreate.CreateNewLayer();
+		}
 
-	//Clear Map Button
-	ImGui::SameLine();
-	if (ImGui::Button("Clear Map")) {
-		mapToCreate.DeleteAllLayers();
-		mapToCreate.CreateNewLayer();
-		_selectedTile.currentLayer = 0;
+		//Clear Map Button
+		ImGui::SameLine();
+		if (ImGui::Button("Clear Map")) {
+			mapToCreate.DeleteAllLayers();
+			mapToCreate.CreateNewLayer();
+			_selectedTile.currentLayer = 0;
+		}
+
+		ImGui::Separator();
+
+		if (ImGui::Button("Save TileMap"))
+		{
+			SaveTileMap(mapToCreate, collidableInfo);
+			_isActive = false;
+			_hasTileData = false;
+			mapCreated = false;
+			gridLinesCreated = false;
+			spriteArrayCreated = false;
+			mapToCreate.Clear();
+			collidableInfo.clear();
+
+			_selectedTile.currentLayer = 0;
+			_selectedTile._tileIndex = -1;
+		}
+
+		ImGui::Separator();
+		if (ImGui::Button("Close")) {
+			_isActive = false;
+			_hasTileData = false;
+			mapCreated = false;
+			gridLinesCreated = false;
+			spriteArrayCreated = false;
+			mapToCreate.Clear();
+			collidableInfo.clear();
+
+			_selectedTile.currentLayer = 0;
+			_selectedTile._tileIndex = -1;
+		}
+
+		ImGui::EndChild();
 	}
 
 	ImGui::Separator();
-	
-	if (ImGui::Button("Save TileMap"))
-	{
-		SaveTileMap(mapToCreate, collidableInfo);
-		_isActive = false;
-		_hasTileData = false;
-		mapCreated = false;
-		gridLinesCreated = false;
-		spriteArrayCreated = false;
-		mapToCreate.Clear();
-		collidableInfo.clear();
 
-		_selectedTile.currentLayer = 0;
-		_selectedTile._tileIndex = -1;
-	}
 
-	ImGui::Separator();
-	if (ImGui::Button("Close")) {
-		_isActive = false;
-		_hasTileData = false;
-		mapCreated = false;
-		gridLinesCreated = false;
-		spriteArrayCreated = false;
-		mapToCreate.Clear();
-		collidableInfo.clear();
 
-		_selectedTile.currentLayer = 0;
-		_selectedTile._tileIndex = -1;
-	}
+
 	ImGui::End();
 
-	glm::vec2 mousePos = Input::GetMousePos();
-
-	//TODO: Mouse position to tilemap editor positon and draw call
-	
-	//mapToCreate.AddTileAt(0, 4, 5, 2);
-	//mapToCreate.AddTileAt(0, 4, 5, 18);
-	//mapToCreate.AddTileAt(0, 4, 5, 35);
-	//mapToCreate.AddTileAt(0, 4, 5, 50);
+	if (Input::IsMouseButtonDown(BUTTON_LEFT)) {
+		pTilemap->AddTileAt(0, _selectedTile.tileX, _selectedTile.tileY, CameraManager::GetCamera("Editor"), true);
+	}
+	else if (Input::IsMouseButtonDown(BUTTON_RIGHT)) {
+		pTilemap->AddTileAt(0, 0, 0, CameraManager::GetCamera("Editor"), false);
+	}
 }
 
 void TileMapEditor::SaveTileMap(const TileMap& map, const std::vector<bool>& collisionInfo)
@@ -287,6 +311,4 @@ void TileMapEditor::SaveTileMap(const TileMap& map, const std::vector<bool>& col
 	//fileToWrite << root;
 	//
 	//std::cout << "Successfully saved tileMap to json file" << std::endl;
-
-
 }

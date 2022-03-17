@@ -73,12 +73,12 @@ void Application::Init(bool devMode)
 
 	Texture2D* texture = new Texture2D("testSheet.png", true);
 	ResourceManager::InstantiateTexture("spritesheet", texture);
-	_pTilemap = new TileMap();
-	_pSpritesheet = new SpriteSheet(texture, 128, 128);
-	_pTilemap->SetSpriteSheet(_pSpritesheet);
+	//_pTilemap = new TileMap();
+	//_pSpritesheet = new SpriteSheet(texture, 128, 128);
+	//_pTilemap->SetSpriteSheet(_pSpritesheet);
 
 	//initializes editor with scene
-	_pCurrentScene = new Scene("Test scene", _pTilemap);
+	_pCurrentScene = new Scene("Test scene");
 	_mRunning = true;
 
 	CameraManager::Init();
@@ -135,7 +135,7 @@ void Application::GameLoop()
 		//imgui update frame
 		ImGuiManager::ImGuiNewFrame();
 
-		_pTilemap->UpdateLogic(CameraManager::GetCamera("Editor"));
+		//_pTilemap->UpdateLogic(CameraManager::GetCamera("Editor"));
 
 
 		//update editor if in editor mode
@@ -146,12 +146,7 @@ void Application::GameLoop()
 			GameRender(CameraManager::GetCamera("Editor"));
 			_pEditor->EditorLoop(_pCurrentScene, elapsed, _mInEditorMode, _mPaused);
 
-			if (Input::IsMouseButtonDown(BUTTON_LEFT)) {
-				_pTilemap->AddTileAt(0, 3, 5, CameraManager::GetCamera("Editor"), true);
-			}
-			else if (Input::IsMouseButtonDown(BUTTON_RIGHT)) {
-				_pTilemap->AddTileAt(0, 0, 0, CameraManager::GetCamera("Editor"), false);
-			}
+
 
 			//_pEditor->GetCamera()->PrintInfo();
 
@@ -234,7 +229,7 @@ void Application::GameBeginRender()
 //render game
 void Application::GameRender(Camera* cam)
 {
-	_pTilemap->RenderMap(cam);
+	//_pTilemap->RenderMap(cam);
 	_pCurrentScene->RenderScene(cam);
 }
 
@@ -349,7 +344,8 @@ bool Application::OnMouseMovedEvent(MouseMovedEvent& e)
 
 bool Application::OnMouseScrolledEvent(MouseScrolledEvent& e)
 {
-	CameraManager::GetCamera("Editor")->OnMouseScrolled(e.GetOffsetY());
+	//TODO: Only allow this when hovered over the window
+	//CameraManager::GetCamera("Editor")->OnMouseScrolled(e.GetOffsetY());
 
 	return true;
 }

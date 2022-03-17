@@ -63,6 +63,6 @@ private:
 	bool _mPaused = false;
 	bool _mGameRunning = false;
 
-	TileMap* _pTilemap;
-	SpriteSheet* _pSpritesheet;
+	//TileMap* _pTilemap;
+	//SpriteSheet* _pSpritesheet;
 };

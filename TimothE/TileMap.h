@@ -26,6 +26,8 @@ public:
 		_pSpritesheet = spritesheet;
 	}
 
+	SpriteSheet* GetSpriteSheet() { return _pSpritesheet; }
+
 	void AddTileAt(unsigned int layer, unsigned int x, unsigned int y, Camera* cam, bool shouldCollide = false);
 
 	//Returns the width and height of the WHOLE TILE MAP

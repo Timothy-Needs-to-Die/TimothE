@@ -46,8 +46,6 @@ Editor::Editor(Application* pApp)
 
 	pImGuiSample = new Texture2D(NULL);
 	pImGuiSample->Load("lenna3.jpg");
-
-	pTileMapEditor = new TileMapEditor();
 }
 
 Editor::~Editor()
@@ -58,7 +56,7 @@ Editor::~Editor()
 
 void Editor::EditorLoop(Scene* currentScene, float dt, bool& editorMode, bool& paused)
 {
-	CameraManager::GetCamera("Editor")->OnUpdate(dt);
+	
 
 	EditorImGui(currentScene);
 	ImGUISwitchRender(editorMode, paused);
@@ -113,8 +111,8 @@ void Editor::EditorImGui(Scene* currentScene)
 
 	//Tile Editor
 	{
-		pTileMapEditor->EnableEditor();
-		pTileMapEditor->DisplayEditorGUI();
+		TileMapEditor::EnableEditor();
+		TileMapEditor::Update(currentScene->GetTileMap());
 	}
 
 
@@ -496,6 +494,13 @@ void Editor::ImGUISwitchRender(bool& editorMode, bool& paused)
 void Editor::EditorRender()
 {
 	ImGui::Begin("Scene Window", 0 ,ImGuiWindowFlags_NoMove);
+
+	if(ImGui::IsWindowFocused())
+	{
+		CameraManager::GetCamera("Editor")->OnUpdate(0.16f);
+	}
+
+
 	ImVec2 wp = ImGui::GetCursorScreenPos();
 	_windowPos = { wp.x,wp.y };
 	ImGui::GetWindowDrawList()->AddImage(

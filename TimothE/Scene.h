@@ -10,7 +10,7 @@
 class Scene
 {
 public:
-	Scene(std::string name, TileMap* pTilemap);
+	Scene(std::string name);
 	~Scene();
 	
 	//Triggers the gameobjects start methods
@@ -24,6 +24,8 @@ public:
 
 	//Any updates that need to be performed in the editor. Primarily every game objects transform
 	void EditorUpdate(float deltaTime);
+
+	TileMap* GetTileMap() { return _pTilemap; }
 
 	void Update(float deltaTime);
 	void RenderScene(Camera* cam);
@@ -110,4 +112,6 @@ private:
 	GameObject* _pTriggerBox;
 	TileMap* _pTilemap;
 	AnimatedSpritesheet* _pAnimSheet;
+
+	SpriteSheet* _pSpritesheet;
 };
