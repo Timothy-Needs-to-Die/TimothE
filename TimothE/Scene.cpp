@@ -94,7 +94,7 @@ Scene::Scene(std::string name)
 	_pTilemap = new TileMap();
 	_pSpritesheet = new SpriteSheet(ResourceManager::GetTexture("spritesheet"), 128, 128);
 	_pTilemap->SetSpriteSheet(_pSpritesheet);
-
+	
 	//////////////////
 	//END OF TEST CODE
 	//////////////////

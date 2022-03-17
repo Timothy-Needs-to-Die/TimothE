@@ -16,7 +16,11 @@ TileMap::TileMap()
 	_mapSizeInScreenUnits = glm::vec2(_mapDimensions.x / _tilesPerUnit, _mapDimensions.y / _tilesPerUnit);
 	_tileSize = glm::vec2(128.0f);
 	_spritemapResolution = glm::vec2(2560.0f, 1664.0f);
-	_tiles.resize(_mapDimensions.x * _mapDimensions.y);
+
+	int elementSize = _mapDimensions.x * _mapDimensions.y;
+	_tileArr[0].resize(elementSize);
+	_tileArr[1].resize(elementSize);
+	_tileArr[2].resize(elementSize);
 
 	_xGapBetweenTiles = 1.0f / _tilesPerUnit;
 	_yGapBetweenTiles = 1.0f / _tilesPerUnit;
@@ -114,7 +118,7 @@ void TileMap::AddTileAt(unsigned int layer, unsigned int x, unsigned int y, Came
 
 	newTile._pSpritesheet = _pSpritesheet;
 	newTile._pSprite = _pSpritesheet->GetSpriteAtIndex(_pSpritesheet->GetSheetWidth() * y + x);
-	_tiles[index] = newTile;
+	_tileArr[layer][index] = newTile;
 }
 
 int TileMap::GetTileWidth() const
@@ -137,8 +141,12 @@ std::string TileMap::GetName() const
 	return std::string();
 }
 
-void TileMap::FillLayer(unsigned int layer, int tileIndex)
+void TileMap::FillLayer(unsigned int layer, int uvX, int uvY)
 {
+	for (int i = 0; i < _tileArr[layer].size(); i++) {
+		_tileArr[layer][i]._pSpritesheet = _pSpritesheet;
+		_tileArr[layer][i]._pSprite = _pSpritesheet->GetSpriteAtIndex(_pSpritesheet->GetSheetWidth() * uvY + uvX);
+	}
 }
 
 glm::vec2 TileMap::GetTileSize() const
@@ -188,13 +196,13 @@ void TileMap::SetTextureName(std::string name)
 {
 }
 
-TileData* TileMap::GetTileAtWorldPos(glm::vec2 worldPos)
+TileData* TileMap::GetTileAtWorldPos(int layer, glm::vec2 worldPos)
 {
 	int index = _mapDimensions.x * (int)(worldPos.y * _tilesPerUnit) + (int)(worldPos.x * _tilesPerUnit);
 	if (index < 0) index = 0;
 	if (index > _mapDimensions.x * _mapDimensions.y) index = _mapDimensions.x * _mapDimensions.y;
 
-	return &_tiles[index];
+	return &_tileArr[layer][index];
 }
 
 void TileMap::Clear()
@@ -207,25 +215,27 @@ void TileMap::RenderMap(Camera* cam)
 	float extents = cam->GetAspectRatio() * cam->GetZoomLevel() * 2.0f;
 	Renderer2D::BeginRender(cam);
 
-	for (float y = 0; y < _mapSizeInScreenUnits.y; y += _yGapBetweenTiles) {
-		for (float x = 0; x < _mapSizeInScreenUnits.x; x += _xGapBetweenTiles) {
-			if (x < camPos.x - extents || x > camPos.x + extents || y < camPos.y - extents || y > camPos.y + extents) {
-				continue;
+	for (int i = 0; i < 3; i++) {
+		for (float y = 0; y < _mapSizeInScreenUnits.y; y += _yGapBetweenTiles) {
+			for (float x = 0; x < _mapSizeInScreenUnits.x; x += _xGapBetweenTiles) {
+				if (x < camPos.x - extents || x > camPos.x + extents || y < camPos.y - extents || y > camPos.y + extents) {
+					continue;
+				}
+				int index = _mapDimensions.x * (int)(y * 4) + (int)(x * 4);
+
+				//if (index == _currentTileIndex) {
+				//	//Renderer2D::DrawQuad({ x,y }, { _tileScale, _tileScale }, ResourceManager::GetTexture("spritesheet"), _noTcCoords, 1.0f, glm::vec4(1.0f, 0.0f, 0.0f, 1.0f));
+				//	continue;
+				//}
+
+
+				if (_tileArr[i][index]._pSprite == nullptr) {
+					//Renderer2D::DrawQuad({ x,y }, { _tileScale, _tileScale }, ResourceManager::GetTexture("spritesheet"), _noTcCoords);
+					continue;
+				}
+
+				Renderer2D::DrawQuad({ x,y }, { _tileScale,_tileScale }, _tileArr[i][index]._pSprite->GetTexture(), _tileArr[i][index]._pSprite->GetTexCoords());
 			}
-			int index = _mapDimensions.x * (int)(y * 4) + (int)(x * 4);
-
-			if (index == _currentTileIndex) {
-				Renderer2D::DrawQuad({ x,y }, { _tileScale, _tileScale }, ResourceManager::GetTexture("spritesheet"), _noTcCoords, 1.0f, glm::vec4(1.0f, 0.0f, 0.0f, 1.0f));
-				continue;
-			}
-
-
-			if (_tiles[index]._pSprite == nullptr) {
-				Renderer2D::DrawQuad({ x,y }, { _tileScale, _tileScale }, ResourceManager::GetTexture("spritesheet"), _noTcCoords);
-				continue;
-			}
-
-			Renderer2D::DrawQuad({ x,y }, { _tileScale,_tileScale }, _tiles[index]._pSprite->GetTexture(), _tiles[index]._pSprite->GetTexCoords());
 		}
 	}
 

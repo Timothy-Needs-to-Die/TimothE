@@ -35,7 +35,7 @@ public:
 	int GetTileHeight() const;
 	std::string GetTextureName() const;
 	std::string GetName() const;
-	void FillLayer(unsigned int layer, int tileIndex);
+	void FillLayer(unsigned int layer, int uvX, int uvY);
 
 	//Returns the hight and width of the tiles themselves
 	glm::vec2 GetTileSize() const;
@@ -48,7 +48,7 @@ public:
 	void SetMapName(std::string name);
 	void SetTextureName(std::string name);
 	
-	TileData* GetTileAtWorldPos(glm::vec2 worldPos);
+	TileData* GetTileAtWorldPos(int layer, glm::vec2 worldPos);
 	
 	void Clear();
 	
@@ -76,7 +76,9 @@ private:
 
 	SpriteSheet* _pSpritesheet;
 
-	std::vector<TileData> _tiles;
+	//std::vector<TileData> _tiles;
+
+	std::vector<TileData> _tileArr[3];
 
 	glm::vec2* _noTcCoords;
 
