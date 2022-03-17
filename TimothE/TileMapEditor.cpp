@@ -30,7 +30,7 @@ void TileMapEditor::Update(TileMap* pTilemap)
 void TileMapEditor::AcquireData(TileMap* pTilemap)
 {
 	static char infoName[50];
-	ImGui::Begin("Tile Map Info");
+	ImGui::Begin("Tile Map Info", 0, ImGuiWindowFlags_NoMove);
 	ImGui::InputText("Tile Map Name", infoName, 50);
 	ImGui::InputFloat("Tile count X", &_mapSizeInScreenUnits.x);
 	ImGui::InputFloat("Tile Count Y", &_mapSizeInScreenUnits.y);
@@ -130,37 +130,45 @@ void TileMapEditor::CreateTileMap(TileMap* pTilemap)
 	}
 
 
-	float sheetWidth = pTilemap->GetSpriteSheet()->GetPixelWidth();
-	float sheetHeight = pTilemap->GetSpriteSheet()->GetPixelHeight();
-	float spriteWidth = pTilemap->GetSpriteSheet()->GetSpriteWidth();
-	float spriteHeight = pTilemap->GetSpriteSheet()->GetSpriteHeight();
+	float sheetWidth = (float)pTilemap->GetSpriteSheet()->GetPixelWidth();
+	float sheetHeight = (float) pTilemap->GetSpriteSheet()->GetPixelHeight();
+	float spriteWidth = (float)pTilemap->GetSpriteSheet()->GetSpriteWidth();
+	float spriteHeight = (float)pTilemap->GetSpriteSheet()->GetSpriteHeight();
 
 	const auto& tex = ResourceManager::GetTexture(_textureName);
-	ImGui::Begin("Tilemap Editor");
+	ImGui::Begin("Tilemap Editor", 0, ImGuiWindowFlags_NoMove);
 	
 
 	{
 		ImGui::BeginChild("Select Tile", ImVec2(ImGui::GetContentRegionAvail().x * 0.5f, 260));
-		for (auto i = 0; i < y; i++)
-		{
-			for (auto j = 0; j < x; j++)
-			{
-				ImVec2 bl = ImVec2(((j)*spriteWidth) / sheetWidth, (i * spriteHeight) / sheetHeight);
-				ImVec2 tr = ImVec2(((j + 1) * spriteWidth) / sheetWidth, ((i + 1) * spriteHeight) / sheetHeight);
 
-				ImGui::PushID(i * x + j);
-				if (ImGui::ImageButton((void*)tex->GetID(), ImVec2(32, 32), tr, bl))
+		float imgDimensions = ImGui::GetWindowSize().x / spriteWidth;
+		if (ImGui::BeginTable("split", 8)) {
+			for (auto i = 0; i < y; i++)
+			{
+				for (auto j = 0; j < x; j++)
 				{
-					_selectedTile.tileX = j;
-					_selectedTile.tileY = i;
-					std::cout << "Selected: " << i << ", " << j << std::endl;
-					_selectedTile._tileIndex = i * x + j;
+					ImVec2 bl = ImVec2(((j)*spriteWidth) / sheetWidth, (i * spriteHeight) / sheetHeight);
+					ImVec2 tr = ImVec2(((j + 1) * spriteWidth) / sheetWidth, ((i + 1) * spriteHeight) / sheetHeight);
+
+
+					ImGui::TableNextColumn();
+					ImGui::PushID(i * x + j);
+					if (ImGui::ImageButton((void*)tex->GetID(), ImVec2(32, 32), tr, bl))
+					{
+						_selectedTile.tileX = j;
+						_selectedTile.tileY = i;
+						std::cout << "Selected: " << i << ", " << j << std::endl;
+						_selectedTile._tileIndex = i * x + j;
+					}
+					ImGui::PopID();
+					//ImGui::SameLine();
 				}
-				ImGui::PopID();
-				//ImGui::SameLine();
+				ImGui::NewLine();
 			}
-			ImGui::NewLine();
 		}
+		ImGui::EndTable();
+
 		ImGui::EndChild();
 	}
 
