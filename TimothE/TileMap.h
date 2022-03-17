@@ -18,8 +18,7 @@ public:
 	~TileMap();
 
 	void CreateTileMap();
-	void CreateNewLayer();
-	void DeleteAllLayers();
+	void ClearAllLayers();
 	void UpdateLogic(Camera* cam);
 
 	void SetSpriteSheet(SpriteSheet* spritesheet) {
@@ -50,7 +49,7 @@ public:
 	
 	TileData* GetTileAtWorldPos(int layer, glm::vec2 worldPos);
 	
-	void Clear();
+	void ClearLayer(int layer);
 	
 	glm::vec2 ConvertWorldToScreen(glm::vec2 inPos) {
 		glm::vec2 outPos{ inPos.x / 1920.0f, inPos.y / 1080.0f };
@@ -66,7 +65,7 @@ private:
 	glm::vec2 _tileSize;
 	glm::vec2 _mapDimensions;
 	glm::vec2 _spritemapResolution;
-	std::string _textureName;
+	std::string _spritesheetName;
 	std::string _tileMapFile;
 	float _xGapBetweenTiles;
 	float _yGapBetweenTiles;
@@ -74,7 +73,7 @@ private:
 	glm::vec2 _currentTile;
 	int _currentTileIndex;
 
-	SpriteSheet* _pSpritesheet;
+	SpriteSheet* _pSpritesheet = nullptr;
 
 	//std::vector<TileData> _tiles;
 

@@ -111,7 +111,6 @@ void Editor::EditorImGui(Scene* currentScene)
 
 	//Tile Editor
 	{
-		TileMapEditor::EnableEditor();
 		TileMapEditor::Update(currentScene->GetTileMap());
 	}
 

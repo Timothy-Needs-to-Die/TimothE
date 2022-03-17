@@ -2257,8 +2257,8 @@ struct ImGuiPayload
     bool            Preview;            // Set when AcceptDragDropPayload() was called and mouse has been hovering the target item (nb: handle overlapping drag targets)
     bool            Delivery;           // Set when AcceptDragDropPayload() was called and mouse button is released over the target item.
 
-    ImGuiPayload()  { Clear(); }
-    void Clear()    { SourceId = SourceParentId = 0; Data = NULL; DataSize = 0; memset(DataType, 0, sizeof(DataType)); DataFrameCount = -1; Preview = Delivery = false; }
+    ImGuiPayload()  { ClearLayer(); }
+    void ClearLayer()    { SourceId = SourceParentId = 0; Data = NULL; DataSize = 0; memset(DataType, 0, sizeof(DataType)); DataFrameCount = -1; Preview = Delivery = false; }
     bool IsDataType(const char* type) const { return DataFrameCount != -1 && strcmp(type, DataType) == 0; }
     bool IsPreview() const                  { return Preview; }
     bool IsDelivery() const                 { return Delivery; }
@@ -2316,7 +2316,7 @@ struct ImGuiTextFilter
     IMGUI_API bool      Draw(const char* label = "Filter (inc,-exc)", float width = 0.0f);  // Helper calling InputText+Build
     IMGUI_API bool      PassFilter(const char* text, const char* text_end = NULL) const;
     IMGUI_API void      Build();
-    void                Clear()          { InputBuf[0] = 0; Build(); }
+    void                ClearLayer()          { InputBuf[0] = 0; Build(); }
     bool                IsActive() const { return !Filters.empty(); }
 
     // [Internal]
@@ -2381,7 +2381,7 @@ struct ImGuiStorage
     // - Get***() functions find pair, never add/allocate. Pairs are sorted so a query is O(log N)
     // - Set***() functions find pair, insertion on demand if missing.
     // - Sorted insertion is costly, paid once. A typical frame shouldn't need to insert any new pair.
-    void                Clear() { Data.clear(); }
+    void                ClearLayer() { Data.clear(); }
     IMGUI_API int       GetInt(ImGuiID key, int default_val = 0) const;
     IMGUI_API void      SetInt(ImGuiID key, int val);
     IMGUI_API bool      GetBool(ImGuiID key, bool default_val = false) const;
@@ -2582,7 +2582,7 @@ struct ImDrawListSplitter
 
     inline ImDrawListSplitter()  { memset(this, 0, sizeof(*this)); }
     inline ~ImDrawListSplitter() { ClearFreeMemory(); }
-    inline void                 Clear() { _Current = 0; _Count = 1; } // Do not clear Channels[] so our allocations are reused next frame
+    inline void                 ClearLayer() { _Current = 0; _Count = 1; } // Do not clear Channels[] so our allocations are reused next frame
     IMGUI_API void              ClearFreeMemory();
     IMGUI_API void              Split(ImDrawList* draw_list, int count);
     IMGUI_API void              Merge(ImDrawList* draw_list);
@@ -2768,8 +2768,8 @@ struct ImDrawData
     ImGuiViewport*  OwnerViewport;          // Viewport carrying the ImDrawData instance, might be of use to the renderer (generally not).
 
     // Functions
-    ImDrawData()    { Clear(); }
-    void Clear()    { memset(this, 0, sizeof(*this)); }     // The ImDrawList are owned by ImGuiContext!
+    ImDrawData()    { ClearLayer(); }
+    void ClearLayer()    { memset(this, 0, sizeof(*this)); }     // The ImDrawList are owned by ImGuiContext!
     IMGUI_API void  DeIndexAllBuffers();                    // Helper to convert all buffers from indexed to non-indexed, in case you cannot render indexed. Note: this is slow and most likely a waste of resources. Always prefer indexed rendering!
     IMGUI_API void  ScaleClipRects(const ImVec2& fb_scale); // Helper to scale the ClipRect field of each ImDrawCmd. Use if your final output buffer is at a different scale than Dear ImGui expects, or if there is a difference between your window resolution and framebuffer resolution.
 };
@@ -2823,8 +2823,8 @@ struct ImFontGlyphRangesBuilder
 {
     ImVector<ImU32> UsedChars;            // Store 1-bit per Unicode code point (0=unused, 1=used)
 
-    ImFontGlyphRangesBuilder()              { Clear(); }
-    inline void     Clear()                 { int size_in_bytes = (IM_UNICODE_CODEPOINT_MAX + 1) / 8; UsedChars.resize(size_in_bytes / (int)sizeof(ImU32)); memset(UsedChars.Data, 0, (size_t)size_in_bytes); }
+    ImFontGlyphRangesBuilder()              { ClearLayer(); }
+    inline void     ClearLayer()                 { int size_in_bytes = (IM_UNICODE_CODEPOINT_MAX + 1) / 8; UsedChars.resize(size_in_bytes / (int)sizeof(ImU32)); memset(UsedChars.Data, 0, (size_t)size_in_bytes); }
     inline bool     GetBit(size_t n) const  { int off = (int)(n >> 5); ImU32 mask = 1u << (n & 31); return (UsedChars[off] & mask) != 0; }  // Get bit n in the array
     inline void     SetBit(size_t n)        { int off = (int)(n >> 5); ImU32 mask = 1u << (n & 31); UsedChars[off] |= mask; }               // Set bit n in the array
     inline void     AddChar(ImWchar c)      { SetBit(c); }                      // Add character
@@ -2885,7 +2885,7 @@ struct ImFontAtlas
     IMGUI_API void              ClearInputData();           // Clear input data (all ImFontConfig structures including sizes, TTF data, glyph ranges, etc.) = all the data used to build the texture and fonts.
     IMGUI_API void              ClearTexData();             // Clear output texture data (CPU side). Saves RAM once the texture has been copied to graphics memory.
     IMGUI_API void              ClearFonts();               // Clear output font data (glyphs storage, UV coordinates).
-    IMGUI_API void              Clear();                    // Clear all input and output.
+    IMGUI_API void              ClearLayer();                    // Clear all input and output.
 
     // Build atlas, retrieve pixel data.
     // User is in charge of copying the pixels into graphics memory (e.g. create a texture with your engine). Then store your texture handle with SetTexID().

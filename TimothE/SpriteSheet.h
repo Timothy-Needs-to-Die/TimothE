@@ -17,6 +17,8 @@ public:
 	int GetSpriteWidth() const { return _spriteWidth; }
 	int GetSpriteHeight() const { return _spriteHeight; }
 
+	Texture2D* GetTexture() const { return _pTexture; }
+
 	Sprite* GetSpriteAtIndex(int index) { return _sprites[index]; }
 protected:
 	//Number of sprites on the spritesheet

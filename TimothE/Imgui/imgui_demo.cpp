@@ -6876,10 +6876,10 @@ struct ExampleAppLog
     ExampleAppLog()
     {
         AutoScroll = true;
-        Clear();
+        ClearLayer();
     }
 
-    void    Clear()
+    void    ClearLayer()
     {
         Buf.clear();
         LineOffsets.clear();
@@ -6927,7 +6927,7 @@ struct ExampleAppLog
         ImGui::BeginChild("scrolling", ImVec2(0, 0), false, ImGuiWindowFlags_HorizontalScrollbar);
 
         if (clear)
-            Clear();
+            ClearLayer();
         if (copy)
             ImGui::LogToClipboard();
 

@@ -1,271 +1,153 @@
 #include "TileMapEditor.h"
 
 
-bool TileMapEditor::_hasTileData = false;
-bool TileMapEditor::_isActive = false;
+bool TileMapEditor::_collidableToggle = false;
 std::string TileMapEditor::_mapName = "testSheet.png";
-std::string TileMapEditor::_textureName = "spritesheet";
+std::string TileMapEditor::_spritesheetName = "spritesheet";
 glm::vec2 TileMapEditor::_mapSizeInScreenUnits = glm::vec2(32.0);
 glm::vec2 TileMapEditor::_tileSize = glm::vec2(32.0);
 std::string TileMapEditor::_name;
 SelectedTile TileMapEditor::_selectedTile;
-
-void TileMapEditor::EnableEditor()
-{
-	_isActive = true;
-}
+int TileMapEditor::_currentLayer = 0;
 
 void TileMapEditor::Update(TileMap* pTilemap)
 {
-	if (!_isActive)
-		return;
-	if (!_hasTileData)
-		AcquireData(pTilemap);
-	else
-		CreateTileMap(pTilemap);
+	CreateTileMap(pTilemap);
 
 	pTilemap->UpdateLogic(CameraManager::CurrentCamera());
-}
-
-void TileMapEditor::AcquireData(TileMap* pTilemap)
-{
-	static char infoName[50];
-	ImGui::Begin("Tile Map Info", 0, ImGuiWindowFlags_NoMove);
-	ImGui::InputText("Tile Map Name", infoName, 50);
-	ImGui::InputFloat("Tile count X", &_mapSizeInScreenUnits.x);
-	ImGui::InputFloat("Tile Count Y", &_mapSizeInScreenUnits.y);
-	ImGui::InputFloat("Tile Size X", &_tileSize.x);
-	ImGui::InputFloat("Tile Size Y", &_tileSize.y);
-	ImGui::Text("Selected Texture Atlas: %s", _textureName.c_str());
-
-	//TODO - Get a list of the loaded textures for the current map
-	//for (const auto& x : /*GetTextureList() */)
-	//{
-	//	_textureName = x.first;
-	//}
-
-
-
-	ImGui::Separator();
-	if (ImGui::Button("Start"))
-	{
-		if (_mapSizeInScreenUnits.x >= 1 && _mapSizeInScreenUnits.y >= 1 && _tileSize.x > 0 && _tileSize.y > 0 && !_textureName.empty() && infoName[0] != '\0')
-		{
-			_name = std::string(infoName);
-			_hasTileData = true;
-		}
-	}
-
-	if (ImGui::Button("Close"))
-	{
-		_hasTileData = false;
-		_isActive = false;
-	}
-	ImGui::End();
 }
 
 //Sets the data in the tileMap object that the editor will be editing
 //Along with setting up the ImGui window for the editor 
 void TileMapEditor::CreateTileMap(TileMap* pTilemap)
 {
-	static bool gridLinesCreated = false;
-	static bool spriteArrayCreated = false;
 
-	int x = pTilemap->GetSpriteSheet()->GetSheetWidth();
-	int y = pTilemap->GetSpriteSheet()->GetSheetHeight();
 
-	//static VAO VERTEX ARRAY gridLines;
-	//static std::vector<Sprite> sprites;
-	static std::vector<Texture2D*> textures;
-	static std::vector<bool>collidableInfo;
 
-	static bool mapCreated = false;
-
-	if (!mapCreated)
-	{
-		//mapToCreate.SetTileSize(_tileSize);
-		//mapToCreate.SetPosition(0.0f, 0.0f);
-		//mapToCreate.SetTileMapSize(_mapSizeInScreenUnits);
-		//mapToCreate.SetMapName(_mapName);
-		//mapToCreate.SetTextureName(_textureName);
-		//mapToCreate.CreateNewLayer();
-		//mapCreated = true;
-	}
-	//if (!gridLinesCreated)
-	//{
-	//	gridLines.Clear();
-	//	gridLines.SetPrimitiveType(Lines);
-	//	for (auto i = 0; i <= _mapSize.x; i++) {
-	//		//Append grid lines with vec2(i * _tileSize.x, 0.0f)
-	//		//Append grid lines with vec2((i) * _tileSize.x, _tileSize.y * _mapSize.y)
-	//	}
-	//	
-	//	for (auto i = 0; i <= _mapSize.x; i++) {
-	//		//Append grid lines with vec2(i * _tileSize.y, 0.0f)
-	//		//Append grid lines with vec2(_tileSize.x, _mapSize.x, _tileSize.y * (i) )
-	//	}
-	//	gridLinesCreated = true;
-	//}
-	if (!spriteArrayCreated) {
-		textures.clear();
-
-		const auto& tex = ResourceManager::GetTexture("spritesheet");
-		auto sizeX = tex->GetWidth();
-		auto sizeY = tex->GetHeight();
-
-		//x = sizeX / _tileSize.x;
-		//y = sizeY / _tileSize.y;
-		//for (auto i = 0; i < y; i++) {
-		//	for (auto j = 0; j < x; j++) {
-		//		//CREATE USEFUL SPRITE COMPONENT FOR This
-		//		Sprite spr;
-		//		spr.SetTexture(tex);
-		//		spr.SetTextureRect(j * _tileSize.x, i * _tileSize.y, _tileSize.x, _tileSize.y);
-		//		sprites.push_back(std::move(spr));
-		//		collidableInfo.push_back(false);
-		//	}
-		//}
-		//spriteArrayCreated = true;
-	}
-
-	float sheetWidth = (float)pTilemap->GetSpriteSheet()->GetPixelWidth();
-	float sheetHeight = (float) pTilemap->GetSpriteSheet()->GetPixelHeight();
-	float spriteWidth = (float)pTilemap->GetSpriteSheet()->GetSpriteWidth();
-	float spriteHeight = (float)pTilemap->GetSpriteSheet()->GetSpriteHeight();
-
-	const auto& tex = ResourceManager::GetTexture(_textureName);
+	//const auto& tex = ResourceManager::GetTexture(_spritesheetName);
 	ImGui::Begin("Tilemap Editor", 0, ImGuiWindowFlags_NoMove);
-	
 
+	//Tile display
 	{
 		ImGui::BeginChild("Select Tile", ImVec2(ImGui::GetContentRegionAvail().x * 0.5f, ImGui::GetContentRegionAvail().y * 0.75f));
 
-		float imgDimensions = ImGui::GetWindowSize().x / spriteWidth;
-		if (ImGui::BeginTable("split", 8)) {
-			for (auto i = 0; i < y; i++)
-			{
-				for (auto j = 0; j < x; j++)
+		if (pTilemap->GetSpriteSheet()) {
+			//Furthest tile in X and Y axis'
+			int xMax = pTilemap->GetSpriteSheet()->GetSheetWidth();
+			int yMax = pTilemap->GetSpriteSheet()->GetSheetHeight();
+
+			float sheetWidth = pTilemap->GetSpriteSheet()->GetPixelWidth();
+			float sheetHeight = pTilemap->GetSpriteSheet()->GetPixelHeight();
+			float spriteWidth = pTilemap->GetSpriteSheet()->GetSpriteWidth();
+			float spriteHeight = pTilemap->GetSpriteSheet()->GetSpriteHeight();
+
+			if (ImGui::BeginTable("split", 8)) {
+				for (auto i = 0; i < yMax; i++)
 				{
-					ImVec2 bl = ImVec2(((j + 1)*spriteWidth) / sheetWidth, (i * spriteHeight) / sheetHeight);
-					ImVec2 tr = ImVec2(((j) * spriteWidth) / sheetWidth, ((i + 1) * spriteHeight) / sheetHeight);
-
-
-					ImGui::TableNextColumn();
-					ImGui::PushID(i * x + j);
-					if (ImGui::ImageButton((void*)tex->GetID(), ImVec2(32, 32), tr, bl))
+					for (auto j = 0; j < xMax; j++)
 					{
-						_selectedTile.tileX = j;
-						_selectedTile.tileY = i;
-						std::cout << "Selected: " << i << ", " << j << std::endl;
-						_selectedTile._tileIndex = i * x + j;
+						ImVec2 bl = ImVec2(((j + 1) * spriteWidth) / sheetWidth, (i * spriteHeight) / sheetHeight);
+						ImVec2 tr = ImVec2(((j)*spriteWidth) / sheetWidth, ((i + 1) * spriteHeight) / sheetHeight);
+
+
+						ImGui::TableNextColumn();
+						ImGui::PushID(i * xMax + j);
+						if (ImGui::ImageButton((void*)pTilemap->GetSpriteSheet()->GetTexture()->GetID(), ImVec2(32, 32), tr, bl))
+						{
+							_selectedTile.tileX = j;
+							_selectedTile.tileY = i;
+							std::cout << "Selected: " << i << ", " << j << std::endl;
+						}
+						ImGui::PopID();
+						//ImGui::SameLine();
 					}
-					ImGui::PopID();
-					//ImGui::SameLine();
+					ImGui::NewLine();
 				}
-				ImGui::NewLine();
+
+				ImGui::EndTable();
 			}
 		}
-		ImGui::EndTable();
-
+		
 		ImGui::EndChild();
 	}
 
 	ImGui::SameLine();
+
 	{
-		ImGui::BeginChild("Tile Settings", ImVec2(0, ImGui::GetContentRegionAvail().y * 0.75f));
+		ImGui::BeginChild("Tilemap Settings", ImVec2(0, ImGui::GetContentRegionAvail().y * 0.75f));
 
-		ImGui::NewLine();
-
-		/*Collidable Toggle
-		if (_selectedTile._tileIndex >= 0 && _selectedTile._tileIndex < sprites.size())
-		{
-			ImGui::Text("Tile %d Collidable?", _selectedTile._tileIndex);
-			ImGui::SameLine();
-
-			if (ImGui::Button("Yes"))
-				collidableInfo[_selectedTile._tileIndex] = true;
-			ImGui::SameLine();
-			if (ImGui::Button("No"))
-				collidableInfo[_selectedTile._tileIndex] = false;
-		}*/
-
-		//if (_selectedTile == nullptr) return;
-
-		//Layer Selection
-		ImGui::Separator();
-		ImGui::Text("CurrentLayer: %d", _selectedTile.currentLayer);
-		ImGui::Separator();
-		//for (auto i = 0; i < mapToCreate.GetLayerCount(); i++)
-		//{
-		//	auto str = "Layer " + std::to_string(i);
-		//	if (ImGui::Selectable(str.c_str()))
-		//	{
-		//		_selectedTile.currentLayer = i;
-		//	}
-		//}
-		ImGui::Separator();
-
-		if (ImGui::Button("Fill"))
-		{
-			if (_selectedTile._tileIndex >= 0)
-			{
-				pTilemap->FillLayer(_selectedTile.currentLayer, _selectedTile.tileX, _selectedTile.tileY);
-			}
-		}
-
-		//Add Layer Button
+		ImGui::Text("Layer: ");
 		ImGui::SameLine();
-		if (ImGui::Button("Add Layer"))
-		{
-			pTilemap->CreateNewLayer();
-		}
-
-		//Clear Map Button
+		ImGui::PushItemWidth(150.0f);
+		ImGui::SliderInt("##", &_currentLayer, 0, 2);
+		ImGui::PopItemWidth();
 		ImGui::SameLine();
-		if (ImGui::Button("Clear Map")) {
-			pTilemap->DeleteAllLayers();
-			pTilemap->CreateNewLayer();
-			_selectedTile.currentLayer = 0;
+		if (ImGui::Button("Fill Layer"))
+		{
+			pTilemap->FillLayer(_currentLayer, _selectedTile.tileX, _selectedTile.tileY);
+		}
+		ImGui::SameLine();
+		if (ImGui::Button("Clear Current Layer")) {
+			pTilemap->ClearLayer(_currentLayer);
 		}
 
 		ImGui::Separator();
+
+		ImGui::Checkbox("Collidable: ", &_collidableToggle);
 
 		if (ImGui::Button("Save TileMap"))
 		{
-			SaveTileMap(*pTilemap, collidableInfo);
-			_isActive = false;
-			_hasTileData = false;
-			mapCreated = false;
-			gridLinesCreated = false;
-			spriteArrayCreated = false;
-			pTilemap->Clear();
-			collidableInfo.clear();
-
-			_selectedTile.currentLayer = 0;
-			_selectedTile._tileIndex = -1;
+			SaveTileMap(*pTilemap);
 		}
 
 		ImGui::Separator();
-		if (ImGui::Button("Close")) {
-			_isActive = false;
-			_hasTileData = false;
-			mapCreated = false;
-			gridLinesCreated = false;
-			spriteArrayCreated = false;
-			pTilemap->Clear();
-			collidableInfo.clear();
 
-			_selectedTile.currentLayer = 0;
-			_selectedTile._tileIndex = -1;
+		//Clear Map Button
+		if (ImGui::Button("Clear Map")) {
+			pTilemap->ClearAllLayers();
+		}
+
+		ImGui::Separator();
+
+		static char infoName[50];
+		ImGui::InputText("Tile Map Name", infoName, 50);
+		ImGui::InputFloat("Tile count X", &_mapSizeInScreenUnits.x);
+		ImGui::InputFloat("Tile Count Y", &_mapSizeInScreenUnits.y);
+		ImGui::InputFloat("Tile Size X", &_tileSize.x);
+		ImGui::InputFloat("Tile Size Y", &_tileSize.y);
+		static char spritesheetName[50];
+		if (ImGui::InputText("Spritesheet Name: ", spritesheetName, 50));
+
+		static bool _loadedSheet;
+
+		if (ImGui::Button("Search for Sheet")) {
+
+			std::string temp = spritesheetName;
+
+			SpriteSheet* spritesheet = ResourceManager::GetSpriteSheet(temp);
+
+			if (spritesheet) {
+				_loadedSheet = true;
+				_spritesheetName = spritesheetName;
+				pTilemap->SetSpriteSheet(spritesheet);
+			}
+			else {
+				_loadedSheet = false;
+			}
+		}
+
+		if (_loadedSheet) {
+
+		ImGui::Text("Selected Texture Atlas: %s", _spritesheetName.c_str());
+		}
+		else {
+			ImGui::Text("Spritesheet could not be loaded: %s", spritesheetName);
 		}
 
 		ImGui::EndChild();
 	}
 
 	ImGui::Separator();
-
-
-
 
 	ImGui::End();
 
@@ -273,24 +155,24 @@ void TileMapEditor::CreateTileMap(TileMap* pTilemap)
 
 	if (ImGui::IsWindowFocused()) {
 		if (Input::IsMouseButtonDown(BUTTON_LEFT)) {
-			pTilemap->AddTileAt(0, _selectedTile.tileX, _selectedTile.tileY, CameraManager::GetCamera("Editor"), true);
+			pTilemap->AddTileAt(_currentLayer, _selectedTile.tileX, _selectedTile.tileY, CameraManager::GetCamera("Editor"), _collidableToggle);
 		}
 		else if (Input::IsMouseButtonDown(BUTTON_RIGHT)) {
-			pTilemap->AddTileAt(0, 0, 0, CameraManager::GetCamera("Editor"), false);
+			pTilemap->AddTileAt(_currentLayer, 0, 0, CameraManager::GetCamera("Editor"), _collidableToggle);
 		}
 	}
 
 	ImGui::End();
 }
 
-void TileMapEditor::SaveTileMap(const TileMap& map, const std::vector<bool>& collisionInfo)
+void TileMapEditor::SaveTileMap(const TileMap& map)
 {
 	using nlohmann::json;
-	
+
 	json root;
 
 	auto layers = json::array();
-	
+
 	//for (const auto& layer : map.GetTileData())
 	//{
 	//	auto x = json::object();

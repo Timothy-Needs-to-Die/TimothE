@@ -450,7 +450,7 @@ union GL3WProcs {
         PFNGLBLENDFUNCSEPARATEPROC       BlendFuncSeparate;
         PFNGLBUFFERDATAPROC              BufferData;
         PFNGLBUFFERSUBDATAPROC           BufferSubData;
-        PFNGLCLEARPROC                   Clear;
+        PFNGLCLEARPROC                   ClearLayer;
         PFNGLCLEARCOLORPROC              ClearColor;
         PFNGLCOMPILESHADERPROC           CompileShader;
         PFNGLCREATEPROGRAMPROC           CreateProgram;
@@ -510,7 +510,7 @@ GL3W_API extern union GL3WProcs imgl3wProcs;
 #define glBlendFuncSeparate              imgl3wProcs.gl.BlendFuncSeparate
 #define glBufferData                     imgl3wProcs.gl.BufferData
 #define glBufferSubData                  imgl3wProcs.gl.BufferSubData
-#define glClear                          imgl3wProcs.gl.Clear
+#define glClear                          imgl3wProcs.gl.ClearLayer
 #define glClearColor                     imgl3wProcs.gl.ClearColor
 #define glCompileShader                  imgl3wProcs.gl.CompileShader
 #define glCreateProgram                  imgl3wProcs.gl.CreateProgram

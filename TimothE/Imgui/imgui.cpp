@@ -4318,7 +4318,7 @@ void ImGui::NewFrame()
     {
         ImGuiViewportP* viewport = g.Viewports[n];
         viewport->DrawData = NULL;
-        viewport->DrawDataP.Clear();
+        viewport->DrawDataP.ClearLayer();
     }
 
     // Drag and drop keep the source ID alive so even if the source disappear our state is consistent
@@ -4556,7 +4556,7 @@ void ImGui::Shutdown(ImGuiContext* context)
     g.WindowsTempSortBuffer.clear();
     g.CurrentWindow = NULL;
     g.CurrentWindowStack.clear();
-    g.WindowsById.Clear();
+    g.WindowsById.ClearLayer();
     g.NavWindow = NULL;
     g.HoveredWindow = g.HoveredWindowUnderMovingWindow = NULL;
     g.ActiveIdWindow = g.ActiveIdPreviousFrameWindow = NULL;
@@ -4570,13 +4570,13 @@ void ImGui::Shutdown(ImGuiContext* context)
     g.CurrentViewport = g.MouseViewport = g.MouseLastHoveredViewport = NULL;
     g.Viewports.clear_delete();
 
-    g.TabBars.Clear();
+    g.TabBars.ClearLayer();
     g.CurrentTabBarStack.clear();
     g.ShrinkWidthBuffer.clear();
 
     g.ClipperTempData.clear_destruct();
 
-    g.Tables.Clear();
+    g.Tables.ClearLayer();
     g.TablesTempData.clear_destruct();
     g.DrawChannelsTempMergeBuffer.clear();
 
@@ -4986,7 +4986,7 @@ void ImGui::Render()
     for (int n = 0; n != g.Viewports.Size; n++)
     {
         ImGuiViewportP* viewport = g.Viewports[n];
-        viewport->DrawDataBuilder.Clear();
+        viewport->DrawDataBuilder.ClearLayer();
         if (viewport->DrawLists[0] != NULL)
             AddDrawListToDrawData(&viewport->DrawDataBuilder.Layers[0], GetBackgroundDrawList(viewport));
     }
@@ -10199,9 +10199,9 @@ void ImGui::NavMoveRequestSubmit(ImGuiDir move_dir, ImGuiDir clip_dir, ImGuiNavM
     g.NavMoveForwardToNextFrame = false;
     g.NavMoveKeyMods = g.IO.KeyMods;
     g.NavTabbingCounter = 0;
-    g.NavMoveResultLocal.Clear();
-    g.NavMoveResultLocalVisible.Clear();
-    g.NavMoveResultOther.Clear();
+    g.NavMoveResultLocal.ClearLayer();
+    g.NavMoveResultLocalVisible.ClearLayer();
+    g.NavMoveResultOther.ClearLayer();
     NavUpdateAnyRequestFlag();
 }
 
@@ -10716,7 +10716,7 @@ void ImGui::NavUpdateCreateTabbingRequest()
     ImGuiScrollFlags scroll_flags = window->Appearing ? ImGuiScrollFlags_KeepVisibleEdgeX | ImGuiScrollFlags_AlwaysCenterY : ImGuiScrollFlags_KeepVisibleEdgeX | ImGuiScrollFlags_KeepVisibleEdgeY;
     ImGuiDir clip_dir = (g.NavTabbingDir < 0) ? ImGuiDir_Up : ImGuiDir_Down;
     NavMoveRequestSubmit(ImGuiDir_None, clip_dir, ImGuiNavMoveFlags_Tabbing, scroll_flags); // FIXME-NAV: Once we refactor tabbing, add LegacyApi flag to not activate non-inputable.
-    g.NavTabbingResultFirst.Clear();
+    g.NavTabbingResultFirst.ClearLayer();
     g.NavTabbingCounter = -1;
 }
 
@@ -11275,7 +11275,7 @@ void ImGui::ClearDragDrop()
 {
     ImGuiContext& g = *GImGui;
     g.DragDropActive = false;
-    g.DragDropPayload.Clear();
+    g.DragDropPayload.ClearLayer();
     g.DragDropAcceptFlags = ImGuiDragDropFlags_None;
     g.DragDropAcceptIdCurr = g.DragDropAcceptIdPrev = 0;
     g.DragDropAcceptIdCurrRectSurface = FLT_MAX;
@@ -16203,7 +16203,7 @@ void ImGui::DockBuilderRemoveNodeChildNodes(ImGuiID root_id)
 
     if (root_id == 0)
     {
-        dc->Nodes.Clear();
+        dc->Nodes.ClearLayer();
         dc->Requests.clear();
     }
     else if (has_central_node)

@@ -345,7 +345,7 @@ bool    ImGui::BeginTableEx(const char* name, ImGuiID id, int columns_count, ImG
     ImGuiTableTempData* temp_data = table->TempData = &g.TablesTempData[g.TablesTempDataStacked - 1];
     temp_data->TableIndex = table_idx;
     table->DrawSplitter = &table->TempData->DrawSplitter;
-    table->DrawSplitter->Clear();
+    table->DrawSplitter->ClearLayer();
 
     // Fix flags
     table->IsDefaultSizingPolicy = (flags & ImGuiTableFlags_SizingMask_) == 0;

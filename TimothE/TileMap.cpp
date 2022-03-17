@@ -56,33 +56,23 @@ void TileMap::CreateTileMap() {
 	_mapSizeInScreenUnits.y = root["HEIGHT"];
 
 	const auto& layers = root["LAYERS"];
-	_textureName = root["TEXTURE_NAME"];
-	auto texturePtr = ResourceManager::GetTexture(_textureName);
+	_spritesheetName = root["TEXTURE_NAME"];
+	auto texturePtr = ResourceManager::GetTexture(_spritesheetName);
 
 	if (!texturePtr)
 	{
 		std::cout << "Error: Tilemap Texture not found" << std::endl;
 		return;
 	}
+}
 
-	for (const auto& layer : layers)
-	{
-		const auto& layerData = layer["DATA"];
-
-		//VAO Vertex array vertices
+void TileMap::ClearAllLayers()
+{
+	for (int i = 0; i < 3; i++) {
+		for (int j = 0; j < _mapDimensions.x * _mapDimensions.y; j++) {
+			_tileArr[i][j]._pSprite = nullptr;
+		}
 	}
-
-	//TODO: Abstract this out map width * map height
-
-
-}
-
-void TileMap::CreateNewLayer()
-{
-}
-
-void TileMap::DeleteAllLayers()
-{
 }
 
 void TileMap::UpdateLogic(Camera* cam)
@@ -93,6 +83,8 @@ void TileMap::UpdateLogic(Camera* cam)
 
 void TileMap::AddTileAt(unsigned int layer, unsigned int x, unsigned int y, Camera* cam, bool shouldCollide)
 {
+	if (_pSpritesheet == nullptr) return;
+
 	glm::vec2 worldPos = MousePosToTile(cam);
 
 	int index = _mapDimensions.x * (int)(worldPos.y * _tilesPerUnit) + (int)(worldPos.x * _tilesPerUnit);
@@ -182,18 +174,22 @@ void TileMap::SetTileSize(glm::vec2 tileSize)
 
 void TileMap::SetPosition(float x, float y)
 {
+
 }
 
 void TileMap::SetTileMapSize(glm::vec2 mapSize)
 {
+
 }
 
 void TileMap::SetMapName(std::string name)
 {
+
 }
 
 void TileMap::SetTextureName(std::string name)
 {
+
 }
 
 TileData* TileMap::GetTileAtWorldPos(int layer, glm::vec2 worldPos)
@@ -205,8 +201,11 @@ TileData* TileMap::GetTileAtWorldPos(int layer, glm::vec2 worldPos)
 	return &_tileArr[layer][index];
 }
 
-void TileMap::Clear()
+void TileMap::ClearLayer(int layer)
 {
+	for (int i = 0; i < _mapDimensions.x * _mapDimensions.y; i++) {
+		_tileArr[layer][i]._pSprite = nullptr;
+	}
 }
 
 void TileMap::RenderMap(Camera* cam)
@@ -218,21 +217,10 @@ void TileMap::RenderMap(Camera* cam)
 	for (int i = 0; i < 3; i++) {
 		for (float y = 0; y < _mapSizeInScreenUnits.y; y += _yGapBetweenTiles) {
 			for (float x = 0; x < _mapSizeInScreenUnits.x; x += _xGapBetweenTiles) {
-				if (x < camPos.x - extents || x > camPos.x + extents || y < camPos.y - extents || y > camPos.y + extents) {
-					continue;
-				}
+				if (x < camPos.x - extents || x > camPos.x + extents || y < camPos.y - extents || y > camPos.y + extents) continue;
+
 				int index = _mapDimensions.x * (int)(y * 4) + (int)(x * 4);
-
-				//if (index == _currentTileIndex) {
-				//	//Renderer2D::DrawQuad({ x,y }, { _tileScale, _tileScale }, ResourceManager::GetTexture("spritesheet"), _noTcCoords, 1.0f, glm::vec4(1.0f, 0.0f, 0.0f, 1.0f));
-				//	continue;
-				//}
-
-
-				if (_tileArr[i][index]._pSprite == nullptr) {
-					//Renderer2D::DrawQuad({ x,y }, { _tileScale, _tileScale }, ResourceManager::GetTexture("spritesheet"), _noTcCoords);
-					continue;
-				}
+				if (_tileArr[i][index]._pSprite == nullptr) continue;
 
 				Renderer2D::DrawQuad({ x,y }, { _tileScale,_tileScale }, _tileArr[i][index]._pSprite->GetTexture(), _tileArr[i][index]._pSprite->GetTexCoords());
 			}

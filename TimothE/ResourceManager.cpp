@@ -5,6 +5,7 @@
 std::map<std::string, Texture2D*> ResourceManager::_textures;
 std::map<std::string, Shader*> ResourceManager::_shaders;
 std::map<std::string, Scene*> ResourceManager::_scenes;
+std::map<std::string, SpriteSheet*> ResourceManager::_spritesheets;
 
 std::string ResourceManager::_UID;
 
@@ -52,6 +53,11 @@ void ResourceManager::InstantiateShader(std::string name, Shader* shader)
 void ResourceManager::InstantiateScene(std::string name, Scene* scene)
 { 
 	_scenes[name] = scene; 
+}
+
+void ResourceManager::InstantiateSpritesheet(std::string name, SpriteSheet* spritesheet)
+{
+	_spritesheets[name] = spritesheet;
 }
 
 //void ResourceManager::InstantiateSound(std::string name, SoundStruct* sound)
