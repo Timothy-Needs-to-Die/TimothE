@@ -9,6 +9,7 @@
     </Filter>
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="AnimatedSpritesheet.h" />
     <ClInclude Include="Application.h" />
     <ClInclude Include="ApplicationEvent.h" />
     <ClInclude Include="AudioEngine.h" />
@@ -17,12 +18,15 @@
     <ClInclude Include="BufferLayout.h" />
     <ClInclude Include="Button.h" />
     <ClInclude Include="Camera.h" />
+    <ClInclude Include="CameraManager.h" />
+    <ClInclude Include="ColliderBase.h" />
     <ClInclude Include="Component.h" />
     <ClInclude Include="ComponentFactory.h" />
     <ClInclude Include="Console.h" />
     <ClInclude Include="Dirent.h" />
     <ClInclude Include="Editor.h" />
     <ClInclude Include="Event.h" />
+    <ClInclude Include="Font.h" />
     <ClInclude Include="Framebuffer.h" />
     <ClInclude Include="GameObject.h" />
     <ClInclude Include="Heap.h" />
@@ -60,6 +64,12 @@
     <ClInclude Include="KeyEvent.h" />
     <ClInclude Include="MemoryManager.h" />
     <ClInclude Include="MouseEvent.h" />
+    <ClInclude Include="OpenGLError.h" />
+    <ClInclude Include="Particle.h" />
+    <ClInclude Include="ParticleSystem.h" />
+    <ClInclude Include="Physics.h" />
+    <ClInclude Include="PlayerMovement.h" />
+    <ClInclude Include="Quad.h" />
     <ClInclude Include="RBO.h" />
     <ClInclude Include="Renderer2D.h" />
     <ClInclude Include="ResourceManager.h" />
@@ -117,13 +127,16 @@
     <ClInclude Include="Scene.h" />
     <ClInclude Include="Serializable.h" />
     <ClInclude Include="Shader.h" />
+    <ClInclude Include="Sprite.h" />
     <ClInclude Include="SpriteComponent.h" />
+    <ClInclude Include="SpriteSheet.h" />
     <ClInclude Include="Stream.h" />
     <ClInclude Include="StreamFile.h" />
     <ClInclude Include="SubTexture2D.h" />
     <ClInclude Include="TestComponent.h" />
     <ClInclude Include="TextComponent.h" />
     <ClInclude Include="Texture2D.h" />
+    <ClInclude Include="TileData.h" />
     <ClInclude Include="TileMap.h" />
     <ClInclude Include="TileMapEditor.h" />
     <ClInclude Include="TileMapManager.h" />
@@ -134,28 +147,20 @@
     <ClInclude Include="VBO.h" />
     <ClInclude Include="Window.h" />
     <ClInclude Include="pch.h" />
-    <ClInclude Include="ParticleSystem.h" />
-    <ClInclude Include="Particle.h" />
-    <ClInclude Include="Font.h" />
-    <ClInclude Include="OpenGLError.h" />
-    <ClInclude Include="Quad.h" />
-    <ClInclude Include="Physics.h" />
-    <ClInclude Include="ColliderBase.h" />
-    <ClInclude Include="PlayerMovement.h" />
-    <ClInclude Include="TileData.h" />
-    <ClInclude Include="CameraManager.h" />
-    <ClInclude Include="SpriteSheet.h" />
-    <ClInclude Include="Sprite.h" />
-    <ClInclude Include="AnimatedSpritesheet.h" />
+    <ClInclude Include="Time.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="AnimatedSpritesheet.cpp" />
     <ClCompile Include="Application.cpp" />
     <ClCompile Include="AudioEngine.cpp" />
     <ClCompile Include="BoxColliderComponenet.cpp" />
     <ClCompile Include="Button.cpp" />
     <ClCompile Include="Camera.cpp" />
+    <ClCompile Include="CameraManager.cpp" />
+    <ClCompile Include="ColliderBase.cpp" />
     <ClCompile Include="Console.cpp" />
     <ClCompile Include="Editor.cpp" />
+    <ClCompile Include="Font.cpp" />
     <ClCompile Include="Framebuffer.cpp" />
     <ClCompile Include="GameObject.cpp" />
     <ClCompile Include="Heap.cpp" />
@@ -184,13 +189,19 @@
     </ClCompile>
     <ClCompile Include="Input.cpp" />
     <ClCompile Include="MemoryManager.cpp" />
+    <ClCompile Include="Particle.cpp" />
+    <ClCompile Include="ParticleSystem.cpp" />
+    <ClCompile Include="Physics.cpp" />
+    <ClCompile Include="PlayerMovement.cpp" />
     <ClCompile Include="RBO.cpp" />
     <ClCompile Include="Renderer2D.cpp" />
     <ClCompile Include="ResourceManager.cpp" />
     <ClCompile Include="Scene.cpp" />
     <ClCompile Include="Shader.cpp" />
     <ClCompile Include="Source.cpp" />
+    <ClCompile Include="Sprite.cpp" />
     <ClCompile Include="SpriteComponent.cpp" />
+    <ClCompile Include="SpriteSheet.cpp" />
     <ClCompile Include="StreamFile.cpp" />
     <ClCompile Include="StreamHelpers.cpp" />
     <ClCompile Include="SubTexture2D.cpp" />
@@ -205,15 +216,5 @@
     <ClCompile Include="VBO.cpp" />
     <ClCompile Include="Window.cpp" />
     <ClCompile Include="pch.cpp" />
-    <ClCompile Include="ParticleSystem.cpp" />
-    <ClCompile Include="Particle.cpp" />
-    <ClCompile Include="Font.cpp" />
-    <ClCompile Include="Physics.cpp" />
-    <ClCompile Include="ColliderBase.cpp" />
-    <ClCompile Include="PlayerMovement.cpp" />
-    <ClCompile Include="CameraManager.cpp" />
-    <ClCompile Include="SpriteSheet.cpp" />
-    <ClCompile Include="Sprite.cpp" />
-    <ClCompile Include="AnimatedSpritesheet.cpp" />
   </ItemGroup>
 </Project>
