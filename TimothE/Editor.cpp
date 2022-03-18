@@ -496,7 +496,7 @@ void Editor::EditorRender()
 
 	if(ImGui::IsWindowFocused())
 	{
-		CameraManager::GetCamera("Editor")->OnUpdate(0.16f);
+		CameraManager::GetCamera("Editor")->OnUpdate(0.016f);
 	}
 
 

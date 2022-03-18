@@ -158,7 +158,6 @@
     <ClInclude Include="TileData.h" />
     <ClInclude Include="TileMap.h" />
     <ClInclude Include="TileMapEditor.h" />
-    <ClInclude Include="TileMapManager.h" />
     <ClInclude Include="TimothEInputCodes.h" />
     <ClInclude Include="Transform.h" />
     <ClInclude Include="UID.h" />
@@ -214,7 +213,6 @@
     <ClCompile Include="Texture2D.cpp" />
     <ClCompile Include="TileMap.cpp" />
     <ClCompile Include="TileMapEditor.cpp" />
-    <ClCompile Include="TileMapManager.cpp" />
     <ClCompile Include="Transform.cpp" />
     <ClCompile Include="VAO.cpp" />
     <ClCompile Include="VBO.cpp" />
