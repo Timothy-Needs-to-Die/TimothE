@@ -17,7 +17,7 @@ public:
 	TileMap();
 	~TileMap();
 
-	void SaveTileMap();
+	void SaveTilemap();
 	void ClearAllLayers();
 	void UpdateLogic(Camera* cam);
 

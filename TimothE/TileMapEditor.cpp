@@ -9,14 +9,14 @@ int TileMapEditor::_currentLayer = 0;
 
 void TileMapEditor::Update(TileMap* pTilemap)
 {
-	SaveTileMap(pTilemap);
+	EditorUI(pTilemap);
 
 	pTilemap->UpdateLogic(CameraManager::CurrentCamera());
 }
 
 //Sets the data in the tileMap object that the editor will be editing
 //Along with setting up the ImGui window for the editor 
-void TileMapEditor::SaveTileMap(TileMap* pTilemap)
+void TileMapEditor::EditorUI(TileMap* pTilemap)
 {
 	//const auto& tex = ResourceManager::GetTexture(_spritesheetName);
 	ImGui::Begin("Tilemap Editor", 0, ImGuiWindowFlags_NoMove);
@@ -91,8 +91,7 @@ void TileMapEditor::SaveTileMap(TileMap* pTilemap)
 
 		if (ImGui::Button("Save TileMap"))
 		{
-			SaveTileMap(*pTilemap);
-			pTilemap->SaveTileMap();
+			pTilemap->SaveTilemap();
 		}
 
 		ImGui::Separator();
@@ -165,44 +164,3 @@ void TileMapEditor::SaveTileMap(TileMap* pTilemap)
 	ImGui::End();
 }
 
-void TileMapEditor::SaveTileMap(const TileMap& map)
-{
-	using nlohmann::json;
-
-	json root;
-
-	auto layers = json::array();
-
-	//for (const auto& layer : map.GetTileData())
-	//{
-	//	auto x = json::object();
-	//	auto data = json::array();
-	//	for (auto tileIndex : layer)
-	//	{
-	//		data.push_back(layer);
-	//	}
-	//	x["DATA"] = std::move(data);
-	//	layers.push_back(x);
-	//}
-	//
-	//auto col = json::object();
-	//for (int i = 0; i < collisionInfo.size(); i++)
-	//{
-	//	col[std::to_string(i)] = collisionInfo[i];
-	//}
-	//
-	//root["WIDTH"] = map.GetTileWidth();
-	//root["HEIGHT"] = map.GetTileHeight();
-	//
-	//root["TILE_WIDTH"] = map.GetTileSize().x;
-	//root["TILE_HEIGHT"] = map.GetTileSize().y;
-	//
-	//root["LAYERS"] = std::move(layers);
-	//root["COLLIDABLE_INFO"] = collisionInfo;
-	//root["TEXTURE_NAME"] = map.GetTextureName();
-	//
-	//std::ofstream fileToWrite(map.GetName() + ".json");
-	//fileToWrite << root;
-	//
-	//std::cout << "Successfully saved tileMap to json file" << std::endl;
-}

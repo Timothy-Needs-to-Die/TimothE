@@ -26,10 +26,6 @@ TileMap::~TileMap()
 {
 }
 
-
-
-
-
 void TileMap::ClearAllLayers()
 {
 	for (int i = 0; i < 3; i++) {
@@ -45,7 +41,7 @@ void TileMap::UpdateLogic(Camera* cam)
 	_currentTileIndex = _mapInTiles.x * (int)(_currentTile.y * 4) + (int)(_currentTile.x * 4);
 }
 
-void TileMap::SaveTileMap() {
+void TileMap::SaveTilemap() {
 	using nlohmann::json;
 
 	std::ofstream outfile("Resources/Levels/l1.json");
@@ -59,14 +55,16 @@ void TileMap::SaveTileMap() {
 	file["sizeY"] = _mapInTiles.y;
 	file["tilePerUnit"] = _tilesPerUnit;
 
-	std::string tileLayout;
-	for each (TileData var in _tileArr[0])
-	{
-		int index = var.texIndex;
+	for (int layer = 0; layer < 3; layer++) {
+		std::string tileLayout;
+		for each (TileData var in _tileArr[layer])
+		{
+			int index = var.texIndex;
 
-		tileLayout += std::to_string(index) + " " + std::to_string((int)var.collidable) + ",";
+			tileLayout += std::to_string(index) + " " + std::to_string((int)var.collidable) + ",";
+		}
+		file["tiles" + std::to_string(layer)] = tileLayout;
 	}
-	file["tiles"] = tileLayout;
 
 
 	outfile << file;
@@ -86,38 +84,36 @@ void TileMap::LoadTileMap()
 	_tilesPerUnit = (int)file["tilePerUnit"];
 
 	int dimensions = _mapInTiles.x * _mapInTiles.y;
-	_tileArr[0].resize(dimensions);
+	
+	for (int layer = 0; layer < 3; layer++) {
+		_tileArr[layer].resize(dimensions);
+		std::string tileInfo = file["tiles" + std::to_string(layer)];
+		std::stringstream ss(tileInfo);
 
-	std::string tileInfo = file["tiles"];
+		std::vector<std::string> results;
+		while (ss.good()) {
+			std::string substr;
+			getline(ss, substr, ',');
+			results.push_back(substr);
+		}
 
-	std::stringstream ss(tileInfo);
+		for (int i = 0; i < dimensions; i++) {
 
-	std::vector<std::string> results;
-	while (ss.good()) {
-		std::string substr;
-		getline(ss, substr, ',');
-		results.push_back(substr);
-	}
+			std::cout << results[i] << std::endl;
 
-	for (int i = 0; i < dimensions; i++) {
-		
-		std::cout << results[i] << std::endl;
+			std::stringstream ss(results[i]);
+			std::string s1;
+			getline(ss, s1, ' ');
+			std::string s2;
+			getline(ss, s2, ' ');
 
-		std::stringstream ss(results[i]);
-		std::string s1;
-		getline(ss, s1, ' ');
-		std::string s2;
-		getline(ss, s2, ' ');
+			int index = std::stoi(s1);
+			bool collidable = std::stoi(s2);
 
-		int index = std::stoi(s1);
-		bool collidable = std::stoi(s2);
-
-		
-
-		//__debugbreak();
-		_tileArr[0][i].texIndex = index;
-		_tileArr[0][i]._pSprite = _pSpritesheet->GetSpriteAtIndex(index);
-		_tileArr[0][i].collidable = collidable;
+			_tileArr[layer][i].texIndex = index;
+			_tileArr[layer][i]._pSprite = _pSpritesheet->GetSpriteAtIndex(index);
+			_tileArr[layer][i].collidable = collidable;
+		}
 	}
 
 }

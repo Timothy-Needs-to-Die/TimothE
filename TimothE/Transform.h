@@ -27,6 +27,7 @@ public:
 
 	//Setters
 	void SetPosition(float x, float y) { _position = glm::vec2(x, y); }
+	void SetPosition(glm::vec2 pos) { _position = pos; }
 	void SetRotation(float xRot) { _rotation = xRot; }
 	void SetXScale(float _tileScale) { _size.x = _tileScale; }
 	void SetYScale(float _tileScale) { _size.y = _tileScale; }

@@ -7,9 +7,6 @@ struct QuadVertex {
 	glm::vec2 texCoord;
 	float texIndex;
 	float tilingFactor;
-
-	//TODO: this is editor side handle this
-	int entityID;
 };
 
 struct RendererData {
@@ -53,8 +50,7 @@ void Renderer2D::Init()
 			{ ShaderDataTypes::Float4, "a_Color"        },
 			{ ShaderDataTypes::Float2, "a_TexCoord"     },
 			{ ShaderDataTypes::Float,  "a_TexIndex"     },
-			{ ShaderDataTypes::Float,  "a_TilingFactor" },
-			{ ShaderDataTypes::Int,    "a_EntityID"     }
+			{ ShaderDataTypes::Float,  "a_TilingFactor" }
 		});
 
 	_uiData.quadVertexBuffer->SetLayout({
@@ -62,8 +58,7 @@ void Renderer2D::Init()
 			{ ShaderDataTypes::Float4, "a_Color"        },
 			{ ShaderDataTypes::Float2, "a_TexCoord"     },
 			{ ShaderDataTypes::Float,  "a_TexIndex"     },
-			{ ShaderDataTypes::Float,  "a_TilingFactor" },
-			{ ShaderDataTypes::Int,    "a_EntityID"     }
+			{ ShaderDataTypes::Float,  "a_TilingFactor" }
 		});
 
 
@@ -123,7 +118,7 @@ void Renderer2D::Init()
 
 void Renderer2D::Shutdown()
 {
-	//delete[] _data.quadVertexBuffer;
+
 }
 
 void Renderer2D::BeginRender(Camera* camera)
@@ -131,7 +126,6 @@ void Renderer2D::BeginRender(Camera* camera)
 	StartBatch();
 	currentCam = camera;
 	_data.textureShader->SetMat4("view", currentCam->ViewProj());
-	//_uiData.textureShader->SetMat4("view", currentCam->ViewProj());
 }
 
 void Renderer2D::EndRender()
@@ -210,7 +204,7 @@ void Renderer2D::DrawUIQuad(const glm::vec3& position, const glm::vec2& size, Te
 	DrawUIQuad(transform, texture, uvCoordinates, tilingFactor, tintColor);
 }
 
-void Renderer2D::DrawUIQuad(const glm::mat4& transform, const glm::vec4& color, glm::vec2* uvCoordinates /*= nullptr*/, int entityID /*= -1*/)
+void Renderer2D::DrawUIQuad(const glm::mat4& transform, const glm::vec4& color, glm::vec2* uvCoordinates /*= nullptr*/)
 {
 	constexpr size_t quadVertexCount = 4;
 	const float textureIndex = 0.0f;
@@ -240,14 +234,13 @@ void Renderer2D::DrawUIQuad(const glm::mat4& transform, const glm::vec4& color, 
 		_uiData.quadVertexBufferPtr->texCoord = textureCoords[i];
 		_uiData.quadVertexBufferPtr->tilingFactor = tillingFactor;
 		_uiData.quadVertexBufferPtr->texIndex = textureIndex;
-		_uiData.quadVertexBufferPtr->entityID = entityID;
 		_uiData.quadVertexBufferPtr++;
 	}
 
 	_uiData.quadIndexCount += 6;
 }
 
-void Renderer2D::DrawUIQuad(const glm::mat4& transform, Texture2D* texture, glm::vec2* uvCoordinates /*= nullptr*/, float tilingFactor /*= 1.0f*/, glm::vec4& tintColor /*= glm::vec4(1.0f)*/, int entityID /*= -1*/)
+void Renderer2D::DrawUIQuad(const glm::mat4& transform, Texture2D* texture, glm::vec2* uvCoordinates /*= nullptr*/, float tilingFactor /*= 1.0f*/, glm::vec4& tintColor /*= glm::vec4(1.0f)*/)
 {
 	constexpr size_t quadVertexCount = 4;
 	glm::vec2 textureCoords[] = { { 0.0f, 0.0f }, { 1.0f, 0.0f }, { 1.0f, 1.0f }, { 0.0f, 1.0f } };
@@ -289,7 +282,6 @@ void Renderer2D::DrawUIQuad(const glm::mat4& transform, Texture2D* texture, glm:
 		_uiData.quadVertexBufferPtr->texCoord = textureCoords[i];
 		_uiData.quadVertexBufferPtr->texIndex = textureIndex;
 		_uiData.quadVertexBufferPtr->tilingFactor = tilingFactor;
-		_uiData.quadVertexBufferPtr->entityID = entityID;
 		_uiData.quadVertexBufferPtr++;
 	}
 
@@ -322,7 +314,7 @@ void Renderer2D::DrawQuad(const glm::vec3& position, const glm::vec2& size,  Tex
 	DrawQuad(transform, texture, uvCoordinates, tilingFactor, tintColor);
 }
 
-void Renderer2D::DrawQuad(const glm::mat4& transform, const glm::vec4& color, glm::vec2* uvCoordinates, int entityID)
+void Renderer2D::DrawQuad(const glm::mat4& transform, const glm::vec4& color, glm::vec2* uvCoordinates)
 {
 	constexpr size_t quadVertexCount = 4;
 	const float textureIndex = 0.0f;
@@ -352,14 +344,13 @@ void Renderer2D::DrawQuad(const glm::mat4& transform, const glm::vec4& color, gl
 		_data.quadVertexBufferPtr->texCoord = textureCoords[i];
 		_data.quadVertexBufferPtr->tilingFactor = tillingFactor;
 		_data.quadVertexBufferPtr->texIndex = textureIndex;
-		_data.quadVertexBufferPtr->entityID = entityID;
 		_data.quadVertexBufferPtr++;
 	}
 
 	_data.quadIndexCount += 6;
 }
 
-void Renderer2D::DrawQuad(const glm::mat4& transform, Texture2D* texture, glm::vec2* uvCoordinates, float tilingFactor, glm::vec4& tintColor, int entityID)
+void Renderer2D::DrawQuad(const glm::mat4& transform, Texture2D* texture, glm::vec2* uvCoordinates, float tilingFactor, glm::vec4& tintColor)
 {
 	constexpr size_t quadVertexCount = 4;
 	glm::vec2 textureCoords[] = { { 0.0f, 0.0f }, { 1.0f, 0.0f }, { 1.0f, 1.0f }, { 0.0f, 1.0f } };
@@ -401,7 +392,6 @@ void Renderer2D::DrawQuad(const glm::mat4& transform, Texture2D* texture, glm::v
 		_data.quadVertexBufferPtr->texCoord = textureCoords[i];
 		_data.quadVertexBufferPtr->texIndex = textureIndex;
 		_data.quadVertexBufferPtr->tilingFactor = tilingFactor;
-		_data.quadVertexBufferPtr->entityID = entityID;
 		_data.quadVertexBufferPtr++;
 	}
 

@@ -42,8 +42,6 @@ private:
 	//The tile we want to place down.
 	static SelectedTile _selectedTile;
 	
-	static void SaveTileMap(TileMap* pTilemap);
-	static void SaveTileMap(const TileMap& map);
-
+	static void EditorUI(TileMap* pTilemap);
 };
 
