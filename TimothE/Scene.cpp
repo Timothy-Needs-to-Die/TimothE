@@ -88,12 +88,11 @@ Scene::Scene(std::string name)
 	_pTextObj->SetType(ObjectType::UI);
 	AddGameObject(_pTextObj);
 
-	//ResourceManager::InstantiateTexture("spritesheet", new Texture2D("testSheet.png"));
 
-
-	_pTilemap = new TileMap();
 	_pSpritesheet = new SpriteSheet(ResourceManager::GetTexture("spritesheet"), 128, 128);
 	ResourceManager::InstantiateSpritesheet("testSheet\0", _pSpritesheet);
+
+	_pTilemap = new TileMap();
 	//_pTilemap->SetSpriteSheet(_pSpritesheet);
 	
 	//////////////////

@@ -9,14 +9,14 @@ int TileMapEditor::_currentLayer = 0;
 
 void TileMapEditor::Update(TileMap* pTilemap)
 {
-	CreateTileMap(pTilemap);
+	SaveTileMap(pTilemap);
 
 	pTilemap->UpdateLogic(CameraManager::CurrentCamera());
 }
 
 //Sets the data in the tileMap object that the editor will be editing
 //Along with setting up the ImGui window for the editor 
-void TileMapEditor::CreateTileMap(TileMap* pTilemap)
+void TileMapEditor::SaveTileMap(TileMap* pTilemap)
 {
 	//const auto& tex = ResourceManager::GetTexture(_spritesheetName);
 	ImGui::Begin("Tilemap Editor", 0, ImGuiWindowFlags_NoMove);
@@ -92,6 +92,7 @@ void TileMapEditor::CreateTileMap(TileMap* pTilemap)
 		if (ImGui::Button("Save TileMap"))
 		{
 			SaveTileMap(*pTilemap);
+			pTilemap->SaveTileMap();
 		}
 
 		ImGui::Separator();
@@ -113,7 +114,6 @@ void TileMapEditor::CreateTileMap(TileMap* pTilemap)
 		if (_mapSizeChanged) {
 			pTilemap->SetTileMapSize(_mapSizeInUnits);
 		}
-
 
 		static char spritesheetName[50];
 		if (ImGui::InputText("Spritesheet Name: ", spritesheetName, 50));

@@ -17,7 +17,7 @@ public:
 	TileMap();
 	~TileMap();
 
-	void CreateTileMap();
+	void SaveTileMap();
 	void ClearAllLayers();
 	void UpdateLogic(Camera* cam);
 
@@ -26,8 +26,9 @@ public:
 		_pSpritesheet = spritesheet;
 		_tileSize = { _pSpritesheet->GetSpriteWidth(), _pSpritesheet->GetSpriteHeight() };
 		_spritemapResolution = { _pSpritesheet->GetPixelWidth(), _pSpritesheet->GetPixelHeight() };
-		
 	}
+
+	void LoadTileMap();
 
 	//Returns the spritesheet for this tilemap
 	SpriteSheet* GetSpriteSheet() { return _pSpritesheet; }
@@ -60,9 +61,6 @@ public:
 		_mapSizeInUnits = glm::vec2(_mapInTiles.x / _tilesPerUnit, _mapInTiles.y / _tilesPerUnit);
 	}
 
-	void SetTilesPerUnit(int val) {
-		_tilesPerUnit = val;
-	}
 
 	int GetTilesPerUnit() const {
 		return _tilesPerUnit;

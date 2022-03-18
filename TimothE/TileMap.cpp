@@ -17,38 +17,18 @@ TileMap::TileMap()
 	_tileSize = glm::vec2(128.0f);
 
 	_gapBetweenTiles = 1.0f / _tilesPerUnit;
+
+	SetSpriteSheet(ResourceManager::GetSpriteSheet("testSheet"));
+	LoadTileMap();
 }
 
 TileMap::~TileMap()
 {
 }
 
-void TileMap::CreateTileMap() {
-	//using nlohmann::json;
-	//std::ifstream file(_tileMapFile);
-	//if (!file) {
-	//	std::cout << "Unable to open file" << _tileMapFile << std::endl;
-	//	return;
-	//}
-	//json root;
-	//file >> root;
-	//
-	//_tileSize.x = root["TILE_WIDTH"];
-	//_tileSize.y = root["TILE_HEIGHT"];
-	//
-	//_mapSizeInScreenUnits.x = root["WIDTH"];
-	//_mapSizeInScreenUnits.y = root["HEIGHT"];
-	//
-	//const auto& layers = root["LAYERS"];
-	//_spritesheetName = root["TEXTURE_NAME"];
-	//auto texturePtr = ResourceManager::GetTexture(_spritesheetName);
-	//
-	//if (!texturePtr)
-	//{
-	//	std::cout << "Error: Tilemap Texture not found" << std::endl;
-	//	return;
-	//}
-}
+
+
+
 
 void TileMap::ClearAllLayers()
 {
@@ -63,6 +43,83 @@ void TileMap::UpdateLogic(Camera* cam)
 {
 	_currentTile = MousePosToTile(cam);
 	_currentTileIndex = _mapInTiles.x * (int)(_currentTile.y * 4) + (int)(_currentTile.x * 4);
+}
+
+void TileMap::SaveTileMap() {
+	using nlohmann::json;
+
+	std::ofstream outfile("Resources/Levels/l1.json");
+
+	json file;
+
+	//TODO: Change this to getting the spritesheet name
+	file["spritesheet"] = "testSheet";
+
+	file["sizeX"] = _mapInTiles.x;
+	file["sizeY"] = _mapInTiles.y;
+	file["tilePerUnit"] = _tilesPerUnit;
+
+	std::string tileLayout;
+	for each (TileData var in _tileArr[0])
+	{
+		int index = var.texIndex;
+
+		tileLayout += std::to_string(index) + " " + std::to_string((int)var.collidable) + ",";
+	}
+	file["tiles"] = tileLayout;
+
+
+	outfile << file;
+}
+
+void TileMap::LoadTileMap()
+{
+	using nlohmann::json;
+	std::ifstream inFile("Resources/Levels/l1.json");
+	json file;
+
+	file << inFile;
+
+	_mapInTiles.x = (float)file["sizeX"];
+	_mapInTiles.y = (float)file["sizeY"];
+
+	_tilesPerUnit = (int)file["tilePerUnit"];
+
+	int dimensions = _mapInTiles.x * _mapInTiles.y;
+	_tileArr[0].resize(dimensions);
+
+	std::string tileInfo = file["tiles"];
+
+	std::stringstream ss(tileInfo);
+
+	std::vector<std::string> results;
+	while (ss.good()) {
+		std::string substr;
+		getline(ss, substr, ',');
+		results.push_back(substr);
+	}
+
+	for (int i = 0; i < dimensions; i++) {
+		
+		std::cout << results[i] << std::endl;
+
+		std::stringstream ss(results[i]);
+		std::string s1;
+		getline(ss, s1, ' ');
+		std::string s2;
+		getline(ss, s2, ' ');
+
+		int index = std::stoi(s1);
+		bool collidable = std::stoi(s2);
+
+		
+
+		//__debugbreak();
+		_tileArr[0][i].texIndex = index;
+		_tileArr[0][i]._pSprite = _pSpritesheet->GetSpriteAtIndex(index);
+		_tileArr[0][i].collidable = collidable;
+	}
+
 }
 
 void TileMap::AddTileAt(unsigned int layer, unsigned int uvX, unsigned int uvY, Camera* cam, bool shouldCollide /*= false*/)
@@ -83,8 +140,7 @@ void TileMap::AddTileAt(unsigned int layer, unsigned int uvX, unsigned int uvY, 
 	glm::vec2 colPos = glm::vec2(xPos, yPos);
 
 	TileData newTile;
-	newTile.xIndex = uvX;
-	newTile.yIndex = uvY;
+	newTile.texIndex = uvY * _pSpritesheet->GetSheetWidth() + uvX;
 	newTile.layer = layer;
 	newTile.collidable = shouldCollide;
 	newTile.size = _gapBetweenTiles;
@@ -100,6 +156,7 @@ void TileMap::AddTileAt(unsigned int layer, unsigned int uvX, unsigned int uvY, 
 void TileMap::FillLayer(unsigned int layer, int uvX, int uvY)
 {
 	for (int i = 0; i < _tileArr[layer].size(); i++) {
+		_tileArr[layer][i].texIndex = uvY * _pSpritesheet->GetSheetWidth() + uvX;
 		_tileArr[layer][i]._pSpritesheet = _pSpritesheet;
 		_tileArr[layer][i]._pSprite = _pSpritesheet->GetSpriteAtIndex(_pSpritesheet->GetSheetWidth() * uvY + uvX);
 	}

@@ -4,8 +4,7 @@
 #include "Sprite.h"
 
 struct TileData {
-	int xIndex;
-	int yIndex;
+	int texIndex;
 	int layer;
 
 	bool collidable;
