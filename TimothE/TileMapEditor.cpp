@@ -2,34 +2,28 @@
 
 
 bool TileMapEditor::_collidableToggle = false;
-std::string TileMapEditor::_mapName = "testSheet.png";
 std::string TileMapEditor::_spritesheetName = "spritesheet";
-glm::vec2 TileMapEditor::_mapSizeInScreenUnits = glm::vec2(32.0);
-glm::vec2 TileMapEditor::_tileSize = glm::vec2(32.0);
-std::string TileMapEditor::_name;
+glm::vec2 TileMapEditor::_mapSizeInUnits = glm::vec2(32.0);
 SelectedTile TileMapEditor::_selectedTile;
 int TileMapEditor::_currentLayer = 0;
 
 void TileMapEditor::Update(TileMap* pTilemap)
 {
-	CreateTileMap(pTilemap);
+	EditorUI(pTilemap);
 
 	pTilemap->UpdateLogic(CameraManager::CurrentCamera());
 }
 
 //Sets the data in the tileMap object that the editor will be editing
 //Along with setting up the ImGui window for the editor 
-void TileMapEditor::CreateTileMap(TileMap* pTilemap)
+void TileMapEditor::EditorUI(TileMap* pTilemap)
 {
-
-
-
 	//const auto& tex = ResourceManager::GetTexture(_spritesheetName);
 	ImGui::Begin("Tilemap Editor", 0, ImGuiWindowFlags_NoMove);
 
 	//Tile display
 	{
-		ImGui::BeginChild("Select Tile", ImVec2(ImGui::GetContentRegionAvail().x * 0.5f, ImGui::GetContentRegionAvail().y * 0.75f));
+		ImGui::BeginChild("Select Tile", ImVec2(ImGui::GetContentRegionAvail().x * 0.5f, 400.0f));
 
 		if (pTilemap->GetSpriteSheet()) {
 			//Furthest tile in X and Y axis'
@@ -97,7 +91,7 @@ void TileMapEditor::CreateTileMap(TileMap* pTilemap)
 
 		if (ImGui::Button("Save TileMap"))
 		{
-			SaveTileMap(*pTilemap);
+			pTilemap->SaveTilemap();
 		}
 
 		ImGui::Separator();
@@ -109,12 +103,17 @@ void TileMapEditor::CreateTileMap(TileMap* pTilemap)
 
 		ImGui::Separator();
 
-		static char infoName[50];
-		ImGui::InputText("Tile Map Name", infoName, 50);
-		ImGui::InputFloat("Tile count X", &_mapSizeInScreenUnits.x);
-		ImGui::InputFloat("Tile Count Y", &_mapSizeInScreenUnits.y);
-		ImGui::InputFloat("Tile Size X", &_tileSize.x);
-		ImGui::InputFloat("Tile Size Y", &_tileSize.y);
+		static bool _mapSizeChanged = false;
+		_mapSizeChanged = false;
+
+		ImGui::TextColored(ImVec4(1.0f, 0.0f,0.0f,1.0f), "Do not change after starting. It will not scale well");
+		if (ImGui::InputFloat("Tile Count X", &_mapSizeInUnits.x)) _mapSizeChanged = true;
+		if (ImGui::InputFloat("Tile Count Y", &_mapSizeInUnits.y)) _mapSizeChanged = true;
+
+		if (_mapSizeChanged) {
+			pTilemap->SetTileMapSize(_mapSizeInUnits);
+		}
+
 		static char spritesheetName[50];
 		if (ImGui::InputText("Spritesheet Name: ", spritesheetName, 50));
 
@@ -165,44 +164,3 @@ void TileMapEditor::CreateTileMap(TileMap* pTilemap)
 	ImGui::End();
 }
 
-void TileMapEditor::SaveTileMap(const TileMap& map)
-{
-	using nlohmann::json;
-
-	json root;
-
-	auto layers = json::array();
-
-	//for (const auto& layer : map.GetTileData())
-	//{
-	//	auto x = json::object();
-	//	auto data = json::array();
-	//	for (auto tileIndex : layer)
-	//	{
-	//		data.push_back(layer);
-	//	}
-	//	x["DATA"] = std::move(data);
-	//	layers.push_back(x);
-	//}
-	//
-	//auto col = json::object();
-	//for (int i = 0; i < collisionInfo.size(); i++)
-	//{
-	//	col[std::to_string(i)] = collisionInfo[i];
-	//}
-	//
-	//root["WIDTH"] = map.GetTileWidth();
-	//root["HEIGHT"] = map.GetTileHeight();
-	//
-	//root["TILE_WIDTH"] = map.GetTileSize().x;
-	//root["TILE_HEIGHT"] = map.GetTileSize().y;
-	//
-	//root["LAYERS"] = std::move(layers);
-	//root["COLLIDABLE_INFO"] = collisionInfo;
-	//root["TEXTURE_NAME"] = map.GetTextureName();
-	//
-	//std::ofstream fileToWrite(map.GetName() + ".json");
-	//fileToWrite << root;
-	//
-	//std::cout << "Successfully saved tileMap to json file" << std::endl;
-}
