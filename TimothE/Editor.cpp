@@ -584,32 +584,42 @@ void Editor::CheckFileType(std::string fileDirectory)
 	//if file is a script
 	if (fileDirectory.find(".cpp") != std::string::npos || fileDirectory.find(".h") != std::string::npos)
 	{
-		ImGui::Image((void*)pContentTextureScript->GetID(), ImVec2(100, 100));
-		ImGui::Text(fileDirectory.c_str());
+		/*ImGui::Image((void*)pContentTextureScript->GetID(), ImVec2(100, 100));
+		if (ImGui::BeginDragDropSource())
+		{
+			ImGui::SetDragDropPayload("CONTENT", fileDirectory.c_str(), fileDirectory.size(), ImGuiCond_Once);
+			ImGui::EndDragDropSource();
+		}*/
+		if (ImGui::ImageButton((void*)pContentTextureScript->GetID(), ImVec2(100, 100), ImVec2(0, 0), ImVec2(1, 1)))
+		{
+			
+		}
+		if (ImGui::BeginDragDropSource())
+		{
+			ImGui::SetDragDropPayload("CONTENT", fileDirectory.c_str(), fileDirectory.size(), ImGuiCond_Once);
+			ImGui::EndDragDropSource();
+		}
+		
 	}
 	//if file is an image
 	else if (fileDirectory.find(".png") != std::string::npos || fileDirectory.find(".jpg") != std::string::npos)
 	{
 		ImGui::Image((void*)pContentTextureImage->GetID(), ImVec2(100, 100));
-		ImGui::Text(fileDirectory.c_str());
 	}
 	//if file is a scene
 	else if (fileDirectory.find(".scene") != std::string::npos)
 	{
 		ImGui::Image((void*)pContentTextureScene->GetID(), ImVec2(100, 100));
-		ImGui::Text(fileDirectory.c_str());
 	}
 	//file is a config file
 	else if (fileDirectory.find(".ini") != std::string::npos)
 	{
 		ImGui::Image((void*)pContentTextureConfig->GetID(), ImVec2(100, 100));
-		ImGui::Text(fileDirectory.c_str());
 	}
 	//file is a sound
 	else if (fileDirectory.find(".mp3") != std::string::npos || fileDirectory.find(".wav") != std::string::npos)
 	{
 		ImGui::Image((void*)pContentTextureSound->GetID(), ImVec2(100, 100));
-		ImGui::Text(fileDirectory.c_str());
 	}
 	//file is a folder
 	else if (fileDirectory.find(".") == std::string::npos)
@@ -621,13 +631,14 @@ void Editor::CheckFileType(std::string fileDirectory)
 			_mCurrentDir += "/" + fileDirectory;
 			SearchFileDirectory();
 		}
+		return;
 	}
 	//other file types
 	else
 	{
 		ImGui::Image((void*)pContentTextureFile->GetID(), ImVec2(100, 100));
-		ImGui::Text(fileDirectory.c_str());
 	}
+	ImGui::Text(fileDirectory.c_str());
 }
 
 //creates list of directorys for the content browser
