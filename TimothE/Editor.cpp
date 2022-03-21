@@ -260,6 +260,18 @@ void Editor::EditorImGui(Scene* currentScene)
 					// texture component
 					static std::string texPath = "lenna3.jpg";
 					ImGui::InputText("Texture path", &texPath);
+					if (ImGui::BeginDragDropTarget())
+					{
+						if (const ImGuiPayload* payload = ImGui::AcceptDragDropPayload("CONTENT_IMAGE"))
+						{
+							const char* path = (const char*)payload->Data;
+							texPath = (string)path;
+						}
+						
+						ImGui::EndDragDropTarget();
+					}
+
+
 					if (ImGui::Button("Texture"))
 					{
 						Texture2D* tex = _pSelectedGameObject->GetComponent<Texture2D>();
@@ -443,12 +455,13 @@ void Editor::EditorImGui(Scene* currentScene)
 		//sets up a column to display the files in a grid
 		ImGui::Columns(4, NULL);
 		ImGui::Separator();
+		int j=0;
 		//for each item in directory create new button
 		for (int i = 2; i < _mDirectoryList.size(); i++) {
-
+			
 			//checks filetype and give it an icon
-			CheckFileType(_mDirectoryList[i]);
-
+			CheckFileType(_mDirectoryList[i], j);
+			j++;
 			//adds padding to files
 			ImGui::Dummy(ImVec2(0, 20.0f));
 
@@ -579,8 +592,10 @@ void Editor::CreateFileInContentBrowser(std::string name, std::string type)
 }
 
 //checks file type and displays file in content browser
-void Editor::CheckFileType(std::string fileDirectory)
+void Editor::CheckFileType(std::string fileDirectory, int i)
 {
+	string fulldir = _mCurrentDir + "/" + fileDirectory;
+	
 	//if file is a script
 	if (fileDirectory.find(".cpp") != std::string::npos || fileDirectory.find(".h") != std::string::npos)
 	{
@@ -590,26 +605,53 @@ void Editor::CheckFileType(std::string fileDirectory)
 			ImGui::SetDragDropPayload("CONTENT", fileDirectory.c_str(), fileDirectory.size(), ImGuiCond_Once);
 			ImGui::EndDragDropSource();
 		}*/
+		ImGui::PushID(i);
 		if (ImGui::ImageButton((void*)pContentTextureScript->GetID(), ImVec2(100, 100), ImVec2(0, 0), ImVec2(1, 1)))
 		{
 			
 		}
+		
 		if (ImGui::BeginDragDropSource())
 		{
-			ImGui::SetDragDropPayload("CONTENT", fileDirectory.c_str(), fileDirectory.size(), ImGuiCond_Once);
+			
+			ImGui::SetDragDropPayload("CONTENT_SCRIPT", fulldir.c_str(), fulldir.size(), ImGuiCond_Once);
 			ImGui::EndDragDropSource();
 		}
+		ImGui::PopID();
 		
 	}
 	//if file is an image
 	else if (fileDirectory.find(".png") != std::string::npos || fileDirectory.find(".jpg") != std::string::npos)
 	{
-		ImGui::Image((void*)pContentTextureImage->GetID(), ImVec2(100, 100));
+		//ImGui::Image((void*)pContentTextureImage->GetID(), ImVec2(100, 100));
+		ImGui::PushID(i);
+		if (ImGui::ImageButton((void*)pContentTextureImage->GetID(), ImVec2(100, 100), ImVec2(0, 0), ImVec2(1, 1)))
+		{
+
+		}
+		
+		if (ImGui::BeginDragDropSource())
+		{
+			ImGui::SetDragDropPayload("DRAGCONTENT_IMAGE", fulldir.c_str(), fulldir.size(), ImGuiCond_Once);
+			ImGui::EndDragDropSource();
+		}
+		ImGui::PopID();
 	}
 	//if file is a scene
 	else if (fileDirectory.find(".scene") != std::string::npos)
 	{
-		ImGui::Image((void*)pContentTextureScene->GetID(), ImVec2(100, 100));
+		//ImGui::Image((void*)pContentTextureScene->GetID(), ImVec2(100, 100));
+		ImGui::PushID(i);
+		if (ImGui::ImageButton((void*)pContentTextureScene->GetID(), ImVec2(100, 100), ImVec2(0, 0), ImVec2(1, 1)))
+		{
+
+		}
+		if (ImGui::BeginDragDropSource())
+		{
+			ImGui::SetDragDropPayload("DRAGCONTENT_SCENE", fulldir.c_str(), fulldir.size(), ImGuiCond_Once);
+			ImGui::EndDragDropSource();
+		}
+		ImGui::PopID();
 	}
 	//file is a config file
 	else if (fileDirectory.find(".ini") != std::string::npos)
@@ -619,19 +661,33 @@ void Editor::CheckFileType(std::string fileDirectory)
 	//file is a sound
 	else if (fileDirectory.find(".mp3") != std::string::npos || fileDirectory.find(".wav") != std::string::npos)
 	{
-		ImGui::Image((void*)pContentTextureSound->GetID(), ImVec2(100, 100));
+		//ImGui::Image((void*)pContentTextureSound->GetID(), ImVec2(100, 100));
+		ImGui::PushID(i);
+		if (ImGui::ImageButton((void*)pContentTextureSound->GetID(), ImVec2(100, 100), ImVec2(0, 0), ImVec2(1, 1)))
+		{
+
+		}
+
+		if (ImGui::BeginDragDropSource())
+		{
+			ImGui::SetDragDropPayload("DRAGCONTENT_SOUND", fulldir.c_str(), fulldir.size(), ImGuiCond_Once);
+			ImGui::EndDragDropSource();
+		}
+		ImGui::PopID();
 	}
 	//file is a folder
 	else if (fileDirectory.find(".") == std::string::npos)
 	{
-		ImGui::Image((void*)pContentTextureFolder->GetID(), ImVec2(100, 100));
+		ImGui::PushID(i);
+		//ImGui::Image((void*)pContentTextureFolder->GetID(), ImVec2(100, 100));
 		//adds button with directory name which when pressed adds its name to directory string and updates buttons
-		if (ImGui::Button(fileDirectory.c_str()))
+		//if (ImGui::Button(fileDirectory.c_str()))
+		if (ImGui::ImageButton((void*)pContentTextureFolder->GetID(), ImVec2(100, 100), ImVec2(0, 0), ImVec2(1, 1)))
 		{
 			_mCurrentDir += "/" + fileDirectory;
 			SearchFileDirectory();
 		}
-		return;
+		ImGui::PopID();
 	}
 	//other file types
 	else
@@ -639,6 +695,8 @@ void Editor::CheckFileType(std::string fileDirectory)
 		ImGui::Image((void*)pContentTextureFile->GetID(), ImVec2(100, 100));
 	}
 	ImGui::Text(fileDirectory.c_str());
+
+	
 }
 
 //creates list of directorys for the content browser
