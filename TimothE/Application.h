@@ -12,6 +12,7 @@
 #include "TileMap.h"
 #include "OpenGLError.h"
 #include "SpriteSheet.h"
+#include "SceneManager.h"
 
 class Editor;
 
@@ -55,8 +56,6 @@ private:
 	bool _mDevMode;
 
 	bool _mRunning;
-
-	Scene* _pCurrentScene;
 
 	class Editor* _pEditor;
 

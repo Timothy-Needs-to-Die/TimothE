@@ -211,9 +211,9 @@ void Scene::RenderScene(Camera* cam)
 		}
 	}
 
-	Renderer2D::DrawQuad(_pPlayer->GetTransform()->GetPosition(),
-		_pPlayer->GetTransform()->GetScale(), ResourceManager::GetTexture("character"),
-		_pPlayer->GetComponent<SpriteComponent>()->GetSprite()->GetTexCoords());
+	//Renderer2D::DrawQuad(_pPlayer->GetTransform()->GetPosition(),
+	//	_pPlayer->GetTransform()->GetScale(), ResourceManager::GetTexture("character"),
+	//	_pPlayer->GetComponent<SpriteComponent>()->GetSprite()->GetTexCoords());
 
 	Renderer2D::EndRender();
 }

@@ -44,7 +44,9 @@ void TileMap::UpdateLogic(Camera* cam)
 void TileMap::SaveTilemap() {
 	using nlohmann::json;
 
-	std::ofstream outfile("Resources/Levels/l1.json");
+	//TODO: Change to use the current scene instead
+
+	std::ofstream outfile("Resources/Scenes/l1.json");
 
 	json file;
 
@@ -73,7 +75,7 @@ void TileMap::SaveTilemap() {
 void TileMap::LoadTileMap()
 {
 	using nlohmann::json;
-	std::ifstream inFile("Resources/Levels/l1.json");
+	std::ifstream inFile("Resources/Scenes/l1.json");
 	json file;
 
 	file << inFile;

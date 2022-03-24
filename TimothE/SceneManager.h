@@ -6,6 +6,8 @@
 class SceneManager
 {
 public:
+	static void Init();
+
 	//Creates a new scene object with the specified name and returns the scene object
 	static Scene* CreateScene(std::string name);
 
@@ -17,6 +19,12 @@ public:
 
 	//Gets the default scene
 	static Scene* GetDefaultScene();
+
+	//Sets the current scene to the passed in one
+	static Scene* SetCurrentScene(Scene* scene);
+
+	//Sets the current scene to the passed in one by the name
+	static Scene* SetCurrentScene(std::string name);
 
 	//Deletes a scene
 	static void DeleteScene(std::string name);

@@ -421,6 +421,7 @@ void Editor::EditorImGui(Scene* currentScene)
 				if (ImGui::InputText(" ", &name, ImGuiInputTextFlags_CharsNoBlank)) {}
 				if (ImGui::MenuItem("Add"))
 				{
+					SceneManager::CreateScene(name);
 					CreateFileInContentBrowser(name, ".scene");
 					SearchFileDirectory();
 				}
@@ -598,6 +599,15 @@ void Editor::CheckFileType(std::string fileDirectory)
 	{
 		ImGui::Image((void*)pContentTextureScene->GetID(), ImVec2(100, 100));
 		ImGui::Text(fileDirectory.c_str());
+		if (ImGui::Button("Open Scene")) {
+			std::cout << fileDirectory << std::endl;
+
+			std::stringstream ss(fileDirectory);
+			std::string sub;
+			getline(ss, sub, '.');
+
+			SceneManager::SetCurrentScene(sub);
+		}
 	}
 	//file is a config file
 	else if (fileDirectory.find(".ini") != std::string::npos)

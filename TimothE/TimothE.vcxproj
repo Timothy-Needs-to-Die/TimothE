@@ -126,6 +126,7 @@
     <ClInclude Include="ParticleSystem.h" />
     <ClInclude Include="Renderer2D.h" />
     <ClInclude Include="ResourceManager.h" />
+    <ClInclude Include="SceneManager.h" />
     <ClInclude Include="SOIL\SOIL2.h" />
     <ClInclude Include="SOIL\image_DXT.h" />
     <ClInclude Include="SOIL\image_helper.h" />
@@ -200,6 +201,7 @@
     <ClCompile Include="Renderer2D.cpp" />
     <ClCompile Include="ResourceManager.cpp" />
     <ClCompile Include="Scene.cpp" />
+    <ClCompile Include="SceneManager.cpp" />
     <ClCompile Include="Shader.cpp" />
     <ClCompile Include="Source.cpp" />
     <ClCompile Include="Sprite.cpp" />

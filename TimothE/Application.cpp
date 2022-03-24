@@ -73,12 +73,11 @@ void Application::Init(bool devMode)
 
 	Texture2D* texture = new Texture2D("testSheet.png", true);
 	ResourceManager::InstantiateTexture("spritesheet", texture);
-	//_pTilemap = new TileMap();
-	//_pSpritesheet = new SpriteSheet(texture, 128, 128);
-	//_pTilemap->SetSpriteSheet(_pSpritesheet);
+
+	SceneManager::Init();
 
 	//initializes editor with scene
-	_pCurrentScene = new Scene("Test scene");
+
 	_mRunning = true;
 
 	CameraManager::Init();
@@ -86,7 +85,6 @@ void Application::Init(bool devMode)
 
 	CameraManager::AddCamera("Editor");
 	CameraManager::GetCamera("Editor")->SetPosition({ 1.78f, 1.0f, -1.0f });
-
 	CameraManager::SetToMainCamera();
 
 	_pEditor = new Editor(this);
@@ -144,7 +142,7 @@ void Application::GameLoop()
 			GameBeginRender();
 
 			GameRender(CameraManager::GetCamera("Editor"));
-			_pEditor->EditorLoop(_pCurrentScene, elapsed, _mInEditorMode, _mPaused);
+			_pEditor->EditorLoop(SceneManager::GetCurrentScene(), elapsed, _mInEditorMode, _mPaused);
 
 
 
@@ -179,7 +177,7 @@ void Application::GameLoop()
 	}
 
 	//saves scene
-	_pCurrentScene->SaveScene("scene1.scene");
+	SceneManager::GetCurrentScene()->SaveScene("Resources/Scenes/" + SceneManager::GetCurrentScene()->GetName() + ".scene");
 
 	//delete
 	ImGuiManager::DestroyImGui();
@@ -207,7 +205,7 @@ void Application::OnGameEvent(Event& e)
 //on game start start game state
 void Application::GameStart()
 {
-	_pCurrentScene->SceneStart();
+	SceneManager::GetCurrentScene()->SceneStart();
 	_mInEditorMode = false;
 	_mPaused = false;
 	_mGameRunning = true;
@@ -230,14 +228,14 @@ void Application::GameBeginRender()
 void Application::GameRender(Camera* cam)
 {
 	//_pTilemap->RenderMap(cam);
-	_pCurrentScene->RenderScene(cam);
+	SceneManager::GetCurrentScene()->RenderScene(cam);
 }
 
 //updates game scene
 void Application::GameUpdate(float dt)
 {
 	CameraManager::CurrentCamera()->OnUpdate(dt);
-	_pCurrentScene->Update(dt);
+	SceneManager::GetCurrentScene()->Update(dt);
 }
 
 //stop and play buttons switches play states

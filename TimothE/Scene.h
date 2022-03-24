@@ -7,9 +7,18 @@
 #include "Physics.h"
 #include "AnimatedSpritesheet.h"
 
+//TODO: Document and order this class
+
 class Scene
 {
 public:
+	Scene() {
+		_pSpritesheet = new SpriteSheet(ResourceManager::GetTexture("spritesheet"), 128, 128);
+		ResourceManager::InstantiateSpritesheet("testSheet\0", _pSpritesheet);
+		_name = "DefaultScene";
+		_pTilemap = new TileMap();
+	}
+
 	Scene(std::string name);
 	~Scene();
 	
@@ -29,9 +38,16 @@ public:
 
 	void Update(float deltaTime);
 	void RenderScene(Camera* cam);
+
+	//TODO: Implement unloading logic.
+	void Unload() {
+
+	}
 	
 	static void CircleBoxTest();
 	static void SceneBox();
+
+	std::string GetName() const { return _name; }
 
 	GameObject* AddGameObject(GameObject* gameObject);
 	void RemoveGameObject(GameObject* gameObject);
