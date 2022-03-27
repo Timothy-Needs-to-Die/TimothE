@@ -139,6 +139,7 @@
     <ClInclude Include="TileData.h" />
     <ClInclude Include="TileMap.h" />
     <ClInclude Include="TileMapEditor.h" />
+    <ClInclude Include="Time.h" />
     <ClInclude Include="TimothEInputCodes.h" />
     <ClInclude Include="Transform.h" />
     <ClInclude Include="UID.h" />
@@ -146,7 +147,6 @@
     <ClInclude Include="VBO.h" />
     <ClInclude Include="Window.h" />
     <ClInclude Include="pch.h" />
-    <ClInclude Include="Time.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="AnimatedSpritesheet.cpp" />

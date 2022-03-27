@@ -1,5 +1,5 @@
 #pragma once
-static class Time
+class Time
 {
 public:
 	static double GetDeltaTime() { return deltaTime; };

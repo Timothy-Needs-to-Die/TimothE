@@ -12,6 +12,7 @@
 #include "TileMap.h"
 #include "OpenGLError.h"
 #include "SpriteSheet.h"
+#include "Time.h"
 
 class Editor;
 
