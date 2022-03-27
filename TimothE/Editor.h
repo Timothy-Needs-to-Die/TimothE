@@ -55,7 +55,7 @@ private:
 	GameObject* _pSelectedGameObject = nullptr;
 
 	void CreateFileInContentBrowser(std::string name, std::string type);
-	void CheckFileType(std::string fileDirectory);
+	void CheckFileType(std::string fileDirectory, int i);
 	void SearchFileDirectory();
 	std::string _mCurrentDir = CONTENT_BROWSER_DIRECTORY;
 
