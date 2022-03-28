@@ -1,4 +1,5 @@
 #include "Particle.h"
+#include "Time.h"
 #include <random>
 
 Particle::Particle(float life, glm::vec4 colour, Texture2D* texture, Transform* parentTransform) : _movementVec(0.0f), _colour(colour), _currentLife(life), _maxLife(life), _pTexture(texture), _pParentTransform(parentTransform), _speed(1.0f), _useRandomDirection(true), _angleRange(0.0f), _angle(0.0f), _usingTexture(true), _canRespawn(false)
@@ -7,9 +8,9 @@ Particle::Particle(float life, glm::vec4 colour, Texture2D* texture, Transform* 
 	InitVertexData();
 }
 
-void Particle::Update(float deltaTime)
+void Particle::Update()
 {
-	glm::vec2 newPos = _pTransform->GetPosition() + (_movementVec * deltaTime);
+	glm::vec2 newPos = _pTransform->GetPosition() + (_movementVec * (float)Time::GetDeltaTime());
 	_pTransform->SetPosition(newPos.x, newPos.y);
 }
 

@@ -1,33 +1,34 @@
 #include "PlayerMovement.h"
 #include "CameraManager.h"
+#include "Time.h"
 
 void PlayerMovement::OnStart()
 {
 
 }
 
-void PlayerMovement::OnUpdate(float deltaTime)
+void PlayerMovement::OnUpdate()
 {
 	Transform* transform = _pParentObject->GetTransform();
 	glm::vec2 originalPosition = transform->GetPosition();
 	glm::vec2 newPos = originalPosition;
 
 	if (Input::IsKeyDown(KEY_W)) {
-		newPos.y += 2.0f * deltaTime;
+		newPos.y += 2.0f * Time::GetDeltaTime();
 	}
 	else if (Input::IsKeyDown(KEY_S)) {
-		newPos.y -= 2.0f * deltaTime;
+		newPos.y -= 2.0f * Time::GetDeltaTime();
 
 		if (newPos.y < 0.0f) newPos.y = 0.0f;
 	}
 
 	if (Input::IsKeyDown(KEY_A)) {
-		newPos.x -= 2.0f * deltaTime;
+		newPos.x -= 2.0f * Time::GetDeltaTime();
 
 		if (newPos.x < 0.0f) newPos.x = 0.0f;
 	}
 	else if (Input::IsKeyDown(KEY_D)) {
-		newPos.x += 2.0f * deltaTime;
+		newPos.x += 2.0f * Time::GetDeltaTime();
 	}
 
 	ColQuad playerQuad;

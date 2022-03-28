@@ -54,14 +54,14 @@ Editor::~Editor()
 	delete _pScreenShader;
 }
 
-void Editor::EditorLoop(Scene* currentScene, float dt, bool& editorMode, bool& paused)
+void Editor::EditorLoop(Scene* currentScene, bool& editorMode, bool& paused)
 {
 	
 
 	EditorImGui(currentScene);
 	ImGUISwitchRender(editorMode, paused);
 
-	EditorUpdate(currentScene, dt);
+	EditorUpdate(currentScene);
 }
 
 void Editor::EditorImGui(Scene* currentScene)
@@ -509,7 +509,7 @@ void Editor::EditorRender()
 
 	if(ImGui::IsWindowFocused())
 	{
-		CameraManager::GetCamera("Editor")->OnUpdate(0.016f);
+		CameraManager::GetCamera("Editor")->OnUpdate();
 	}
 
 
@@ -580,9 +580,9 @@ void Editor::ConvertGameToEditorSpace()
 }
 
 
-void Editor::EditorUpdate(Scene* currentScene, float dt)
+void Editor::EditorUpdate(Scene* currentScene)
 {
-	currentScene->EditorUpdate(dt);
+	currentScene->EditorUpdate();
 }
 
 void Editor::CreateFileInContentBrowser(std::string name, std::string type)

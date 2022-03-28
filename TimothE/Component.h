@@ -70,7 +70,7 @@ public:
 
 	//virtual function for sub class of components
 	virtual void OnStart() = 0;
-	virtual void OnUpdate(float deltaTime) = 0;
+	virtual void OnUpdate() = 0;
 	virtual void OnEnd() = 0;
 	//virtual void GetComponent() = 0;
 

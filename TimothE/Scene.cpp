@@ -10,6 +10,7 @@
 #include "SubTexture2D.h"
 #include "PlayerMovement.h"
 #include "SpriteComponent.h"
+#include "Time.h"
 
 int Scene::nextID = 0;
 std::vector<GameObject*> Scene::_listOfGameObjects;
@@ -127,7 +128,7 @@ void Scene::ScenePause()
 
 }
 
-void Scene::EditorUpdate(float deltaTime)
+void Scene::EditorUpdate()
 {
 	//Cycles through all gameobjects in the scene and calculates there transform.
 	//Needed for the editor window to work smoothly
@@ -136,20 +137,20 @@ void Scene::EditorUpdate(float deltaTime)
 		TextComponent* tc = obj->GetComponent<TextComponent>();
 		if (tc != nullptr) {
 			tc->OnStart();
-			tc->OnUpdate(deltaTime);
+			tc->OnUpdate();
 		}
 	}
 }
 
-void Scene::Update(float deltaTime)
+void Scene::Update()
 {
 	//Cycles through all gameobjects in the scene and updates them
 	for (GameObject* obj : _listOfGameObjects)
 	{
-		obj->Update(deltaTime);
+		obj->Update();
 	}
 
-	timer += deltaTime;
+	timer += Time::GetDeltaTime();
 	if (timer >= duration) {
 		timer = 0.0f;
 

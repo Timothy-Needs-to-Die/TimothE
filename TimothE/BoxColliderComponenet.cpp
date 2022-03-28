@@ -37,7 +37,7 @@ void BoxColliderComponent::OnStart()
 
 }
 
-void BoxColliderComponent::OnUpdate(float deltaTime)
+void BoxColliderComponent::OnUpdate()
 {
 	if (Component::IsEnabled())
 	{

@@ -1,4 +1,5 @@
 #include "Transform.h"
+#include "Time.h"
 
 
 Transform::Transform(GameObject* pParent)
@@ -39,7 +40,7 @@ void Transform::OnStart()
 	
 }
 
-void Transform::OnUpdate(float deltaTime)
+void Transform::OnUpdate()
 {
 	//Calculates the transform matrix
 	CalculateTransformMatrix();

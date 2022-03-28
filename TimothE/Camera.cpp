@@ -1,4 +1,5 @@
 #include "Camera.h"
+#include "Time.h"
 
 Camera::Camera(float left, float right, float bottom, float top, std::string name, GameObject* parent) : Component(parent)
 {
@@ -44,9 +45,9 @@ void Camera::DrawEditorUI()
 	SetPosition(glm::vec3(x,y,z));
 }
 
-void Camera::OnUpdate(float dt)
+void Camera::OnUpdate()
 {
-	PollInput(dt);
+	PollInput();
 	RecalculateViewMatrix();
 }
 
@@ -80,24 +81,24 @@ void Camera::RecalculateViewMatrix()
 }
 
 //polls for movement for control
-void Camera::PollInput(float dt)
+void Camera::PollInput()
 {
 	if (Input::IsKeyDown(KEY_W)) {
-		float yOffset = cos(glm::radians(_rotation)) * _cameraSpeed * dt;
-		float xOffset = -sin(glm::radians(_rotation)) * _cameraSpeed * dt;
+		float yOffset = cos(glm::radians(_rotation)) * _cameraSpeed * Time::GetDeltaTime();
+		float xOffset = -sin(glm::radians(_rotation)) * _cameraSpeed * Time::GetDeltaTime();
 		_cameraPos.x += xOffset;
 		_cameraPos.y += yOffset;
 	}
 	if (Input::IsKeyDown(KEY_S)) {
-		_cameraPos.x -= -sin(glm::radians(_rotation)) * _cameraSpeed * dt;
-		_cameraPos.y -= cos(glm::radians(_rotation)) * _cameraSpeed * dt;
+		_cameraPos.x -= -sin(glm::radians(_rotation)) * _cameraSpeed * Time::GetDeltaTime();
+		_cameraPos.y -= cos(glm::radians(_rotation)) * _cameraSpeed * Time::GetDeltaTime();
 	}
 	if (Input::IsKeyDown(KEY_A)) {
-		_cameraPos.x -= cos(glm::radians(_rotation)) * _cameraSpeed * dt;
-		_cameraPos.y -= sin(glm::radians(_rotation)) * _cameraSpeed * dt;
+		_cameraPos.x -= cos(glm::radians(_rotation)) * _cameraSpeed * Time::GetDeltaTime();
+		_cameraPos.y -= sin(glm::radians(_rotation)) * _cameraSpeed * Time::GetDeltaTime();
 	}
 	if (Input::IsKeyDown(KEY_D)) {
-		_cameraPos.x += cos(glm::radians(_rotation)) * _cameraSpeed * dt;
-		_cameraPos.y += sin(glm::radians(_rotation)) * _cameraSpeed * dt;
+		_cameraPos.x += cos(glm::radians(_rotation)) * _cameraSpeed * Time::GetDeltaTime();
+		_cameraPos.y += sin(glm::radians(_rotation)) * _cameraSpeed * Time::GetDeltaTime();
 	}
 }

@@ -57,7 +57,7 @@ void TextComponent::OnEnd()
 {
 }
 
-void TextComponent::OnUpdate(float deltaTime)
+void TextComponent::OnUpdate()
 {
 	//_font->RenderText(*_shader, _text, _parentObject->GetTransform()->GetPosition().x, _parentObject->GetTransform()->GetPosition().y, _scale, _color);
 }

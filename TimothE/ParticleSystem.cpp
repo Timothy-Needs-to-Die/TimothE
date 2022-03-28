@@ -1,5 +1,6 @@
 #include "ParticleSystem.h"
 #include "misc/cpp/imgui_stdlib.h"
+#include "Time.h"
 
 ParticleSystem::ParticleSystem(int count, glm::vec4 colour, Texture2D* texture, Transform* parentTransform) : _maxParticles(count), _particleColour(colour), _pTexture(texture), _pParentTransform(parentTransform), _particleLife(1.0f)
 {
@@ -26,12 +27,12 @@ void ParticleSystem::OnStart()
 {
 }
 
-void ParticleSystem::OnUpdate(float deltaTime)
+void ParticleSystem::OnUpdate()
 {
 	if (_creatingParticles)
 	{
 		static float timer = 0.0f;
-		timer += deltaTime;
+		timer += Time::GetDeltaTime();
 		if (timer >= _spawnDelay)
 		{
 			static int creatingIndex = 0;
@@ -58,11 +59,11 @@ void ParticleSystem::OnUpdate(float deltaTime)
 	for (Particle* p : _particles)
 	{
 		// reduce particle life by deltatime
-		p->SetLife(p->GetLife() - deltaTime);
+		p->SetLife(p->GetLife() - Time::GetDeltaTime());
 		if (p->GetLife() > 0.0f) // if life greater than 0, still alive so update
 		{
 			p->SetParentTransform(_pParentTransform);
-			p->Update(deltaTime);
+			p->Update();
 
 			//p->SetPosition(p->GetPosition() + (p->GetVelocity() * deltaTime));
 		}

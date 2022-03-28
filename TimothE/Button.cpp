@@ -33,7 +33,7 @@ void Button::OnStart()
 {
 }
 
-void Button::OnUpdate(float deltaTime)
+void Button::OnUpdate()
 {	
 	if (Component::IsEnabled())
 	{

@@ -10,6 +10,7 @@
 #include "Editor.h"
 #include "Renderer2D.h"
 #include "TileMap.h"
+#include "Time.h"
 
 #define BIND_EVENT_FN(x) std::bind(&Application::x, this, std::placeholders::_1)
 
@@ -132,9 +133,8 @@ void Application::GameLoop()
 
 		//deltatime update
 		double deltaTime = glfwGetTime();
-		double elapsed = deltaTime - previousTime;
 
-		Time::deltaTime = elapsed;
+		Time::SetDeltaTime(deltaTime - previousTime);
 
 		//imgui update frame
 		ImGuiManager::ImGuiNewFrame();
@@ -148,9 +148,7 @@ void Application::GameLoop()
 			GameBeginRender();
 
 			GameRender(CameraManager::GetCamera("Editor"));
-			_pEditor->EditorLoop(_pCurrentScene, elapsed, _mInEditorMode, _mPaused);
-
-
+			_pEditor->EditorLoop(_pCurrentScene, _mInEditorMode, _mPaused);
 
 			//_pEditor->GetCamera()->PrintInfo();
 
@@ -167,7 +165,7 @@ void Application::GameLoop()
 			//_pGameCamera->PrintInfo();
 
 			if (_mGameRunning && !_mPaused) {
-				GameUpdate(elapsed);
+				GameUpdate();
 			}
 
 			if (_mDevMode) {
@@ -238,10 +236,10 @@ void Application::GameRender(Camera* cam)
 }
 
 //updates game scene
-void Application::GameUpdate(float dt)
+void Application::GameUpdate()
 {
-	CameraManager::CurrentCamera()->OnUpdate(dt);
-	_pCurrentScene->Update(dt);
+	CameraManager::CurrentCamera()->OnUpdate();
+	_pCurrentScene->Update();
 }
 
 //stop and play buttons switches play states
