@@ -599,12 +599,6 @@ void Editor::CheckFileType(std::string fileDirectory, int i)
 	//if file is a script
 	if (fileDirectory.find(".cpp") != std::string::npos || fileDirectory.find(".h") != std::string::npos)
 	{
-		/*ImGui::Image((void*)pContentTextureScript->GetID(), ImVec2(100, 100));
-		if (ImGui::BeginDragDropSource())
-		{
-			ImGui::SetDragDropPayload("CONTENT", fileDirectory.c_str(), fileDirectory.size(), ImGuiCond_Once);
-			ImGui::EndDragDropSource();
-		}*/
 		ImGui::PushID(i);
 		if (ImGui::ImageButton((void*)pContentTextureScript->GetID(), ImVec2(100, 100), ImVec2(0, 0), ImVec2(1, 1)))
 		{
@@ -717,4 +711,36 @@ void Editor::SearchFileDirectory()
 		}
 		closedir(_mDirectory);
 	}
+
+	GetDirectoriesOfType("png", ".");
+}
+
+//give type like jpg or mp3 and it will return all directories for this and for the current directorory it should be the folder you want to search 
+vector<string> Editor::GetDirectoriesOfType(string type, string currentDir)
+{
+	vector<string> list;
+	DIR* dir = opendir(currentDir.c_str());
+	if (dir)
+	{
+		while ((_mDirent = readdir(dir)) != NULL)
+		{
+
+			string temp = _mDirent->d_name;
+			if (temp.find(type) != std::string::npos)
+			{
+				list.push_back(temp);
+				std::cout << "Found: " << _mDirent->d_name << std::endl;
+			}
+			else if (temp.find(".") == std::string::npos)
+			{
+				vector<string> tempList = GetDirectoriesOfType(type, _mDirent->d_name);
+				for (int i = 0; i < tempList.size(); i++)
+				{
+					list.push_back(tempList[i]);
+				}
+			}
+		}
+		closedir(dir);
+	}
+	return list;
 }

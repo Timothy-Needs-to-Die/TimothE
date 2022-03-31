@@ -77,4 +77,6 @@ private:
 	Texture2D* pContentTextureSound = new Texture2D(NULL);
 	Texture2D* pContentTextureFile = new Texture2D(NULL);
 	Texture2D* pContentTextureFolder = new Texture2D(NULL);
+
+	vector<string> GetDirectoriesOfType(string type, string currentDir);
 };
