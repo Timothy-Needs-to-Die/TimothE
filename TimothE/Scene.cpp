@@ -202,18 +202,15 @@ void Scene::RenderScene(Camera* cam)
 
 		if (objTex != nullptr) {
 			if (obj->GetObjectType() == ObjectType::UI) {
-				Renderer2D::DrawUIQuad(obj->GetTransform()->GetPosition(),
-					obj->GetTransform()->GetScale(), obj->GetComponent<Texture2D>());
+				Renderer2D::DrawUIQuad(obj->GetTransform()->GetRenderQuad(), obj->GetComponent<Texture2D>());
 			}
 			else {
-				Renderer2D::DrawQuad(obj->GetTransform()->GetPosition(),
-					obj->GetTransform()->GetScale(), objTex);
+				Renderer2D::DrawQuad(obj->GetTransform()->GetRenderQuad(), objTex);
 			}
 		}
 	}
 
-	Renderer2D::DrawQuad(_pPlayer->GetTransform()->GetPosition(),
-		_pPlayer->GetTransform()->GetScale(), ResourceManager::GetTexture("character"),
+	Renderer2D::DrawQuad(_pPlayer->GetTransform()->GetRenderQuad(), ResourceManager::GetTexture("character"),
 		_pPlayer->GetComponent<SpriteComponent>()->GetSprite()->GetTexCoords());
 
 	Renderer2D::EndRender();

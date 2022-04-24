@@ -17,38 +17,32 @@ public:
 
 	static void BeginRender(Camera* camera);
 	static void EndRender();
-	static void Flush();
 
 	//Draw Quads
 	static void DrawQuad(const Quad& quad, const glm::vec4& color);
-	static void DrawQuad(const Quad& quad, Texture2D* texture, glm::vec2* uvCoordinates = nullptr);
-	static void DrawQuad(const glm::vec2& position, const glm::vec2& size, const glm::vec4& color);
 
-	
-	static void DrawQuad(const glm::vec3& position, const glm::vec2& size, const glm::vec4& color);
-	static void DrawQuad(const glm::vec2& position, const glm::vec2& size, Texture2D* texture, glm::vec2* uvCoordinates = nullptr, float tilingFactor = 1.0f,  glm::vec4& tintColor = glm::vec4(1.0f));
-	static void DrawQuad(const glm::vec3& position, const glm::vec2& size, Texture2D* texture, glm::vec2* uvCoordinates = nullptr, float tilingFactor = 1.0f,  glm::vec4& tintColor = glm::vec4(1.0f));
+	static void DrawQuad(const Quad& quad, Texture2D* texture, glm::vec2* uvCoordinates = nullptr,
+		float tilingFactor = 1.0f, glm::vec4 & tintColor = glm::vec4(1.0f));
 
 	static void DrawQuad(const glm::mat4& transform, const glm::vec4& color, glm::vec2* uvCoordinates = nullptr);
-	static void DrawQuad(const glm::mat4& transform, Texture2D* texture, glm::vec2* uvCoordinates = nullptr, float tilingFactor = 1.0f, glm::vec4& tintColor = glm::vec4(1.0f));
+
+	static void DrawQuad(const glm::mat4& transform, Texture2D* texture, glm::vec2* uvCoordinates = nullptr,
+		float tilingFactor = 1.0f, glm::vec4& tintColor = glm::vec4(1.0f));
 
 	//Draw UI
-	static void DrawUIQuad(const glm::vec2& pos, const glm::vec2& size);
 	static void DrawUIQuad(const Quad& quad, const glm::vec4& color);
-	static void DrawUIQuad(const Quad& quad, Texture2D* texture, glm::vec2* uvCoordinates = nullptr);
-	static void DrawUIQuad(const glm::vec2& position, const glm::vec2& size, const glm::vec4& color);
 
-
-	static void DrawUIQuad(const glm::vec3& position, const glm::vec2& size, const glm::vec4& color);
-	static void DrawUIQuad(const glm::vec2& position, const glm::vec2& size, Texture2D* texture, glm::vec2* uvCoordinates = nullptr, float tilingFactor = 1.0f, glm::vec4& tintColor = glm::vec4(1.0f));
-	static void DrawUIQuad(const glm::vec3& position, const glm::vec2& size, Texture2D* texture, glm::vec2* uvCoordinates = nullptr, float tilingFactor = 1.0f, glm::vec4& tintColor = glm::vec4(1.0f));
+	static void DrawUIQuad(const Quad& quad, Texture2D* texture, glm::vec2* uvCoordinates = nullptr, 
+		float tilingFactor = 1.0f, glm::vec4 & tintColor = glm::vec4(1.0f));
 
 	static void DrawUIQuad(const glm::mat4& transform, const glm::vec4& color, glm::vec2* uvCoordinates = nullptr);
-	static void DrawUIQuad(const glm::mat4& transform, Texture2D* texture, glm::vec2* uvCoordinates = nullptr, float tilingFactor = 1.0f, glm::vec4& tintColor = glm::vec4(1.0f));
 
-	static void DrawIndexed(const std::shared_ptr<VAO>& vertexArray, uint32_t indexCount);
+	static void DrawUIQuad(const glm::mat4& transform, Texture2D* texture, glm::vec2* uvCoordinates = nullptr, 
+		float tilingFactor = 1.0f, glm::vec4& tintColor = glm::vec4(1.0f));
 
 private:
+	static void Flush();
+	static void DrawIndexed(const std::shared_ptr<VAO>& vertexArray, uint32_t indexCount);
 	static void StartBatch();
 	static void NextBatch();
 };

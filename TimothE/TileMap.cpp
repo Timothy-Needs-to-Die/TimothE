@@ -1,6 +1,7 @@
 #include "TileMap.h"
 #include "Renderer2D.h"
 #include "Window.h"
+#include "Quad.h"
 
 
 std::ostream& operator<<(std::ostream& os, glm::vec2 v) {
@@ -235,7 +236,7 @@ void TileMap::RenderMap(Camera* cam)
 				if (_tileArr[i][index]._pSprite == nullptr) continue;
 
 				//Draw this tile
-				Renderer2D::DrawQuad({ x,y }, { _gapBetweenTiles,_gapBetweenTiles }, _tileArr[i][index]._pSprite->GetTexture(), _tileArr[i][index]._pSprite->GetTexCoords());
+				Renderer2D::DrawQuad(Quad{ { x,y }, { _gapBetweenTiles,_gapBetweenTiles } }, _tileArr[i][index]._pSprite->GetTexture(), _tileArr[i][index]._pSprite->GetTexCoords());
 			}
 		}
 	}
