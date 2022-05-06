@@ -9,6 +9,7 @@
 #include "Input.h"
 #include "Application.h"
 #include "imgui.h"
+//#include "Imgui/imgui_demo.cpp"
 
 DIR* _mDirectory;
 struct dirent* _mDirent;
@@ -89,6 +90,8 @@ void Editor::EditorImGui(Scene* currentScene)
 				}
 				else if (ImGui::MenuItem("Save Scene As")) {
 
+					fileDropdownOpen = true;
+
 				}
 				if (ImGui::MenuItem("Load Scene")) {
 					std::cout << "Load Scene" << std::endl;
@@ -96,6 +99,45 @@ void Editor::EditorImGui(Scene* currentScene)
 				ImGui::EndMenu();
 			}
 			ImGui::EndMainMenuBar();
+		}
+	}
+
+	if (fileDropdownOpen) {
+		if (!ImGui::IsPopupOpen("Save Scene As")) ImGui::OpenPopup("Save Scene As");
+		if (ImGui::BeginPopupModal("Save Scene As", NULL, ImGuiWindowFlags_AlwaysAutoResize)) {
+
+			
+			ImGui::Text("Not yet functional");
+
+			//ImGui::Text("New Name: ");
+			//char inputBuf[256];
+			//ImGuiInputTextFlags input_text_flags = ImGuiInputTextFlags_EnterReturnsTrue | ImGuiInputTextFlags_CallbackCompletion | ImGuiInputTextFlags_CallbackHistory;
+			//if (ImGui::InputText("##", inputBuf, IM_ARRAYSIZE(inputBuf), input_text_flags)) {
+			//	char* s = inputBuf;
+			//
+			//	char* str_end = s + strlen(s); 
+			//	while (str_end > s && str_end[-1] == ' ') str_end--; *str_end = 0;
+			//	//Strtrim(s);
+			//	if (s[0])
+			//		//ExecCommand(s);
+			//	strcpy(s, "");
+			//	//reclaim_focus = true;
+			//}
+
+			ImGui::SameLine();
+			if (ImGui::Button("Save As")) {
+				std::cout << std::string(inputBuf) << std::endl;
+				
+				fileDropdownOpen = false;
+				ImGui::CloseCurrentPopup();
+			}
+			if (ImGui::Button("Close")) {
+
+				fileDropdownOpen = false;
+				ImGui::CloseCurrentPopup();
+			}
+
+			ImGui::EndPopup();
 		}
 	}
 
