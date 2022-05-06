@@ -126,7 +126,7 @@ void Editor::EditorImGui(Scene* currentScene)
 
 			ImGui::SameLine();
 			if (ImGui::Button("Save As")) {
-				std::cout << std::string(inputBuf) << std::endl;
+				//std::cout << std::string(inputBuf) << std::endl;
 				
 				fileDropdownOpen = false;
 				ImGui::CloseCurrentPopup();
