@@ -102,7 +102,7 @@ void TileMap::LoadTileMap()
 
 		for (int i = 0; i < dimensions; i++) {
 
-			std::cout << results[i] << std::endl;
+			//std::cout << results[i] << std::endl;
 
 			std::stringstream ss(results[i]);
 			std::string s1;

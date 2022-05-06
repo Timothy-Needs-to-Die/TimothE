@@ -639,7 +639,11 @@ void Editor::CheckFileType(std::string fileDirectory, int i)
 		ImGui::PushID(i);
 		if (ImGui::ImageButton((void*)pContentTextureScene->GetID(), ImVec2(100, 100), ImVec2(0, 0), ImVec2(1, 1)))
 		{
+			std::stringstream ss(fileDirectory);
+			std::string sub;
+			getline(ss, sub, '.');
 
+			SceneManager::SetCurrentScene(sub);
 		}
 		if (ImGui::BeginDragDropSource())
 		{

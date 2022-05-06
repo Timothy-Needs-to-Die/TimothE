@@ -25,6 +25,8 @@ public:
 	//Triggers the gameobjects start methods
 	void SceneStart();
 
+	void InitScene();
+
 	//Triggers the gameobjects end methods
 	void SceneEnd();
 
@@ -130,4 +132,6 @@ private:
 	AnimatedSpritesheet* _pAnimSheet;
 
 	SpriteSheet* _pSpritesheet;
+
+	bool _isInitialized = false;
 };

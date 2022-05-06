@@ -10,6 +10,22 @@ void SceneManager::Init()
 	//TODO: Neaten content browser a fuck tonne.
 	_pDefaultScene = new Scene();
 	_pCurrentScene = _pDefaultScene;
+
+	std::vector<string> sceneFiles = Editor::GetDirectoriesOfType(".scene", ".");
+
+	for (auto& s : sceneFiles) {
+		std::cout << s << std::endl;
+
+		int reduced = s.find(".scene");
+		if (reduced != std::string::npos) {
+			std::string rString = s.substr(0, s.length() - reduced);
+			std::cout << rString << std::endl;
+
+			Scene* scene = new Scene(rString);
+			_scenes.emplace(rString, scene);
+		}
+
+	}
 }
 
 Scene* SceneManager::CreateScene(std::string name)
@@ -40,6 +56,7 @@ Scene* SceneManager::GetDefaultScene()
 	if (_pDefaultScene == nullptr) {
 		//TODO: Create a blank scene template
 	}
+	_pDefaultScene->InitScene();
 
 	return _pDefaultScene;
 }

@@ -21,10 +21,35 @@ TextComponent* text;
 
 Scene::Scene(std::string name)
 {
-	_listOfGameObjects.clear();
-
 	_id = ++nextID;
 	_name = name;
+
+	InitScene();
+	//_pTilemap->SetSpriteSheet(_pSpritesheet);
+
+	//////////////////
+	//END OF TEST CODE
+	//////////////////
+}
+
+Scene::~Scene()
+{
+	for (GameObject* obj : _listOfGameObjects)
+	{
+		delete(obj);
+	}
+}
+
+void Scene::SceneStart()
+{
+	for (GameObject* obj : _listOfGameObjects) {
+		obj->Start();
+	}
+}
+
+void Scene::InitScene()
+{
+	_listOfGameObjects.clear();
 
 	/////////////
 	//TEST CODE//
@@ -39,7 +64,7 @@ Scene::Scene(std::string name)
 	ResourceManager::InstantiateTexture("character", new Texture2D("Resources/Images/Spritesheets/AlexTest.png", true));
 
 	_pTestObject->GetTransform()->SetPosition(0.0f, 0.0f);
-	_pTestObject->GetTransform()->SetScale({0.2f, 0.2f});
+	_pTestObject->GetTransform()->SetScale({ 0.2f, 0.2f });
 
 	_pTestObject2 = new GameObject("In World Object", ObjectType::Player);
 	_pTestObject2->LoadTexture(ResourceManager::GetTexture("lenna"));
@@ -72,7 +97,7 @@ Scene::Scene(std::string name)
 
 	_pTriggerBox = new GameObject("Trigger Box", ObjectType::NPC);
 	_pTriggerBox->GetTransform()->SetScale({ 1.0f, 1.0f });
-	_pTriggerBox->GetTransform()->SetPosition( 2.0f, 1.0f );
+	_pTriggerBox->GetTransform()->SetPosition(2.0f, 1.0f);
 	_pTriggerBox->LoadTexture(ResourceManager::GetTexture("fish"));
 	_pTriggerBox->AddComponent<BoxColliderComponent>(new BoxColliderComponent(_pTriggerBox));
 	_pTriggerBox->GetComponent<BoxColliderComponent>()->SetTrigger(true);
@@ -94,26 +119,8 @@ Scene::Scene(std::string name)
 	ResourceManager::InstantiateSpritesheet("testSheet\0", _pSpritesheet);
 
 	_pTilemap = new TileMap();
-	//_pTilemap->SetSpriteSheet(_pSpritesheet);
 
-	//////////////////
-	//END OF TEST CODE
-	//////////////////
-}
-
-Scene::~Scene()
-{
-	for (GameObject* obj : _listOfGameObjects)
-	{
-		delete(obj);
-	}
-}
-
-void Scene::SceneStart()
-{
-	for (GameObject* obj : _listOfGameObjects) {
-		obj->Start();
-	}
+	_isInitialized = true;
 }
 
 void Scene::SceneEnd()
@@ -144,6 +151,10 @@ void Scene::EditorUpdate()
 
 void Scene::Update()
 {
+	if (!_isInitialized) {
+		InitScene();
+	}
+
 	//Cycles through all gameobjects in the scene and updates them
 	for (GameObject* obj : _listOfGameObjects)
 	{
@@ -170,16 +181,15 @@ void Scene::Update()
 	//{
 	//	std::cout << "Boxes are colliding" << std::endl;
 	//}
-
-	glm::vec2 pos = _listOfGameObjects[1]->GetTransform()->GetPosition();
-	if (Input::IsKeyDown(KEY_T))
-	{
-		_listOfGameObjects[1]->GetTransform()->SetPosition(pos.x + 0.5, pos.y );
-	}
-	if (Input::IsKeyDown(KEY_G))
-	{
-		_listOfGameObjects[1]->GetTransform()->SetPosition(pos.x - 0.5, pos.y );
-	}
+	//glm::vec2 pos = _listOfGameObjects[1]->GetTransform()->GetPosition();
+	//if (Input::IsKeyDown(KEY_T))
+	//{
+	//	_listOfGameObjects[1]->GetTransform()->SetPosition(pos.x + 0.5, pos.y );
+	//}
+	//if (Input::IsKeyDown(KEY_G))
+	//{
+	//	_listOfGameObjects[1]->GetTransform()->SetPosition(pos.x - 0.5, pos.y );
+	//}
 
 	//Physics::Intersects(_pCircleTest->GetComponent<CircleCollider>(), _pTestObject2->GetComponent<BoxColliderComponent>());
 
@@ -210,8 +220,8 @@ void Scene::RenderScene(Camera* cam)
 		}
 	}
 
-	Renderer2D::DrawQuad(_pPlayer->GetTransform()->GetRenderQuad(), ResourceManager::GetTexture("character"),
-		_pPlayer->GetComponent<SpriteComponent>()->GetSprite()->GetTexCoords());
+	//Renderer2D::DrawQuad(_pPlayer->GetTransform()->GetRenderQuad(), ResourceManager::GetTexture("character"),
+	//	_pPlayer->GetComponent<SpriteComponent>()->GetSprite()->GetTexCoords());
 
 	Renderer2D::EndRender();
 }

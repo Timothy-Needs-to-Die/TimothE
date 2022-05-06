@@ -146,7 +146,7 @@ void Application::GameLoop()
 			GameBeginRender();
 
 			GameRender(CameraManager::GetCamera("Editor"));
-			_pEditor->EditorLoop(SceneManager::GetCurrentScene(), elapsed, _mInEditorMode, _mPaused);
+			_pEditor->EditorLoop(SceneManager::GetCurrentScene(), _mInEditorMode, _mPaused);
 
 
 
@@ -238,8 +238,8 @@ void Application::GameRender(Camera* cam)
 //updates game scene
 void Application::GameUpdate()
 {
-	CameraManager::CurrentCamera()->OnUpdate(dt);
-	SceneManager::GetCurrentScene()->Update(dt);
+	CameraManager::CurrentCamera()->OnUpdate();
+	SceneManager::GetCurrentScene()->Update();
 }
 
 //stop and play buttons switches play states

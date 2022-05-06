@@ -1,7 +1,7 @@
 #pragma once
 #include "pch.h"
 #include "Scene.h"
-
+#include "Editor.h"
 
 class SceneManager
 {

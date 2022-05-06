@@ -37,6 +37,8 @@ public:
 
 	void ConvertGameToEditorSpace();
 
+	static vector<string> GetDirectoriesOfType(string type, string currentDir);
+
 	Framebuffer* _pEditorFramebuffer;
 private:
 
@@ -78,5 +80,5 @@ private:
 	Texture2D* pContentTextureFile = new Texture2D(NULL);
 	Texture2D* pContentTextureFolder = new Texture2D(NULL);
 
-	vector<string> GetDirectoriesOfType(string type, string currentDir);
+	
 };
