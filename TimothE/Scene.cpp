@@ -118,7 +118,7 @@ void Scene::InitScene()
 	_pSpritesheet = new SpriteSheet(ResourceManager::GetTexture("spritesheet"), 128, 128);
 	ResourceManager::InstantiateSpritesheet("testSheet\0", _pSpritesheet);
 
-	_pTilemap = new TileMap();
+	_pTilemap = new TileMap(_name);
 
 	_isInitialized = true;
 }

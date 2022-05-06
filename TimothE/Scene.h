@@ -16,7 +16,7 @@ public:
 		_pSpritesheet = new SpriteSheet(ResourceManager::GetTexture("spritesheet"), 128, 128);
 		ResourceManager::InstantiateSpritesheet("testSheet\0", _pSpritesheet);
 		_name = "DefaultScene";
-		_pTilemap = new TileMap();
+		_pTilemap = new TileMap("DefaultTileMap");
 	}
 
 	Scene(std::string name);

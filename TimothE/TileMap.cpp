@@ -11,7 +11,8 @@ std::ostream& operator<<(std::ostream& os, glm::vec2 v) {
 
 //TODO: Size details
 //TODO: Add a system to change how many tiles per unit
-TileMap::TileMap()
+TileMap::TileMap(std::string name)
+	: _name(name)
 {
 	SetTileMapSize({ 32.0f, 32.0f });
 
@@ -47,7 +48,8 @@ void TileMap::SaveTilemap() {
 
 	//TODO: Change to use the current scene instead
 
-	std::ofstream outfile("Resources/Scenes/l1.json");
+	std::string filename = "Resources/Scenes/" + _name + ".json";
+	std::ofstream outfile(filename);
 
 	json file;
 
@@ -76,7 +78,14 @@ void TileMap::SaveTilemap() {
 void TileMap::LoadTileMap()
 {
 	using nlohmann::json;
-	std::ifstream inFile("Resources/Scenes/l1.json");
+	std::string filename = "Resources/Scenes/" + _name + ".json";
+	std::ifstream inFile(filename);
+
+	if (!inFile.good()) {
+		std::cout << "[ERROR: TileMap::LoadTileMap]: TileMap file: " << filename << " could not be loaded" << std::endl;
+		return;
+	}
+
 	json file;
 
 	file << inFile;

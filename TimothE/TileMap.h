@@ -14,7 +14,7 @@
 class TileMap
 {
 public:
-	TileMap();
+	TileMap(std::string name);
 	~TileMap();
 
 	void SaveTilemap();
@@ -108,5 +108,7 @@ private:
 
 	//How many tiles are there per unit in the X and Y axis
 	int _tilesPerUnit = 4;
+
+	std::string _name;
 };
 
