@@ -16,7 +16,7 @@ public:
 	Particle(float life, glm::vec4 colour, Texture2D* texture, Transform* parentTransform);
 	~Particle() {}
 
-	void Update(float deltaTime);
+	void Update();
 	void ResetParticle();
 	void InitVertexData();
 

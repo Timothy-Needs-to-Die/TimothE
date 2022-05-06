@@ -35,7 +35,7 @@ public:
 	//Game Loop//
 	/////////////
 	virtual void Start();
-	virtual void Update(float deltaTime);
+	virtual void Update();
 	virtual void Exit();
 
 public:

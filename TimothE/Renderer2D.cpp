@@ -162,84 +162,6 @@ void Renderer2D::Flush()
 	}
 }
 
-
-void Renderer2D::DrawUIQuad(const glm::vec2& pos, const glm::vec2& size)
-{
-	DrawUIQuad(pos, size, glm::vec4(1.0));
-}
-
-void Renderer2D::DrawUIQuad(const Quad& quad, const glm::vec4& color)
-{
-	DrawUIQuad(quad.position, quad.size, glm::vec4(1.0));
-}
-
-void Renderer2D::DrawUIQuad(const Quad& quad, Texture2D* texture, glm::vec2* uvCoordinates /*= nullptr*/)
-{
-	DrawUIQuad(quad.position, quad.size, texture, uvCoordinates);
-}
-
-void Renderer2D::DrawUIQuad(const glm::vec2& position, const glm::vec2& size, const glm::vec4& color)
-{
-	DrawUIQuad({ position.x, position.y, 0.0f }, size, color);
-}
-
-void Renderer2D::DrawUIQuad(const glm::vec3& position, const glm::vec2& size, const glm::vec4& color)
-{
-	glm::mat4 transform = glm::translate(glm::mat4(1.0f), position)
-		* glm::scale(glm::mat4(1.0f), { size.x, size.y, 1.0f });
-
-	DrawUIQuad(transform, color);
-}
-
-void Renderer2D::DrawUIQuad(const glm::vec2& position, const glm::vec2& size, Texture2D* texture, glm::vec2* uvCoordinates /*= nullptr*/, float tilingFactor /*= 1.0f*/, glm::vec4& tintColor /*= glm::vec4(1.0f)*/)
-{
-	DrawUIQuad({ position.x, position.y, 0.0f }, size, texture, uvCoordinates, tilingFactor, tintColor);
-}
-
-void Renderer2D::DrawUIQuad(const glm::vec3& position, const glm::vec2& size, Texture2D* texture, glm::vec2* uvCoordinates /*= nullptr*/, float tilingFactor /*= 1.0f*/, glm::vec4& tintColor /*= glm::vec4(1.0f)*/)
-{
-	glm::mat4 transform = glm::translate(glm::mat4(1.0f), position)
-		* glm::scale(glm::mat4(1.0f), { size.x, size.y, 1.0f });
-
-	DrawUIQuad(transform, texture, uvCoordinates, tilingFactor, tintColor);
-}
-
-void Renderer2D::DrawUIQuad(const glm::mat4& transform, const glm::vec4& color, glm::vec2* uvCoordinates /*= nullptr*/)
-{
-	constexpr size_t quadVertexCount = 4;
-	const float textureIndex = 0.0f;
-	glm::vec2 textureCoords[] = {
-		{0.0f, 0.0f},
-		{1.0f, 0.0f},
-		{1.0f,1.0f},
-		{0.0f, 1.0f}
-	};
-
-	if (uvCoordinates != nullptr) {
-		textureCoords[0] = uvCoordinates[0];
-		textureCoords[1] = uvCoordinates[1];
-		textureCoords[2] = uvCoordinates[2];
-		textureCoords[3] = uvCoordinates[3];
-	}
-
-	const float tillingFactor = 0.0f;
-
-	if (_uiData.quadIndexCount >= RendererData::maxIndices) {
-		NextBatch();
-	}
-
-	for (size_t i = 0; i < quadVertexCount; i++) {
-		_uiData.quadVertexBufferPtr->position = transform * _uiData.quadVertexPositions[i];
-		_uiData.quadVertexBufferPtr->color = color;
-		_uiData.quadVertexBufferPtr->texCoord = textureCoords[i];
-		_uiData.quadVertexBufferPtr->tilingFactor = tillingFactor;
-		_uiData.quadVertexBufferPtr->texIndex = textureIndex;
-		_uiData.quadVertexBufferPtr++;
-	}
-
-	_uiData.quadIndexCount += 6;
-}
-
 void Renderer2D::DrawUIQuad(const glm::mat4& transform, Texture2D* texture, glm::vec2* uvCoordinates /*= nullptr*/, float tilingFactor /*= 1.0f*/, glm::vec4& tintColor /*= glm::vec4(1.0f)*/)
 {
 	constexpr size_t quadVertexCount = 4;
@@ -255,17 +177,22 @@ void Renderer2D::DrawUIQuad(const glm::mat4& transform, Texture2D* texture, glm:
 	if (_uiData.quadIndexCount >= RendererData::maxIndices)
 		NextBatch();
 
-	float textureIndex = 0.0f;
-	for (uint32_t i = 1; i < _uiData.textureSlotIndex; i++)
-	{
-		if (_uiData.textureSlots[i] == texture)
+	float textureIndex = -1.0f;
+	if (texture == nullptr) {
+		textureIndex = 0.0f;
+	}
+	else {
+		for (uint32_t i = 1; i < _uiData.textureSlotIndex; i++)
 		{
-			textureIndex = (float)i;
-			break;
+			if (_uiData.textureSlots[i] == texture)
+			{
+				textureIndex = (float)i;
+				break;
+			}
 		}
 	}
 
-	if (textureIndex == 0.0f)
+	if (textureIndex == -1.0f)
 	{
 		if (_uiData.textureSlotIndex >= RendererData::maxTextureSlots)
 			NextBatch();
@@ -288,66 +215,10 @@ void Renderer2D::DrawUIQuad(const glm::mat4& transform, Texture2D* texture, glm:
 	_uiData.quadIndexCount += 6;
 }
 
-void Renderer2D::DrawQuad(const glm::vec2& position, const glm::vec2& size, const glm::vec4& color)
+void Renderer2D::DrawUIQuad(const Quad& quad, Texture2D* texture /*= nullptr*/, glm::vec2* uvCoordinates /*= nullptr*/ , glm::vec4& tintColor /*= glm::vec4(1.0f)*/, float tilingFactor /*= 1.0f*/)
 {
-	DrawQuad({ position.x, position.y, 0.0f }, size, color);
-}
-
-void Renderer2D::DrawQuad(const glm::vec3& position, const glm::vec2& size, const glm::vec4& color)
-{
-	glm::mat4 transform = glm::translate(glm::mat4(1.0f), position)
-		* glm::scale(glm::mat4(1.0f), { size.x, size.y, 1.0f });
-
-	DrawQuad(transform, color);
-}
-
-void Renderer2D::DrawQuad(const glm::vec2& position, const glm::vec2& size, Texture2D* texture, glm::vec2* uvCoordinates, float tilingFactor, glm::vec4& tintColor)
-{
-	DrawQuad({ position.x, position.y, 0.0f }, size, texture, uvCoordinates, tilingFactor, tintColor);
-}
-
-void Renderer2D::DrawQuad(const glm::vec3& position, const glm::vec2& size,  Texture2D* texture, glm::vec2* uvCoordinates, float tilingFactor, glm::vec4& tintColor)
-{
-	glm::mat4 transform = glm::translate(glm::mat4(1.0f), position)
-		* glm::scale(glm::mat4(1.0f), { size.x, size.y, 1.0f });
-
-	DrawQuad(transform, texture, uvCoordinates, tilingFactor, tintColor);
-}
-
-void Renderer2D::DrawQuad(const glm::mat4& transform, const glm::vec4& color, glm::vec2* uvCoordinates)
-{
-	constexpr size_t quadVertexCount = 4;
-	const float textureIndex = 0.0f;
-	glm::vec2 textureCoords[] = {
-		{0.0f, 0.0f},
-		{1.0f, 0.0f},
-		{1.0f,1.0f},
-		{0.0f, 1.0f}
-	};
-
-	if (uvCoordinates != nullptr) {
-		textureCoords[0] = uvCoordinates[0];
-		textureCoords[1] = uvCoordinates[1];
-		textureCoords[2] = uvCoordinates[2];
-		textureCoords[3] = uvCoordinates[3];
-	}
-
-	const float tillingFactor = 0.0f;
-
-	if (_data.quadIndexCount >= RendererData::maxIndices) {
-		NextBatch();
-	}
-
-	for (size_t i = 0; i < quadVertexCount; i++) {
-		_data.quadVertexBufferPtr->position = transform * _data.quadVertexPositions[i];
-		_data.quadVertexBufferPtr->color = color;
-		_data.quadVertexBufferPtr->texCoord = textureCoords[i];
-		_data.quadVertexBufferPtr->tilingFactor = tillingFactor;
-		_data.quadVertexBufferPtr->texIndex = textureIndex;
-		_data.quadVertexBufferPtr++;
-	}
-
-	_data.quadIndexCount += 6;
+	glm::mat4 transform = glm::translate(glm::mat4(1.0f), glm::vec3(quad.position, 0.0f)) * glm::scale(glm::mat4(1.0f), glm::vec3(quad.size, 1.0f));
+	DrawUIQuad(transform, texture, uvCoordinates, tilingFactor, tintColor);
 }
 
 void Renderer2D::DrawQuad(const glm::mat4& transform, Texture2D* texture, glm::vec2* uvCoordinates, float tilingFactor, glm::vec4& tintColor)
@@ -365,17 +236,22 @@ void Renderer2D::DrawQuad(const glm::mat4& transform, Texture2D* texture, glm::v
 	if (_data.quadIndexCount >= RendererData::maxIndices)
 		NextBatch();
 
-	float textureIndex = 0.0f;
-	for (uint32_t i = 1; i < _data.textureSlotIndex; i++)
-	{
-		if (_data.textureSlots[i] == texture)
+	float textureIndex = -1.0f;
+	if (texture == nullptr) {
+		textureIndex = 0.0f;
+	}
+	else{
+		for (uint32_t i = 1; i < _data.textureSlotIndex; i++)
 		{
-			textureIndex = (float)i;
-			break;
+			if (_data.textureSlots[i] == texture)
+			{
+				textureIndex = (float)i;
+				break;
+			}
 		}
 	}
 
-	if (textureIndex == 0.0f)
+	if (textureIndex == -1.0f)
 	{
 		if (_data.textureSlotIndex >= RendererData::maxTextureSlots)
 			NextBatch();
@@ -398,16 +274,11 @@ void Renderer2D::DrawQuad(const glm::mat4& transform, Texture2D* texture, glm::v
 	_data.quadIndexCount += 6;
 }
 
-void Renderer2D::DrawQuad(const Quad& quad, const glm::vec4& color)
+void Renderer2D::DrawQuad(const Quad& quad, Texture2D* texture, glm::vec2* uvCoordinates /* = nullptr */, glm::vec4& tintColor /*= glm::vec4(1.0f)*/, float tilingFactor /*= 1.0f*/)
 {
-	DrawQuad(quad.position, quad.size, color);
+	glm::mat4 transform = glm::translate(glm::mat4(1.0f), glm::vec3(quad.position, 0.0f)) * glm::scale(glm::mat4(1.0f), glm::vec3(quad.size, 1.0f));
+	DrawQuad(transform, texture, uvCoordinates, tilingFactor, tintColor);
 }
-
-void Renderer2D::DrawQuad(const Quad& quad, Texture2D* texture, glm::vec2* uvCoordinates /*= nullptr*/)
-{
-	DrawQuad(quad.position, quad.size, texture, uvCoordinates);
-}
-
 
 void Renderer2D::DrawIndexed(const std::shared_ptr<VAO>& vertexArray, uint32_t indexCount)
 {

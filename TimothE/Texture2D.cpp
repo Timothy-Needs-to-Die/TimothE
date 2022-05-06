@@ -26,19 +26,29 @@ Texture2D::~Texture2D()
 
 void Texture2D::DrawEditorUI()
 {
+	static std::string texPath = "path";
 	//displays the texture in the editor window
 	ImGui::Text("Texture");
 	ImTextureID texID = (void*)_ID;
 	//specifies a size of 100x100 for the texture preview
 	ImGui::Image(texID, ImVec2(100.0f, 100.0f));
-
-	static std::string texPath = "path";
+	if (ImGui::BeginDragDropTarget())
+	{
+		if (const ImGuiPayload* payload = ImGui::AcceptDragDropPayload("DRAGCONTENT_IMAGE"))
+		{
+			const char* path = (const char*)payload->Data;
+			texPath = (std::string)path;
+		}
+		ImGui::EndDragDropTarget();
+	}
 	ImGui::InputText("##TexturePath", &texPath);
-	ImGui::SameLine();
+	
+	//ImGui::SameLine();
 	if (ImGui::Button("Set texture"))
 	{
 		Load(texPath);
 	}
+	
 }
 
 // Pass in file path
@@ -91,7 +101,7 @@ void Texture2D::OnStart()
 
 }
 
-void Texture2D::OnUpdate(float deltaTime)
+void Texture2D::OnUpdate()
 {
 
 }

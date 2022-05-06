@@ -23,7 +23,7 @@ public:
 
 	// Inherited via Component
 	virtual void OnStart() override;
-	virtual void OnUpdate(float deltaTime) override;
+	virtual void OnUpdate() override;
 	virtual void OnEnd() override;
 
 private:

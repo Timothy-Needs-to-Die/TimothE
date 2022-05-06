@@ -5,6 +5,7 @@
 #include "MemoryManager.h"
 
 #include "pch.h"
+#include "Quad.h"
 
 class Transform : public Component
 {
@@ -15,7 +16,7 @@ public:
 
 	//Components Overrides
 	void OnStart() override;
-	void OnUpdate(float deltaTime) override;
+	void OnUpdate() override;
 	void OnEnd() override;
 	void DrawEditorUI() override;
 
@@ -24,6 +25,7 @@ public:
 	glm::vec2 GetScale() const { return _size; }
 	float GetRotation() const { return _rotation; }
 	glm::mat4 GetTransformMatrix() const { return _transformationMatrix; }
+	Quad GetRenderQuad() const { return Quad{ _position, _size }; }
 
 	//Setters
 	void SetPosition(float x, float y) { _position = glm::vec2(x, y); }

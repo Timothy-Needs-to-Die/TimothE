@@ -40,11 +40,11 @@ void GameObject::Start()
 	}
 }
 
-void GameObject::Update(float deltaTime)
+void GameObject::Update()
 {
 	for (Component* c : _pComponents)
 	{
-		c->OnUpdate(deltaTime);
+		c->OnUpdate();
 		if (c->GetType() == Component::ParticleSystem_Type)
 		{
 			ParticleSystem* p = (ParticleSystem*)c;

@@ -10,6 +10,7 @@
 #include "SubTexture2D.h"
 #include "PlayerMovement.h"
 #include "SpriteComponent.h"
+#include "Time.h"
 
 int Scene::nextID = 0;
 std::vector<GameObject*> Scene::_listOfGameObjects;
@@ -45,7 +46,7 @@ Scene::Scene(std::string name)
 	_pTestObject2->AddComponent(new BoxColliderComponent(_pTestObject2))->SetTrigger(true);
 	_pTestObject2->GetTransform()->SetPosition(1.2f, 1.0f);
 	_pTestObject2->GetTransform()->SetScale({ 0.4f,0.4f });
-	
+
 
 	GameObject* _pButtonTestingObject = new GameObject("BUTTON", ObjectType::UI);
 	_pButtonTestingObject->AddComponent(new Button(_pButtonTestingObject));
@@ -56,7 +57,7 @@ Scene::Scene(std::string name)
 	_pButtonTestingObject->GetTransform()->SetPosition(0.0f, 0.0f);
 	_pButtonTestingObject->GetTransform()->SetScale({ 0.2f, 0.2f });
 	_pButtonTestingObject->SetType(ObjectType::UI);
-	
+
 	_pPlayer = new GameObject("Player", ObjectType::Player);
 	_pPlayer->AddComponent<PlayerMovement>(new PlayerMovement(_pPlayer));
 
@@ -76,7 +77,7 @@ Scene::Scene(std::string name)
 	_pTriggerBox->AddComponent<BoxColliderComponent>(new BoxColliderComponent(_pTriggerBox));
 	_pTriggerBox->GetComponent<BoxColliderComponent>()->SetTrigger(true);
 	_pTriggerBox->GetComponent<BoxColliderComponent>()->AddTriggerEvent(&SceneBox);
-	
+
 	AddGameObject(_pTriggerBox);
 	AddGameObject(_pTestObject);
 	AddGameObject(_pTestObject2);
@@ -94,7 +95,7 @@ Scene::Scene(std::string name)
 
 	_pTilemap = new TileMap();
 	//_pTilemap->SetSpriteSheet(_pSpritesheet);
-	
+
 	//////////////////
 	//END OF TEST CODE
 	//////////////////
@@ -127,7 +128,7 @@ void Scene::ScenePause()
 
 }
 
-void Scene::EditorUpdate(float deltaTime)
+void Scene::EditorUpdate()
 {
 	//Cycles through all gameobjects in the scene and calculates there transform.
 	//Needed for the editor window to work smoothly
@@ -136,20 +137,20 @@ void Scene::EditorUpdate(float deltaTime)
 		TextComponent* tc = obj->GetComponent<TextComponent>();
 		if (tc != nullptr) {
 			tc->OnStart();
-			tc->OnUpdate(deltaTime);
+			tc->OnUpdate();
 		}
 	}
 }
 
-void Scene::Update(float deltaTime)
+void Scene::Update()
 {
 	//Cycles through all gameobjects in the scene and updates them
 	for (GameObject* obj : _listOfGameObjects)
 	{
-		obj->Update(deltaTime);
+		obj->Update();
 	}
 
-	timer += deltaTime;
+	timer += Time::GetDeltaTime();
 	if (timer >= duration) {
 		timer = 0.0f;
 
@@ -196,24 +197,21 @@ void Scene::RenderScene(Camera* cam)
 	_pTilemap->RenderMap(cam);
 
 	for (auto& obj : _listOfDrawableGameObjects) {
-		//TODO: Text won't render here as it uses its own internal texture data. 
+		//TODO: Text won't render here as it uses its own internal texture data.
 		Texture2D* objTex = obj->GetComponent<Texture2D>();
 
 		if (objTex != nullptr) {
 			if (obj->GetObjectType() == ObjectType::UI) {
-				Renderer2D::DrawUIQuad(obj->GetTransform()->GetPosition(),
-					obj->GetTransform()->GetScale(), obj->GetComponent<Texture2D>());
+				Renderer2D::DrawUIQuad(obj->GetTransform()->GetRenderQuad(), obj->GetComponent<Texture2D>());
 			}
 			else {
-				Renderer2D::DrawQuad(obj->GetTransform()->GetPosition(),
-					obj->GetTransform()->GetScale(), objTex);
+				Renderer2D::DrawQuad(obj->GetTransform()->GetRenderQuad(), objTex);
 			}
 		}
 	}
 
-	//Renderer2D::DrawQuad(_pPlayer->GetTransform()->GetPosition(),
-	//	_pPlayer->GetTransform()->GetScale(), ResourceManager::GetTexture("character"),
-	//	_pPlayer->GetComponent<SpriteComponent>()->GetSprite()->GetTexCoords());
+	Renderer2D::DrawQuad(_pPlayer->GetTransform()->GetRenderQuad(), ResourceManager::GetTexture("character"),
+		_pPlayer->GetComponent<SpriteComponent>()->GetSprite()->GetTexCoords());
 
 	Renderer2D::EndRender();
 }

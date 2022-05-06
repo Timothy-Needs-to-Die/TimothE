@@ -34,7 +34,7 @@ protected:
 
 	void GameBeginRender();
 	void GameRender(Camera* cam);
-	void GameUpdate(float dt);
+	void GameUpdate();
 
 	void ImGUISwitchRender();
 

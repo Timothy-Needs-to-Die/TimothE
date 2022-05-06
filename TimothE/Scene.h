@@ -32,11 +32,11 @@ public:
 	void ScenePause();
 
 	//Any updates that need to be performed in the editor. Primarily every game objects transform
-	void EditorUpdate(float deltaTime);
+	void EditorUpdate();
 
 	TileMap* GetTileMap() { return _pTilemap; }
 
-	void Update(float deltaTime);
+	void Update();
 	void RenderScene(Camera* cam);
 
 	//TODO: Implement unloading logic.

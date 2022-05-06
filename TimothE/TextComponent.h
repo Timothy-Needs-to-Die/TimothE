@@ -17,7 +17,7 @@ public:
 
 	void OnStart();
 	void OnEnd();
-	void OnUpdate(float deltaTime);
+	void OnUpdate();
 
 	void SetFont(std::string font);
 

@@ -23,7 +23,7 @@ public:
 	~Editor();
 
 	//Runs through the editor loop
-	void EditorLoop(Scene* currentScene, float dt, bool& editorMode, bool& paused);
+	void EditorLoop(Scene* currentScene, bool& editorMode, bool& paused);
 
 
 		//Starts the render
@@ -47,7 +47,7 @@ private:
 	void ImGUISwitchRender(bool& editorMode, bool& paused);
 
 	//Editor update loop
-	void EditorUpdate(Scene* currentScene, float dt);
+	void EditorUpdate(Scene* currentScene);
 
 	Shader* _pScreenShader;
 	char* _pNotesBuffer;
@@ -55,7 +55,7 @@ private:
 	GameObject* _pSelectedGameObject = nullptr;
 
 	void CreateFileInContentBrowser(std::string name, std::string type);
-	void CheckFileType(std::string fileDirectory);
+	void CheckFileType(std::string fileDirectory, int i);
 	void SearchFileDirectory();
 	std::string _mCurrentDir = CONTENT_BROWSER_DIRECTORY;
 
@@ -77,4 +77,6 @@ private:
 	Texture2D* pContentTextureSound = new Texture2D(NULL);
 	Texture2D* pContentTextureFile = new Texture2D(NULL);
 	Texture2D* pContentTextureFolder = new Texture2D(NULL);
+
+	vector<string> GetDirectoriesOfType(string type, string currentDir);
 };

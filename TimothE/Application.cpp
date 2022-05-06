@@ -10,8 +10,11 @@
 #include "Editor.h"
 #include "Renderer2D.h"
 #include "TileMap.h"
+#include "Time.h"
 
 #define BIND_EVENT_FN(x) std::bind(&Application::x, this, std::placeholders::_1)
+
+double Time::deltaTime;
 
 void GLAPIENTRY MessageCallback(GLenum source,
 	GLenum type,
@@ -128,7 +131,8 @@ void Application::GameLoop()
 
 		//deltatime update
 		double deltaTime = glfwGetTime();
-		double elapsed = deltaTime - previousTime;
+
+		Time::SetDeltaTime(deltaTime - previousTime);
 
 		//imgui update frame
 		ImGuiManager::ImGuiNewFrame();
@@ -161,7 +165,7 @@ void Application::GameLoop()
 			//_pGameCamera->PrintInfo();
 
 			if (_mGameRunning && !_mPaused) {
-				GameUpdate(elapsed);
+				GameUpdate();
 			}
 
 			if (_mDevMode) {
@@ -232,7 +236,7 @@ void Application::GameRender(Camera* cam)
 }
 
 //updates game scene
-void Application::GameUpdate(float dt)
+void Application::GameUpdate()
 {
 	CameraManager::CurrentCamera()->OnUpdate(dt);
 	SceneManager::GetCurrentScene()->Update(dt);

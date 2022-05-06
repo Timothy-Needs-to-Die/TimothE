@@ -19,7 +19,7 @@ public:
 
 	//Inherited Component methods
 	void OnStart() override;
-	void OnUpdate(float deltaTime) override;
+	void OnUpdate() override;
 	void OnEnd() override;
 	void DrawEditorUI() override;
 

@@ -10,7 +10,7 @@ public:
 	Camera(float left, float right, float bottom, float top, std::string name, GameObject* parent);
 	COMPONENT_STATIC_TYPE(Camera_Type);
 	void OnStart() override;
-	void OnUpdate(float deltaTime) override;
+	void OnUpdate() override;
 	void OnEnd() override;
 	void DrawEditorUI() override;
 
@@ -39,7 +39,7 @@ public:
 	}
 	std::string _mName;
 private:
-	void PollInput(float dt);
+	void PollInput();
 
 private:
 	glm::vec3 _cameraPos;
