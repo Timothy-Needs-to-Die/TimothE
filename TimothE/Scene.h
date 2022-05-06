@@ -16,7 +16,8 @@ public:
 		_pSpritesheet = new SpriteSheet(ResourceManager::GetTexture("spritesheet"), 128, 128);
 		ResourceManager::InstantiateSpritesheet("testSheet\0", _pSpritesheet);
 		_name = "DefaultScene";
-		_pTilemap = new TileMap("DefaultTileMap");
+		_pTilemap = new TileMap("DefaultScene");
+		Save();
 	}
 
 	Scene(std::string name);
@@ -61,6 +62,7 @@ public:
 
 	void LoadScene(const std::string& filename);
 	void SaveScene(const std::string& filename);
+	void Save();
 
 	//GameObject getters
 	static GameObject* GetGameObjectByName(std::string name);

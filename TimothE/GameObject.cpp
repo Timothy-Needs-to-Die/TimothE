@@ -89,7 +89,11 @@ void GameObject::SetShader(std::string name)
 {
 	_shaderName = name;
 	_pShader = ResourceManager::GetShader(_shaderName);
-	_shaderID = _pShader->GetProgramID();
+	if (_pShader != nullptr) {
+		_shaderID = _pShader->GetProgramID();
+	}else{
+		std::cout << "[ERROR: GameObject::SetShader]: " << name << " does not exist" << std::endl;
+	}
 }
 
 bool GameObject::SaveState(IStream& stream) const

@@ -17,7 +17,7 @@ std::vector<std::string> _mDirectoryList;
 std::vector<std::string> Console::output = std::vector<std::string>();
 
 Editor::Editor(Application* pApp)
-	:  _pApplication(pApp)
+	: _pApplication(pApp)
 {
 	//icon textures
 	pContentTextureScript->Load("Icons/ScriptContent.png");
@@ -66,7 +66,8 @@ void Editor::EditorLoop(Scene* currentScene, bool& editorMode, bool& paused)
 
 void Editor::EditorImGui(Scene* currentScene)
 {
-	static ImGuiWindowFlags flags = ImGuiWindowFlags_NoDecoration | ImGuiWindowFlags_NoMove | ImGuiWindowFlags_NoResize | ImGuiWindowFlags_NoSavedSettings;
+	//ImGui::End();
+	static ImGuiWindowFlags flags = ImGuiWindowFlags_NoDecoration | ImGuiWindowFlags_NoMove | ImGuiWindowFlags_NoResize | ImGuiWindowFlags_NoSavedSettings | ImGuiWindowFlags_MenuBar;
 
 	const ImGuiViewport* viewport = ImGui::GetMainViewport();
 	ImGui::SetNextWindowPos(true ? viewport->WorkPos : viewport->Pos);
@@ -76,28 +77,26 @@ void Editor::EditorImGui(Scene* currentScene)
 
 	static bool changeObject = false;
 
+	static bool fileDropdownOpen = false;
+
 	{
 		if (ImGui::BeginMainMenuBar()) {
-			if (ImGui::MenuItem("File")) {
-				if (ImGui::BeginChild("FileMenu")) {
-					if (ImGui::MenuItem("New Scene"))
-					{
-						std::cout << "New Scene" << std::endl;
-					}
-					if (ImGui::MenuItem("Load Scene")) {
-						std::cout << "Load Scene" << std::endl;
-					}
+			if (ImGui::BeginMenu("File")) {
+				if (ImGui::MenuItem("Save Scene"))
+				{
+					std::cout << "Saving Scene" << std::endl;
+					SceneManager::GetCurrentScene()->Save();
 				}
-				ImGui::EndChild();
-			}
-			if (ImGui::MenuItem("Edit")) {
+				else if (ImGui::MenuItem("Save Scene As")) {
 
+				}
+				if (ImGui::MenuItem("Load Scene")) {
+					std::cout << "Load Scene" << std::endl;
+				}
+				ImGui::EndMenu();
 			}
-			if (ImGui::MenuItem("View")) {
-
-			}
+			ImGui::EndMainMenuBar();
 		}
-		ImGui::EndMainMenuBar();
 	}
 
 	{
@@ -456,7 +455,7 @@ void Editor::EditorImGui(Scene* currentScene)
 		//sets up a column to display the files in a grid
 		ImGui::Columns(4, NULL);
 		ImGui::Separator();
-		int j=0;
+		int j = 0;
 		//for each item in directory create new button
 		for (int i = 2; i < _mDirectoryList.size(); i++) {
 
@@ -506,9 +505,9 @@ void Editor::ImGUISwitchRender(bool& editorMode, bool& paused)
 
 void Editor::EditorRender()
 {
-	ImGui::Begin("Scene Window", 0 ,ImGuiWindowFlags_NoMove);
+	ImGui::Begin("Scene Window", 0, ImGuiWindowFlags_NoMove);
 
-	if(ImGui::IsWindowFocused())
+	if (ImGui::IsWindowFocused())
 	{
 		CameraManager::GetCamera("Editor")->OnUpdate();
 	}

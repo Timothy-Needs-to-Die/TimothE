@@ -282,7 +282,11 @@ void Scene::RemoveComponentHandler(GameObject* gameObject, Component* comp)
 
 void Scene::LoadScene(const std::string& filename)
 {
-	//Clears the list (this is incase we are going from one scene to the next
+	if (_pTilemap != nullptr) {
+		_pTilemap->LoadTileMap();
+	}
+
+	//Clears the list (this is in case we are going from one scene to the next)
 	_listOfGameObjects.clear();
 
 	//Creates a stream
@@ -311,6 +315,10 @@ void Scene::LoadScene(const std::string& filename)
 
 void Scene::SaveScene(const std::string& filename)
 {
+	if (_pTilemap != nullptr) {
+		_pTilemap->SaveTilemap();
+	}
+
 	//Creates a stream file object
 	StreamFile stream;
 	//Opens this stream for writing
@@ -326,6 +334,11 @@ void Scene::SaveScene(const std::string& filename)
 
 	//Closes the stream
 	stream.Close();
+}
+
+void Scene::Save()
+{
+	SaveScene("Resources/Scenes/" + _name);
 }
 
 GameObject* Scene::GetGameObjectByName(std::string name)
