@@ -38,7 +38,6 @@ void Application::Init(bool devMode)
 	Input::Init();
 	HeapManager::Init();
 
-
 	_mDevMode = devMode;
 
 	//checks if glfw initialsed
@@ -76,13 +75,9 @@ void Application::Init(bool devMode)
 
 	Renderer2D::Init();
 
-	Texture2D* texture = new Texture2D("testSheet.png", true);
-	ResourceManager::InstantiateTexture("spritesheet", texture);
+	ResourceManager::GetScene("FarmScene")->InitScene();
 
-	_pFarmScene = new FarmScene("FarmScene");
-	_pFarmScene->InitScene();
-
-	_pCurrentScene = _pFarmScene;
+	_pCurrentScene = ResourceManager::GetScene("FarmScene");
 
 	//SceneManager::Init();
 	//SceneManager::SetCurrentScene(new FarmScene("FarmSceen"));

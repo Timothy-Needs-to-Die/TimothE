@@ -1,11 +1,14 @@
 #include "ResourceManager.h"
-#include "Scene.h"
 #include "OpenGLError.h"
+#include "FarmScene.h"
+#include "Dirent.h"
+#include "misc/cpp/imgui_stdlib.h"
 
 std::map<std::string, Texture2D*> ResourceManager::_textures;
 std::map<std::string, Shader*> ResourceManager::_shaders;
 std::map<std::string, Scene*> ResourceManager::_scenes;
 std::map<std::string, SpriteSheet*> ResourceManager::_spritesheets;
+std::map<std::string, Font*> ResourceManager::_fonts;
 
 std::string ResourceManager::_UID;
 
@@ -15,16 +18,25 @@ void ResourceManager::Init()
 
 	//LOAD TEXTURES
 	ResourceManager::InstantiateTexture("lenna", new Texture2D("lenna3.jpg"));
+	ResourceManager::InstantiateTexture("fish", new Texture2D("Fish.png"));
+	ResourceManager::InstantiateTexture("character", new Texture2D("Resources/Images/Spritesheets/AlexTest.png", true));
+	ResourceManager::InstantiateTexture("spritesheet", new Texture2D("Resources/Images/Spritesheets/RPGpack_sheet.png", true));
+
+	//LOAD SPRITESHEETS
+	ResourceManager::InstantiateSpritesheet("testSheet", new SpriteSheet(ResourceManager::GetTexture("spritesheet"), 64, 64));
 
 	//LOAD SHADERS
 	ResourceManager::InstantiateShader("ui", new Shader("vr_UIShader.vert", "fr_UIShader.frag"));
 	ResourceManager::InstantiateShader("default", new Shader("VertexShader.vert", "FragmentShader.frag"));
 
 	//LOAD SCENES
+	ResourceManager::InstantiateScene("CurrentScene", new Scene("Default"));
+	ResourceManager::InstantiateScene("FarmScene", new FarmScene("FarmScene"));
+
+	//LOAD FONTS
+	LoadFonts();
 
 	//LOAD SOUNDS
-	
-	//LOAD FONTS
 }
 
 void ResourceManager::Shutdown()
@@ -38,6 +50,27 @@ void ResourceManager::Shutdown()
 	_textures.clear();
 	_shaders.clear();
 	_scenes.clear();
+}
+
+void ResourceManager::LoadFonts() 
+{
+	std::ofstream fileStream("./fonts");
+	_fonts.clear();
+	DIR* directory = opendir("./fonts");
+	struct dirent* dirent;
+	if (directory)
+	{
+		while ((dirent = readdir(directory)) != NULL)
+		{
+			if (dirent->d_type == 32768)
+			{
+				InstantiateFont(dirent->d_name, new Font(dirent->d_name));
+
+				std::cout << "Font loaded: " << dirent->d_name << std::endl;
+			}
+		}
+		closedir(directory);
+	}
 }
 
 void ResourceManager::InstantiateTexture(std::string name, Texture2D* texture)
@@ -60,7 +93,7 @@ void ResourceManager::InstantiateSpritesheet(std::string name, SpriteSheet* spri
 	_spritesheets[name] = spritesheet;
 }
 
-//void ResourceManager::InstantiateSound(std::string name, SoundStruct* sound)
-//{
-//	_sounds[name] = sound;
-//}
+void ResourceManager::InstantiateFont(std::string name, Font* font)
+{
+	_fonts[name] = font;
+}

@@ -65,7 +65,6 @@ private:
 	bool _mGameRunning = false;
 
 	Scene* _pCurrentScene;
-	FarmScene* _pFarmScene;
 
 	//TileMap* _pTilemap;
 	//SpriteSheet* _pSpritesheet;
