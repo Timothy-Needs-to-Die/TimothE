@@ -1,5 +1,7 @@
 #pragma once
-#include "pch.h"
+
+#include <memory>
+
 #include "BufferLayout.h"
 
 class VBO

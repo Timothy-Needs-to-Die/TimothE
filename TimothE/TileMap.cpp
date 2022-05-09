@@ -1,6 +1,6 @@
 #include "TileMap.h"
-#include "Renderer2D.h"
-#include "Window.h"
+#include "Core/Graphics/Renderer2D.h"
+#include "Core/Graphics/Window.h"
 #include "Quad.h"
 
 
@@ -32,7 +32,9 @@ void TileMap::ClearAllLayers()
 {
 	for (int i = 0; i < _numLayers; i++) {
 		for (int j = 0; j < _mapInTiles.x * _mapInTiles.y; j++) {
-			_tileArr[i][j]._pSprite = nullptr;
+			//_tileArr[i][j]._pSprite = nullptr;
+			//_tileArr[i][j].texIndex = 0;
+			_tileArr[i][j] = TileData();
 		}
 	}
 }
@@ -209,7 +211,10 @@ void TileMap::ClearLayer(int layer)
 {
 	//Cycle through all tiles on this layer and remove their sprite
 	for (int i = 0; i < _mapInTiles.x * _mapInTiles.y; i++) {
-		_tileArr[layer][i]._pSprite = nullptr;
+		//_tileArr[layer][i]._pSprite = nullptr;
+		//_tileArr[layer][i].texIndex = 0;
+		//_tileArr[layer][i].collidable = false;
+		_tileArr[layer][i] = TileData();
 	}
 }
 

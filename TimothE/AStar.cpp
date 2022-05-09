@@ -16,7 +16,7 @@ glm::vec3 AStar::PathFinding(glm::vec3 startPos)
         }
     }
 
-
+    return glm::vec3(1.0f);
 }
 
 std::vector<glm::vec3> AStar::GetPathPoints()

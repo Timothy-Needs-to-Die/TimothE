@@ -1,5 +1,5 @@
 #include "ResourceManager.h"
-#include "OpenGLError.h"
+#include "Core/Graphics/OpenGLError.h"
 #include "FarmScene.h"
 #include "Dirent.h"
 #include "misc/cpp/imgui_stdlib.h"
