@@ -12,9 +12,8 @@
 class Scene
 {
 public:
-	Scene() {
-		_pSpritesheet = new SpriteSheet(ResourceManager::GetTexture("spritesheet"), 128, 128);
-		ResourceManager::InstantiateSpritesheet("testSheet\0", _pSpritesheet);
+	Scene() 
+	{
 		_name = "DefaultScene";
 		_pTilemap = new TileMap("DefaultScene");
 		Save();

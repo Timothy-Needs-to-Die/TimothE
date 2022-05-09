@@ -38,7 +38,6 @@ void Application::Init(bool devMode)
 	Input::Init();
 	HeapManager::Init();
 
-
 	_mDevMode = devMode;
 
 	//checks if glfw initialsed

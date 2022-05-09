@@ -16,9 +16,6 @@ int Scene::nextID = 0;
 std::vector<GameObject*> Scene::_listOfGameObjects;
 std::vector<GameObject*> Scene::_listOfDrawableGameObjects;
 
-Shader* shader;
-TextComponent* text;
-
 Scene::Scene(std::string name)
 {
 	_id = ++nextID;
@@ -59,9 +56,6 @@ void Scene::InitScene()
 	GameObject* _pTestObject = new(gameObjectHeap) GameObject("LENNA!", ObjectType::Player);
 	_pTestObject->LoadTexture(ResourceManager::GetTexture("lenna"));
 	_pTestObject->AddComponent(new BoxColliderComponent(_pTestObject));
-
-	ResourceManager::InstantiateTexture("fish", new Texture2D("Fish.png"));
-	ResourceManager::InstantiateTexture("character", new Texture2D("Resources/Images/Spritesheets/AlexTest.png", true));
 
 	_pTestObject->GetTransform()->SetPosition(0.0f, 0.0f);
 	_pTestObject->GetTransform()->SetScale({ 0.2f, 0.2f });
@@ -105,10 +99,6 @@ void Scene::InitScene()
 	_pTextObj->AddComponent(new TextComponent(_pTextObj));
 	_pTextObj->SetType(ObjectType::UI);
 	AddGameObject(_pTextObj);
-
-
-	_pSpritesheet = new SpriteSheet(ResourceManager::GetTexture("spritesheet"), 128, 128);
-	ResourceManager::InstantiateSpritesheet("testSheet\0", _pSpritesheet);
 
 	_pTilemap = new TileMap(_name);
 	_pTilemap->LoadTileMap();
