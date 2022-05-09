@@ -117,6 +117,11 @@ float AudioEngine::RandomBetween(float min, float max) {
 	return min + n * (max - min);
 }
 
+void AudioEngine::Set3DListenerAttributes(FMOD_VECTOR position, FMOD_VECTOR vel, FMOD_VECTOR forward, FMOD_VECTOR up)
+{
+	_fmodSystem->set3DListenerAttributes(0, &position, &vel, &forward, &up);
+}
+
 // ================================================================================ //
 
 // ========================= Grouping and Group Controls ========================== // 

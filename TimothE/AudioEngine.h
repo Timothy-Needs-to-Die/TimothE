@@ -25,6 +25,7 @@ public:
 	void ReleaseSound(FMOD::Sound* sound);
 	void CheckForErrors(FMOD_RESULT result);
 	float RandomBetween(float min, float max);
+	void Set3DListenerAttributes(FMOD_VECTOR position, FMOD_VECTOR vel, FMOD_VECTOR forward, FMOD_VECTOR up);
 
 	// == Grouping and Group Controls == //
 	FMOD::ChannelGroup* CreateChanellGroup(const char* name);
