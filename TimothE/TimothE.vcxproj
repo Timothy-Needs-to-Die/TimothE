@@ -83,7 +83,6 @@
     <ClInclude Include="AnimatedSpritesheet.h" />
     <ClInclude Include="Application.h" />
     <ClInclude Include="ApplicationEvent.h" />
-    <ClInclude Include="AStar.h" />
     <ClInclude Include="AudioEngine.h" />
     <ClInclude Include="Base.h" />
     <ClInclude Include="BoxColliderComponent.h" />
@@ -173,7 +172,6 @@
   <ItemGroup>
     <ClCompile Include="AnimatedSpritesheet.cpp" />
     <ClCompile Include="Application.cpp" />
-    <ClCompile Include="AStar.cpp" />
     <ClCompile Include="AudioEngine.cpp" />
     <ClCompile Include="BoxColliderComponenet.cpp" />
     <ClCompile Include="Button.cpp" />
