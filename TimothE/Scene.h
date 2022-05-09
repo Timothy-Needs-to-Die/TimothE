@@ -18,15 +18,16 @@ public:
 		_name = "DefaultScene";
 		_pTilemap = new TileMap("DefaultScene");
 		Save();
+		InitScene();
 	}
 
 	Scene(std::string name);
 	~Scene();
-	
+
 	//Triggers the gameobjects start methods
 	void SceneStart();
 
-	void InitScene();
+	virtual void InitScene();
 
 	//Triggers the gameobjects end methods
 	void SceneEnd();
@@ -40,13 +41,18 @@ public:
 	TileMap* GetTileMap() { return _pTilemap; }
 
 	void Update();
+	virtual void UpdateUI();
+	virtual void UpdateObjects();
+
+
+
 	void RenderScene(Camera* cam);
 
 	//TODO: Implement unloading logic.
 	void Unload() {
 
 	}
-	
+
 	static void CircleBoxTest();
 	static void SceneBox();
 
@@ -80,7 +86,7 @@ public:
 	//DO NOT MOVE
 	/////////////
 	//Template methods. Have to be in the header in order for them to work. 
-	
+
 	//Gets a pointer to the component of type T
 	template<typename T>
 	static T* FindObjectOfType() {
@@ -108,9 +114,12 @@ public:
 		return compList;
 	}
 
-private:
+protected:
 	//Stores the name of the scene
 	std::string _name;
+
+private:
+
 
 	//Stores an id for the scene
 	int _id;

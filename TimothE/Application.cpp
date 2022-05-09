@@ -11,6 +11,7 @@
 #include "Renderer2D.h"
 #include "TileMap.h"
 #include "Time.h"
+#include "FarmScene.h"
 
 #define BIND_EVENT_FN(x) std::bind(&Application::x, this, std::placeholders::_1)
 
@@ -36,6 +37,7 @@ void Application::Init(bool devMode)
 	UID::Init();
 	Input::Init();
 	HeapManager::Init();
+
 
 	_mDevMode = devMode;
 
@@ -77,7 +79,14 @@ void Application::Init(bool devMode)
 	Texture2D* texture = new Texture2D("testSheet.png", true);
 	ResourceManager::InstantiateTexture("spritesheet", texture);
 
-	SceneManager::Init();
+	_pFarmScene = new FarmScene("FarmScene");
+	_pFarmScene->InitScene();
+
+	_pCurrentScene = _pFarmScene;
+
+	//SceneManager::Init();
+	//SceneManager::SetCurrentScene(new FarmScene("FarmSceen"));
+	//SceneManager::GetCurrentScene()->InitScene();
 
 	//initializes editor with scene
 
@@ -139,39 +148,9 @@ void Application::GameLoop()
 
 		//_pTilemap->UpdateLogic(CameraManager::GetCamera("Editor"));
 
-
-		//update editor if in editor mode
-		if (_mInEditorMode) {
-			_pEditor->_pEditorFramebuffer->BindFramebuffer();
-			GameBeginRender();
-
-			GameRender(CameraManager::GetCamera("Editor"));
-			_pEditor->EditorLoop(SceneManager::GetCurrentScene(), _mInEditorMode, _mPaused);
-
-
-
-			//_pEditor->GetCamera()->PrintInfo();
-
-			_pEditor->_pEditorFramebuffer->UnbindFramebuffer();
-
-			_pEditor->EditorRender();
-		}
-		//update game if in game mode
-		else {
-			GameBeginRender();
-
-			GameRender(CameraManager::CurrentCamera());
-
-			//_pGameCamera->PrintInfo();
-
-			if (_mGameRunning && !_mPaused) {
-				GameUpdate();
-			}
-
-			if (_mDevMode) {
-				ImGUISwitchRender();
-			}
-		}
+		GameBeginRender();
+		GameUpdate();
+		GameRender(CameraManager::CurrentCamera());
 
 		ImGuiManager::ImGuiEndFrame();
 
@@ -181,7 +160,7 @@ void Application::GameLoop()
 	}
 
 	//saves scene
-	SceneManager::GetCurrentScene()->SaveScene("Resources/Scenes/" + SceneManager::GetCurrentScene()->GetName() + ".scene");
+	_pCurrentScene->SaveScene("Resources/Scenes/" + _pCurrentScene->GetName() + ".scene");
 
 	//delete
 	ImGuiManager::DestroyImGui();
@@ -232,14 +211,14 @@ void Application::GameBeginRender()
 void Application::GameRender(Camera* cam)
 {
 	//_pTilemap->RenderMap(cam);
-	SceneManager::GetCurrentScene()->RenderScene(cam);
+	_pCurrentScene->RenderScene(cam);
 }
 
 //updates game scene
 void Application::GameUpdate()
 {
 	CameraManager::CurrentCamera()->OnUpdate();
-	SceneManager::GetCurrentScene()->Update();
+	_pCurrentScene->Update();
 }
 
 //stop and play buttons switches play states

@@ -14,6 +14,8 @@
 #include "SpriteSheet.h"
 #include "SceneManager.h"
 
+#include "FarmScene.h"
+
 class Editor;
 
 class Application
@@ -61,6 +63,9 @@ private:
 
 	bool _mPaused = false;
 	bool _mGameRunning = false;
+
+	Scene* _pCurrentScene;
+	FarmScene* _pFarmScene;
 
 	//TileMap* _pTilemap;
 	//SpriteSheet* _pSpritesheet;

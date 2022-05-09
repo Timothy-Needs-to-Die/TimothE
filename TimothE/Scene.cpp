@@ -73,15 +73,7 @@ void Scene::InitScene()
 	_pTestObject2->GetTransform()->SetScale({ 0.4f,0.4f });
 
 
-	GameObject* _pButtonTestingObject = new GameObject("BUTTON", ObjectType::UI);
-	_pButtonTestingObject->AddComponent(new Button(_pButtonTestingObject));
-	_pButtonTestingObject->AddComponent(new BoxColliderComponent(_pButtonTestingObject));
-	_pButtonTestingObject->AddComponent(new TextComponent(_pTestObject));
-	_pButtonTestingObject->LoadTexture(ResourceManager::GetTexture("fish"));
-	_pButtonTestingObject->SetShader("ui");
-	_pButtonTestingObject->GetTransform()->SetPosition(0.0f, 0.0f);
-	_pButtonTestingObject->GetTransform()->SetScale({ 0.2f, 0.2f });
-	_pButtonTestingObject->SetType(ObjectType::UI);
+
 
 	_pPlayer = new GameObject("Player", ObjectType::Player);
 	_pPlayer->AddComponent<PlayerMovement>(new PlayerMovement(_pPlayer));
@@ -95,18 +87,18 @@ void Scene::InitScene()
 	_pPlayer->AddComponent(new BoxColliderComponent(_pPlayer));
 	//_pPlayer->GetComponent<PlayerMovement>()->SetTileMap(pTilemap);
 
-	_pTriggerBox = new GameObject("Trigger Box", ObjectType::NPC);
-	_pTriggerBox->GetTransform()->SetScale({ 1.0f, 1.0f });
-	_pTriggerBox->GetTransform()->SetPosition(2.0f, 1.0f);
-	_pTriggerBox->LoadTexture(ResourceManager::GetTexture("fish"));
-	_pTriggerBox->AddComponent<BoxColliderComponent>(new BoxColliderComponent(_pTriggerBox));
-	_pTriggerBox->GetComponent<BoxColliderComponent>()->SetTrigger(true);
-	_pTriggerBox->GetComponent<BoxColliderComponent>()->AddTriggerEvent(&SceneBox);
-
-	AddGameObject(_pTriggerBox);
+	//_pTriggerBox = new GameObject("Trigger Box", ObjectType::NPC);
+	//_pTriggerBox->GetTransform()->SetScale({ 1.0f, 1.0f });
+	//_pTriggerBox->GetTransform()->SetPosition(2.0f, 1.0f);
+	//_pTriggerBox->LoadTexture(ResourceManager::GetTexture("fish"));
+	//_pTriggerBox->AddComponent<BoxColliderComponent>(new BoxColliderComponent(_pTriggerBox));
+	//_pTriggerBox->GetComponent<BoxColliderComponent>()->SetTrigger(true);
+	//_pTriggerBox->GetComponent<BoxColliderComponent>()->AddTriggerEvent(&SceneBox);
+	//
+	//AddGameObject(_pTriggerBox);
 	AddGameObject(_pTestObject);
 	AddGameObject(_pTestObject2);
-	AddGameObject(_pButtonTestingObject);
+	//AddGameObject(_pButtonTestingObject);
 	AddGameObject(_pPlayer);
 
 	GameObject* _pTextObj = new GameObject("TEXTOBJ", ObjectType::UI);
@@ -119,6 +111,7 @@ void Scene::InitScene()
 	ResourceManager::InstantiateSpritesheet("testSheet\0", _pSpritesheet);
 
 	_pTilemap = new TileMap(_name);
+	_pTilemap->LoadTileMap();
 
 	_isInitialized = true;
 }
@@ -155,11 +148,10 @@ void Scene::Update()
 		InitScene();
 	}
 
-	//Cycles through all gameobjects in the scene and updates them
-	for (GameObject* obj : _listOfGameObjects)
-	{
-		obj->Update();
-	}
+	UpdateObjects();
+	UpdateUI();
+
+
 
 	timer += Time::GetDeltaTime();
 	if (timer >= duration) {
@@ -176,7 +168,6 @@ void Scene::Update()
 	/////////////
 	//TEST CODE//     BOX COLISSIONS
 	/////////////
-
 	//if (_listOfGameObjects[0]->GetComponent<BoxColliderComponent>()->Intersects(_listOfGameObjects[1]->GetComponent<BoxColliderComponent>()->GetCollisionRect()))
 	//{
 	//	std::cout << "Boxes are colliding" << std::endl;
@@ -190,14 +181,25 @@ void Scene::Update()
 	//{
 	//	_listOfGameObjects[1]->GetTransform()->SetPosition(pos.x - 0.5, pos.y );
 	//}
-
 	//Physics::Intersects(_pCircleTest->GetComponent<CircleCollider>(), _pTestObject2->GetComponent<BoxColliderComponent>());
-
-	Physics::Intersects(_pTriggerBox->GetComponent<BoxColliderComponent>(), _pPlayer->GetComponent<BoxColliderComponent>());
-
+	//Physics::Intersects(_pTriggerBox->GetComponent<BoxColliderComponent>(), _pPlayer->GetComponent<BoxColliderComponent>());
 	//////////////////
 	//END OF TEST CODE
 	//////////////////
+}
+
+void Scene::UpdateUI()
+{
+
+}
+
+void Scene::UpdateObjects()
+{
+	//Cycles through all gameobjects in the scene and updates them
+	for (GameObject* obj : _listOfGameObjects)
+	{
+		obj->Update();
+	}
 }
 
 void Scene::RenderScene(Camera* cam)

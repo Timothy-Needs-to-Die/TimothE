@@ -147,6 +147,8 @@
     <ClInclude Include="Sprite.h" />
     <ClInclude Include="AnimatedSpritesheet.h" />
     <ClInclude Include="SceneManager.h" />
+    <ClInclude Include="Time.h" />
+    <ClInclude Include="FarmScene.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Application.cpp" />
@@ -215,5 +217,6 @@
     <ClCompile Include="Sprite.cpp" />
     <ClCompile Include="AnimatedSpritesheet.cpp" />
     <ClCompile Include="SceneManager.cpp" />
+    <ClCompile Include="FarmScene.cpp" />
   </ItemGroup>
 </Project>

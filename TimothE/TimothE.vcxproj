@@ -97,6 +97,7 @@
     <ClInclude Include="Dirent.h" />
     <ClInclude Include="Editor.h" />
     <ClInclude Include="Event.h" />
+    <ClInclude Include="FarmScene.h" />
     <ClInclude Include="Font.h" />
     <ClInclude Include="Framebuffer.h" />
     <ClInclude Include="GameObject.h" />
@@ -179,6 +180,7 @@
     <ClCompile Include="ColliderBase.cpp" />
     <ClCompile Include="Console.cpp" />
     <ClCompile Include="Editor.cpp" />
+    <ClCompile Include="FarmScene.cpp" />
     <ClCompile Include="Font.cpp" />
     <ClCompile Include="Framebuffer.cpp" />
     <ClCompile Include="GameObject.cpp" />
