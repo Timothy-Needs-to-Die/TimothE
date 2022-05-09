@@ -38,6 +38,8 @@ protected:
 	void GameRender(Camera* cam);
 	void GameUpdate();
 
+	void DisplayTileEditor();
+
 	void ImGUISwitchRender();
 
 private:
@@ -63,6 +65,8 @@ private:
 
 	bool _mPaused = false;
 	bool _mGameRunning = false;
+
+	bool _tileMapEditorEnabled = false;
 
 	Scene* _pCurrentScene;
 	FarmScene* _pFarmScene;
