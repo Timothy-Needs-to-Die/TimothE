@@ -16,9 +16,6 @@ int Scene::nextID = 0;
 std::vector<GameObject*> Scene::_listOfGameObjects;
 std::vector<GameObject*> Scene::_listOfDrawableGameObjects;
 
-Shader* shader;
-TextComponent* text;
-
 Scene::Scene(std::string name)
 {
 	_id = ++nextID;
