@@ -1,5 +1,7 @@
 #pragma once
 #include "Scene.h"
+#include "PlayerMovement.h"
+
 class FarmScene : public Scene
 {
 public:
@@ -17,6 +19,13 @@ protected:
 
 
 private:
-	GameObject* pStartButton = nullptr;
+	GameObject* _pStartButton = nullptr;
+	GameObject* _pPlayerObject = nullptr;
+
+	PlayerMovement* _pPlayerMovement = nullptr;
+
+	AnimatedSpritesheet* _pAnimSheet;
+
+	SpriteSheet* _pSpritesheet;
 };
 

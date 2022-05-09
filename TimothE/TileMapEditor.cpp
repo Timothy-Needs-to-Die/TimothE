@@ -159,8 +159,8 @@ void TileMapEditor::EditorUI(TileMap* pTilemap)
 		else if (Input::IsMouseButtonDown(BUTTON_RIGHT)) {
 			pTilemap->AddTileAt(_currentLayer, 0, 0, CameraManager::GetCamera("Editor"), _collidableToggle);
 		}
+		std::cout << "In Focus!" << std::endl;
 	}
-
 	ImGui::End();
 }
 

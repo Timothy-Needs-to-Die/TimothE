@@ -127,7 +127,6 @@
     <ClInclude Include="RBO.h" />
     <ClInclude Include="Renderer2D.h" />
     <ClInclude Include="ResourceManager.h" />
-    <ClInclude Include="SceneManager.h" />
     <ClInclude Include="SOIL\SOIL2.h" />
     <ClInclude Include="SOIL\image_DXT.h" />
     <ClInclude Include="SOIL\image_helper.h" />
@@ -146,6 +145,7 @@
     <ClInclude Include="SOIL\stbi_pvr_c.h" />
     <ClInclude Include="SOIL\wfETC.h" />
     <ClInclude Include="Scene.h" />
+    <ClInclude Include="SceneManager.h" />
     <ClInclude Include="Serializable.h" />
     <ClInclude Include="Shader.h" />
     <ClInclude Include="Sprite.h" />

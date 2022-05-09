@@ -13,8 +13,7 @@ class Scene
 {
 public:
 	Scene() {
-		_pSpritesheet = new SpriteSheet(ResourceManager::GetTexture("spritesheet"), 128, 128);
-		ResourceManager::InstantiateSpritesheet("testSheet\0", _pSpritesheet);
+
 		_name = "DefaultScene";
 		_pTilemap = new TileMap("DefaultScene");
 		Save();
@@ -117,6 +116,7 @@ public:
 protected:
 	//Stores the name of the scene
 	std::string _name;
+	TileMap* _pTilemap;
 
 private:
 
@@ -135,14 +135,11 @@ private:
 	static std::vector<GameObject*> _listOfGameObjects;
 	static std::vector<GameObject*> _listOfDrawableGameObjects;
 
-	GameObject* _pCircleTest;
-	GameObject* _pTestObject2;
-	GameObject* _pPlayer;
-	GameObject* _pTriggerBox;
-	TileMap* _pTilemap;
-	AnimatedSpritesheet* _pAnimSheet;
+	//GameObject* _pCircleTest;
+	//GameObject* _pTestObject2;
+	//GameObject* _pPlayer;
+	//GameObject* _pTriggerBox;
 
-	SpriteSheet* _pSpritesheet;
 
 	bool _isInitialized = false;
 };

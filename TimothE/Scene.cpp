@@ -16,9 +16,6 @@ int Scene::nextID = 0;
 std::vector<GameObject*> Scene::_listOfGameObjects;
 std::vector<GameObject*> Scene::_listOfDrawableGameObjects;
 
-Shader* shader;
-TextComponent* text;
-
 Scene::Scene(std::string name)
 {
 	_id = ++nextID;
@@ -49,71 +46,30 @@ void Scene::SceneStart()
 
 void Scene::InitScene()
 {
-	_listOfGameObjects.clear();
+	//_listOfGameObjects.clear();
 
 	/////////////
 	//TEST CODE//
 	/////////////
 
 	Heap* gameObjectHeap = HeapManager::CreateHeap("GameObject", "Root");
-	GameObject* _pTestObject = new(gameObjectHeap) GameObject("LENNA!", ObjectType::Player);
-	_pTestObject->LoadTexture(ResourceManager::GetTexture("lenna"));
-	_pTestObject->AddComponent(new BoxColliderComponent(_pTestObject));
 
-	ResourceManager::InstantiateTexture("fish", new Texture2D("Fish.png"));
-	ResourceManager::InstantiateTexture("character", new Texture2D("Resources/Images/Spritesheets/AlexTest.png", true));
+	//ResourceManager::InstantiateTexture("fish", new Texture2D("Fish.png"));
+	//ResourceManager::InstantiateTexture("character", new Texture2D("Resources/Images/Spritesheets/AlexTest.png", true));
 
-	_pTestObject->GetTransform()->SetPosition(0.0f, 0.0f);
-	_pTestObject->GetTransform()->SetScale({ 0.2f, 0.2f });
-
-	_pTestObject2 = new GameObject("In World Object", ObjectType::Player);
-	_pTestObject2->LoadTexture(ResourceManager::GetTexture("lenna"));
-	_pTestObject2->AddComponent(new BoxColliderComponent(_pTestObject2))->SetTrigger(true);
-	_pTestObject2->GetTransform()->SetPosition(1.2f, 1.0f);
-	_pTestObject2->GetTransform()->SetScale({ 0.4f,0.4f });
-
-
-
-
-	_pPlayer = new GameObject("Player", ObjectType::Player);
-	_pPlayer->AddComponent<PlayerMovement>(new PlayerMovement(_pPlayer));
-
-
-	//_pPlayer->LoadTexture(ResourceManager::GetTexture("character"));
-	_pPlayer->GetTransform()->SetScale({ 0.2f, 0.45f });
-	_pAnimSheet = new AnimatedSpritesheet(ResourceManager::GetTexture("character"), 16, 32);
-	SpriteComponent* sc = _pPlayer->AddComponent<SpriteComponent>(new SpriteComponent(_pPlayer));
-	sc->SetSprite(_pAnimSheet->GetSpriteAtIndex(0));
-	_pPlayer->AddComponent(new BoxColliderComponent(_pPlayer));
-	//_pPlayer->GetComponent<PlayerMovement>()->SetTileMap(pTilemap);
-
-	//_pTriggerBox = new GameObject("Trigger Box", ObjectType::NPC);
-	//_pTriggerBox->GetTransform()->SetScale({ 1.0f, 1.0f });
-	//_pTriggerBox->GetTransform()->SetPosition(2.0f, 1.0f);
-	//_pTriggerBox->LoadTexture(ResourceManager::GetTexture("fish"));
-	//_pTriggerBox->AddComponent<BoxColliderComponent>(new BoxColliderComponent(_pTriggerBox));
-	//_pTriggerBox->GetComponent<BoxColliderComponent>()->SetTrigger(true);
-	//_pTriggerBox->GetComponent<BoxColliderComponent>()->AddTriggerEvent(&SceneBox);
-	//
-	//AddGameObject(_pTriggerBox);
-	AddGameObject(_pTestObject);
-	AddGameObject(_pTestObject2);
+	//AddGameObject(_pTestObject2);
 	//AddGameObject(_pButtonTestingObject);
-	AddGameObject(_pPlayer);
+	//AddGameObject(_pPlayer);
 
-	GameObject* _pTextObj = new GameObject("TEXTOBJ", ObjectType::UI);
-	_pTextObj->AddComponent(new TextComponent(_pTextObj));
-	_pTextObj->SetType(ObjectType::UI);
-	AddGameObject(_pTextObj);
+	//GameObject* _pTextObj = new GameObject("TEXTOBJ", ObjectType::UI);
+	//_pTextObj->AddComponent(new TextComponent(_pTextObj));
+	//_pTextObj->SetType(ObjectType::UI);
+	//AddGameObject(_pTextObj);
 
 
-	_pSpritesheet = new SpriteSheet(ResourceManager::GetTexture("spritesheet"), 128, 128);
-	ResourceManager::InstantiateSpritesheet("testSheet\0", _pSpritesheet);
 
-	_pTilemap = new TileMap(_name);
-	_pTilemap->LoadTileMap();
 
-	_isInitialized = true;
+
 }
 
 void Scene::SceneEnd()
@@ -144,10 +100,6 @@ void Scene::EditorUpdate()
 
 void Scene::Update()
 {
-	if (!_isInitialized) {
-		InitScene();
-	}
-
 	UpdateObjects();
 	UpdateUI();
 
@@ -157,8 +109,8 @@ void Scene::Update()
 	if (timer >= duration) {
 		timer = 0.0f;
 
-		SpriteComponent* sc = _pPlayer->GetComponent<SpriteComponent>();
-		sc->SetSprite(_pAnimSheet->GetSpriteAtIndex(iteration));
+		//SpriteComponent* sc = _pPlayer->GetComponent<SpriteComponent>();
+		//sc->SetSprite(_pAnimSheet->GetSpriteAtIndex(iteration));
 		iteration++;
 		if (iteration == 8) {
 			iteration = 0;
@@ -215,6 +167,10 @@ void Scene::RenderScene(Camera* cam)
 		if (objTex != nullptr) {
 			if (obj->GetObjectType() == ObjectType::UI) {
 				Renderer2D::DrawUIQuad(obj->GetTransform()->GetRenderQuad(), obj->GetComponent<Texture2D>());
+			}
+			else if (obj->GetObjectType() == ObjectType::Player) {
+				SpriteComponent* sc = obj->GetComponent<SpriteComponent>();
+				Renderer2D::DrawQuad(obj->GetTransform()->GetRenderQuad(), objTex, sc->GetSprite()->GetTexCoords());
 			}
 			else {
 				Renderer2D::DrawQuad(obj->GetTransform()->GetRenderQuad(), objTex);

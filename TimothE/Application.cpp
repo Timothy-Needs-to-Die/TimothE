@@ -38,7 +38,6 @@ void Application::Init(bool devMode)
 	Input::Init();
 	HeapManager::Init();
 
-
 	_mDevMode = devMode;
 
 	//checks if glfw initialsed
@@ -76,13 +75,9 @@ void Application::Init(bool devMode)
 
 	Renderer2D::Init();
 
-	Texture2D* texture = new Texture2D("testSheet.png", true);
-	ResourceManager::InstantiateTexture("spritesheet", texture);
+	ResourceManager::GetScene("FarmScene")->InitScene();
 
-	_pFarmScene = new FarmScene("FarmScene");
-	_pFarmScene->InitScene();
-
-	_pCurrentScene = _pFarmScene;
+	_pCurrentScene = ResourceManager::GetScene("FarmScene");
 
 	//SceneManager::Init();
 	//SceneManager::SetCurrentScene(new FarmScene("FarmSceen"));
@@ -148,9 +143,30 @@ void Application::GameLoop()
 
 		//_pTilemap->UpdateLogic(CameraManager::GetCamera("Editor"));
 
+		if (Input::IsKeyDown(TimothEKeyCode::KEY_0)) {
+			_tileMapEditorEnabled = !_tileMapEditorEnabled;
+			std::string cameraName = _tileMapEditorEnabled ? "Editor" : "Main Camera";
+			CameraManager::SetCamera(cameraName);
+		}
+
+		if (_tileMapEditorEnabled) {
+			_pEditor->_pEditorFramebuffer->BindFramebuffer();
+			GameBeginRender();
+			GameRender(CameraManager::GetCamera("Editor"));
+			_pEditor->EditorLoop(_pCurrentScene, _tileMapEditorEnabled, _mPaused);
+
+			//_pEditor->EditorStartRender();
+			//DisplayTileEditor();
+			_pEditor->_pEditorFramebuffer->UnbindFramebuffer();
+			_pEditor->EditorRender();
+
+		}
+
 		GameBeginRender();
 		GameUpdate();
 		GameRender(CameraManager::CurrentCamera());
+
+
 
 		ImGuiManager::ImGuiEndFrame();
 
@@ -219,6 +235,11 @@ void Application::GameUpdate()
 {
 	CameraManager::CurrentCamera()->OnUpdate();
 	_pCurrentScene->Update();
+}
+
+void Application::DisplayTileEditor()
+{
+	TileMapEditor::Update(_pCurrentScene->GetTileMap());
 }
 
 //stop and play buttons switches play states

@@ -30,7 +30,7 @@ TileMap::~TileMap()
 
 void TileMap::ClearAllLayers()
 {
-	for (int i = 0; i < 3; i++) {
+	for (int i = 0; i < _numLayers; i++) {
 		for (int j = 0; j < _mapInTiles.x * _mapInTiles.y; j++) {
 			_tileArr[i][j]._pSprite = nullptr;
 		}
@@ -60,7 +60,7 @@ void TileMap::SaveTilemap() {
 	file["sizeY"] = _mapInTiles.y;
 	file["tilePerUnit"] = _tilesPerUnit;
 
-	for (int layer = 0; layer < 3; layer++) {
+	for (int layer = 0; layer < _numLayers; layer++) {
 		std::string tileLayout;
 		for each (TileData var in _tileArr[layer])
 		{
@@ -97,7 +97,7 @@ void TileMap::LoadTileMap()
 
 	int dimensions = _mapInTiles.x * _mapInTiles.y;
 	
-	for (int layer = 0; layer < 3; layer++) {
+	for (int layer = 0; layer < _numLayers; layer++) {
 		_tileArr[layer].resize(dimensions);
 		std::string tileInfo = file["tiles" + std::to_string(layer)];
 		std::stringstream ss(tileInfo);
@@ -232,7 +232,7 @@ void TileMap::RenderMap(Camera* cam)
 	Renderer2D::BeginRender(cam);
 
 	//Cycle through each layer
-	for (int i = 0; i < 3; i++) {
+	for (int i = 0; i < _numLayers; i++) {
 		//Cycle through the Y axis
 		for (float y = 0; y < _mapSizeInUnits.y; y += _gapBetweenTiles) {
 			//Cycle through the X axis
@@ -254,4 +254,13 @@ void TileMap::RenderMap(Camera* cam)
 
 	//Ends the batch render for the tilemap
 	Renderer2D::EndRender();
+}
+
+bool TileMap::CollidableAtPosition(const int x, const int y) const
+{
+	int tIndex = y * _mapInTiles.x + x;
+	for (int layer = 0; layer < _numLayers; layer++) {
+		if (_tileArr[layer][tIndex].collidable) return true;
+	}
+	return false;
 }
