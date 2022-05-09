@@ -16,14 +16,8 @@ void FarmScene::UpdateObjects()
 
 void FarmScene::InitScene()
 {
-	ResourceManager::InstantiateTexture("Button", new Texture2D("Resources/Images/ButtonTest.png"));
-	ResourceManager::InstantiateTexture("character", new Texture2D("Resources/Images/Spritesheets/AlexTest.png", true));
-	
 	_pAnimSheet = new AnimatedSpritesheet(ResourceManager::GetTexture("character"), 16, 32);
-	_pSpritesheet = new SpriteSheet(ResourceManager::GetTexture("spritesheet"), 128, 128);
-	ResourceManager::InstantiateSpritesheet("testSheet\0", _pSpritesheet);
-
-	
+	_pSpritesheet = ResourceManager::GetSpriteSheet("testSheet");
 
 	_pStartButton = new GameObject("BUTTON", ObjectType::UI);
 	_pStartButton->AddComponent(new Button(_pStartButton));
