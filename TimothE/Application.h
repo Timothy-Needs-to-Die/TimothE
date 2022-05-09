@@ -69,7 +69,6 @@ private:
 	bool _tileMapEditorEnabled = false;
 
 	Scene* _pCurrentScene;
-	FarmScene* _pFarmScene;
 
 	//TileMap* _pTilemap;
 	//SpriteSheet* _pSpritesheet;

@@ -1,6 +1,6 @@
 #include "ResourceManager.h"
-#include "Scene.h"
 #include "OpenGLError.h"
+#include "FarmScene.h"
 
 std::map<std::string, Texture2D*> ResourceManager::_textures;
 std::map<std::string, Shader*> ResourceManager::_shaders;
@@ -15,12 +15,15 @@ void ResourceManager::Init()
 
 	//LOAD TEXTURES
 	ResourceManager::InstantiateTexture("lenna", new Texture2D("lenna3.jpg"));
+	ResourceManager::InstantiateTexture("spritesheet", new Texture2D("testSheet.png", true));
 
 	//LOAD SHADERS
 	ResourceManager::InstantiateShader("ui", new Shader("vr_UIShader.vert", "fr_UIShader.frag"));
 	ResourceManager::InstantiateShader("default", new Shader("VertexShader.vert", "FragmentShader.frag"));
 
 	//LOAD SCENES
+	ResourceManager::InstantiateScene("CurrentScene", new Scene("Default"));
+	ResourceManager::InstantiateScene("FarmScene", new FarmScene("FarmScene"));
 
 	//LOAD SOUNDS
 	
