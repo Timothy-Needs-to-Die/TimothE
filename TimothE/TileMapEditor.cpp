@@ -152,13 +152,14 @@ void TileMapEditor::EditorUI(TileMap* pTilemap)
 
 	ImGui::Begin("Scene Window", 0, ImGuiWindowFlags_NoMove);
 
-	if (!ImGui::IsWindowFocused()) {
+	if (ImGui::IsWindowFocused()) {
 		if (Input::IsMouseButtonDown(BUTTON_LEFT)) {
 			pTilemap->AddTileAt(_currentLayer, _selectedTile.tileX, _selectedTile.tileY, CameraManager::GetCamera("Editor"), _collidableToggle);
 		}
 		else if (Input::IsMouseButtonDown(BUTTON_RIGHT)) {
 			pTilemap->AddTileAt(_currentLayer, 0, 0, CameraManager::GetCamera("Editor"), _collidableToggle);
 		}
+		std::cout << "In Focus!" << std::endl;
 	}
 	ImGui::End();
 }
