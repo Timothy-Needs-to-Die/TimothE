@@ -8,6 +8,13 @@
 #include "TileMap.h"
 #include "Physics.h"
 
+enum Direction {
+	UP,
+	DOWN,
+	LEFT,
+	RIGHT
+};
+
 class PlayerMovement : public Component
 {
 public:
@@ -26,7 +33,11 @@ public:
 	virtual void OnUpdate() override;
 	virtual void OnEnd() override;
 
+	Direction GetDirection() const { return _movementDirection; }
+
 private:
 	TileMap* _pTileMap;
+
+	Direction _movementDirection = Direction::UP;
 };
 

@@ -11,7 +11,36 @@ void FarmScene::UpdateObjects()
 {
 	Scene::UpdateObjects();
 
+	_pAnimSheet->Update();
 	
+	int currentRow = 0;
+	Direction playerDirection = _pPlayerMovement->GetDirection();
+	//Down, Right, Up, Left
+	switch (playerDirection)
+	{
+	case UP:
+		currentRow = 1;
+		break;
+	case DOWN:
+		currentRow = 3;
+		break;
+	case LEFT:
+		currentRow = 0;
+		break;
+	case RIGHT:
+		currentRow = 2;
+		break;
+	default:
+		break;
+	}
+
+	if (currentRow != _pAnimSheet->GetCurrentRow()) {
+		_pAnimSheet->SetCurrentRow(currentRow);
+	}
+
+	_pSc->SetSprite(_pAnimSheet->GetSpriteAtIndex(_pAnimSheet->GetCurrentIndex()));
+
+
 }
 
 void FarmScene::InitScene()
@@ -36,13 +65,14 @@ void FarmScene::InitScene()
 	_pPlayerMovement = new PlayerMovement(_pPlayerObject);
 	_pPlayerObject->AddComponent(_pPlayerMovement);
 	_pPlayerObject->AddComponent(ResourceManager::GetTexture("character"));
-	SpriteComponent* sc = _pPlayerObject->AddComponent<SpriteComponent>(new SpriteComponent(_pPlayerObject));
+	_pSc = _pPlayerObject->AddComponent<SpriteComponent>(new SpriteComponent(_pPlayerObject));
+	_pAnimSheet->SetFramerate(4);
 	_pPlayerObject->GetTransform()->SetScale({ 0.25f, 0.45f });
 	AddGameObject(_pPlayerObject);
 
 	_pTilemap = new TileMap(_name);
 
-	sc->SetSprite(_pAnimSheet->GetSpriteAtIndex(0));
+	_pSc->SetSprite(_pAnimSheet->GetSpriteAtIndex(0));
 	//_pTilemap->SetSpriteSheet(ResourceManager::GetSpriteSheet("testSheet"));
 	//_pTilemap->LoadTileMap();
 

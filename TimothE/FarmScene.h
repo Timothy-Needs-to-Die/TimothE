@@ -1,6 +1,8 @@
 #pragma once
 #include "Scene.h"
 #include "PlayerMovement.h"
+#include "SpriteComponent.h"
+#include "AnimatedSpritesheet.h"
 
 class FarmScene : public Scene
 {
@@ -25,6 +27,8 @@ private:
 	PlayerMovement* _pPlayerMovement = nullptr;
 
 	AnimatedSpritesheet* _pAnimSheet;
+
+	SpriteComponent* _pSc = nullptr;
 
 	SpriteSheet* _pSpritesheet;
 };

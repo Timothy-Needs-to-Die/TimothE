@@ -15,20 +15,24 @@ void PlayerMovement::OnUpdate()
 
 	if (Input::IsKeyDown(KEY_W)) {
 		newPos.y += 2.0f * Time::GetDeltaTime();
+		_movementDirection = UP;
 	}
 	else if (Input::IsKeyDown(KEY_S)) {
 		newPos.y -= 2.0f * Time::GetDeltaTime();
 
 		if (newPos.y < 0.0f) newPos.y = 0.0f;
+		_movementDirection = DOWN;
 	}
 
 	if (Input::IsKeyDown(KEY_A)) {
 		newPos.x -= 2.0f * Time::GetDeltaTime();
+		_movementDirection = LEFT;
 
 		if (newPos.x < 0.0f) newPos.x = 0.0f;
 	}
 	else if (Input::IsKeyDown(KEY_D)) {
 		newPos.x += 2.0f * Time::GetDeltaTime();
+		_movementDirection = RIGHT;
 	}
 
 	ColQuad playerQuad;
