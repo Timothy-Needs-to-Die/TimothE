@@ -9,6 +9,7 @@
 #include "Physics.h"
 
 enum Direction {
+	STATIONARY,
 	UP,
 	DOWN,
 	LEFT,
@@ -32,6 +33,8 @@ public:
 	virtual void OnStart() override;
 	virtual void OnUpdate() override;
 	virtual void OnEnd() override;
+
+	
 
 	Direction GetDirection() const { return _movementDirection; }
 

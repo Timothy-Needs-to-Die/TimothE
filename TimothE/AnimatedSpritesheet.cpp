@@ -10,18 +10,17 @@ AnimatedSpritesheet::AnimatedSpritesheet(Texture2D* texture, int spriteWidth, in
 void AnimatedSpritesheet::SetFramerate(int framerate)
 {
 	_framerate = framerate;
-	
-	if (_runThroughAll) {
-		_timeOnEachSprite = 1.0f / (_framerate);
-	}
-	else
-	{
-		_timeOnEachSprite = 1.0f / (_framerate);
-	}
+	_timeOnEachSprite = 1.0f / (_framerate);
 }
 
 void AnimatedSpritesheet::Update()
 {
+	if (_isStationary) {
+		_timer = 0.0f;
+		_currentIndex = _currentRow * _spritesPerRow;
+		return;
+	}
+
 	_timer += Time::GetDeltaTime();
 
 	if (_timer > _timeOnEachSprite) {

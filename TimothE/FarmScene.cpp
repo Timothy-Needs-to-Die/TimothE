@@ -13,8 +13,11 @@ void FarmScene::UpdateObjects()
 
 	_pAnimSheet->Update();
 	
-	int currentRow = 0;
+	int currentRow = _pAnimSheet->GetCurrentRow();
 	Direction playerDirection = _pPlayerMovement->GetDirection();
+
+	_pAnimSheet->SetStationary(playerDirection == STATIONARY);
+
 	//Down, Right, Up, Left
 	switch (playerDirection)
 	{

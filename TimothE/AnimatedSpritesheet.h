@@ -16,6 +16,10 @@ public:
 
 	int GetCurrentIndex() const { return _currentIndex; }
 
+	void SetStationary(bool isStationary) {
+		_isStationary = isStationary;
+	}
+
 	void Update();
 
 	glm::vec2* GetNextTexCoords(int row, int currentIndex);
@@ -23,6 +27,8 @@ public:
 private:
 	int _framerate;
 	bool _runThroughAll = false;
+
+	bool _isStationary = false;
 
 	int _rows;
 	int _currentRow;

@@ -13,27 +13,41 @@ void PlayerMovement::OnUpdate()
 	glm::vec2 originalPosition = transform->GetPosition();
 	glm::vec2 newPos = originalPosition;
 
+	bool _moving = false;
+
 	if (Input::IsKeyDown(KEY_W)) {
 		newPos.y += 2.0f * Time::GetDeltaTime();
 		_movementDirection = UP;
+		_moving = true;
 	}
 	else if (Input::IsKeyDown(KEY_S)) {
 		newPos.y -= 2.0f * Time::GetDeltaTime();
+		_moving = true;
+		if (newPos.y < 0.0f) {
+			newPos.y = 0.0f;
+			_moving = false;
+		}
 
-		if (newPos.y < 0.0f) newPos.y = 0.0f;
 		_movementDirection = DOWN;
 	}
 
 	if (Input::IsKeyDown(KEY_A)) {
 		newPos.x -= 2.0f * Time::GetDeltaTime();
 		_movementDirection = LEFT;
+		_moving = true;
 
-		if (newPos.x < 0.0f) newPos.x = 0.0f;
+		if (newPos.x < 0.0f) {
+			_moving = false;
+			newPos.x = 0.0f;
+		}
 	}
 	else if (Input::IsKeyDown(KEY_D)) {
 		newPos.x += 2.0f * Time::GetDeltaTime();
+		_moving = true;
 		_movementDirection = RIGHT;
 	}
+
+	if (!_moving) _movementDirection = STATIONARY;
 
 	ColQuad playerQuad;
 	playerQuad.pos = newPos;
