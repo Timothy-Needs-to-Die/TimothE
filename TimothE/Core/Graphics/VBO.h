@@ -14,7 +14,6 @@ public:
 	static std::shared_ptr<VBO> Create(unsigned int size);
 	static std::shared_ptr<VBO> Create(float* vertices, unsigned int size);
 	
-
 	void Bind() const;
 	void Unbind() const;
 

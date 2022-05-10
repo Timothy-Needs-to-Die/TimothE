@@ -15,7 +15,8 @@
 
 #define BIND_EVENT_FN(x) std::bind(&Application::x, this, std::placeholders::_1)
 
-double Time::deltaTime;
+double Time::_deltaTime;
+double Time::_time;
 
 void GLAPIENTRY MessageCallback(GLenum source,
 	GLenum type,
@@ -136,7 +137,7 @@ void Application::GameLoop()
 		//deltatime update
 		double deltaTime = glfwGetTime();
 
-		Time::SetDeltaTime(deltaTime - previousTime);
+		Time::Update(deltaTime - previousTime , glfwGetTime());
 
 		//imgui update frame
 		ImGuiManager::ImGuiNewFrame();
@@ -165,8 +166,6 @@ void Application::GameLoop()
 		GameBeginRender();
 		GameUpdate();
 		GameRender(CameraManager::CurrentCamera());
-
-
 
 		ImGuiManager::ImGuiEndFrame();
 
