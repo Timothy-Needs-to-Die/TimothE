@@ -120,6 +120,7 @@
     <ClInclude Include="MemoryManager.h" />
     <ClInclude Include="Core\Events\MouseEvent.h" />
     <ClInclude Include="Core\Graphics\OpenGLError.h" />
+    <ClInclude Include="MovementComponent.h" />
     <ClInclude Include="Particle.h" />
     <ClInclude Include="ParticleSystem.h" />
     <ClInclude Include="Physics.h" />
@@ -198,6 +199,7 @@
     <ClCompile Include="Imgui\imgui_widgets.cpp" />
     <ClCompile Include="Input.cpp" />
     <ClCompile Include="MemoryManager.cpp" />
+    <ClCompile Include="MovementComponent.cpp" />
     <ClCompile Include="Particle.cpp" />
     <ClCompile Include="ParticleSystem.cpp" />
     <ClCompile Include="Physics.cpp" />

@@ -122,11 +122,27 @@ void TileMap::LoadTileMap()
 			getline(ss, s2, ' ');
 
 			int index = std::stoi(s1);
+
 			bool collidable = std::stoi(s2);
 
 			_tileArr[layer][i].texIndex = index;
 			_tileArr[layer][i]._pSprite = _pSpritesheet->GetSpriteAtIndex(index);
 			_tileArr[layer][i].collidable = collidable;
+
+			int row = i / _mapInTiles.x;
+			int xIndex = i - (row * _mapInTiles.x);
+
+			//int xIndex = 
+
+			float xPos = (float)xIndex * _gapBetweenTiles;
+			float yPos = ((float)row * _gapBetweenTiles);
+			glm::vec2 colPos = glm::vec2(xPos, yPos);
+			_tileArr[layer][i].colXPos = xPos;
+			_tileArr[layer][i].colYPos = yPos;
+
+			std::cout << "Index: " << i << " X Pos: " << xPos << " Y Pos: " << yPos << std::endl;
+
+			_tileArr[layer][i].size = _gapBetweenTiles;
 		}
 	}
 
@@ -211,9 +227,6 @@ void TileMap::ClearLayer(int layer)
 {
 	//Cycle through all tiles on this layer and remove their sprite
 	for (int i = 0; i < _mapInTiles.x * _mapInTiles.y; i++) {
-		//_tileArr[layer][i]._pSprite = nullptr;
-		//_tileArr[layer][i].texIndex = 0;
-		//_tileArr[layer][i].collidable = false;
 		_tileArr[layer][i] = TileData();
 	}
 }
@@ -266,6 +279,23 @@ bool TileMap::CollidableAtPosition(const int x, const int y) const
 	int tIndex = y * _mapInTiles.x + x;
 	for (int layer = 0; layer < _numLayers; layer++) {
 		if (_tileArr[layer][tIndex].collidable) return true;
+	}
+	return false;
+}
+
+bool TileMap::CollidableAtPosition(glm::vec2 worldPos)
+{
+	TileData* td = GetTileAtWorldPos(0, worldPos);
+	
+	int index = _mapInTiles.x * (int)(worldPos.y * _tilesPerUnit) + (int)(worldPos.x * _tilesPerUnit);
+	
+	return CollidableAtPosition(index);
+}
+
+bool TileMap::CollidableAtPosition(const int index)
+{
+	for (int layer = 0; layer < _numLayers; layer++) {
+		if (_tileArr[layer][index].collidable) return true;
 	}
 	return false;
 }

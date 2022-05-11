@@ -3,6 +3,7 @@
 #include "PlayerMovement.h"
 #include "SpriteComponent.h"
 #include "AnimatedSpritesheet.h"
+#include "MovementComponent.h"
 
 class FarmScene : public Scene
 {
@@ -25,6 +26,7 @@ private:
 	GameObject* _pPlayerObject = nullptr;
 
 	PlayerMovement* _pPlayerMovement = nullptr;
+	MovementComponent* _pMovement = nullptr;
 
 	AnimatedSpritesheet* _pAnimSheet;
 

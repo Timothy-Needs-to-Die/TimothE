@@ -7,14 +7,8 @@
 #include "TileData.h"
 #include "TileMap.h"
 #include "Physics.h"
+#include "MovementComponent.h"
 
-enum Direction {
-	STATIONARY,
-	UP,
-	DOWN,
-	LEFT,
-	RIGHT
-};
 
 class PlayerMovement : public Component
 {
@@ -34,13 +28,8 @@ public:
 	virtual void OnUpdate() override;
 	virtual void OnEnd() override;
 
-	
-
-	Direction GetDirection() const { return _movementDirection; }
-
 private:
 	TileMap* _pTileMap;
-
-	Direction _movementDirection = Direction::UP;
+	MovementComponent* _pMovement;
 };
 

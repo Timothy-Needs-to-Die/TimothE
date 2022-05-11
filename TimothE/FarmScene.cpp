@@ -4,7 +4,7 @@
 
 void FarmScene::UpdateUI()
 {
-	
+
 }
 
 void FarmScene::UpdateObjects()
@@ -12,25 +12,23 @@ void FarmScene::UpdateObjects()
 	Scene::UpdateObjects();
 
 	_pAnimSheet->Update();
-	
+
 	int currentRow = _pAnimSheet->GetCurrentRow();
-	Direction playerDirection = _pPlayerMovement->GetDirection();
 
-	_pAnimSheet->SetStationary(playerDirection == STATIONARY);
+	Direction playerDirection = _pMovement->GetDirection();
 
-	//Down, Right, Up, Left
 	switch (playerDirection)
 	{
-	case UP:
+	case Direction::UP:
 		currentRow = 1;
 		break;
-	case DOWN:
-		currentRow = 3;
-		break;
-	case LEFT:
+	case Direction::DOWN:
 		currentRow = 0;
 		break;
-	case RIGHT:
+	case Direction::LEFT:
+		currentRow = 3;
+		break;
+	case Direction::RIGHT:
 		currentRow = 2;
 		break;
 	default:
@@ -41,6 +39,7 @@ void FarmScene::UpdateObjects()
 		_pAnimSheet->SetCurrentRow(currentRow);
 	}
 
+	_pAnimSheet->SetStationary(!_pMovement->IsMoving());
 	_pSc->SetSprite(_pAnimSheet->GetSpriteAtIndex(_pAnimSheet->GetCurrentIndex()));
 
 
@@ -65,6 +64,8 @@ void FarmScene::InitScene()
 	//AddGameObject(_pStartButton);
 
 	_pPlayerObject = new GameObject("Player");
+	_pMovement = _pPlayerObject->AddComponent(new MovementComponent(_pPlayerObject));
+	_pMovement->SetMovementSpeed(2.0f);
 	_pPlayerMovement = new PlayerMovement(_pPlayerObject);
 	_pPlayerObject->AddComponent(_pPlayerMovement);
 	_pPlayerObject->AddComponent(ResourceManager::GetTexture("character"));

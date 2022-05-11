@@ -77,9 +77,13 @@ void Application::Init(bool devMode)
 
 	ResourceManager::GetScene("FarmScene")->InitScene();
 
-	_pCurrentScene = ResourceManager::GetScene("FarmScene");
+	//_pCurrentScene = ResourceManager::GetScene("FarmScene");
 
-	//SceneManager::Init();
+	SceneManager::Init();
+	_pCurrentScene = SceneManager::CreateScene(ResourceManager::GetScene("FarmScene"));
+	_pCurrentScene->SceneStart();
+	SceneManager::SetCurrentScene(_pCurrentScene);
+
 	//SceneManager::SetCurrentScene(new FarmScene("FarmSceen"));
 	//SceneManager::GetCurrentScene()->InitScene();
 

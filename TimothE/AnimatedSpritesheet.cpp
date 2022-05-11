@@ -5,6 +5,11 @@ AnimatedSpritesheet::AnimatedSpritesheet(Texture2D* texture, int spriteWidth, in
 	: SpriteSheet(texture, spriteWidth, spriteHeight), _rows(_sheetHeightInPixels / _spriteHeight)
 {
 	_spritesPerRow = _numOfSprites / _rows;
+	_framerate = 4;
+	_currentRow = 0;
+	_timeOnEachSprite = 0.25f;
+	_timer = 0.0f;
+	_currentIndex = 0;
 }
 
 void AnimatedSpritesheet::SetFramerate(int framerate)
