@@ -2,14 +2,23 @@
 #include <vector>
 #include <vec3.hpp>
 #include <stdlib.h>
+#include <vector>
+#include <algorithm>
+class MapNode {
+public:
+	glm::vec3 position;
+	int fCost;
+	int gCost;
+	int hCost;
+	int id;
+	MapNode* previousNodePAth = NULL;
+};
+
+
+
 class AStar
 {
 public:
-	struct Node
-	{
-		glm::vec3 position;
-		int fCost;
-	};
 
 	glm::vec3 PathFinding(glm::vec3 startPos);
 	std::vector<glm::vec3> GetPathPoints();
@@ -18,10 +27,10 @@ public:
 
 private:
 	std::vector<glm::vec3> _mPoints;
-	std::vector<glm::vec3> _mMapTiles;
+	std::vector<MapNode> _mMapNodes;
+	std::vector<MapNode> _mPath;
 	int _mMapTilesX;
 	int _mMapTilesY;
 
-	int CalculateDistance(Node nodeA, Node nodeB);
-	std::vector<glm::vec3> GetNeighbours(Node node);
+	int CalculateDistance(MapNode nodeA, MapNode nodeB);
 };
