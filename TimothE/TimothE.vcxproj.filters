@@ -18,19 +18,10 @@
     <ClInclude Include="Application.h">
       <Filter>Headers</Filter>
     </ClInclude>
-    <ClInclude Include="Core\Events\ApplicationEvent.h">
-      <Filter>Headers</Filter>
-    </ClInclude>
     <ClInclude Include="AudioEngine.h">
       <Filter>Headers</Filter>
     </ClInclude>
-    <ClInclude Include="Core\Graphics\Base.h">
-      <Filter>Headers</Filter>
-    </ClInclude>
     <ClInclude Include="BoxColliderComponent.h">
-      <Filter>Headers</Filter>
-    </ClInclude>
-    <ClInclude Include="Core\Graphics\BufferLayout.h">
       <Filter>Headers</Filter>
     </ClInclude>
     <ClInclude Include="Button.h">
@@ -54,22 +45,64 @@
     <ClInclude Include="Console.h">
       <Filter>Headers</Filter>
     </ClInclude>
+    <ClInclude Include="Core\Events\ApplicationEvent.h">
+      <Filter>Headers</Filter>
+    </ClInclude>
+    <ClInclude Include="Core\Events\Event.h">
+      <Filter>Headers</Filter>
+    </ClInclude>
+    <ClInclude Include="Core\Events\KeyEvent.h">
+      <Filter>Headers</Filter>
+    </ClInclude>
+    <ClInclude Include="Core\Events\MouseEvent.h">
+      <Filter>Headers</Filter>
+    </ClInclude>
+    <ClInclude Include="Core\Graphics\Base.h">
+      <Filter>Headers</Filter>
+    </ClInclude>
+    <ClInclude Include="Core\Graphics\BufferLayout.h">
+      <Filter>Headers</Filter>
+    </ClInclude>
+    <ClInclude Include="Core\Graphics\Framebuffer.h">
+      <Filter>Headers</Filter>
+    </ClInclude>
+    <ClInclude Include="Core\Graphics\IBO.h">
+      <Filter>Headers</Filter>
+    </ClInclude>
+    <ClInclude Include="Core\Graphics\OpenGLError.h">
+      <Filter>Headers</Filter>
+    </ClInclude>
+    <ClInclude Include="Core\Graphics\RBO.h">
+      <Filter>Headers</Filter>
+    </ClInclude>
+    <ClInclude Include="Core\Graphics\Renderer2D.h">
+      <Filter>Headers</Filter>
+    </ClInclude>
+    <ClInclude Include="Core\Graphics\Shader.h">
+      <Filter>Headers</Filter>
+    </ClInclude>
+    <ClInclude Include="Core\Graphics\SubTexture2D.h">
+      <Filter>Headers</Filter>
+    </ClInclude>
+    <ClInclude Include="Core\Graphics\VAO.h">
+      <Filter>Headers</Filter>
+    </ClInclude>
+    <ClInclude Include="Core\Graphics\VBO.h">
+      <Filter>Headers</Filter>
+    </ClInclude>
+    <ClInclude Include="Core\Graphics\Window.h">
+      <Filter>Headers</Filter>
+    </ClInclude>
     <ClInclude Include="Dirent.h">
       <Filter>Headers</Filter>
     </ClInclude>
     <ClInclude Include="Editor.h">
       <Filter>Headers</Filter>
     </ClInclude>
-    <ClInclude Include="Core\Events\Event.h">
-      <Filter>Headers</Filter>
-    </ClInclude>
     <ClInclude Include="FarmScene.h">
       <Filter>Headers</Filter>
     </ClInclude>
     <ClInclude Include="Font.h">
-      <Filter>Headers</Filter>
-    </ClInclude>
-    <ClInclude Include="Core\Graphics\Framebuffer.h">
       <Filter>Headers</Filter>
     </ClInclude>
     <ClInclude Include="GameObject.h">
@@ -79,9 +112,6 @@
       <Filter>Headers</Filter>
     </ClInclude>
     <ClInclude Include="HeapManager.h">
-      <Filter>Headers</Filter>
-    </ClInclude>
-    <ClInclude Include="Core\Graphics\IBO.h">
       <Filter>Headers</Filter>
     </ClInclude>
     <ClInclude Include="ImGuiManager.h">
@@ -117,16 +147,7 @@
     <ClInclude Include="Input.h">
       <Filter>Headers</Filter>
     </ClInclude>
-    <ClInclude Include="Core\Events\KeyEvent.h">
-      <Filter>Headers</Filter>
-    </ClInclude>
     <ClInclude Include="MemoryManager.h">
-      <Filter>Headers</Filter>
-    </ClInclude>
-    <ClInclude Include="Core\Events\MouseEvent.h">
-      <Filter>Headers</Filter>
-    </ClInclude>
-    <ClInclude Include="Core\Graphics\OpenGLError.h">
       <Filter>Headers</Filter>
     </ClInclude>
     <ClInclude Include="Particle.h">
@@ -142,12 +163,6 @@
       <Filter>Headers</Filter>
     </ClInclude>
     <ClInclude Include="Quad.h">
-      <Filter>Headers</Filter>
-    </ClInclude>
-    <ClInclude Include="Core\Graphics\RBO.h">
-      <Filter>Headers</Filter>
-    </ClInclude>
-    <ClInclude Include="Core\Graphics\Renderer2D.h">
       <Filter>Headers</Filter>
     </ClInclude>
     <ClInclude Include="ResourceManager.h">
@@ -213,9 +228,6 @@
     <ClInclude Include="Serializable.h">
       <Filter>Headers</Filter>
     </ClInclude>
-    <ClInclude Include="Core\Graphics\Shader.h">
-      <Filter>Headers</Filter>
-    </ClInclude>
     <ClInclude Include="Sprite.h">
       <Filter>Headers</Filter>
     </ClInclude>
@@ -229,9 +241,6 @@
       <Filter>Headers</Filter>
     </ClInclude>
     <ClInclude Include="StreamFile.h">
-      <Filter>Headers</Filter>
-    </ClInclude>
-    <ClInclude Include="Core\Graphics\SubTexture2D.h">
       <Filter>Headers</Filter>
     </ClInclude>
     <ClInclude Include="TestComponent.h">
@@ -262,15 +271,6 @@
       <Filter>Headers</Filter>
     </ClInclude>
     <ClInclude Include="UID.h">
-      <Filter>Headers</Filter>
-    </ClInclude>
-    <ClInclude Include="Core\Graphics\VAO.h">
-      <Filter>Headers</Filter>
-    </ClInclude>
-    <ClInclude Include="Core\Graphics\VBO.h">
-      <Filter>Headers</Filter>
-    </ClInclude>
-    <ClInclude Include="Core\Graphics\Window.h">
       <Filter>Headers</Filter>
     </ClInclude>
     <ClInclude Include="pch.h">
@@ -309,6 +309,33 @@
     <ClCompile Include="Console.cpp">
       <Filter>Source</Filter>
     </ClCompile>
+    <ClCompile Include="Core\Graphics\Framebuffer.cpp">
+      <Filter>Source</Filter>
+    </ClCompile>
+    <ClCompile Include="Core\Graphics\IBO.cpp">
+      <Filter>Source</Filter>
+    </ClCompile>
+    <ClCompile Include="Core\Graphics\RBO.cpp">
+      <Filter>Source</Filter>
+    </ClCompile>
+    <ClCompile Include="Core\Graphics\Renderer2D.cpp">
+      <Filter>Source</Filter>
+    </ClCompile>
+    <ClCompile Include="Core\Graphics\Shader.cpp">
+      <Filter>Source</Filter>
+    </ClCompile>
+    <ClCompile Include="Core\Graphics\SubTexture2D.cpp">
+      <Filter>Source</Filter>
+    </ClCompile>
+    <ClCompile Include="Core\Graphics\VAO.cpp">
+      <Filter>Source</Filter>
+    </ClCompile>
+    <ClCompile Include="Core\Graphics\VBO.cpp">
+      <Filter>Source</Filter>
+    </ClCompile>
+    <ClCompile Include="Core\Graphics\Window.cpp">
+      <Filter>Source</Filter>
+    </ClCompile>
     <ClCompile Include="Editor.cpp">
       <Filter>Source</Filter>
     </ClCompile>
@@ -318,9 +345,6 @@
     <ClCompile Include="Font.cpp">
       <Filter>Source</Filter>
     </ClCompile>
-    <ClCompile Include="Core\Graphics\Framebuffer.cpp">
-      <Filter>Source</Filter>
-    </ClCompile>
     <ClCompile Include="GameObject.cpp">
       <Filter>Source</Filter>
     </ClCompile>
@@ -328,9 +352,6 @@
       <Filter>Source</Filter>
     </ClCompile>
     <ClCompile Include="HeapManager.cpp">
-      <Filter>Source</Filter>
-    </ClCompile>
-    <ClCompile Include="Core\Graphics\IBO.cpp">
       <Filter>Source</Filter>
     </ClCompile>
     <ClCompile Include="Imgui\imgui.cpp">
@@ -372,12 +393,6 @@
     <ClCompile Include="PlayerMovement.cpp">
       <Filter>Source</Filter>
     </ClCompile>
-    <ClCompile Include="Core\Graphics\RBO.cpp">
-      <Filter>Source</Filter>
-    </ClCompile>
-    <ClCompile Include="Core\Graphics\Renderer2D.cpp">
-      <Filter>Source</Filter>
-    </ClCompile>
     <ClCompile Include="ResourceManager.cpp">
       <Filter>Source</Filter>
     </ClCompile>
@@ -385,9 +400,6 @@
       <Filter>Source</Filter>
     </ClCompile>
     <ClCompile Include="SceneManager.cpp">
-      <Filter>Source</Filter>
-    </ClCompile>
-    <ClCompile Include="Core\Graphics\Shader.cpp">
       <Filter>Source</Filter>
     </ClCompile>
     <ClCompile Include="Source.cpp">
@@ -408,9 +420,6 @@
     <ClCompile Include="StreamHelpers.cpp">
       <Filter>Source</Filter>
     </ClCompile>
-    <ClCompile Include="Core\Graphics\SubTexture2D.cpp">
-      <Filter>Source</Filter>
-    </ClCompile>
     <ClCompile Include="TestComponent.cpp">
       <Filter>Source</Filter>
     </ClCompile>
@@ -427,15 +436,6 @@
       <Filter>Source</Filter>
     </ClCompile>
     <ClCompile Include="Transform.cpp">
-      <Filter>Source</Filter>
-    </ClCompile>
-    <ClCompile Include="Core\Graphics\VAO.cpp">
-      <Filter>Source</Filter>
-    </ClCompile>
-    <ClCompile Include="Core\Graphics\VBO.cpp">
-      <Filter>Source</Filter>
-    </ClCompile>
-    <ClCompile Include="Core\Graphics\Window.cpp">
       <Filter>Source</Filter>
     </ClCompile>
     <ClCompile Include="pch.cpp">
