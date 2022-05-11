@@ -48,3 +48,8 @@ project "TimothE"
 		"freetype.lib",
 		"fmod_vc.lib"
 	}
+
+	vpaths {
+		["Headers"] = "**.h",
+		["Source"] = "**.cpp",
+	}

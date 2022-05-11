@@ -1,12 +1,16 @@
 #pragma once
 
-#include "pch.h"
+#include <gl/glew.h>
+#include <GLFW/glfw3.h>
+#include <GL/GL.h>
 
-#include "Event.h"
+#include <glm.hpp>
 
-#include "ApplicationEvent.h"
-#include "MouseEvent.h"
-#include "KeyEvent.h"
+#include "../Events/Event.h"
+
+#include "../Events/ApplicationEvent.h"
+#include "../Events/MouseEvent.h"
+#include "../Events/KeyEvent.h"
 
 class Window
 {

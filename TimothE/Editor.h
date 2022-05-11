@@ -2,9 +2,9 @@
 
 #include "pch.h"
 
-#include "Window.h"
-#include "Framebuffer.h"
-#include "Shader.h"
+#include "Core/Graphics/Window.h"
+#include "Core/Graphics/Framebuffer.h"
+#include "Core/Graphics/Shader.h"
 #include "Scene.h"
 #include "Camera.h"
 #include "Console.h"

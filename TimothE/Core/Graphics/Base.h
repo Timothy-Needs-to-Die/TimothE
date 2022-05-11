@@ -1,6 +1,6 @@
 #pragma once
 
-#include "pch.h"
+#include <memory>
 
 template<typename T, typename ... Args>
 constexpr std::shared_ptr<T> CreateRef(Args&& ... args)

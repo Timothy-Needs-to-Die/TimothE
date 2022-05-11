@@ -78,6 +78,8 @@ public:
 	void RenderMap(Camera* cam);
 
 	bool CollidableAtPosition(const int x, const int y) const;
+	bool CollidableAtPosition(const int index);
+	bool CollidableAtPosition(glm::vec2 worldPos) ;
 
 
 private:

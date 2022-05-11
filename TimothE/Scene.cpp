@@ -5,9 +5,9 @@
 #include "StreamFile.h"
 #include "Button.h"
 #include "ResourceManager.h"
-#include "Renderer2D.h"
+#include "Core/Graphics/Renderer2D.h"
 
-#include "SubTexture2D.h"
+#include "Core/Graphics/SubTexture2D.h"
 #include "PlayerMovement.h"
 #include "SpriteComponent.h"
 #include "Time.h"

@@ -2,7 +2,9 @@
 
 #define BIT(x) (1 << x)
 
-#include "pch.h"
+#include <iostream>
+#include <functional>
+#include <sstream>
 
 //Events currently happen and then instantly get handled.
 //No event queue system currently TODO: Implement a event queue?
