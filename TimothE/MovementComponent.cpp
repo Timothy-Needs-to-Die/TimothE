@@ -57,8 +57,6 @@ void MovementComponent::CollisionCheck(glm::vec2& newPos)
 
 			bool collidable = pTilemap->CollidableAtPosition(pos);
 			if (collidable) {
-				std::cout << "Collidable" << std::endl;
-
 				TileData* tile = pTilemap->GetTileAtWorldPos(0, pos);
 
 				ColQuad tileQuad;
@@ -84,26 +82,6 @@ void MovementComponent::CollisionCheck(glm::vec2& newPos)
 					}
 				}
 			}
-
-			//if (tile->collidable) {
-			//	if (Physics::Intersects(playerQuad, tileQuad)) {
-
-			//		float dx1 = tileQuad.pos.x - playerQuad.max.x;
-			//		float dx2 = tileQuad.max.x - playerQuad.pos.x;
-			//		float dy1 = tileQuad.pos.y - playerQuad.max.y;
-			//		float dy2 = tileQuad.max.y - playerQuad.pos.y;
-
-			//		float dx = (abs(dx1) < abs(dx2)) ? dx1 : dx2;
-			//		float dy = (abs(dy1) < abs(dy2)) ? dy1 : dy2;
-
-			//		if (abs(dx) <= abs(dy)) {
-			//			newPos.x += dx;
-			//		}
-			//		else if (abs(dy) <= abs(dx)) {
-			//			newPos.y += dy;
-			//		}
-			//	}
-			//}
 		}
 	}
 }

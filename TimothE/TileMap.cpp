@@ -140,8 +140,6 @@ void TileMap::LoadTileMap()
 			_tileArr[layer][i].colXPos = xPos;
 			_tileArr[layer][i].colYPos = yPos;
 
-			std::cout << "Index: " << i << " X Pos: " << xPos << " Y Pos: " << yPos << std::endl;
-
 			_tileArr[layer][i].size = _gapBetweenTiles;
 		}
 	}
