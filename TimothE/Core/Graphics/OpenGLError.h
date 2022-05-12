@@ -1,5 +1,12 @@
 #pragma once
-#include "pch.h"
+
+//OpenGL Stuff
+#include <gl/glew.h>
+#include <GLFW/glfw3.h>
+#include <GL/GL.h>
+
+#include <string>
+#include <iostream>
 
 #define ASSERT(x) if(!(x)) __debugbreak();
 #define GLCall(x) GLClearError();\

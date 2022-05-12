@@ -6,7 +6,7 @@
 #include "Component.h"
 
 #include "SOIL/stb_image.h"
-#include "OpenGLError.h"
+#include "Core/Graphics/OpenGLError.h"
 
 class Texture2D : public Component
 {

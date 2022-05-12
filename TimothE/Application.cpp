@@ -4,18 +4,19 @@
 #include "UID.h"
 #include "ImGuiManager.h"
 #include "Texture2D.h"
-#include "SubTexture2D.h"
+#include "Core/Graphics/SubTexture2D.h"
 #include "Button.h"
 #include "ResourceManager.h"
 #include "Editor.h"
-#include "Renderer2D.h"
+#include "Core/Graphics/Renderer2D.h"
 #include "TileMap.h"
 #include "Time.h"
 #include "FarmScene.h"
 
 #define BIND_EVENT_FN(x) std::bind(&Application::x, this, std::placeholders::_1)
 
-double Time::deltaTime;
+double Time::_deltaTime;
+double Time::_time;
 
 void GLAPIENTRY MessageCallback(GLenum source,
 	GLenum type,
@@ -77,9 +78,13 @@ void Application::Init(bool devMode)
 
 	ResourceManager::GetScene("FarmScene")->InitScene();
 
-	_pCurrentScene = ResourceManager::GetScene("FarmScene");
+	//_pCurrentScene = ResourceManager::GetScene("FarmScene");
 
-	//SceneManager::Init();
+	SceneManager::Init();
+	_pCurrentScene = SceneManager::CreateScene(ResourceManager::GetScene("FarmScene"));
+	_pCurrentScene->SceneStart();
+	SceneManager::SetCurrentScene(_pCurrentScene);
+
 	//SceneManager::SetCurrentScene(new FarmScene("FarmSceen"));
 	//SceneManager::GetCurrentScene()->InitScene();
 
@@ -136,12 +141,31 @@ void Application::GameLoop()
 		//deltatime update
 		double deltaTime = glfwGetTime();
 
-		Time::SetDeltaTime(deltaTime - previousTime);
+		Time::Update(deltaTime - previousTime , glfwGetTime());
 
 		//imgui update frame
 		ImGuiManager::ImGuiNewFrame();
 
 		//_pTilemap->UpdateLogic(CameraManager::GetCamera("Editor"));
+
+		if (Input::IsKeyDown(TimothEKeyCode::KEY_0)) {
+			_tileMapEditorEnabled = !_tileMapEditorEnabled;
+			std::string cameraName = _tileMapEditorEnabled ? "Editor" : "Main Camera";
+			CameraManager::SetCamera(cameraName);
+		}
+
+		if (_tileMapEditorEnabled) {
+			_pEditor->_pEditorFramebuffer->BindFramebuffer();
+			GameBeginRender();
+			GameRender(CameraManager::GetCamera("Editor"));
+			_pEditor->EditorLoop(_pCurrentScene, _tileMapEditorEnabled, _mPaused);
+
+			//_pEditor->EditorStartRender();
+			//DisplayTileEditor();
+			_pEditor->_pEditorFramebuffer->UnbindFramebuffer();
+			_pEditor->EditorRender();
+
+		}
 
 		GameBeginRender();
 		GameUpdate();
@@ -214,6 +238,11 @@ void Application::GameUpdate()
 {
 	CameraManager::CurrentCamera()->OnUpdate();
 	_pCurrentScene->Update();
+}
+
+void Application::DisplayTileEditor()
+{
+	TileMapEditor::Update(_pCurrentScene->GetTileMap());
 }
 
 //stop and play buttons switches play states
