@@ -43,15 +43,56 @@ glm::vec2 AStar::PathFinding(glm::vec2 startPos)
         std::vector<MapNode> neighbours;
         std::vector<int> openIDs;
         std::vector<int> closedIDs;
-        int id = current.id;
-        neighbours.push_back(_mMapNodes.at(id - 1));//mid left
-        neighbours.push_back(_mMapNodes.at(id + 1));//mid right
-        neighbours.push_back(_mMapNodes.at(id + _mMapTilesX));//bottom
-        neighbours.push_back(_mMapNodes.at(id - _mMapTilesX));//top
-        neighbours.push_back(_mMapNodes.at(id - 1 + _mMapTilesX));//top left
-        neighbours.push_back(_mMapNodes.at(id + 1 + _mMapTilesX));//top right
-        neighbours.push_back(_mMapNodes.at(id - 1 - _mMapTilesX));//bottom left
-        neighbours.push_back(_mMapNodes.at(id + 1 - _mMapTilesX));//bottom right
+        int id = current.id; // cant be on edge of map
+        if ((id - 1) > -1)
+        {
+            neighbours.push_back(_mMapNodes.at(id - 1));//mid left
+        }
+        if ((id + 1) < _mMapTilesX * _mMapTilesY)
+        {
+            neighbours.push_back(_mMapNodes.at(id + 1));//mid right
+        }
+        if ((id + _mMapTilesX) < _mMapTilesX * _mMapTilesY)
+        {
+            neighbours.push_back(_mMapNodes.at(id + _mMapTilesX));//bottom
+        }
+        if ((id - _mMapTilesX) > -1)
+        {
+            neighbours.push_back(_mMapNodes.at(id - _mMapTilesX));//top
+        }
+        if ((id - 1 + _mMapTilesX) < _mMapTilesX * _mMapTilesY)
+        {
+            neighbours.push_back(_mMapNodes.at(id - 1 + _mMapTilesX));//top left
+        }
+        if ((id + 1 + _mMapTilesX) < _mMapTilesX * _mMapTilesY)
+        {
+            neighbours.push_back(_mMapNodes.at(id + 1 + _mMapTilesX));//top right
+        }
+        if ((id - 1 - _mMapTilesX) > -1)
+        {
+            neighbours.push_back(_mMapNodes.at(id - 1 - _mMapTilesX));//bottom left
+        }
+        if ((id + 1 - _mMapTilesX) > -1)
+        {
+            neighbours.push_back(_mMapNodes.at(id + 1 - _mMapTilesX));//bottom right
+        }
+        
+        
+        
+        
+        
+
+        for (int i = 0; i < neighbours.size(); i++)
+        {
+            if (neighbours.at(i).id < 0)
+            {
+                neighbours.at(i).id = 0;
+            }
+            else if(neighbours.at(i).id > _mMapTilesX * _mMapTilesY)
+            {
+                neighbours.at(i).id = _mMapTilesX * _mMapTilesY;
+            }
+        }
 
         //finds ids for open and closed lists
         for (int closedID = 0; closedID < closedList.size(); closedID++)
@@ -115,11 +156,11 @@ void AStar::SetPathPoints(glm::vec2 _points)
 }
 
 //sets tile map
-void AStar::SetMapCoords(std::vector<glm::vec2> mapTiles, glm::vec2 size)
+void AStar::SetMapCoords(std::vector<TileData> mapTiles, glm::vec2 size)
 {
-    int id;
+    int id = 0;
     //set all map tiles as nodes
-    for each (glm::vec2 position in mapTiles)
+    for each (TileData position in mapTiles)
     {
         MapNode mapTile;
         mapTile.fCost = 0;
@@ -127,7 +168,9 @@ void AStar::SetMapCoords(std::vector<glm::vec2> mapTiles, glm::vec2 size)
         mapTile.gCost = 0;
         mapTile.id = id;
         id++;
-        mapTile.position = position;
+        mapTile.position.x = position.colXPos;
+        mapTile.position.y = position.colYPos;
+        mapTile.wall = position.collidable;
         _mMapNodes.push_back(mapTile);
     }
     _mMapTilesX = size.x;

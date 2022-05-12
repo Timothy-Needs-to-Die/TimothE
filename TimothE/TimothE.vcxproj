@@ -80,6 +80,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClInclude Include="AIController.h" />
     <ClInclude Include="AStar.h" />
     <ClInclude Include="AnimatedSpritesheet.h" />
     <ClInclude Include="Application.h" />
@@ -173,6 +174,7 @@
     <ClInclude Include="pch.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="AIController.cpp" />
     <ClCompile Include="AStar.cpp" />
     <ClCompile Include="AnimatedSpritesheet.cpp" />
     <ClCompile Include="Application.cpp" />

@@ -66,15 +66,22 @@ void FarmScene::InitScene()
 	_pPlayerObject = new GameObject("Player");
 	_pMovement = _pPlayerObject->AddComponent(new MovementComponent(_pPlayerObject));
 	_pMovement->SetMovementSpeed(2.0f);
-	_pPlayerMovement = new PlayerMovement(_pPlayerObject);
-	_pPlayerObject->AddComponent(_pPlayerMovement);
+	aiMove = new AIController(_pPlayerObject);
+	_pPlayerMovement = _pPlayerObject->AddComponent(new PlayerMovement(_pPlayerObject));
 	_pPlayerObject->AddComponent(ResourceManager::GetTexture("character"));
 	_pSc = _pPlayerObject->AddComponent<SpriteComponent>(new SpriteComponent(_pPlayerObject));
 	_pAnimSheet->SetFramerate(4);
 	_pPlayerObject->GetTransform()->SetScale({ 0.25f, 0.45f });
 	AddGameObject(_pPlayerObject);
 
+	
+
 	_pTilemap = new TileMap(_name);
+
+	aStar.SetMapCoords(_pTilemap->GetAllTilesInLayer(0), _pTilemap->GetMapSize());
+	aStar.SetPathPoints(glm::vec2{ 0,10 });
+	//set move to as first path position
+	_pPlayerObject->GetComponent<AIController>()->Move(glm::vec2{0,10}/*aStar.PathFinding(_pPlayerObject->GetTransform()->GetPosition())*/);
 
 	_pSc->SetSprite(_pAnimSheet->GetSpriteAtIndex(0));
 	//_pTilemap->SetSpriteSheet(ResourceManager::GetSpriteSheet("testSheet"));

@@ -65,6 +65,10 @@ public:
 	int GetTilesPerUnit() const {
 		return _tilesPerUnit;
 	}
+
+	glm::vec2 GetMapSize() const {
+		return _mapSizeInUnits;
+	}
 	
 	TileData* GetTileAtWorldPos(int layer, glm::vec2 worldPos);
 

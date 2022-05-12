@@ -47,7 +47,8 @@ public:
 		Collider = BIT(13),
 		PlayerMovement = BIT(14),
 		Movement = BIT(15),
-		SpriteType
+		SpriteType = BIT(16),
+		AIControl
 	};
 
 	//enums for different catagories of components

@@ -17,7 +17,7 @@ public:
 };
 
 
-
+class TileMap;
 class AStar
 {
 public:
@@ -26,7 +26,7 @@ public:
 	std::vector<glm::vec2> GetPathPoints();
 	void SetPathPoints(glm::vec2 _points);
 	//void SetMapCoords(std::vector<glm::vec2> mapTiles, glm::vec2 size);
-	void SetMapCoords(std::vector<glm::vec2> mapTiles, glm::vec2 size);
+	void SetMapCoords(std::vector<TileData> mapTiles, glm::vec2 size);
 
 private:
 	std::vector<glm::vec2> _mPoints;
