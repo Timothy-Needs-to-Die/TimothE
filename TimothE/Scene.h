@@ -2,7 +2,7 @@
 #include "pch.h"
 #include "GameObject.h"
 #include "Camera.h"
-#include "Window.h"
+#include "Core/Graphics/Window.h"
 #include "TileMap.h"
 #include "Physics.h"
 #include "AnimatedSpritesheet.h"
@@ -12,8 +12,8 @@
 class Scene
 {
 public:
-	Scene() 
-	{
+	Scene() {
+
 		_name = "DefaultScene";
 		_pTilemap = new TileMap("DefaultScene");
 		Save();
@@ -116,6 +116,7 @@ public:
 protected:
 	//Stores the name of the scene
 	std::string _name;
+	TileMap* _pTilemap;
 
 private:
 
@@ -134,14 +135,11 @@ private:
 	static std::vector<GameObject*> _listOfGameObjects;
 	static std::vector<GameObject*> _listOfDrawableGameObjects;
 
-	GameObject* _pCircleTest;
-	GameObject* _pTestObject2;
-	GameObject* _pPlayer;
-	GameObject* _pTriggerBox;
-	TileMap* _pTilemap;
-	AnimatedSpritesheet* _pAnimSheet;
+	//GameObject* _pCircleTest;
+	//GameObject* _pTestObject2;
+	//GameObject* _pPlayer;
+	//GameObject* _pTriggerBox;
 
-	SpriteSheet* _pSpritesheet;
 
 	bool _isInitialized = false;
 };

@@ -160,7 +160,6 @@ void TileMapEditor::EditorUI(TileMap* pTilemap)
 			pTilemap->AddTileAt(_currentLayer, 0, 0, CameraManager::GetCamera("Editor"), _collidableToggle);
 		}
 	}
-
 	ImGui::End();
 }
 

@@ -77,8 +77,14 @@ public:
 
 	void RenderMap(Camera* cam);
 
+	bool CollidableAtPosition(const int x, const int y) const;
+	bool CollidableAtPosition(const int index);
+	bool CollidableAtPosition(glm::vec2 worldPos) ;
+
 
 private:
+	int _numLayers = 3;
+
 	//How large the map is in units. e.g. 32 meters by 20 meters. 
 	glm::vec2 _mapSizeInUnits;
 
@@ -103,15 +109,7 @@ private:
 	//The spritesheet for this spritemap
 	SpriteSheet* _pSpritesheet = nullptr;
 
-<<<<<<< HEAD
-<<<<<<< HEAD
 	//Array/Vector which holds the tiles. //TODO: Make this not magic and link to the _numLayers variable
-=======
-	//Array/Vector which holds the tiles.
->>>>>>> parent of 84fd60c... Merge branch 'main' of https://github.com/Timothy-Needs-to-Die/TimothE into main
-=======
-	//Array/Vector which holds the tiles.
->>>>>>> parent of 84fd60c... Merge branch 'main' of https://github.com/Timothy-Needs-to-Die/TimothE into main
 	std::vector<TileData> _tileArr[3];
 
 	//How many tiles are there per unit in the X and Y axis

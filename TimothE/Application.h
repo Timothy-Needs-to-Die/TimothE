@@ -2,15 +2,15 @@
 
 #include "pch.h"
 
-#include "Window.h"
-#include "ApplicationEvent.h"
+#include "Core/Graphics/Window.h"
+#include "Core/Events/ApplicationEvent.h"
 #include "Scene.h"
 #include "MemoryManager.h"
 #include "CameraManager.h"
 
 #include "AudioEngine.h"
 #include "TileMap.h"
-#include "OpenGLError.h"
+#include "Core/Graphics/OpenGLError.h"
 #include "SpriteSheet.h"
 #include "SceneManager.h"
 
@@ -38,6 +38,8 @@ protected:
 	void GameRender(Camera* cam);
 	void GameUpdate();
 
+	void DisplayTileEditor();
+
 	void ImGUISwitchRender();
 
 private:
@@ -63,6 +65,8 @@ private:
 
 	bool _mPaused = false;
 	bool _mGameRunning = false;
+
+	bool _tileMapEditorEnabled = false;
 
 	Scene* _pCurrentScene;
 
