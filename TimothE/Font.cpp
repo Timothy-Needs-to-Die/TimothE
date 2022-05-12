@@ -1,5 +1,5 @@
 #include "Font.h"
-#include "Core/Graphics/OpenGLError.h"
+#include "OpenGLError.h"
 
 Font::Font(std::string font)
 {

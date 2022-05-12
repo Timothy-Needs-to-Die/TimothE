@@ -1,6 +1,6 @@
 #include "TileMap.h"
-#include "Core/Graphics/Renderer2D.h"
-#include "Core/Graphics/Window.h"
+#include "Renderer2D.h"
+#include "Window.h"
 #include "Quad.h"
 
 
@@ -30,11 +30,9 @@ TileMap::~TileMap()
 
 void TileMap::ClearAllLayers()
 {
-	for (int i = 0; i < _numLayers; i++) {
+	for (int i = 0; i < 3; i++) {
 		for (int j = 0; j < _mapInTiles.x * _mapInTiles.y; j++) {
-			//_tileArr[i][j]._pSprite = nullptr;
-			//_tileArr[i][j].texIndex = 0;
-			_tileArr[i][j] = TileData();
+			_tileArr[i][j]._pSprite = nullptr;
 		}
 	}
 }
@@ -62,7 +60,7 @@ void TileMap::SaveTilemap() {
 	file["sizeY"] = _mapInTiles.y;
 	file["tilePerUnit"] = _tilesPerUnit;
 
-	for (int layer = 0; layer < _numLayers; layer++) {
+	for (int layer = 0; layer < 3; layer++) {
 		std::string tileLayout;
 		for each (TileData var in _tileArr[layer])
 		{
@@ -99,7 +97,7 @@ void TileMap::LoadTileMap()
 
 	int dimensions = _mapInTiles.x * _mapInTiles.y;
 	
-	for (int layer = 0; layer < _numLayers; layer++) {
+	for (int layer = 0; layer < 3; layer++) {
 		_tileArr[layer].resize(dimensions);
 		std::string tileInfo = file["tiles" + std::to_string(layer)];
 		std::stringstream ss(tileInfo);
@@ -122,12 +120,12 @@ void TileMap::LoadTileMap()
 			getline(ss, s2, ' ');
 
 			int index = std::stoi(s1);
-
 			bool collidable = std::stoi(s2);
 
 			_tileArr[layer][i].texIndex = index;
 			_tileArr[layer][i]._pSprite = _pSpritesheet->GetSpriteAtIndex(index);
 			_tileArr[layer][i].collidable = collidable;
+<<<<<<< HEAD
 
 			int row = i / _mapInTiles.x;
 			int xIndex = i - (row * _mapInTiles.x);
@@ -141,6 +139,8 @@ void TileMap::LoadTileMap()
 			_tileArr[layer][i].colYPos = yPos;
 
 			_tileArr[layer][i].size = _gapBetweenTiles;
+=======
+>>>>>>> parent of 84fd60c... Merge branch 'main' of https://github.com/Timothy-Needs-to-Die/TimothE into main
 		}
 	}
 
@@ -225,7 +225,7 @@ void TileMap::ClearLayer(int layer)
 {
 	//Cycle through all tiles on this layer and remove their sprite
 	for (int i = 0; i < _mapInTiles.x * _mapInTiles.y; i++) {
-		_tileArr[layer][i] = TileData();
+		_tileArr[layer][i]._pSprite = nullptr;
 	}
 }
 
@@ -248,7 +248,7 @@ void TileMap::RenderMap(Camera* cam)
 	Renderer2D::BeginRender(cam);
 
 	//Cycle through each layer
-	for (int i = 0; i < _numLayers; i++) {
+	for (int i = 0; i < 3; i++) {
 		//Cycle through the Y axis
 		for (float y = 0; y < _mapSizeInUnits.y; y += _gapBetweenTiles) {
 			//Cycle through the X axis
@@ -270,30 +270,4 @@ void TileMap::RenderMap(Camera* cam)
 
 	//Ends the batch render for the tilemap
 	Renderer2D::EndRender();
-}
-
-bool TileMap::CollidableAtPosition(const int x, const int y) const
-{
-	int tIndex = y * _mapInTiles.x + x;
-	for (int layer = 0; layer < _numLayers; layer++) {
-		if (_tileArr[layer][tIndex].collidable) return true;
-	}
-	return false;
-}
-
-bool TileMap::CollidableAtPosition(glm::vec2 worldPos)
-{
-	TileData* td = GetTileAtWorldPos(0, worldPos);
-	
-	int index = _mapInTiles.x * (int)(worldPos.y * _tilesPerUnit) + (int)(worldPos.x * _tilesPerUnit);
-	
-	return CollidableAtPosition(index);
-}
-
-bool TileMap::CollidableAtPosition(const int index)
-{
-	for (int layer = 0; layer < _numLayers; layer++) {
-		if (_tileArr[layer][index].collidable) return true;
-	}
-	return false;
 }

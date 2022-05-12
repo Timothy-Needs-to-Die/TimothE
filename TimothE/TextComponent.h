@@ -1,7 +1,7 @@
 #pragma once
 
 #include "Font.h"
-#include "Core/Graphics/Shader.h"
+#include "Shader.h"
 #include "GameObject.h"
 #include "Component.h"
 

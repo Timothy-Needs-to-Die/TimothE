@@ -80,14 +80,13 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClInclude Include="AStar.h" />
     <ClInclude Include="AnimatedSpritesheet.h" />
     <ClInclude Include="Application.h" />
-    <ClInclude Include="Core\Events\ApplicationEvent.h" />
+    <ClInclude Include="ApplicationEvent.h" />
     <ClInclude Include="AudioEngine.h" />
     <ClInclude Include="Core\Graphics\Base.h" />
     <ClInclude Include="BoxColliderComponent.h" />
-    <ClInclude Include="Core\Graphics\BufferLayout.h" />
+    <ClInclude Include="BufferLayout.h" />
     <ClInclude Include="Button.h" />
     <ClInclude Include="Camera.h" />
     <ClInclude Include="CameraManager.h" />
@@ -97,14 +96,14 @@
     <ClInclude Include="Console.h" />
     <ClInclude Include="Dirent.h" />
     <ClInclude Include="Editor.h" />
-    <ClInclude Include="Core\Events\Event.h" />
+    <ClInclude Include="Event.h" />
     <ClInclude Include="FarmScene.h" />
     <ClInclude Include="Font.h" />
-    <ClInclude Include="Core\Graphics\Framebuffer.h" />
+    <ClInclude Include="Framebuffer.h" />
     <ClInclude Include="GameObject.h" />
     <ClInclude Include="Heap.h" />
     <ClInclude Include="HeapManager.h" />
-    <ClInclude Include="Core\Graphics\IBO.h" />
+    <ClInclude Include="IBO.h" />
     <ClInclude Include="ImGuiManager.h" />
     <ClInclude Include="Imgui\imconfig.h" />
     <ClInclude Include="Imgui\imgui.h" />
@@ -116,18 +115,17 @@
     <ClInclude Include="Imgui\imstb_textedit.h" />
     <ClInclude Include="Imgui\imstb_truetype.h" />
     <ClInclude Include="Input.h" />
-    <ClInclude Include="Core\Events\KeyEvent.h" />
+    <ClInclude Include="KeyEvent.h" />
     <ClInclude Include="MemoryManager.h" />
-    <ClInclude Include="Core\Events\MouseEvent.h" />
-    <ClInclude Include="Core\Graphics\OpenGLError.h" />
-    <ClInclude Include="MovementComponent.h" />
+    <ClInclude Include="MouseEvent.h" />
+    <ClInclude Include="OpenGLError.h" />
     <ClInclude Include="Particle.h" />
     <ClInclude Include="ParticleSystem.h" />
     <ClInclude Include="Physics.h" />
     <ClInclude Include="PlayerMovement.h" />
     <ClInclude Include="Quad.h" />
-    <ClInclude Include="Core\Graphics\RBO.h" />
-    <ClInclude Include="Core\Graphics\Renderer2D.h" />
+    <ClInclude Include="RBO.h" />
+    <ClInclude Include="Renderer2D.h" />
     <ClInclude Include="ResourceManager.h" />
     <ClInclude Include="SOIL\SOIL2.h" />
     <ClInclude Include="SOIL\image_DXT.h" />
@@ -149,13 +147,13 @@
     <ClInclude Include="Scene.h" />
     <ClInclude Include="SceneManager.h" />
     <ClInclude Include="Serializable.h" />
-    <ClInclude Include="Core\Graphics\Shader.h" />
+    <ClInclude Include="Shader.h" />
     <ClInclude Include="Sprite.h" />
     <ClInclude Include="SpriteComponent.h" />
     <ClInclude Include="SpriteSheet.h" />
     <ClInclude Include="Stream.h" />
     <ClInclude Include="StreamFile.h" />
-    <ClInclude Include="Core\Graphics\SubTexture2D.h" />
+    <ClInclude Include="SubTexture2D.h" />
     <ClInclude Include="TestComponent.h" />
     <ClInclude Include="TextComponent.h" />
     <ClInclude Include="Texture2D.h" />
@@ -166,13 +164,12 @@
     <ClInclude Include="TimothEInputCodes.h" />
     <ClInclude Include="Transform.h" />
     <ClInclude Include="UID.h" />
-    <ClInclude Include="Core\Graphics\VAO.h" />
-    <ClInclude Include="Core\Graphics\VBO.h" />
-    <ClInclude Include="Core\Graphics\Window.h" />
+    <ClInclude Include="VAO.h" />
+    <ClInclude Include="VBO.h" />
+    <ClInclude Include="Window.h" />
     <ClInclude Include="pch.h" />
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="AStar.cpp" />
     <ClCompile Include="AnimatedSpritesheet.cpp" />
     <ClCompile Include="Application.cpp" />
     <ClCompile Include="AudioEngine.cpp" />
@@ -185,11 +182,11 @@
     <ClCompile Include="Editor.cpp" />
     <ClCompile Include="FarmScene.cpp" />
     <ClCompile Include="Font.cpp" />
-    <ClCompile Include="Core\Graphics\Framebuffer.cpp" />
+    <ClCompile Include="Framebuffer.cpp" />
     <ClCompile Include="GameObject.cpp" />
     <ClCompile Include="Heap.cpp" />
     <ClCompile Include="HeapManager.cpp" />
-    <ClCompile Include="Core\Graphics\IBO.cpp" />
+    <ClCompile Include="IBO.cpp" />
     <ClCompile Include="Imgui\imgui.cpp" />
     <ClCompile Include="Imgui\imgui_demo.cpp" />
     <ClCompile Include="Imgui\imgui_draw.cpp" />
@@ -199,33 +196,32 @@
     <ClCompile Include="Imgui\imgui_widgets.cpp" />
     <ClCompile Include="Input.cpp" />
     <ClCompile Include="MemoryManager.cpp" />
-    <ClCompile Include="MovementComponent.cpp" />
     <ClCompile Include="Particle.cpp" />
     <ClCompile Include="ParticleSystem.cpp" />
     <ClCompile Include="Physics.cpp" />
     <ClCompile Include="PlayerMovement.cpp" />
-    <ClCompile Include="Core\Graphics\RBO.cpp" />
-    <ClCompile Include="Core\Graphics\Renderer2D.cpp" />
+    <ClCompile Include="RBO.cpp" />
+    <ClCompile Include="Renderer2D.cpp" />
     <ClCompile Include="ResourceManager.cpp" />
     <ClCompile Include="Scene.cpp" />
     <ClCompile Include="SceneManager.cpp" />
-    <ClCompile Include="Core\Graphics\Shader.cpp" />
+    <ClCompile Include="Shader.cpp" />
     <ClCompile Include="Source.cpp" />
     <ClCompile Include="Sprite.cpp" />
     <ClCompile Include="SpriteComponent.cpp" />
     <ClCompile Include="SpriteSheet.cpp" />
     <ClCompile Include="StreamFile.cpp" />
     <ClCompile Include="StreamHelpers.cpp" />
-    <ClCompile Include="Core\Graphics\SubTexture2D.cpp" />
+    <ClCompile Include="SubTexture2D.cpp" />
     <ClCompile Include="TestComponent.cpp" />
     <ClCompile Include="TextComponent.cpp" />
     <ClCompile Include="Texture2D.cpp" />
     <ClCompile Include="TileMap.cpp" />
     <ClCompile Include="TileMapEditor.cpp" />
     <ClCompile Include="Transform.cpp" />
-    <ClCompile Include="Core\Graphics\VAO.cpp" />
-    <ClCompile Include="Core\Graphics\VBO.cpp" />
-    <ClCompile Include="Core\Graphics\Window.cpp" />
+    <ClCompile Include="VAO.cpp" />
+    <ClCompile Include="VBO.cpp" />
+    <ClCompile Include="Window.cpp" />
     <ClCompile Include="pch.cpp" />
   </ItemGroup>
   <ItemGroup>

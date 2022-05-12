@@ -2,9 +2,9 @@
 
 #include "pch.h"
 
-#include "Core/Graphics/Window.h"
-#include "Core/Graphics/Framebuffer.h"
-#include "Core/Graphics/Shader.h"
+#include "Window.h"
+#include "Framebuffer.h"
+#include "Shader.h"
 #include "Scene.h"
 #include "Camera.h"
 #include "Console.h"
@@ -79,4 +79,6 @@ private:
 	Texture2D* pContentTextureSound = new Texture2D(NULL);
 	Texture2D* pContentTextureFile = new Texture2D(NULL);
 	Texture2D* pContentTextureFolder = new Texture2D(NULL);
+
+	
 };
