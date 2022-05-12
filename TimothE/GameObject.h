@@ -1,11 +1,12 @@
 #pragma once
 #include "pch.h"
 
-#include "Core/Graphics/Shader.h"
+#include "Shader.h"
 #include "Transform.h"
 #include "Component.h"
 #include "UID.h"
 #include "Serializable.h"
+#include "Shader.h"
 #include "BoxColliderComponent.h"
 #include "ParticleSystem.h"
 

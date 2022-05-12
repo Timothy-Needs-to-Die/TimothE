@@ -2,12 +2,7 @@
 
 #include <gl/glew.h>
 
-#include <string>
-
-#include <glm.hpp>
-#include <fstream>
-#include <sstream>
-#include <vector>
+#include "pch.h"
 
 //Structure to hold the source code for the shaders
 struct ShaderSourceCode {

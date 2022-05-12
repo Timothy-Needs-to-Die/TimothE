@@ -80,75 +80,75 @@ void Editor::EditorImGui(Scene* currentScene)
 
 	static bool fileDropdownOpen = false;
 
-	//{
-	//	if (ImGui::BeginMainMenuBar()) {
-	//		if (ImGui::BeginMenu("File")) {
-	//			if (ImGui::MenuItem("Save Scene"))
-	//			{
-	//				std::cout << "Saving Scene" << std::endl;
-	//				SceneManager::GetCurrentScene()->Save();
-	//			}
-	//			else if (ImGui::MenuItem("Save Scene As")) {
-	//
-	//				fileDropdownOpen = true;
-	//
-	//			}
-	//			if (ImGui::MenuItem("Load Scene")) {
-	//				std::cout << "Load Scene" << std::endl;
-	//			}
-	//			ImGui::EndMenu();
-	//		}
-	//		ImGui::EndMainMenuBar();
-	//	}
-	//}
+	{
+		if (ImGui::BeginMainMenuBar()) {
+			if (ImGui::BeginMenu("File")) {
+				if (ImGui::MenuItem("Save Scene"))
+				{
+					std::cout << "Saving Scene" << std::endl;
+					SceneManager::GetCurrentScene()->Save();
+				}
+				else if (ImGui::MenuItem("Save Scene As")) {
 
-	//if (fileDropdownOpen) {
-	//	if (!ImGui::IsPopupOpen("Save Scene As")) ImGui::OpenPopup("Save Scene As");
-	//	if (ImGui::BeginPopupModal("Save Scene As", NULL, ImGuiWindowFlags_AlwaysAutoResize)) {
-	//
-	//		
-	//		ImGui::Text("Not yet functional");
-	//
-	//		//ImGui::Text("New Name: ");
-	//		//char inputBuf[256];
-	//		//ImGuiInputTextFlags input_text_flags = ImGuiInputTextFlags_EnterReturnsTrue | ImGuiInputTextFlags_CallbackCompletion | ImGuiInputTextFlags_CallbackHistory;
-	//		//if (ImGui::InputText("##", inputBuf, IM_ARRAYSIZE(inputBuf), input_text_flags)) {
-	//		//	char* s = inputBuf;
-	//		//
-	//		//	char* str_end = s + strlen(s); 
-	//		//	while (str_end > s && str_end[-1] == ' ') str_end--; *str_end = 0;
-	//		//	//Strtrim(s);
-	//		//	if (s[0])
-	//		//		//ExecCommand(s);
-	//		//	strcpy(s, "");
-	//		//	//reclaim_focus = true;
-	//		//}
-	//
-	//		ImGui::SameLine();
-	//		if (ImGui::Button("Save As")) {
-	//			//std::cout << std::string(inputBuf) << std::endl;
-	//			
-	//			fileDropdownOpen = false;
-	//			ImGui::CloseCurrentPopup();
-	//		}
-	//		if (ImGui::Button("Close")) {
-	//
-	//			fileDropdownOpen = false;
-	//			ImGui::CloseCurrentPopup();
-	//		}
-	//
-	//		ImGui::EndPopup();
-	//	}
-	//}
-	//
-	//{
-	//	ImGui::Begin("Notes", 0, ImGuiWindowFlags_NoMove);
-	//
-	//	std::string notes;
-	//	ImGui::InputTextMultiline("Notes", &notes, ImVec2(300.0f, 600.0f), 0, 0);
-	//
-	//	ImGui::End();
-	//}
+					fileDropdownOpen = true;
+
+				}
+				if (ImGui::MenuItem("Load Scene")) {
+					std::cout << "Load Scene" << std::endl;
+				}
+				ImGui::EndMenu();
+			}
+			ImGui::EndMainMenuBar();
+		}
+	}
+
+	if (fileDropdownOpen) {
+		if (!ImGui::IsPopupOpen("Save Scene As")) ImGui::OpenPopup("Save Scene As");
+		if (ImGui::BeginPopupModal("Save Scene As", NULL, ImGuiWindowFlags_AlwaysAutoResize)) {
+
+			
+			ImGui::Text("Not yet functional");
+
+			//ImGui::Text("New Name: ");
+			//char inputBuf[256];
+			//ImGuiInputTextFlags input_text_flags = ImGuiInputTextFlags_EnterReturnsTrue | ImGuiInputTextFlags_CallbackCompletion | ImGuiInputTextFlags_CallbackHistory;
+			//if (ImGui::InputText("##", inputBuf, IM_ARRAYSIZE(inputBuf), input_text_flags)) {
+			//	char* s = inputBuf;
+			//
+			//	char* str_end = s + strlen(s); 
+			//	while (str_end > s && str_end[-1] == ' ') str_end--; *str_end = 0;
+			//	//Strtrim(s);
+			//	if (s[0])
+			//		//ExecCommand(s);
+			//	strcpy(s, "");
+			//	//reclaim_focus = true;
+			//}
+
+			ImGui::SameLine();
+			if (ImGui::Button("Save As")) {
+				//std::cout << std::string(inputBuf) << std::endl;
+				
+				fileDropdownOpen = false;
+				ImGui::CloseCurrentPopup();
+			}
+			if (ImGui::Button("Close")) {
+
+				fileDropdownOpen = false;
+				ImGui::CloseCurrentPopup();
+			}
+
+			ImGui::EndPopup();
+		}
+	}
+
+	{
+		ImGui::Begin("Notes", 0, ImGuiWindowFlags_NoMove);
+
+		std::string notes;
+		ImGui::InputTextMultiline("Notes", &notes, ImVec2(300.0f, 600.0f), 0, 0);
+
+		ImGui::End();
+	}
 
 	//Tile Editor
 	{
@@ -160,187 +160,187 @@ void Editor::EditorImGui(Scene* currentScene)
 	{
 		ImGui::Begin("Inspector", 0, ImGuiWindowFlags_NoMove);
 
-		//if (_pSelectedGameObject != nullptr)
-		//{
-		//	// text box to change name
-		//	{
-		//		static std::string text = _pSelectedGameObject->GetName();
-		//		if (changeObject)
-		//		{
-		//			text = _pSelectedGameObject->GetName();
-		//		}
-		//		if (ImGui::InputText(" ", &text, ImGuiInputTextFlags_CharsNoBlank))
-		//		{
-		//			_pSelectedGameObject->SetName(text);
-		//		}
-		//	}
-		//
-		//	// select object type
-		//	if (ImGui::CollapsingHeader("Object Type"))
-		//	{
-		//		int index = (int)_pSelectedGameObject->GetType();
-		//		if (ImGui::RadioButton("Player", &index, 0))
-		//		{
-		//			_pSelectedGameObject->SetType(ObjectType::Player);
-		//		}
-		//		if (ImGui::RadioButton("Enemy", &index, 1))
-		//		{
-		//			_pSelectedGameObject->SetType(ObjectType::Enemy);
-		//		}
-		//		if (ImGui::RadioButton("NPC", &index, 2))
-		//		{
-		//			_pSelectedGameObject->SetType(ObjectType::NPC);
-		//		}
-		//		if (ImGui::RadioButton("PickUp", &index, 3))
-		//		{
-		//			_pSelectedGameObject->SetType(ObjectType::PickUp);
-		//		}
-		//		if (ImGui::RadioButton("UI", &index, 4)) {
-		//			_pSelectedGameObject->SetType(ObjectType::UI);
-		//		}
-		//	}
-		//
-		//	Component* componentToDelete = nullptr;
-		//
-		//	// for each component in the game object
-		//	for (int i = 0; i < _pSelectedGameObject->GetComponents().size(); i++)
-		//	{
-		//		Component* c = _pSelectedGameObject->GetComponents()[i];
-		//		// draw the UI for the current component
-		//		c->DrawEditorUI();
-		//
-		//		// check the current component is not transform
-		//		if (c->GetType() != Component::Transform_Type)
-		//		{
-		//			// add a delete button
-		//			if (ImGui::Button(("Delete component##" + std::to_string(c->GetType())).c_str()))
-		//			{
-		//				componentToDelete = c;
-		//				break;
-		//				//_pSelectedGameObject->RemoveComponent(c);
-		//
-		//			}
-		//			// check if i is not the first
-		//			if (i > 0)
-		//			{
-		//				if (_pSelectedGameObject->GetComponents()[i - 1]->GetType() != Component::Transform_Type)
-		//				{
-		//					ImGui::SameLine();
-		//					// add button to move the component up
-		//					if (ImGui::Button(("Up##component" + std::to_string(i)).c_str()))
-		//					{
-		//						_pSelectedGameObject->SwapComponents(i, i - 1);
-		//					}
-		//				}
-		//			}
-		//			// check if i is not the last
-		//			if (i < _pSelectedGameObject->GetComponents().size() - 1)
-		//			{
-		//				ImGui::SameLine();
-		//				// add button to move the component down
-		//				if (ImGui::Button(("Down##component" + std::to_string(i)).c_str()))
-		//				{
-		//					_pSelectedGameObject->SwapComponents(i, i + 1);
-		//				}
-		//			}
-		//		}
-		//
-		//		ImGui::Separator();
-		//	}
-		//
-		//	if (componentToDelete != nullptr) {
-		//		_pSelectedGameObject->RemoveComponent(componentToDelete);
-		//		componentToDelete = nullptr;
-		//	}
-		//
-		//	// add component
-		//	if (ImGui::CollapsingHeader("AddComponent"))
-		//	{
-		//		if (ImGui::CollapsingHeader("Transform"))
-		//		{
-		//			if (ImGui::Button("Transform"))
-		//			{
-		//				if (_pSelectedGameObject->GetTransform() == nullptr)
-		//				{
-		//					_pSelectedGameObject->AddComponent(new Transform(_pSelectedGameObject));
-		//				}
-		//			}
-		//		}
-		//		if (ImGui::CollapsingHeader("Sound System"))
-		//		{
-		//			if (ImGui::Button("Sound"))
-		//			{
-		//
-		//			}
-		//		}
-		//		if (ImGui::CollapsingHeader("Colliders"))
-		//		{
-		//			if (ImGui::Button("Box Collider"))
-		//			{
-		//				BoxColliderComponent* pTest = _pSelectedGameObject->GetComponent<BoxColliderComponent>();
-		//				if (pTest == nullptr)
-		//				{
-		//					_pSelectedGameObject->AddComponent(new BoxColliderComponent(_pSelectedGameObject));
-		//				}
-		//			}
-		//
-		//		}
-		//		if (ImGui::CollapsingHeader("AI"))
-		//		{
-		//			if (ImGui::Button("Pathfinding"))
-		//			{
-		//
-		//			}
-		//			if (ImGui::Button("GOAP"))
-		//			{
-		//
-		//			}
-		//		}
-		//		if (ImGui::CollapsingHeader("Graphics"))
-		//		{
-		//			// texture component
-		//			static std::string texPath = "lenna3.jpg";
-		//			ImGui::InputText("Texture path", &texPath);
-		//			if (ImGui::BeginDragDropTarget())
-		//			{
-		//				if (const ImGuiPayload* payload = ImGui::AcceptDragDropPayload("CONTENT_IMAGE"))
-		//				{
-		//					const char* path = (const char*)payload->Data;
-		//					texPath = (string)path;
-		//				}
-		//
-		//				ImGui::EndDragDropTarget();
-		//			}
-		//
-		//
-		//			if (ImGui::Button("Texture"))
-		//			{
-		//				Texture2D* tex = _pSelectedGameObject->GetComponent<Texture2D>();
-		//				if (tex == nullptr)
-		//				{
-		//					_pSelectedGameObject->LoadTexture(new Texture2D((char*)texPath.c_str()));
-		//				}
-		//			}
-		//
-		//			if (ImGui::Button("Particle System"))
-		//			{
-		//				_pSelectedGameObject->AddComponent<ParticleSystem>(new ParticleSystem(100, glm::vec4(1.0f), new Texture2D((char*)texPath.c_str()), _pSelectedGameObject->GetTransform()));
-		//			}
-		//
-		//			if (ImGui::Button("Camera"))
-		//			{
-		//				float aspectRatio = Window::GetAspectRatio();
-		//				float zoomLevel = 1.0f;
-		//				float left = -aspectRatio * zoomLevel;
-		//				float right = aspectRatio * zoomLevel;
-		//				float bottom = -zoomLevel;
-		//				float top = zoomLevel;
-		//				_pSelectedGameObject->AddComponent<Camera>(new Camera(left, right, bottom, top, _pSelectedGameObject->GetName(), _pSelectedGameObject));
-		//
-		//			}
-		//		}
-		//	}
-		//}
+		if (_pSelectedGameObject != nullptr)
+		{
+			// text box to change name
+			{
+				static std::string text = _pSelectedGameObject->GetName();
+				if (changeObject)
+				{
+					text = _pSelectedGameObject->GetName();
+				}
+				if (ImGui::InputText(" ", &text, ImGuiInputTextFlags_CharsNoBlank))
+				{
+					_pSelectedGameObject->SetName(text);
+				}
+			}
+
+			// select object type
+			if (ImGui::CollapsingHeader("Object Type"))
+			{
+				int index = (int)_pSelectedGameObject->GetType();
+				if (ImGui::RadioButton("Player", &index, 0))
+				{
+					_pSelectedGameObject->SetType(ObjectType::Player);
+				}
+				if (ImGui::RadioButton("Enemy", &index, 1))
+				{
+					_pSelectedGameObject->SetType(ObjectType::Enemy);
+				}
+				if (ImGui::RadioButton("NPC", &index, 2))
+				{
+					_pSelectedGameObject->SetType(ObjectType::NPC);
+				}
+				if (ImGui::RadioButton("PickUp", &index, 3))
+				{
+					_pSelectedGameObject->SetType(ObjectType::PickUp);
+				}
+				if (ImGui::RadioButton("UI", &index, 4)) {
+					_pSelectedGameObject->SetType(ObjectType::UI);
+				}
+			}
+
+			Component* componentToDelete = nullptr;
+
+			// for each component in the game object
+			for (int i = 0; i < _pSelectedGameObject->GetComponents().size(); i++)
+			{
+				Component* c = _pSelectedGameObject->GetComponents()[i];
+				// draw the UI for the current component
+				c->DrawEditorUI();
+
+				// check the current component is not transform
+				if (c->GetType() != Component::Transform_Type)
+				{
+					// add a delete button
+					if (ImGui::Button(("Delete component##" + std::to_string(c->GetType())).c_str()))
+					{
+						componentToDelete = c;
+						break;
+						//_pSelectedGameObject->RemoveComponent(c);
+
+					}
+					// check if i is not the first
+					if (i > 0)
+					{
+						if (_pSelectedGameObject->GetComponents()[i - 1]->GetType() != Component::Transform_Type)
+						{
+							ImGui::SameLine();
+							// add button to move the component up
+							if (ImGui::Button(("Up##component" + std::to_string(i)).c_str()))
+							{
+								_pSelectedGameObject->SwapComponents(i, i - 1);
+							}
+						}
+					}
+					// check if i is not the last
+					if (i < _pSelectedGameObject->GetComponents().size() - 1)
+					{
+						ImGui::SameLine();
+						// add button to move the component down
+						if (ImGui::Button(("Down##component" + std::to_string(i)).c_str()))
+						{
+							_pSelectedGameObject->SwapComponents(i, i + 1);
+						}
+					}
+				}
+
+				ImGui::Separator();
+			}
+
+			if (componentToDelete != nullptr) {
+				_pSelectedGameObject->RemoveComponent(componentToDelete);
+				componentToDelete = nullptr;
+			}
+
+			// add component
+			if (ImGui::CollapsingHeader("AddComponent"))
+			{
+				if (ImGui::CollapsingHeader("Transform"))
+				{
+					if (ImGui::Button("Transform"))
+					{
+						if (_pSelectedGameObject->GetTransform() == nullptr)
+						{
+							_pSelectedGameObject->AddComponent(new Transform(_pSelectedGameObject));
+						}
+					}
+				}
+				if (ImGui::CollapsingHeader("Sound System"))
+				{
+					if (ImGui::Button("Sound"))
+					{
+
+					}
+				}
+				if (ImGui::CollapsingHeader("Colliders"))
+				{
+					if (ImGui::Button("Box Collider"))
+					{
+						BoxColliderComponent* pTest = _pSelectedGameObject->GetComponent<BoxColliderComponent>();
+						if (pTest == nullptr)
+						{
+							_pSelectedGameObject->AddComponent(new BoxColliderComponent(_pSelectedGameObject));
+						}
+					}
+
+				}
+				if (ImGui::CollapsingHeader("AI"))
+				{
+					if (ImGui::Button("Pathfinding"))
+					{
+
+					}
+					if (ImGui::Button("GOAP"))
+					{
+
+					}
+				}
+				if (ImGui::CollapsingHeader("Graphics"))
+				{
+					// texture component
+					static std::string texPath = "lenna3.jpg";
+					ImGui::InputText("Texture path", &texPath);
+					if (ImGui::BeginDragDropTarget())
+					{
+						if (const ImGuiPayload* payload = ImGui::AcceptDragDropPayload("CONTENT_IMAGE"))
+						{
+							const char* path = (const char*)payload->Data;
+							texPath = (string)path;
+						}
+
+						ImGui::EndDragDropTarget();
+					}
+
+
+					if (ImGui::Button("Texture"))
+					{
+						Texture2D* tex = _pSelectedGameObject->GetComponent<Texture2D>();
+						if (tex == nullptr)
+						{
+							_pSelectedGameObject->LoadTexture(new Texture2D((char*)texPath.c_str()));
+						}
+					}
+
+					if (ImGui::Button("Particle System"))
+					{
+						_pSelectedGameObject->AddComponent<ParticleSystem>(new ParticleSystem(100, glm::vec4(1.0f), new Texture2D((char*)texPath.c_str()), _pSelectedGameObject->GetTransform()));
+					}
+
+					if (ImGui::Button("Camera"))
+					{
+						float aspectRatio = Window::GetAspectRatio();
+						float zoomLevel = 1.0f;
+						float left = -aspectRatio * zoomLevel;
+						float right = aspectRatio * zoomLevel;
+						float bottom = -zoomLevel;
+						float top = zoomLevel;
+						_pSelectedGameObject->AddComponent<Camera>(new Camera(left, right, bottom, top, _pSelectedGameObject->GetName(), _pSelectedGameObject));
+
+					}
+				}
+			}
+		}
 
 		ImGui::End();
 	}
@@ -349,83 +349,83 @@ void Editor::EditorImGui(Scene* currentScene)
 	{
 		ImGui::Begin("Hierarchy", 0, ImGuiWindowFlags_NoMove);
 
-		//if (ImGui::CollapsingHeader("Add GameObject"))
-		//{
-		//	static std::string name = "New GameObject";
-		//
-		//	ImGui::InputText("##NewGameObjectName", &name, ImGuiInputTextFlags_CharsNoBlank);
-		//	static ObjectType tag = ObjectType::Player;
-		//	if (ImGui::CollapsingHeader("Object type"))
-		//	{
-		//		static int tagIndex = 0;
-		//		if (ImGui::RadioButton("Player", &tagIndex, 0))
-		//		{
-		//			tag = ObjectType::Player;
-		//		}
-		//		if (ImGui::RadioButton("Enemy", &tagIndex, 1))
-		//		{
-		//			tag = ObjectType::Enemy;
-		//		}
-		//		if (ImGui::RadioButton("NPC", &tagIndex, 2))
-		//		{
-		//			tag = ObjectType::NPC;
-		//		}
-		//		if (ImGui::RadioButton("PickUp", &tagIndex, 3))
-		//		{
-		//			tag = ObjectType::PickUp;
-		//		}
-		//	}
-		//	if (ImGui::Button("Add Object"))
-		//	{
-		//		GameObject* obj = new GameObject(name, tag);
-		//		currentScene->AddGameObject(obj);
-		//		Console::Print("Object added: " + name);
-		//		name = "New GameObject";
-		//	}
-		//}
-		//
-		//changeObject = false;
-		//
-		//// index of the selected object
-		//static int index = 0;
-		//// get vector of objects from the current scene
-		//std::vector<GameObject*> objects = currentScene->GetGameObjects();
-		//if (!objects.empty())
-		//{
-		//	for (int i = 0; i < objects.size(); i++)
-		//	{
-		//		// create a radio button for each of the objects
-		//		// '##' is to add a unique ID for ImGui when labels are the same
-		//		ImGui::RadioButton((objects[i]->GetName() + "##" + objects[i]->GetUID()).c_str(), &index, i); ImGui::SameLine();
-		//		if (ImGui::Button(("Delete object##" + objects[i]->GetUID()).c_str()))
-		//		{
-		//			Console::Print("Deleted " + objects[i]->GetName());
-		//			// add button next to object button that removes game object
-		//			currentScene->RemoveGameObject(objects[i]);
-		//			_pSelectedGameObject = nullptr;
-		//			// update objects and take 1 from i (because the object at the current index was removed)
-		//			objects = currentScene->GetGameObjects();
-		//			i--;
-		//
-		//			if (i <= index)
-		//			{
-		//				if (index > 0)
-		//					index--;
-		//			}
-		//		}
-		//	}
-		//	// set selected object to the object that the user has selected. does nothing currently.
-		//	if (!objects.empty())
-		//	{
-		//		if (_pSelectedGameObject != objects[index])
-		//		{
-		//			_pSelectedGameObject = objects[index];
-		//			changeObject = true;
-		//		}
-		//	}
-		//	else
-		//		_pSelectedGameObject = nullptr;
-		//}
+		if (ImGui::CollapsingHeader("Add GameObject"))
+		{
+			static std::string name = "New GameObject";
+
+			ImGui::InputText("##NewGameObjectName", &name, ImGuiInputTextFlags_CharsNoBlank);
+			static ObjectType tag = ObjectType::Player;
+			if (ImGui::CollapsingHeader("Object type"))
+			{
+				static int tagIndex = 0;
+				if (ImGui::RadioButton("Player", &tagIndex, 0))
+				{
+					tag = ObjectType::Player;
+				}
+				if (ImGui::RadioButton("Enemy", &tagIndex, 1))
+				{
+					tag = ObjectType::Enemy;
+				}
+				if (ImGui::RadioButton("NPC", &tagIndex, 2))
+				{
+					tag = ObjectType::NPC;
+				}
+				if (ImGui::RadioButton("PickUp", &tagIndex, 3))
+				{
+					tag = ObjectType::PickUp;
+				}
+			}
+			if (ImGui::Button("Add Object"))
+			{
+				GameObject* obj = new GameObject(name, tag);
+				currentScene->AddGameObject(obj);
+				Console::Print("Object added: " + name);
+				name = "New GameObject";
+			}
+		}
+
+		changeObject = false;
+
+		// index of the selected object
+		static int index = 0;
+		// get vector of objects from the current scene
+		std::vector<GameObject*> objects = currentScene->GetGameObjects();
+		if (!objects.empty())
+		{
+			for (int i = 0; i < objects.size(); i++)
+			{
+				// create a radio button for each of the objects
+				// '##' is to add a unique ID for ImGui when labels are the same
+				ImGui::RadioButton((objects[i]->GetName() + "##" + objects[i]->GetUID()).c_str(), &index, i); ImGui::SameLine();
+				if (ImGui::Button(("Delete object##" + objects[i]->GetUID()).c_str()))
+				{
+					Console::Print("Deleted " + objects[i]->GetName());
+					// add button next to object button that removes game object
+					currentScene->RemoveGameObject(objects[i]);
+					_pSelectedGameObject = nullptr;
+					// update objects and take 1 from i (because the object at the current index was removed)
+					objects = currentScene->GetGameObjects();
+					i--;
+
+					if (i <= index)
+					{
+						if (index > 0)
+							index--;
+					}
+				}
+			}
+			// set selected object to the object that the user has selected. does nothing currently.
+			if (!objects.empty())
+			{
+				if (_pSelectedGameObject != objects[index])
+				{
+					_pSelectedGameObject = objects[index];
+					changeObject = true;
+				}
+			}
+			else
+				_pSelectedGameObject = nullptr;
+		}
 		ImGui::End();
 	}
 
@@ -433,18 +433,18 @@ void Editor::EditorImGui(Scene* currentScene)
 	{
 		ImGui::Begin("Console", 0, ImGuiWindowFlags_NoMove);
 
-		//// get output from console class
-		//std::vector<std::string> consoleOut = Console::GetConsoleOutput();
-		//// convert vector to string array
-		//std::string* out = &consoleOut[0];
-		//if (out != nullptr)
-		//{
-		//	// output as wrapped text
-		//	ImGui::TextWrapped(out->c_str());
-		//
-		//	// scroll to the bottom of the console window
-		//	ImGui::SetScrollY(ImGui::GetScrollMaxY());
-		//}
+		// get output from console class
+		std::vector<std::string> consoleOut = Console::GetConsoleOutput();
+		// convert vector to string array
+		std::string* out = &consoleOut[0];
+		if (out != nullptr)
+		{
+			// output as wrapped text
+			ImGui::TextWrapped(out->c_str());
+
+			// scroll to the bottom of the console window
+			ImGui::SetScrollY(ImGui::GetScrollMaxY());
+		}
 
 		ImGui::End();
 	}
@@ -453,67 +453,67 @@ void Editor::EditorImGui(Scene* currentScene)
 	{
 		ImGui::Begin("Content Browser", 0, ImGuiWindowFlags_NoMove);
 
-		//if (ImGui::BeginPopupContextWindow())
-		//{
-		//	static std::string name = " ";
-		//	if (ImGui::CollapsingHeader("New Script"))
-		//	{
-		//		if (ImGui::InputText(" ", &name, ImGuiInputTextFlags_CharsNoBlank)) {}
-		//		if (ImGui::MenuItem("Add"))
-		//		{
-		//			std::ofstream cppStream(_mCurrentDir + "/" + name + ".cpp");
-		//			cppStream.close();
-		//			std::ofstream hStream(_mCurrentDir + "/" + name + ".h");
-		//			hStream.close();
-		//			SearchFileDirectory();
-		//		}
-		//	}
-		//	// makes new script with.scene files
-		//	if (ImGui::CollapsingHeader("New Scene"))
-		//	{
-		//		if (ImGui::InputText(" ", &name, ImGuiInputTextFlags_CharsNoBlank)) {}
-		//		if (ImGui::MenuItem("Add"))
-		//		{
-		//			SceneManager::CreateScene(name);
-		//			CreateFileInContentBrowser(name, ".scene");
-		//			SearchFileDirectory();
-		//		}
-		//
-		//	}
-		//
-		//	ImGui::EndPopup();
-		//}
-		//
-		////adds back button which removes last directory and updates options
-		//if (ImGui::Button("Back"))
-		//{
-		//	_mCurrentDir = _mCurrentDir.substr(0, _mCurrentDir.find_last_of("\\/"));
-		//	SearchFileDirectory();
-		//}
-		////displays directory next to button
-		//ImGui::SameLine();
-		//ImGui::Text(_mCurrentDir.c_str());
-		//
-		////sets up a column to display the files in a grid
-		//ImGui::Columns(4, NULL);
-		//ImGui::Separator();
-		//int j = 0;
-		////for each item in directory create new button
-		//for (int i = 2; i < _mDirectoryList.size(); i++) {
-		//
-		//	//checks filetype and give it an icon
-		//	CheckFileType(_mDirectoryList[i], j);
-		//	j++;
-		//	//adds padding to files
-		//	ImGui::Dummy(ImVec2(0, 20.0f));
-		//
-		//	//goes to next column
-		//	if (i > 0 || i % 4 == 2)
-		//	{
-		//		ImGui::NextColumn();
-		//	}
-		//	ImGui::Dummy(ImVec2(0, 80.0f));
-		//}
+		if (ImGui::BeginPopupContextWindow())
+		{
+			static std::string name = " ";
+			if (ImGui::CollapsingHeader("New Script"))
+			{
+				if (ImGui::InputText(" ", &name, ImGuiInputTextFlags_CharsNoBlank)) {}
+				if (ImGui::MenuItem("Add"))
+				{
+					std::ofstream cppStream(_mCurrentDir + "/" + name + ".cpp");
+					cppStream.close();
+					std::ofstream hStream(_mCurrentDir + "/" + name + ".h");
+					hStream.close();
+					SearchFileDirectory();
+				}
+			}
+			// makes new script with.scene files
+			if (ImGui::CollapsingHeader("New Scene"))
+			{
+				if (ImGui::InputText(" ", &name, ImGuiInputTextFlags_CharsNoBlank)) {}
+				if (ImGui::MenuItem("Add"))
+				{
+					SceneManager::CreateScene(name);
+					CreateFileInContentBrowser(name, ".scene");
+					SearchFileDirectory();
+				}
+
+			}
+
+			ImGui::EndPopup();
+		}
+
+		//adds back button which removes last directory and updates options
+		if (ImGui::Button("Back"))
+		{
+			_mCurrentDir = _mCurrentDir.substr(0, _mCurrentDir.find_last_of("\\/"));
+			SearchFileDirectory();
+		}
+		//displays directory next to button
+		ImGui::SameLine();
+		ImGui::Text(_mCurrentDir.c_str());
+
+		//sets up a column to display the files in a grid
+		ImGui::Columns(4, NULL);
+		ImGui::Separator();
+		int j = 0;
+		//for each item in directory create new button
+		for (int i = 2; i < _mDirectoryList.size(); i++) {
+
+			//checks filetype and give it an icon
+			CheckFileType(_mDirectoryList[i], j);
+			j++;
+			//adds padding to files
+			ImGui::Dummy(ImVec2(0, 20.0f));
+
+			//goes to next column
+			if (i > 0 || i % 4 == 2)
+			{
+				ImGui::NextColumn();
+			}
+			ImGui::Dummy(ImVec2(0, 80.0f));
+		}
 		ImGui::End();
 	}
 

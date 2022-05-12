@@ -46,7 +46,6 @@ public:
 		Camera_Type = BIT(12),
 		Collider = BIT(13),
 		PlayerMovement = BIT(14),
-		Movement = BIT(15),
 		SpriteType
 	};
 

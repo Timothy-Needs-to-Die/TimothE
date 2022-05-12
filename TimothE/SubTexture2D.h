@@ -1,7 +1,7 @@
 #pragma once
 #include <glm.hpp>
 //#include <gl/glew.h>
-#include "../../Texture2D.h"
+#include "Texture2D.h"
 
 // SubTexture referrs to a smaller texture created from a larger spritesheet
 class SubTexture2D
