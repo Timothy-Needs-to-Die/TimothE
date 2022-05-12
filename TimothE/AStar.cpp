@@ -1,6 +1,6 @@
 #include "AStar.h"
 #include <algorithm>
-glm::vec3 AStar::PathFinding(glm::vec3 startPos)
+glm::vec2 AStar::PathFinding(glm::vec2 startPos)
 {
     std::vector<MapNode> openList;
     std::vector<MapNode> closedList;
@@ -91,21 +91,21 @@ glm::vec3 AStar::PathFinding(glm::vec3 startPos)
 
 }
 
-std::vector<glm::vec3> AStar::GetPathPoints()
+std::vector<glm::vec2> AStar::GetPathPoints()
 {
     return _mPoints;
 }
 
-void AStar::SetPathPoints(std::vector<glm::vec3> _points)
+void AStar::SetPathPoints(glm::vec2 _points)
 {
-    _mPoints = _points;
+    _mPoints.push_back(_points);
 }
 
-void AStar::SetMapCoords(std::vector<glm::vec3> mapTiles, int sizeX, int sizeY)
+void AStar::SetMapCoords(std::vector<glm::vec2> mapTiles, glm::vec2 size)
 {
     int id;
     //set all map tiles as nodes
-    for each (glm::vec3 position in mapTiles)
+    for each (glm::vec2 position in mapTiles)
     {
         MapNode mapTile;
         mapTile.fCost = 0;
@@ -116,8 +116,8 @@ void AStar::SetMapCoords(std::vector<glm::vec3> mapTiles, int sizeX, int sizeY)
         mapTile.position = position;
         _mMapNodes.push_back(mapTile);
     }
-    _mMapTilesX = sizeX;
-    _mMapTilesY = sizeY;
+    _mMapTilesX = size.x;
+    _mMapTilesY = size.y;
 
 }
 

@@ -25,7 +25,7 @@ private:
 	GameObject* _parentObject;
 
 	bool _isMusicSource;
-	
+
 	glm::vec2 _position;
 	float _volume = 1.0f;
 };

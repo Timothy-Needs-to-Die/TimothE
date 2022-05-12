@@ -40,9 +40,9 @@ public:
 	void ToggleGroupPause(FMOD::ChannelGroup* group);
 	void SetGroupVolume(FMOD::ChannelGroup* group, float value);
 	void SetGroupPitch(FMOD::ChannelGroup* group, float value);
-	
+
 	// == Core Functionality == // 
-	
+
 	FMOD::Sound* CreateAudioStream(const char* filePath);
 	void LoadSound(const char* name, const char* filePath, AudioType type);
 	static FMOD::Channel* PlaySound(std::string soundName, float minVolume, float maxVolume, float minPitch, float maxPitch);
@@ -61,14 +61,14 @@ public:
 
 private:
 	//Test storage
-	SoundStruct titleMusic; 
+	SoundStruct titleMusic;
 
 	//Song stuff
 	static FMOD::Channel* _currentSongChannel;
 	static const char* _currentSongPath;
 	SoundStruct _nextSong;
 
-	
+
 	static FadeState fade;
 
 	static FMOD::System* _fmodSystem;
@@ -88,12 +88,9 @@ private:
 	//Each loaded sound will have a relative channel created of the same name + Channel
 	//The component will update the channels position within the components update
 
-	
+
 	static LoadedSoundMap _loadedSFX;
 	static LoadedSoundMap _loadedMusic;
 	ChannelMap AllChannels; // Might not need
 
 };
-
-
-

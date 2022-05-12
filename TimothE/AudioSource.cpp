@@ -1,13 +1,11 @@
+
 #include "AudioSource.h"
-
-
-
 
 AudioSource::AudioSource()
 {
-	
+
 	_parentObject = GetParent();
- 
+
 }
 
 void AudioSource::Update()
@@ -36,3 +34,4 @@ void AudioSource::SetVolume(float value)
 {
 	AudioEngine::SetVolume(_sourceChannel, value);
 }
+

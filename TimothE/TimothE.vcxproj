@@ -83,10 +83,10 @@
     <ClInclude Include="AStar.h" />
     <ClInclude Include="AnimatedSpritesheet.h" />
     <ClInclude Include="Application.h" />
+    <ClInclude Include="AudioSource.h" />
     <ClInclude Include="Core\Events\ApplicationEvent.h" />
     <ClInclude Include="AudioEngine.h" />
-    <ClInclude Include="AudioSource.h" />
-    <ClInclude Include="Base.h" />
+    <ClInclude Include="Core\Graphics\Base.h" />
     <ClInclude Include="BoxColliderComponent.h" />
     <ClInclude Include="Core\Graphics\BufferLayout.h" />
     <ClInclude Include="Button.h" />

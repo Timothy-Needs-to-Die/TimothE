@@ -34,14 +34,14 @@ AudioEngine::AudioEngine()
 	modes[Type_Song] = FMOD_DEFAULT | FMOD_CREATESTREAM | FMOD_LOOP_NORMAL;
 
 	_currentSongChannel = nullptr;
-	
+
 
 }
 
 AudioEngine::~AudioEngine()
 {
 	//Release remaining sounds
-	
+
 
 }
 
@@ -49,8 +49,8 @@ AudioEngine::~AudioEngine()
 // the first parameter represents the total audio channels that will be created. 
 void AudioEngine::Initialize()
 {
-	
-	
+
+
 }
 
 //This must be called within the main game loop in order for FMOD 
@@ -93,7 +93,7 @@ void AudioEngine::AudioUpdate(float elapsed)
 	}*/
 
 
-	
+
 }
 
 //Shut down the audio system. 
@@ -106,7 +106,7 @@ void AudioEngine::ShutDownAudio()
 //If an error was detected with a certain issue this will print an error string
 //to aid with debugging
 void AudioEngine::CheckForErrors(FMOD_RESULT result)
- 
+
 {
 	if (result != FMOD_OK)
 	{
@@ -223,7 +223,7 @@ void AudioEngine::LoadSound(const char* name, const char* filePath, AudioType ty
 	newSound.type = type;
 
 	FMOD::Sound* soundToLoad;
-	
+
 	FMOD_RESULT result = _fmodSystem->createSound(newSound.filePath, FMOD_DEFAULT, 0, &soundToLoad);
 	newSound.sound = soundToLoad;
 
@@ -240,7 +240,7 @@ void AudioEngine::LoadSound(const char* name, const char* filePath, AudioType ty
 //Creates an audio stream.
 //Audio streams are ideal for streaming long audio files such as soundtracks or voicelines
 //As it is not as necaserry to load these into memory. 
-FMOD::Sound* AudioEngine::CreateAudioStream( const char* filePath)
+FMOD::Sound* AudioEngine::CreateAudioStream(const char* filePath)
 {
 	FMOD::Sound* soundToStream;;
 	FMOD_RESULT result = _fmodSystem->createStream(filePath, FMOD_DEFAULT, 0, &soundToStream);
@@ -251,7 +251,7 @@ FMOD::Sound* AudioEngine::CreateAudioStream( const char* filePath)
 
 //Play sound effects
 //Pass in values for min and max pitch to allow for slight variations in pitch for repeating sounds (footsteps, attacks etc)
- FMOD::Channel* AudioEngine::PlaySound(std::string soundName, float minVolume, float maxVolume, float minPitch, float maxPitch)
+FMOD::Channel* AudioEngine::PlaySound(std::string soundName, float minVolume, float maxVolume, float minPitch, float maxPitch)
 {
 	auto sound = _loadedSFX.find(soundName);
 	if (sound == _loadedSFX.end()) {
@@ -289,7 +289,7 @@ FMOD::Sound* AudioEngine::CreateAudioStream( const char* filePath)
 
 		return channel;
 	}
-	
+
 }
 
 
@@ -355,7 +355,3 @@ void AudioEngine::SetMusicVolume(float volume)
 {
 	_groups[Type_Song]->setVolume(volume);
 }
-
-
-
-//Audio Source
