@@ -2,6 +2,7 @@
 #include "Core/Graphics/Renderer2D.h"
 #include "Core/Graphics/Window.h"
 #include "Quad.h"
+#include "TileMapEditor.h"
 
 
 std::ostream& operator<<(std::ostream& os, glm::vec2 v) {
@@ -14,6 +15,7 @@ std::ostream& operator<<(std::ostream& os, glm::vec2 v) {
 TileMap::TileMap(std::string name)
 	: _name(name)
 {
+	_tileArr = new std::vector<TileData>[_numLayers];
 	SetTileMapSize({ 32.0f, 32.0f });
 
 	_tileSize = glm::vec2(128.0f);
@@ -22,6 +24,7 @@ TileMap::TileMap(std::string name)
 
 	SetSpriteSheet(ResourceManager::GetSpriteSheet("testSheet"));
 	LoadTileMap();
+
 }
 
 TileMap::~TileMap()
@@ -132,6 +135,9 @@ void TileMap::LoadTileMap()
 			int row = i / _mapInTiles.x;
 			int xIndex = i - (row * _mapInTiles.x);
 
+			if (collidable) {
+				std::cout << "Tile at X: " << xIndex << ", Y: " << row << std::endl;
+			}
 			//int xIndex = 
 
 			float xPos = (float)xIndex * _gapBetweenTiles;
@@ -262,8 +268,18 @@ void TileMap::RenderMap(Camera* cam)
 				//if this tile does not have a sprite then go to next cycle
 				if (_tileArr[i][index]._pSprite == nullptr) continue;
 
-				//Draw this tile
-				Renderer2D::DrawQuad(Quad{ { x,y }, { _gapBetweenTiles,_gapBetweenTiles } }, _tileArr[i][index]._pSprite->GetTexture(), _tileArr[i][index]._pSprite->GetTexCoords());
+				if (TileMapEditor::_showCollisionMap) {
+					glm::vec4 color = glm::vec4(1.0f, 0.0f, 0.0f, 1.0f);
+					if (!_tileArr[i][index].collidable) {
+						color.r = 0.0f;
+						color.g = 1.0f;
+					}
+					Renderer2D::DrawQuad(Quad{ { x,y }, { _gapBetweenTiles,_gapBetweenTiles } }, _tileArr[i][index]._pSprite->GetTexture(), _tileArr[i][index]._pSprite->GetTexCoords(), color);
+				}
+				else {
+					//Draw this tile
+					Renderer2D::DrawQuad(Quad{ { x,y }, { _gapBetweenTiles,_gapBetweenTiles } }, _tileArr[i][index]._pSprite->GetTexture(), _tileArr[i][index]._pSprite->GetTexCoords());
+				}
 			}
 		}
 	}

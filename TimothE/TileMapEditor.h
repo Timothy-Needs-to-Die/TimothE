@@ -26,6 +26,8 @@ public:
 
 	static void Update(TileMap* pTilemap);
 
+	// Says if we can see the collision map or not in the editor.
+	static bool _showCollisionMap;
 private:
 	//Name of the spritesheet used for this tilemap.
 	static std::string _spritesheetName;
@@ -38,6 +40,9 @@ private:
 
 	//Should the tile we are placing down be collidable
 	static bool _collidableToggle;
+
+
+	
 
 	//The tile we want to place down.
 	static SelectedTile _selectedTile;
