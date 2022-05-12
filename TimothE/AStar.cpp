@@ -77,7 +77,7 @@ glm::vec3 AStar::PathFinding(glm::vec3 startPos)
                 }
                 /*float dist = sqrt(pow(neighbours[i].position.x - _mPoints.at(0).x, 2) +
                     pow(neighbours[i].position.y - _mPoints.at(0).y, 2));*/
-                neighbours[i].hCost = dist;
+                //neighbours[i].hCost = dist;
                 neighbours[i].fCost = neighbours[i].gCost + neighbours[i].hCost;
                 neighbours[i].previousNodePAth = &current;
             }

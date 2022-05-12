@@ -7,6 +7,7 @@ struct QuadVertex {
 	glm::vec2 texCoord;
 	float texIndex;
 	float tilingFactor;
+	int entityID;
 };
 
 struct RendererData {
@@ -50,7 +51,8 @@ void Renderer2D::Init()
 			{ ShaderDataTypes::Float4, "a_Color"        },
 			{ ShaderDataTypes::Float2, "a_TexCoord"     },
 			{ ShaderDataTypes::Float,  "a_TexIndex"     },
-			{ ShaderDataTypes::Float,  "a_TilingFactor" }
+			{ ShaderDataTypes::Float,  "a_TilingFactor" },
+			{ ShaderDataTypes::Int,  "a_EntityID" }
 		});
 
 	_uiData.quadVertexBuffer->SetLayout({
@@ -58,7 +60,8 @@ void Renderer2D::Init()
 			{ ShaderDataTypes::Float4, "a_Color"        },
 			{ ShaderDataTypes::Float2, "a_TexCoord"     },
 			{ ShaderDataTypes::Float,  "a_TexIndex"     },
-			{ ShaderDataTypes::Float,  "a_TilingFactor" }
+			{ ShaderDataTypes::Float,  "a_TilingFactor" },
+			{ ShaderDataTypes::Int,  "a_EntityID" }
 		});
 
 

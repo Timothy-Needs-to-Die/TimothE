@@ -14,4 +14,6 @@ struct TileData {
 
 	Sprite* _pSprite;
 	SpriteSheet* _pSpritesheet;
+
+	int lightLevel = 0;
 };

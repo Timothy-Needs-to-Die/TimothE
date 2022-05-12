@@ -179,4 +179,5 @@ private:
 	///////////
 	Shader* _pShader;
 	std::string _shaderName;
+	int lightLevel = 0;
 };

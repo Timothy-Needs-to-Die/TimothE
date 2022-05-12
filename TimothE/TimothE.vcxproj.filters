@@ -443,4 +443,8 @@
     </ClCompile>
     <ClCompile Include="MovementComponent.cpp" />
   </ItemGroup>
+  <ItemGroup>
+    <None Include="vs_Texture.vert" />
+    <None Include="fr_Texture.frag" />
+  </ItemGroup>
 </Project>
