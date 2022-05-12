@@ -2,6 +2,7 @@
 
 
 bool TileMapEditor::_collidableToggle = false;
+bool TileMapEditor::_showCollisionMap = false;
 std::string TileMapEditor::_spritesheetName = "spritesheet";
 glm::vec2 TileMapEditor::_mapSizeInUnits = glm::vec2(32.0);
 SelectedTile TileMapEditor::_selectedTile;
@@ -89,6 +90,8 @@ void TileMapEditor::EditorUI(TileMap* pTilemap)
 
 		ImGui::Checkbox("Collidable: ", &_collidableToggle);
 
+		ImGui::Checkbox("Show Collision Map: ", &_showCollisionMap);
+
 		if (ImGui::Button("Save TileMap"))
 		{
 			pTilemap->SaveTilemap();
@@ -160,7 +163,6 @@ void TileMapEditor::EditorUI(TileMap* pTilemap)
 			pTilemap->AddTileAt(_currentLayer, 0, 0, CameraManager::GetCamera("Editor"), _collidableToggle);
 		}
 	}
-
 	ImGui::End();
 }
 

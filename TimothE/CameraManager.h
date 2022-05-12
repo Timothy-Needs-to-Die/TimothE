@@ -1,6 +1,6 @@
 #pragma once
 #include "Camera.h"
-#include "Window.h"
+#include "Core/Graphics/Window.h"
 #include <vector>
 
 class CameraManager

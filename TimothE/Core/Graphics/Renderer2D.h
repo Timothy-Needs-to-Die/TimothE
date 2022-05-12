@@ -1,13 +1,13 @@
 #pragma once
 
-#include "pch.h"
-#include "Camera.h"
-#include "Texture2D.h"
 #include "VAO.h"
 #include "VBO.h"
 #include "IBO.h"
 #include "Shader.h"
-#include "Quad.h"
+
+#include "../../Quad.h"
+#include "../../Camera.h"
+#include "../../Texture2D.h"
 
 class Renderer2D
 {
