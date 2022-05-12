@@ -85,8 +85,7 @@
     <ClInclude Include="Application.h" />
     <ClInclude Include="Core\Events\ApplicationEvent.h" />
     <ClInclude Include="AudioEngine.h" />
-    <ClInclude Include="AudioSource.h" />
-    <ClInclude Include="Base.h" />
+    <ClInclude Include="Core\Graphics\Base.h" />
     <ClInclude Include="BoxColliderComponent.h" />
     <ClInclude Include="Core\Graphics\BufferLayout.h" />
     <ClInclude Include="Button.h" />
@@ -177,7 +176,6 @@
     <ClCompile Include="AnimatedSpritesheet.cpp" />
     <ClCompile Include="Application.cpp" />
     <ClCompile Include="AudioEngine.cpp" />
-    <ClCompile Include="AudioSource.cpp" />
     <ClCompile Include="BoxColliderComponenet.cpp" />
     <ClCompile Include="Button.cpp" />
     <ClCompile Include="Camera.cpp" />

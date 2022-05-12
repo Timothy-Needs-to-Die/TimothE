@@ -67,14 +67,6 @@ public:
 	}
 	
 	TileData* GetTileAtWorldPos(int layer, glm::vec2 worldPos);
-
-	std::vector<TileData>* GetAllTiles() const {
-		return _tileArr;
-	}
-	
-	std::vector<TileData> GetAllTilesInLayer(int layer) const {
-		return _tileArr[layer];
-	}
 	
 	void ClearLayer(int layer);
 	
@@ -118,7 +110,7 @@ private:
 	SpriteSheet* _pSpritesheet = nullptr;
 
 	//Array/Vector which holds the tiles. //TODO: Make this not magic and link to the _numLayers variable
-	std::vector<TileData>* _tileArr;
+	std::vector<TileData> _tileArr[3];
 
 	//How many tiles are there per unit in the X and Y axis
 	int _tilesPerUnit = 4;

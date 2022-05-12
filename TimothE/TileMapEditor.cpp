@@ -2,7 +2,6 @@
 
 
 bool TileMapEditor::_collidableToggle = false;
-bool TileMapEditor::_showCollisionMap = false;
 std::string TileMapEditor::_spritesheetName = "spritesheet";
 glm::vec2 TileMapEditor::_mapSizeInUnits = glm::vec2(32.0);
 SelectedTile TileMapEditor::_selectedTile;
@@ -89,8 +88,6 @@ void TileMapEditor::EditorUI(TileMap* pTilemap)
 		ImGui::Separator();
 
 		ImGui::Checkbox("Collidable: ", &_collidableToggle);
-
-		ImGui::Checkbox("Show Collision Map: ", &_showCollisionMap);
 
 		if (ImGui::Button("Save TileMap"))
 		{
