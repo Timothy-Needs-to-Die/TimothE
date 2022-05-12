@@ -52,7 +52,8 @@ void Renderer2D::Init()
 			{ ShaderDataTypes::Float2, "a_TexCoord"     },
 			{ ShaderDataTypes::Float,  "a_TexIndex"     },
 			{ ShaderDataTypes::Float,  "a_TilingFactor" },
-			{ ShaderDataTypes::Int,  "a_EntityID" }
+			{ ShaderDataTypes::Int,  "a_EntityID" },
+			{ ShaderDataTypes::Int,  "a_LightLevel" }
 		});
 
 	_uiData.quadVertexBuffer->SetLayout({
@@ -61,7 +62,8 @@ void Renderer2D::Init()
 			{ ShaderDataTypes::Float2, "a_TexCoord"     },
 			{ ShaderDataTypes::Float,  "a_TexIndex"     },
 			{ ShaderDataTypes::Float,  "a_TilingFactor" },
-			{ ShaderDataTypes::Int,  "a_EntityID" }
+			{ ShaderDataTypes::Int,  "a_EntityID" },
+			{ ShaderDataTypes::Int,  "a_LightLevel" }
 		});
 
 

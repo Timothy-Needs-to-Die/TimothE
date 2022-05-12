@@ -8,13 +8,16 @@ struct VertexOutput
 	vec4 Color;
 	vec2 TexCoord;
 	float TilingFactor;
+	int lightLevel;
 };
 
 layout (location = 0) in VertexOutput Input;
-layout (location = 3) in flat float v_TexIndex;
-layout (location = 4) in flat int v_EntityID;
+layout (location = 4) in flat float v_TexIndex;
+layout (location = 5) in flat int v_EntityID;
 
 layout(binding = 0) uniform sampler2D u_Textures[32];
+
+vec4 darkest = vec4(0.2f, 0.2f, 0.0f, 0.0f);
 
 void main()
 {
@@ -58,9 +61,7 @@ void main()
 	if(texColor.a < 0.1)
 		discard;
 
-	vec4 darkest = vec4(0.2f, 0.2f, 0.0f, 0.0f);
-
-	color = texColor * darkest;
+	color = texColor * (darkest);
 
 	color2 = v_EntityID;
 }
