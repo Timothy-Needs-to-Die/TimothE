@@ -5,6 +5,7 @@ struct QuadVertex {
 	glm::vec3 position;
 	glm::vec4 color;
 	glm::vec2 texCoord;
+	int lightLevel;
 	float texIndex;
 	float tilingFactor;
 	int entityID;
@@ -50,10 +51,10 @@ void Renderer2D::Init()
 			{ ShaderDataTypes::Float3, "a_Position"     },
 			{ ShaderDataTypes::Float4, "a_Color"        },
 			{ ShaderDataTypes::Float2, "a_TexCoord"     },
+			{ ShaderDataTypes::Int,  "a_LightLevel"		},
 			{ ShaderDataTypes::Float,  "a_TexIndex"     },
 			{ ShaderDataTypes::Float,  "a_TilingFactor" },
-			{ ShaderDataTypes::Int,  "a_EntityID" },
-			{ ShaderDataTypes::Int,  "a_LightLevel" }
+			{ ShaderDataTypes::Int,  "a_EntityID" }
 		});
 
 	_uiData.quadVertexBuffer->SetLayout({
@@ -62,11 +63,8 @@ void Renderer2D::Init()
 			{ ShaderDataTypes::Float2, "a_TexCoord"     },
 			{ ShaderDataTypes::Float,  "a_TexIndex"     },
 			{ ShaderDataTypes::Float,  "a_TilingFactor" },
-			{ ShaderDataTypes::Int,  "a_EntityID" },
-			{ ShaderDataTypes::Int,  "a_LightLevel" }
+			{ ShaderDataTypes::Int,  "a_EntityID" }
 		});
-
-
 
 	_data.quadVertexArray->AddVertexBuffer(_data.quadVertexBuffer);
 	_uiData.quadVertexArray->AddVertexBuffer(_uiData.quadVertexBuffer);
@@ -271,6 +269,7 @@ void Renderer2D::DrawQuad(const glm::mat4& transform, Texture2D* texture, glm::v
 		_data.quadVertexBufferPtr->position = transform * _data.quadVertexPositions[i];
 		_data.quadVertexBufferPtr->color = tintColor;
 		_data.quadVertexBufferPtr->texCoord = textureCoords[i];
+		_data.quadVertexBufferPtr->lightLevel = 10;
 		_data.quadVertexBufferPtr->texIndex = textureIndex;
 		_data.quadVertexBufferPtr->tilingFactor = tilingFactor;
 		_data.quadVertexBufferPtr++;

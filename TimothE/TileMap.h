@@ -61,6 +61,7 @@ public:
 		_mapSizeInUnits = glm::vec2(_mapInTiles.x / _tilesPerUnit, _mapInTiles.y / _tilesPerUnit);
 	}
 
+	std::vector<TileData> GetTiles() { return _tileArr[3]; }
 
 	int GetTilesPerUnit() const {
 		return _tilesPerUnit;

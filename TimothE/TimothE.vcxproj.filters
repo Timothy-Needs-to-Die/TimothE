@@ -277,6 +277,7 @@
       <Filter>Headers</Filter>
     </ClInclude>
     <ClInclude Include="MovementComponent.h" />
+    <ClInclude Include="LightLevelManager.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="AStar.cpp">
@@ -442,6 +443,7 @@
       <Filter>Source</Filter>
     </ClCompile>
     <ClCompile Include="MovementComponent.cpp" />
+    <ClCompile Include="LightLevelManager.cpp" />
   </ItemGroup>
   <ItemGroup>
     <None Include="vs_Texture.vert" />
