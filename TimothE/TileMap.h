@@ -104,7 +104,11 @@ private:
 	SpriteSheet* _pSpritesheet = nullptr;
 
 <<<<<<< HEAD
+<<<<<<< HEAD
 	//Array/Vector which holds the tiles. //TODO: Make this not magic and link to the _numLayers variable
+=======
+	//Array/Vector which holds the tiles.
+>>>>>>> parent of 84fd60c... Merge branch 'main' of https://github.com/Timothy-Needs-to-Die/TimothE into main
 =======
 	//Array/Vector which holds the tiles.
 >>>>>>> parent of 84fd60c... Merge branch 'main' of https://github.com/Timothy-Needs-to-Die/TimothE into main

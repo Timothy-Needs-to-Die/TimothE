@@ -126,6 +126,7 @@ void TileMap::LoadTileMap()
 			_tileArr[layer][i]._pSprite = _pSpritesheet->GetSpriteAtIndex(index);
 			_tileArr[layer][i].collidable = collidable;
 <<<<<<< HEAD
+<<<<<<< HEAD
 
 			int row = i / _mapInTiles.x;
 			int xIndex = i - (row * _mapInTiles.x);
@@ -139,6 +140,8 @@ void TileMap::LoadTileMap()
 			_tileArr[layer][i].colYPos = yPos;
 
 			_tileArr[layer][i].size = _gapBetweenTiles;
+=======
+>>>>>>> parent of 84fd60c... Merge branch 'main' of https://github.com/Timothy-Needs-to-Die/TimothE into main
 =======
 >>>>>>> parent of 84fd60c... Merge branch 'main' of https://github.com/Timothy-Needs-to-Die/TimothE into main
 		}

@@ -218,9 +218,12 @@
     <ClCompile Include="VBO.cpp" />
     <ClCompile Include="Window.cpp" />
     <ClCompile Include="pch.cpp" />
+<<<<<<< HEAD
   </ItemGroup>
   <ItemGroup>
     <None Include="vs_Texture.vert" />
     <None Include="fr_Texture.frag" />
+=======
+>>>>>>> parent of 84fd60c... Merge branch 'main' of https://github.com/Timothy-Needs-to-Die/TimothE into main
   </ItemGroup>
 </Project>
