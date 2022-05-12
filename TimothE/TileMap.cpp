@@ -15,6 +15,7 @@ std::ostream& operator<<(std::ostream& os, glm::vec2 v) {
 TileMap::TileMap(std::string name)
 	: _name(name)
 {
+	_tileArr = new std::vector<TileData>[_numLayers];
 	SetTileMapSize({ 32.0f, 32.0f });
 
 	_tileSize = glm::vec2(128.0f);
@@ -23,6 +24,7 @@ TileMap::TileMap(std::string name)
 
 	SetSpriteSheet(ResourceManager::GetSpriteSheet("testSheet"));
 	LoadTileMap();
+
 }
 
 TileMap::~TileMap()
