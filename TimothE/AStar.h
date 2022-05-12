@@ -35,5 +35,4 @@ private:
 	int _mMapTilesX;
 	int _mMapTilesY;
 
-	int CalculateDistance(MapNode nodeA, MapNode nodeB);
 };

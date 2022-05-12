@@ -1,13 +1,16 @@
 #include "AStar.h"
 #include <algorithm>
+
+//uses a* algorthigm to find path
 glm::vec2 AStar::PathFinding(glm::vec2 startPos)
 {
     std::vector<MapNode> openList;
     std::vector<MapNode> closedList;
     openList.push_back({ startPos, 0,0,0 });
-
+    //while open list contains something
     while (openList.size() > 0)
     {
+        //gets node with lowest fcost
         int lowestIndex = 0;
         for (int i = 0; i < openList.size(); i++)
         {
@@ -17,8 +20,10 @@ glm::vec2 AStar::PathFinding(glm::vec2 startPos)
             }
         }
 
+        //sets current node to lowest f cost node
         MapNode current = openList[lowestIndex];
 
+        //if lowest f cost position is equal to end point recreate path
         if (openList[lowestIndex].position == _mPoints[0])
         {
             MapNode temp = current;
@@ -30,10 +35,11 @@ glm::vec2 AStar::PathFinding(glm::vec2 startPos)
             }
         }
 
+        //removes current from open list and adds to closed list to confirm value of node
         closedList.push_back(current);
         openList.erase(openList.begin() + lowestIndex);
 
-        //for each neighbour
+        //gets neighbours from current
         std::vector<MapNode> neighbours;
         std::vector<int> openIDs;
         std::vector<int> closedIDs;
@@ -47,7 +53,7 @@ glm::vec2 AStar::PathFinding(glm::vec2 startPos)
         neighbours.push_back(_mMapNodes.at(id - 1 - _mMapTilesX));//bottom left
         neighbours.push_back(_mMapNodes.at(id + 1 - _mMapTilesX));//bottom right
 
-
+        //finds ids for open and closed lists
         for (int closedID = 0; closedID < closedList.size(); closedID++)
         {
             closedIDs.push_back(closedList.at(closedID).id);
@@ -57,8 +63,10 @@ glm::vec2 AStar::PathFinding(glm::vec2 startPos)
             openIDs.push_back(openList.at(openID).id);
         }
 
+        //for each neighbour
         for (int i= 0; i < neighbours.size(); i++)
         {
+            //if neighbour is not in closed list and if in open list then add 1 to neighbour gcost
             if (!std::count(closedIDs.begin(), closedIDs.end(), neighbours[i].id))
             {
                 int tempG = current.gCost + 1;
@@ -70,14 +78,17 @@ glm::vec2 AStar::PathFinding(glm::vec2 startPos)
                         neighbours[i].gCost = tempG;
                     }
                 }
+                //else if in closed list then open list includes neighbour
                 else
                 {
                     neighbours[i].gCost = tempG;
                     openList.push_back(neighbours[i]);
                 }
-                /*float dist = sqrt(pow(neighbours[i].position.x - _mPoints.at(0).x, 2) +
-                    pow(neighbours[i].position.y - _mPoints.at(0).y, 2));*/
-                //neighbours[i].hCost = dist;
+                //finds distance between current and end position
+                float dist = sqrt(pow(neighbours[i].position.x - _mPoints.at(0).x, 2) +
+                    pow(neighbours[i].position.y - _mPoints.at(0).y, 2));
+                //sets f and h cost and sets previours node as current for path creation
+                neighbours[i].hCost = dist;
                 neighbours[i].fCost = neighbours[i].gCost + neighbours[i].hCost;
                 neighbours[i].previousNodePAth = &current;
             }
@@ -91,16 +102,19 @@ glm::vec2 AStar::PathFinding(glm::vec2 startPos)
 
 }
 
+//gets all paths the ai will take
 std::vector<glm::vec2> AStar::GetPathPoints()
 {
     return _mPoints;
 }
 
+//sets new path points
 void AStar::SetPathPoints(glm::vec2 _points)
 {
     _mPoints.push_back(_points);
 }
 
+//sets tile map
 void AStar::SetMapCoords(std::vector<glm::vec2> mapTiles, glm::vec2 size)
 {
     int id;
@@ -121,16 +135,6 @@ void AStar::SetMapCoords(std::vector<glm::vec2> mapTiles, glm::vec2 size)
 
 }
 
-int AStar::CalculateDistance(MapNode nodeA, MapNode nodeB)
-{
-    int distX = std::abs(nodeA.position.x - nodeB.position.x);
-    int distY = std::abs(nodeA.position.y - nodeB.position.y);
-    if (distX > distY)
-    {
-        return 14 * distY + 10 * (distX - distY);
-    }
-    return 14 * distX + 10 * (distY - distX);
-}
 
 
 
