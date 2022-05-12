@@ -7,8 +7,6 @@
 #include "TileData.h"
 #include "TileMap.h"
 #include "Physics.h"
-#include "MovementComponent.h"
-
 
 class PlayerMovement : public Component
 {
@@ -30,6 +28,5 @@ public:
 
 private:
 	TileMap* _pTileMap;
-	MovementComponent* _pMovement;
 };
 

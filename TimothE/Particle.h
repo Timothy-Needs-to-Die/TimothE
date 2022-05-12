@@ -2,7 +2,7 @@
 
 #include "glm.hpp"
 #include <vector>
-#include "Core/Graphics/Shader.h"
+#include "Shader.h"
 #include "Component.h"
 #include "ResourceManager.h"
 #include "Transform.h"

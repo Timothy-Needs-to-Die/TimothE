@@ -1,7 +1,6 @@
 #pragma once
 
-#include <memory>
-#include "OpenGLError.h"
+#include "pch.h"
 
 class IBO
 {
