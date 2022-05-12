@@ -1,0 +1,53 @@
+#pragma once
+#include "Component.h"
+
+
+enum class Direction {
+	STATIONARY,
+	UP,
+	DOWN,
+	LEFT,
+	RIGHT
+};
+
+class MovementComponent : public Component
+{
+
+public:
+	MovementComponent(GameObject* gameObject) : Component(gameObject) 
+	{
+		_direction = Direction::STATIONARY;
+		_moving = false;
+		SetType(Types::Movement);
+	}
+
+	COMPONENT_STATIC_TYPE(Movement);
+	
+
+	void Move(glm::vec2 moveVec);
+
+	void CollisionCheck(glm::vec2& newPos);
+
+	void DecideDirection(glm::vec2& moveVec);
+
+	void SetMovementSpeed(const float speed) {
+		_movementSpeed = speed;
+	}
+	float GetMovementSpeed() const { return _movementSpeed; }
+
+	bool IsMoving() const { return _moving; }
+
+	Direction GetDirection() const { return _direction; }
+
+	void OnStart() override;
+	void OnUpdate() override;
+	void OnEnd() override;
+
+private:
+	float _movementSpeed = 3.0f;
+	bool _moving;
+
+	Direction _direction;
+
+};
+

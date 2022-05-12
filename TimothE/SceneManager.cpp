@@ -8,30 +8,30 @@ void SceneManager::Init()
 	//TODO: Load list of scenes from file and load the default one
 	//TODO: Add all the scenes found to the list of files.
 	//TODO: Neaten content browser a fuck tonne.
-	_pDefaultScene = new Scene();
-	_pCurrentScene = _pDefaultScene;
-
-	std::vector<string> sceneFiles = Editor::GetDirectoriesOfType(".scene", "Resources/Scenes/");
-
-	for (auto& s : sceneFiles) {
-		std::cout << s << std::endl;
-
-		int extensionLocation = s.find(".scene");
-		if (extensionLocation != std::string::npos) {
-			std::string rString = s.erase(extensionLocation);
-
-			int lastSlashLocation = rString.find_last_of("/");
-			if (lastSlashLocation != std::string::npos) {
-				rString = rString.substr(lastSlashLocation);
-			}
-
-			//std::cout << rString << std::endl;
-
-			Scene* scene = new Scene(rString);
-			_scenes.emplace(rString, scene);
-		}
-
-	}
+	//_pDefaultScene = new Scene();
+	//_pCurrentScene = _pDefaultScene;
+	//
+	//std::vector<string> sceneFiles = Editor::GetDirectoriesOfType(".scene", "Resources/Scenes/");
+	//
+	//for (auto& s : sceneFiles) {
+	//	std::cout << s << std::endl;
+	//
+	//	int extensionLocation = s.find(".scene");
+	//	if (extensionLocation != std::string::npos) {
+	//		std::string rString = s.erase(extensionLocation);
+	//
+	//		int lastSlashLocation = rString.find_last_of("/");
+	//		if (lastSlashLocation != std::string::npos) {
+	//			rString = rString.substr(lastSlashLocation);
+	//		}
+	//
+	//		//std::cout << rString << std::endl;
+	//
+	//		Scene* scene = new Scene(rString);
+	//		_scenes.emplace(rString, scene);
+	//	}
+	//
+	//}
 }
 
 Scene* SceneManager::CreateScene(std::string name)
@@ -41,6 +41,13 @@ Scene* SceneManager::CreateScene(std::string name)
 	_scenes[name] = newScene;
 	
 	return newScene;
+}
+
+Scene* SceneManager::CreateScene(Scene* scene)
+{
+	_scenes[scene->GetName()] = scene;
+
+	return scene;
 }
 
 Scene* SceneManager::GetScene(std::string name)
@@ -72,7 +79,8 @@ Scene* SceneManager::SetCurrentScene(Scene* scene)
 	if (scene != nullptr) {
 		_pCurrentScene->Unload();
 		_pCurrentScene = scene;
-		_pCurrentScene->LoadScene("Resources/Scenes/" + scene->GetName() + ".scene");
+
+		//_pCurrentScene->LoadScene("Resources/Scenes/" + scene->GetName() + ".scene");
 	}
 
 	return _pCurrentScene;

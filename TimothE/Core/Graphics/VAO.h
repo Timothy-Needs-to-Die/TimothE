@@ -1,6 +1,7 @@
 #pragma once
 
-#include "pch.h"
+#include <memory>
+
 #include "VBO.h"
 #include "IBO.h"
 
