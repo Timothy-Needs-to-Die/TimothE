@@ -277,6 +277,9 @@
       <Filter>Headers</Filter>
     </ClInclude>
     <ClInclude Include="MovementComponent.h" />
+    <ClInclude Include="Tag.h">
+      <Filter>Headers</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="AStar.cpp">
@@ -442,5 +445,8 @@
       <Filter>Source</Filter>
     </ClCompile>
     <ClCompile Include="MovementComponent.cpp" />
+    <ClCompile Include="Tag.cpp">
+      <Filter>Source</Filter>
+    </ClCompile>
   </ItemGroup>
 </Project>

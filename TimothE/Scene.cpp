@@ -374,3 +374,14 @@ std::vector<GameObject*> Scene::GetGameObjectsByType(ObjectType type)
 	//Returns the vector
 	return list;
 }
+
+GameObject* Scene::FindObjectWithTag(const std::string& tagName)
+{
+
+	return nullptr;
+}
+
+std::vector<GameObject*> Scene::FindGameObjectsWithTag(const std::string& tagName)
+{
+	return nullptr;
+}

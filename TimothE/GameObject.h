@@ -8,6 +8,7 @@
 #include "Serializable.h"
 #include "BoxColliderComponent.h"
 #include "ParticleSystem.h"
+#include "Tag.h"
 
 class Texture2D;
 class Scene;
@@ -15,7 +16,7 @@ class Scene;
 enum class ObjectType
 {
 	Player,
-	Enemy,
+	Enemy, 
 	NPC,
 	PickUp,
 	UI
@@ -27,7 +28,7 @@ public:
 	//////////////////////////
 	//Constructor/Destructor//
 	//////////////////////////
-	GameObject(std::string name = "New GameObject", ObjectType tag = ObjectType::Player, Transform* transform = nullptr);
+	GameObject(std::string name, std::string tag, Transform* transform = nullptr);
 	~GameObject();
 
 	/////////////
@@ -54,7 +55,8 @@ public:
 	//////////////////////////
 	std::string GetUID() { return _UID; }
 	std::string GetName() { return _name; }
-	ObjectType GetType() { return _tag; }
+	std::string GetTag() { return _tag; }
+	//ObjectType GetType() { return _tag; }
 	int GetTextureID() { return _textureID; }
 	int GetShaderID() { return _shaderID; }
 
@@ -71,8 +73,8 @@ public:
 	GameObject* GetChild() { return _pChild; };
 
 
-	ObjectType GetObjectType() const { return _tag; }
-	ObjectType SetObjectType(ObjectType type) { _tag = type; }
+	//ObjectType GetObjectType() const { return _tag; }
+	//ObjectType SetObjectType(ObjectType type) { _tag = type; }
 
 
 	////////////////////////
@@ -158,7 +160,7 @@ private:
 	///////////////////////////////////
 	std::string _UID;
 	std::string _name;
-	ObjectType _tag;
+	std::string _tag;
 	int _textureID = 0;
 	int _shaderID = 0;
 
