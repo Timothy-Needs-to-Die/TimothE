@@ -26,6 +26,7 @@ public:
 	float GetRotation() const { return _rotation; }
 	glm::mat4 GetTransformMatrix() const { return _transformationMatrix; }
 	Quad GetRenderQuad() const { return Quad{ _position, _size }; }
+	glm::vec2 GetForward() const { return _rotation * glm::vec2(0.0,1.0); }
 
 	//Setters
 	void SetPosition(float x, float y) { _position = glm::vec2(x, y); }
@@ -34,6 +35,7 @@ public:
 	void SetXScale(float _tileScale) { _size.x = _tileScale; }
 	void SetYScale(float _tileScale) { _size.y = _tileScale; }
 	void SetScale(glm::vec2 _tileScale) { _size = _tileScale; }
+	void SetForward(const glm::vec2 forward) { _forward = forward; }
 
 	//Performs a translate operation
 	void Translate(glm::vec2 newPos);
@@ -53,6 +55,8 @@ private:
 
 	glm::vec2 _position;
 	glm::vec2 _size;
+	glm::vec2 _forward;
+
 	float _rotation;
 
 	//These pointers are used for the ImGui Editor window

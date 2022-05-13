@@ -88,15 +88,28 @@ void MovementComponent::CollisionCheck(glm::vec2& newPos)
 
 void MovementComponent::DecideDirection(glm::vec2& moveVec)
 {
+	glm::vec2 newForward = glm::vec2(0.0f);
+	float xVal;
+
 	//If the x value is greater than or equal to y value
 	if (moveVec.x >= moveVec.y) {
 		//We are moving left or right. Decide based on if the x component is greater than 0
 		_direction = moveVec.x > 0.0f ? Direction::RIGHT : Direction::LEFT;
+		xVal = moveVec.x > 0.0f ? 0.0f : 4.71f;
+
 	}
 	else {
 		//We are moving up or down. Decide based on if the y component is greater than 0
 		_direction = moveVec.y > 0.0f ? Direction::UP : Direction::DOWN;
+		xVal = moveVec.y > 0.0f ? 1.57f : 3.14f;
 	}
+
+	newForward.y = xVal;
+
+	//std::cout << "Rotation: " << xVal << std::endl;
+
+	_pParentObject->GetTransform()->SetForward(newForward);
+	_pParentObject->GetTransform()->SetRotation(xVal);
 }
 
 void MovementComponent::OnStart()

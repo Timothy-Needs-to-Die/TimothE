@@ -143,6 +143,7 @@ private:
 	//Stores a vector of game objects. This is refreshed every time a scene loads.
 	static std::vector<GameObject*> _listOfGameObjects;
 	static std::vector<GameObject*> _listOfDrawableGameObjects;
+	std::vector<GameObject*> _gameObjectsToRemove;
 
 	//GameObject* _pCircleTest;
 	//GameObject* _pTestObject2;

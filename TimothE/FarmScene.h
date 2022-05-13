@@ -1,9 +1,11 @@
 #pragma once
 #include "Scene.h"
-#include "PlayerMovement.h"
+#include "PlayerInputComponent.h"
 #include "SpriteComponent.h"
 #include "AnimatedSpritesheet.h"
 #include "MovementComponent.h"
+#include "Fighter.h"
+#include "Health.h"
 
 class FarmScene : public Scene
 {
@@ -25,7 +27,7 @@ private:
 	GameObject* _pStartButton = nullptr;
 	GameObject* _pPlayerObject = nullptr;
 
-	PlayerMovement* _pPlayerMovement = nullptr;
+	PlayerInputComponent* _pPlayerMovement = nullptr;
 	MovementComponent* _pMovement = nullptr;
 
 	AnimatedSpritesheet* _pAnimSheet;
@@ -33,5 +35,8 @@ private:
 	SpriteComponent* _pSc = nullptr;
 
 	SpriteSheet* _pSpritesheet;
+
+	Health* _pPlayerHealth = nullptr;
+	Health* _pEnemyHealth = nullptr;
 };
 

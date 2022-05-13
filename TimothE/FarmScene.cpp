@@ -50,7 +50,7 @@ void FarmScene::InitScene()
 	_pAnimSheet = new AnimatedSpritesheet(ResourceManager::GetTexture("character"), 16, 32);
 	_pSpritesheet = ResourceManager::GetSpriteSheet("testSheet");
 
-	_pStartButton = new GameObject("BUTTON","UI");
+	_pStartButton = new GameObject("BUTTON", ObjectType::UI);
 	_pStartButton->AddComponent(new Button(_pStartButton));
 	_pStartButton->AddComponent(new BoxColliderComponent(_pStartButton));
 	//pStartButton->AddComponent(new TextComponent(_pTestObject));
@@ -60,12 +60,15 @@ void FarmScene::InitScene()
 	_pStartButton->SetShader("ui");
 	_pStartButton->GetTransform()->SetPosition(0.0f, 0.0f);
 	_pStartButton->GetTransform()->SetScale({ 0.2f, 0.2f });
+	_pStartButton->SetType(ObjectType::UI);
 	//AddGameObject(_pStartButton);
 
-	_pPlayerObject = new GameObject("Player", "Player");
+	_pPlayerObject = new GameObject("Player", ObjectType::Player);
 	_pMovement = _pPlayerObject->AddComponent(new MovementComponent(_pPlayerObject));
-	_pMovement->SetMovementSpeed(2.0f);
-	_pPlayerMovement = new PlayerMovement(_pPlayerObject);
+	_pMovement->SetMovementSpeed(1.0f);
+	_pPlayerObject->AddComponent(new Fighter(_pPlayerObject));
+	_pPlayerMovement = new PlayerInputComponent(_pPlayerObject);
+	
 	_pPlayerObject->AddComponent(_pPlayerMovement);
 	_pPlayerObject->AddComponent(ResourceManager::GetTexture("character"));
 	_pSc = _pPlayerObject->AddComponent<SpriteComponent>(new SpriteComponent(_pPlayerObject));
@@ -79,4 +82,14 @@ void FarmScene::InitScene()
 	//_pTilemap->SetSpriteSheet(ResourceManager::GetSpriteSheet("testSheet"));
 	//_pTilemap->LoadTileMap();
 
+	GameObject* enemyGO = new GameObject("Enemy", ObjectType::Enemy);
+	enemyGO->AddComponent<Texture2D>(new Texture2D(enemyGO));
+	enemyGO->GetTransform()->SetPosition(2.0f, 2.0f);
+	enemyGO->GetTransform()->SetScale({ 0.25f, 0.45f });
+
+	_pEnemyHealth = enemyGO->AddComponent(new Health(enemyGO));
+	_pEnemyHealth->SetMaxHealth(50);
+	AddGameObject(enemyGO);
+
+	
 }

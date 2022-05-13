@@ -12,6 +12,8 @@
 #include "TileMap.h"
 #include "Time.h"
 #include "FarmScene.h"
+#include "CSVReader.h"
+#include "CropsConfig.h"
 
 #define BIND_EVENT_FN(x) std::bind(&Application::x, this, std::placeholders::_1)
 
@@ -81,8 +83,8 @@ void Application::Init(bool devMode)
 	//_pCurrentScene = ResourceManager::GetScene("FarmScene");
 
 	SceneManager::Init();
-	//_pCurrentScene = SceneManager::CreateScene(ResourceManager::GetScene("FarmScene"));
-	_pCurrentScene = SceneManager::CreateScene(ResourceManager::GetScene("TownScene"));
+	_pCurrentScene = SceneManager::CreateScene(ResourceManager::GetScene("FarmScene"));
+	//_pCurrentScene = SceneManager::CreateScene(ResourceManager::GetScene("TownScene"));
 	_pCurrentScene->InitScene();
 	_pCurrentScene->SceneStart();
 	SceneManager::SetCurrentScene(_pCurrentScene);
@@ -115,6 +117,21 @@ void Application::GameLoop()
 
 	//Intial mem bookmark
 	int memBookmark = HeapManager::GetMemoryBookmark();
+
+	std::vector<std::vector<std::string>> cropDetails = CSVReader::RequestDataFromFile("Resources/Data/CropsConfig.csv");
+
+
+	std::vector<CropConfig> cropConfigs;
+	for (int i = 0; i < cropDetails.size(); i++) {
+		CropConfig newCrop;
+		newCrop.name = cropDetails[i][0];
+		newCrop.price = std::stoi(cropDetails[i][1]);
+		newCrop.description = cropDetails[i][2];
+		cropConfigs.emplace_back(newCrop);
+	}
+
+
+
 
 	//creates new audio engine
 	_pAudio = new AudioEngine;
