@@ -65,8 +65,8 @@ void FarmScene::InitScene()
 
 	_pPlayerObject = new GameObject("Player");
 	_pMovement = _pPlayerObject->AddComponent(new MovementComponent(_pPlayerObject));
+	aiMove = _pPlayerObject->AddComponent(new AIController(_pPlayerObject));
 	_pMovement->SetMovementSpeed(2.0f);
-	aiMove = new AIController(_pPlayerObject);
 	_pPlayerMovement = _pPlayerObject->AddComponent(new PlayerMovement(_pPlayerObject));
 	_pPlayerObject->AddComponent(ResourceManager::GetTexture("character"));
 	_pSc = _pPlayerObject->AddComponent<SpriteComponent>(new SpriteComponent(_pPlayerObject));
