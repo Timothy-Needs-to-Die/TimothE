@@ -14,6 +14,7 @@
 #include "FarmScene.h"
 #include "CSVReader.h"
 #include "CropsConfig.h"
+#include "Core.h"
 
 #define BIND_EVENT_FN(x) std::bind(&Application::x, this, std::placeholders::_1)
 
@@ -45,7 +46,7 @@ void Application::Init(bool devMode)
 
 	//checks if glfw initialsed
 	if (!glfwInit()) {
-		std::cout << "[ERROR: Application::Init()]: glfw failed to initialize" << std::endl;
+		TIM_LOG_ERROR("glfw failed to initialize");
 	}
 
 	//sets up new window

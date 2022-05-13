@@ -3,6 +3,7 @@
 #include "Core/Graphics/Window.h"
 #include "Quad.h"
 #include "TileMapEditor.h"
+#include "Core.h"
 
 
 std::ostream& operator<<(std::ostream& os, glm::vec2 v) {
@@ -87,7 +88,7 @@ void TileMap::LoadTileMap()
 	std::ifstream inFile(filename);
 
 	if (!inFile.good()) {
-		std::cout << "[ERROR: TileMap::LoadTileMap]: TileMap file: " << filename << " could not be loaded" << std::endl;
+		TIM_LOG_ERROR("[ERROR: TileMap::LoadTileMap]: TileMap file: " << filename << " could not be loaded");
 		return;
 	}
 

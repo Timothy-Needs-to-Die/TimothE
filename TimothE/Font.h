@@ -9,6 +9,7 @@
 #include <glm.hpp>
 #include <gtc/matrix_transform.hpp>
 #include "Core/Graphics/Shader.h"
+#include "Core.h"
 
 struct Character
 {

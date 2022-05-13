@@ -7,6 +7,7 @@
 #include "BoxColliderComponent.h"
 #include "ResourceManager.h"
 #include "Scene.h"
+#include "Core.h"
 
 GameObject::GameObject(std::string name, std::string tag, Transform* transform) 
 	: _name(name), _tag(tag), _pTransform(transform)
@@ -106,7 +107,7 @@ void GameObject::SetShader(std::string name)
 	if (_pShader != nullptr) {
 		_shaderID = _pShader->GetProgramID();
 	}else{
-		std::cout << "[ERROR: GameObject::SetShader]: " << name << " does not exist" << std::endl;
+		TIM_LOG_ERROR("" << name << " does not exist");
 	}
 }
 

@@ -3,6 +3,7 @@
 #include "Time.h"
 #include "GameObject.h"
 #include "Transform.h"
+#include "Core.h"
 
 void PlayerInputComponent::OnStart()
 {
@@ -13,7 +14,7 @@ void PlayerInputComponent::OnStart()
 void PlayerInputComponent::OnUpdate()
 {
 	if (_pMovement == nullptr) {
-		std::cout << "[ERROR: PlayerInputComponent::OnUpdate]: Player does not have movement component attached" << std::endl;
+		TIM_LOG_ERROR("Player does not have movement component attached");
 		return;
 	}
 
@@ -38,7 +39,7 @@ void PlayerInputComponent::OnUpdate()
 	CameraManager::GetCamera(-1)->SetPosition({ _pParentObject->GetTransform()->GetPosition(), -2.0f });
 
 	if (_pFighter == nullptr) {
-		std::cout << "[ERROR: PlayerInputComponent::OnUpdate]: Player does not have fighter component attached" << std::endl;
+		TIM_LOG_ERROR("Player does not have fighter component attached");
 		return;
 	}
 

@@ -8,8 +8,7 @@ std::vector<std::vector<std::string>> CSVReader::RequestDataFromFile(const std::
 
     //Early out in case file does not exist
     if (!file.good()) {
-        std::cout << TIM_LOG_ERROR("file at: " << filename << " does not exist") << std::endl;
-        std::cout << "[ERROR: CSVReader::RequestDataFromFile]: file at " << filename << " does not exist" << std::endl;
+        TIM_LOG_ERROR("file at: " << filename << " does not exist");
         return std::vector<std::vector<std::string>>();
     }
 

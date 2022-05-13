@@ -58,7 +58,7 @@ void operator delete(void* pMem)
 
 	//Checks if our dead codes match up in the header and footer
 	if (pHeader->checkCode != deadcode) {
-		std::cout << "[ERROR: MemoryManager::delete]: Header check code does not match" << std::endl;
+		TIM_LOG_ERROR("Header check code does not match");
 	}
 
 	//Deallocates the memory from the heap (handles the linked list)
