@@ -12,7 +12,7 @@ public:
 	int gCost;
 	int hCost;
 	int id;
-	MapNode* previousNodePAth = NULL;
+	int previousNodePAth = 0;
 	bool wall = false;
 };
 
@@ -31,7 +31,7 @@ public:
 private:
 	std::vector<glm::vec2> _mPoints;
 	std::vector<MapNode> _mMapNodes;
-	std::vector<MapNode> _mPath;
+	std::vector<int> _mPath;
 	int _mMapTilesX;
 	int _mMapTilesY;
 

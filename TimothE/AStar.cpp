@@ -4,6 +4,9 @@
 //uses a* algorthigm to find path
 glm::vec2 AStar::PathFinding(glm::vec2 startPos)
 {
+    _mPath.clear();
+
+    //startPos = { 0,0 };
     std::vector<MapNode> openList;
     std::vector<MapNode> closedList;
     openList.push_back({ startPos, 0,0,0 });
@@ -23,21 +26,28 @@ glm::vec2 AStar::PathFinding(glm::vec2 startPos)
         //sets current node to lowest f cost node
         MapNode current = openList[lowestIndex];
 
-        //if lowest f cost position is equal to end point recreate path
-        if (openList[lowestIndex].position == _mPoints[0])
-        {
-            MapNode temp = current;
-            _mPath.push_back(temp);
-            while (temp.previousNodePAth != NULL)
-            {
-                _mPath.push_back(*temp.previousNodePAth);
-                temp = *temp.previousNodePAth;
-            }
-        }
+        
 
         //removes current from open list and adds to closed list to confirm value of node
         closedList.push_back(current);
         openList.erase(openList.begin() + lowestIndex);
+
+        //if lowest f cost position is equal to end point recreate path
+        if (current.position == _mPoints[0])
+        {
+            std::cout << "done" << std::endl;
+            MapNode temp = current;
+            _mPath.push_back(temp.id);
+            while (temp.previousNodePAth != 0)
+            {
+                _mPath.push_back(temp.previousNodePAth);
+                temp = _mMapNodes.at(temp.id);
+            }
+            return _mMapNodes.at(temp.previousNodePAth).position;
+        }
+        else {
+            //std::cout << "failed" << std::endl;
+        }
 
         //gets neighbours from current
         std::vector<MapNode> neighbours;
@@ -47,6 +57,7 @@ glm::vec2 AStar::PathFinding(glm::vec2 startPos)
         if ((id - 1) > -1)
         {
             neighbours.push_back(_mMapNodes.at(id - 1));//mid left
+            neighbours.back().previousNodePAth = current.id;
         }
         if ((id + 1) < _mMapTilesX * _mMapTilesY)
         {
@@ -76,11 +87,6 @@ glm::vec2 AStar::PathFinding(glm::vec2 startPos)
         {
             neighbours.push_back(_mMapNodes.at(id + 1 - _mMapTilesX));//bottom right
         }
-        
-        
-        
-        
-        
 
         for (int i = 0; i < neighbours.size(); i++)
         {
@@ -111,7 +117,17 @@ glm::vec2 AStar::PathFinding(glm::vec2 startPos)
             if (!std::count(closedIDs.begin(), closedIDs.end(), neighbours[i].id))
             {
                 int tempG = current.gCost + 1;
-
+                //finds distance between current and end position
+                float dist = sqrt(pow(neighbours[i].position.x - _mPoints.at(0).x, 2) +
+                    pow(neighbours[i].position.y - _mPoints.at(0).y, 2));
+                //sets f and h cost and sets previours node as current for path creation
+                neighbours[i].gCost = sqrt(pow(neighbours[i].position.x - current.position.x, 2) +
+                    pow(neighbours[i].position.y - current.position.y, 2));
+                neighbours[i].hCost = sqrt(pow(neighbours[i].position.x - _mPoints.at(0).x, 2) +
+                    pow(neighbours[i].position.y - _mPoints.at(0).y, 2));
+                neighbours[i].fCost = neighbours[i].gCost + neighbours[i].hCost;
+                neighbours[i].previousNodePAth = current.id;
+                neighbours[i].hCost = dist;
                 if (std::count(openIDs.begin(), openIDs.end(), neighbours[i].id))
                 {
                     if (tempG < neighbours[i].gCost)
@@ -125,20 +141,14 @@ glm::vec2 AStar::PathFinding(glm::vec2 startPos)
                     neighbours[i].gCost = tempG;
                     openList.push_back(neighbours[i]);
                 }
-                //finds distance between current and end position
-                float dist = sqrt(pow(neighbours[i].position.x - _mPoints.at(0).x, 2) +
-                    pow(neighbours[i].position.y - _mPoints.at(0).y, 2));
-                //sets f and h cost and sets previours node as current for path creation
-                neighbours[i].hCost = dist;
-                neighbours[i].fCost = neighbours[i].gCost + neighbours[i].hCost;
-                neighbours[i].previousNodePAth = &current;
+                
             }
 
                
         }
     }
 
-
+    std::cout << "fail" << std::endl;
     return startPos;
 
 }
