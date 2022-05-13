@@ -4,6 +4,9 @@
 #include "Dirent.h"
 #include "misc/cpp/imgui_stdlib.h"
 
+#include "FarmScene.h"
+#include "TownScene.h"
+
 std::map<std::string, Texture2D*> ResourceManager::_textures;
 std::map<std::string, Shader*> ResourceManager::_shaders;
 std::map<std::string, Scene*> ResourceManager::_scenes;
@@ -33,6 +36,7 @@ void ResourceManager::Init()
 	//LOAD SCENES
 	ResourceManager::InstantiateScene("CurrentScene", new Scene("Default"));
 	ResourceManager::InstantiateScene("FarmScene", new FarmScene("FarmScene"));
+	ResourceManager::InstantiateScene("TownScene", new TownScene("TownScene"));
 
 	//LOAD FONTS
 	LoadFonts();

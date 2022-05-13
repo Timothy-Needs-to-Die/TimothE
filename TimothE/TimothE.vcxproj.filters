@@ -278,6 +278,7 @@
     </ClInclude>
     <ClInclude Include="MovementComponent.h" />
     <ClInclude Include="AudioSource.h" />
+    <ClInclude Include="TownScene.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="AStar.cpp">
@@ -444,5 +445,6 @@
     </ClCompile>
     <ClCompile Include="MovementComponent.cpp" />
     <ClCompile Include="AudioSource.cpp" />
+    <ClCompile Include="TownScene.cpp" />
   </ItemGroup>
 </Project>
