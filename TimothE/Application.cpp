@@ -179,7 +179,7 @@ void Application::GameLoop()
 	}
 
 	//saves scene
-	_pCurrentScene->SaveScene("Resources/Scenes/" + _pCurrentScene->GetName() + ".scene");
+	//_pCurrentScene->SaveScene("Resources/Scenes/" + _pCurrentScene->GetName() + ".scene");
 
 	//delete
 	ImGuiManager::DestroyImGui();

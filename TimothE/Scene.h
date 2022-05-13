@@ -18,7 +18,7 @@ public:
 
 		_name = "DefaultScene";
 		_pTilemap = new TileMap("DefaultScene");
-		Save();
+		//Save();
 		InitScene();
 	}
 
@@ -67,21 +67,18 @@ public:
 
 	std::vector<GameObject*> GetGameObjects() { return _listOfGameObjects; }
 
-	void LoadScene(const std::string& filename);
-	void SaveScene(const std::string& filename);
-	void Save();
+	//void LoadScene(const std::string& filename);
+	//void SaveScene(const std::string& filename);
+	/*void Save();*/
 
 	//GameObject getters
 	static GameObject* GetGameObjectByName(std::string name);
 	static GameObject* GetGameObjectByID(std::string id);
 
-	//////OLD TAG
-	static GameObject* GetGameObjectByType(ObjectType type);
+
 
 	static std::vector<GameObject*> GetGameObjectsByName(std::string name);
 
-	////// OLD TAG
-	static std::vector<GameObject*> GetGameObjectsByType(ObjectType type);
 
 	glm::vec2 ConvertWorldToScreen(glm::vec2 inPos) {
 		glm::vec2 outPos{ inPos.x / Window::GetWidth(), inPos.y / Window::GetHeight() };

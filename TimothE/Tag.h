@@ -1,9 +1,11 @@
-#pragma once 
-#include "Serializable.h"
+#pragma once
+
 #include <string>
 #include <iostream>
+#include <sstream>
 
-static class Tag : public ISerializable
+
+static class Tag 
 {
 	
 public:
@@ -14,8 +16,4 @@ public:
 	static bool CheckTag(const std::string& tagName);
 
 	static void PrintTags();
-
-private: 
-	
-
 };

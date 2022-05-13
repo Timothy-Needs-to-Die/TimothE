@@ -13,22 +13,13 @@
 class Texture2D;
 class Scene;
 
-enum class ObjectType
-{
-	Player,
-	Enemy, 
-	NPC,
-	PickUp,
-	UI
-};
-
 class GameObject : public ISerializable
 {
 public:
 	//////////////////////////
 	//Constructor/Destructor//
 	//////////////////////////
-	GameObject(std::string name, std::string tag, Transform* transform = nullptr);
+	GameObject(std::string name, std::string tag = "UNTAGGED", Transform* transform = nullptr);
 	~GameObject();
 
 	/////////////
@@ -64,7 +55,6 @@ public:
 	//Set Unique Identifiers//
 	//////////////////////////
 	void SetName(std::string name);
-	void SetType(ObjectType tag);
 
 	////////////////////////
 	//Get Ownership States//

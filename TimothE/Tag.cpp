@@ -1,5 +1,7 @@
 #include "Tag.h"
 
+std::string Tag::_tags[32];
+
 void Tag::AddTag(const std::string& tagName)
 {
 	for (int i = 0; i < 31; i++)
@@ -39,5 +41,13 @@ bool Tag::CheckTag(const std::string& tagName)
 			std::cout << "Tag Found " << std::endl;
 			return true;
 		}
+	}
+}
+
+void Tag::PrintTags()
+{
+	for (int i = 0; i < 31; i++)
+	{
+		std::cout << "Tag: " << i << _tags[i] << std::endl;
 	}
 }
