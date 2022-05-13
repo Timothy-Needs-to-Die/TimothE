@@ -6,15 +6,18 @@ void Tag::AddTag(const std::string& tagName)
 {
 	for (int i = 0; i < 31; i++)
 	{
-		if (_tags[i].empty()) {
-			_tags[i] = tagName;
-			std::cout << "Tag Added: " << tagName << std::endl;
-			return;
+		if (_tags[i] != tagName) {
+			if (_tags[i].empty()) {
+				_tags[i] = tagName;
+				std::cout << "Tag Added: " << tagName << std::endl;
+				return;
+			}
+			//If all tags are filled
+			if (!_tags[31].empty()) {
+				std::cout << "Tag Array full, remove tags to add more" << std::endl;
+			}
 		}
-		//If all tags are filled
-		if (!_tags[31].empty()) {
-			std::cout << "Tag Array full, remove tags to add more" << std::endl;
-		}
+		
 
 	}
 }
