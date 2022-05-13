@@ -118,7 +118,7 @@ void Application::GameLoop()
 	//Intial mem bookmark
 	int memBookmark = HeapManager::GetMemoryBookmark();
 
-	std::vector<std::vector<std::string>> cropDetails = CSVReader::RequestDataFromFile("Resources/Data/CropsConfig.csv");
+	std::vector<std::vector<std::string>> cropDetails = CSVReader::RequestDataFromFile("Resources/Data/CopsConfig.csv");
 
 
 	
