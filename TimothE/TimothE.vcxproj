@@ -84,6 +84,7 @@
     <ClInclude Include="AnimatedSpritesheet.h" />
     <ClInclude Include="Application.h" />
     <ClInclude Include="AudioSource.h" />
+    <ClInclude Include="BaseTrader.h" />
     <ClInclude Include="PlayerResource.h" />
     <ClInclude Include="CoreResourceType.h" />
     <ClInclude Include="Core\Events\ApplicationEvent.h" />
@@ -171,6 +172,8 @@
     <ClInclude Include="Time.h" />
     <ClInclude Include="TimothEInputCodes.h" />
     <ClInclude Include="TownScene.h" />
+    <ClInclude Include="TraderConfig.h" />
+    <ClInclude Include="TraderManager.h" />
     <ClInclude Include="Transform.h" />
     <ClInclude Include="UID.h" />
     <ClInclude Include="Core\Graphics\VAO.h" />
@@ -184,6 +187,7 @@
     <ClCompile Include="Application.cpp" />
     <ClCompile Include="AudioEngine.cpp" />
     <ClCompile Include="AudioSource.cpp" />
+    <ClCompile Include="BaseTrader.cpp" />
     <ClCompile Include="BoxColliderComponenet.cpp" />
     <ClCompile Include="Button.cpp" />
     <ClCompile Include="Camera.cpp" />
@@ -234,6 +238,7 @@
     <ClCompile Include="TileMap.cpp" />
     <ClCompile Include="TileMapEditor.cpp" />
     <ClCompile Include="TownScene.cpp" />
+    <ClCompile Include="TraderManager.cpp" />
     <ClCompile Include="Transform.cpp" />
     <ClCompile Include="Core\Graphics\VAO.cpp" />
     <ClCompile Include="Core\Graphics\VBO.cpp" />
