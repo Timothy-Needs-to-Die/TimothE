@@ -1,0 +1,12 @@
+﻿Item Name,SizeX,SizeY,Health,Yield
+WoodSmall,1,1,5,1
+WoodMedium,2,2,10,2
+WoodLarge,3,3,15,3
+StoneSmall,1,1,5,1
+StoneMedium,2,2,10,2
+StoneLarge,3,3,15,3
+IronSmall,1,1,20,1
+IronMedium,2,2,40,2
+CoalSmall,1,1,10,1
+CoalMedium,2,2,20,2
+CropPlot,1,1,2,0
