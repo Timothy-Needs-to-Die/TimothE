@@ -16,12 +16,10 @@ public:
 	void TogglePaused();
 	void SetVolume(float value);
 
-
 	FMOD::Channel* _sourceChannel;
 	std::string _channelName;
 
 private:
-
 	GameObject* _parentObject;
 
 	bool _isMusicSource;

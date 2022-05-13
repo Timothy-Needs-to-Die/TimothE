@@ -118,7 +118,6 @@ public:
 	}
 
 	// Tag Handling // 
-
 	GameObject* FindObjectWithTag(const std::string& tagName);
 	std::vector<GameObject*> FindGameObjectsWithTag(const std::string& tagName);
 

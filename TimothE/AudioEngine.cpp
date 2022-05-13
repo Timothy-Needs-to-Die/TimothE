@@ -10,7 +10,7 @@ FMOD::ChannelGroup* AudioEngine::_master;
 FMOD::ChannelGroup* AudioEngine::_groups[Type_Count];
 AudioEngine::LoadedSoundMap AudioEngine::_loadedSFX;
 AudioEngine::LoadedSoundMap AudioEngine::_loadedMusic;
-
+SoundStruct AudioEngine::_nextSong;
 
 // ============================== System Functions =============================== // 
 AudioEngine::AudioEngine()
