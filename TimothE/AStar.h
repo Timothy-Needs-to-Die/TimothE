@@ -23,13 +23,11 @@ class AStar
 public:
 
 	glm::vec2 PathFinding(glm::vec2 startPos);
-	std::vector<glm::vec2> GetPathPoints();
 	void SetPathPoints(glm::vec2 _points);
-	//void SetMapCoords(std::vector<glm::vec2> mapTiles, glm::vec2 size);
 	void SetMapCoords(std::vector<TileData> mapTiles, glm::vec2 size);
 
 private:
-	std::vector<glm::vec2> _mPoints;
+	glm::vec2 _mEnd;
 	std::vector<MapNode> _mMapNodes;
 	std::vector<int> _mPath;
 	int _mMapTilesX;

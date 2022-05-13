@@ -79,7 +79,7 @@ void FarmScene::InitScene()
 	_pTilemap = new TileMap(_name);
 
 	aStar.SetMapCoords(_pTilemap->GetAllTilesInLayer(0), _pTilemap->GetMapSize());
-	aStar.SetPathPoints(glm::vec2{ 6,0 });
+	aStar.SetPathPoints(glm::vec2{ 6,6 });
 	//set move to as first path position
 	
 
