@@ -1,4 +1,4 @@
-﻿Item,Item Description,Cost,Resource1,Resource2,Resource3,Resource4,Damage Per Hit,Where to Find,Town Upgrade Level
+﻿Item,Item Description,Cost,Wood,Stone,Metal,Coal,Damage Per Hit,Where to Find,Town Upgrade Level
 Wooden Axe,A basic wooden axe for gathering wood,0,,,,,1,Given to player after first bandit kill in the woods,0
 Wooden Pickaxe,A basic wooden pickaxe for gathering stone & iron,0,,,,,1,Given to player after killing first undead in the mine,0
 Wooden Sword,A basic wooden sword to attack enemies,0,,,,,1,Given to the player by the builder as part of story progression,0
