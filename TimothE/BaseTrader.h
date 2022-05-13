@@ -1,24 +1,35 @@
 #pragma once
+#include "Component.h"
+#include "TraderConfig.h"
 
-class BaseTrader
+
+class BaseTrader : Component
 {
 public:
-	BaseTrader();
+	BaseTrader(TraderConfig config);
 	~BaseTrader();
 	
+	COMPONENT_STATIC_TYPE(Trader_Type);
+
+
 	void OnNewDay();
-	void GenerateDailyGoldAmmount();
+	
 	void Trade(Item item);
     void OnBuy(Item item);
 	void UpdateUI();
+	void LevelUpTrader();
+	TraderConfig* GetConfig() { return &_config; }
 
-
+	void SetTraderConfig(TraderConfig config);
 private:
+	void GenerateDailyGoldAmmount();
+	TraderConfig _config; 
 	int _traderLevel;
 	int _goldAtLevel[4];
+    int _traderGold;
 
-protected:
-	int _traderGold;
-	//TraderConfig _config;
+
 };
 
+
+//base trader component will be attatched to gameObject

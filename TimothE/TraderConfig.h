@@ -1,9 +1,10 @@
 #pragma once
+#include "Item.h"
 struct TraderConfig
 {
 	TraderType type;
 	int goldAtLevel[4];
-	Item itemsToSell[];
+	std::vector<Item> itemsToSell; 
 
 };
 

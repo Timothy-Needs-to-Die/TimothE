@@ -85,6 +85,7 @@
     <ClInclude Include="Application.h" />
     <ClInclude Include="AudioSource.h" />
     <ClInclude Include="BaseTrader.h" />
+    <ClInclude Include="Item.h" />
     <ClInclude Include="PlayerResource.h" />
     <ClInclude Include="CoreResourceType.h" />
     <ClInclude Include="Core\Events\ApplicationEvent.h" />
