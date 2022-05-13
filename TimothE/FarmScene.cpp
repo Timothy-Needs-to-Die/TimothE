@@ -63,10 +63,12 @@ void FarmScene::InitScene()
 	_pStartButton->SetType(ObjectType::UI);
 	//AddGameObject(_pStartButton);
 
-	_pPlayerObject = new GameObject("Player");
+	_pPlayerObject = new GameObject("Player", ObjectType::Player);
 	_pMovement = _pPlayerObject->AddComponent(new MovementComponent(_pPlayerObject));
 	_pMovement->SetMovementSpeed(1.0f);
+	_pPlayerObject->AddComponent(new Fighter(_pPlayerObject));
 	_pPlayerMovement = new PlayerInputComponent(_pPlayerObject);
+	
 	_pPlayerObject->AddComponent(_pPlayerMovement);
 	_pPlayerObject->AddComponent(ResourceManager::GetTexture("character"));
 	_pSc = _pPlayerObject->AddComponent<SpriteComponent>(new SpriteComponent(_pPlayerObject));
@@ -80,4 +82,14 @@ void FarmScene::InitScene()
 	//_pTilemap->SetSpriteSheet(ResourceManager::GetSpriteSheet("testSheet"));
 	//_pTilemap->LoadTileMap();
 
+	GameObject* enemyGO = new GameObject("Enemy", ObjectType::Enemy);
+	enemyGO->AddComponent<Texture2D>(new Texture2D(enemyGO));
+	enemyGO->GetTransform()->SetPosition(2.0f, 2.0f);
+	enemyGO->GetTransform()->SetScale({ 0.25f, 0.45f });
+
+	_pEnemyHealth = enemyGO->AddComponent(new Health(enemyGO));
+	_pEnemyHealth->SetMaxHealth(50);
+	AddGameObject(enemyGO);
+
+	
 }

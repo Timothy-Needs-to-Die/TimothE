@@ -152,6 +152,14 @@ void Scene::UpdateObjects()
 	{
 		obj->Update();
 	}
+
+	for (GameObject* obj : _gameObjectsToRemove) {
+		_listOfGameObjects.erase(std::find(_listOfGameObjects.begin(), _listOfGameObjects.end(), obj));
+		
+
+		delete obj;
+	}
+	_gameObjectsToRemove.clear();
 }
 
 void Scene::RenderScene(Camera* cam)
@@ -171,6 +179,7 @@ void Scene::RenderScene(Camera* cam)
 			else if (obj->GetObjectType() == ObjectType::Player) {
 				SpriteComponent* sc = obj->GetComponent<SpriteComponent>();
 				Renderer2D::DrawQuad(obj->GetTransform()->GetRenderQuad(), objTex, sc->GetSprite()->GetTexCoords());
+				//Renderer2D::DrawQuad(obj->GetTransform()->GetRenderQuad(), objTex);
 			}
 			else {
 				Renderer2D::DrawQuad(obj->GetTransform()->GetRenderQuad(), objTex);
@@ -203,10 +212,11 @@ GameObject* Scene::AddGameObject(GameObject* gameObject)
 
 void Scene::RemoveGameObject(GameObject* gameObject)
 {
+	_gameObjectsToRemove.emplace_back(gameObject);
 	//Searches for the desired object and deletes it if it is found
-	_listOfGameObjects.erase(std::find(_listOfGameObjects.begin(), _listOfGameObjects.end(), gameObject));
-	delete gameObject;
-	gameObject = nullptr;
+	//_listOfGameObjects.erase(std::find(_listOfGameObjects.begin(), _listOfGameObjects.end(), gameObject));
+	//delete gameObject;
+	//gameObject = nullptr;
 }
 
 void Scene::AddedComponentHandler(GameObject* gameObject, Component* comp)

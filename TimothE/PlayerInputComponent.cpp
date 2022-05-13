@@ -7,12 +7,13 @@
 void PlayerInputComponent::OnStart()
 {
 	_pMovement = _pParentObject->GetComponent<MovementComponent>();
+	_pFighter = _pParentObject->GetComponent<Fighter>();
 }
 
 void PlayerInputComponent::OnUpdate()
 {
 	if (_pMovement == nullptr) {
-		std::cout << "[ERROR: PlayerMovement::OnUpdate]: Player does not have movement component attached" << std::endl;
+		std::cout << "[ERROR: PlayerInputComponent::OnUpdate]: Player does not have movement component attached" << std::endl;
 		return;
 	}
 
@@ -35,6 +36,15 @@ void PlayerInputComponent::OnUpdate()
 	_pMovement->Move(moveVec);
 
 	CameraManager::GetCamera(-1)->SetPosition({ _pParentObject->GetTransform()->GetPosition(), -2.0f });
+
+	if (_pFighter == nullptr) {
+		std::cout << "[ERROR: PlayerInputComponent::OnUpdate]: Player does not have fighter component attached" << std::endl;
+		return;
+	}
+
+	if (Input::IsKeyDown(KEY_SPACE)) {
+		_pFighter->Attack();
+	}
 }
 
 void PlayerInputComponent::OnEnd()

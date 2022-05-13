@@ -4,6 +4,8 @@
 #include "SpriteComponent.h"
 #include "AnimatedSpritesheet.h"
 #include "MovementComponent.h"
+#include "Fighter.h"
+#include "Health.h"
 
 class FarmScene : public Scene
 {
@@ -33,5 +35,8 @@ private:
 	SpriteComponent* _pSc = nullptr;
 
 	SpriteSheet* _pSpritesheet;
+
+	Health* _pPlayerHealth = nullptr;
+	Health* _pEnemyHealth = nullptr;
 };
 

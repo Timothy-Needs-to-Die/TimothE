@@ -100,9 +100,11 @@
     <ClInclude Include="Editor.h" />
     <ClInclude Include="Core\Events\Event.h" />
     <ClInclude Include="FarmScene.h" />
+    <ClInclude Include="Fighter.h" />
     <ClInclude Include="Font.h" />
     <ClInclude Include="Core\Graphics\Framebuffer.h" />
     <ClInclude Include="GameObject.h" />
+    <ClInclude Include="Health.h" />
     <ClInclude Include="Heap.h" />
     <ClInclude Include="HeapManager.h" />
     <ClInclude Include="Core\Graphics\IBO.h" />
@@ -172,6 +174,7 @@
     <ClInclude Include="Core\Graphics\VBO.h" />
     <ClInclude Include="Core\Graphics\Window.h" />
     <ClInclude Include="pch.h" />
+    <ClInclude Include="WeaponConfig.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="AStar.cpp" />
@@ -187,9 +190,11 @@
     <ClCompile Include="Console.cpp" />
     <ClCompile Include="Editor.cpp" />
     <ClCompile Include="FarmScene.cpp" />
+    <ClCompile Include="Fighter.cpp" />
     <ClCompile Include="Font.cpp" />
     <ClCompile Include="Core\Graphics\Framebuffer.cpp" />
     <ClCompile Include="GameObject.cpp" />
+    <ClCompile Include="Health.cpp" />
     <ClCompile Include="Heap.cpp" />
     <ClCompile Include="HeapManager.cpp" />
     <ClCompile Include="Core\Graphics\IBO.cpp" />

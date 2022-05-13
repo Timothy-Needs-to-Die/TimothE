@@ -8,6 +8,7 @@
 #include "TileMap.h"
 #include "Physics.h"
 #include "MovementComponent.h"
+#include "Fighter.h"
 
 
 class PlayerInputComponent : public Component
@@ -30,6 +31,7 @@ public:
 
 private:
 	TileMap* _pTileMap;
-	MovementComponent* _pMovement;
+	MovementComponent* _pMovement = nullptr;
+	Fighter* _pFighter = nullptr;
 };
 

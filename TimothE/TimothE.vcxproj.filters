@@ -279,6 +279,9 @@
     <ClInclude Include="MovementComponent.h" />
     <ClInclude Include="AudioSource.h" />
     <ClInclude Include="TownScene.h" />
+    <ClInclude Include="Fighter.h" />
+    <ClInclude Include="WeaponConfig.h" />
+    <ClInclude Include="Health.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="AStar.cpp">
@@ -446,5 +449,7 @@
     <ClCompile Include="MovementComponent.cpp" />
     <ClCompile Include="AudioSource.cpp" />
     <ClCompile Include="TownScene.cpp" />
+    <ClCompile Include="Fighter.cpp" />
+    <ClCompile Include="Health.cpp" />
   </ItemGroup>
 </Project>
