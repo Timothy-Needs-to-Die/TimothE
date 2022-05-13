@@ -282,6 +282,8 @@
     <ClInclude Include="Fighter.h" />
     <ClInclude Include="WeaponConfig.h" />
     <ClInclude Include="Health.h" />
+    <ClInclude Include="CSVReader.h" />
+    <ClInclude Include="CropsConfig.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="AStar.cpp">
@@ -451,5 +453,6 @@
     <ClCompile Include="TownScene.cpp" />
     <ClCompile Include="Fighter.cpp" />
     <ClCompile Include="Health.cpp" />
+    <ClCompile Include="CSVReader.cpp" />
   </ItemGroup>
 </Project>

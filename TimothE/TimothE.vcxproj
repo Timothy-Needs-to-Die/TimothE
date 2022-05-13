@@ -96,6 +96,8 @@
     <ClInclude Include="Component.h" />
     <ClInclude Include="ComponentFactory.h" />
     <ClInclude Include="Console.h" />
+    <ClInclude Include="CropsConfig.h" />
+    <ClInclude Include="CSVReader.h" />
     <ClInclude Include="Dirent.h" />
     <ClInclude Include="Editor.h" />
     <ClInclude Include="Core\Events\Event.h" />
@@ -188,6 +190,7 @@
     <ClCompile Include="CameraManager.cpp" />
     <ClCompile Include="ColliderBase.cpp" />
     <ClCompile Include="Console.cpp" />
+    <ClCompile Include="CSVReader.cpp" />
     <ClCompile Include="Editor.cpp" />
     <ClCompile Include="FarmScene.cpp" />
     <ClCompile Include="Fighter.cpp" />

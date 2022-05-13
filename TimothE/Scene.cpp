@@ -65,11 +65,6 @@ void Scene::InitScene()
 	//_pTextObj->AddComponent(new TextComponent(_pTextObj));
 	//_pTextObj->SetType(ObjectType::UI);
 	//AddGameObject(_pTextObj);
-
-
-
-
-
 }
 
 void Scene::SceneEnd()
