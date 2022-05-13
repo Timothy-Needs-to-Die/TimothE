@@ -1,19 +1,22 @@
-﻿Item,Item Description,Cost,Wood,Stone,Metal,Coal,Damage Per Hit,Where to Find,Town Upgrade Level
-Wooden Axe,A basic wooden axe for gathering wood,0,,,,,1,Given to player after first bandit kill in the woods,0
-Wooden Pickaxe,A basic wooden pickaxe for gathering stone & iron,0,,,,,1,Given to player after killing first undead in the mine,0
-Wooden Sword,A basic wooden sword to attack enemies,0,,,,,1,Given to the player by the builder as part of story progression,0
-Stone Axe,An improved axe made of stone,7,3,3,,,2,Purchase from blacksmith ,1
-Stone Pickaxe,An improved pickaxe made of stone,7,3,3,,,2,Purchase from blacksmith,1
-Stone Sword,An improved sword made of stone,5,2,3,,,2,Purchase from blacksmith ,1
-Reinforced Stone Axe,An axe strengthened by additional sturdy materials,12,3,3,1,,2.5,Purchase from blacksmith,2
-Reinforced Stone Pickaxe,A pickaxe strengthened by additional sturdy materials,12,3,3,1,,2.5,Purchase from blacksmith ,2
-Reinforced Stone Sword,A sword strengthened by additional sturdy materials,10,2,3,1,,2.5,Purchase from blacksmith,2
-Iron Axe,An upgraded axe made of iron,20,4,2,3,,3,Purchase from blacksmith ,3
-Iron Pickaxe,An upgraded pickaxe made of iron,20,4,2,3,,3,Purchase from blacksmith,3
-Iron Sword,An upgraded sword made of iron,15,4,1,3,,3,Purchase from blacksmith ,3
-Hardened Iron Axe,A steel axe refined to perfection,25,4,,3,2,4,Purchase from blacksmith,4
-Hardened Iron Pickaxe,A steel pickaxe refined to perfection,25,4,,3,2,4,Purchase from blacksmith ,4
-Hardened Iron Swords,A steel sword refined to perfection,30,4,,3,2,4,Purchase from blacksmith,4
-Legendary Axe,A mystical axe with a strange glowing aura,0,,,,,5,RARE DROP,4
-Legendary Pickaxe,A mystical pickaxe with a strange glowing aura,0,,,,,5,RARE DROP,4
-Legendary Sword,A mystical sword with a strange glowing aura,0,,,,,5,RARE DROP,4
+﻿Item,Item Description,Cost,Wood,Stone,Metal,Coal,Damage Per Hit,Damage Reduction,Where to Find,Town Upgrade Level
+Wooden Axe,A basic wooden axe for gathering wood,0,,,,,1,,Given to player after first bandit kill in the woods,0
+Wooden Pickaxe,A basic wooden pickaxe for gathering stone & iron,0,,,,,1,,Given to player after killing first undead in the mine,0
+Wooden Sword,A basic wooden sword to attack enemies,0,,,,,1,,Given to the player by the builder as part of story progression,0
+Stone Axe,An improved axe made of stone,7,3,3,,,2,,Purchase from blacksmith ,1
+Stone Pickaxe,An improved pickaxe made of stone,7,3,3,,,2,,Purchase from blacksmith,1
+Stone Sword,An improved sword made of stone,5,2,3,,,2,,Purchase from blacksmith ,1
+Reinforced Stone Axe,An axe strengthened by additional sturdy materials,12,3,3,1,,2.5,,Purchase from blacksmith,2
+Reinforced Stone Pickaxe,A pickaxe strengthened by additional sturdy materials,12,3,3,1,,2.5,,Purchase from blacksmith ,2
+Reinforced Stone Sword,A sword strengthened by additional sturdy materials,10,2,3,1,,2.5,,Purchase from blacksmith,2
+Iron Axe,An upgraded axe made of iron,20,4,2,3,,3,,Purchase from blacksmith ,3
+Iron Pickaxe,An upgraded pickaxe made of iron,20,4,2,3,,3,,Purchase from blacksmith,3
+Iron Sword,An upgraded sword made of iron,15,4,1,3,,3,,Purchase from blacksmith ,3
+Hardened Iron Axe,A steel axe refined to perfection,25,4,,3,2,4,,Purchase from blacksmith,4
+Hardened Iron Pickaxe,A steel pickaxe refined to perfection,25,4,,3,2,4,,Purchase from blacksmith ,4
+Hardened Iron Swords,A steel sword refined to perfection,30,4,,3,2,4,,Purchase from blacksmith,4
+Legendary Axe,A mystical axe with a strange glowing aura,0,,,,,5,,RARE DROP,4
+Legendary Pickaxe,A mystical pickaxe with a strange glowing aura,0,,,,,5,,RARE DROP,4
+Legendary Sword,A mystical sword with a strange glowing aura,0,,,,,5,,RARE DROP,4
+Leather Armour,,20,,,1,,,2,Purchase from armourer,2
+Chainmail Armour,,35,,,5,,,4,Purchase from armourer,3
+Iron Armour,,50,,,10,,,6,Purchase from armourer,4
