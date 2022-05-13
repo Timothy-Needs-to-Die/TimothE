@@ -3,7 +3,7 @@
 
 Font::Font(std::string font)
 {
-	_name = font;
+	_name = "./fonts/" + font;
 
 	FT_Library ft;
 	if (FT_Init_FreeType(&ft))
@@ -12,7 +12,7 @@ Font::Font(std::string font)
 		return;
 	}
 	FT_Face face;
-	if (FT_New_Face(ft, font.c_str(), 0, &face))
+	if (FT_New_Face(ft, _name.c_str(), 0, &face))
 	{
 		std::cout << "ERROR::FREETYPE: Failed to load font" << std::endl;
 		return;

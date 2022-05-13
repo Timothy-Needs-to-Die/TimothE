@@ -7,7 +7,7 @@ void TownScene::UpdateUI()
 
 void TownScene::UpdateObjects()
 {
-
+	Scene::UpdateObjects();
 }
 
 void TownScene::InitScene()

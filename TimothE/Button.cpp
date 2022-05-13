@@ -18,10 +18,19 @@ Button::Button(GameObject* parent) : Component(parent)
 	if (GetParent()->GetComponent<BoxColliderComponent>() == nullptr)
 	{
 		// Print to console to let the user know a new component was added
-		Console::Print("BUTTON COMPONENT: Created Component::BoxCollider as is required for Button::OnUpdate");
+		Console::Print("[LOG: Button::Constructor]: Created Component::BoxCollider");// as is required for Button::OnUpdate");
 		//std::cout << "BUTTON COMPONENT: created default box component for object" << std::endl;
 		GetParent()->AddComponent(new BoxColliderComponent(GetParent()));
 	}
+	// If there is no text component, add one since the button needs one
+	if (GetParent()->GetComponent<TextComponent>() == nullptr)
+	{
+		// Print to console to let the user know a new component was added
+		Console::Print("[LOG: Button::Constructor]: Created Component::TextComponent");
+		//std::cout << "BUTTON COMPONENT: created default text component for object" << std::endl;
+		GetParent()->AddComponent(new TextComponent(GetParent()));
+	}
+
 }
 
 Button::~Button()
@@ -44,27 +53,33 @@ void Button::OnUpdate()
 			_isHovering = true;
 
 			// Check if the button is now being clicked
-			if (Input::IsMouseButtonDown(BUTTON_1))
+			if (!_isClicked)
 			{
-				_isClicked = true;
-
-				// debug
-				std::cout << "Button Clicked" << std::endl;
-
-				// If we have function calls to perform when the button is clicked
-				if (!_onClickCalls.empty())
+				if (Input::IsMouseButtonDown(BUTTON_1))
 				{
-					// Perform them all
-					for (int i = 0; i < _onClickCalls.size(); i++)
+					_isClicked = true;
+
+					// debug
+					std::cout << "[LOG: Button::OnUpdate]: Button Clicked" << std::endl;
+
+					// If we have function calls to perform when the button is clicked
+					if (!_onClickCalls.empty())
 					{
-						_onClickCalls[i]();
+						// Perform them all
+						for (int i = 0; i < _onClickCalls.size(); i++)
+						{
+							_onClickCalls[i]();
+						}
 					}
 				}
 			}
 			else
 			{
-				// We are not clicking the button
-				_isClicked = false;
+				if (Input::IsMouseButtonUp(BUTTON_1))
+				{
+					// We are not clicking the button
+					_isClicked = false;
+				}
 			}
 		}
 		else

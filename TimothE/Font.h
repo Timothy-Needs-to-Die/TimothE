@@ -21,8 +21,8 @@ struct Character
 class Font
 {
 private:
-	unsigned int _VAO = 0;
-	unsigned int _VBO = 0;
+	unsigned int _VAO;// = 0;
+	unsigned int _VBO;// = 0;
 	std::string _name;
 	std::map<char, Character> _characters;
 	

@@ -71,7 +71,7 @@ void ResourceManager::LoadFonts()
 			{
 				InstantiateFont(dirent->d_name, new Font(dirent->d_name));
 
-				std::cout << "Font loaded: " << dirent->d_name << std::endl;
+				std::cout << "[LOG: ResourceManager::LoadFonts]: Font loaded: " << dirent->d_name << std::endl;
 			}
 		}
 		closedir(directory);

@@ -52,15 +52,15 @@ void FarmScene::InitScene()
 
 	_pStartButton = new GameObject("BUTTON","UI");
 	_pStartButton->AddComponent(new Button(_pStartButton));
-	_pStartButton->AddComponent(new BoxColliderComponent(_pStartButton));
-	//pStartButton->AddComponent(new TextComponent(_pTestObject));
+	//_pStartButton->AddComponent(new BoxColliderComponent(_pStartButton));
+	//_pStartButton->AddComponent(new TextComponent(_pStartButton));
 
 
 	//_pStartButton->LoadTexture(ResourceManager::GetTexture("Button"));
 	_pStartButton->SetShader("ui");
-	_pStartButton->GetTransform()->SetPosition(0.0f, 0.0f);
+	_pStartButton->GetTransform()->SetPosition(150.0f, 300.0f);
 	_pStartButton->GetTransform()->SetScale({ 0.2f, 0.2f });
-	//AddGameObject(_pStartButton);
+	AddGameObject(_pStartButton);
 
 	_pPlayerObject = new GameObject("Player", "Player");
 	_pMovement = _pPlayerObject->AddComponent(new MovementComponent(_pPlayerObject));
