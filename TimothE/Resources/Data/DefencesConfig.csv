@@ -1,4 +1,4 @@
-﻿Name,Description,Price,Resource1,Resource2,Resource3,SizeX,SizeY,Health,Damage,Rate of Fire,Range,Town Upgrade Level
+﻿Name,Description,Cost,Resource1,Resource2,Resource3,SizeX,SizeY,Health,Damage,Rate of Fire,Range,Town Upgrade Level
 Wood Wall,You probably can't get past this,3,1,,,1,4,10,,,,0
 Slingshot Tower,Pew,5,3,,,1,1,10,5,0.5,0.625,1
 Stone Wall,You most likely can't get past this,8,,3,,1,4,20,,,,2
