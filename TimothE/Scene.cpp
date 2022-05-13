@@ -165,10 +165,10 @@ void Scene::RenderScene(Camera* cam)
 		Texture2D* objTex = obj->GetComponent<Texture2D>();
 
 		if (objTex != nullptr) {
-			if (obj->GetObjectType() == ObjectType::UI) {
+			if (obj->GetTag() == "UI") {
 				Renderer2D::DrawUIQuad(obj->GetTransform()->GetRenderQuad(), obj->GetComponent<Texture2D>());
 			}
-			else if (obj->GetObjectType() == ObjectType::Player) {
+			else if (obj->GetTag() == "PLAYER") {
 				SpriteComponent* sc = obj->GetComponent<SpriteComponent>();
 				Renderer2D::DrawQuad(obj->GetTransform()->GetRenderQuad(), objTex, sc->GetSprite()->GetTexCoords());
 			}
@@ -237,67 +237,67 @@ void Scene::RemoveComponentHandler(GameObject* gameObject, Component* comp)
 	//remove from drawables if all graphics components have been removed
 	_listOfDrawableGameObjects.erase(std::find(_listOfDrawableGameObjects.begin(), _listOfDrawableGameObjects.end(), gameObject));
 }
+//
+//void Scene::LoadScene(const std::string& filename)
+//{
+//	if (_pTilemap != nullptr) {
+//		_pTilemap->LoadTileMap();
+//	}
+//
+//	//Clears the list (this is in case we are going from one scene to the next)
+//	_listOfGameObjects.clear();
+//
+//	//Creates a stream
+//	StreamFile stream;
+//	//Opens the stream for reading
+//	stream.OpenRead(filename);
+//
+//	//recreates the list of gameobjects
+//	_listOfGameObjects = std::vector<GameObject*>();
+//
+//	//Read in the amount of game objects in the scene
+//	int amountOfGo = ReadInt(stream);
+//	_listOfGameObjects.resize(amountOfGo);
+//
+//	//Read in the information for each game object
+//	for (int i = 0; i < amountOfGo; ++i) {
+//		GameObject* go = new GameObject();
+//		go->LoadState(stream);
+//		_listOfGameObjects[i] = go;
+//	}
+//
+//	//FindObjectOfType<PlayerMovement>()->SetTileMap(_pTilemap);
+//
+//	stream.Close();
+//}
 
-void Scene::LoadScene(const std::string& filename)
-{
-	if (_pTilemap != nullptr) {
-		_pTilemap->LoadTileMap();
-	}
-
-	//Clears the list (this is in case we are going from one scene to the next)
-	_listOfGameObjects.clear();
-
-	//Creates a stream
-	StreamFile stream;
-	//Opens the stream for reading
-	stream.OpenRead(filename);
-
-	//recreates the list of gameobjects
-	_listOfGameObjects = std::vector<GameObject*>();
-
-	//Read in the amount of game objects in the scene
-	int amountOfGo = ReadInt(stream);
-	_listOfGameObjects.resize(amountOfGo);
-
-	//Read in the information for each game object
-	for (int i = 0; i < amountOfGo; ++i) {
-		GameObject* go = new GameObject();
-		go->LoadState(stream);
-		_listOfGameObjects[i] = go;
-	}
-
-	//FindObjectOfType<PlayerMovement>()->SetTileMap(_pTilemap);
-
-	stream.Close();
-}
-
-void Scene::SaveScene(const std::string& filename)
-{
-	if (_pTilemap != nullptr) {
-		_pTilemap->SaveTilemap();
-	}
-
-	//Creates a stream file object
-	StreamFile stream;
-	//Opens this stream for writing
-	stream.OpenWrite(filename);
-
-	//Writes the amount of game objects in the scene
-	WriteInt(stream, _listOfGameObjects.size());
-
-	//Cycles through each object and calls there save method
-	for (int i = 0; i < _listOfGameObjects.size(); ++i) {
-		_listOfGameObjects[i]->SaveState(stream);
-	}
-
-	//Closes the stream
-	stream.Close();
-}
-
-void Scene::Save()
-{
-	SaveScene("Resources/Scenes/" + _name);
-}
+//void Scene::SaveScene(const std::string& filename)
+//{
+//	if (_pTilemap != nullptr) {
+//		_pTilemap->SaveTilemap();
+//	}
+//
+//	//Creates a stream file object
+//	StreamFile stream;
+//	//Opens this stream for writing
+//	stream.OpenWrite(filename);
+//
+//	//Writes the amount of game objects in the scene
+//	WriteInt(stream, _listOfGameObjects.size());
+//
+//	//Cycles through each object and calls there save method
+//	for (int i = 0; i < _listOfGameObjects.size(); ++i) {
+//		_listOfGameObjects[i]->SaveState(stream);
+//	}
+//
+//	//Closes the stream
+//	stream.Close();
+//}
+//
+//void Scene::Save()
+//{
+//	SaveScene("Resources/Scenes/" + _name);
+//}
 
 GameObject* Scene::GetGameObjectByName(std::string name)
 {
@@ -327,19 +327,7 @@ GameObject* Scene::GetGameObjectByID(std::string id)
 	return nullptr;
 }
 
-GameObject* Scene::GetGameObjectByType(ObjectType type)
-{
-	//Cycles through all gameobjects in the scene
-	for (GameObject* obj : _listOfGameObjects) {
-		//Checks if the types match
-		if (obj->GetType() == type) {
-			//returns the object
-			return obj;
-		}
-	}
-	//returns nullptr if the object was not found
-	return nullptr;
-}
+
 
 std::vector<GameObject*> Scene::GetGameObjectsByName(std::string name)
 {
@@ -358,19 +346,26 @@ std::vector<GameObject*> Scene::GetGameObjectsByName(std::string name)
 	return list;
 }
 
-std::vector<GameObject*> Scene::GetGameObjectsByType(ObjectType type)
+
+
+//Find first GameObject with the desired tag 
+GameObject* Scene::FindObjectWithTag(const std::string& tagName)
 {
-	//vector of gameobjects
-	std::vector<GameObject*> list;
-	//Cycles through all the gameobjects in the scene
 	for (GameObject* obj : _listOfGameObjects) {
-		//checks if the types match
-		if (obj->GetType() == type) {
-			//Adds the object to the vector
-			list.emplace_back(obj);
+		if (obj->GetTag() == tagName) {
+			return obj;
 		}
 	}
+	return nullptr;
+}
 
-	//Returns the vector
-	return list;
+std::vector<GameObject*> Scene::FindGameObjectsWithTag(const std::string& tagName)
+{
+	std::vector<GameObject*> objects;
+	for (GameObject* obj : _listOfGameObjects) {
+		if (obj->GetTag() == tagName) {
+			objects.emplace_back(obj);
+		}
+	}
+	return objects;
 }

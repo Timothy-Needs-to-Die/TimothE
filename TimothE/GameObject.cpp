@@ -8,10 +8,24 @@
 #include "ResourceManager.h"
 #include "Scene.h"
 
-GameObject::GameObject(std::string name, ObjectType tag, Transform* transform) 
+GameObject::GameObject(std::string name, std::string tag, Transform* transform) 
 	: _name(name), _tag(tag), _pTransform(transform)
 {
 	_UID = UID::GenerateUID();
+
+	//If name is empty apply default name
+	if (name.empty()) {
+		name = "New GameObject";
+	}
+
+	//Check the tag exists 
+	if (Tag::CheckTag(tag)) {
+		_tag = tag;
+	}
+	else {
+		Tag::AddTag(tag);
+		_tag = tag;
+	}
 
 	if (_pTransform == nullptr)
 		_pTransform = new Transform(this);
@@ -234,10 +248,6 @@ void GameObject::SetName(std::string name)
 	_name = name;
 }
 
-void GameObject::SetType(ObjectType tag)
-{
-	_tag = tag;
-}
 
 void GameObject::SetParent(GameObject* parent)
 {

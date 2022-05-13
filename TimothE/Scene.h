@@ -6,6 +6,8 @@
 #include "TileMap.h"
 #include "Physics.h"
 #include "AnimatedSpritesheet.h"
+#include "Tag.h"
+#include <vector>
 
 //TODO: Document and order this class
 
@@ -16,7 +18,7 @@ public:
 
 		_name = "DefaultScene";
 		_pTilemap = new TileMap("DefaultScene");
-		Save();
+		//Save();
 		InitScene();
 	}
 
@@ -65,16 +67,18 @@ public:
 
 	std::vector<GameObject*> GetGameObjects() { return _listOfGameObjects; }
 
-	void LoadScene(const std::string& filename);
-	void SaveScene(const std::string& filename);
-	void Save();
+	//void LoadScene(const std::string& filename);
+	//void SaveScene(const std::string& filename);
+	/*void Save();*/
 
 	//GameObject getters
 	static GameObject* GetGameObjectByName(std::string name);
 	static GameObject* GetGameObjectByID(std::string id);
-	static GameObject* GetGameObjectByType(ObjectType type);
+
+
+
 	static std::vector<GameObject*> GetGameObjectsByName(std::string name);
-	static std::vector<GameObject*> GetGameObjectsByType(ObjectType type);
+
 
 	glm::vec2 ConvertWorldToScreen(glm::vec2 inPos) {
 		glm::vec2 outPos{ inPos.x / Window::GetWidth(), inPos.y / Window::GetHeight() };
@@ -112,6 +116,12 @@ public:
 		}
 		return compList;
 	}
+
+	// Tag Handling // 
+
+	GameObject* FindObjectWithTag(const std::string& tagName);
+	std::vector<GameObject*> FindGameObjectsWithTag(const std::string& tagName);
+
 
 protected:
 	//Stores the name of the scene

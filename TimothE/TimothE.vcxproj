@@ -157,6 +157,7 @@
     <ClInclude Include="Stream.h" />
     <ClInclude Include="StreamFile.h" />
     <ClInclude Include="Core\Graphics\SubTexture2D.h" />
+    <ClInclude Include="Tag.h" />
     <ClInclude Include="TestComponent.h" />
     <ClInclude Include="TextComponent.h" />
     <ClInclude Include="Texture2D.h" />
@@ -220,6 +221,7 @@
     <ClCompile Include="StreamFile.cpp" />
     <ClCompile Include="StreamHelpers.cpp" />
     <ClCompile Include="Core\Graphics\SubTexture2D.cpp" />
+    <ClCompile Include="Tag.cpp" />
     <ClCompile Include="TestComponent.cpp" />
     <ClCompile Include="TextComponent.cpp" />
     <ClCompile Include="Texture2D.cpp" />
