@@ -21,10 +21,16 @@
     <ClInclude Include="AudioEngine.h">
       <Filter>Headers</Filter>
     </ClInclude>
+    <ClInclude Include="AudioSource.h">
+      <Filter>Headers</Filter>
+    </ClInclude>
     <ClInclude Include="BoxColliderComponent.h">
       <Filter>Headers</Filter>
     </ClInclude>
     <ClInclude Include="Button.h">
+      <Filter>Headers</Filter>
+    </ClInclude>
+    <ClInclude Include="CSVReader.h">
       <Filter>Headers</Filter>
     </ClInclude>
     <ClInclude Include="Camera.h">
@@ -93,6 +99,12 @@
     <ClInclude Include="Core\Graphics\Window.h">
       <Filter>Headers</Filter>
     </ClInclude>
+    <ClInclude Include="CoreResourceType.h">
+      <Filter>Headers</Filter>
+    </ClInclude>
+    <ClInclude Include="CropsConfig.h">
+      <Filter>Headers</Filter>
+    </ClInclude>
     <ClInclude Include="Dirent.h">
       <Filter>Headers</Filter>
     </ClInclude>
@@ -102,10 +114,16 @@
     <ClInclude Include="FarmScene.h">
       <Filter>Headers</Filter>
     </ClInclude>
+    <ClInclude Include="Fighter.h">
+      <Filter>Headers</Filter>
+    </ClInclude>
     <ClInclude Include="Font.h">
       <Filter>Headers</Filter>
     </ClInclude>
     <ClInclude Include="GameObject.h">
+      <Filter>Headers</Filter>
+    </ClInclude>
+    <ClInclude Include="Health.h">
       <Filter>Headers</Filter>
     </ClInclude>
     <ClInclude Include="Heap.h">
@@ -150,6 +168,9 @@
     <ClInclude Include="MemoryManager.h">
       <Filter>Headers</Filter>
     </ClInclude>
+    <ClInclude Include="MovementComponent.h">
+      <Filter>Headers</Filter>
+    </ClInclude>
     <ClInclude Include="Particle.h">
       <Filter>Headers</Filter>
     </ClInclude>
@@ -159,7 +180,16 @@
     <ClInclude Include="Physics.h">
       <Filter>Headers</Filter>
     </ClInclude>
-    <ClInclude Include="PlayerMovement.h">
+    <ClInclude Include="PlantResourceType.h">
+      <Filter>Headers</Filter>
+    </ClInclude>
+    <ClInclude Include="PlayerInputComponent.h">
+      <Filter>Headers</Filter>
+    </ClInclude>
+    <ClInclude Include="PlayerResource.h">
+      <Filter>Headers</Filter>
+    </ClInclude>
+    <ClInclude Include="PlayerResourceManager.h">
       <Filter>Headers</Filter>
     </ClInclude>
     <ClInclude Include="Quad.h">
@@ -243,6 +273,9 @@
     <ClInclude Include="StreamFile.h">
       <Filter>Headers</Filter>
     </ClInclude>
+    <ClInclude Include="Tag.h">
+      <Filter>Headers</Filter>
+    </ClInclude>
     <ClInclude Include="TestComponent.h">
       <Filter>Headers</Filter>
     </ClInclude>
@@ -267,23 +300,21 @@
     <ClInclude Include="TimothEInputCodes.h">
       <Filter>Headers</Filter>
     </ClInclude>
+    <ClInclude Include="TownScene.h">
+      <Filter>Headers</Filter>
+    </ClInclude>
     <ClInclude Include="Transform.h">
       <Filter>Headers</Filter>
     </ClInclude>
     <ClInclude Include="UID.h">
       <Filter>Headers</Filter>
     </ClInclude>
+    <ClInclude Include="WeaponConfig.h">
+      <Filter>Headers</Filter>
+    </ClInclude>
     <ClInclude Include="pch.h">
       <Filter>Headers</Filter>
     </ClInclude>
-    <ClInclude Include="MovementComponent.h" />
-    <ClInclude Include="AudioSource.h" />
-    <ClInclude Include="TownScene.h" />
-    <ClInclude Include="Tag.h" />
-    <ClInclude Include="PlayerResourceManager.h" />
-    <ClInclude Include="PlayerResource.h" />
-    <ClInclude Include="CoreResourceType.h" />
-    <ClInclude Include="PlantResourceType.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="AStar.cpp">
@@ -298,10 +329,16 @@
     <ClCompile Include="AudioEngine.cpp">
       <Filter>Source</Filter>
     </ClCompile>
+    <ClCompile Include="AudioSource.cpp">
+      <Filter>Source</Filter>
+    </ClCompile>
     <ClCompile Include="BoxColliderComponenet.cpp">
       <Filter>Source</Filter>
     </ClCompile>
     <ClCompile Include="Button.cpp">
+      <Filter>Source</Filter>
+    </ClCompile>
+    <ClCompile Include="CSVReader.cpp">
       <Filter>Source</Filter>
     </ClCompile>
     <ClCompile Include="Camera.cpp">
@@ -349,10 +386,16 @@
     <ClCompile Include="FarmScene.cpp">
       <Filter>Source</Filter>
     </ClCompile>
+    <ClCompile Include="Fighter.cpp">
+      <Filter>Source</Filter>
+    </ClCompile>
     <ClCompile Include="Font.cpp">
       <Filter>Source</Filter>
     </ClCompile>
     <ClCompile Include="GameObject.cpp">
+      <Filter>Source</Filter>
+    </ClCompile>
+    <ClCompile Include="Health.cpp">
       <Filter>Source</Filter>
     </ClCompile>
     <ClCompile Include="Heap.cpp">
@@ -388,6 +431,9 @@
     <ClCompile Include="MemoryManager.cpp">
       <Filter>Source</Filter>
     </ClCompile>
+    <ClCompile Include="MovementComponent.cpp">
+      <Filter>Source</Filter>
+    </ClCompile>
     <ClCompile Include="Particle.cpp">
       <Filter>Source</Filter>
     </ClCompile>
@@ -397,7 +443,13 @@
     <ClCompile Include="Physics.cpp">
       <Filter>Source</Filter>
     </ClCompile>
-    <ClCompile Include="PlayerMovement.cpp">
+    <ClCompile Include="PlayerInputComponent.cpp">
+      <Filter>Source</Filter>
+    </ClCompile>
+    <ClCompile Include="PlayerResource.cpp">
+      <Filter>Source</Filter>
+    </ClCompile>
+    <ClCompile Include="PlayerResourceManager.cpp">
       <Filter>Source</Filter>
     </ClCompile>
     <ClCompile Include="ResourceManager.cpp">
@@ -427,6 +479,9 @@
     <ClCompile Include="StreamHelpers.cpp">
       <Filter>Source</Filter>
     </ClCompile>
+    <ClCompile Include="Tag.cpp">
+      <Filter>Source</Filter>
+    </ClCompile>
     <ClCompile Include="TestComponent.cpp">
       <Filter>Source</Filter>
     </ClCompile>
@@ -442,17 +497,14 @@
     <ClCompile Include="TileMapEditor.cpp">
       <Filter>Source</Filter>
     </ClCompile>
+    <ClCompile Include="TownScene.cpp">
+      <Filter>Source</Filter>
+    </ClCompile>
     <ClCompile Include="Transform.cpp">
       <Filter>Source</Filter>
     </ClCompile>
     <ClCompile Include="pch.cpp">
       <Filter>Source</Filter>
     </ClCompile>
-    <ClCompile Include="MovementComponent.cpp" />
-    <ClCompile Include="AudioSource.cpp" />
-    <ClCompile Include="TownScene.cpp" />
-    <ClCompile Include="Tag.cpp" />
-    <ClCompile Include="PlayerResourceManager.cpp" />
-    <ClCompile Include="PlayerResource.cpp" />
   </ItemGroup>
 </Project>
