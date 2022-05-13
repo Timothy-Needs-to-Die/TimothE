@@ -10,7 +10,7 @@
 #include "Camera.h"
 #include "Button.h"
 #include "TextComponent.h"
-#include "PlayerMovement.h"
+#include "PlayerInputComponent.h"
 
 class ComponentFactory {
 public:
@@ -34,8 +34,8 @@ public:
 			return new Button(pParent);
 		case Component::Types::Text_Type:
 			return new TextComponent(pParent);
-		case Component::PlayerMovement:
-			return new PlayerMovement(pParent);
+		case Component::PlayerInput:
+			return new PlayerInputComponent(pParent);
 		}
 	}
 };

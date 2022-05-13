@@ -1,6 +1,6 @@
 #pragma once
 #include "Scene.h"
-#include "PlayerMovement.h"
+#include "PlayerInputComponent.h"
 #include "SpriteComponent.h"
 #include "AnimatedSpritesheet.h"
 #include "MovementComponent.h"
@@ -25,7 +25,7 @@ private:
 	GameObject* _pStartButton = nullptr;
 	GameObject* _pPlayerObject = nullptr;
 
-	PlayerMovement* _pPlayerMovement = nullptr;
+	PlayerInputComponent* _pPlayerMovement = nullptr;
 	MovementComponent* _pMovement = nullptr;
 
 	AnimatedSpritesheet* _pAnimSheet;

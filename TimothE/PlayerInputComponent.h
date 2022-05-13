@@ -10,13 +10,13 @@
 #include "MovementComponent.h"
 
 
-class PlayerMovement : public Component
+class PlayerInputComponent : public Component
 {
 public:
-	COMPONENT_STATIC_TYPE(PlayerMovement);
+	COMPONENT_STATIC_TYPE(PlayerInput);
 
-	PlayerMovement(GameObject* parent) : Component(parent) {
-		SetType(Types::PlayerMovement);
+	PlayerInputComponent(GameObject* parent) : Component(parent) {
+		SetType(Types::PlayerInput);
 	}
 
 	void SetTileMap(TileMap* pTileMap) {

@@ -8,7 +8,7 @@
 #include "Core/Graphics/Renderer2D.h"
 
 #include "Core/Graphics/SubTexture2D.h"
-#include "PlayerMovement.h"
+#include "PlayerInputComponent.h"
 #include "SpriteComponent.h"
 #include "Time.h"
 

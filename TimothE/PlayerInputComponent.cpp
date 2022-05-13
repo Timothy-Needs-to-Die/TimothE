@@ -1,15 +1,15 @@
-#include "PlayerMovement.h"
+#include "PlayerInputComponent.h"
 #include "CameraManager.h"
 #include "Time.h"
 #include "GameObject.h"
 #include "Transform.h"
 
-void PlayerMovement::OnStart()
+void PlayerInputComponent::OnStart()
 {
 	_pMovement = _pParentObject->GetComponent<MovementComponent>();
 }
 
-void PlayerMovement::OnUpdate()
+void PlayerInputComponent::OnUpdate()
 {
 	if (_pMovement == nullptr) {
 		std::cout << "[ERROR: PlayerMovement::OnUpdate]: Player does not have movement component attached" << std::endl;
@@ -34,10 +34,10 @@ void PlayerMovement::OnUpdate()
 
 	_pMovement->Move(moveVec);
 
-	CameraManager::GetCamera(-1)->SetPosition({ _pParentObject->GetTransform()->GetPosition(), -1.0f });
+	CameraManager::GetCamera(-1)->SetPosition({ _pParentObject->GetTransform()->GetPosition(), -2.0f });
 }
 
-void PlayerMovement::OnEnd()
+void PlayerInputComponent::OnEnd()
 {
 
 }

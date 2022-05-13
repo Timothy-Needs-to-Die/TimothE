@@ -125,7 +125,7 @@
     <ClInclude Include="Particle.h" />
     <ClInclude Include="ParticleSystem.h" />
     <ClInclude Include="Physics.h" />
-    <ClInclude Include="PlayerMovement.h" />
+    <ClInclude Include="PlayerInputComponent.h" />
     <ClInclude Include="Quad.h" />
     <ClInclude Include="Core\Graphics\RBO.h" />
     <ClInclude Include="Core\Graphics\Renderer2D.h" />
@@ -206,7 +206,7 @@
     <ClCompile Include="Particle.cpp" />
     <ClCompile Include="ParticleSystem.cpp" />
     <ClCompile Include="Physics.cpp" />
-    <ClCompile Include="PlayerMovement.cpp" />
+    <ClCompile Include="PlayerInputComponent.cpp" />
     <ClCompile Include="Core\Graphics\RBO.cpp" />
     <ClCompile Include="Core\Graphics\Renderer2D.cpp" />
     <ClCompile Include="ResourceManager.cpp" />

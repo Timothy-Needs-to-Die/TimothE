@@ -159,7 +159,7 @@
     <ClInclude Include="Physics.h">
       <Filter>Headers</Filter>
     </ClInclude>
-    <ClInclude Include="PlayerMovement.h">
+    <ClInclude Include="PlayerInputComponent.h">
       <Filter>Headers</Filter>
     </ClInclude>
     <ClInclude Include="Quad.h">
@@ -392,7 +392,7 @@
     <ClCompile Include="Physics.cpp">
       <Filter>Source</Filter>
     </ClCompile>
-    <ClCompile Include="PlayerMovement.cpp">
+    <ClCompile Include="PlayerInputComponent.cpp">
       <Filter>Source</Filter>
     </ClCompile>
     <ClCompile Include="ResourceManager.cpp">
