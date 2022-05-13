@@ -1,12 +1,12 @@
-﻿Town Hall level,Item Name,Item Price,Item Description,Growth Rate,Yield
+﻿Town Hall level,Item Name,Item Value,Item Description,Growth Rate,Yield
 0,Wheat Seed,5,The seeds to plant a single plot of wheat,1,
-0,Wheat,1,"A fast growing pale yellow rough grain, a staple for any farm",,1
+0,Wheat,1,A fast growing pale yellow rough grain` a staple for any farm,,1
 1,Carrot Seed,10,The seeds to plant a single plot of carrots,1,
-1,Carrot,3,"A long thin crunchy orange vegetable, popular among rabbits",,1
+1,Carrot,3,A long thin crunchy orange vegetable` popular among rabbits,,1
 1,Good Wheat Seed,10,This seed will yield twice as much!,1,
 1,Good Wheat,2,It's good!,,2
 2,Potato Seed,20,The seeds to plant a single plot of potatos,0.5,
-2,Potato,8,"A dirt brown orb of starchy goodness, it's spud-tacular!",,1
+2,Potato,8,A dirt brown orb of starchy goodness` it's spud-tacular!,,1
 2,Better Wheat Seed,20,This seed seems to be better,1,
 2,Better Wheat,4,It's just better!,,3
 2,Good Carrot Seed,20,This seed will yield twice as much!,1,
