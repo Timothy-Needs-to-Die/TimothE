@@ -52,7 +52,7 @@ public:
 		HealthType = BIT(18)
 	};
 
-	//enums for different catagories of components
+	//enums for different categories of components
 	enum Categories {
 		None_Category = 0,
 		Transform_Category = BIT(0),
@@ -67,9 +67,14 @@ public:
 	COMPONENT_STATIC_TYPE(None)
 
 	//constructor and destructor calling start and end methods
-	Component(GameObject* pParent) : _pParentObject(pParent) { }
-	Component() {}
-	~Component() {}
+	Component(GameObject* pParent) : _pParentObject(pParent), _type(None), _category(None_Category) { }
+	Component() = default;
+	~Component() 
+	{
+		delete _editorIsEnabled;
+		_editorIsEnabled = nullptr;
+		_pParentObject = nullptr;
+	}
 
 	//virtual function for sub class of components
 	virtual void OnStart() = 0;
@@ -85,7 +90,7 @@ public:
 		}
 	}
 
-	//gets the component type and catagory
+	//gets the component type and category
 	Categories GetCategory() const { return _category; }
 	Types GetType() const { return _type; }
 
@@ -98,7 +103,7 @@ public:
 	// Getter
 	GameObject* GetParent() { return _pParentObject; }
 
-	//checks if item is in catagory and type enums
+	//checks if item is in category and type enums
 	inline bool IsInCategory(Categories category) { return GetCategory() & category; }
 	inline bool IsInTypes(Types type) { return GetType() & type; }
 

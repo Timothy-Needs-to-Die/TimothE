@@ -16,6 +16,8 @@ public:
 
 	}
 
+	~FarmScene();
+
 	void UpdateUI() override;
 	void UpdateObjects() override;
 	void InitScene() override;

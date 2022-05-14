@@ -80,7 +80,7 @@ void GameObject::LoadTexture(Texture2D* texture)
 {
 	if (texture == nullptr)
 	{
-		Console::Print("[Error] Texture is equal too nullptr!");
+		TIM_LOG_ERROR("Texture is equal to nullptr");
 		return;
 	}
 	else
@@ -107,7 +107,7 @@ void GameObject::SetShader(std::string name)
 	if (_pShader != nullptr) {
 		_shaderID = _pShader->GetProgramID();
 	}else{
-		TIM_LOG_ERROR("" << name << " does not exist");
+		TIM_LOG_ERROR(name << " does not exist");
 	}
 }
 
@@ -157,7 +157,7 @@ bool GameObject::LoadState(IStream& stream)
 			//Make instance of component
 			auto* c = ComponentFactory::GetComponent(type, this);
 			if (c == nullptr) {
-				std::cout << "Failed to load Gameobject: " << _name << " Component is null" << std::endl;
+				TIM_LOG_ERROR("Failed to load Gameobject: " << _name << " Component is null");
 				return false;
 			}
 

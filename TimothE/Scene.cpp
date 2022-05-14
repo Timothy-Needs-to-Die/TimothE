@@ -98,20 +98,6 @@ void Scene::Update()
 	UpdateObjects();
 	UpdateUI();
 
-
-
-	timer += Time::GetDeltaTime();
-	if (timer >= duration) {
-		timer = 0.0f;
-
-		//SpriteComponent* sc = _pPlayer->GetComponent<SpriteComponent>();
-		//sc->SetSprite(_pAnimSheet->GetSpriteAtIndex(iteration));
-		iteration++;
-		if (iteration == 8) {
-			iteration = 0;
-		}
-	}
-
 	/////////////
 	//TEST CODE//     BOX COLISSIONS
 	/////////////

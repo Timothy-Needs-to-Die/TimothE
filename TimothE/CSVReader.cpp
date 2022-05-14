@@ -54,11 +54,15 @@ std::vector<std::vector<std::string>> CSVReader::RequestDataFromFile(const std::
 
 void CSVReader::FindAndReplaceAll(std::string& str, char filter, char replaceWith)
 {
+	//find location of the filter char
     int location = str.find(filter);
 
+	//if we have a location
     if (location != std::string::npos) {
+		//replace the filter with the new character
         str = str.replace(location, 1, 1, replaceWith);
 
+		//recall this method
         FindAndReplaceAll(str, filter, replaceWith);
     }
 }

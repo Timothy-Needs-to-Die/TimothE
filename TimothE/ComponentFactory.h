@@ -11,13 +11,14 @@
 #include "Button.h"
 #include "TextComponent.h"
 #include "PlayerInputComponent.h"
+#include "Core.h"
 
 class ComponentFactory {
 public:
 	static Component* GetComponent(Component::Types type, GameObject* pParent) {
 		switch (type) {
 		case Component::Types::None:
-			std::cout << "Error: Component of NONE type attempting to be loaded" << std::endl;
+			TIM_LOG_ERROR("Component of NONE type attempting to be loaded");
 			return nullptr;
 
 		case Component::Types::Transform_Type:

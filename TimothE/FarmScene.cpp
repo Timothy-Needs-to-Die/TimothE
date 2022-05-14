@@ -2,6 +2,11 @@
 #include "Button.h"
 #include "SpriteComponent.h"
 
+FarmScene::~FarmScene()
+{
+	
+}
+
 void FarmScene::UpdateUI()
 {
 
