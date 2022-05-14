@@ -269,7 +269,7 @@ void Renderer2D::DrawQuad(const glm::mat4& transform, Texture2D* texture, glm::v
 		_data.quadVertexBufferPtr->position = transform * _data.quadVertexPositions[i];
 		_data.quadVertexBufferPtr->color = tintColor;
 		_data.quadVertexBufferPtr->texCoord = textureCoords[i];
-		_data.quadVertexBufferPtr->lightLevel = 10;
+		_data.quadVertexBufferPtr->lightLevel = 5;
 		_data.quadVertexBufferPtr->texIndex = textureIndex;
 		_data.quadVertexBufferPtr->tilingFactor = tilingFactor;
 		_data.quadVertexBufferPtr++;
