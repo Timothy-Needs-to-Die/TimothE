@@ -1,4 +1,3 @@
-#include "pch.h"
 #include "Font.h"
 #include "Core/Graphics/OpenGLError.h"
 #include "Core.h"

@@ -1,7 +1,7 @@
-#include "../../pch.h"
 #include "Framebuffer.h"
 #include "Base.h"
 #include "OpenGLError.h"
+
 Framebuffer::Framebuffer(Shader* screenShader, float* quadVertices)
 	: _pScreenShader(screenShader), _pQuadVertices(quadVertices)
 {

@@ -1,6 +1,5 @@
 #pragma once
 
-#include "../../pch.h"
 //OpenGL Stuff
 #include <gl/glew.h>
 #include <GLFW/glfw3.h>

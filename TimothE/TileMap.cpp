@@ -1,4 +1,3 @@
-#include "pch.h"
 #include "TileMap.h"
 #include "Core/Graphics/Renderer2D.h"
 #include "Core/Graphics/Window.h"

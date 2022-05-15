@@ -1,4 +1,3 @@
-#include "pch.h"
 #include "PlayerResourceManager.h"
 
 std::map<CoreResourceType, PlayerResource> PlayerResourceManager::_coreResourceMap;

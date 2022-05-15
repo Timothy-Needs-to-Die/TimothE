@@ -1,4 +1,3 @@
-#include "pch.h"
 #include "AnimatedSpritesheet.h"
 #include "Time.h"
 

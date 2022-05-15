@@ -1,4 +1,3 @@
-#include "pch.h"
 #include "Button.h"
 
 Button::Button(GameObject* parent) : Component(parent)

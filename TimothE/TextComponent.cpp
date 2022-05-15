@@ -1,4 +1,3 @@
-#include "pch.h"
 #include "TextComponent.h"
 #include "imgui.h"
 #include "Dirent.h"

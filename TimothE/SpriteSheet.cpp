@@ -1,4 +1,3 @@
-#include "pch.h"
 #include "SpriteSheet.h"
 
 SpriteSheet::SpriteSheet(Texture2D* texture, int spriteWidth, int spriteHeight)

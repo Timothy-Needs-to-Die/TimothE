@@ -1,6 +1,6 @@
 #pragma once
 #include "pch.h"
-//#include "Stdafx.h"
+
 #include "Core/Graphics/Shader.h"
 #include "Transform.h"
 #include "Component.h"
@@ -9,8 +9,6 @@
 #include "BoxColliderComponent.h"
 #include "ParticleSystem.h"
 #include "Tag.h"
-
-
 
 class Texture2D;
 class Scene;

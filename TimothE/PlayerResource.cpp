@@ -1,4 +1,3 @@
-#include "pch.h"
 #include "PlayerResource.h"
 
 PlayerResource::PlayerResource(int ammount)

@@ -1,4 +1,3 @@
-#include "pch.h"
 #include "Transform.h"
 #include "Time.h"
 

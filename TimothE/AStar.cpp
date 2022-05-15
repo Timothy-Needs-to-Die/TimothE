@@ -1,4 +1,3 @@
-#include "pch.h"
 #include "AStar.h"
 #include <algorithm>
 glm::vec2 AStar::PathFinding(glm::vec2 startPos)

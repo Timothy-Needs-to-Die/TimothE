@@ -1,4 +1,3 @@
-#include "pch.h"
 #include "TownScene.h"
 
 void TownScene::UpdateUI()

@@ -1,4 +1,3 @@
-#include "pch.h"
 #include "BoxColliderComponent.h"
 #include "GameObject.h"
 #include "imgui.h"

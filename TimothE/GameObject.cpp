@@ -1,4 +1,3 @@
-#include "pch.h"
 #include "GameObject.h"
 #include "Texture2D.h"
 #include "Stream.h"

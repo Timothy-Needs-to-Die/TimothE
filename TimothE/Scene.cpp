@@ -1,4 +1,3 @@
-#include "pch.h"
 #include "Texture2D.h"
 #include "Scene.h"
 #include <algorithm>

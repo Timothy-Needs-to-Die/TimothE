@@ -1,4 +1,3 @@
-#include "pch.h"
 #include "SceneManager.h"
 
 //TODO: Add error statments and such to this class
