@@ -1,3 +1,4 @@
+#include "pch.h"
 #include "FarmScene.h"
 #include "Button.h"
 #include "SpriteComponent.h"
@@ -68,7 +69,7 @@ void FarmScene::InitScene()
 	//_pStartButton->SetType(ObjectType::UI);
 	//AddGameObject(_pStartButton);
 
-	_pPlayerObject = new GameObject("Player");
+	_pPlayerObject = new GameObject("Player", "PLAYER");
 	_pMovement = _pPlayerObject->AddComponent(new MovementComponent(_pPlayerObject));
 	_pMovement->SetMovementSpeed(1.0f);
 	_pPlayerObject->AddComponent(new Fighter(_pPlayerObject));

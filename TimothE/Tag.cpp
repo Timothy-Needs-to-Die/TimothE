@@ -1,3 +1,4 @@
+#include "pch.h"
 #include "Tag.h"
 
 std::string Tag::_tags[32];

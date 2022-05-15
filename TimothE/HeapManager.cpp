@@ -1,3 +1,4 @@
+#include "pch.h"
 #include "HeapManager.h"
 
 void HeapManager::Init()

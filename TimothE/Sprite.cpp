@@ -1,3 +1,4 @@
+#include "pch.h"
 #include "Sprite.h"
 
 Sprite::Sprite(Texture2D* texture, glm::vec2* pTexCoords /*= nullptr*/)

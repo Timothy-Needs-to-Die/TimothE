@@ -1,6 +1,8 @@
+#include "../../pch.h"
 #include "VAO.h"
 #include "Base.h"
 #include "OpenGLError.h"
+
 
 std::shared_ptr<VAO> VAO::Create()
 {

@@ -1,3 +1,4 @@
+#include "pch.h"
 #include "TestComponent.h"
 
 TestComponent::TestComponent(GameObject* pParent) : Component(pParent)

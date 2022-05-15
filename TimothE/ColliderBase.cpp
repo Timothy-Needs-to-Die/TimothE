@@ -1,3 +1,4 @@
+#include "pch.h"
 #include "ColliderBase.h"
 
 void ColliderBase::Triggered()

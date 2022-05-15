@@ -1,3 +1,4 @@
+#include "pch.h"
 #include "StreamFile.h"
 
 StreamFile::StreamFile()
