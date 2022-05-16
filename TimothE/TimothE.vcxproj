@@ -182,6 +182,7 @@
     <ClInclude Include="TownScene.h" />
     <ClInclude Include="Transform.h" />
     <ClInclude Include="UID.h" />
+    <ClInclude Include="Wave.h" />
     <ClInclude Include="WeaponConfig.h" />
     <ClInclude Include="pch.h" />
   </ItemGroup>
@@ -250,6 +251,7 @@
     <ClCompile Include="TownScene.cpp" />
     <ClCompile Include="Transform.cpp" />
     <ClCompile Include="pch.cpp" />
+    <ClCompile Include="Wave.cpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

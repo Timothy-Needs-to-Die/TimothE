@@ -1,0 +1,66 @@
+#include "Wave.h"
+
+WaveController::WaveController(Scene* scene) : _pCurrentScene(scene)
+{
+}
+
+WaveController::~WaveController()
+{
+	_enemies.clear();
+}
+
+void WaveController::SpawnWave(int difficulty)
+{
+	_enemies.clear();
+	// todo change the amount of enemies for difficulty
+	int enemyCount = difficulty;
+	for (int i = 0; i < enemyCount; i++)
+	{
+		_enemies.push_back(new GameObject("Enemy", "ENEMY"));
+		// todo change the texture
+		_enemies[i]->AddComponent<Texture2D>(new Texture2D("whiteTexture.png"));
+
+		// spawn on random edge
+		glm::vec2 tilesize = _pCurrentScene->GetTileMap()->GetTileSize();
+		float x = 0.0f;
+		float y = 0.0f;
+		float maxX = 10.0f;
+		float maxY = 10.0f;
+		int side = rand() % 4;
+		switch (side)
+		{
+		case 0:
+			// top
+			x = (float)(rand() / (float)(RAND_MAX / maxX));
+			y = maxY;
+			break;
+		case 1:
+			// right
+			x = maxX;
+			y = (float)(rand() / (float)(RAND_MAX / maxY));
+			break;
+		case 2:
+			// bottom
+			x = (float)(rand() / (float)(RAND_MAX / maxX));
+			y = 0.0f;
+			break;
+		case 3:
+			// left
+			x = 0.0f;
+			y = (float)(rand() / (float)(RAND_MAX / maxY));
+			break;
+		}
+
+		_enemies[i]->GetTransform()->SetPosition(x, y);
+		_enemies[i]->GetTransform()->SetScale({ 0.25f, 0.45f });
+		Health* h = new Health(_enemies[i]);
+		h->SetMaxHealth(50);
+		_enemies[i]->AddComponent(h);
+		std::cout << _enemies[i]->GetTransform()->GetPosition().x << ", " << _enemies[i]->GetTransform()->GetPosition().y << std::endl;
+	}
+}
+
+std::vector<GameObject*> WaveController::GetEnemies()
+{
+	return _enemies;
+}

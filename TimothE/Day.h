@@ -10,7 +10,10 @@ public:
 	void Update();
 
 	void SetDay(bool day) { _day = day; }
-	bool GetDay() { return _day; }
+	bool IsDay() { return _day; }
+
+	// returns true on the first frame that it turns night
+	bool NightStart();
 
 	void SetDayLength(float length) { _dayLength = length; }
 	float GetDayLength() { return _dayLength; }
@@ -18,12 +21,10 @@ public:
 	void SetTime(float time) { _currentTime = time; }
 	float GetTime() { return _currentTime; }
 
-	void DayStart();
-	void NightStart();
-
 private:
-	float _dayLength = 10.0f;
+	float _dayLength = 5.0f;
 	float _currentTime;
 	bool _day;
+	bool _oldDay;
 };
 

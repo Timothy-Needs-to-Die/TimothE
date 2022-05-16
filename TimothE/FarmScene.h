@@ -6,6 +6,7 @@
 #include "MovementComponent.h"
 #include "Fighter.h"
 #include "Health.h"
+#include "Wave.h"
 
 class FarmScene : public Scene
 {
@@ -40,6 +41,7 @@ private:
 	SpriteSheet* _pSpritesheet;
 
 	Health* _pPlayerHealth = nullptr;
-	Health* _pEnemyHealth = nullptr;
+
+	WaveController* _pWaveController = nullptr;
 };
 

@@ -13,6 +13,7 @@ Day::~Day()
 
 void Day::Update()
 {
+	_oldDay = _day;
 	if (_day)
 	{
 		_currentTime += Time::GetDeltaTime();
@@ -23,10 +24,11 @@ void Day::Update()
 	}
 }
 
-void Day::DayStart()
+bool Day::NightStart()
 {
-}
-
-void Day::NightStart()
-{
+	if (_oldDay && !_day)
+	{
+		return true;
+	}
+	return false;
 }

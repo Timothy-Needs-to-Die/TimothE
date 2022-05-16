@@ -316,7 +316,12 @@
       <Filter>Headers</Filter>
     </ClInclude>
     <ClInclude Include="Core.h" />
-    <ClInclude Include="Day.h" />
+    <ClInclude Include="Day.h">
+      <Filter>Headers</Filter>
+    </ClInclude>
+    <ClInclude Include="Wave.h">
+      <Filter>Headers</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="AStar.cpp">
@@ -508,6 +513,11 @@
     <ClCompile Include="pch.cpp">
       <Filter>Source</Filter>
     </ClCompile>
-    <ClCompile Include="Day.cpp" />
+    <ClCompile Include="Day.cpp">
+      <Filter>Source</Filter>
+    </ClCompile>
+    <ClCompile Include="Wave.cpp">
+      <Filter>Source</Filter>
+    </ClCompile>
   </ItemGroup>
 </Project>

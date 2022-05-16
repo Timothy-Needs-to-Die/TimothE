@@ -53,6 +53,17 @@ void FarmScene::UpdateObjects()
 	//TIM_LOG_LOG("Player forward: " << forward.x << ", " << forward.y);
 	//TIM_LOG_LOG("Weapon Pos: " << pos.x << ", " << pos.y);
 	_pWeaponObject->GetTransform()->SetPosition(pos);
+
+	if (_pDay->NightStart())
+	{
+		_pWaveController->SpawnWave(5);
+
+		for (GameObject* go : _pWaveController->GetEnemies())
+		{
+			AddGameObject(go);
+		}
+	}
+	//std::cout << _pPlayerObject->GetTransform()->GetPosition().x << ", " << _pPlayerObject->GetTransform()->GetPosition().y << std::endl;
 }
 
 void FarmScene::InitScene()
@@ -98,21 +109,10 @@ void FarmScene::InitScene()
 	AddGameObject(_pPlayerObject);
 
 	_pTilemap = new TileMap(_name);
-	
-
 
 	_pSc->SetSprite(_pAnimSheet->GetSpriteAtIndex(0));
 	//_pTilemap->SetSpriteSheet(ResourceManager::GetSpriteSheet("testSheet"));
 	//_pTilemap->LoadTileMap();
 
-	GameObject* enemyGO = new GameObject("Enemy");
-	enemyGO->AddComponent<Texture2D>(new Texture2D(enemyGO));
-	enemyGO->GetTransform()->SetPosition(2.0f, 2.0f);
-	enemyGO->GetTransform()->SetScale({ 0.25f, 0.45f });
-
-	_pEnemyHealth = enemyGO->AddComponent(new Health(enemyGO));
-	_pEnemyHealth->SetMaxHealth(50);
-	AddGameObject(enemyGO);
-
-	
+	_pWaveController = new WaveController(this);
 }
