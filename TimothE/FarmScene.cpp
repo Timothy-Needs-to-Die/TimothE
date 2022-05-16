@@ -1,6 +1,7 @@
 #include "FarmScene.h"
 #include "Button.h"
 #include "SpriteComponent.h"
+#include "CameraManager.h"
 
 FarmScene::~FarmScene()
 {
@@ -47,6 +48,29 @@ void FarmScene::UpdateObjects()
 	_pAnimSheet->SetStationary(!_pMovement->IsMoving());
 	_pSc->SetSprite(_pAnimSheet->GetSpriteAtIndex(_pAnimSheet->GetCurrentIndex()));
 
+	if (Input::IsKeyDown(KEY_G))
+	{
+		_pTilemap->AddTileAt(2, 6, 11, CameraManager::CurrentCamera());
+		_pCropPlotList.push_back(new CropPlot());
+	}
+
+	if (Input::IsKeyDown(KEY_H))
+	{
+		//_pCropPlot->Plant(CropResourceType::Wheat);
+	}
+
+	if (Input::IsKeyDown(KEY_L))
+	{
+		//_pCropPlot->OnNewDay();
+	}
+	
+	//if (//_pCropPlot->IsOccupied())
+	//{
+	//	if (//_pCropPlot->GetCrop()->IsReady())
+	//	{
+	//		std::cout << "The Crop is ready!" << std::endl;
+	//	}
+	//}
 
 }
 
@@ -96,5 +120,6 @@ void FarmScene::InitScene()
 	_pEnemyHealth->SetMaxHealth(50);
 	AddGameObject(enemyGO);
 
-	
+	// Crops
+	//_pCropPlot = new CropPlot();
 }

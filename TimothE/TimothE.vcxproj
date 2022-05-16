@@ -87,7 +87,8 @@
     <ClInclude Include="AudioSource.h" />
     <ClInclude Include="BoxColliderComponent.h" />
     <ClInclude Include="Button.h" />
-    <ClInclude Include="Core.h" />
+    <ClInclude Include="CropPlot.h" />
+    <ClInclude Include="CropResourceType.h" />
     <ClInclude Include="CSVReader.h" />
     <ClInclude Include="Camera.h" />
     <ClInclude Include="CameraManager.h" />
@@ -95,6 +96,7 @@
     <ClInclude Include="Component.h" />
     <ClInclude Include="ComponentFactory.h" />
     <ClInclude Include="Console.h" />
+    <ClInclude Include="Core.h" />
     <ClInclude Include="Core\Events\ApplicationEvent.h" />
     <ClInclude Include="Core\Events\Event.h" />
     <ClInclude Include="Core\Events\KeyEvent.h" />
@@ -139,6 +141,7 @@
     <ClInclude Include="Particle.h" />
     <ClInclude Include="ParticleSystem.h" />
     <ClInclude Include="Physics.h" />
+    <ClInclude Include="PlantedCrop.h" />
     <ClInclude Include="PlantResourceType.h" />
     <ClInclude Include="PlayerInputComponent.h" />
     <ClInclude Include="PlayerResource.h" />
@@ -193,6 +196,7 @@
     <ClCompile Include="AudioSource.cpp" />
     <ClCompile Include="BoxColliderComponenet.cpp" />
     <ClCompile Include="Button.cpp" />
+    <ClCompile Include="CropPlot.cpp" />
     <ClCompile Include="CSVReader.cpp" />
     <ClCompile Include="Camera.cpp" />
     <ClCompile Include="CameraManager.cpp" />
@@ -229,6 +233,7 @@
     <ClCompile Include="Particle.cpp" />
     <ClCompile Include="ParticleSystem.cpp" />
     <ClCompile Include="Physics.cpp" />
+    <ClCompile Include="PlantedCrop.cpp" />
     <ClCompile Include="PlayerInputComponent.cpp" />
     <ClCompile Include="PlayerResource.cpp" />
     <ClCompile Include="PlayerResourceManager.cpp" />

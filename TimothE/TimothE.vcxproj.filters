@@ -51,6 +51,9 @@
     <ClInclude Include="Console.h">
       <Filter>Headers</Filter>
     </ClInclude>
+    <ClInclude Include="Core.h">
+      <Filter>Headers</Filter>
+    </ClInclude>
     <ClInclude Include="Core\Events\ApplicationEvent.h">
       <Filter>Headers</Filter>
     </ClInclude>
@@ -103,6 +106,9 @@
       <Filter>Headers</Filter>
     </ClInclude>
     <ClInclude Include="CropsConfig.h">
+      <Filter>Headers</Filter>
+    </ClInclude>
+    <ClInclude Include="Day.h">
       <Filter>Headers</Filter>
     </ClInclude>
     <ClInclude Include="Dirent.h">
@@ -315,8 +321,15 @@
     <ClInclude Include="pch.h">
       <Filter>Headers</Filter>
     </ClInclude>
-    <ClInclude Include="Core.h" />
-    <ClInclude Include="Day.h" />
+    <ClInclude Include="PlantedCrop.h">
+      <Filter>Headers</Filter>
+    </ClInclude>
+    <ClInclude Include="CropResourceType.h">
+      <Filter>Headers</Filter>
+    </ClInclude>
+    <ClInclude Include="CropPlot.h">
+      <Filter>Headers</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="AStar.cpp">
@@ -380,6 +393,9 @@
       <Filter>Source</Filter>
     </ClCompile>
     <ClCompile Include="Core\Graphics\Window.cpp">
+      <Filter>Source</Filter>
+    </ClCompile>
+    <ClCompile Include="Day.cpp">
       <Filter>Source</Filter>
     </ClCompile>
     <ClCompile Include="Editor.cpp">
@@ -508,6 +524,11 @@
     <ClCompile Include="pch.cpp">
       <Filter>Source</Filter>
     </ClCompile>
-    <ClCompile Include="Day.cpp" />
+    <ClCompile Include="PlantedCrop.cpp">
+      <Filter>Source</Filter>
+    </ClCompile>
+    <ClCompile Include="CropPlot.cpp">
+      <Filter>Source</Filter>
+    </ClCompile>
   </ItemGroup>
 </Project>

@@ -6,6 +6,7 @@
 #include "MovementComponent.h"
 #include "Fighter.h"
 #include "Health.h"
+#include "CropPlot.h"
 
 class FarmScene : public Scene
 {
@@ -40,5 +41,8 @@ private:
 
 	Health* _pPlayerHealth = nullptr;
 	Health* _pEnemyHealth = nullptr;
+
+	//CropPlot* _pCropPlot = nullptr;
+	vector<CropPlot*> _pCropPlotList;
 };
 
