@@ -52,16 +52,31 @@ void FarmScene::UpdateObjects()
 	{
 		if (farmKeyPressed) return;
 		farmKeyPressed = true;
-
-		_pCropPlotBaseObject = new GameObject("CropPlot");
-		_pCropPlotBaseObject->AddComponent(new CropPlot(_pCropPlotBaseObject));
-
-		_pTilemap->AddTileAt(2, 6, 11, CameraManager::CurrentCamera());
-		glm::vec2 pos = { _pTilemap->GetTileAtWorldPos(0, _pPlayerObject->GetTransform()->GetPosition())->colXPos, _pTilemap->GetTileAtWorldPos(0, _pPlayerObject->GetTransform()->GetPosition())->colYPos };
-		_pCropPlotBaseObject->GetTransform()->SetPosition(pos); 
-		_pCropPlotBaseObject->GetTransform()->SetScale(glm::vec2(0.25f, 0.25f)); 
-		_pCropPlotBaseObject->AddComponent(new BoxColliderComponent(_pCropPlotBaseObject));
-		_pCropPlotObjects.push_back(_pCropPlotBaseObject);
+		
+		bool plotAlreadyInTile = false;
+		glm::vec2 playerPos = _pPlayerObject->GetTransform()->GetPosition();
+		glm::vec2 tilePlayerIsOnPos = { _pTilemap->GetTileAtWorldPos(0, playerPos)->colXPos, _pTilemap->GetTileAtWorldPos(0, playerPos)->colYPos };
+			
+		for (GameObject* cropPlotObject : _pCropPlotObjects)
+		{
+			// Check if there is already plot land here
+			if (cropPlotObject->GetTransform()->GetPosition() == tilePlayerIsOnPos)
+			{
+				plotAlreadyInTile = true;
+			}
+		}
+		
+		// Get the tile position within world space
+		if (!plotAlreadyInTile)
+		{
+			_pCropPlotBaseObject = new GameObject("CropPlot");
+			_pCropPlotBaseObject->AddComponent(new CropPlot(_pCropPlotBaseObject));
+			_pTilemap->AddTileAt(2, 6, 11, CameraManager::CurrentCamera());
+			_pCropPlotBaseObject->GetTransform()->SetPosition(tilePlayerIsOnPos);
+			_pCropPlotBaseObject->GetTransform()->SetScale(glm::vec2(0.25f, 0.25f));
+			_pCropPlotBaseObject->AddComponent(new BoxColliderComponent(_pCropPlotBaseObject));
+			_pCropPlotObjects.push_back(_pCropPlotBaseObject);
+		}
 	}
 
 	if (Input::IsKeyUp(KEY_G))
@@ -73,8 +88,6 @@ void FarmScene::UpdateObjects()
 	{
 		for (GameObject* cropPlot : _pCropPlotObjects)
 		{
-			
-
 			glm::vec2 playerPos = _pPlayerObject->GetTransform()->GetPosition();
 			glm::vec2 playerScale = _pPlayerObject->GetTransform()->GetScale();
 			glm::vec2 midPoint = glm::vec2(playerPos.x + (playerScale.x / 2), playerPos.y + (playerScale.y / 2));
