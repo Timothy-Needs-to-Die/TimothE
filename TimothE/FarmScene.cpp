@@ -58,24 +58,20 @@ void FarmScene::InitScene()
 
 	_pSpritesheet = ResourceManager::GetSpriteSheet("testSheet");
 
-	_pStartButton = new GameObject("BUTTON");
+	_pStartButton = new GameObject("BUTTON", "UI");
 	_pStartButton->AddComponent(new Button(_pStartButton));
 	_pStartButton->AddComponent(new BoxColliderComponent(_pStartButton));
-	//pStartButton->AddComponent(new TextComponent(_pTestObject));
+	//_pStartButton->AddComponent(new TextComponent(_pTestObject));
 
+	_pStartButton->AddComponent(ResourceManager::GetTexture("Button"));
 
-	//_pStartButton->LoadTexture(ResourceManager::GetTexture("Button"));
-	_pStartButton->SetShader("ui");
+	AddGameObject(_pStartButton);
+
 	_pStartButton->GetTransform()->SetPosition(0.0f, 0.0f);
 	_pStartButton->GetTransform()->SetScale({ 0.2f, 0.2f });
-	//_pStartButton->SetType(ObjectType::UI);
-	//AddGameObject(_pStartButton);
 
-	//_pPlayerObject->AddComponent(new Fighter(_pPlayerObject));
-	//_pPlayerMovement = new PlayerInputComponent(_pPlayerObject);
 
 	_pWeaponObject = new GameObject("Weapon");
-	//_pWeaponObject->SetParent(_pPlayerObject);
 	_pWeaponObject->AddComponent<Texture2D>(ResourceManager::GetTexture("swords"));
 	_pWeaponObject->GetTransform()->SetScale({0.20f, 0.20f});
 	_pWeaponObject->GetTransform()->SetPosition({1.5f, 0.0f});
@@ -89,15 +85,7 @@ void FarmScene::InitScene()
 	_pPlayer = new Player();
 	AddGameObject(_pPlayer);
 
-	//_pPlayerObject->AddComponent(_pPlayerMovement);
-	//_pPlayerObject->AddComponent(ResourceManager::GetTexture("character"));
-	//AddGameObject(_pPlayerObject);
-
 	_pTilemap = new TileMap(_name);
-
-	//_pSc->SetSprite(_pAnimSheet->GetSpriteAtIndex(0));
-	//_pTilemap->SetSpriteSheet(ResourceManager::GetSpriteSheet("testSheet"));
-	//_pTilemap->LoadTileMap();
 
 	_pWaveController = new WaveController(this);
 }

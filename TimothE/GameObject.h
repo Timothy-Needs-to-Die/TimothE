@@ -19,7 +19,7 @@ public:
 	//////////////////////////
 	//Constructor/Destructor//
 	//////////////////////////
-	GameObject(std::string name, std::string tag = "UNTAGGED", Transform* transform = nullptr);
+	GameObject(std::string name, std::string tag = "UNTAGGED");
 	~GameObject();
 
 	/////////////
@@ -29,27 +29,17 @@ public:
 	virtual void Update();
 	virtual void Exit();
 
-public:
-	///////////////////////
-	//Data Initialisation//
-	///////////////////////
-	void LoadTexture(Texture2D* texture);
-
 	/////////////////////
 	//Display Functions//
 	/////////////////////
 	void DisplayInEditor();
 
-public:
 	//////////////////////////
 	//Get Unique Identifiers//
 	//////////////////////////
 	std::string GetUID() { return _UID; }
 	std::string GetName() { return _name; }
 	std::string GetTag() { return _tag; }
-	//ObjectType GetType() { return _tag; }
-	int GetTextureID() { return _textureID; }
-	int GetShaderID() { return _shaderID; }
 
 	//////////////////////////
 	//Set Unique Identifiers//
@@ -62,11 +52,6 @@ public:
 	GameObject* GetParent() { return _pParent; };
 	GameObject* GetChild() { return _pChild; };
 
-
-	//ObjectType GetObjectType() const { return _tag; }
-	//ObjectType SetObjectType(ObjectType type) { _tag = type; }
-
-
 	////////////////////////
 	//Set Ownership States//
 	////////////////////////
@@ -75,13 +60,12 @@ public:
 
 
 	void AddedComponent(Component* comp);
-public:
+
 	//////////////////
 	//Get Components//
 	//////////////////
 	std::vector<Component*> GetComponents() { return _pComponents; }
 	Transform* GetTransform() { return _pTransform; }
-	Shader* GetShader() const { return _pShader; }
 
 	////////////////////////
 	//Get Child Components//
@@ -99,12 +83,6 @@ public:
 	//Swap Components//
 	///////////////////
 	void SwapComponents(int index1, int index2);
-
-	//////////////////
-	//Set Components//
-	//////////////////
-	void SetShader(int id) { _shaderID = id; };
-	void SetShader(std::string name);
 
 	////////////////////////////
 	//Component Get/Add/Remove//
@@ -138,12 +116,12 @@ public:
 
 	void RemoveComponent(Component* comp);
 
-public:
 	///////////////////////////////
 	//Inherited via ISerializable//
 	///////////////////////////////
 	virtual bool SaveState(IStream& stream) const override;
 	virtual bool LoadState(IStream& stream) override;
+
 private:
 	///////////////////////////////////
 	//Properties (Unique Identifiers)//
@@ -151,26 +129,19 @@ private:
 	std::string _UID;
 	std::string _name;
 	std::string _tag;
-	int _textureID = 0;
-	int _shaderID = 0;
-
-	///////////
-	//Shaders//
-	///////////
-	Shader* _pShader;
-	std::string _shaderName;
 
 protected:
-		//////////////
-		//Components//
-		//////////////
-		std::vector<Component*> _pComponents;
-		Transform* _pTransform;
-		/////////////
+	//////////////
+	//Components//
+	//////////////
+	std::vector<Component*> _pComponents;
+	Transform* _pTransform;
+
+	/////////////
 	//Ownership//
 	/////////////
-		GameObject* _pParent = nullptr;
-		GameObject* _pChild = nullptr;
+	GameObject* _pParent = nullptr;
+	GameObject* _pChild = nullptr;
 
-		virtual void UniqueLogic();
+	virtual void UniqueLogic();
 };

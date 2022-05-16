@@ -9,7 +9,7 @@ public:
 private:
 	class Fighter* _pFighter = nullptr;
 	class Health* _pHealth = nullptr;
-	class PlayerInputComponent* _pPlayerMovement = nullptr;
+	class PlayerInputComponent* _pInput = nullptr;
 
 protected:
 	virtual void UniqueLogic() override;

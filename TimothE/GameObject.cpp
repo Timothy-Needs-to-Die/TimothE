@@ -9,8 +9,8 @@
 #include "Scene.h"
 #include "Core.h"
 
-GameObject::GameObject(std::string name, std::string tag, Transform* transform) 
-	: _name(name), _tag(tag), _pTransform(transform)
+GameObject::GameObject(std::string name, std::string tag) 
+	: _name(name), _tag(tag)
 {
 	_UID = UID::GenerateUID();
 
@@ -28,12 +28,7 @@ GameObject::GameObject(std::string name, std::string tag, Transform* transform)
 		_tag = tag;
 	}
 
-	if (_pTransform == nullptr)
-		_pTransform = new Transform(this);
-
-	AddComponent<Transform>(_pTransform);
-
-	SetShader("default");
+	_pTransform = AddComponent<Transform>(new Transform(this));
 
 	Start();
 }
@@ -78,20 +73,6 @@ void GameObject::Exit()
 	}
 }
 
-void GameObject::LoadTexture(Texture2D* texture)
-{
-	if (texture == nullptr)
-	{
-		TIM_LOG_ERROR("Texture is equal to nullptr");
-		return;
-	}
-	else
-	{
-		_textureID = texture->GetID();
-		AddComponent<Texture2D>(texture);
-	}
-}
-
 void GameObject::DisplayInEditor()
 {
 	ImGui::Text(_name.c_str());
@@ -102,25 +83,12 @@ void GameObject::DisplayInEditor()
 
 }
 
-void GameObject::SetShader(std::string name)
-{
-	_shaderName = name;
-	_pShader = ResourceManager::GetShader(_shaderName);
-	if (_pShader != nullptr) {
-		_shaderID = _pShader->GetProgramID();
-	}else{
-		TIM_LOG_ERROR(name << " does not exist");
-	}
-}
-
 bool GameObject::SaveState(IStream& stream) const
 {
 	//Writes name to serialized object
 	WriteString(stream, _name);
 
 	WriteString(stream, _UID);
-
-	WriteString(stream, _shaderName);
 
 	//Writes number of components
 	WriteInt(stream, _pComponents.size());
@@ -141,8 +109,6 @@ bool GameObject::LoadState(IStream& stream)
 	_name = ReadString(stream);
 
 	_UID = ReadString(stream);
-
-	SetShader(ReadString(stream));
 
 	//Reserve the amount of components
 	int noComponents = ReadInt(stream);
@@ -170,11 +136,7 @@ bool GameObject::LoadState(IStream& stream)
 			AddComponent(c);
 		}
 	}
-
 	Texture2D* texture = GetComponent<Texture2D>();
-	if (texture != nullptr) {
-		_textureID = texture->GetID();
-	}
 
 	return true;
 }
