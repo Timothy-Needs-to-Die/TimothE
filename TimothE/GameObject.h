@@ -19,7 +19,7 @@ public:
 	//////////////////////////
 	//Constructor/Destructor//
 	//////////////////////////
-	GameObject(std::string name, std::string tag = "UNTAGGED", Transform* transform = nullptr);
+	GameObject(std::string name, std::string tag = "UNTAGGED", Transform* transform = nullptr, int maxHealth = 100);
 	~GameObject();
 
 	/////////////
@@ -144,6 +144,13 @@ public:
 	///////////////////////////////
 	virtual bool SaveState(IStream& stream) const override;
 	virtual bool LoadState(IStream& stream) override;
+
+	void HurtObject(int damage);
+	int GetHealth();
+	int GetMaxHealth();
+	void SetMaxHealth(int newMax);
+	bool GetAlive();
+
 private:
 	///////////////////////////////////
 	//Properties (Unique Identifiers)//
@@ -171,4 +178,8 @@ private:
 	///////////
 	Shader* _pShader;
 	std::string _shaderName;
+
+	int _health;
+	int _maxHealth;
+	bool _alive;
 };

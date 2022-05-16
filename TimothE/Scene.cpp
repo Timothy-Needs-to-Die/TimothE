@@ -157,6 +157,11 @@ void Scene::RenderScene(Camera* cam)
 	_pTilemap->RenderMap(cam);
 
 	for (auto& obj : _listOfDrawableGameObjects) {
+		if (!obj->GetAlive())
+		{
+			continue;
+		}
+
 		//TODO: Text won't render here as it uses its own internal texture data.
 		Texture2D* objTex = obj->GetComponent<Texture2D>();
 

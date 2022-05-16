@@ -9,8 +9,8 @@
 #include "Scene.h"
 #include "Core.h"
 
-GameObject::GameObject(std::string name, std::string tag, Transform* transform) 
-	: _name(name), _tag(tag), _pTransform(transform)
+GameObject::GameObject(std::string name, std::string tag, Transform* transform, int maxHealth)
+	: _name(name), _tag(tag), _pTransform(transform), _health(maxHealth), _maxHealth(maxHealth), _alive(true)
 {
 	_UID = UID::GenerateUID();
 
@@ -57,6 +57,16 @@ void GameObject::Start()
 
 void GameObject::Update()
 {
+	if (_maxHealth > 0 && _health < 0)
+	{
+		_alive = false;
+		return;
+	}
+	else
+	{
+		_alive = true;
+	}
+
 	for (Component* c : _pComponents)
 	{
 		c->OnUpdate();
@@ -129,6 +139,7 @@ bool GameObject::SaveState(IStream& stream) const
 	}
 
 	//TODO: GameObjects need a child system
+	_pChild->SaveState(stream);
 
 	return true;
 }
@@ -168,6 +179,7 @@ bool GameObject::LoadState(IStream& stream)
 			AddComponent(c);
 		}
 	}
+	_pChild->LoadState(stream);
 
 	Texture2D* texture = GetComponent<Texture2D>();
 	if (texture != nullptr) {
@@ -175,6 +187,31 @@ bool GameObject::LoadState(IStream& stream)
 	}
 
 	return true;
+}
+
+void GameObject::HurtObject(int damage)
+{
+	_health -= damage;
+}
+
+int GameObject::GetHealth()
+{
+	return _health;
+}
+
+int GameObject::GetMaxHealth()
+{
+	return _maxHealth;
+}
+
+void GameObject::SetMaxHealth(int newMax)
+{
+	_maxHealth = newMax;
+}
+
+bool GameObject::GetAlive()
+{
+	return _alive;
 }
 
 Component* GameObject::GetComponentInChild(Component::Types type)
