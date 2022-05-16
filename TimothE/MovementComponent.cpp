@@ -95,21 +95,41 @@ void MovementComponent::DecideDirection(glm::vec2& moveVec)
 	if (moveVec.x >= moveVec.y) {
 		//We are moving left or right. Decide based on if the x component is greater than 0
 		_direction = moveVec.x > 0.0f ? Direction::RIGHT : Direction::LEFT;
-		xVal = moveVec.x > 0.0f ? 0.0f : 4.71f;
+
+		if (_direction == Direction::LEFT) {
+			
+			
+			newForward.x = 0.0f;
+			newForward.y = -1.0f;
+		}
+		else {
+			newForward.x = 1.0f;
+			newForward.y = 0.0f;
+		}
 
 	}
 	else {
 		//We are moving up or down. Decide based on if the y component is greater than 0
 		_direction = moveVec.y > 0.0f ? Direction::UP : Direction::DOWN;
-		xVal = moveVec.y > 0.0f ? 1.57f : 3.14f;
+
+		if (_direction == Direction::UP) {
+			newForward.x = 0.0f;
+			newForward.y = 1.0f;
+		}
+		else {
+			newForward.x = -1.0f;
+			newForward.y = 0.0f;
+		}
 	}
 
-	newForward.y = xVal;
+	
+	newForward = glm::normalize(newForward);
 
 	//std::cout << "Rotation: " << xVal << std::endl;
 
+	TIM_LOG_LOG("Player Forward: " << newForward.x << ", " << newForward.y);
 	_pParentObject->GetTransform()->SetForward(newForward);
-	_pParentObject->GetTransform()->SetRotation(xVal);
+	//_pParentObject->GetTransform()->SetRotation(xVal);
 }
 
 void MovementComponent::OnStart()

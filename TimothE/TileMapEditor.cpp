@@ -74,7 +74,7 @@ void TileMapEditor::EditorUI(TileMap* pTilemap)
 		ImGui::Text("Layer: ");
 		ImGui::SameLine();
 		ImGui::PushItemWidth(150.0f);
-		ImGui::SliderInt("##", &_currentLayer, 0, 2);
+		ImGui::SliderInt("##", &_currentLayer, 0, 5);
 		ImGui::PopItemWidth();
 		ImGui::SameLine();
 		if (ImGui::Button("Fill Layer"))

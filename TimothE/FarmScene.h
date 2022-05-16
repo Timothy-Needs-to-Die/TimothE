@@ -29,6 +29,7 @@ protected:
 private:
 	GameObject* _pStartButton = nullptr;
 	GameObject* _pPlayerObject = nullptr;
+	GameObject* _pWeaponObject = nullptr;
 
 	PlayerInputComponent* _pPlayerMovement = nullptr;
 	MovementComponent* _pMovement = nullptr;

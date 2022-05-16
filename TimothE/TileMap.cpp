@@ -16,8 +16,9 @@ std::ostream& operator<<(std::ostream& os, glm::vec2 v) {
 TileMap::TileMap(std::string name)
 	: _name(name)
 {
-	_tileArr = new std::vector<TileData>[_numLayers];
-	SetTileMapSize({ 32.0f, 32.0f });
+	_tileArr.resize(_numLayers);
+	//_tileArr = new std::vector<TileData>[_numLayers];
+	SetTileMapSize({ 256.0f, 32.0f });
 
 	_tileSize = glm::vec2(128.0f);
 
@@ -105,50 +106,78 @@ void TileMap::LoadTileMap()
 	
 	for (int layer = 0; layer < _numLayers; layer++) {
 		_tileArr[layer].resize(dimensions);
-		std::string tileInfo = file["tiles" + std::to_string(layer)];
-		std::stringstream ss(tileInfo);
 
-		std::vector<std::string> results;
-		while (ss.good()) {
-			std::string substr;
-			getline(ss, substr, ',');
-			results.push_back(substr);
-		}
+		if (file.contains("tiles" + std::to_string(layer))) {
+			std::string tileInfo = file["tiles" + std::to_string(layer)];
+			std::stringstream ss(tileInfo);
 
-		for (int i = 0; i < dimensions; i++) {
-
-			//std::cout << results[i] << std::endl;
-
-			std::stringstream ss(results[i]);
-			std::string s1;
-			getline(ss, s1, ' ');
-			std::string s2;
-			getline(ss, s2, ' ');
-
-			int index = std::stoi(s1);
-
-			bool collidable = std::stoi(s2);
-
-			_tileArr[layer][i].texIndex = index;
-			_tileArr[layer][i]._pSprite = _pSpritesheet->GetSpriteAtIndex(index);
-			_tileArr[layer][i].collidable = collidable;
-
-			int row = i / _mapInTiles.x;
-			int xIndex = i - (row * _mapInTiles.x);
-
-			if (collidable) {
-				std::cout << "Tile at X: " << xIndex << ", Y: " << row << std::endl;
+			std::vector<std::string> results;
+			while (ss.good()) {
+				std::string substr;
+				getline(ss, substr, ',');
+				results.push_back(substr);
 			}
-			//int xIndex = 
 
-			float xPos = (float)xIndex * _gapBetweenTiles;
-			float yPos = ((float)row * _gapBetweenTiles);
-			glm::vec2 colPos = glm::vec2(xPos, yPos);
-			_tileArr[layer][i].colXPos = xPos;
-			_tileArr[layer][i].colYPos = yPos;
+			for (int i = 0; i < dimensions; i++) {
+				std::stringstream ss(results[i]);
+				std::string s1;
+				getline(ss, s1, ' ');
+				std::string s2;
+				getline(ss, s2, ' ');
 
-			_tileArr[layer][i].size = _gapBetweenTiles;
+				int index = std::stoi(s1);
+
+				bool collidable = std::stoi(s2);
+
+				_tileArr[layer][i].texIndex = index;
+				_tileArr[layer][i]._pSprite = _pSpritesheet->GetSpriteAtIndex(index);
+				_tileArr[layer][i].collidable = collidable;
+
+				int row = i / _mapInTiles.x;
+				int xIndex = i - (row * _mapInTiles.x);
+
+				if (collidable) {
+					std::cout << "Tile at X: " << xIndex << ", Y: " << row << std::endl;
+				}
+				//int xIndex = 
+
+				float xPos = (float)xIndex * _gapBetweenTiles;
+				float yPos = ((float)row * _gapBetweenTiles);
+				glm::vec2 colPos = glm::vec2(xPos, yPos);
+				_tileArr[layer][i].colXPos = xPos;
+				_tileArr[layer][i].colYPos = yPos;
+
+				_tileArr[layer][i].size = _gapBetweenTiles;
+			}
 		}
+		else {
+			for (int i = 0; i < dimensions; i++) {
+
+				int index = 0;
+
+				bool collidable = false;
+
+				_tileArr[layer][i].texIndex = index;
+				_tileArr[layer][i]._pSprite = _pSpritesheet->GetSpriteAtIndex(index);
+				_tileArr[layer][i].collidable = collidable;
+
+				int row = i / _mapInTiles.x;
+				int xIndex = i - (row * _mapInTiles.x);
+
+				float xPos = (float)xIndex * _gapBetweenTiles;
+				float yPos = ((float)row * _gapBetweenTiles);
+				glm::vec2 colPos = glm::vec2(xPos, yPos);
+				_tileArr[layer][i].colXPos = xPos;
+				_tileArr[layer][i].colYPos = yPos;
+
+				_tileArr[layer][i].size = _gapBetweenTiles;
+			}
+		}
+
+
+
+
+
 	}
 
 }
@@ -262,13 +291,13 @@ void TileMap::RenderMap(Camera* cam)
 			for (float x = 0; x < _mapSizeInUnits.x; x += _gapBetweenTiles) {
 				//If the tile is outside of the cameras range
 				if (x < xMin || x > xMax || y < yMin || y > yMax) continue;
-
+	
 				//Get the index of the tile
 				int index = _mapInTiles.x * (int)(y * _tilesPerUnit) + (int)(x * _tilesPerUnit);
-
+	
 				//if this tile does not have a sprite then go to next cycle
 				if (_tileArr[i][index]._pSprite == nullptr) continue;
-
+	
 				if (TileMapEditor::_showCollisionMap) {
 					glm::vec4 color = glm::vec4(1.0f, 0.0f, 0.0f, 1.0f);
 					if (!_tileArr[i][index].collidable) {
