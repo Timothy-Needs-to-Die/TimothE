@@ -3,7 +3,11 @@
 #include "TraderConfig.h"
 #include "ItemConfig.h"
 
+
 class PlayerResourceManager;
+enum PlantResourceType; 
+enum CoreResourceType;
+struct HotbarItem;
 
 class BaseTrader : Component
 {
@@ -16,8 +20,10 @@ public:
 
 	void OnNewDay();
 
-	//Pass in 1 for hotbar items, 2 for seeds
-    void OnBuy(int type, ItemConfig item);
+
+	void OnBuy(ItemConfig item, PlantResourceType type, int ammount);
+	void OnBuy(ItemConfig item, HotbarItem type, int ammount);
+
 	void OnSell();
 	void UpdateUI();
 	void LevelUpTrader();

@@ -174,7 +174,6 @@
     <ClInclude Include="TimothEInputCodes.h" />
     <ClInclude Include="TownScene.h" />
     <ClInclude Include="TraderConfig.h" />
-    <ClInclude Include="TraderManager.h" />
     <ClInclude Include="Transform.h" />
     <ClInclude Include="UID.h" />
     <ClInclude Include="Core\Graphics\VAO.h" />
@@ -240,7 +239,6 @@
     <ClCompile Include="TileMap.cpp" />
     <ClCompile Include="TileMapEditor.cpp" />
     <ClCompile Include="TownScene.cpp" />
-    <ClCompile Include="TraderManager.cpp" />
     <ClCompile Include="Transform.cpp" />
     <ClCompile Include="Core\Graphics\VAO.cpp" />
     <ClCompile Include="Core\Graphics\VBO.cpp" />

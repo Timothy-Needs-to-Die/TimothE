@@ -19,7 +19,7 @@ private:
 	static std::map<PlantResourceType, PlayerResource> _plantResourceMap;
 	static std::map<HotbarItem, PlayerResource> _hotbarItemMap; 
 
-};
+}; 
 
 
 //The maps contain the type and resource object, meaning adding a wood resource will mean calling GetCoreResource

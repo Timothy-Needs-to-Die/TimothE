@@ -12,6 +12,7 @@ PlayerResourceManager::~PlayerResourceManager()
 {
 	_coreResourceMap.clear();
 	_plantResourceMap.clear();
+	_hotbarItemMap.clear();
 }
 
 PlayerResource* PlayerResourceManager::GetCoreResource(CoreResourceType type)

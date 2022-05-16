@@ -1,10 +1,12 @@
 #pragma once
+#include "ItemResourceType.h"
+#include "PlantResourceType.h"
 
 struct TraderConfig
 {
 	TraderType type;
 	int goldAtLevel[4];
-	TraderInventory inventory;
+	TraderInventory  inventory;
 
 }; 
 
@@ -19,5 +21,5 @@ enum TraderType
 	Blacksmith,
 	Armourer,
 	Wizard,
-	Farmer
+	Farmer   
 };

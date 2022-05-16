@@ -17,5 +17,6 @@ public:
 
 private:
 
+	ItemConfig _config; 
 	int _ammount; 
 };

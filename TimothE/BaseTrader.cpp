@@ -1,10 +1,10 @@
 #include "BaseTrader.h"
 #include "PlayerResourceManager.h"
+#include "PlantResourceType.h"
+#include "CoreResourceType.h"
+#include "ItemResourceType.h"
 
-BaseTrader::BaseTrader(TraderConfig config)
-{
-	_config = config;
-}
+
 
 BaseTrader::BaseTrader(TraderConfig config)
 {
@@ -20,23 +20,31 @@ void BaseTrader::OnNewDay()
 	GenerateDailyGoldAmmount();
 }
 
-void BaseTrader::OnBuy()
+
+void BaseTrader::OnBuy(ItemConfig item, PlantResourceType type, int ammount)
 {
-	
+	if (PlayerResourceManager::GetPlantResource(type)->CanAfford(item.price * ammount)) {
+		PlayerResourceManager::GetPlantResource(type)->GainResource(ammount);
+		std::cout << "[LOG: BaseTrader::OnBuy: Item bought by player" << std::endl;
+	}
+	else {
+		std::cout << "[LOG: BaseTrader::OnBuy: Player can not afford item" << std::endl; 
+	}
 }
 
-
-void BaseTrader::OnBuy(int type, ItemConfig item)
+void BaseTrader::OnBuy(ItemConfig item, HotbarItem type, int ammount)
 {
-	//Plant Items
-	if (type == 0) {
-		
+	if (PlayerResourceManager::GetHotbarItem(type)->CanAfford(item.price * ammount)) {
+		PlayerResourceManager::GetHotbarItem(type)->GainResource(ammount);
+		std::cout << "[LOG: BaseTrader::OnBuy: Item bought by player" << std::endl;
 	}
-	//Hotbar Items
-	else if (type == 1) {
+	else {
+		std::cout << "[LOG: BaseTrader::OnBuy: Player can not afford item" << std::endl; 
+	}
+}
 
-	}
-	
+void BaseTrader::OnSell()
+{
 }
 
 void BaseTrader::UpdateUI()
