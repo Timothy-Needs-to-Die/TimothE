@@ -25,5 +25,12 @@ The libraries currently being used within the engine are:
 ## Authors
 | Team Member | Role | Username |
 | -------------- | ----------- | ----------- |
-| John Smith | Title | Text |
-| Jane Doe | Title | Text |
+| Adam Harris | Lead Programmer | AdamHarris-GamesProgrammer |
+| Benji Rea | Project Manager | benji-rea |
+| Toby Coles | Audio Lead | Toby-Coles |
+| Isaac Dunn | AI Lead | IsaacdmDunn |
+| Lucy Eames | UI Lead | LucyEames |
+| Jacob Dexter | Graphics Lead | JacobDexter |
+| Jack Dobie | AI Programmer | JackDobie |
+| Ryan Goldsmith | UI Programmer | ryangoldsmith |
+

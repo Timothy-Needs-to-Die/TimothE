@@ -51,6 +51,9 @@
     <ClInclude Include="Console.h">
       <Filter>Headers</Filter>
     </ClInclude>
+    <ClInclude Include="Core.h">
+      <Filter>Headers</Filter>
+    </ClInclude>
     <ClInclude Include="Core\Events\ApplicationEvent.h">
       <Filter>Headers</Filter>
     </ClInclude>
@@ -103,6 +106,9 @@
       <Filter>Headers</Filter>
     </ClInclude>
     <ClInclude Include="CropsConfig.h">
+      <Filter>Headers</Filter>
+    </ClInclude>
+    <ClInclude Include="Day.h">
       <Filter>Headers</Filter>
     </ClInclude>
     <ClInclude Include="Dirent.h">
@@ -385,6 +391,9 @@
       <Filter>Source</Filter>
     </ClCompile>
     <ClCompile Include="Core\Graphics\Window.cpp">
+      <Filter>Source</Filter>
+    </ClCompile>
+    <ClCompile Include="Day.cpp">
       <Filter>Source</Filter>
     </ClCompile>
     <ClCompile Include="Editor.cpp">

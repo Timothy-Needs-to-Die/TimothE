@@ -87,7 +87,6 @@
     <ClInclude Include="AudioSource.h" />
     <ClInclude Include="BoxColliderComponent.h" />
     <ClInclude Include="Button.h" />
-    <ClInclude Include="Core.h" />
     <ClInclude Include="CSVReader.h" />
     <ClInclude Include="Camera.h" />
     <ClInclude Include="CameraManager.h" />
@@ -95,6 +94,7 @@
     <ClInclude Include="Component.h" />
     <ClInclude Include="ComponentFactory.h" />
     <ClInclude Include="Console.h" />
+    <ClInclude Include="Core.h" />
     <ClInclude Include="Core\Events\ApplicationEvent.h" />
     <ClInclude Include="Core\Events\Event.h" />
     <ClInclude Include="Core\Events\KeyEvent.h" />

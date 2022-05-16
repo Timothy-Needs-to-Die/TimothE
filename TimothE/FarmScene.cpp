@@ -1,6 +1,7 @@
 #include "FarmScene.h"
 #include "Button.h"
 #include "SpriteComponent.h"
+#include "CameraManager.h"
 
 FarmScene::~FarmScene()
 {
@@ -48,7 +49,8 @@ void FarmScene::UpdateObjects()
 	_pSc->SetSprite(_pAnimSheet->GetSpriteAtIndex(_pAnimSheet->GetCurrentIndex()));
 
 	glm::vec2 forward = _pPlayerObject->GetTransform()->GetForward();
-	glm::vec2 pos = forward * 0.25f;
+	glm::vec2 pos = forward * 0.1f;
+	pos.y += 0.1f;
 
 	//TIM_LOG_LOG("Player forward: " << forward.x << ", " << forward.y);
 	//TIM_LOG_LOG("Weapon Pos: " << pos.x << ", " << pos.y);
@@ -72,6 +74,10 @@ void FarmScene::UpdateObjects()
 				AddGameObject(enemy);
 			}
 		}
+	}
+
+	if (Input::IsKeyDown(KEY_G)) {
+		_pTilemap->AddTileAt(2, 15, 12, CameraManager::CurrentCamera());
 	}
 }
 
@@ -104,9 +110,14 @@ void FarmScene::InitScene()
 
 	_pWeaponObject = new GameObject("Weapon");
 	_pWeaponObject->SetParent(_pPlayerObject);
-	_pWeaponObject->AddComponent<Texture2D>(ResourceManager::GetTexture("character"));
-	_pWeaponObject->GetTransform()->SetScale({0.25f, 0.15f});
+	_pWeaponObject->AddComponent<Texture2D>(ResourceManager::GetTexture("swords"));
+	_pWeaponObject->GetTransform()->SetScale({0.20f, 0.20f});
 	_pWeaponObject->GetTransform()->SetPosition({1.5f, 0.0f});
+	SpriteComponent* pWeaponSC = _pWeaponObject->AddComponent<SpriteComponent>(new SpriteComponent(_pWeaponObject));
+
+	AnimatedSpritesheet* pWeaSS = new AnimatedSpritesheet(ResourceManager::GetTexture("swords"), 16, 16, false);
+	pWeaponSC->SetSprite(pWeaSS->GetSpriteAtIndex(6));
+
 	AddGameObject(_pWeaponObject);
 
 
