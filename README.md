@@ -25,5 +25,5 @@ The libraries currently being used within the engine are:
 ## Authors
 | Team Member | Role | Username |
 | -------------- | ----------- | ----------- |
-| John Smith | Title | Text |
-| Jane Doe | Title | Text |
+| Adam Harris | Lead Programmer | AdamHarris-GamesProgrammer |
+|  |  |  |
