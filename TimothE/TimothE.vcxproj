@@ -85,7 +85,7 @@
     <ClInclude Include="Application.h" />
     <ClInclude Include="AudioSource.h" />
     <ClInclude Include="BaseTrader.h" />
-    <ClInclude Include="Item.h" />
+    <ClInclude Include="ItemConfig.h" />
     <ClInclude Include="PlayerResource.h" />
     <ClInclude Include="CoreResourceType.h" />
     <ClInclude Include="Core\Events\ApplicationEvent.h" />
@@ -195,6 +195,7 @@
     <ClCompile Include="CameraManager.cpp" />
     <ClCompile Include="ColliderBase.cpp" />
     <ClCompile Include="Console.cpp" />
+    <ClCompile Include="ItemResourceType.h" />
     <ClCompile Include="PlayerResource.cpp" />
     <ClCompile Include="Editor.cpp" />
     <ClCompile Include="FarmScene.cpp" />

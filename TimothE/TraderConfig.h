@@ -1,11 +1,16 @@
 #pragma once
-#include "Item.h"
+
 struct TraderConfig
 {
 	TraderType type;
 	int goldAtLevel[4];
-	std::vector<Item> itemsToSell; 
+	TraderInventory inventory;
 
+};
+
+struct TraderInventory {
+	std::vector<HotbarItem> hotbarItemsToSell;
+	std::vector<PlantResourceType> plantItemsToSell;
 };
 
 enum TraderType

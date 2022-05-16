@@ -287,7 +287,7 @@
     <ClInclude Include="BaseTrader.h" />
     <ClInclude Include="TraderManager.h" />
     <ClInclude Include="TraderConfig.h" />
-    <ClInclude Include="Item.h" />
+    <ClInclude Include="ItemConfig.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="AStar.cpp">
@@ -460,5 +460,6 @@
     <ClCompile Include="PlayerResource.cpp" />
     <ClCompile Include="BaseTrader.cpp" />
     <ClCompile Include="TraderManager.cpp" />
+    <ClCompile Include="ItemResourceType.h" />
   </ItemGroup>
 </Project>

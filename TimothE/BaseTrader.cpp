@@ -1,7 +1,9 @@
 #include "BaseTrader.h"
+#include "PlayerResourceManager.h"
 
-BaseTrader::BaseTrader()
+BaseTrader::BaseTrader(TraderConfig config)
 {
+	_config = config;
 }
 
 BaseTrader::BaseTrader(TraderConfig config)
@@ -18,13 +20,11 @@ void BaseTrader::OnNewDay()
 	GenerateDailyGoldAmmount();
 }
 
-void BaseTrader::Trade(Item item)
+void BaseTrader::OnBuy()
 {
+	
 }
 
-void BaseTrader::OnBuy(Item item)
-{
-}
 
 void BaseTrader::UpdateUI()
 {

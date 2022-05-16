@@ -24,4 +24,9 @@ PlayerResource* PlayerResourceManager::GetPlantResource(PlantResourceType type)
 	return &_plantResourceMap[type];
 }
 
+PlayerResource* PlayerResourceManager::GetHotbarItem(HotbarItem item)
+{
+	return &_hotbarItemMap[item];
+}
+
 

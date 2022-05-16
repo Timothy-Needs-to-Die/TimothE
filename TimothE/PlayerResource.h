@@ -1,6 +1,7 @@
 #pragma once
 #include "CoreResourceType.h"
 #include "PlantResourceType.h"
+#include "ItemResourceType.h"
 #include <iostream>
 
 class PlayerResource

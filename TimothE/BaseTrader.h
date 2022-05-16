@@ -3,6 +3,8 @@
 #include "TraderConfig.h"
 
 
+class PlayerResourceManager;
+
 class BaseTrader : Component
 {
 public:
@@ -13,9 +15,10 @@ public:
 
 
 	void OnNewDay();
-	
-	void Trade(Item item);
-    void OnBuy(Item item);
+
+	//Pass in 1 for hotbar items, 2 for seeds
+    void OnBuy(int type, );
+	void OnSell();
 	void UpdateUI();
 	void LevelUpTrader();
 	TraderConfig* GetConfig() { return &_config; }
@@ -24,6 +27,7 @@ public:
 private:
 	void GenerateDailyGoldAmmount();
 	TraderConfig _config; 
+
 	int _traderLevel;
 	int _goldAtLevel[4];
     int _traderGold;
