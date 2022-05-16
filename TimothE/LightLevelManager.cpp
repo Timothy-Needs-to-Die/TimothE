@@ -8,24 +8,30 @@ void LightLevelManager::UpdateLightMap(TileMap& tileMap)
 		obj.lightLevel = 0;
 	}*/
 
-	std::vector<float> xMin;
-	std::vector<float> xMax;
-	std::vector<float> yMin;
-	std::vector<float> yMax;
+	float xMin, xMax;
+	float yMin, yMax;
+	float tileXSize = tileMap.GetTileSize().x;
+	float tileYSize = tileMap.GetTileSize().y;
 
 	for (LightSource source : _lightSources)
 	{
 		//needs to loop through layers
-		xMin.push_back(tileMap.GetTileAtWorldPos(0, glm::vec2(source.worldPos.x - (source.range * tileMap.GetTileSize().x), source.worldPos.y))->colXPos);
-		xMax.push_back(tileMap.GetTileAtWorldPos(0, glm::vec2(source.worldPos.x + (source.range * tileMap.GetTileSize().x), source.worldPos.y))->colXPos);
-		yMin.push_back(tileMap.GetTileAtWorldPos(0, glm::vec2(source.worldPos.x, source.worldPos.y - (source.range * tileMap.GetTileSize().y)))->colYPos);
-		yMax.push_back(tileMap.GetTileAtWorldPos(0, glm::vec2(source.worldPos.x, source.worldPos.y + (source.range * tileMap.GetTileSize().y)))->colYPos);
-	}
+		xMin = tileMap.GetTileAtWorldPos(0, glm::vec2(source.worldPos.x - (source.range * tileMap.GetTileSize().x), source.worldPos.y))->colXPos;
+		xMax = tileMap.GetTileAtWorldPos(0, glm::vec2(source.worldPos.x + (source.range * tileMap.GetTileSize().x), source.worldPos.y))->colXPos;
+		yMin = tileMap.GetTileAtWorldPos(0, glm::vec2(source.worldPos.x, source.worldPos.y - (source.range * tileMap.GetTileSize().y)))->colYPos;
+		yMax = tileMap.GetTileAtWorldPos(0, glm::vec2(source.worldPos.x, source.worldPos.y + (source.range * tileMap.GetTileSize().y)))->colYPos;
 
-	xMin.clear();
-	xMax.clear();
-	yMin.clear();
-	yMax.clear();
+		for (float y = yMin; y <= yMax; tileYSize++)
+		{
+			for (float x = xMin; x <= xMax; tileXSize++)
+			{
+				TileData* tile;  tileMap.GetTileAtWorldPos(0, glm::vec2(x, y));
+
+				//get affective light value
+				//get final light value and apply to tile
+			}
+		}
+	}
 }
 
 void LightLevelManager::RemoveLightSource(LightSource lightSource)
