@@ -10,6 +10,14 @@
 
 void MovementComponent::Move(glm::vec2 moveVec)
 {
+	// if magnitude greater than 1 (moving diagonally), normalise to prevent moving at double speed
+	float mag = sqrt((moveVec.x * moveVec.x) + (moveVec.y * moveVec.y));
+	if (mag > 1.0f)
+	{
+		moveVec.x /= mag;
+		moveVec.y /= mag;
+	}
+
 	_moving = (moveVec.x == 0.0f && moveVec.y == 0.0f) ? false : true;
 	if (!_moving) return;
 
