@@ -55,7 +55,10 @@ void FarmScene::UpdateObjects()
 		
 		bool plotAlreadyInTile = false;
 		glm::vec2 playerPos = _pPlayerObject->GetTransform()->GetPosition();
-		glm::vec2 tilePlayerIsOnPos = { _pTilemap->GetTileAtWorldPos(0, playerPos)->colXPos, _pTilemap->GetTileAtWorldPos(0, playerPos)->colYPos };
+		glm::vec2 playerScale = _pPlayerObject->GetTransform()->GetScale();
+		glm::vec2 midPoint = glm::vec2(playerPos.x + (playerScale.x / 2), playerPos.y + (playerScale.y / 2));
+
+		glm::vec2 tilePlayerIsOnPos = { _pTilemap->GetTileAtWorldPos(0, midPoint)->colXPos, _pTilemap->GetTileAtWorldPos(0, midPoint)->colYPos };
 			
 		for (GameObject* cropPlotObject : _pCropPlotObjects)
 		{
@@ -75,7 +78,10 @@ void FarmScene::UpdateObjects()
 			_pCropPlotBaseObject->GetTransform()->SetPosition(tilePlayerIsOnPos);
 			_pCropPlotBaseObject->GetTransform()->SetScale(glm::vec2(0.25f, 0.25f));
 			_pCropPlotBaseObject->AddComponent(new BoxColliderComponent(_pCropPlotBaseObject));
+			//_pCropPlotBaseObject->AddComponent(new SpriteComponent(_pCropPlotBaseObject))->SetSprite(ResourceManager::GetSpriteSheet("swords")->GetSpriteAtIndex(3));
 			_pCropPlotObjects.push_back(_pCropPlotBaseObject);
+
+			AddGameObject(_pCropPlotBaseObject);
 		}
 	}
 
@@ -126,6 +132,9 @@ void FarmScene::UpdateObjects()
 
 void FarmScene::InitScene()
 {
+	_listOfDrawableGameObjects.clear();
+	_gameObjectsToRemove.clear();
+
 	_pAnimSheet = new AnimatedSpritesheet(ResourceManager::GetTexture("character"), 16, 32);
 	_pSpritesheet = ResourceManager::GetSpriteSheet("testSheet");
 

@@ -45,7 +45,9 @@ private:
 
 	//CropPlot* _pCropPlot = nullptr;
 	vector<GameObject*> _pCropPlotObjects;
-	GameObject* _pCropPlotBaseObject;
+	vector<SpriteComponent*> _pCropPlotSpriteComponents;
+	SpriteComponent* _pCropPlotBaseSpriteComponent = nullptr;
+	GameObject* _pCropPlotBaseObject = nullptr;
 
 	bool farmKeyPressed = false;
 };
