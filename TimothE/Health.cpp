@@ -9,7 +9,7 @@ void Health::TakeDamage(int val)
 
 	_currentHealth -= val;
 	std::cout << "Current Health: " << _currentHealth << std::endl;
-	if (_currentHealth < 0) {
+	if (_currentHealth <= 0) {
 		OnDeath();
 	}
 	else {

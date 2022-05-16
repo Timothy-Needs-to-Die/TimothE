@@ -50,8 +50,8 @@ void FarmScene::UpdateObjects()
 	glm::vec2 forward = _pPlayerObject->GetTransform()->GetForward();
 	glm::vec2 pos = forward * 0.25f;
 
-	TIM_LOG_LOG("Player forward: " << forward.x << ", " << forward.y);
-	TIM_LOG_LOG("Weapon Pos: " << pos.x << ", " << pos.y);
+	//TIM_LOG_LOG("Player forward: " << forward.x << ", " << forward.y);
+	//TIM_LOG_LOG("Weapon Pos: " << pos.x << ", " << pos.y);
 	_pWeaponObject->GetTransform()->SetPosition(pos);
 }
 

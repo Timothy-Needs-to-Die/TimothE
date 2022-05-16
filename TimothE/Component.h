@@ -71,8 +71,8 @@ public:
 	Component() = default;
 	~Component() 
 	{
-		delete _editorIsEnabled;
-		_editorIsEnabled = nullptr;
+		//delete _editorIsEnabled;
+		//_editorIsEnabled = nullptr;
 		_pParentObject = nullptr;
 	}
 
