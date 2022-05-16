@@ -164,13 +164,14 @@ void Scene::RenderScene(Camera* cam)
 			if (obj->GetTag() == "UI") {
 				Renderer2D::DrawUIQuad(obj->GetTransform()->GetRenderQuad(), obj->GetComponent<Texture2D>());
 			}
-			else if (obj->GetTag() == "PLAYER") {
-				SpriteComponent* sc = obj->GetComponent<SpriteComponent>();
-				Renderer2D::DrawQuad(obj->GetTransform()->GetRenderQuad(), objTex, sc->GetSprite()->GetTexCoords());
-				//Renderer2D::DrawQuad(obj->GetTransform()->GetRenderQuad(), objTex);
-			}
 			else {
-				Renderer2D::DrawQuad(obj->GetTransform()->GetRenderQuad(), objTex);
+				SpriteComponent* sc = obj->GetComponent<SpriteComponent>();
+				if (sc) {
+					Renderer2D::DrawQuad(obj->GetTransform()->GetRenderQuad(), objTex, sc->GetSprite()->GetTexCoords());
+				}
+				else {
+					Renderer2D::DrawQuad(obj->GetTransform()->GetRenderQuad(), objTex);
+				}
 			}
 		}
 	}
