@@ -8,6 +8,7 @@
 #include "AnimatedSpritesheet.h"
 #include "Tag.h"
 #include <vector>
+#include "Day.h"
 
 //TODO: Document and order this class
 
@@ -148,4 +149,6 @@ private:
 	std::vector<GameObject*> _gameObjectsToRemove;
 
 	bool _isInitialized = false;
+
+	Day* _pDay;
 };

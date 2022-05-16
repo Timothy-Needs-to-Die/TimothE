@@ -316,6 +316,7 @@
       <Filter>Headers</Filter>
     </ClInclude>
     <ClInclude Include="Core.h" />
+    <ClInclude Include="Day.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="AStar.cpp">
@@ -507,5 +508,6 @@
     <ClCompile Include="pch.cpp">
       <Filter>Source</Filter>
     </ClCompile>
+    <ClCompile Include="Day.cpp" />
   </ItemGroup>
 </Project>

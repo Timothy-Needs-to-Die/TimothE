@@ -113,6 +113,7 @@
     <ClInclude Include="Core\Graphics\Window.h" />
     <ClInclude Include="CoreResourceType.h" />
     <ClInclude Include="CropsConfig.h" />
+    <ClInclude Include="Day.h" />
     <ClInclude Include="Dirent.h" />
     <ClInclude Include="Editor.h" />
     <ClInclude Include="FarmScene.h" />
@@ -206,6 +207,7 @@
     <ClCompile Include="Core\Graphics\VAO.cpp" />
     <ClCompile Include="Core\Graphics\VBO.cpp" />
     <ClCompile Include="Core\Graphics\Window.cpp" />
+    <ClCompile Include="Day.cpp" />
     <ClCompile Include="Editor.cpp" />
     <ClCompile Include="FarmScene.cpp" />
     <ClCompile Include="Fighter.cpp" />

@@ -35,6 +35,7 @@ Scene::~Scene()
 	{
 		delete(obj);
 	}
+	delete(_pDay);
 }
 
 void Scene::SceneStart()
@@ -53,6 +54,8 @@ void Scene::InitScene()
 	/////////////
 
 	Heap* gameObjectHeap = HeapManager::CreateHeap("GameObject", "Root");
+
+	_pDay = new Day();
 
 	//ResourceManager::InstantiateTexture("fish", new Texture2D("Fish.png"));
 	//ResourceManager::InstantiateTexture("character", new Texture2D("Resources/Images/Spritesheets/AlexTest.png", true));
@@ -95,6 +98,7 @@ void Scene::EditorUpdate()
 
 void Scene::Update()
 {
+	_pDay->Update();
 	UpdateObjects();
 	UpdateUI();
 
