@@ -98,7 +98,10 @@ void Scene::EditorUpdate()
 
 void Scene::Update()
 {
-	_pDay->Update();
+	if (_timeProgression)
+	{
+		_pDay->Update();
+	}
 	UpdateObjects();
 	UpdateUI();
 

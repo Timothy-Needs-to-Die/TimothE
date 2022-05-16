@@ -151,4 +151,5 @@ private:
 	bool _isInitialized = false;
 
 	Day* _pDay;
+	bool _timeProgression = true;
 };
