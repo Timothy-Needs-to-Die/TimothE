@@ -8,6 +8,7 @@
 #include "AnimatedSpritesheet.h"
 #include "Tag.h"
 #include <vector>
+#include "Day.h"
 
 //TODO: Document and order this class
 
@@ -149,4 +150,7 @@ protected:
 	std::vector<GameObject*> _gameObjectsToRemove;
 
 	bool _isInitialized = false;
+
+	Day* _pDay;
+	bool _timeProgression = true;
 };
