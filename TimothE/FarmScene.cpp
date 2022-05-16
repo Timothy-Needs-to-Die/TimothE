@@ -56,14 +56,21 @@ void FarmScene::UpdateObjects()
 
 	if (_pDay->NightStart())
 	{
-		_pWaveController->SpawnWave(5);
+		_pWaveController->StartWaves(_pDay->GetDayCount());
 
 		for (GameObject* go : _pWaveController->GetEnemies())
 		{
 			AddGameObject(go);
 		}
 	}
-	//std::cout << _pPlayerObject->GetTransform()->GetPosition().x << ", " << _pPlayerObject->GetTransform()->GetPosition().y << std::endl;
+	else if (!_pDay->IsDay())
+	{
+		_pWaveController->Update();
+		for (GameObject* go : _pWaveController->GetEnemies())
+		{
+			AddGameObject(go);
+		}
+	}
 }
 
 void FarmScene::InitScene()

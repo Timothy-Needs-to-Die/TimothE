@@ -1,4 +1,5 @@
 #include "Wave.h"
+#include "CSVReader.h"
 
 WaveController::WaveController(Scene* scene) : _pCurrentScene(scene)
 {
@@ -9,12 +10,63 @@ WaveController::~WaveController()
 	_enemies.clear();
 }
 
-void WaveController::SpawnWave(int difficulty)
+void WaveController::Update()
+{
+	if (_remainingWaves > 0)
+	{
+		if (_enemies.size() == 0)
+		{
+			_remainingWaves--;
+			_enemyCount += _enemyIncreaseRate;
+			SpawnWave();
+		}
+	}
+}
+
+void WaveController::StartWaves(int waveCount, int initialEnemies, int increaseRate)
+{
+	_remainingWaves = waveCount;
+	_enemyCount = initialEnemies;
+	_enemyIncreaseRate = increaseRate;
+	SpawnWave();
+}
+
+void WaveController::StartWaves(int day)
+{
+	std::vector<std::vector<std::string>> waveConfig = CSVReader::RequestDataFromFile("Resources/Data/WaveConfig.csv");
+	if (waveConfig.size() == 0)
+	{
+		return;
+	}
+
+	bool foundDay = false;
+	for (int i = 0; i < waveConfig.size(); i++)
+	{
+		if (std::stoi(waveConfig[i][0]) == day)
+		{
+			foundDay = true;
+			_remainingWaves = std::stoi(waveConfig[i][1]);
+			_enemyCount = std::stoi(waveConfig[i][2]);
+			_enemyIncreaseRate = std::stoi(waveConfig[i][3]);
+			break;
+		}
+	}
+	if (!foundDay)
+	{
+		// if greater than the final day in config, set to the final day
+		int i = waveConfig.size() - 1;
+		_remainingWaves = std::stoi(waveConfig[i][1]);
+		_enemyCount = std::stoi(waveConfig[i][2]);
+		_enemyIncreaseRate = std::stoi(waveConfig[i][3]);
+	}
+	SpawnWave();
+}
+
+void WaveController::SpawnWave()
 {
 	_enemies.clear();
-	// todo change the amount of enemies for difficulty
-	int enemyCount = difficulty;
-	for (int i = 0; i < enemyCount; i++)
+
+	for (int i = 0; i < _enemyCount; i++)
 	{
 		_enemies.push_back(new GameObject("Enemy", "ENEMY"));
 		// todo change the texture

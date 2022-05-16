@@ -4,7 +4,8 @@
 Day::Day()
 {
 	_currentTime = 0.0f;
-	_day = true;
+	_isDaytime = true;
+	_dayCount = -1;
 }
 
 Day::~Day()
@@ -13,20 +14,22 @@ Day::~Day()
 
 void Day::Update()
 {
-	_oldDay = _day;
-	if (_day)
+	_oldDaytime = _isDaytime;
+	if (_isDaytime)
 	{
 		_currentTime += Time::GetDeltaTime();
-	}
-	if (_currentTime > _dayLength)
-	{
-		_day = false;
+
+		if (_currentTime > _dayLength)
+		{
+			_isDaytime = false;
+			_dayCount++;
+		}
 	}
 }
 
 bool Day::NightStart()
 {
-	if (_oldDay && !_day)
+	if (_oldDaytime && !_isDaytime)
 	{
 		return true;
 	}
