@@ -65,10 +65,12 @@ void FarmScene::UpdateObjects()
 	}
 	else if (!_pDay->IsDay())
 	{
-		_pWaveController->Update();
-		for (GameObject* go : _pWaveController->GetEnemies())
+		if (_pWaveController->TryNewWave())
 		{
-			AddGameObject(go);
+			for (GameObject* enemy : _pWaveController->GetEnemies())
+			{
+				AddGameObject(enemy);
+			}
 		}
 	}
 }

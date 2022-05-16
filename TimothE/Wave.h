@@ -10,7 +10,7 @@ public:
 	WaveController(Scene* scene);
 	~WaveController();
 
-	void Update();
+	bool TryNewWave();
 
 	/// <summary>
 	/// Start spawning waves

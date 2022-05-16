@@ -10,7 +10,7 @@ WaveController::~WaveController()
 	_enemies.clear();
 }
 
-void WaveController::Update()
+bool WaveController::TryNewWave()
 {
 	if (_remainingWaves > 0)
 	{
@@ -19,8 +19,10 @@ void WaveController::Update()
 			_remainingWaves--;
 			_enemyCount += _enemyIncreaseRate;
 			SpawnWave();
+			return true;
 		}
 	}
+	return false;
 }
 
 void WaveController::StartWaves(int waveCount, int initialEnemies, int increaseRate)
@@ -73,11 +75,13 @@ void WaveController::SpawnWave()
 		_enemies[i]->AddComponent<Texture2D>(new Texture2D("whiteTexture.png"));
 
 		// spawn on random edge
-		glm::vec2 tilesize = _pCurrentScene->GetTileMap()->GetTileSize();
+		//glm::vec2 tilesize = _pCurrentScene->GetTileMap()->GetTileSize();
+
 		float x = 0.0f;
 		float y = 0.0f;
 		float maxX = 10.0f;
 		float maxY = 10.0f;
+
 		int side = rand() % 4;
 		switch (side)
 		{
@@ -108,8 +112,8 @@ void WaveController::SpawnWave()
 		Health* h = new Health(_enemies[i]);
 		h->SetMaxHealth(50);
 		_enemies[i]->AddComponent(h);
-		std::cout << _enemies[i]->GetTransform()->GetPosition().x << ", " << _enemies[i]->GetTransform()->GetPosition().y << std::endl;
 	}
+	std::cout << "Created " << _enemies.size() << " enemies" << std::endl;
 }
 
 std::vector<GameObject*> WaveController::GetEnemies()
