@@ -43,6 +43,9 @@ private:
 	Health* _pEnemyHealth = nullptr;
 
 	//CropPlot* _pCropPlot = nullptr;
-	vector<CropPlot*> _pCropPlotList;
+	vector<GameObject*> _pCropPlotObjects;
+	GameObject* _pCropPlotBaseObject;
+
+	bool farmKeyPressed = false;
 };
 

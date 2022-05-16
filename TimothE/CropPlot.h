@@ -4,7 +4,7 @@
 class CropPlot : public Component
 {
 public:
-	CropPlot();
+	CropPlot(GameObject* parent);
 	~CropPlot();
 
 	void OnNewDay();
@@ -18,8 +18,6 @@ public:
 	void OnEnd() override;
 
 private:
-	glm::vec2 _TilePos;
-
 	PlantedCrop* _crop;
 	bool _isOccupied;
 };

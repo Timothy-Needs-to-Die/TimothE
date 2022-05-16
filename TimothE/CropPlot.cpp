@@ -1,6 +1,6 @@
 #include "CropPlot.h"
 
-CropPlot::CropPlot()
+CropPlot::CropPlot(GameObject* parent) : Component(parent)
 {
 	_crop = nullptr;
 	_isOccupied = false;
@@ -8,7 +8,7 @@ CropPlot::CropPlot()
 
 CropPlot::~CropPlot()
 {
-
+	
 }
 
 void CropPlot::OnNewDay()

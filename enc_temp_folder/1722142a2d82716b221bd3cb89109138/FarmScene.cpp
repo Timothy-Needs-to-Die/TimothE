@@ -73,6 +73,8 @@ void FarmScene::UpdateObjects()
 	{
 		for (GameObject* cropPlot : _pCropPlotObjects)
 		{
+			
+
 			glm::vec2 playerPos = _pPlayerObject->GetTransform()->GetPosition();
 			glm::vec2 playerScale = _pPlayerObject->GetTransform()->GetScale();
 			glm::vec2 midPoint = glm::vec2(playerPos.x + (playerScale.x / 2), playerPos.y + (playerScale.y / 2));
