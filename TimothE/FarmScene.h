@@ -28,20 +28,18 @@ protected:
 
 private:
 	GameObject* _pStartButton = nullptr;
-	GameObject* _pPlayerObject = nullptr;
 	GameObject* _pWeaponObject = nullptr;
 
-	PlayerInputComponent* _pPlayerMovement = nullptr;
-	MovementComponent* _pMovement = nullptr;
 
-	AnimatedSpritesheet* _pAnimSheet;
-
-	SpriteComponent* _pSc = nullptr;
+	//class PlayerInputComponent* _pPlayerMovement = nullptr;
+	//GameObject* _pPlayerObject = nullptr;
+	//Health* _pPlayerHealth = nullptr;
 
 	SpriteSheet* _pSpritesheet;
 
-	Health* _pPlayerHealth = nullptr;
 
 	WaveController* _pWaveController = nullptr;
+
+	class Player* _pPlayer;
 };
 

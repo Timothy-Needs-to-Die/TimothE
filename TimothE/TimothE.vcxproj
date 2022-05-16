@@ -87,6 +87,7 @@
     <ClInclude Include="AudioSource.h" />
     <ClInclude Include="BoxColliderComponent.h" />
     <ClInclude Include="Button.h" />
+    <ClInclude Include="Character.h" />
     <ClInclude Include="CSVReader.h" />
     <ClInclude Include="Camera.h" />
     <ClInclude Include="CameraManager.h" />
@@ -140,6 +141,7 @@
     <ClInclude Include="ParticleSystem.h" />
     <ClInclude Include="Physics.h" />
     <ClInclude Include="PlantResourceType.h" />
+    <ClInclude Include="Player.h" />
     <ClInclude Include="PlayerInputComponent.h" />
     <ClInclude Include="PlayerResource.h" />
     <ClInclude Include="PlayerResourceManager.h" />
@@ -194,6 +196,7 @@
     <ClCompile Include="AudioSource.cpp" />
     <ClCompile Include="BoxColliderComponenet.cpp" />
     <ClCompile Include="Button.cpp" />
+    <ClCompile Include="Character.cpp" />
     <ClCompile Include="CSVReader.cpp" />
     <ClCompile Include="Camera.cpp" />
     <ClCompile Include="CameraManager.cpp" />
@@ -230,6 +233,7 @@
     <ClCompile Include="Particle.cpp" />
     <ClCompile Include="ParticleSystem.cpp" />
     <ClCompile Include="Physics.cpp" />
+    <ClCompile Include="Player.cpp" />
     <ClCompile Include="PlayerInputComponent.cpp" />
     <ClCompile Include="PlayerResource.cpp" />
     <ClCompile Include="PlayerResourceManager.cpp" />

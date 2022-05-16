@@ -57,13 +57,13 @@ Font::Font(std::string font)
 		GLCall(glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR));
 		GLCall(glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR));
 		// now store character for later use
-		Character character = {
+		TextCharacter character = {
 			texture,
 			glm::ivec2(face->glyph->bitmap.width, face->glyph->bitmap.rows),
 			glm::ivec2(face->glyph->bitmap_left, face->glyph->bitmap_top),
 			face->glyph->advance.x
 		};
-		_characters.insert(std::pair<char, Character>(c, character));
+		_characters.insert(std::pair<char, TextCharacter>(c, character));
 	}
 
 	FT_Done_Face(face);
@@ -115,7 +115,7 @@ void Font::RenderText(Shader& s, std::string text, float x = 0.0f, float y = 0.0
 	std::string::const_iterator c;
 	for (c = text.begin(); c != text.end(); c++)
 	{
-		Character ch = _characters[*c];
+		TextCharacter ch = _characters[*c];
 		if (*c == '\n')
 		{
 			newline++;

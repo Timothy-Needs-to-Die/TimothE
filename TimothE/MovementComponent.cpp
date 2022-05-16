@@ -55,7 +55,6 @@ void MovementComponent::CollisionCheck(glm::vec2& newPos)
 	playerQuad.size = _pParentObject->GetTransform()->GetScale();
 	playerQuad.size.y /= 2.0f;
 	playerQuad.CalculateMax();
-
 	
 
 

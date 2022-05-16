@@ -11,7 +11,7 @@
 #include "Core/Graphics/Shader.h"
 #include "Core.h"
 
-struct Character
+struct TextCharacter
 {
 	unsigned int _textureID; // ID handle of the glyph texture
 	glm::ivec2 _size;		// Size of glyph
@@ -25,7 +25,7 @@ private:
 	unsigned int _VAO = 0;
 	unsigned int _VBO = 0;
 	std::string _name;
-	std::map<char, Character> _characters;
+	std::map<char, TextCharacter> _characters;
 	
 public:
 	Font(std::string font);

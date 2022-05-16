@@ -154,21 +154,23 @@ private:
 	int _textureID = 0;
 	int _shaderID = 0;
 
-	/////////////
-	//Ownership//
-	/////////////
-	GameObject* _pParent = nullptr;
-	GameObject* _pChild = nullptr;
-
-	//////////////
-	//Components//
-	//////////////
-	std::vector<Component*> _pComponents;
-	Transform* _pTransform;
-
 	///////////
 	//Shaders//
 	///////////
 	Shader* _pShader;
 	std::string _shaderName;
+
+protected:
+		//////////////
+		//Components//
+		//////////////
+		std::vector<Component*> _pComponents;
+		Transform* _pTransform;
+		/////////////
+	//Ownership//
+	/////////////
+		GameObject* _pParent = nullptr;
+		GameObject* _pChild = nullptr;
+
+		virtual void UniqueLogic();
 };

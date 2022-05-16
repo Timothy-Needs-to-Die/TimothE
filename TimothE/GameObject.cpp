@@ -66,6 +66,8 @@ void GameObject::Update()
 			p->SetParentTransform(_pTransform);
 		}
 	}
+
+	UniqueLogic();
 }
 
 void GameObject::Exit()
@@ -175,6 +177,10 @@ bool GameObject::LoadState(IStream& stream)
 	}
 
 	return true;
+}
+
+void GameObject::UniqueLogic()
+{
 }
 
 Component* GameObject::GetComponentInChild(Component::Types type)

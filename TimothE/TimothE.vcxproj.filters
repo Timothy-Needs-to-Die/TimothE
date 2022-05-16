@@ -328,6 +328,8 @@
     <ClInclude Include="Wave.h">
       <Filter>Headers</Filter>
     </ClInclude>
+    <ClInclude Include="Character.h" />
+    <ClInclude Include="Player.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="AStar.cpp">
@@ -528,5 +530,7 @@
     <ClCompile Include="Wave.cpp">
       <Filter>Source</Filter>
     </ClCompile>
+    <ClCompile Include="Character.cpp" />
+    <ClCompile Include="Player.cpp" />
   </ItemGroup>
 </Project>
