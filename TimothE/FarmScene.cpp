@@ -80,4 +80,5 @@ void FarmScene::InitScene()
 	//_pTilemap->SetSpriteSheet(ResourceManager::GetSpriteSheet("testSheet"));
 	//_pTilemap->LoadTileMap();
 
+	_pLightManager->UpdateLightMap(_pTilemap);
 }

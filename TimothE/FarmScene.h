@@ -4,6 +4,7 @@
 #include "SpriteComponent.h"
 #include "AnimatedSpritesheet.h"
 #include "MovementComponent.h"
+#include "LightLevelManager.h"
 
 class FarmScene : public Scene
 {
@@ -33,5 +34,7 @@ private:
 	SpriteComponent* _pSc = nullptr;
 
 	SpriteSheet* _pSpritesheet;
+
+	LightLevelManager* _pLightManager;
 };
 

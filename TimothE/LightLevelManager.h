@@ -17,7 +17,7 @@ class LightLevelManager
 public:
 	void AddLightSource(LightSource lightSource) { _lightSources.push_back(lightSource); };
 	void RemoveLightSource(LightSource lightSource);
-	void UpdateLightMap(TileMap& tileMap);
+	void UpdateLightMap(TileMap* tileMap);
 
 private:
 	std::vector<LightSource> _lightSources;
