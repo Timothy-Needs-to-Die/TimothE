@@ -21,16 +21,16 @@ public:
 	void DrawEditorUI() override;
 
 	//Getters
-	glm::vec2 GetPosition() const { return _position; };
+	glm::vec2 GetPosition() const { return _localPosition; };
 	glm::vec2 GetScale() const { return _size; }
 	float GetRotation() const { return _rotation; }
 	glm::mat4 GetTransformMatrix() const { return _transformationMatrix; }
-	Quad GetRenderQuad() const { return Quad{ _position, _size }; }
-	glm::vec2 GetForward() const { return _rotation * glm::vec2(0.0,1.0); }
+	Quad GetRenderQuad() const { return Quad{ _globalPosition, _size }; }
+	glm::vec2 GetForward() const { return _forward; }
 
 	//Setters
-	void SetPosition(float x, float y) { _position = glm::vec2(x, y); }
-	void SetPosition(glm::vec2 pos) { _position = pos; }
+	void SetPosition(float x, float y) { _localPosition = glm::vec2(x, y); }
+	void SetPosition(glm::vec2 pos) { _localPosition = pos; }
 	void SetRotation(float xRot) { _rotation = xRot; }
 	void SetXScale(float _tileScale) { _size.x = _tileScale; }
 	void SetYScale(float _tileScale) { _size.y = _tileScale; }
@@ -53,7 +53,8 @@ public:
 private:
 	glm::mat4 _transformationMatrix;
 
-	glm::vec2 _position;
+	glm::vec2 _globalPosition;
+	glm::vec2 _localPosition;
 	glm::vec2 _size;
 	glm::vec2 _forward;
 

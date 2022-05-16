@@ -47,11 +47,19 @@ void FarmScene::UpdateObjects()
 	_pAnimSheet->SetStationary(!_pMovement->IsMoving());
 	_pSc->SetSprite(_pAnimSheet->GetSpriteAtIndex(_pAnimSheet->GetCurrentIndex()));
 
+	glm::vec2 forward = _pPlayerObject->GetTransform()->GetForward();
+	glm::vec2 pos = forward * 0.25f;
 
+	TIM_LOG_LOG("Player forward: " << forward.x << ", " << forward.y);
+	TIM_LOG_LOG("Weapon Pos: " << pos.x << ", " << pos.y);
+	_pWeaponObject->GetTransform()->SetPosition(pos);
 }
 
 void FarmScene::InitScene()
 {
+	_listOfGameObjects.clear();
+	_listOfDrawableGameObjects.clear();
+
 	_pAnimSheet = new AnimatedSpritesheet(ResourceManager::GetTexture("character"), 16, 32);
 	_pSpritesheet = ResourceManager::GetSpriteSheet("testSheet");
 
@@ -68,12 +76,20 @@ void FarmScene::InitScene()
 	//_pStartButton->SetType(ObjectType::UI);
 	//AddGameObject(_pStartButton);
 
-	_pPlayerObject = new GameObject("Player");
+	_pPlayerObject = new GameObject("Player", "PLAYER");
 	_pMovement = _pPlayerObject->AddComponent(new MovementComponent(_pPlayerObject));
 	_pMovement->SetMovementSpeed(1.0f);
 	_pPlayerObject->AddComponent(new Fighter(_pPlayerObject));
 	_pPlayerMovement = new PlayerInputComponent(_pPlayerObject);
-	
+
+	_pWeaponObject = new GameObject("Weapon");
+	_pWeaponObject->SetParent(_pPlayerObject);
+	_pWeaponObject->AddComponent<Texture2D>(ResourceManager::GetTexture("character"));
+	_pWeaponObject->GetTransform()->SetScale({0.25f, 0.15f});
+	_pWeaponObject->GetTransform()->SetPosition({1.5f, 0.0f});
+	AddGameObject(_pWeaponObject);
+
+
 	_pPlayerObject->AddComponent(_pPlayerMovement);
 	_pPlayerObject->AddComponent(ResourceManager::GetTexture("character"));
 	_pSc = _pPlayerObject->AddComponent<SpriteComponent>(new SpriteComponent(_pPlayerObject));
@@ -82,6 +98,8 @@ void FarmScene::InitScene()
 	AddGameObject(_pPlayerObject);
 
 	_pTilemap = new TileMap(_name);
+	
+
 
 	_pSc->SetSprite(_pAnimSheet->GetSpriteAtIndex(0));
 	//_pTilemap->SetSpriteSheet(ResourceManager::GetSpriteSheet("testSheet"));

@@ -142,6 +142,7 @@ private:
 	//Stores the next id for the scene
 	static int nextID;
 
+protected:
 	//Stores a vector of game objects. This is refreshed every time a scene loads.
 	static std::vector<GameObject*> _listOfGameObjects;
 	static std::vector<GameObject*> _listOfDrawableGameObjects;
