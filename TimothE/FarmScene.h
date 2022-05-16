@@ -36,6 +36,7 @@ private:
 
 	SpriteSheet* _pSpritesheet;
 
-	AStar aStar;
+	AStar* aStar = nullptr;
+	std::list<Node*> mNodePath;
 };
 

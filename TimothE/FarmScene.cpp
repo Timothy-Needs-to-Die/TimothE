@@ -42,7 +42,6 @@ void FarmScene::UpdateObjects()
 	_pAnimSheet->SetStationary(!_pMovement->IsMoving());
 	_pSc->SetSprite(_pAnimSheet->GetSpriteAtIndex(_pAnimSheet->GetCurrentIndex()));
 
-	_pPlayerObject->GetComponent<AIController>()->Move(aStar.PathFinding(_pPlayerObject->GetTransform()->GetPosition()));
 }
 
 void FarmScene::InitScene()
@@ -78,8 +77,16 @@ void FarmScene::InitScene()
 
 	_pTilemap = new TileMap(_name);
 
-	aStar.SetMapCoords(_pTilemap->GetAllTilesInLayer(0), _pTilemap->GetMapSize());
-	aStar.SetPathPoints(glm::vec2{ 6,6 });
+
+	Node* start = new Node();
+	start->pos = {0,0};
+	Node* end = new Node();
+	end->pos = { 6,6 };
+	aStar = new AStar(start, end);
+	aStar->SetMap(_pTilemap);
+	aStar->FindPath();
+	aStar->ProcessDirections();
+	mNodePath = aStar->GetPathOfNodes();
 	//set move to as first path position
 	
 
