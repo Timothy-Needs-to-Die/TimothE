@@ -26,6 +26,19 @@ void BaseTrader::OnBuy()
 }
 
 
+void BaseTrader::OnBuy(int type, ItemConfig item)
+{
+	//Plant Items
+	if (type == 0) {
+		
+	}
+	//Hotbar Items
+	else if (type == 1) {
+
+	}
+	
+}
+
 void BaseTrader::UpdateUI()
 {
 	//Update UI to display refreshed values of trader/UI

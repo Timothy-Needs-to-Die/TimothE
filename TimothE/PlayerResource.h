@@ -5,7 +5,7 @@
 #include <iostream>
 
 class PlayerResource
-{
+{ 
 public:
 	PlayerResource(int ammount);
 	PlayerResource() = default;

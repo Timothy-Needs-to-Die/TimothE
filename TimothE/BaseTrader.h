@@ -1,7 +1,7 @@
 #pragma once
 #include "Component.h"
 #include "TraderConfig.h"
-
+#include "ItemConfig.h"
 
 class PlayerResourceManager;
 
@@ -17,7 +17,7 @@ public:
 	void OnNewDay();
 
 	//Pass in 1 for hotbar items, 2 for seeds
-    void OnBuy(int type, );
+    void OnBuy(int type, ItemConfig item);
 	void OnSell();
 	void UpdateUI();
 	void LevelUpTrader();

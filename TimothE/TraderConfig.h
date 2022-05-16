@@ -6,7 +6,7 @@ struct TraderConfig
 	int goldAtLevel[4];
 	TraderInventory inventory;
 
-};
+}; 
 
 struct TraderInventory {
 	std::vector<HotbarItem> hotbarItemsToSell;
