@@ -54,9 +54,13 @@ public:
 	{
 		_mapInTiles = mapSize;
 		int elementSize = _mapInTiles.x * _mapInTiles.y;
-		_tileArr[0].resize(elementSize);
-		_tileArr[1].resize(elementSize);
-		_tileArr[2].resize(elementSize);
+		//_tileArr[0].resize(elementSize);
+		//_tileArr[1].resize(elementSize);
+		//_tileArr[2].resize(elementSize);
+
+		for (int i = 0; i < _tileArr.size(); i++) {
+			_tileArr[i].resize(elementSize);
+		}
 
 		_mapSizeInUnits = glm::vec2(_mapInTiles.x / _tilesPerUnit, _mapInTiles.y / _tilesPerUnit);
 	}
@@ -68,7 +72,7 @@ public:
 	
 	TileData* GetTileAtWorldPos(int layer, glm::vec2 worldPos);
 
-	std::vector<TileData>* GetAllTiles() const {
+	std::vector<std::vector<TileData>> GetAllTiles() const {
 		return _tileArr;
 	}
 	
@@ -91,7 +95,7 @@ public:
 
 
 private:
-	int _numLayers = 3;
+	int _numLayers = 6;
 
 	//How large the map is in units. e.g. 32 meters by 20 meters. 
 	glm::vec2 _mapSizeInUnits;
@@ -118,7 +122,7 @@ private:
 	SpriteSheet* _pSpritesheet = nullptr;
 
 	//Array/Vector which holds the tiles. //TODO: Make this not magic and link to the _numLayers variable
-	std::vector<TileData>* _tileArr;
+	std::vector<std::vector<TileData>> _tileArr;
 
 	//How many tiles are there per unit in the X and Y axis
 	int _tilesPerUnit = 4;
