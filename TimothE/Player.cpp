@@ -6,7 +6,7 @@
 Player::Player(std::string name /*= "Player"*/, std::string tag /*= "PLAYER"*/)
 	: Character(name, tag)
 {
-	_pPlayerMovement = AddComponent(new PlayerInputComponent(this));
+	_pInput = AddComponent(new PlayerInputComponent(this));
 	_pHealth = AddComponent(new Health(this));
 	_pFighter = AddComponent(new Fighter(this));
 }

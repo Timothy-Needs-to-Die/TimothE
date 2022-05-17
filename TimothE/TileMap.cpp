@@ -272,7 +272,9 @@ void TileMap::RenderMap(Camera* cam)
 
 	//Calculate the extents of the camera based on the aspect ratio and zoom level. 
 	//Multiplying by 2 stops tiles suddenly being rendered or unrendered. 
-	float extents = cam->GetAspectRatio() * cam->GetZoomLevel() * 2.0f;
+	
+	float extents = cam->GetAspectRatio() + 2.5f;
+	//float extents = 7.0f;
 
 	//Pre-calculate the min and max values of the camera's extents to avoid recalculating them. Optimisation 
 	float xMin = camPos.x - extents;

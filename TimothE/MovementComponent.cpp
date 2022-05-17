@@ -134,7 +134,7 @@ void MovementComponent::DecideDirection(glm::vec2& moveVec)
 
 	//std::cout << "Rotation: " << xVal << std::endl;
 
-	TIM_LOG_LOG("Player Forward: " << newForward.x << ", " << newForward.y);
+	//TIM_LOG_LOG("Player Forward: " << newForward.x << ", " << newForward.y);
 	_pParentObject->GetTransform()->SetForward(newForward);
 	//_pParentObject->GetTransform()->SetRotation(xVal);
 }
