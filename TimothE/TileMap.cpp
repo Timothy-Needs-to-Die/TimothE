@@ -77,7 +77,7 @@ void TileMap::SaveTilemap() {
 		file["tiles" + std::to_string(layer)] = tileLayout;
 	}
 
-	
+
 
 	outfile << file;
 }
@@ -103,7 +103,7 @@ void TileMap::LoadTileMap()
 	_tilesPerUnit = (int)file["tilePerUnit"];
 
 	int dimensions = _mapInTiles.x * _mapInTiles.y;
-	
+
 	for (int layer = 0; layer < _numLayers; layer++) {
 		_tileArr[layer].resize(dimensions);
 
@@ -231,7 +231,7 @@ glm::vec2 TileMap::MousePosToTile(Camera* cam)
 		//Puts tile on furthest right index
 		convertedPosition.y = _mapSizeInUnits.y - _gapBetweenTiles;
 	}
-	
+
 	//std::cout << "Camera Pos: " << camPos << std::endl;
 	//std::cout << "Mouse Pos: " << mousePos << std::endl;
 	//std::cout << "Converted Pos: " << convertedPosition << std::endl << std::endl;
@@ -267,7 +267,7 @@ void TileMap::RenderMap(Camera* cam)
 
 	//Calculate the extents of the camera based on the aspect ratio and zoom level. 
 	//Multiplying by 2 stops tiles suddenly being rendered or unrendered. 
-	
+
 	float extents = cam->GetAspectRatio() + 5.0f;
 	//float extents = 7.0f;
 
@@ -285,35 +285,55 @@ void TileMap::RenderMap(Camera* cam)
 	//Start the batch render for the tilemap
 	Renderer2D::BeginRender(cam);
 
-	//Cycle through each layer
-	for (int i = 0; i < _numLayers; i++) {
-		//Cycle through the Y axis
-		for (float y = yMin; y <= yMax; y += _gapBetweenTiles) {
-			//Cycle through the X axis
-			for (float x = xMin; x <= xMax; x += _gapBetweenTiles) {
-	
-				//Get the index of the tile
-				int index = _mapInTiles.x * (int)(y * _tilesPerUnit) + (int)(x * _tilesPerUnit);
-	
-				//if this tile does not have a sprite then go to next cycle
-				if (_tileArr[i][index]._pSprite == nullptr) continue;
-	
-				if (TileMapEditor::_showCollisionMap) {
-					glm::vec4 color = glm::vec4(1.0f, 0.0f, 0.0f, 1.0f);
-					if (!_tileArr[i][index].collidable) {
-						color.r = 0.0f;
-						color.g = 1.0f;
-					}
+	//Using this if check here means that we don't have to do the if check inside each tile, massively reducing comparisons on each tile (roughly 9000 comparisons per frame)
+	if (TileMapEditor::_showCollisionMap) {
+		//Predefine these here to reduce the amount of created objects inside the loop.
+		glm::vec4 red = glm::vec4(1.0f, 0.0f, 0.0f, 1.0f);
+		glm::vec4 green = glm::vec4(0.0f, 1.0f, 0.0f, 1.0f);
+		glm::vec4 color;
+
+		//Cycle through each layer
+		for (int i = 0; i < _numLayers; i++) {
+			//Cycle through the Y axis
+			for (float y = yMin; y <= yMax; y += _gapBetweenTiles) {
+				//Cycle through the X axis
+				for (float x = xMin; x <= xMax; x += _gapBetweenTiles) {
+
+					//Get the index of the tile
+					int index = _mapInTiles.x * (int)(y * _tilesPerUnit) + (int)(x * _tilesPerUnit);
+
+					//if this tile does not have a sprite then go to next cycle
+					if (_tileArr[i][index]._pSprite == nullptr) continue;
+
+					//Decide the color based on the tiles collidability
+					color = (_tileArr[i][index].collidable) ? red : green;
+
 					Renderer2D::DrawQuad(Quad{ { x,y }, { _gapBetweenTiles,_gapBetweenTiles } }, _tileArr[i][index]._pSprite->GetTexture(), _tileArr[i][index]._pSprite->GetTexCoords(), color);
 				}
-				else {
+			}
+		}
+	}
+	else {
+		//Cycle through each layer
+		for (int i = 0; i < _numLayers; i++) {
+			//Cycle through the Y axis
+			for (float y = yMin; y <= yMax; y += _gapBetweenTiles) {
+				//Cycle through the X axis
+				for (float x = xMin; x <= xMax; x += _gapBetweenTiles) {
+
+					//Get the index of the tile
+					int index = _mapInTiles.x * (int)(y * _tilesPerUnit) + (int)(x * _tilesPerUnit);
+
+					//if this tile does not have a sprite then go to next cycle
+					if (_tileArr[i][index]._pSprite == nullptr) continue;
+
 					//Draw this tile
 					Renderer2D::DrawQuad(Quad{ { x,y }, { _gapBetweenTiles,_gapBetweenTiles } }, _tileArr[i][index]._pSprite->GetTexture(), _tileArr[i][index]._pSprite->GetTexCoords());
 				}
 			}
 		}
 	}
-	
+
 	//Ends the batch render for the tilemap
 	Renderer2D::EndRender();
 }
@@ -330,9 +350,9 @@ bool TileMap::CollidableAtPosition(const int x, const int y) const
 bool TileMap::CollidableAtPosition(glm::vec2 worldPos)
 {
 	TileData* td = GetTileAtWorldPos(0, worldPos);
-	
+
 	int index = _mapInTiles.x * (int)(worldPos.y * _tilesPerUnit) + (int)(worldPos.x * _tilesPerUnit);
-	
+
 	return CollidableAtPosition(index);
 }
 
