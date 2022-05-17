@@ -268,7 +268,7 @@ void TileMap::RenderMap(Camera* cam)
 	//Calculate the extents of the camera based on the aspect ratio and zoom level. 
 	//Multiplying by 2 stops tiles suddenly being rendered or unrendered. 
 	
-	float extents = cam->GetAspectRatio() + 2.5f;
+	float extents = cam->GetAspectRatio() + 5.0f;
 	//float extents = 7.0f;
 
 	//Pre-calculate the min and max values of the camera's extents to avoid recalculating them. Optimisation 
@@ -277,17 +277,20 @@ void TileMap::RenderMap(Camera* cam)
 	float yMin = camPos.y - extents;
 	float yMax = camPos.y + extents;
 
+	if (xMin < 0) xMin = 0.0f;
+	if (xMax > _mapSizeInUnits.x) xMax = _mapSizeInUnits.x;
+	if (yMin < 0) yMin = 0.0f;
+	if (yMax > _mapSizeInUnits.y) yMax = _mapSizeInUnits.y;
+
 	//Start the batch render for the tilemap
 	Renderer2D::BeginRender(cam);
 
 	//Cycle through each layer
 	for (int i = 0; i < _numLayers; i++) {
 		//Cycle through the Y axis
-		for (float y = 0; y < _mapSizeInUnits.y; y += _gapBetweenTiles) {
+		for (float y = yMin; y <= yMax; y += _gapBetweenTiles) {
 			//Cycle through the X axis
-			for (float x = 0; x < _mapSizeInUnits.x; x += _gapBetweenTiles) {
-				//If the tile is outside of the cameras range
-				if (x < xMin || x > xMax || y < yMin || y > yMax) continue;
+			for (float x = xMin; x <= xMax; x += _gapBetweenTiles) {
 	
 				//Get the index of the tile
 				int index = _mapInTiles.x * (int)(y * _tilesPerUnit) + (int)(x * _tilesPerUnit);
@@ -310,7 +313,7 @@ void TileMap::RenderMap(Camera* cam)
 			}
 		}
 	}
-
+	
 	//Ends the batch render for the tilemap
 	Renderer2D::EndRender();
 }
