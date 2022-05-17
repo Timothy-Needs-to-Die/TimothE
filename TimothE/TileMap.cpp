@@ -62,7 +62,6 @@ void TileMap::SaveTilemap() {
 
 	//TODO: Change this to getting the spritesheet name
 	file["spritesheet"] = "testSheet";
-
 	file["sizeX"] = _mapInTiles.x;
 	file["sizeY"] = _mapInTiles.y;
 	file["tilePerUnit"] = _tilesPerUnit;
@@ -78,6 +77,7 @@ void TileMap::SaveTilemap() {
 		file["tiles" + std::to_string(layer)] = tileLayout;
 	}
 
+	
 
 	outfile << file;
 }
@@ -173,11 +173,6 @@ void TileMap::LoadTileMap()
 				_tileArr[layer][i].size = _gapBetweenTiles;
 			}
 		}
-
-
-
-
-
 	}
 
 }
