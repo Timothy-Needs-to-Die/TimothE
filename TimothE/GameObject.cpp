@@ -8,6 +8,11 @@
 #include "ResourceManager.h"
 #include "Scene.h"
 #include "Core.h"
+#include "Transform.h"
+#include "Component.h"
+#include "UID.h"
+#include "Serializable.h"
+
 
 GameObject::GameObject(std::string name, std::string tag) 
 	: _name(name), _tag(tag)

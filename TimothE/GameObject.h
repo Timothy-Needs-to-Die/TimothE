@@ -2,16 +2,22 @@
 #include "pch.h"
 
 #include "Core/Graphics/Shader.h"
-#include "Transform.h"
-#include "Component.h"
-#include "UID.h"
-#include "Serializable.h"
+//#include "Transform.h"
+//#include "Component.h"
+//#include "UID.h"
+//#include "Serializable.h"
 #include "BoxColliderComponent.h"
 #include "ParticleSystem.h"
 #include "Tag.h"
 
 class Texture2D;
 class Scene;
+class ComponentFactory;
+class Transform;
+class Component;
+class UID;
+class Serializable;
+//Further foreard declerations cause errors across the engine
 
 class GameObject : public ISerializable
 {

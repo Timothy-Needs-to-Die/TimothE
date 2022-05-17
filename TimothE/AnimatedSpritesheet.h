@@ -1,5 +1,9 @@
 #pragma once
 #include "SpriteSheet.h"
+
+class SpriteSheet;
+class Time;
+
 class AnimatedSpritesheet : public SpriteSheet
 {
 public:

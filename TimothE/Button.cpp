@@ -1,5 +1,11 @@
 #include "Button.h"
 
+#include "GameObject.h"
+#include "Transform.h"
+#include "Texture2D.h"
+#include "Input.h"
+#include "Console.h"
+
 Button::Button(GameObject* parent) : Component(parent)
 {
 	SetType(Component::Button_Type);

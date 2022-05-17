@@ -2,7 +2,7 @@
 #include "pch.h"
 #include "fmod.h"
 #include <map>
-#include "Component.h"
+
 
 
 enum AudioType { Type_SFX, Type_Song, Type_Count };

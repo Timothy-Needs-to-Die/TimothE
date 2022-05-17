@@ -1,8 +1,11 @@
 #pragma once
 #include "Component.h"
-#include "GameObject.h"
 #include "WeaponConfig.h"
-#include "Time.h"
+
+class GameObject;
+class Time;
+class Transform;
+class Health;
 
 class Fighter : public Component
 {

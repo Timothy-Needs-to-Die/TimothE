@@ -1,5 +1,6 @@
 #include "Camera.h"
 #include "Time.h"
+#include "Input.h"
 
 Camera::Camera(float left, float right, float bottom, float top, std::string name, GameObject* parent) : Component(parent)
 {

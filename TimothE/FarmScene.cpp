@@ -1,8 +1,17 @@
 #include "FarmScene.h"
 #include "Button.h"
-#include "SpriteComponent.h"
+//#include "SpriteComponent.h"
 #include "CameraManager.h"
 #include "Player.h"
+
+
+#include "PlayerInputComponent.h"
+#include "SpriteComponent.h"
+#include "AnimatedSpritesheet.h"
+#include "MovementComponent.h"
+#include "Fighter.h"
+#include "Health.h"
+//#include "Wave.h"
 
 FarmScene::~FarmScene()
 {

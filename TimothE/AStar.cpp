@@ -1,5 +1,7 @@
 #include "AStar.h"
 #include <algorithm>
+
+#include "TileMap.h"
 glm::vec2 AStar::PathFinding(glm::vec2 startPos)
 {
     std::vector<MapNode> openList;

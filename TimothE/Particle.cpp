@@ -2,6 +2,9 @@
 #include "Time.h"
 #include <random>
 
+#include "Texture2D.h"
+#include "Transform.h"
+
 Particle::Particle(float life, glm::vec4 colour, Texture2D* texture, Transform* parentTransform) : _movementVec(0.0f), _colour(colour), _currentLife(life), _maxLife(life), _pTexture(texture), _pParentTransform(parentTransform), _speed(1.0f), _useRandomDirection(true), _angleRange(0.0f), _angle(0.0f), _usingTexture(true), _canRespawn(false)
 {
 	_pTransform = new Transform(nullptr);

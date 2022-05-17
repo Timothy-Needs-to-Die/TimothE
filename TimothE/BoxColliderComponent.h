@@ -1,8 +1,11 @@
 #pragma once
 #include "pch.h"
-#include "UID.h"
 #include "Component.h"
 #include "ColliderBase.h"
+//Forward declaring component and colliderbase does not work.
+class UID;
+
+
 
 struct Rect
 {

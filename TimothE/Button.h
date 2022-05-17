@@ -1,13 +1,16 @@
 #pragma once
 
 #include "pch.h"
-#include "GameObject.h"
-#include "Component.h"
-#include "Transform.h"
 #include "Core/Events/MouseEvent.h"
-#include "Texture2D.h"
-#include "Input.h"
-#include "Console.h"
+#include "Component.h"
+
+class Component;
+class GameObject;
+class Transform;
+class Texture2D;
+class Input;
+class Console;
+
 
 using std::string;
 using std::vector;

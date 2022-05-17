@@ -4,7 +4,9 @@
 #include <stdlib.h>
 #include <vector>
 #include <algorithm>
-#include "TileMap.h"
+
+class TileMap;
+
 class MapNode {
 public:
 	glm::vec2 position;

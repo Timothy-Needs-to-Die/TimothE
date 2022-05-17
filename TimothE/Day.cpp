@@ -1,5 +1,6 @@
 #include "Day.h"
 #include <iostream>
+#include "Time.h"
 
 Day::Day()
 {

@@ -1,8 +1,10 @@
 #pragma once
 
 #include "pch.h"
-#include "Input.h"
+
 #include "Component.h"
+
+class Input;
 
 class Camera : public Component
 {

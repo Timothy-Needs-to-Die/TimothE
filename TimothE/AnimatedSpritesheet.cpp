@@ -1,5 +1,6 @@
 #include "AnimatedSpritesheet.h"
 #include "Time.h"
+#include "SpriteSheet.h"
 
 AnimatedSpritesheet::AnimatedSpritesheet(Texture2D* texture, int spriteWidth, int spriteHeight, bool playAll)
 	: SpriteSheet(texture, spriteWidth, spriteHeight), _rows(_sheetHeightInPixels / _spriteHeight)

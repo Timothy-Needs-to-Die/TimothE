@@ -4,17 +4,27 @@
 
 #include "Core/Graphics/Window.h"
 #include "Core/Events/ApplicationEvent.h"
-#include "Scene.h"
-#include "MemoryManager.h"
-#include "CameraManager.h"
-
-#include "AudioEngine.h"
-#include "TileMap.h"
 #include "Core/Graphics/OpenGLError.h"
-#include "SpriteSheet.h"
-#include "SceneManager.h"
 
-#include "FarmScene.h"
+//For some reason forward deaclaring CameraManager causes errors
+#include "CameraManager.h" 
+class Scene;
+class MemoryManager;
+class CameraManager;
+class AudioEngine;
+class TileMap;
+class SpriteSheet;
+class SceneManager;
+class FarmScene;
+class ImGuiManager;
+class Texture2D;
+class Button;
+class ResourceManager;
+class Time;
+class CSVReader;
+class CopsConfig;
+class Input;
+
 
 class Editor;
 

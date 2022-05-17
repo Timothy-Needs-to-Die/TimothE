@@ -6,10 +6,12 @@
 #include "Core/Graphics/Framebuffer.h"
 #include "Core/Graphics/Shader.h"
 #include "Scene.h"
+#include "SceneManager.h"
 #include "Camera.h"
 #include "Console.h"
 #include "imgui.h"
 #include "TileMapEditor.h"
+#include <vector>
 
 
 class Application;

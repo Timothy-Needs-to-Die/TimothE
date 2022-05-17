@@ -4,9 +4,12 @@
 #include <vector>
 #include "Core/Graphics/Shader.h"
 #include "Component.h"
-#include "ResourceManager.h"
-#include "Transform.h"
+//#include "ResourceManager.h"
 
+
+
+class Texture2D;
+class Transform;
 using std::string;
 using std::vector;
 

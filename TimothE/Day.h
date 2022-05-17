@@ -1,5 +1,7 @@
 #pragma once
-#include "Time.h"
+
+
+class Time;
 
 class Day
 {

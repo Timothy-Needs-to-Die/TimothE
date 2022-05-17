@@ -2,6 +2,9 @@
 #include "GameObject.h"
 #include "imgui.h"
 #include "Input.h"
+#include "UID.h"
+
+
 
 BoxColliderComponent::BoxColliderComponent(GameObject* parent) : ColliderBase(parent)
 {

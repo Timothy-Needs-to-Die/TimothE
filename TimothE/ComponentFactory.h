@@ -13,6 +13,7 @@
 #include "PlayerInputComponent.h"
 #include "Core.h"
 
+
 class ComponentFactory {
 public:
 	static Component* GetComponent(Component::Types type, GameObject* pParent) {

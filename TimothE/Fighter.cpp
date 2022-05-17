@@ -1,10 +1,12 @@
 #include "Fighter.h"
 
 #include "SceneManager.h"
-#include "Scene.h"
+//#include "Scene.h"
 #include "Health.h"
 #include "GameObject.h"
 #include "Transform.h"
+
+#include "Time.h"
 
 void Fighter::Attack()
 {

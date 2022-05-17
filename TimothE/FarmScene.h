@@ -1,12 +1,15 @@
 #pragma once
+
 #include "Scene.h"
-#include "PlayerInputComponent.h"
-#include "SpriteComponent.h"
-#include "AnimatedSpritesheet.h"
-#include "MovementComponent.h"
-#include "Fighter.h"
-#include "Health.h"
 #include "Wave.h"
+//class Scene;
+class PlayerInputComponent;
+class SpriteComponent;
+class AnimatedSpriteSheet;
+class MovementComponentl;
+class Fighter;
+class Health;
+//class Wave;
 
 class FarmScene : public Scene
 {
