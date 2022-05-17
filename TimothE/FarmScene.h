@@ -41,5 +41,7 @@ private:
 	WaveController* _pWaveController = nullptr;
 
 	class Player* _pPlayer;
+
+	static void PlayerResourceNodeIntersect(ColliderBase* other);
 };
 

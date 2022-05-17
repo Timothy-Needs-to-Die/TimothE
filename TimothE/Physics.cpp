@@ -1,8 +1,10 @@
 #include "Physics.h"
 
+std::vector<ColliderBase*> Physics::colliders = std::vector<ColliderBase*>();
+
 void Physics::SetupScenePhysics()
 {
-	std::vector<ColliderBase*> colliders = Scene::FindObjectsOfType<ColliderBase>();
+	colliders = Scene::FindObjectsOfType<ColliderBase>();
 	std::cout << "No. Of Colliders: " << colliders.size() << std::endl;
 
 	if (colliders.size() == 1) return;
@@ -56,10 +58,10 @@ bool Physics::Intersects(BoxColliderComponent* b1, BoxColliderComponent* b2)
 		}
 		else {
 			if (b1->IsTrigger()) {
-				b1->Triggered();
+				b1->Triggered(b2);
 			}
 			if (b2->IsTrigger()) {
-				b2->Triggered();
+				b2->Triggered(b1);
 			}
 		}
 
@@ -74,7 +76,10 @@ bool Physics::Intersects(BoxColliderComponent* b1, glm::vec2 p)
 {
 	Rect* r1 = b1->GetCollisionRect();
 	if (p.x > r1->xPos && p.x < r1->xPos + r1->width && p.y > r1->yPos && p.y < r1->yPos + r1->height) {
-		
+		if (b1->IsTrigger()) {
+			b1->Triggered(nullptr);
+		}
+
 		return true;
 	}
 	return false;
@@ -94,8 +99,8 @@ bool Physics::Intersects(ColQuad& a, ColQuad& b)
 
 void Physics::HandleCollision(ColliderBase* c1, ColliderBase* c2)
 {
-	c1->Collided();
-	c2->Collided();
+	c1->Collided(c2);
+	c2->Collided(c1);
 }
 
 
@@ -103,5 +108,33 @@ void Physics::HandleCollision(ColliderBase* c1, ColliderBase* c2)
 bool Physics::Intersects(glm::vec2 p, BoxColliderComponent* b1)
 {
 	return Intersects(b1, p);
+}
+
+void Physics::UpdateWorld()
+{
+	for (int i = 0; i < colliders.size(); ++i) {
+		ColliderBase* pColA = colliders[i];
+		ColliderType aType = pColA->GetType();
+
+		for (int j = i; j < colliders.size(); ++j) {
+			if (j == i) continue;
+
+			ColliderBase* pColB = colliders[j];
+			ColliderType bType = pColB->GetType();
+
+			if (aType == Circle && bType == Circle) {
+				
+			}
+			else if (aType == Box && bType == Box) {
+				Intersects((BoxColliderComponent*)pColA, (BoxColliderComponent*)pColB);
+			}
+			else if (aType == Box && bType == Circle) {
+
+			}
+			else if (aType == Circle && bType == Box) {
+
+			}
+		}
+	}
 }
 

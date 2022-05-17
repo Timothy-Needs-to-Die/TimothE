@@ -88,4 +88,34 @@ void FarmScene::InitScene()
 	_pTilemap = new TileMap(_name);
 
 	_pWaveController = new WaveController(this);
+
+	BoxColliderComponent* _pPlayerCollider = _pPlayer->AddComponent(new BoxColliderComponent(_pPlayer));
+	
+	GameObject* _pResourceNode = new GameObject("Wood Node");
+	Transform* pTransform = _pResourceNode->GetTransform();
+	pTransform->SetPosition(5.0f, 1.0f);
+	pTransform->SetScale({ 0.25f, 0.25f });
+	_pResourceNode->AddComponent(ResourceManager::GetTexture("swords"));
+
+	BoxColliderComponent* pBoxCollider = _pResourceNode->AddComponent(new BoxColliderComponent(_pResourceNode));
+
+
+
+	pBoxCollider->AddTriggerEvent(&FarmScene::PlayerResourceNodeIntersect);
+	AddGameObject(_pResourceNode);
+
+	Physics::SetupScenePhysics();
+}
+
+void FarmScene::PlayerResourceNodeIntersect(ColliderBase* other)
+{
+	if (other == nullptr) return;
+
+	if (other->GetParent()->GetTag() == "PLAYER") {
+		TIM_LOG_LOG("Resource Node Intersect");
+	}
+	else {
+		
+	}
+
 }

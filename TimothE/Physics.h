@@ -29,10 +29,12 @@ public:
 	static bool Intersects(BoxColliderComponent* b1, glm::vec2 p);
 	static bool Intersects(glm::vec2 p, BoxColliderComponent* b1);
 
+	static void UpdateWorld();
+
 private:
 	static void HandleCollision(ColliderBase* c1, ColliderBase* c2);
 
 
-
+	static std::vector<ColliderBase*> colliders;
 };
 
