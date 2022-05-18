@@ -2,6 +2,7 @@
 #include "pch.h"
 
 #include "BoxColliderComponent.h"
+#include "CircleColliderComponent.h"
 #include "Transform.h"
 #include "Scene.h"
 
@@ -27,6 +28,11 @@ public:
 	static bool Intersects(ColQuad& a, ColQuad& b);
 	static bool Intersects(BoxColliderComponent* b1, BoxColliderComponent* b2);
 	static bool Intersects(BoxColliderComponent* b1, glm::vec2 p);
+	
+	static bool Intersects(CircleColliderComponent* c1, CircleColliderComponent* c2);
+	static bool Intersects(CircleColliderComponent* c1, BoxColliderComponent* b1);
+	static bool Intersects(CircleColliderComponent* c1, glm::vec2 point);
+
 	static bool Intersects(glm::vec2 p, BoxColliderComponent* b1);
 
 	static void UpdateWorld();
