@@ -121,6 +121,9 @@ public:
 		return true;
 	}
 
+	virtual void OnTriggerEnter(class ColliderBase* other) {}
+	virtual void OnCollisionEnter(class ColliderBase* other) {}
+
 	// IsEnabled Get & Set
 	bool IsEnabled() { return _isEnabled; }
 	void SetEnabled(bool state) { _isEnabled = state; }

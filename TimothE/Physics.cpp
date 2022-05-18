@@ -58,10 +58,10 @@ bool Physics::Intersects(BoxColliderComponent* b1, BoxColliderComponent* b2)
 		}
 		else {
 			if (b1->IsTrigger()) {
-				b1->Triggered(b2);
+				b1->GetParent()->OnTriggerEnter(b2);
 			}
 			if (b2->IsTrigger()) {
-				b2->Triggered(b1);
+				b2->GetParent()->OnTriggerEnter(b1);
 			}
 		}
 
@@ -100,10 +100,10 @@ bool Physics::Intersects(CircleColliderComponent* c1, CircleColliderComponent* c
 
 	if (distance < resultingRadius) {
 		if (c1->IsTrigger()) {
-			c1->Triggered(c2);
+			c1->GetParent()->OnTriggerEnter(c2);
 		}
 		if (c2->IsTrigger()) {
-			c2->Triggered(c1);
+			c2->GetParent()->OnTriggerEnter(c1);
 		}
 
 		return true;
@@ -146,10 +146,10 @@ bool Physics::Intersects(CircleColliderComponent* c1, BoxColliderComponent* b1)
 
 	if (d < c1->GetRadius() * c1->GetRadius()) {
 		if (c1->IsTrigger()) {
-			c1->Triggered(b1);
+			c1->GetParent()->OnTriggerEnter(b1);
 		}
 		if (b1->IsTrigger()) {
-			b1->Triggered(c1);
+			b1->GetParent()->OnTriggerEnter(c1);
 		}
 
 		return true;
@@ -176,10 +176,7 @@ bool Physics::Intersects(CircleColliderComponent* c1, glm::vec2 point)
 
 void Physics::HandleCollision(ColliderBase* c1, ColliderBase* c2)
 {
-	c1->Collided(c2);
-	c2->Collided(c1);
 }
-
 
 
 bool Physics::Intersects(glm::vec2 p, BoxColliderComponent* b1)

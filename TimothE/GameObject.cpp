@@ -141,6 +141,18 @@ bool GameObject::LoadState(IStream& stream)
 	return true;
 }
 
+void GameObject::OnTriggerEnter(ColliderBase* other)
+{
+	for (auto& comp : _pComponents) {
+		comp->OnTriggerEnter(other);
+	}
+}
+
+void GameObject::OnColliderEnter(ColliderBase* other)
+{
+
+}
+
 void GameObject::UniqueLogic()
 {
 }

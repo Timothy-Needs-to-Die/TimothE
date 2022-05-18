@@ -3,6 +3,7 @@
 #include "SpriteComponent.h"
 #include "CameraManager.h"
 #include "Player.h"
+#include "ResourceNode.h"
 
 FarmScene::~FarmScene()
 {
@@ -91,31 +92,15 @@ void FarmScene::InitScene()
 
 	BoxColliderComponent* _pPlayerCollider = _pPlayer->AddComponent(new BoxColliderComponent(_pPlayer));
 	
-	GameObject* _pResourceNode = new GameObject("Wood Node");
-	Transform* pTransform = _pResourceNode->GetTransform();
+	_pWoodNode = new ResourceNode("Wood Node", Wood);
+	Transform* pTransform = _pWoodNode->GetTransform();
 	pTransform->SetPosition(5.0f, 1.0f);
 	pTransform->SetScale({ 0.25f, 0.25f });
-	_pResourceNode->AddComponent(ResourceManager::GetTexture("swords"));
+	_pWoodNode->AddComponent(ResourceManager::GetTexture("swords"));
 
-	BoxColliderComponent* pBoxCollider = _pResourceNode->AddComponent(new BoxColliderComponent(_pResourceNode));
+	BoxColliderComponent* pBoxCollider = _pWoodNode->AddComponent(new BoxColliderComponent(_pWoodNode));
 
-
-
-	pBoxCollider->AddTriggerEvent(&FarmScene::PlayerResourceNodeIntersect);
-	AddGameObject(_pResourceNode);
+	AddGameObject(_pWoodNode);
 
 	Physics::SetupScenePhysics();
-}
-
-void FarmScene::PlayerResourceNodeIntersect(ColliderBase* other)
-{
-	if (other == nullptr) return;
-
-	if (other->GetParent()->GetTag() == "PLAYER") {
-		TIM_LOG_LOG("Resource Node Intersect");
-	}
-	else {
-		
-	}
-
 }

@@ -4,6 +4,7 @@
 #include "GameObject.h"
 #include "Transform.h"
 #include "Core.h"
+#include "ResourceNode.h"
 
 void PlayerInputComponent::OnStart()
 {
@@ -46,9 +47,32 @@ void PlayerInputComponent::OnUpdate()
 	if (Input::IsKeyDown(KEY_SPACE)) {
 		_pFighter->Attack();
 	}
+
+	if (_pNearbyResourceNode != nullptr) {
+		if (Input::IsKeyDown(KEY_E)) {
+			_pNearbyResourceNode->Interact();
+		}
+	}
 }
 
 void PlayerInputComponent::OnEnd()
 {
 
+}
+
+void PlayerInputComponent::NearbyResourceNode(class ResourceNode* nearbyResource)
+{
+	_pNearbyResourceNode = nearbyResource;
+}
+
+void PlayerInputComponent::OnTriggerEnter(ColliderBase* other)
+{
+	if (other->GetParent()->GetTag() == "RESOURCE_NODE") {
+		//Downwards Casts from GameObject to ResourceNode
+		ResourceNode* pResource = dynamic_cast<ResourceNode*>(other->GetParent());
+
+		if (pResource) {
+			_pNearbyResourceNode = pResource;
+		}
+	}
 }

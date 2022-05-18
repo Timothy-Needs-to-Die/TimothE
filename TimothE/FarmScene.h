@@ -7,6 +7,7 @@
 #include "Fighter.h"
 #include "Health.h"
 #include "Wave.h"
+#include "ResourceNode.h"
 
 class FarmScene : public Scene
 {
@@ -30,18 +31,13 @@ private:
 	GameObject* _pStartButton = nullptr;
 	GameObject* _pWeaponObject = nullptr;
 
-
-	//class PlayerInputComponent* _pPlayerMovement = nullptr;
-	//GameObject* _pPlayerObject = nullptr;
-	//Health* _pPlayerHealth = nullptr;
-
 	SpriteSheet* _pSpritesheet;
 
 
 	WaveController* _pWaveController = nullptr;
 
 	class Player* _pPlayer;
-
-	static void PlayerResourceNodeIntersect(ColliderBase* other);
+	
+	class ResourceNode* _pWoodNode = nullptr;
 };
 
