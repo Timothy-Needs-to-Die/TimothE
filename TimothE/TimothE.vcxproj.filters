@@ -332,6 +332,7 @@
     <ClInclude Include="Player.h" />
     <ClInclude Include="CircleColliderComponent.h" />
     <ClInclude Include="ResourceNode.h" />
+    <ClInclude Include="ResourceNodeObject.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="AStar.cpp">
@@ -536,5 +537,6 @@
     <ClCompile Include="Player.cpp" />
     <ClCompile Include="CircleColliderComponent.cpp" />
     <ClCompile Include="ResourceNode.cpp" />
+    <ClCompile Include="ResourceNodeObject.cpp" />
   </ItemGroup>
 </Project>

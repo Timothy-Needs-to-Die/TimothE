@@ -38,6 +38,6 @@ private:
 
 	class Player* _pPlayer;
 	
-	class ResourceNode* _pWoodNode = nullptr;
+	class ResourceNodeObject* _pWoodNode = nullptr;
 };
 

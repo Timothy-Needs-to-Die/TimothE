@@ -3,7 +3,7 @@
 #include "SpriteComponent.h"
 #include "CameraManager.h"
 #include "Player.h"
-#include "ResourceNode.h"
+#include "ResourceNodeObject.h"
 
 FarmScene::~FarmScene()
 {
@@ -92,13 +92,11 @@ void FarmScene::InitScene()
 
 	BoxColliderComponent* _pPlayerCollider = _pPlayer->AddComponent(new BoxColliderComponent(_pPlayer));
 	
-	_pWoodNode = new ResourceNode("Wood Node", Wood);
+	_pWoodNode = new ResourceNodeObject(Wood);
 	Transform* pTransform = _pWoodNode->GetTransform();
 	pTransform->SetPosition(5.0f, 1.0f);
-	pTransform->SetScale({ 0.25f, 0.25f });
-	_pWoodNode->AddComponent(ResourceManager::GetTexture("swords"));
 
-	BoxColliderComponent* pBoxCollider = _pWoodNode->AddComponent(new BoxColliderComponent(_pWoodNode));
+	//BoxColliderComponent* pBoxCollider = _pWoodNode->AddComponent(new BoxColliderComponent(_pWoodNode));
 
 	AddGameObject(_pWoodNode);
 

@@ -1,19 +1,26 @@
 #pragma once
-#include "GameObject.h"
+#include "Component.h"
 #include "CoreResourceType.h"
-class ResourceNode : public GameObject
+class ResourceNode : public Component
 {
 public:
-	ResourceNode(std::string name = "Resource Node", CoreResourceType type = Wood);
+	COMPONENT_STATIC_TYPE(ResourceNodeType);
+
+	ResourceNode(GameObject* owner, CoreResourceType type);
 
 	void Interact();
 private:
-	BoxColliderComponent* _pCollider;
-
-
 	CoreResourceType _resourceType;
 
 protected:
+
+
+	// Inherited via Component
+	virtual void OnStart() override;
+
+	virtual void OnUpdate() override;
+
+	virtual void OnEnd() override;
 
 };
 

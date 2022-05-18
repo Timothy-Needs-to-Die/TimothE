@@ -68,11 +68,6 @@ void PlayerInputComponent::NearbyResourceNode(class ResourceNode* nearbyResource
 void PlayerInputComponent::OnTriggerEnter(ColliderBase* other)
 {
 	if (other->GetParent()->GetTag() == "RESOURCE_NODE") {
-		//Downwards Casts from GameObject to ResourceNode
-		ResourceNode* pResource = dynamic_cast<ResourceNode*>(other->GetParent());
-
-		if (pResource) {
-			_pNearbyResourceNode = pResource;
-		}
+		_pNearbyResourceNode = other->GetParent()->GetComponent<ResourceNode>();
 	}
 }
