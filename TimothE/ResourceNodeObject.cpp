@@ -5,6 +5,7 @@ ResourceNodeObject::ResourceNodeObject(CoreResourceType type, std::string name /
 {
 	_pResourceNode = AddComponent(new ResourceNode(this, type));
 	_pCollider = AddComponent(new BoxColliderComponent(this));
+	_pCollider->SetTrigger(true);
 
 	switch (type)
 	{

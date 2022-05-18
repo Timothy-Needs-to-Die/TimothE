@@ -21,17 +21,17 @@ void PlayerInputComponent::OnUpdate()
 
 	glm::vec2 moveVec = glm::vec2(0.0f);
 
-	if (Input::IsKeyDown(KEY_W)) {
+	if (Input::IsKeyHeld(KEY_W)) {
 		moveVec.y = 1.0f;
 	}
-	else if (Input::IsKeyDown(KEY_S)) {
+	else if (Input::IsKeyHeld(KEY_S)) {
 		moveVec.y = -1.0f;
 	}
 
-	if (Input::IsKeyDown(KEY_A)) {
+	if (Input::IsKeyHeld(KEY_A)) {
 		moveVec.x = -1.0f;
 	}
-	else if (Input::IsKeyDown(KEY_D)) {
+	else if (Input::IsKeyHeld(KEY_D)) {
 		moveVec.x = 1.0f;
 	}
 
