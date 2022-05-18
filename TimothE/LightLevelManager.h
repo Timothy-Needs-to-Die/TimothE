@@ -15,7 +15,7 @@ struct LightSource
 class LightLevelManager
 {
 public:
-	void AddLightSource(LightSource lightSource) { _lightSources.push_back(lightSource); };
+	void AddLightSource(LightSource lightSource);
 	void RemoveLightSource(LightSource lightSource);
 	void UpdateLightMap(TileMap* tileMap);
 
