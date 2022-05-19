@@ -7,6 +7,7 @@
 #include "Fighter.h"
 #include "Health.h"
 #include "CropPlot.h"
+#include "FarmlandManager.h"
 
 class FarmScene : public Scene
 {
@@ -44,10 +45,12 @@ private:
 	Health* _pEnemyHealth = nullptr;
 
 	//CropPlot* _pCropPlot = nullptr;
-	vector<GameObject*> _pCropPlotObjects;
+	/*vector<GameObject*> _pCropPlotObjects;
 	vector<SpriteComponent*> _pCropPlotSpriteComponents;
 	SpriteComponent* _pCropPlotBaseSpriteComponent = nullptr;
-	GameObject* _pCropPlotBaseObject = nullptr;
+	GameObject* _pCropPlotBaseObject = nullptr;*/
+	FarmlandManager* farmland;
+
 
 	bool farmKeyPressed = false;
 };

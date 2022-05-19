@@ -11,7 +11,7 @@
 
 */
 
-PlantedCrop::PlantedCrop(GameObject* parent, CropResourceType cropType, int daysToGrow) : Component(parent)
+PlantedCrop::PlantedCrop(CropResourceType cropType, int daysToGrow, std::string name, std::string tag) : GameObject(name, tag)
 {
 	/*int sheetX = 6, sheetY = 11;
 	SpriteSheet* sheet = ResourceManager::GetSpriteSheet("testSheet");
@@ -33,9 +33,7 @@ void PlantedCrop::AddGrowth(int growTime)
 	if (_currentGrowTime > _daysToGrow)
 	{
 		_isReady = true;
-	}
-
-	
+	}	
 }
 
 void PlantedCrop::Harvest()
@@ -43,14 +41,3 @@ void PlantedCrop::Harvest()
 
 }
 
-void PlantedCrop::OnStart()
-{
-}
-
-void PlantedCrop::OnUpdate()
-{
-}
-
-void PlantedCrop::OnEnd()
-{
-}

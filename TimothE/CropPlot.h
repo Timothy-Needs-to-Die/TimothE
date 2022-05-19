@@ -1,21 +1,19 @@
 #pragma once
-#include "PlantedCrop.h"
+#include "GameObject.h"
+#include "CropResourceType.h"
 
-class CropPlot : public Component
+class CropPlot : public GameObject
 {
 public:
-	CropPlot(GameObject* parent);
+	CropPlot(std::string name = "Crop Plot", std::string tag = "UNTAGGED");
 	~CropPlot();
 
 	void OnNewDay();
 	void Plant(CropResourceType type);
 
 	bool IsOccupied() { return _isOccupied; }
+	void SetOccupied(bool state) { _isOccupied = state; }
 	//PlantedCrop* GetCrop() { return _crop; }
-
-	void OnStart() override;
-	void OnUpdate() override;
-	void OnEnd() override;
 
 private:
 	//PlantedCrop* _crop;

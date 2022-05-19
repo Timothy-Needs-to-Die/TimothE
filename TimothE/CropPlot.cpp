@@ -1,6 +1,6 @@
 #include "CropPlot.h"
 
-CropPlot::CropPlot(GameObject* parent) : Component(parent)
+CropPlot::CropPlot(std::string name, std::string tag) : GameObject(name, tag)
 {
 	//_crop = nullptr;
 	_isOccupied = false;
@@ -31,14 +31,3 @@ void CropPlot::Plant(CropResourceType type)
 	}
 }
 
-void CropPlot::OnStart()
-{
-}
-
-void CropPlot::OnUpdate()
-{
-}
-
-void CropPlot::OnEnd()
-{
-}

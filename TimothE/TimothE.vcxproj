@@ -118,6 +118,7 @@
     <ClInclude Include="Day.h" />
     <ClInclude Include="Dirent.h" />
     <ClInclude Include="Editor.h" />
+    <ClInclude Include="FarmlandManager.h" />
     <ClInclude Include="FarmScene.h" />
     <ClInclude Include="Fighter.h" />
     <ClInclude Include="Font.h" />
@@ -213,6 +214,7 @@
     <ClCompile Include="Core\Graphics\Window.cpp" />
     <ClCompile Include="Day.cpp" />
     <ClCompile Include="Editor.cpp" />
+    <ClCompile Include="FarmlandManager.cpp" />
     <ClCompile Include="FarmScene.cpp" />
     <ClCompile Include="Fighter.cpp" />
     <ClCompile Include="Font.cpp" />

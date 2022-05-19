@@ -50,6 +50,7 @@ void FarmScene::UpdateObjects()
 
 	if (Input::IsKeyDown(KEY_G))
 	{
+
 		if (farmKeyPressed) return;
 		farmKeyPressed = true;
 		
@@ -57,45 +58,9 @@ void FarmScene::UpdateObjects()
 		glm::vec2 playerPos = _pPlayerObject->GetTransform()->GetPosition();
 		glm::vec2 playerScale = _pPlayerObject->GetTransform()->GetScale();
 		glm::vec2 midPoint = glm::vec2(playerPos.x + (playerScale.x / 2), playerPos.y + (playerScale.y / 2));
-
 		glm::vec2 tilePlayerIsOnPos = { _pTilemap->GetTileAtWorldPos(0, midPoint)->colXPos, _pTilemap->GetTileAtWorldPos(0, midPoint)->colYPos };
-			
-		// Make sure we dont put farmland on already existing farmland
-		for (GameObject* cropPlotObject : _pCropPlotObjects)
-		{
-			// Check if there is already plot land here
-			if (cropPlotObject->GetTransform()->GetPosition() == tilePlayerIsOnPos)
-			{
-				plotAlreadyInTile = true;
-			}
-		}
-		
-		// Get the tile position within world space
-		if (!plotAlreadyInTile)
-		{
-			//_pTilemap->AddTileAt(2, 6, 11, CameraManager::CurrentCamera());
-			
-			_pCropPlotBaseObject = new GameObject("CropPlot");
-			_pCropPlotBaseObject->AddComponent(new CropPlot(_pCropPlotBaseObject));
-			_pCropPlotBaseObject->GetTransform()->SetPosition(tilePlayerIsOnPos);
-			_pCropPlotBaseObject->GetTransform()->SetScale(glm::vec2(0.25f, 0.25f));
-			_pCropPlotBaseObject->AddComponent(new BoxColliderComponent(_pCropPlotBaseObject));
-			//_pCropPlotBaseObject->AddComponent(ResourceManager::GetTexture("swords"));
-			SpriteComponent* sprite = _pCropPlotBaseObject->AddComponent(new SpriteComponent(_pCropPlotBaseObject));
-			sprite->SetSprite(ResourceManager::GetSpriteSheet("testSheet")->GetSpriteAtIndex(130));
 
-			_pCropPlotObjects.push_back(_pCropPlotBaseObject);
-			AddGameObject(_pCropPlotBaseObject);
-
-
-			GameObject* plantObject = new GameObject("Plant");
-			SpriteComponent* s = plantObject->AddComponent(new SpriteComponent(plantObject));
-			s->SetSprite(ResourceManager::GetSpriteSheet("testSheet")->GetSpriteAtIndex(24));
-			plantObject->SetParent(_pCropPlotBaseObject);
-			plantObject->GetTransform()->SetScale(glm::vec2(0.25f, 0.25f));
-			AddGameObject(plantObject);
-
-		}
+		farmland->PlaceFarmLand(tilePlayerIsOnPos);
 	}
 
 	if (Input::IsKeyUp(KEY_G))
@@ -105,31 +70,14 @@ void FarmScene::UpdateObjects()
 
 	if (Input::IsKeyDown(KEY_H))
 	{
+		glm::vec2 playerPos = _pPlayerObject->GetTransform()->GetPosition();
+		glm::vec2 playerScale = _pPlayerObject->GetTransform()->GetScale();
+		glm::vec2 midPoint = glm::vec2(playerPos.x + (playerScale.x / 2), playerPos.y + (playerScale.y / 2));
+		glm::vec2 tilePlayerIsOnPos = { _pTilemap->GetTileAtWorldPos(0, midPoint)->colXPos, _pTilemap->GetTileAtWorldPos(0, midPoint)->colYPos };
+
 		
-		for (GameObject* cropPlot : _pCropPlotObjects)
-		{
-			glm::vec2 playerPos = _pPlayerObject->GetTransform()->GetPosition();
-			glm::vec2 playerScale = _pPlayerObject->GetTransform()->GetScale();
-			glm::vec2 midPoint = glm::vec2(playerPos.x + (playerScale.x / 2), playerPos.y + (playerScale.y / 2));
-
-			BoxColliderComponent* cropPlotCollider = cropPlot->GetComponent<BoxColliderComponent>();
-			if (cropPlotCollider->IsPointInside(midPoint))
-			{
-
-				CropPlot* cropPlotComponent = cropPlot->GetComponent<CropPlot>();
-				if (!cropPlotComponent->IsOccupied())
-				{
-					// TODO here we want the user to have the seeds in their 
-					// inventory to then plant the corresponding crop
-
-					//cropPlotComponent->Plant(CropResourceType::Wheat);
-
-					cropPlot->AddComponent(new PlantedCrop(cropPlot, CropResourceType::Wheat, 2));
-					_pTilemap->AddTileAt(2, 8, 2, CameraManager::CurrentCamera());
-					std::cout << "Succesfully planted crop!" << std::endl;
-				}
-			}
-		}
+		farmland->PlantSeed(tilePlayerIsOnPos, CropResourceType::Wheat);
+		
 	}
 
 	if (Input::IsKeyDown(KEY_L))
@@ -195,6 +143,8 @@ void FarmScene::InitScene()
 	_pEnemyHealth = enemyGO->AddComponent(new Health(enemyGO));
 	_pEnemyHealth->SetMaxHealth(50);
 	AddGameObject(enemyGO);
+
+	farmland = new FarmlandManager(this, "FarmLand");
 
 	// Crops
 	//_pCropPlot = new CropPlot();

@@ -330,6 +330,7 @@
     <ClInclude Include="CropPlot.h">
       <Filter>Headers</Filter>
     </ClInclude>
+    <ClInclude Include="FarmlandManager.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="AStar.cpp">
@@ -530,5 +531,6 @@
     <ClCompile Include="CropPlot.cpp">
       <Filter>Source</Filter>
     </ClCompile>
+    <ClCompile Include="FarmlandManager.cpp" />
   </ItemGroup>
 </Project>

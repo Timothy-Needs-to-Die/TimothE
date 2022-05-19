@@ -1,23 +1,16 @@
 #pragma once
 
-#include "SpriteSheet.h"
-#include "Sprite.h"
+#include "GameObject.h"
 #include "CropResourceType.h"
-#include "ResourceManager.h"
-#include "SpriteComponent.h"
 
-class PlantedCrop : public Component
+class PlantedCrop : public GameObject
 {
 public:
-	PlantedCrop(GameObject* parent, CropResourceType cropType, int daysToGrow);
+	PlantedCrop(CropResourceType cropType, int daysToGrow, std::string name = "Planted Crop", std::string tag = "UNTAGGED");
 	~PlantedCrop();
 
 	void AddGrowth(int growTime);
 	void Harvest();
-
-	void OnStart() override;
-	void OnUpdate() override;
-	void OnEnd() override;
 
 	// Get & Set Methods
 	bool IsReady() { return _isReady; }
@@ -26,11 +19,13 @@ public:
 private:
 	bool _isReady;
 	
-	SpriteSheet* _cropSheet;
-	SpriteComponent* _currentSprite;
+	class SpriteSheet* _cropSheet;
+	class SpriteComponent* _currentSprite;
 	CropResourceType _type;
 
 	int _daysToGrow;
 	int _currentGrowTime;
+
+protected:
 };
 
