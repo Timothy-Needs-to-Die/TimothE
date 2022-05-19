@@ -7,7 +7,7 @@ FarmlandManager::FarmlandManager(std::string name, std::string tag) : GameObject
 
 void FarmlandManager::PlaceFarmLand(glm::vec2 position)
 {
-	// Bool to check if a plot has been found
+	
 	bool plotAlreadyOnTile = false;
 
 	// Make sure we dont put farmland on already existing farmland
@@ -20,61 +20,52 @@ void FarmlandManager::PlaceFarmLand(glm::vec2 position)
 		}
 	}
 
-	// If there isnt any existing farmland on that plot
+	// Get the tile position within world space
 	if (!plotAlreadyOnTile)
 	{
-		// Create the new plot
 		CropPlot* newCropPlot;
-		// Create the name with a different gameobject name
 		std::string gameObjectName = "Crop Plot " + _pCropPlotObjects.size();
 		newCropPlot = new CropPlot(gameObjectName);
-		// Put it in the correct place
+		//newCropPlot->AddComponent(new CropPlot(newCropPlot));
 		newCropPlot->GetTransform()->SetPosition(position);
 		newCropPlot->GetTransform()->SetScale(glm::vec2(0.25f, 0.25f));
-		// Add a collider for collisions
 		newCropPlot->AddComponent(new BoxColliderComponent(newCropPlot));
 		
-		// Add the sprite  - index needs to be changed at a later date currently uses temp sprites
 		SpriteComponent* sprite = newCropPlot->AddComponent(new SpriteComponent(newCropPlot));
 		sprite->SetSprite(ResourceManager::GetSpriteSheet("testSheet")->GetSpriteAtIndex(130));
 
-		// Add it to the managers list
 		_pCropPlotObjects.push_back(newCropPlot);
-		// Add it to the game object list
 		SceneManager::GetCurrentScene()->AddGameObject(newCropPlot);
-		// Debug message
 		std::cout << "Succesfully Created CropPlot: x:"<< position.x << " y:" << position.y << std::endl;
 	}
 }
 
 void FarmlandManager::PlantSeed(glm::vec2 position, PlantResourceType cropType)
 {
-	// Get the crop plot from the position given
+	//CropPlot* cp = static_cast<CropPlot*>(cropPlot);
 	CropPlot* cropPlot = GetCropPlotAtPosition(position);
 
-	// If a crop plot has been found
 	if (cropPlot != nullptr)
 	{
-		// Check if it already has a plant
 		if (!cropPlot->IsOccupied())
 		{
-			// Create the plan
-			GameObject* plantObject = new GameObject("Plant");
-			// Set its correct W and H
-			plantObject->GetTransform()->SetScale(glm::vec2(0.25f, 0.25f));
-			// Make the plot its on its parent
-			plantObject->SetParent(cropPlot);
+			// TODO here we want the user to have the seeds in their 
+			// inventory to then plant the corresponding crop
 
-			// Set the sprite
+			//cropPlotComponent->Plant(CropResourceType::Wheat);
+			// This is just an example!
+
+			GameObject* plantObject = new GameObject("Plant");
+			//plantObject->GetTransform()->SetPosition(position);
+			plantObject->GetTransform()->SetScale(glm::vec2(0.25f, 0.25f));
+			plantObject->SetParent(cropPlot);
 			SpriteComponent* s = plantObject->AddComponent(new SpriteComponent(plantObject));
 			s->SetSprite(ResourceManager::GetSpriteSheet("testSheet")->GetSpriteAtIndex(24));
-			// The plot now has a plant on it so it is occupied
 			cropPlot->SetOccupied(true);
 
-			// Add it to the scenes gameobjects
 			SceneManager::GetCurrentScene()->AddGameObject(plantObject);
-			// Debug message
 			std::cout << "Succesfully Planted Crop: type:" << cropType << " x:" << position.x << " y:" << position.y << std::endl;
+
 		}
 	}
 }
