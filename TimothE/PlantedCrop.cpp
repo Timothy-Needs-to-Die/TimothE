@@ -11,7 +11,7 @@
 
 */
 
-PlantedCrop::PlantedCrop(CropResourceType cropType, int daysToGrow)
+PlantedCrop::PlantedCrop(GameObject* parent, CropResourceType cropType, int daysToGrow) : Component(parent)
 {
 	/*int sheetX = 6, sheetY = 11;
 	SpriteSheet* sheet = ResourceManager::GetSpriteSheet("testSheet");
@@ -41,4 +41,16 @@ void PlantedCrop::AddGrowth(int growTime)
 void PlantedCrop::Harvest()
 {
 
+}
+
+void PlantedCrop::OnStart()
+{
+}
+
+void PlantedCrop::OnUpdate()
+{
+}
+
+void PlantedCrop::OnEnd()
+{
 }

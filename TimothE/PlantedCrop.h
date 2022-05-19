@@ -6,14 +6,18 @@
 #include "ResourceManager.h"
 #include "SpriteComponent.h"
 
-class PlantedCrop
+class PlantedCrop : public Component
 {
 public:
-	PlantedCrop(CropResourceType cropType, int daysToGrow);
+	PlantedCrop(GameObject* parent, CropResourceType cropType, int daysToGrow);
 	~PlantedCrop();
 
 	void AddGrowth(int growTime);
 	void Harvest();
+
+	void OnStart() override;
+	void OnUpdate() override;
+	void OnEnd() override;
 
 	// Get & Set Methods
 	bool IsReady() { return _isReady; }

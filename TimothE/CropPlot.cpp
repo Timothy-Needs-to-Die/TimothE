@@ -2,7 +2,7 @@
 
 CropPlot::CropPlot(GameObject* parent) : Component(parent)
 {
-	_crop = nullptr;
+	//_crop = nullptr;
 	_isOccupied = false;
 }
 
@@ -16,7 +16,7 @@ void CropPlot::OnNewDay()
 	// If theres a crop apply age to the crop
 	if (_isOccupied)
 	{
-		_crop->AddGrowth(1);
+		//_crop->AddGrowth(1);
 	}
 }
 
@@ -27,7 +27,7 @@ void CropPlot::Plant(CropResourceType type)
 	{
 		// Plant one
 		_isOccupied = true;
-		_crop = new PlantedCrop(type, 3);
+		//_crop = new PlantedCrop(type, 3);
 	}
 }
 

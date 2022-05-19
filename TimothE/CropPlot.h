@@ -11,14 +11,14 @@ public:
 	void Plant(CropResourceType type);
 
 	bool IsOccupied() { return _isOccupied; }
-	PlantedCrop* GetCrop() { return _crop; }
+	//PlantedCrop* GetCrop() { return _crop; }
 
 	void OnStart() override;
 	void OnUpdate() override;
 	void OnEnd() override;
 
 private:
-	PlantedCrop* _crop;
+	//PlantedCrop* _crop;
 	bool _isOccupied;
 };
 

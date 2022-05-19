@@ -60,6 +60,7 @@ void FarmScene::UpdateObjects()
 
 		glm::vec2 tilePlayerIsOnPos = { _pTilemap->GetTileAtWorldPos(0, midPoint)->colXPos, _pTilemap->GetTileAtWorldPos(0, midPoint)->colYPos };
 			
+		// Make sure we dont put farmland on already existing farmland
 		for (GameObject* cropPlotObject : _pCropPlotObjects)
 		{
 			// Check if there is already plot land here
@@ -72,16 +73,28 @@ void FarmScene::UpdateObjects()
 		// Get the tile position within world space
 		if (!plotAlreadyInTile)
 		{
+			//_pTilemap->AddTileAt(2, 6, 11, CameraManager::CurrentCamera());
+			
 			_pCropPlotBaseObject = new GameObject("CropPlot");
 			_pCropPlotBaseObject->AddComponent(new CropPlot(_pCropPlotBaseObject));
-			_pTilemap->AddTileAt(2, 6, 11, CameraManager::CurrentCamera());
 			_pCropPlotBaseObject->GetTransform()->SetPosition(tilePlayerIsOnPos);
 			_pCropPlotBaseObject->GetTransform()->SetScale(glm::vec2(0.25f, 0.25f));
 			_pCropPlotBaseObject->AddComponent(new BoxColliderComponent(_pCropPlotBaseObject));
-			//_pCropPlotBaseObject->AddComponent(new SpriteComponent(_pCropPlotBaseObject))->SetSprite(ResourceManager::GetSpriteSheet("swords")->GetSpriteAtIndex(3));
-			_pCropPlotObjects.push_back(_pCropPlotBaseObject);
+			//_pCropPlotBaseObject->AddComponent(ResourceManager::GetTexture("swords"));
+			SpriteComponent* sprite = _pCropPlotBaseObject->AddComponent(new SpriteComponent(_pCropPlotBaseObject));
+			sprite->SetSprite(ResourceManager::GetSpriteSheet("testSheet")->GetSpriteAtIndex(130));
 
+			_pCropPlotObjects.push_back(_pCropPlotBaseObject);
 			AddGameObject(_pCropPlotBaseObject);
+
+
+			GameObject* plantObject = new GameObject("Plant");
+			SpriteComponent* s = plantObject->AddComponent(new SpriteComponent(plantObject));
+			s->SetSprite(ResourceManager::GetSpriteSheet("testSheet")->GetSpriteAtIndex(24));
+			plantObject->SetParent(_pCropPlotBaseObject);
+			plantObject->GetTransform()->SetScale(glm::vec2(0.25f, 0.25f));
+			AddGameObject(plantObject);
+
 		}
 	}
 
@@ -92,7 +105,7 @@ void FarmScene::UpdateObjects()
 
 	if (Input::IsKeyDown(KEY_H))
 	{
-		// Make sure we dont put farmland on already existing farmland
+		
 		for (GameObject* cropPlot : _pCropPlotObjects)
 		{
 			glm::vec2 playerPos = _pPlayerObject->GetTransform()->GetPosition();
@@ -106,9 +119,13 @@ void FarmScene::UpdateObjects()
 				CropPlot* cropPlotComponent = cropPlot->GetComponent<CropPlot>();
 				if (!cropPlotComponent->IsOccupied())
 				{
-					// TODO here we want the user to have the seeds in their inventory to then plant the corresponding crop
+					// TODO here we want the user to have the seeds in their 
+					// inventory to then plant the corresponding crop
 
-					cropPlotComponent->Plant(CropResourceType::Wheat);
+					//cropPlotComponent->Plant(CropResourceType::Wheat);
+
+					cropPlot->AddComponent(new PlantedCrop(cropPlot, CropResourceType::Wheat, 2));
+					_pTilemap->AddTileAt(2, 8, 2, CameraManager::CurrentCamera());
 					std::cout << "Succesfully planted crop!" << std::endl;
 				}
 			}
