@@ -54,6 +54,8 @@ void FarmScene::UpdateObjects()
 
 void FarmScene::InitScene()
 {
+	Scene::InitScene();
+
 	_listOfGameObjects.clear();
 	_listOfDrawableGameObjects.clear();
 

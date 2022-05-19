@@ -5,6 +5,7 @@
 #include "Transform.h"
 #include "Core.h"
 #include "ResourceNode.h"
+#include "PlayerResourceManager.h"
 
 void PlayerInputComponent::OnStart()
 {
@@ -49,9 +50,21 @@ void PlayerInputComponent::OnUpdate()
 	}
 
 	if (_pNearbyResourceNode != nullptr) {
-		if (Input::IsKeyDown(KEY_E)) {
+		if (Input::IsMouseButtonDown(BUTTON_1)) {
 			_pNearbyResourceNode->Interact();
 		}
+	}
+
+	if (Input::IsKeyDown(KEY_R)) {
+		int goldAmount = PlayerResourceManager::GetCoreResource(CoreResourceType::Gold)->GetAmount();
+		int woodAmount = PlayerResourceManager::GetCoreResource(CoreResourceType::Wood)->GetAmount();
+		int metalAmount = PlayerResourceManager::GetCoreResource(CoreResourceType::Metal)->GetAmount();
+		int stoneAmount = PlayerResourceManager::GetCoreResource(CoreResourceType::Stone)->GetAmount();
+
+		TIM_LOG_LOG("Gold: " << goldAmount);
+		TIM_LOG_LOG("Wood: " << woodAmount);
+		TIM_LOG_LOG("Metal: " << metalAmount);
+		TIM_LOG_LOG("Stone: " << stoneAmount);
 	}
 }
 
