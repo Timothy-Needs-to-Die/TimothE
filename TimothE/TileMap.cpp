@@ -133,6 +133,9 @@ void TileMap::LoadTileMap()
 					std::string resourceName = s3;
 					_tileArr[layer][i]._pSpritesheet = ResourceManager::GetSpriteSheet(resourceName);
 				}
+				else {
+					_tileArr[layer][i]._pSpritesheet = ResourceManager::GetSpriteSheet("spritesheet");
+				}
 				int index = std::stoi(s1);
 
 				bool collidable = std::stoi(s2);
