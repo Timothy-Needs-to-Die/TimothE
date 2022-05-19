@@ -17,7 +17,6 @@ public:
 	// returns true on the first frame that it turns night
 	bool NightStart();
 
-	void SetDayLength(float length) { _dayLength = length; }
 	float GetDayLength() { return _dayLength; }
 
 	void SetTime(float time) { _currentTime = time; }
@@ -28,6 +27,7 @@ public:
 	void SetWaveController(WaveController* newWaveController) { _pWaveController = newWaveController; }
 
 private:
+	void UpdateDayLength();
 	void StartWave();
 
 	float _dayLength = 5.0f;
