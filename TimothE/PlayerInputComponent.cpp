@@ -81,6 +81,15 @@ void PlayerInputComponent::NearbyResourceNode(class ResourceNode* nearbyResource
 void PlayerInputComponent::OnTriggerEnter(ColliderBase* other)
 {
 	if (other->GetParent()->GetTag() == "RESOURCE_NODE") {
+		TIM_LOG_LOG("OnTriggerEnter");
 		_pNearbyResourceNode = other->GetParent()->GetComponent<ResourceNode>();
+	}
+}
+
+void PlayerInputComponent::OnTriggerExit(ColliderBase* other)
+{
+	if (other->GetParent()->GetTag() == "RESOURCE_NODE") {
+		TIM_LOG_LOG("OnTriggerExit");
+		_pNearbyResourceNode = nullptr;
 	}
 }

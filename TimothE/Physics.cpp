@@ -2,6 +2,7 @@
 
 std::vector<ColliderBase*> Physics::_pColliders = std::vector<ColliderBase*>();
 std::vector<ColliderBase*> Physics::_pCollidersToRemove = std::vector<ColliderBase*>();
+std::vector<std::pair<ColliderBase*, ColliderBase*>> Physics::_collidingBodies = std::vector<std::pair<ColliderBase*, ColliderBase*>>();
 
 void Physics::AddCollider(ColliderBase* collider)
 {
@@ -39,39 +40,22 @@ bool Physics::Intersects(BoxColliderComponent* b1, BoxColliderComponent* b2)
 			float yOverlap = r1Extents + r2Extents - abs(n.y);
 
 			if (yOverlap > 0) {
-				if (n.x < 0) {
-					col.collisionNormal = { -1.0f,0.0f };
-				}
-				else {
-					col.collisionNormal = { 0.0f,0.0f };
-				}
+				col.collisionNormal = n.x < 0 ? glm::vec2(-1.0f, 0.0f) : glm::vec2(1.0f, 0.0f);
 				col.penetration = xOverlap;
 			}
 			else
 			{
-				if (n.y < 0) {
-					col.collisionNormal = { 0.0f,-1.0f };
-				}
-				else
-				{
-					col.collisionNormal = { 0.0f,1.0f };
-				}
+				col.collisionNormal = n.y < 0 ? glm::vec2{0.0f, -1.0f} : glm::vec2{0.0f, 1.0f};
 				col.penetration = yOverlap;
 			}
-
-			HandleCollision(b1, b2);
 		}
 		else {
-			if (b1->IsTrigger()) {
-				b1->GetParent()->OnTriggerEnter(b2);
-			}
-			if (b2->IsTrigger()) {
-				b2->GetParent()->OnTriggerEnter(b1);
-			}
+			HandleCollision(b1, b2);
 		}
 
 		return true;
 	}
+	HandleNoCollision(b1, b2);
 	return false;
 }
 
@@ -104,16 +88,12 @@ bool Physics::Intersects(CircleColliderComponent* c1, CircleColliderComponent* c
 	float resultingRadius = c1->GetRadius() + c2->GetRadius();
 
 	if (distance < resultingRadius) {
-		if (c1->IsTrigger()) {
-			c1->GetParent()->OnTriggerEnter(c2);
-		}
-		if (c2->IsTrigger()) {
-			c2->GetParent()->OnTriggerEnter(c1);
-		}
+		HandleCollision(c1, c2);
 
 		return true;
 	}
 
+	HandleNoCollision(c1, c2);
 	return false;
 }
 
@@ -150,16 +130,12 @@ bool Physics::Intersects(CircleColliderComponent* c1, BoxColliderComponent* b1)
 	float d = dX * dX + dY * dY;
 
 	if (d < c1->GetRadius() * c1->GetRadius()) {
-		if (c1->IsTrigger()) {
-			c1->GetParent()->OnTriggerEnter(b1);
-		}
-		if (b1->IsTrigger()) {
-			b1->GetParent()->OnTriggerEnter(c1);
-		}
+		HandleCollision(c1, b1);
 
 		return true;
 	}
 	
+	HandleNoCollision(c1, b1);
 	return false;
 }
 
@@ -179,14 +155,40 @@ bool Physics::Intersects(CircleColliderComponent* c1, glm::vec2 point)
 	return false;
 }
 
-void Physics::HandleCollision(ColliderBase* c1, ColliderBase* c2)
-{
-}
-
-
 bool Physics::Intersects(glm::vec2 p, BoxColliderComponent* b1)
 {
 	return Intersects(b1, p);
+}
+
+void Physics::HandleCollision(ColliderBase* c1, ColliderBase* c2 /*= nullptr*/)
+{
+	std::vector<std::pair<ColliderBase*, ColliderBase*>>::iterator it = std::find(_collidingBodies.begin(), _collidingBodies.end(), std::make_pair(c1, c2));
+	if (it == _collidingBodies.end()) {
+		_collidingBodies.emplace_back(std::make_pair(c1, c2));
+
+		if (c1->IsTrigger()) {
+			c1->GetParent()->OnTriggerEnter(c2);
+		}
+		if (c2->IsTrigger()) {
+			c2->GetParent()->OnTriggerEnter(c1);
+		}
+	}
+}
+
+void Physics::HandleNoCollision(ColliderBase* c1, ColliderBase* c2)
+{
+	std::vector<std::pair<ColliderBase*, ColliderBase*>>::iterator it = std::find(_collidingBodies.begin(), _collidingBodies.end(), std::make_pair(c1, c2));
+	if (it != _collidingBodies.end()) {
+		if (c1->IsTrigger()) {
+			c1->GetParent()->OnTriggerExit(c2);
+		}
+
+		if (c2->IsTrigger()) {
+			c2->GetParent()->OnTriggerExit(c1);
+		}
+
+		_collidingBodies.erase(it);
+	}
 }
 
 void Physics::UpdateWorld()

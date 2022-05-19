@@ -43,7 +43,6 @@ void ResourceManager::Init()
 	ResourceManager::InstantiateShader("default", new Shader("VertexShader.vert", "FragmentShader.frag"));
 
 	//LOAD SCENES
-	ResourceManager::InstantiateScene("CurrentScene", new Scene("Default"));
 	ResourceManager::InstantiateScene("FarmScene", new FarmScene("FarmScene"));
 	ResourceManager::InstantiateScene("TownScene", new TownScene("TownScene"));
 

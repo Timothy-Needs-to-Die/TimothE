@@ -1,20 +1,9 @@
 #include "SceneManager.h"
 
-//TODO: Add error statments and such to this class
-//TODO: Document this file
 
 void SceneManager::Init()
 {
 
-}
-
-Scene* SceneManager::CreateScene(std::string name)
-{
-	Scene* newScene = new Scene(name);
-
-	_scenes[name] = newScene;
-	
-	return newScene;
 }
 
 Scene* SceneManager::CreateScene(Scene* scene)
