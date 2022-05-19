@@ -8,15 +8,16 @@
 #include "TileMap.h"
 #include "Physics.h"
 #include "MovementComponent.h"
+#include "Fighter.h"
 
 
-class PlayerMovement : public Component
+class PlayerInputComponent : public Component
 {
 public:
-	COMPONENT_STATIC_TYPE(PlayerMovement);
+	COMPONENT_STATIC_TYPE(PlayerInput);
 
-	PlayerMovement(GameObject* parent) : Component(parent) {
-		SetType(Types::PlayerMovement);
+	PlayerInputComponent(GameObject* parent) : Component(parent) {
+		SetType(Types::PlayerInput);
 	}
 
 	void SetTileMap(TileMap* pTileMap) {
@@ -28,8 +29,14 @@ public:
 	virtual void OnUpdate() override;
 	virtual void OnEnd() override;
 
+	void NearbyResourceNode(class ResourceNode* nearbyResource);
+
+	virtual void OnTriggerEnter(ColliderBase* other) override;
 private:
 	TileMap* _pTileMap;
-	MovementComponent* _pMovement;
+	MovementComponent* _pMovement = nullptr;
+	Fighter* _pFighter = nullptr;
+
+	class ResourceNode* _pNearbyResourceNode = nullptr;
 };
 

@@ -31,32 +31,32 @@ public:
 	static void Set3DListenerAttributes(FMOD_VECTOR position, FMOD_VECTOR vel, FMOD_VECTOR forward, FMOD_VECTOR up);
 
 	// == Grouping and Group Controls == //
-	FMOD::ChannelGroup* CreateChanellGroup(const char* name);
-	void SetChannelGroup(FMOD::Channel* channelToSet, FMOD::ChannelGroup* groupToSet);
-	void AddChildGroup(FMOD::ChannelGroup* parentGroup, FMOD::ChannelGroup* childGroup);
-	FMOD::ChannelGroup* GetMasterGroup(FMOD::ChannelGroup* masterGroupObject);
-	void StopGroup(FMOD::ChannelGroup* group);
-	void ToggleGroupMute(FMOD::ChannelGroup* group);
-	void ToggleGroupPause(FMOD::ChannelGroup* group);
-	void SetGroupVolume(FMOD::ChannelGroup* group, float value);
-	void SetGroupPitch(FMOD::ChannelGroup* group, float value);
+	static FMOD::ChannelGroup* CreateChanellGroup(const char* name);
+	static void SetChannelGroup(FMOD::Channel* channelToSet, FMOD::ChannelGroup* groupToSet);
+	static void AddChildGroup(FMOD::ChannelGroup* parentGroup, FMOD::ChannelGroup* childGroup);
+	static FMOD::ChannelGroup* GetMasterGroup(FMOD::ChannelGroup* masterGroupObject);
+	static void StopGroup(FMOD::ChannelGroup* group);
+	static void ToggleGroupMute(FMOD::ChannelGroup* group);
+	static void ToggleGroupPause(FMOD::ChannelGroup* group);
+	static void SetGroupVolume(FMOD::ChannelGroup* group, float value);
+	static void SetGroupPitch(FMOD::ChannelGroup* group, float value);
 
 	// == Core Functionality == // 
 
-	FMOD::Sound* CreateAudioStream(const char* filePath);
-	void LoadSound(const char* name, const char* filePath, AudioType type);
+	static FMOD::Sound* CreateAudioStream(const char* filePath);
+	static void LoadSound(const char* name, const char* filePath, AudioType type);
 	static FMOD::Channel* PlaySound(std::string soundName, float minVolume, float maxVolume, float minPitch, float maxPitch);
-	void StopSongs();
+	static void StopSongs();
 	static void TogglePaused(FMOD::Channel* channel);
 	static void SetVolume(FMOD::Channel* channel, float value);
 
 	//Audio Modification
 	float ChangeOctave(float frequency, float ammount);
 	static float ChangeSemitone(float frequency, float ammount);
-	void SetPanning(FMOD::Channel* channel, float ammount);
-	void SetMasterVolume(float volume);
-	void SetSFXVolume(float volume);
-	void SetMusicVolume(float volume);
+	static void SetPanning(FMOD::Channel* channel, float ammount);
+	static void SetMasterVolume(float volume);
+	static void SetSFXVolume(float volume);
+	static void SetMusicVolume(float volume);
 	static enum FadeState { Fade_None, Fade_In, Fade_Out };
 
 private:
@@ -66,7 +66,7 @@ private:
 	//Song stuff
 	static FMOD::Channel* _currentSongChannel;
 	static const char* _currentSongPath;
-	SoundStruct _nextSong;
+	static SoundStruct _nextSong;
 
 
 	static FadeState fade;

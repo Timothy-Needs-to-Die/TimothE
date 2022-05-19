@@ -40,12 +40,12 @@ void Input::SetMousePosition(float x, float y)
 
 bool Input::IsKeyDown(TimothEKeyCode keycode)
 {
-	return _pKeyArr[keycode] == GLFW_PRESS || _pKeyArr[keycode] == GLFW_REPEAT;
+	return _pKeyArr[keycode] == GLFW_PRESS;
 }
 
 bool Input::IsKeyHeld(TimothEKeyCode keycode)
 {
-	return _pKeyArr[keycode] == GLFW_REPEAT;
+	return _pKeyArr[keycode] == GLFW_REPEAT || _pKeyArr[keycode] == GLFW_PRESS;
 }
 
 bool Input::IsKeyUp(TimothEKeyCode keycode)

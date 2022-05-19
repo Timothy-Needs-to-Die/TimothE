@@ -8,18 +8,10 @@
 #include "Serializable.h"
 #include "BoxColliderComponent.h"
 #include "ParticleSystem.h"
+#include "Tag.h"
 
 class Texture2D;
 class Scene;
-
-enum class ObjectType
-{
-	Player,
-	Enemy,
-	NPC,
-	PickUp,
-	UI
-};
 
 class GameObject : public ISerializable
 {
@@ -27,7 +19,7 @@ public:
 	//////////////////////////
 	//Constructor/Destructor//
 	//////////////////////////
-	GameObject(std::string name = "New GameObject", ObjectType tag = ObjectType::Player, Transform* transform = nullptr);
+	GameObject(std::string name, std::string tag = "UNTAGGED");
 	~GameObject();
 
 	/////////////
@@ -37,43 +29,28 @@ public:
 	virtual void Update();
 	virtual void Exit();
 
-public:
-	///////////////////////
-	//Data Initialisation//
-	///////////////////////
-	void LoadTexture(Texture2D* texture);
-
 	/////////////////////
 	//Display Functions//
 	/////////////////////
 	void DisplayInEditor();
 
-public:
 	//////////////////////////
 	//Get Unique Identifiers//
 	//////////////////////////
 	std::string GetUID() { return _UID; }
 	std::string GetName() { return _name; }
-	ObjectType GetType() { return _tag; }
-	int GetTextureID() { return _textureID; }
-	int GetShaderID() { return _shaderID; }
+	std::string GetTag() { return _tag; }
 
 	//////////////////////////
 	//Set Unique Identifiers//
 	//////////////////////////
 	void SetName(std::string name);
-	void SetType(ObjectType tag);
 
 	////////////////////////
 	//Get Ownership States//
 	////////////////////////
 	GameObject* GetParent() { return _pParent; };
 	GameObject* GetChild() { return _pChild; };
-
-
-	ObjectType GetObjectType() const { return _tag; }
-	ObjectType SetObjectType(ObjectType type) { _tag = type; }
-
 
 	////////////////////////
 	//Set Ownership States//
@@ -83,13 +60,12 @@ public:
 
 
 	void AddedComponent(Component* comp);
-public:
+
 	//////////////////
 	//Get Components//
 	//////////////////
 	std::vector<Component*> GetComponents() { return _pComponents; }
 	Transform* GetTransform() { return _pTransform; }
-	Shader* GetShader() const { return _pShader; }
 
 	////////////////////////
 	//Get Child Components//
@@ -107,12 +83,6 @@ public:
 	//Swap Components//
 	///////////////////
 	void SwapComponents(int index1, int index2);
-
-	//////////////////
-	//Set Components//
-	//////////////////
-	void SetShader(int id) { _shaderID = id; };
-	void SetShader(std::string name);
 
 	////////////////////////////
 	//Component Get/Add/Remove//
@@ -146,21 +116,31 @@ public:
 
 	void RemoveComponent(Component* comp);
 
-public:
 	///////////////////////////////
 	//Inherited via ISerializable//
 	///////////////////////////////
 	virtual bool SaveState(IStream& stream) const override;
 	virtual bool LoadState(IStream& stream) override;
+
+
+	virtual void OnTriggerEnter(ColliderBase* other);
+	virtual void OnColliderEnter(ColliderBase* other);
+
+
 private:
 	///////////////////////////////////
 	//Properties (Unique Identifiers)//
 	///////////////////////////////////
 	std::string _UID;
 	std::string _name;
-	ObjectType _tag;
-	int _textureID = 0;
-	int _shaderID = 0;
+	std::string _tag;
+
+protected:
+	//////////////
+	//Components//
+	//////////////
+	std::vector<Component*> _pComponents;
+	Transform* _pTransform;
 
 	/////////////
 	//Ownership//
@@ -168,15 +148,5 @@ private:
 	GameObject* _pParent = nullptr;
 	GameObject* _pChild = nullptr;
 
-	//////////////
-	//Components//
-	//////////////
-	std::vector<Component*> _pComponents;
-	Transform* _pTransform;
-
-	///////////
-	//Shaders//
-	///////////
-	Shader* _pShader;
-	std::string _shaderName;
+	virtual void UniqueLogic();
 };
