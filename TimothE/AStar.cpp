@@ -119,6 +119,7 @@ bool AStar::FindPath()
 			}
 			if (dist == 0)
 			{
+				mEndNode = nodeNeighbor;
 				pathFound = true;
 
 			}
@@ -143,9 +144,9 @@ void AStar::ProcessDirections()
 			{
 
 				//parent node check here
-				if (previousNode->parentNode.y == 10000 || previousNode->parentNode.x == 10000)
+				if (previousNode->parentNode.y == ERROR_PATH_POSITION || previousNode->parentNode.x == ERROR_PATH_POSITION)
 				{
-					//break;
+					break;
 				}
 				
 				//adds the node to the path of nodes

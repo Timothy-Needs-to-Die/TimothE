@@ -7,6 +7,8 @@
 #include <glm.hpp>
 #include "TileMap.h"
 
+#define ERROR_PATH_POSITION -1
+
 /// <summary>
 /// The Node struct is used to represent the information of a cell in the maze
 /// </summary>
@@ -31,7 +33,7 @@ struct Node {
 	//A vector containing all of the nodes in the maze level
 	std::vector<Node*> neighborNodes;
 	//A pointer to the neighbor node that is closest to the start node
-	glm::vec2 parentNode = {10000, 10000};
+	glm::vec2 parentNode = { ERROR_PATH_POSITION, ERROR_PATH_POSITION };
 };
 
 class AStar
