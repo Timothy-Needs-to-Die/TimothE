@@ -1,6 +1,8 @@
 #pragma once
 #include <map>
+#include <unordered_map>
 #include "PlayerResource.h"
+#include "ItemResourceType.h"
 
 
 static class PlayerResourceManager
@@ -12,12 +14,12 @@ public:
 	//Gets the desired resource enabling you to access the functions of PlayerResource
 	static PlayerResource* GetCoreResource(CoreResourceType type);
 	static PlayerResource* GetPlantResource(PlantResourceType type);
-	static PlayerResource* GetHotbarItem(HotbarItem item);
+	//static PlayerResource* GetHotbarItem(HotbarItem item);
 
 private:
-	static std::map<CoreResourceType, PlayerResource> _coreResourceMap;
-	static std::map<PlantResourceType, PlayerResource> _plantResourceMap;
-	static std::map<HotbarItem, PlayerResource> _hotbarItemMap; 
+	static std::unordered_map<CoreResourceType, PlayerResource> _coreResourceMap;
+	static std::unordered_map<PlantResourceType, PlayerResource> _plantResourceMap;
+	//static std::unordered_map<HotbarItem, PlayerResource> _hotbarItemMap; 
 
 }; 
 

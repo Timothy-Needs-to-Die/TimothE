@@ -21,8 +21,8 @@ public:
 	void OnNewDay();
 
 
-	void OnBuy(ItemConfig item, PlantResourceType type, int ammount);
-	void OnBuy(ItemConfig item, HotbarItem type, int ammount);
+	void OnBuy(ItemConfig item, PlantResourceType type, int amount);
+	//void OnBuy(ItemConfig item, HotbarItem type, int amount);
 
 	void OnSell();
 	void UpdateUI();
@@ -31,7 +31,7 @@ public:
 
 	void SetTraderConfig(TraderConfig config);
 private:
-	void GenerateDailyGoldAmmount();
+	void GenerateDailyGoldamount();
 	TraderConfig _config; 
 
 	int _traderLevel;

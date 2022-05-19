@@ -17,31 +17,31 @@ BaseTrader::~BaseTrader()
 
 void BaseTrader::OnNewDay()
 {
-	GenerateDailyGoldAmmount();
+	GenerateDailyGoldamount();
 }
 
+//
+//void BaseTrader::OnBuy(ItemConfig item, PlantResourceType type, int amount)
+//{
+//	if (PlayerResourceManager::GetPlantResource(type)->CanAfford(item.price * amount)) {
+//		PlayerResourceManager::GetPlantResource(type)->GainResource(amount);
+//		std::cout << "[LOG: BaseTrader::OnBuy: Item bought by player" << std::endl;
+//	}
+//	else {
+//		std::cout << "[LOG: BaseTrader::OnBuy: Player can not afford item" << std::endl; 
+//	}
+//}
 
-void BaseTrader::OnBuy(ItemConfig item, PlantResourceType type, int ammount)
-{
-	if (PlayerResourceManager::GetPlantResource(type)->CanAfford(item.price * ammount)) {
-		PlayerResourceManager::GetPlantResource(type)->GainResource(ammount);
-		std::cout << "[LOG: BaseTrader::OnBuy: Item bought by player" << std::endl;
-	}
-	else {
-		std::cout << "[LOG: BaseTrader::OnBuy: Player can not afford item" << std::endl; 
-	}
-}
-
-void BaseTrader::OnBuy(ItemConfig item, HotbarItem type, int ammount)
-{
-	if (PlayerResourceManager::GetHotbarItem(type)->CanAfford(item.price * ammount)) {
-		PlayerResourceManager::GetHotbarItem(type)->GainResource(ammount);
-		std::cout << "[LOG: BaseTrader::OnBuy: Item bought by player" << std::endl;
-	}
-	else {
-		std::cout << "[LOG: BaseTrader::OnBuy: Player can not afford item" << std::endl; 
-	}
-}
+//void BaseTrader::OnBuy(ItemConfig item, HotbarItem type, int amount)
+//{
+//	if (PlayerResourceManager::GetHotbarItem(type)->CanAfford(item.price * amount)) {
+//		PlayerResourceManager::GetHotbarItem(type)->GainResource(amount);
+//		std::cout << "[LOG: BaseTrader::OnBuy: Item bought by player" << std::endl;
+//	}
+//	else {
+//		std::cout << "[LOG: BaseTrader::OnBuy: Player can not afford item" << std::endl; 
+//	}
+//}
 
 void BaseTrader::OnSell()
 {
@@ -63,6 +63,6 @@ void BaseTrader::SetTraderConfig(TraderConfig config)
 
 }
 
-void BaseTrader::GenerateDailyGoldAmmount()
+void BaseTrader::GenerateDailyGoldamount()
 {
 }

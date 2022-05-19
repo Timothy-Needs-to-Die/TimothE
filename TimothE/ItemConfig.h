@@ -1,17 +1,16 @@
 #pragma once
-
 #include <string>
+#include "Sprite.h"
 
 
 struct ItemConfig
 {
-	Type type;
-	float price;
-	std::string name; 
+	ItemConfig() = default;
+	ItemConfig(const ItemConfig&) {};
+	std::string name;
+	std::string description;
+	Sprite icon;
+	
 
 };
 
-enum Type {
-	hotbar,
-	plant
-};

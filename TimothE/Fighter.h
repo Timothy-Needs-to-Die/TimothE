@@ -7,10 +7,10 @@
 class Fighter : public Component
 {
 public:
-	COMPONENT_STATIC_TYPE(FighterType);
+	COMPONENT_STATIC_TYPE(Fighter_Type);
 
 	Fighter(GameObject* pOwner) : Component(pOwner) {
-		SetType(Component::Types::FighterType);
+		SetType(Component::Types::Fighter_Type);
 	}
 
 	void SetWeaponConfig(const WeaponConfig& config) {

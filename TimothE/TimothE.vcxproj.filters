@@ -341,6 +341,12 @@
     </ClInclude>
     <ClInclude Include="Character.h" />
     <ClInclude Include="Player.h" />
+    <ClInclude Include="CoreResourceType.h" />
+    <ClInclude Include="PlayerResource.h" />
+    <ClInclude Include="PurchaseableConfig.h" />
+    <ClInclude Include="ToolConfig.h" />
+    <ClInclude Include="SellableConfig.h" />
+    <ClInclude Include="CropConfig.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="AStar.cpp">
@@ -551,5 +557,6 @@
     </ClCompile>
     <ClCompile Include="Character.cpp" />
     <ClCompile Include="Player.cpp" />
+    <ClCompile Include="PlayerResource.cpp" />
   </ItemGroup>
 </Project>

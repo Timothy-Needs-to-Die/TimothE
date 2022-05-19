@@ -83,12 +83,10 @@
     <ClInclude Include="AStar.h" />
     <ClInclude Include="AnimatedSpritesheet.h" />
     <ClInclude Include="Application.h" />
-    
     <ClInclude Include="BaseTrader.h" />
     <ClInclude Include="ItemConfig.h" />
     <ClInclude Include="PlayerResource.h" />
     <ClInclude Include="CoreResourceType.h" />
-
     <ClInclude Include="AudioEngine.h" />
     <ClInclude Include="AudioSource.h" />
     <ClInclude Include="BoxColliderComponent.h" />
@@ -151,8 +149,11 @@
     <ClInclude Include="PlayerInputComponent.h" />
     <ClInclude Include="PlayerResource.h" />
     <ClInclude Include="PlayerResourceManager.h" />
+    <ClInclude Include="PurchaseableConfig.h" />
     <ClInclude Include="Quad.h" />
     <ClInclude Include="ResourceManager.h" />
+    <ClInclude Include="CropConfig.h" />
+    <ClInclude Include="SellableConfig.h" />
     <ClInclude Include="SOIL\SOIL2.h" />
     <ClInclude Include="SOIL\image_DXT.h" />
     <ClInclude Include="SOIL\image_helper.h" />
@@ -187,6 +188,7 @@
     <ClInclude Include="TileMapEditor.h" />
     <ClInclude Include="Time.h" />
     <ClInclude Include="TimothEInputCodes.h" />
+    <ClInclude Include="ToolConfig.h" />
     <ClInclude Include="TownScene.h" />
     <ClInclude Include="TraderConfig.h" />
     <ClInclude Include="Transform.h" />

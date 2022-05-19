@@ -51,9 +51,9 @@ public:
 	static void SetVolume(FMOD::Channel* channel, float value);
 
 	//Audio Modification
-	float ChangeOctave(float frequency, float ammount);
-	static float ChangeSemitone(float frequency, float ammount);
-	static void SetPanning(FMOD::Channel* channel, float ammount);
+	float ChangeOctave(float frequency, float amount);
+	static float ChangeSemitone(float frequency, float amount);
+	static void SetPanning(FMOD::Channel* channel, float amount);
 	static void SetMasterVolume(float volume);
 	static void SetSFXVolume(float volume);
 	static void SetMusicVolume(float volume);
