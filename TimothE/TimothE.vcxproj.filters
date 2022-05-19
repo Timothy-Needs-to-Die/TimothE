@@ -111,9 +111,6 @@
     <ClInclude Include="CoreResourceType.h">
       <Filter>Headers</Filter>
     </ClInclude>
-    <ClInclude Include="CropPlot.h">
-      <Filter>Headers</Filter>
-    </ClInclude>
     <ClInclude Include="CropsConfig.h">
       <Filter>Headers</Filter>
     </ClInclude>
@@ -127,9 +124,6 @@
       <Filter>Headers</Filter>
     </ClInclude>
     <ClInclude Include="FarmScene.h">
-      <Filter>Headers</Filter>
-    </ClInclude>
-    <ClInclude Include="FarmlandManager.h">
       <Filter>Headers</Filter>
     </ClInclude>
     <ClInclude Include="Fighter.h">
@@ -199,9 +193,6 @@
       <Filter>Headers</Filter>
     </ClInclude>
     <ClInclude Include="PlantResourceType.h">
-      <Filter>Headers</Filter>
-    </ClInclude>
-    <ClInclude Include="PlantedCrop.h">
       <Filter>Headers</Filter>
     </ClInclude>
     <ClInclude Include="Player.h">
@@ -419,9 +410,6 @@
     <ClCompile Include="Core\Graphics\Window.cpp">
       <Filter>Source</Filter>
     </ClCompile>
-    <ClCompile Include="CropPlot.cpp">
-      <Filter>Source</Filter>
-    </ClCompile>
     <ClCompile Include="Day.cpp">
       <Filter>Source</Filter>
     </ClCompile>
@@ -429,9 +417,6 @@
       <Filter>Source</Filter>
     </ClCompile>
     <ClCompile Include="FarmScene.cpp">
-      <Filter>Source</Filter>
-    </ClCompile>
-    <ClCompile Include="FarmlandManager.cpp">
       <Filter>Source</Filter>
     </ClCompile>
     <ClCompile Include="Fighter.cpp">
@@ -489,9 +474,6 @@
       <Filter>Source</Filter>
     </ClCompile>
     <ClCompile Include="Physics.cpp">
-      <Filter>Source</Filter>
-    </ClCompile>
-    <ClCompile Include="PlantedCrop.cpp">
       <Filter>Source</Filter>
     </ClCompile>
     <ClCompile Include="Player.cpp">
