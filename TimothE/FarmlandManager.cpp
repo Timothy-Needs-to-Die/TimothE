@@ -7,65 +7,77 @@ FarmlandManager::FarmlandManager(std::string name, std::string tag) : GameObject
 
 void FarmlandManager::PlaceFarmLand(glm::vec2 position)
 {
-	
+	// Bool to check if a plot has been found
 	bool plotAlreadyOnTile = false;
 
+
 	// Make sure we dont put farmland on already existing farmland
-	for (GameObject* cropPlotObject : _pCropPlotObjects)
+	for (CropPlot* cropPlot : _pCropPlotObjects)
 	{
 		// Check if there is already plot land here
-		if (cropPlotObject->GetTransform()->GetPosition() == position)
+		if (GetCropPlotAtPosition(position) != nullptr)
 		{
 			plotAlreadyOnTile = true;
 		}
 	}
 
-	// Get the tile position within world space
+	glm::vec2 tilePlayerIsOnPos = { SceneManager::GetCurrentScene()->GetTileMap()->GetTileAtWorldPos(0, position)->colXPos, SceneManager::GetCurrentScene()->GetTileMap()->GetTileAtWorldPos(0, position)->colYPos };
+	// If there isnt any existing farmland on that plot
 	if (!plotAlreadyOnTile)
 	{
+		// Create the new plot
 		CropPlot* newCropPlot;
+		// Create the name with a different gameobject name
 		std::string gameObjectName = "Crop Plot " + _pCropPlotObjects.size();
 		newCropPlot = new CropPlot(gameObjectName);
-		//newCropPlot->AddComponent(new CropPlot(newCropPlot));
-		newCropPlot->GetTransform()->SetPosition(position);
+		// Put it in the correct place
+		newCropPlot->GetTransform()->SetPosition(tilePlayerIsOnPos);
 		newCropPlot->GetTransform()->SetScale(glm::vec2(0.25f, 0.25f));
+		// Add a collider for collisions
 		newCropPlot->AddComponent(new BoxColliderComponent(newCropPlot));
 		
+		// Add the sprite  - index needs to be changed at a later date currently uses temp sprites
 		SpriteComponent* sprite = newCropPlot->AddComponent(new SpriteComponent(newCropPlot));
 		sprite->SetSprite(ResourceManager::GetSpriteSheet("testSheet")->GetSpriteAtIndex(130));
 
+		// Add it to the managers list
 		_pCropPlotObjects.push_back(newCropPlot);
+		// Add it to the game object list
 		SceneManager::GetCurrentScene()->AddGameObject(newCropPlot);
-		std::cout << "Succesfully Created CropPlot: x:"<< position.x << " y:" << position.y << std::endl;
+		// Debug message
+		std::cout << "Succesfully Created CropPlot: x:"<< tilePlayerIsOnPos.x << " y:" << tilePlayerIsOnPos.y << std::endl;
 	}
 }
 
 void FarmlandManager::PlantSeed(glm::vec2 position, PlantResourceType cropType)
 {
-	//CropPlot* cp = static_cast<CropPlot*>(cropPlot);
+	// Get the crop plot from the position given
 	CropPlot* cropPlot = GetCropPlotAtPosition(position);
 
+	// If a crop plot has been found
 	if (cropPlot != nullptr)
 	{
+		// Check if it already has a plant
 		if (!cropPlot->IsOccupied())
 		{
-			// TODO here we want the user to have the seeds in their 
-			// inventory to then plant the corresponding crop
-
-			//cropPlotComponent->Plant(CropResourceType::Wheat);
-			// This is just an example!
-
+			// Create the plan
 			GameObject* plantObject = new GameObject("Plant");
-			//plantObject->GetTransform()->SetPosition(position);
+			// Set its correct W and H
 			plantObject->GetTransform()->SetScale(glm::vec2(0.25f, 0.25f));
+			// Make the plot its on its parent
 			plantObject->SetParent(cropPlot);
+
+			// Set the sprite
 			SpriteComponent* s = plantObject->AddComponent(new SpriteComponent(plantObject));
 			s->SetSprite(ResourceManager::GetSpriteSheet("testSheet")->GetSpriteAtIndex(24));
+			// The plot now has a plant on it so it is occupied
 			cropPlot->SetOccupied(true);
 
+			// Add it to the scenes gameobjects
 			SceneManager::GetCurrentScene()->AddGameObject(plantObject);
-			std::cout << "Succesfully Planted Crop: type:" << cropType << " x:" << position.x << " y:" << position.y << std::endl;
-
+			// Debug message
+			glm::vec2 finalPos = cropPlot->GetTransform()->GetPosition();
+			std::cout << "Succesfully Planted Crop: type:" << cropType << " x:" << finalPos.x << " y:" << finalPos.y << std::endl;
 		}
 	}
 }

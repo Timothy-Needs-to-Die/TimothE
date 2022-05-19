@@ -51,6 +51,8 @@ void FarmScene::UpdateObjects()
 	if (Input::IsKeyDown(KEY_G)) {
 		//_pTilemap->AddTileAt(2, 15, 12, CameraManager::CurrentCamera());
 	}
+
+	Physics::UpdateWorld();
 }
 
 void FarmScene::InitScene()
