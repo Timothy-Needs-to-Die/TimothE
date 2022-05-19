@@ -51,6 +51,8 @@ void FarmScene::UpdateObjects()
 	{
 		farmland->PlantSeed(_pPlayer->GetTransform()->GetPosition(), PlantResourceType::Wheat);
 	}
+
+	Physics::UpdateWorld();
 }
 
 void FarmScene::InitScene()

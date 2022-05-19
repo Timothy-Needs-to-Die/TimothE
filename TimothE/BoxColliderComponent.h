@@ -24,7 +24,7 @@ class BoxColliderComponent : public ColliderBase
 {
 public:
 
-	COMPONENT_STATIC_TYPE(Boxcollision_Type)
+	COMPONENT_STATIC_TYPE(Collider)
 		
 	// Constructor & Deconstructor
 	BoxColliderComponent(GameObject* parent);

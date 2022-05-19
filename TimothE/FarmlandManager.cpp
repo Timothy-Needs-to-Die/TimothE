@@ -10,16 +10,18 @@ void FarmlandManager::PlaceFarmLand(glm::vec2 position)
 	// Bool to check if a plot has been found
 	bool plotAlreadyOnTile = false;
 
+
 	// Make sure we dont put farmland on already existing farmland
-	for (GameObject* cropPlotObject : _pCropPlotObjects)
+	for (CropPlot* cropPlot : _pCropPlotObjects)
 	{
 		// Check if there is already plot land here
-		if (cropPlotObject->GetTransform()->GetPosition() == position)
+		if (GetCropPlotAtPosition(position) != nullptr)
 		{
 			plotAlreadyOnTile = true;
 		}
 	}
 
+	glm::vec2 tilePlayerIsOnPos = { SceneManager::GetCurrentScene()->GetTileMap()->GetTileAtWorldPos(0, position)->colXPos, SceneManager::GetCurrentScene()->GetTileMap()->GetTileAtWorldPos(0, position)->colYPos };
 	// If there isnt any existing farmland on that plot
 	if (!plotAlreadyOnTile)
 	{
@@ -29,7 +31,7 @@ void FarmlandManager::PlaceFarmLand(glm::vec2 position)
 		std::string gameObjectName = "Crop Plot " + _pCropPlotObjects.size();
 		newCropPlot = new CropPlot(gameObjectName);
 		// Put it in the correct place
-		newCropPlot->GetTransform()->SetPosition(position);
+		newCropPlot->GetTransform()->SetPosition(tilePlayerIsOnPos);
 		newCropPlot->GetTransform()->SetScale(glm::vec2(0.25f, 0.25f));
 		// Add a collider for collisions
 		newCropPlot->AddComponent(new BoxColliderComponent(newCropPlot));
@@ -43,7 +45,7 @@ void FarmlandManager::PlaceFarmLand(glm::vec2 position)
 		// Add it to the game object list
 		SceneManager::GetCurrentScene()->AddGameObject(newCropPlot);
 		// Debug message
-		std::cout << "Succesfully Created CropPlot: x:"<< position.x << " y:" << position.y << std::endl;
+		std::cout << "Succesfully Created CropPlot: x:"<< tilePlayerIsOnPos.x << " y:" << tilePlayerIsOnPos.y << std::endl;
 	}
 }
 
@@ -74,7 +76,8 @@ void FarmlandManager::PlantSeed(glm::vec2 position, PlantResourceType cropType)
 			// Add it to the scenes gameobjects
 			SceneManager::GetCurrentScene()->AddGameObject(plantObject);
 			// Debug message
-			std::cout << "Succesfully Planted Crop: type:" << cropType << " x:" << position.x << " y:" << position.y << std::endl;
+			glm::vec2 finalPos = cropPlot->GetTransform()->GetPosition();
+			std::cout << "Succesfully Planted Crop: type:" << cropType << " x:" << finalPos.x << " y:" << finalPos.y << std::endl;
 		}
 	}
 }

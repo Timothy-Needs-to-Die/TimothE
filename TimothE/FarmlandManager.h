@@ -36,10 +36,10 @@ public:
 	/// </summary>
 	/// <param name="pos"> Desired position </param>
 	/// <returns> Returns the cropplot if it exists, if not returns nullptr </returns>
-	CropPlot* GetCropPlotAtPosition(glm::vec2 pos)
+	CropPlot* GetCropPlotAtTruePosition(glm::vec2 pos)
 	{
 		// Debug message
-		std::cout << "Searching for CropPlot at: x:" << pos.x << " y:" << pos.y;
+		//std::cout << "Searching for CropPlot at: x:" << pos.x << " y:" << pos.y;
 
 		// Loop through all the existing CropPlots
 		for (CropPlot* go : _pCropPlotObjects)
@@ -48,12 +48,27 @@ public:
 			if (go->GetTransform()->GetPosition() == pos)
 			{
 				// Debug message
-				std::cout << " Success!" << std::endl;
+				//std::cout << " Success!" << std::endl;
 				return go;
 			}
 		}
 		// Debug message
-		std::cout << " Fail!" << std::endl;
+		//std::cout << " Fail!" << std::endl;
+		return nullptr;
+	}
+
+	CropPlot* GetCropPlotAtPosition(glm::vec2 pos)
+	{
+		//std::cout << "Searching for CropPlot at: x:" << pos.x << " y:" << pos.y;
+		for (CropPlot* go : _pCropPlotObjects)
+		{
+			if (go->GetComponent<BoxColliderComponent>()->IsPointInside(pos))
+			{
+				//std::cout << "Success!" << std::endl;
+				return go;
+			}
+		}
+		//std::cout << "Fail!" << std::endl;
 		return nullptr;
 	}
 
