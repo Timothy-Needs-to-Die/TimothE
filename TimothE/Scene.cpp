@@ -12,21 +12,12 @@
 #include "SpriteComponent.h"
 #include "Time.h"
 
-int Scene::nextID = 0;
 std::vector<GameObject*> Scene::_listOfGameObjects;
 std::vector<GameObject*> Scene::_listOfDrawableGameObjects;
 
 Scene::Scene(std::string name)
 {
-	_id = ++nextID;
 	_name = name;
-
-	InitScene();
-	//_pTilemap->SetSpriteSheet(_pSpritesheet);
-
-	//////////////////
-	//END OF TEST CODE
-	//////////////////
 }
 
 Scene::~Scene()
@@ -85,28 +76,6 @@ void Scene::Update()
 {
 	UpdateObjects();
 	UpdateUI();
-
-	/////////////
-	//TEST CODE//     BOX COLISSIONS
-	/////////////
-	//if (_listOfGameObjects[0]->GetComponent<BoxColliderComponent>()->Intersects(_listOfGameObjects[1]->GetComponent<BoxColliderComponent>()->GetCollisionRect()))
-	//{
-	//	std::cout << "Boxes are colliding" << std::endl;
-	//}
-	//glm::vec2 pos = _listOfGameObjects[1]->GetTransform()->GetPosition();
-	//if (Input::IsKeyDown(KEY_T))
-	//{
-	//	_listOfGameObjects[1]->GetTransform()->SetPosition(pos.x + 0.5, pos.y );
-	//}
-	//if (Input::IsKeyDown(KEY_G))
-	//{
-	//	_listOfGameObjects[1]->GetTransform()->SetPosition(pos.x - 0.5, pos.y );
-	//}
-	//Physics::Intersects(_pCircleTest->GetComponent<CircleCollider>(), _pTestObject2->GetComponent<BoxColliderComponent>());
-	//Physics::Intersects(_pTriggerBox->GetComponent<BoxColliderComponent>(), _pPlayer->GetComponent<BoxColliderComponent>());
-	//////////////////
-	//END OF TEST CODE
-	//////////////////
 }
 
 void Scene::UpdateUI()
@@ -159,9 +128,6 @@ void Scene::RenderScene(Camera* cam)
 		}
 	}
 
-	//Renderer2D::DrawQuad(_pPlayer->GetTransform()->GetRenderQuad(), ResourceManager::GetTexture("character"),
-	//	_pPlayer->GetComponent<SpriteComponent>()->GetSprite()->GetTexCoords());
-
 	Renderer2D::EndRender();
 }
 
@@ -178,17 +144,12 @@ void Scene::SceneBox()
 GameObject* Scene::AddGameObject(GameObject* gameObject)
 {
 	_listOfGameObjects.push_back(gameObject);
-	Physics::SetupScenePhysics();
 	return gameObject;
 }
 
 void Scene::RemoveGameObject(GameObject* gameObject)
 {
 	_gameObjectsToRemove.emplace_back(gameObject);
-	//Searches for the desired object and deletes it if it is found
-	//_listOfGameObjects.erase(std::find(_listOfGameObjects.begin(), _listOfGameObjects.end(), gameObject));
-	//delete gameObject;
-	//gameObject = nullptr;
 }
 
 void Scene::AddedComponentHandler(GameObject* gameObject, Component* comp)

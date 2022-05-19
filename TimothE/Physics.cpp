@@ -1,14 +1,19 @@
 #include "Physics.h"
 
-std::vector<ColliderBase*> Physics::colliders = std::vector<ColliderBase*>();
+std::vector<ColliderBase*> Physics::_pColliders = std::vector<ColliderBase*>();
+std::vector<ColliderBase*> Physics::_pCollidersToRemove = std::vector<ColliderBase*>();
 
-void Physics::SetupScenePhysics()
+void Physics::AddCollider(ColliderBase* collider)
 {
-	colliders = Scene::FindObjectsOfType<ColliderBase>();
-	std::cout << "No. Of Colliders: " << colliders.size() << std::endl;
-
-	if (colliders.size() == 1) return;
+	_pColliders.emplace_back(collider);
+	TIM_LOG_LOG("No of Colliders in scene: " << _pColliders.size());
 }
+
+void Physics::RemoveCollider(ColliderBase* collider)
+{
+	_pCollidersToRemove.emplace_back(collider);
+}
+
 
 bool Physics::Intersects(BoxColliderComponent* b1, BoxColliderComponent* b2)
 {
@@ -186,14 +191,14 @@ bool Physics::Intersects(glm::vec2 p, BoxColliderComponent* b1)
 
 void Physics::UpdateWorld()
 {
-	for (int i = 0; i < colliders.size(); ++i) {
-		ColliderBase* pColA = colliders[i];
+	for (int i = 0; i < _pColliders.size(); ++i) {
+		ColliderBase* pColA = _pColliders[i];
 		ColliderType aType = pColA->GetType();
 
-		for (int j = i; j < colliders.size(); ++j) {
+		for (int j = i; j < _pColliders.size(); ++j) {
 			if (j == i) continue;
 
-			ColliderBase* pColB = colliders[j];
+			ColliderBase* pColB = _pColliders[j];
 			ColliderType bType = pColB->GetType();
 
 			if (aType == Circle && bType == Circle) {
@@ -210,5 +215,11 @@ void Physics::UpdateWorld()
 			}
 		}
 	}
+
+	for (int i = 0; i < _pCollidersToRemove.size(); ++i) {
+		_pColliders.erase(std::find(_pColliders.begin(), _pColliders.end(), _pCollidersToRemove[i]));
+	}
+
+	_pCollidersToRemove.clear();
 }
 

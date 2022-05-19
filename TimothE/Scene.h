@@ -23,8 +23,6 @@ public:
 
 		_name = "DefaultScene";
 		_pTilemap = new TileMap("DefaultScene");
-		//Save();
-		InitScene();
 	}
 
 	Scene(std::string name);
@@ -147,11 +145,6 @@ protected:
 	std::vector<CropConfig> _cropConfigs;
 
 private:
-	//Stores an id for the scene
-	int _id;
-
-	//Stores the next id for the scene
-	static int nextID;
 
 protected:
 	//Stores a vector of game objects. This is refreshed every time a scene loads.

@@ -145,11 +145,6 @@ void TileMap::LoadTileMap()
 				int row = i / _mapInTiles.x;
 				int xIndex = i - (row * _mapInTiles.x);
 
-				if (collidable) {
-					std::cout << "Tile at X: " << xIndex << ", Y: " << row << std::endl;
-				}
-				//int xIndex = 
-
 				float xPos = (float)xIndex * _gapBetweenTiles;
 				float yPos = ((float)row * _gapBetweenTiles);
 				glm::vec2 colPos = glm::vec2(xPos, yPos);
@@ -188,8 +183,6 @@ void TileMap::LoadTileMap()
 
 void TileMap::AddTileAt(unsigned int layer, unsigned int uvX, unsigned int uvY, Camera* cam, SpriteSheet* sp, bool shouldCollide /*= false*/)
 {
-	//if (_pSpritesheet == nullptr) return;
-
 	glm::vec2 worldPos = MousePosToTile(cam);
 
 	int index = _mapInTiles.x * (int)(worldPos.y * _tilesPerUnit) + (int)(worldPos.x * _tilesPerUnit);

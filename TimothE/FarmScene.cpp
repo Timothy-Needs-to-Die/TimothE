@@ -102,6 +102,4 @@ void FarmScene::InitScene()
 
 	farmland = new FarmlandManager("Farmland Manager");
 	AddGameObject(farmland);
-
-	Physics::SetupScenePhysics();
 }

@@ -86,8 +86,7 @@ void Application::Init(bool devMode)
 	SceneManager::Init();
 	_pCurrentScene = SceneManager::CreateScene(ResourceManager::GetScene("FarmScene"));
 	//_pCurrentScene = SceneManager::CreateScene(ResourceManager::GetScene("TownScene"));
-	_pCurrentScene->InitScene();
-	_pCurrentScene->SceneStart();
+	
 	SceneManager::SetCurrentScene(_pCurrentScene);
 
 	//SceneManager::SetCurrentScene(new FarmScene("FarmSceen"));

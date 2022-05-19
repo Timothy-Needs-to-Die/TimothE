@@ -16,7 +16,7 @@ void PlayerInputComponent::OnStart()
 void PlayerInputComponent::OnUpdate()
 {
 	if (_pMovement == nullptr) {
-		TIM_LOG_ERROR("Player does not have movement component attached");
+		TIM_LOG_ERROR("Character does not have movement component attached");
 		return;
 	}
 
