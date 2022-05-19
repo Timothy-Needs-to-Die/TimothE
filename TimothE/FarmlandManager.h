@@ -4,7 +4,7 @@
 #include "SceneManager.h"
 
 #include "CropPlot.h"
-#include "CropResourceType.h"
+#include "PlantResourceType.h"
 
 class FarmlandManager : public GameObject
 {
@@ -12,7 +12,7 @@ public:
 	FarmlandManager(std::string name = "Farmland", std::string tag = "UNTAGGED");
 
 	void PlaceFarmLand(glm::vec2 position);
-	void PlantSeed(glm::vec2 position, CropResourceType cropType);
+	void PlantSeed(glm::vec2 position, PlantResourceType cropType);
 
 	CropPlot* GetCropPlotAtPosition(glm::vec2 pos)
 	{

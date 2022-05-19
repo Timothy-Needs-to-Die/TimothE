@@ -40,7 +40,7 @@ void FarmlandManager::PlaceFarmLand(glm::vec2 position)
 	}
 }
 
-void FarmlandManager::PlantSeed(glm::vec2 position, CropResourceType cropType)
+void FarmlandManager::PlantSeed(glm::vec2 position, PlantResourceType cropType)
 {
 	//CropPlot* cp = static_cast<CropPlot*>(cropPlot);
 	CropPlot* cropPlot = GetCropPlotAtPosition(position);

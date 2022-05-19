@@ -24,7 +24,7 @@ public:
 
 	int GetDayCount() { return _dayCount; }
 
-	void SetWaveController(WaveController* newWaveController) { _pWaveController = newWaveController; }
+	//void SetWaveController(WaveController* newWaveController) { _pWaveController = newWaveController; }
 
 private:
 	void UpdateDayLength();
@@ -37,6 +37,6 @@ private:
 
 	int _dayCount;
 
-	WaveController* _pWaveController;
+	//WaveController* _pWaveController;
 };
 

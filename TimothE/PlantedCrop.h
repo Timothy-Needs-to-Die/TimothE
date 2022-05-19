@@ -1,12 +1,12 @@
 #pragma once
 
 #include "GameObject.h"
-#include "CropResourceType.h"
+#include "PlantResourceType.h"
 
 class PlantedCrop : public GameObject
 {
 public:
-	PlantedCrop(CropResourceType cropType, int daysToGrow, std::string name = "Planted Crop", std::string tag = "UNTAGGED");
+	PlantedCrop(PlantResourceType cropType, int daysToGrow, std::string name = "Planted Crop", std::string tag = "UNTAGGED");
 	~PlantedCrop();
 
 	void AddGrowth(int growTime);
@@ -21,7 +21,7 @@ private:
 	
 	class SpriteSheet* _cropSheet;
 	class SpriteComponent* _currentSprite;
-	CropResourceType _type;
+	PlantResourceType _type;
 
 	int _daysToGrow;
 	int _currentGrowTime;

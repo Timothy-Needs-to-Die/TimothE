@@ -66,9 +66,9 @@ void Day::UpdateDayLength()
 
 void Day::StartWave()
 {
-	if (_pWaveController == nullptr)
-	{
-		return;
-	}
-	_pWaveController->StartWaves(_dayCount);
+	//if (_pWaveController == nullptr)
+	//{
+	//	return;
+	//}
+	//_pWaveController->StartWaves(_dayCount);
 }

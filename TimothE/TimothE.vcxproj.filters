@@ -39,6 +39,12 @@
     <ClInclude Include="CameraManager.h">
       <Filter>Headers</Filter>
     </ClInclude>
+    <ClInclude Include="Character.h">
+      <Filter>Headers</Filter>
+    </ClInclude>
+    <ClInclude Include="CircleColliderComponent.h">
+      <Filter>Headers</Filter>
+    </ClInclude>
     <ClInclude Include="ColliderBase.h">
       <Filter>Headers</Filter>
     </ClInclude>
@@ -105,6 +111,9 @@
     <ClInclude Include="CoreResourceType.h">
       <Filter>Headers</Filter>
     </ClInclude>
+    <ClInclude Include="CropPlot.h">
+      <Filter>Headers</Filter>
+    </ClInclude>
     <ClInclude Include="CropsConfig.h">
       <Filter>Headers</Filter>
     </ClInclude>
@@ -118,6 +127,9 @@
       <Filter>Headers</Filter>
     </ClInclude>
     <ClInclude Include="FarmScene.h">
+      <Filter>Headers</Filter>
+    </ClInclude>
+    <ClInclude Include="FarmlandManager.h">
       <Filter>Headers</Filter>
     </ClInclude>
     <ClInclude Include="Fighter.h">
@@ -189,6 +201,12 @@
     <ClInclude Include="PlantResourceType.h">
       <Filter>Headers</Filter>
     </ClInclude>
+    <ClInclude Include="PlantedCrop.h">
+      <Filter>Headers</Filter>
+    </ClInclude>
+    <ClInclude Include="Player.h">
+      <Filter>Headers</Filter>
+    </ClInclude>
     <ClInclude Include="PlayerInputComponent.h">
       <Filter>Headers</Filter>
     </ClInclude>
@@ -202,6 +220,12 @@
       <Filter>Headers</Filter>
     </ClInclude>
     <ClInclude Include="ResourceManager.h">
+      <Filter>Headers</Filter>
+    </ClInclude>
+    <ClInclude Include="ResourceNode.h">
+      <Filter>Headers</Filter>
+    </ClInclude>
+    <ClInclude Include="ResourceNodeObject.h">
       <Filter>Headers</Filter>
     </ClInclude>
     <ClInclude Include="SOIL\SOIL2.h">
@@ -315,22 +339,15 @@
     <ClInclude Include="UID.h">
       <Filter>Headers</Filter>
     </ClInclude>
+    <ClInclude Include="Wave.h">
+      <Filter>Headers</Filter>
+    </ClInclude>
     <ClInclude Include="WeaponConfig.h">
       <Filter>Headers</Filter>
     </ClInclude>
     <ClInclude Include="pch.h">
       <Filter>Headers</Filter>
     </ClInclude>
-    <ClInclude Include="PlantedCrop.h">
-      <Filter>Headers</Filter>
-    </ClInclude>
-    <ClInclude Include="CropResourceType.h">
-      <Filter>Headers</Filter>
-    </ClInclude>
-    <ClInclude Include="CropPlot.h">
-      <Filter>Headers</Filter>
-    </ClInclude>
-    <ClInclude Include="FarmlandManager.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="AStar.cpp">
@@ -361,6 +378,12 @@
       <Filter>Source</Filter>
     </ClCompile>
     <ClCompile Include="CameraManager.cpp">
+      <Filter>Source</Filter>
+    </ClCompile>
+    <ClCompile Include="Character.cpp">
+      <Filter>Source</Filter>
+    </ClCompile>
+    <ClCompile Include="CircleColliderComponent.cpp">
       <Filter>Source</Filter>
     </ClCompile>
     <ClCompile Include="ColliderBase.cpp">
@@ -396,6 +419,9 @@
     <ClCompile Include="Core\Graphics\Window.cpp">
       <Filter>Source</Filter>
     </ClCompile>
+    <ClCompile Include="CropPlot.cpp">
+      <Filter>Source</Filter>
+    </ClCompile>
     <ClCompile Include="Day.cpp">
       <Filter>Source</Filter>
     </ClCompile>
@@ -403,6 +429,9 @@
       <Filter>Source</Filter>
     </ClCompile>
     <ClCompile Include="FarmScene.cpp">
+      <Filter>Source</Filter>
+    </ClCompile>
+    <ClCompile Include="FarmlandManager.cpp">
       <Filter>Source</Filter>
     </ClCompile>
     <ClCompile Include="Fighter.cpp">
@@ -462,6 +491,12 @@
     <ClCompile Include="Physics.cpp">
       <Filter>Source</Filter>
     </ClCompile>
+    <ClCompile Include="PlantedCrop.cpp">
+      <Filter>Source</Filter>
+    </ClCompile>
+    <ClCompile Include="Player.cpp">
+      <Filter>Source</Filter>
+    </ClCompile>
     <ClCompile Include="PlayerInputComponent.cpp">
       <Filter>Source</Filter>
     </ClCompile>
@@ -472,6 +507,12 @@
       <Filter>Source</Filter>
     </ClCompile>
     <ClCompile Include="ResourceManager.cpp">
+      <Filter>Source</Filter>
+    </ClCompile>
+    <ClCompile Include="ResourceNode.cpp">
+      <Filter>Source</Filter>
+    </ClCompile>
+    <ClCompile Include="ResourceNodeObject.cpp">
       <Filter>Source</Filter>
     </ClCompile>
     <ClCompile Include="Scene.cpp">
@@ -522,15 +563,11 @@
     <ClCompile Include="Transform.cpp">
       <Filter>Source</Filter>
     </ClCompile>
+    <ClCompile Include="Wave.cpp">
+      <Filter>Source</Filter>
+    </ClCompile>
     <ClCompile Include="pch.cpp">
       <Filter>Source</Filter>
     </ClCompile>
-    <ClCompile Include="PlantedCrop.cpp">
-      <Filter>Source</Filter>
-    </ClCompile>
-    <ClCompile Include="CropPlot.cpp">
-      <Filter>Source</Filter>
-    </ClCompile>
-    <ClCompile Include="FarmlandManager.cpp" />
   </ItemGroup>
 </Project>

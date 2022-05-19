@@ -11,7 +11,7 @@
 
 */
 
-PlantedCrop::PlantedCrop(CropResourceType cropType, int daysToGrow, std::string name, std::string tag) : GameObject(name, tag)
+PlantedCrop::PlantedCrop(PlantResourceType cropType, int daysToGrow, std::string name, std::string tag) : GameObject(name, tag)
 {
 	/*int sheetX = 6, sheetY = 11;
 	SpriteSheet* sheet = ResourceManager::GetSpriteSheet("testSheet");

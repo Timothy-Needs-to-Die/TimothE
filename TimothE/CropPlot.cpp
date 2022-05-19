@@ -20,7 +20,7 @@ void CropPlot::OnNewDay()
 	}
 }
 
-void CropPlot::Plant(CropResourceType type)
+void CropPlot::Plant(PlantResourceType type)
 {
 	// If there isnt currently a crop
 	if (!_isOccupied)

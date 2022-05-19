@@ -1,6 +1,5 @@
 #pragma once
 #include "GameObject.h"
-#include "ResourceNode.h"
 #include "PlayerResourceManager.h"
 
 class ResourceNodeObject : public GameObject

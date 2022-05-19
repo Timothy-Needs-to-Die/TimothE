@@ -1,14 +1,18 @@
 #pragma once
 #include "Scene.h"
-#include "PlayerInputComponent.h"
 #include "SpriteComponent.h"
 #include "AnimatedSpritesheet.h"
 #include "MovementComponent.h"
 #include "Fighter.h"
 #include "Health.h"
-#include "Wave.h"
+
 #include "ResourceNode.h"
 #include "FarmlandManager.h"
+#include "PlantResourceType.h"
+#include "Button.h"
+#include "CameraManager.h"
+
+
 
 class FarmScene : public Scene
 {
@@ -34,11 +38,11 @@ private:
 
 	SpriteSheet* _pSpritesheet;
 
-	WaveController* _pWaveController = nullptr;
+	//class WaveController* _pWaveController = nullptr;
 
 	class Player* _pPlayer;
 
-	Day* _pDay;
+	//Day* _pDay;
 	bool _timeProgression = true;
 	
 	class ResourceNodeObject* _pWoodNode = nullptr;

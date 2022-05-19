@@ -1,6 +1,6 @@
 #pragma once
 #include "GameObject.h"
-#include "CropResourceType.h"
+#include "PlantResourceType.h"
 
 class CropPlot : public GameObject
 {
@@ -9,7 +9,7 @@ public:
 	~CropPlot();
 
 	void OnNewDay();
-	void Plant(CropResourceType type);
+	void Plant(PlantResourceType type);
 
 	bool IsOccupied() { return _isOccupied; }
 	void SetOccupied(bool state) { _isOccupied = state; }

@@ -87,11 +87,11 @@
     <ClInclude Include="AudioSource.h" />
     <ClInclude Include="BoxColliderComponent.h" />
     <ClInclude Include="Button.h" />
-    <ClInclude Include="CropPlot.h" />
-    <ClInclude Include="CropResourceType.h" />
     <ClInclude Include="CSVReader.h" />
     <ClInclude Include="Camera.h" />
     <ClInclude Include="CameraManager.h" />
+    <ClInclude Include="Character.h" />
+    <ClInclude Include="CircleColliderComponent.h" />
     <ClInclude Include="ColliderBase.h" />
     <ClInclude Include="Component.h" />
     <ClInclude Include="ComponentFactory.h" />
@@ -114,12 +114,13 @@
     <ClInclude Include="Core\Graphics\VBO.h" />
     <ClInclude Include="Core\Graphics\Window.h" />
     <ClInclude Include="CoreResourceType.h" />
+    <ClInclude Include="CropPlot.h" />
     <ClInclude Include="CropsConfig.h" />
     <ClInclude Include="Day.h" />
     <ClInclude Include="Dirent.h" />
     <ClInclude Include="Editor.h" />
-    <ClInclude Include="FarmlandManager.h" />
     <ClInclude Include="FarmScene.h" />
+    <ClInclude Include="FarmlandManager.h" />
     <ClInclude Include="Fighter.h" />
     <ClInclude Include="Font.h" />
     <ClInclude Include="GameObject.h" />
@@ -142,13 +143,16 @@
     <ClInclude Include="Particle.h" />
     <ClInclude Include="ParticleSystem.h" />
     <ClInclude Include="Physics.h" />
-    <ClInclude Include="PlantedCrop.h" />
     <ClInclude Include="PlantResourceType.h" />
+    <ClInclude Include="PlantedCrop.h" />
+    <ClInclude Include="Player.h" />
     <ClInclude Include="PlayerInputComponent.h" />
     <ClInclude Include="PlayerResource.h" />
     <ClInclude Include="PlayerResourceManager.h" />
     <ClInclude Include="Quad.h" />
     <ClInclude Include="ResourceManager.h" />
+    <ClInclude Include="ResourceNode.h" />
+    <ClInclude Include="ResourceNodeObject.h" />
     <ClInclude Include="SOIL\SOIL2.h" />
     <ClInclude Include="SOIL\image_DXT.h" />
     <ClInclude Include="SOIL\image_helper.h" />
@@ -186,6 +190,7 @@
     <ClInclude Include="TownScene.h" />
     <ClInclude Include="Transform.h" />
     <ClInclude Include="UID.h" />
+    <ClInclude Include="Wave.h" />
     <ClInclude Include="WeaponConfig.h" />
     <ClInclude Include="pch.h" />
   </ItemGroup>
@@ -197,10 +202,11 @@
     <ClCompile Include="AudioSource.cpp" />
     <ClCompile Include="BoxColliderComponenet.cpp" />
     <ClCompile Include="Button.cpp" />
-    <ClCompile Include="CropPlot.cpp" />
     <ClCompile Include="CSVReader.cpp" />
     <ClCompile Include="Camera.cpp" />
     <ClCompile Include="CameraManager.cpp" />
+    <ClCompile Include="Character.cpp" />
+    <ClCompile Include="CircleColliderComponent.cpp" />
     <ClCompile Include="ColliderBase.cpp" />
     <ClCompile Include="Console.cpp" />
     <ClCompile Include="Core\Graphics\Framebuffer.cpp" />
@@ -212,10 +218,11 @@
     <ClCompile Include="Core\Graphics\VAO.cpp" />
     <ClCompile Include="Core\Graphics\VBO.cpp" />
     <ClCompile Include="Core\Graphics\Window.cpp" />
+    <ClCompile Include="CropPlot.cpp" />
     <ClCompile Include="Day.cpp" />
     <ClCompile Include="Editor.cpp" />
-    <ClCompile Include="FarmlandManager.cpp" />
     <ClCompile Include="FarmScene.cpp" />
+    <ClCompile Include="FarmlandManager.cpp" />
     <ClCompile Include="Fighter.cpp" />
     <ClCompile Include="Font.cpp" />
     <ClCompile Include="GameObject.cpp" />
@@ -236,10 +243,13 @@
     <ClCompile Include="ParticleSystem.cpp" />
     <ClCompile Include="Physics.cpp" />
     <ClCompile Include="PlantedCrop.cpp" />
+    <ClCompile Include="Player.cpp" />
     <ClCompile Include="PlayerInputComponent.cpp" />
     <ClCompile Include="PlayerResource.cpp" />
     <ClCompile Include="PlayerResourceManager.cpp" />
     <ClCompile Include="ResourceManager.cpp" />
+    <ClCompile Include="ResourceNode.cpp" />
+    <ClCompile Include="ResourceNodeObject.cpp" />
     <ClCompile Include="Scene.cpp" />
     <ClCompile Include="SceneManager.cpp" />
     <ClCompile Include="Source.cpp" />
@@ -256,6 +266,7 @@
     <ClCompile Include="TileMapEditor.cpp" />
     <ClCompile Include="TownScene.cpp" />
     <ClCompile Include="Transform.cpp" />
+    <ClCompile Include="Wave.cpp" />
     <ClCompile Include="pch.cpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

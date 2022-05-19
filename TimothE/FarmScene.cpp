@@ -1,18 +1,17 @@
 #include "FarmScene.h"
-#include "Button.h"
-#include "SpriteComponent.h"
-#include "CameraManager.h"
+//#include "Wave.h"
 #include "Player.h"
 #include "ResourceNodeObject.h"
 
+
 FarmScene::~FarmScene()
 {
-	if (_pStartButton) delete(_pStartButton);
-	if (_pWeaponObject) delete(_pWeaponObject);
-	if (_pSpritesheet) delete(_pSpritesheet);
-	if (_pPlayer) delete(_pPlayer);
-	if (_pDay) delete(_pDay);
-	if (_pWaveController) delete(_pWaveController);
+	if (_pStartButton) delete _pStartButton;
+	if (_pWeaponObject) delete _pWeaponObject;
+	if (_pSpritesheet) delete _pSpritesheet;
+	if (_pPlayer) delete _pPlayer;
+	//if (_pDay) delete(_pDay);
+	//if (_pWaveController) delete(_pWaveController);
 }
 
 void FarmScene::UpdateUI()
@@ -24,7 +23,7 @@ void FarmScene::UpdateObjects()
 {
 	if (_timeProgression)
 	{
-		_pDay->Update();
+		//_pDay->Update();
 	}
 
 	Scene::UpdateObjects();
@@ -37,13 +36,20 @@ void FarmScene::UpdateObjects()
 	////TIM_LOG_LOG("Weapon Pos: " << pos.x << ", " << pos.y);
 	//_pWeaponObject->GetTransform()->SetPosition(pos);
 
-	if (!_pDay->IsDay())
-	{
-		_pWaveController->TryNewWave();
-	}
+	//if (!_pDay->IsDay())
+	//{
+	//	_pWaveController->TryNewWave();
+	//}
+
+	
 
 	if (Input::IsKeyDown(KEY_G)) {
-		_pTilemap->AddTileAt(2, 15, 12, CameraManager::CurrentCamera());
+		farmland->PlaceFarmLand(_pPlayer->GetTransform()->GetPosition());
+	}
+
+	if (Input::IsKeyDown(KEY_H))
+	{
+		farmland->PlantSeed(_pPlayer->GetTransform()->GetPosition(), PlantResourceType::Wheat);
 	}
 }
 
@@ -83,14 +89,17 @@ void FarmScene::InitScene()
 
 	_pTilemap = new TileMap(_name);
 
-	_pWaveController = new WaveController(this);
+	//_pWaveController = new WaveController(this);
 
-	_pDay = new Day();
-	_pDay->SetWaveController(_pWaveController);
+	//_pDay = new Day();
+	//_pDay->SetWaveController(_pWaveController);
 	
 	_pWoodNode = new ResourceNodeObject(Wood);
 	_pWoodNode->GetTransform()->SetPosition(5.0f, 1.0f);
 	AddGameObject(_pWoodNode);
+
+	farmland = new FarmlandManager("Farmland Manager");
+	AddGameObject(farmland);
 
 	Physics::SetupScenePhysics();
 }

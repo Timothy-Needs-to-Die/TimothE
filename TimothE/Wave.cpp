@@ -1,5 +1,6 @@
 #include "Wave.h"
 #include "CSVReader.h"
+#include "Scene.h"
 
 WaveController::WaveController(Scene* scene) : _pCurrentScene(scene)
 {
