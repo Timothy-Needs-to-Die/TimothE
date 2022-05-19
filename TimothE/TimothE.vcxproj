@@ -87,11 +87,11 @@
     <ClInclude Include="AudioSource.h" />
     <ClInclude Include="BoxColliderComponent.h" />
     <ClInclude Include="Button.h" />
-    <ClInclude Include="Character.h" />
-    <ClInclude Include="CircleColliderComponent.h" />
     <ClInclude Include="CSVReader.h" />
     <ClInclude Include="Camera.h" />
     <ClInclude Include="CameraManager.h" />
+    <ClInclude Include="Character.h" />
+    <ClInclude Include="CircleColliderComponent.h" />
     <ClInclude Include="ColliderBase.h" />
     <ClInclude Include="Component.h" />
     <ClInclude Include="ComponentFactory.h" />
@@ -199,11 +199,11 @@
     <ClCompile Include="AudioSource.cpp" />
     <ClCompile Include="BoxColliderComponenet.cpp" />
     <ClCompile Include="Button.cpp" />
-    <ClCompile Include="Character.cpp" />
-    <ClCompile Include="CircleColliderComponent.cpp" />
     <ClCompile Include="CSVReader.cpp" />
     <ClCompile Include="Camera.cpp" />
     <ClCompile Include="CameraManager.cpp" />
+    <ClCompile Include="Character.cpp" />
+    <ClCompile Include="CircleColliderComponent.cpp" />
     <ClCompile Include="ColliderBase.cpp" />
     <ClCompile Include="Console.cpp" />
     <ClCompile Include="Core\Graphics\Framebuffer.cpp" />
@@ -260,8 +260,8 @@
     <ClCompile Include="TileMapEditor.cpp" />
     <ClCompile Include="TownScene.cpp" />
     <ClCompile Include="Transform.cpp" />
-    <ClCompile Include="pch.cpp" />
     <ClCompile Include="Wave.cpp" />
+    <ClCompile Include="pch.cpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
