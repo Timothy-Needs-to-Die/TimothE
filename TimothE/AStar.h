@@ -47,7 +47,7 @@ public:
 	/// </summary>
 	/// <param name="startNode">The node that the player starts on</param>
 	/// <param name="endNode">The node that the player ends on</param>
-	AStar(Node* startNode, Node* endNode);
+	AStar(glm::vec2* startNode, glm::vec2* endNode);
 
 	//Overriding the default destructor to delete the memory associated with the direction and path lists
 	~AStar();
@@ -71,9 +71,10 @@ public:
 
 private:
 	//The starting node
-	Node* mStartNode = nullptr;
+	glm::vec2* mStartNode = nullptr;
 
 	//The ending node
+	glm::vec2* mEnd = nullptr;
 	Node* mEndNode = nullptr;
 
 	//This list contains the directions the player needs to take in the form of Nodes. 

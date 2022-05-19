@@ -11,10 +11,10 @@ public:
 	AIController(GameObject* gameObject) : Component(gameObject) 
 	{
 		_moving = false;
-		SetType(Types::AIControl);
+		SetType(Types::AIControllerType);
 	}
 
-	COMPONENT_STATIC_TYPE(AIControl);
+	COMPONENT_STATIC_TYPE(AIControllerType);
 	
 
 	void Move(glm::vec2 moveVec);
