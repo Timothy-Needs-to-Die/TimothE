@@ -49,7 +49,8 @@ public:
 		Movement = BIT(15),
 		SpriteType = BIT(16),
 		FighterType = BIT(17),
-		HealthType = BIT(18)
+		HealthType = BIT(18),
+		ResourceNodeType = BIT(19)
 	};
 
 	//enums for different categories of components
@@ -120,6 +121,9 @@ public:
 	virtual bool LoadState(IStream& stream) override {
 		return true;
 	}
+
+	virtual void OnTriggerEnter(class ColliderBase* other) {}
+	virtual void OnCollisionEnter(class ColliderBase* other) {}
 
 	// IsEnabled Get & Set
 	bool IsEnabled() { return _isEnabled; }

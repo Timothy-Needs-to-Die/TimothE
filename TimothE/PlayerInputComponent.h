@@ -29,9 +29,14 @@ public:
 	virtual void OnUpdate() override;
 	virtual void OnEnd() override;
 
+	void NearbyResourceNode(class ResourceNode* nearbyResource);
+
+	virtual void OnTriggerEnter(ColliderBase* other) override;
 private:
 	TileMap* _pTileMap;
 	MovementComponent* _pMovement = nullptr;
 	Fighter* _pFighter = nullptr;
+
+	class ResourceNode* _pNearbyResourceNode = nullptr;
 };
 

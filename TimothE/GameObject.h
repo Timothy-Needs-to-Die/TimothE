@@ -122,6 +122,11 @@ public:
 	virtual bool SaveState(IStream& stream) const override;
 	virtual bool LoadState(IStream& stream) override;
 
+
+	virtual void OnTriggerEnter(ColliderBase* other);
+	virtual void OnColliderEnter(ColliderBase* other);
+
+
 private:
 	///////////////////////////////////
 	//Properties (Unique Identifiers)//

@@ -4,6 +4,8 @@
 #include "GameObject.h"
 #include "Transform.h"
 #include "Core.h"
+#include "ResourceNode.h"
+#include "PlayerResourceManager.h"
 
 void PlayerInputComponent::OnStart()
 {
@@ -20,17 +22,17 @@ void PlayerInputComponent::OnUpdate()
 
 	glm::vec2 moveVec = glm::vec2(0.0f);
 
-	if (Input::IsKeyDown(KEY_W)) {
+	if (Input::IsKeyHeld(KEY_W)) {
 		moveVec.y = 1.0f;
 	}
-	else if (Input::IsKeyDown(KEY_S)) {
+	else if (Input::IsKeyHeld(KEY_S)) {
 		moveVec.y = -1.0f;
 	}
 
-	if (Input::IsKeyDown(KEY_A)) {
+	if (Input::IsKeyHeld(KEY_A)) {
 		moveVec.x = -1.0f;
 	}
-	else if (Input::IsKeyDown(KEY_D)) {
+	else if (Input::IsKeyHeld(KEY_D)) {
 		moveVec.x = 1.0f;
 	}
 
@@ -46,9 +48,39 @@ void PlayerInputComponent::OnUpdate()
 	if (Input::IsKeyDown(KEY_SPACE)) {
 		_pFighter->Attack();
 	}
+
+	if (_pNearbyResourceNode != nullptr) {
+		if (Input::IsMouseButtonDown(BUTTON_1)) {
+			_pNearbyResourceNode->Interact();
+		}
+	}
+
+	if (Input::IsKeyDown(KEY_R)) {
+		int goldAmount = PlayerResourceManager::GetCoreResource(CoreResourceType::Gold)->GetAmount();
+		int woodAmount = PlayerResourceManager::GetCoreResource(CoreResourceType::Wood)->GetAmount();
+		int metalAmount = PlayerResourceManager::GetCoreResource(CoreResourceType::Metal)->GetAmount();
+		int stoneAmount = PlayerResourceManager::GetCoreResource(CoreResourceType::Stone)->GetAmount();
+
+		TIM_LOG_LOG("Gold: " << goldAmount);
+		TIM_LOG_LOG("Wood: " << woodAmount);
+		TIM_LOG_LOG("Metal: " << metalAmount);
+		TIM_LOG_LOG("Stone: " << stoneAmount);
+	}
 }
 
 void PlayerInputComponent::OnEnd()
 {
 
+}
+
+void PlayerInputComponent::NearbyResourceNode(class ResourceNode* nearbyResource)
+{
+	_pNearbyResourceNode = nearbyResource;
+}
+
+void PlayerInputComponent::OnTriggerEnter(ColliderBase* other)
+{
+	if (other->GetParent()->GetTag() == "RESOURCE_NODE") {
+		_pNearbyResourceNode = other->GetParent()->GetComponent<ResourceNode>();
+	}
 }

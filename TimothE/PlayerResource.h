@@ -6,15 +6,17 @@
 class PlayerResource
 {
 public:
-	PlayerResource(int ammount);
+	PlayerResource(int amount);
 	PlayerResource() = default;
 	~PlayerResource();
 
-	bool CanAfford(int ammount);
-	void SpendResource(int ammount);
-	void GainResource(int ammount);
+	bool CanAfford(int amount);
+	void SpendResource(int amount);
+	void GainResource(int amount);
+
+	int GetAmount() const { return _amount; }
 
 private:
 
-	int _ammount; 
+	int _amount;
 };

@@ -119,16 +119,13 @@ void Application::GameLoop()
 	//Intial mem bookmark
 	int memBookmark = HeapManager::GetMemoryBookmark();
 
-	std::vector<std::vector<std::string>> cropDetails = CSVReader::RequestDataFromFile("Resources/Data/CropsConfig.csv");
-
-
-	
+	//std::vector<std::vector<std::string>> cropDetails = CSVReader::RequestDataFromFile("Resources/Data/CropsConfig.csv");
 	//std::vector<CropConfig> cropConfigs;
 	//for (int i = 0; i < cropDetails.size(); i++) {
 	//	CropConfig newCrop;
-	//	//newCrop.name = cropDetails[i][0];
-	//	//newCrop.price = std::stoi(cropDetails[i][1]);
-	//	//newCrop.description = cropDetails[i][2];
+	//	newCrop.name = cropDetails[i][0];
+	//	newCrop.price = std::stoi(cropDetails[i][1]);
+	//	newCrop.description = cropDetails[i][2];
 	//	cropConfigs.emplace_back(newCrop);
 	//}
 

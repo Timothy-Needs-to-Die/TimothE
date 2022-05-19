@@ -2,29 +2,27 @@
 #include "pch.h"
 #include "Component.h"
 
+enum ColliderType {
+	Circle,
+	Box
+};
+
+
 class ColliderBase : public Component
 {
 public:
-	ColliderBase(GameObject* parent) : Component(parent) {}
+	ColliderBase(GameObject* parent, ColliderType type) : Component(parent), _type(type) {}
 
 	COMPONENT_STATIC_TYPE(Collider)
-
-	void Triggered();
-	void Collided();
-
-	void AddTriggerEvent(void(*function)());
-	void AddCollisionEvent(void(*function)());
-
-	void RemoveTriggerEvent(void(*function)());
-	void RemoveCollisionEvent(void(*function)());
 
 	bool IsTrigger() const { return _isTrigger; }
 	void SetTrigger(bool val) { _isTrigger = val; }
 
-protected:
-	std::vector<void(*)()> _onTriggerCalls;
-	std::vector<void(*)()> _onCollisionCalls;
+	ColliderType GetType() const { return _type; }
 
+protected:
 	bool _isTrigger;
+
+	ColliderType _type;
 };
 

@@ -53,18 +53,6 @@ void Scene::InitScene()
 	/////////////
 
 	Heap* gameObjectHeap = HeapManager::CreateHeap("GameObject", "Root");
-
-	//ResourceManager::InstantiateTexture("fish", new Texture2D("Fish.png"));
-	//ResourceManager::InstantiateTexture("character", new Texture2D("Resources/Images/Spritesheets/AlexTest.png", true));
-
-	//AddGameObject(_pTestObject2);
-	//AddGameObject(_pButtonTestingObject);
-	//AddGameObject(_pPlayer);
-
-	//GameObject* _pTextObj = new GameObject("TEXTOBJ", ObjectType::UI);
-	//_pTextObj->AddComponent(new TextComponent(_pTextObj));
-	//_pTextObj->SetType(ObjectType::UI);
-	//AddGameObject(_pTextObj);
 }
 
 void Scene::SceneEnd()
@@ -141,6 +129,8 @@ void Scene::UpdateObjects()
 		delete obj;
 	}
 	_gameObjectsToRemove.clear();
+
+	Physics::UpdateWorld();
 }
 
 void Scene::RenderScene(Camera* cam)

@@ -3,9 +3,9 @@
 #include "imgui.h"
 #include "Input.h"
 
-BoxColliderComponent::BoxColliderComponent(GameObject* parent) : ColliderBase(parent)
+BoxColliderComponent::BoxColliderComponent(GameObject* parent) : ColliderBase(parent, Box)
 {
-	SetType(Component::Boxcollision_Type);
+	SetType(Component::Collider);
 	SetCategory(Component::Collisions_Category);
 
 	// Set the boxcollider to be enabled by default
@@ -80,18 +80,16 @@ bool BoxColliderComponent::Intersects(Rect* box)
 
 bool BoxColliderComponent::IsPointInside(glm::vec2 point)
 {
-	if (Component::IsEnabled())
-	{
-		if (point.x > _boxCollider->xPos && point.x < _boxCollider->xPos + _boxCollider->width
-			&& point.y > _boxCollider->yPos && point.y < _boxCollider->yPos + _boxCollider->height)
-		{
-			return true;
-		}
-	}
+	//if (Component::IsEnabled())
+	//{
+	//	if (point.x > _boxCollider->xPos && point.x < _boxCollider->xPos + _boxCollider->width
+	//		&& point.y > _boxCollider->yPos && point.y < _boxCollider->yPos + _boxCollider->height)
+	//	{
+	//		return true;
+	//	}
+	//}
 	return false;
 }
-
-
 
 void BoxColliderComponent::DrawEditorUI()
 {
