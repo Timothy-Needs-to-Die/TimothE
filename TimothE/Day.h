@@ -1,6 +1,8 @@
 #pragma once
 #include "Time.h"
 
+class WaveController;
+
 class Day
 {
 public:
@@ -23,12 +25,18 @@ public:
 
 	int GetDayCount() { return _dayCount; }
 
+	void SetWaveController(WaveController* newWaveController) { _pWaveController = newWaveController; }
+
 private:
+	void StartWave();
+
 	float _dayLength = 5.0f;
 	float _currentTime;
 	bool _isDaytime;
 	bool _oldDaytime;
 
 	int _dayCount;
+
+	WaveController* _pWaveController;
 };
 

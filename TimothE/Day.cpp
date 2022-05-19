@@ -1,11 +1,10 @@
 #include "Day.h"
 #include <iostream>
+#include "Wave.h"
 
-Day::Day()
+Day::Day() : _currentTime(0.0f), _oldDaytime(0.0f), _isDaytime(true), _dayCount(-1)
 {
-	_currentTime = 0.0f;
-	_isDaytime = true;
-	_dayCount = -1;
+	
 }
 
 Day::~Day()
@@ -23,6 +22,7 @@ void Day::Update()
 		{
 			_isDaytime = false;
 			_dayCount++;
+			StartWave();
 		}
 	}
 }
@@ -34,4 +34,13 @@ bool Day::NightStart()
 		return true;
 	}
 	return false;
+}
+
+void Day::StartWave()
+{
+	if (_pWaveController == nullptr)
+	{
+		return;
+	}
+	_pWaveController->StartWaves(_dayCount);
 }

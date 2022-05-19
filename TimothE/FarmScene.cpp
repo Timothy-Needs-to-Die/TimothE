@@ -6,7 +6,12 @@
 
 FarmScene::~FarmScene()
 {
-	
+	if (_pStartButton) delete(_pStartButton);
+	if (_pWeaponObject) delete(_pWeaponObject);
+	if (_pSpritesheet) delete(_pSpritesheet);
+	if (_pPlayer) delete(_pPlayer);
+	if (_pDay) delete(_pDay);
+	if (_pWaveController) delete(_pWaveController);
 }
 
 void FarmScene::UpdateUI()
@@ -16,6 +21,11 @@ void FarmScene::UpdateUI()
 
 void FarmScene::UpdateObjects()
 {
+	if (_timeProgression)
+	{
+		_pDay->Update();
+	}
+
 	Scene::UpdateObjects();
 
 	//glm::vec2 forward = _pPlayerObject->GetTransform()->GetForward();
@@ -26,24 +36,9 @@ void FarmScene::UpdateObjects()
 	////TIM_LOG_LOG("Weapon Pos: " << pos.x << ", " << pos.y);
 	//_pWeaponObject->GetTransform()->SetPosition(pos);
 
-	if (_pDay->NightStart())
+	if (!_pDay->IsDay())
 	{
-		_pWaveController->StartWaves(_pDay->GetDayCount());
-
-		for (GameObject* go : _pWaveController->GetEnemies())
-		{
-			AddGameObject(go);
-		}
-	}
-	else if (!_pDay->IsDay())
-	{
-		if (_pWaveController->TryNewWave())
-		{
-			for (GameObject* enemy : _pWaveController->GetEnemies())
-			{
-				AddGameObject(enemy);
-			}
-		}
+		_pWaveController->TryNewWave();
 	}
 
 	if (Input::IsKeyDown(KEY_G)) {
@@ -88,4 +83,7 @@ void FarmScene::InitScene()
 	_pTilemap = new TileMap(_name);
 
 	_pWaveController = new WaveController(this);
+
+	_pDay = new Day();
+	_pDay->SetWaveController(_pWaveController);
 }

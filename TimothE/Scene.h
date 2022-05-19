@@ -150,7 +150,4 @@ protected:
 	std::vector<GameObject*> _gameObjectsToRemove;
 
 	bool _isInitialized = false;
-
-	Day* _pDay;
-	bool _timeProgression = true;
 };

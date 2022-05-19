@@ -112,6 +112,7 @@ void WaveController::SpawnWave()
 		Health* h = new Health(_enemies[i]);
 		h->SetMaxHealth(50);
 		_enemies[i]->AddComponent(h);
+		_pCurrentScene->AddGameObject(_enemies[i]);
 	}
 	std::cout << "Created " << _enemies.size() << " enemies" << std::endl;
 }
