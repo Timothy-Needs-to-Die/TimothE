@@ -144,7 +144,7 @@ void FarmScene::InitScene()
 	_pEnemyHealth->SetMaxHealth(50);
 	AddGameObject(enemyGO);
 
-	farmland = new FarmlandManager(this, "FarmLand");
+	farmland = new FarmlandManager("FarmLand");
 
 	// Crops
 	//_pCropPlot = new CropPlot();

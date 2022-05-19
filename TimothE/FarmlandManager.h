@@ -1,7 +1,7 @@
 #pragma once
 #include "GameObject.h"
 #include "SpriteComponent.h"
-#include "Scene.h"
+#include "SceneManager.h"
 
 #include "CropPlot.h"
 #include "CropResourceType.h"
@@ -9,7 +9,7 @@
 class FarmlandManager : public GameObject
 {
 public:
-	FarmlandManager(Scene* currentScene, std::string name = "Farmland", std::string tag = "UNTAGGED");
+	FarmlandManager(std::string name = "Farmland", std::string tag = "UNTAGGED");
 
 	void PlaceFarmLand(glm::vec2 position);
 	void PlantSeed(glm::vec2 position, CropResourceType cropType);
@@ -31,8 +31,6 @@ public:
 	}
 
 private:
-
-	Scene* _pCurrentScene;
 
 	vector<CropPlot*> _pCropPlotObjects;
 	//vector<SpriteComponent*> _pCropPlotSpriteComponents;

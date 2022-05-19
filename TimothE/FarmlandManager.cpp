@@ -1,8 +1,8 @@
 #include "FarmlandManager.h"
 
-FarmlandManager::FarmlandManager(Scene* currentScene, std::string name, std::string tag) : GameObject(name, tag)
+FarmlandManager::FarmlandManager(std::string name, std::string tag) : GameObject(name, tag)
 {
-	_pCurrentScene = currentScene;
+	
 }
 
 void FarmlandManager::PlaceFarmLand(glm::vec2 position)
@@ -35,7 +35,7 @@ void FarmlandManager::PlaceFarmLand(glm::vec2 position)
 		sprite->SetSprite(ResourceManager::GetSpriteSheet("testSheet")->GetSpriteAtIndex(130));
 
 		_pCropPlotObjects.push_back(newCropPlot);
-		_pCurrentScene->AddGameObject(newCropPlot);
+		SceneManager::GetCurrentScene()->AddGameObject(newCropPlot);
 		std::cout << "Succesfully Created CropPlot: x:"<< position.x << " y:" << position.y << std::endl;
 	}
 }
@@ -63,7 +63,7 @@ void FarmlandManager::PlantSeed(glm::vec2 position, CropResourceType cropType)
 			s->SetSprite(ResourceManager::GetSpriteSheet("testSheet")->GetSpriteAtIndex(24));
 			cropPlot->SetOccupied(true);
 
-			_pCurrentScene->AddGameObject(plantObject);
+			SceneManager::GetCurrentScene()->AddGameObject(plantObject);
 			std::cout << "Succesfully Planted Crop: type:" << cropType << " x:" << position.x << " y:" << position.y << std::endl;
 
 		}
