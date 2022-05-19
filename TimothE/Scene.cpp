@@ -142,15 +142,15 @@ void Scene::RenderScene(Camera* cam)
 	for (auto& obj : _listOfDrawableGameObjects) {
 		//TODO: Text won't render here as it uses its own internal texture data.
 		Texture2D* objTex = obj->GetComponent<Texture2D>();
+		SpriteComponent* sc = obj->GetComponent<SpriteComponent>();
 
-		if (objTex != nullptr) {
+		if (objTex != nullptr || sc != nullptr) {
 			if (obj->GetTag() == "UI") {
 				Renderer2D::DrawUIQuad(obj->GetTransform()->GetRenderQuad(), obj->GetComponent<Texture2D>());
 			}
 			else {
-				SpriteComponent* sc = obj->GetComponent<SpriteComponent>();
 				if (sc) {
-					Renderer2D::DrawQuad(obj->GetTransform()->GetRenderQuad(), objTex, sc->GetSprite()->GetTexCoords());
+					Renderer2D::DrawQuad(obj->GetTransform()->GetRenderQuad(), sc->GetSprite()->GetTexture(), sc->GetSprite()->GetTexCoords());
 				}
 				else {
 					Renderer2D::DrawQuad(obj->GetTransform()->GetRenderQuad(), objTex);

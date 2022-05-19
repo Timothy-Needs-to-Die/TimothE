@@ -8,6 +8,7 @@
 #include "Health.h"
 #include "Wave.h"
 #include "ResourceNode.h"
+#include "FarmlandManager.h"
 
 class FarmScene : public Scene
 {
@@ -41,5 +42,9 @@ private:
 	bool _timeProgression = true;
 	
 	class ResourceNodeObject* _pWoodNode = nullptr;
+
+	//Farmland
+	FarmlandManager* farmland;
+	bool farmKeyPressed = false;
 };
 

@@ -321,18 +321,16 @@
     <ClInclude Include="pch.h">
       <Filter>Headers</Filter>
     </ClInclude>
-    <ClInclude Include="Core.h" />
-    <ClInclude Include="Day.h">
+    <ClInclude Include="PlantedCrop.h">
       <Filter>Headers</Filter>
     </ClInclude>
-    <ClInclude Include="Wave.h">
+    <ClInclude Include="CropResourceType.h">
       <Filter>Headers</Filter>
     </ClInclude>
-    <ClInclude Include="Character.h" />
-    <ClInclude Include="Player.h" />
-    <ClInclude Include="CircleColliderComponent.h" />
-    <ClInclude Include="ResourceNode.h" />
-    <ClInclude Include="ResourceNodeObject.h" />
+    <ClInclude Include="CropPlot.h">
+      <Filter>Headers</Filter>
+    </ClInclude>
+    <ClInclude Include="FarmlandManager.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="AStar.cpp">
@@ -527,16 +525,12 @@
     <ClCompile Include="pch.cpp">
       <Filter>Source</Filter>
     </ClCompile>
-    <ClCompile Include="Day.cpp">
+    <ClCompile Include="PlantedCrop.cpp">
       <Filter>Source</Filter>
     </ClCompile>
-    <ClCompile Include="Wave.cpp">
+    <ClCompile Include="CropPlot.cpp">
       <Filter>Source</Filter>
     </ClCompile>
-    <ClCompile Include="Character.cpp" />
-    <ClCompile Include="Player.cpp" />
-    <ClCompile Include="CircleColliderComponent.cpp" />
-    <ClCompile Include="ResourceNode.cpp" />
-    <ClCompile Include="ResourceNodeObject.cpp" />
+    <ClCompile Include="FarmlandManager.cpp" />
   </ItemGroup>
 </Project>
