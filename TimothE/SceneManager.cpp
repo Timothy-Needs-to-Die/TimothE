@@ -77,7 +77,7 @@ Scene* SceneManager::GetDefaultScene()
 Scene* SceneManager::SetCurrentScene(Scene* scene)
 {
 	if (scene != nullptr) {
-		_pCurrentScene->Unload();
+		//_pCurrentScene->Unload();
 		_pCurrentScene = scene;
 
 		//_pCurrentScene->LoadScene("Resources/Scenes/" + scene->GetName() + ".scene");

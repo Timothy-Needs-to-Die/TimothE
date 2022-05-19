@@ -8,7 +8,7 @@
 #include "Core/Graphics/Renderer2D.h"
 
 #include "Core/Graphics/SubTexture2D.h"
-#include "PlayerMovement.h"
+#include "PlayerInputComponent.h"
 #include "SpriteComponent.h"
 #include "Time.h"
 
@@ -35,6 +35,7 @@ Scene::~Scene()
 	{
 		delete(obj);
 	}
+	delete(_pDay);
 }
 
 void Scene::SceneStart()
@@ -54,6 +55,8 @@ void Scene::InitScene()
 
 	Heap* gameObjectHeap = HeapManager::CreateHeap("GameObject", "Root");
 
+	_pDay = new Day();
+
 	//ResourceManager::InstantiateTexture("fish", new Texture2D("Fish.png"));
 	//ResourceManager::InstantiateTexture("character", new Texture2D("Resources/Images/Spritesheets/AlexTest.png", true));
 
@@ -65,11 +68,6 @@ void Scene::InitScene()
 	//_pTextObj->AddComponent(new TextComponent(_pTextObj));
 	//_pTextObj->SetType(ObjectType::UI);
 	//AddGameObject(_pTextObj);
-
-
-
-
-
 }
 
 void Scene::SceneEnd()
@@ -100,22 +98,12 @@ void Scene::EditorUpdate()
 
 void Scene::Update()
 {
+	if (_timeProgression)
+	{
+		_pDay->Update();
+	}
 	UpdateObjects();
 	UpdateUI();
-
-
-
-	timer += Time::GetDeltaTime();
-	if (timer >= duration) {
-		timer = 0.0f;
-
-		//SpriteComponent* sc = _pPlayer->GetComponent<SpriteComponent>();
-		//sc->SetSprite(_pAnimSheet->GetSpriteAtIndex(iteration));
-		iteration++;
-		if (iteration == 8) {
-			iteration = 0;
-		}
-	}
 
 	/////////////
 	//TEST CODE//     BOX COLISSIONS
@@ -152,6 +140,14 @@ void Scene::UpdateObjects()
 	{
 		obj->Update();
 	}
+
+	for (GameObject* obj : _gameObjectsToRemove) {
+		_listOfGameObjects.erase(std::find(_listOfGameObjects.begin(), _listOfGameObjects.end(), obj));
+		
+
+		delete obj;
+	}
+	_gameObjectsToRemove.clear();
 }
 
 void Scene::RenderScene(Camera* cam)
@@ -168,12 +164,14 @@ void Scene::RenderScene(Camera* cam)
 			if (obj->GetTag() == "UI") {
 				Renderer2D::DrawUIQuad(obj->GetTransform()->GetRenderQuad(), obj->GetComponent<Texture2D>());
 			}
-			else if (obj->GetTag() == "PLAYER") {
-				SpriteComponent* sc = obj->GetComponent<SpriteComponent>();
-				Renderer2D::DrawQuad(obj->GetTransform()->GetRenderQuad(), objTex, sc->GetSprite()->GetTexCoords());
-			}
 			else {
-				Renderer2D::DrawQuad(obj->GetTransform()->GetRenderQuad(), objTex);
+				SpriteComponent* sc = obj->GetComponent<SpriteComponent>();
+				if (sc) {
+					Renderer2D::DrawQuad(obj->GetTransform()->GetRenderQuad(), objTex, sc->GetSprite()->GetTexCoords());
+				}
+				else {
+					Renderer2D::DrawQuad(obj->GetTransform()->GetRenderQuad(), objTex);
+				}
 			}
 		}
 	}
@@ -203,10 +201,11 @@ GameObject* Scene::AddGameObject(GameObject* gameObject)
 
 void Scene::RemoveGameObject(GameObject* gameObject)
 {
+	_gameObjectsToRemove.emplace_back(gameObject);
 	//Searches for the desired object and deletes it if it is found
-	_listOfGameObjects.erase(std::find(_listOfGameObjects.begin(), _listOfGameObjects.end(), gameObject));
-	delete gameObject;
-	gameObject = nullptr;
+	//_listOfGameObjects.erase(std::find(_listOfGameObjects.begin(), _listOfGameObjects.end(), gameObject));
+	//delete gameObject;
+	//gameObject = nullptr;
 }
 
 void Scene::AddedComponentHandler(GameObject* gameObject, Component* comp)

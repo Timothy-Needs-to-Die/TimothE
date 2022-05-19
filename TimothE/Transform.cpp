@@ -1,9 +1,10 @@
 #include "Transform.h"
+#include "GameObject.h"
 #include "Time.h"
 
 
 Transform::Transform(GameObject* pParent)
-	: _transformationMatrix(glm::mat4(1.0f)), _position(glm::vec2(0.0f)), _rotation(0.0f), _size(glm::vec2(1.0f)), Component(pParent)
+	: _transformationMatrix(glm::mat4(1.0f)), _globalPosition(glm::vec2(0.0f)), _rotation(0.0f), _size(glm::vec2(1.0f)), Component(pParent)
 {
 	//Sets the type and category for the component
 	SetType(Component::Transform_Type);
@@ -44,6 +45,16 @@ void Transform::OnUpdate()
 {
 	//Calculates the transform matrix
 	CalculateTransformMatrix();
+
+	GameObject* pParent = _pParentObject->GetParent();
+	if (pParent != nullptr) {
+		Transform* pTransform = pParent->GetTransform();
+
+		_globalPosition = pTransform->GetPosition() + _localPosition;
+	}
+	else {
+		_globalPosition = _localPosition;
+	}
 }
 
 void Transform::DrawEditorUI()
@@ -51,8 +62,8 @@ void Transform::DrawEditorUI()
 	ImGui::Text("Transform");
 
 	// get the position into the editorPos float array
-	editorPos[0] = _position.x;
-	editorPos[1] = _position.y;
+	editorPos[0] = _globalPosition.x;
+	editorPos[1] = _globalPosition.y;
 
 	//Gets the rotation into the editorRotation float*
 	editorRot =  &_rotation;
@@ -85,7 +96,7 @@ inline bool Transform::SaveState(IStream& stream) const {
 	Component::SaveState(stream);
 
 	//Save position
-	WriteVec2(stream, _position);
+	WriteVec2(stream, _globalPosition);
 
 	//Save Rotation
 	WriteFloat(stream, _rotation);
@@ -103,7 +114,7 @@ bool Transform::LoadState(IStream& stream)
 	Component::LoadState(stream);
 
 	//Load position
-	_position = ReadVec2(stream);
+	_globalPosition = ReadVec2(stream);
 
 	//Load Rotation
 	_rotation = ReadFloat(stream);
@@ -121,11 +132,14 @@ void Transform::CalculateTransformMatrix()
 	//Reset matrix to identity
 	_transformationMatrix = glm::mat4(1.0);
 	//translate by the position
-	_transformationMatrix = glm::translate(_transformationMatrix, glm::vec3(_position, 0.0f));
+	_transformationMatrix = glm::translate(_transformationMatrix, glm::vec3(_globalPosition, 0.0f));
 	//rotate by the rotation
 	_transformationMatrix = glm::rotate(_transformationMatrix, glm::radians(_rotation), glm::vec3(0.0f, 0.0f, 1.0f));
 	//scale by the scale
 	_transformationMatrix = glm::scale(_transformationMatrix, glm::vec3(_size, 1.0f));
+
+
+
 }
 
 void Transform::OnEnd()

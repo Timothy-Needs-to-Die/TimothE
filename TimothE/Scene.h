@@ -8,6 +8,7 @@
 #include "AnimatedSpritesheet.h"
 #include "Tag.h"
 #include <vector>
+#include "Day.h"
 
 //TODO: Document and order this class
 
@@ -51,7 +52,15 @@ public:
 
 	//TODO: Implement unloading logic.
 	void Unload() {
+		for (auto& obj : _listOfGameObjects) {
+			delete obj;
+			obj = nullptr;
+		}
+		_listOfGameObjects.clear();
+		_listOfDrawableGameObjects.clear();
 
+		delete _pTilemap;
+		_pTilemap = nullptr;
 	}
 
 	static void CircleBoxTest();
@@ -128,27 +137,20 @@ protected:
 	TileMap* _pTilemap;
 
 private:
-
-
 	//Stores an id for the scene
 	int _id;
-
-	float duration = 0.5f;
-	float timer = 0.0f;
-	int iteration = 0;
 
 	//Stores the next id for the scene
 	static int nextID;
 
+protected:
 	//Stores a vector of game objects. This is refreshed every time a scene loads.
 	static std::vector<GameObject*> _listOfGameObjects;
 	static std::vector<GameObject*> _listOfDrawableGameObjects;
-
-	//GameObject* _pCircleTest;
-	//GameObject* _pTestObject2;
-	//GameObject* _pPlayer;
-	//GameObject* _pTriggerBox;
-
+	std::vector<GameObject*> _gameObjectsToRemove;
 
 	bool _isInitialized = false;
+
+	Day* _pDay;
+	bool _timeProgression = true;
 };

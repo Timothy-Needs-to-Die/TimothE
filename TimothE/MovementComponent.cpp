@@ -10,6 +10,14 @@
 
 void MovementComponent::Move(glm::vec2 moveVec)
 {
+	// if magnitude greater than 1 (moving diagonally), normalise to prevent moving at double speed
+	float mag = sqrt((moveVec.x * moveVec.x) + (moveVec.y * moveVec.y));
+	if (mag > 1.0f)
+	{
+		moveVec.x /= mag;
+		moveVec.y /= mag;
+	}
+
 	_moving = (moveVec.x == 0.0f && moveVec.y == 0.0f) ? false : true;
 	if (!_moving) return;
 
@@ -47,7 +55,6 @@ void MovementComponent::CollisionCheck(glm::vec2& newPos)
 	playerQuad.size = _pParentObject->GetTransform()->GetScale();
 	playerQuad.size.y /= 2.0f;
 	playerQuad.CalculateMax();
-
 	
 
 
@@ -88,15 +95,48 @@ void MovementComponent::CollisionCheck(glm::vec2& newPos)
 
 void MovementComponent::DecideDirection(glm::vec2& moveVec)
 {
+	glm::vec2 newForward = glm::vec2(0.0f);
+	float xVal;
+
 	//If the x value is greater than or equal to y value
 	if (moveVec.x >= moveVec.y) {
 		//We are moving left or right. Decide based on if the x component is greater than 0
 		_direction = moveVec.x > 0.0f ? Direction::RIGHT : Direction::LEFT;
+
+		if (_direction == Direction::LEFT) {
+			
+			
+			newForward.x = 0.0f;
+			newForward.y = -1.0f;
+		}
+		else {
+			newForward.x = 1.0f;
+			newForward.y = 0.0f;
+		}
+
 	}
 	else {
 		//We are moving up or down. Decide based on if the y component is greater than 0
 		_direction = moveVec.y > 0.0f ? Direction::UP : Direction::DOWN;
+
+		if (_direction == Direction::UP) {
+			newForward.x = 0.0f;
+			newForward.y = 1.0f;
+		}
+		else {
+			newForward.x = -1.0f;
+			newForward.y = 0.0f;
+		}
 	}
+
+	
+	newForward = glm::normalize(newForward);
+
+	//std::cout << "Rotation: " << xVal << std::endl;
+
+	//TIM_LOG_LOG("Player Forward: " << newForward.x << ", " << newForward.y);
+	_pParentObject->GetTransform()->SetForward(newForward);
+	//_pParentObject->GetTransform()->SetRotation(xVal);
 }
 
 void MovementComponent::OnStart()

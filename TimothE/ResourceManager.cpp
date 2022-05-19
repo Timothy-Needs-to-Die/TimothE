@@ -25,9 +25,15 @@ void ResourceManager::Init()
 	ResourceManager::InstantiateTexture("character", new Texture2D("Resources/Images/Spritesheets/AlexTest.png", true));
 	ResourceManager::InstantiateTexture("spritesheet", new Texture2D("Resources/Images/Spritesheets/RPGpack_sheet.png", true));
 	ResourceManager::InstantiateTexture("Button", new Texture2D("Resources/Images/ButtonTest.png"));
+	ResourceManager::InstantiateTexture("swords", new Texture2D("Resources/Images/swords.png", true));
+	ResourceManager::InstantiateTexture("axes", new Texture2D("Resources/Images/axes.png"));
+	ResourceManager::InstantiateTexture("pickaxes", new Texture2D("Resources/Images/pickaxes.png"));
 
 	//LOAD SPRITESHEETS
 	ResourceManager::InstantiateSpritesheet("testSheet", new SpriteSheet(ResourceManager::GetTexture("spritesheet"), 64, 64));
+	ResourceManager::InstantiateSpritesheet("swords", new SpriteSheet(ResourceManager::GetTexture("swords"), 16, 16));
+	ResourceManager::InstantiateSpritesheet("axes", new SpriteSheet(ResourceManager::GetTexture("axes"), 16, 16));
+	ResourceManager::InstantiateSpritesheet("pickaxes", new SpriteSheet(ResourceManager::GetTexture("pickaxes"), 16, 16));
 
 	//LOAD SHADERS
 	ResourceManager::InstantiateShader("ui", new Shader("vr_UIShader.vert", "fr_UIShader.frag"));

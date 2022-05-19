@@ -1,9 +1,12 @@
 #pragma once
 #include "Scene.h"
-#include "PlayerMovement.h"
+#include "PlayerInputComponent.h"
 #include "SpriteComponent.h"
 #include "AnimatedSpritesheet.h"
 #include "MovementComponent.h"
+#include "Fighter.h"
+#include "Health.h"
+#include "Wave.h"
 
 class FarmScene : public Scene
 {
@@ -14,6 +17,8 @@ public:
 
 	}
 
+	~FarmScene();
+
 	void UpdateUI() override;
 	void UpdateObjects() override;
 	void InitScene() override;
@@ -23,15 +28,18 @@ protected:
 
 private:
 	GameObject* _pStartButton = nullptr;
-	GameObject* _pPlayerObject = nullptr;
+	GameObject* _pWeaponObject = nullptr;
 
-	PlayerMovement* _pPlayerMovement = nullptr;
-	MovementComponent* _pMovement = nullptr;
 
-	AnimatedSpritesheet* _pAnimSheet;
-
-	SpriteComponent* _pSc = nullptr;
+	//class PlayerInputComponent* _pPlayerMovement = nullptr;
+	//GameObject* _pPlayerObject = nullptr;
+	//Health* _pPlayerHealth = nullptr;
 
 	SpriteSheet* _pSpritesheet;
+
+
+	WaveController* _pWaveController = nullptr;
+
+	class Player* _pPlayer;
 };
 

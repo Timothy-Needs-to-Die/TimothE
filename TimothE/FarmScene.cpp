@@ -1,6 +1,13 @@
 #include "FarmScene.h"
 #include "Button.h"
 #include "SpriteComponent.h"
+#include "CameraManager.h"
+#include "Player.h"
+
+FarmScene::~FarmScene()
+{
+	
+}
 
 void FarmScene::UpdateUI()
 {
@@ -11,72 +18,74 @@ void FarmScene::UpdateObjects()
 {
 	Scene::UpdateObjects();
 
-	_pAnimSheet->Update();
+	//glm::vec2 forward = _pPlayerObject->GetTransform()->GetForward();
+	//glm::vec2 pos = forward * 0.1f;
+	//pos.y += 0.1f;
+	//
+	////TIM_LOG_LOG("Player forward: " << forward.x << ", " << forward.y);
+	////TIM_LOG_LOG("Weapon Pos: " << pos.x << ", " << pos.y);
+	//_pWeaponObject->GetTransform()->SetPosition(pos);
 
-	int currentRow = _pAnimSheet->GetCurrentRow();
-
-	Direction playerDirection = _pMovement->GetDirection();
-
-	switch (playerDirection)
+	if (_pDay->NightStart())
 	{
-	case Direction::UP:
-		currentRow = 1;
-		break;
-	case Direction::DOWN:
-		currentRow = 0;
-		break;
-	case Direction::LEFT:
-		currentRow = 3;
-		break;
-	case Direction::RIGHT:
-		currentRow = 2;
-		break;
-	default:
-		break;
+		_pWaveController->StartWaves(_pDay->GetDayCount());
+
+		for (GameObject* go : _pWaveController->GetEnemies())
+		{
+			AddGameObject(go);
+		}
+	}
+	else if (!_pDay->IsDay())
+	{
+		if (_pWaveController->TryNewWave())
+		{
+			for (GameObject* enemy : _pWaveController->GetEnemies())
+			{
+				AddGameObject(enemy);
+			}
+		}
 	}
 
-	if (currentRow != _pAnimSheet->GetCurrentRow()) {
-		_pAnimSheet->SetCurrentRow(currentRow);
+	if (Input::IsKeyDown(KEY_G)) {
+		_pTilemap->AddTileAt(2, 15, 12, CameraManager::CurrentCamera());
 	}
-
-	_pAnimSheet->SetStationary(!_pMovement->IsMoving());
-	_pSc->SetSprite(_pAnimSheet->GetSpriteAtIndex(_pAnimSheet->GetCurrentIndex()));
-
-
 }
 
 void FarmScene::InitScene()
 {
-	_pAnimSheet = new AnimatedSpritesheet(ResourceManager::GetTexture("character"), 16, 32);
+	_listOfGameObjects.clear();
+	_listOfDrawableGameObjects.clear();
+
 	_pSpritesheet = ResourceManager::GetSpriteSheet("testSheet");
 
-	_pStartButton = new GameObject("BUTTON","UI");
+	_pStartButton = new GameObject("BUTTON", "UI");
 	_pStartButton->AddComponent(new Button(_pStartButton));
 	_pStartButton->AddComponent(new BoxColliderComponent(_pStartButton));
-	//pStartButton->AddComponent(new TextComponent(_pTestObject));
+	//_pStartButton->AddComponent(new TextComponent(_pTestObject));
 
+	_pStartButton->AddComponent(ResourceManager::GetTexture("Button"));
 
-	//_pStartButton->LoadTexture(ResourceManager::GetTexture("Button"));
-	_pStartButton->SetShader("ui");
+	AddGameObject(_pStartButton);
+
 	_pStartButton->GetTransform()->SetPosition(0.0f, 0.0f);
 	_pStartButton->GetTransform()->SetScale({ 0.2f, 0.2f });
-	//AddGameObject(_pStartButton);
 
-	_pPlayerObject = new GameObject("Player", "Player");
-	_pMovement = _pPlayerObject->AddComponent(new MovementComponent(_pPlayerObject));
-	_pMovement->SetMovementSpeed(2.0f);
-	_pPlayerMovement = new PlayerMovement(_pPlayerObject);
-	_pPlayerObject->AddComponent(_pPlayerMovement);
-	_pPlayerObject->AddComponent(ResourceManager::GetTexture("character"));
-	_pSc = _pPlayerObject->AddComponent<SpriteComponent>(new SpriteComponent(_pPlayerObject));
-	_pAnimSheet->SetFramerate(4);
-	_pPlayerObject->GetTransform()->SetScale({ 0.25f, 0.45f });
-	AddGameObject(_pPlayerObject);
+
+	_pWeaponObject = new GameObject("Weapon");
+	_pWeaponObject->AddComponent<Texture2D>(ResourceManager::GetTexture("swords"));
+	_pWeaponObject->GetTransform()->SetScale({0.20f, 0.20f});
+	_pWeaponObject->GetTransform()->SetPosition({1.5f, 0.0f});
+	SpriteComponent* pWeaponSC = _pWeaponObject->AddComponent<SpriteComponent>(new SpriteComponent(_pWeaponObject));
+
+	AnimatedSpritesheet* pWeaSS = new AnimatedSpritesheet(ResourceManager::GetTexture("swords"), 16, 16, false);
+	pWeaponSC->SetSprite(pWeaSS->GetSpriteAtIndex(6));
+
+	AddGameObject(_pWeaponObject);
+
+	_pPlayer = new Player();
+	AddGameObject(_pPlayer);
 
 	_pTilemap = new TileMap(_name);
 
-	_pSc->SetSprite(_pAnimSheet->GetSpriteAtIndex(0));
-	//_pTilemap->SetSpriteSheet(ResourceManager::GetSpriteSheet("testSheet"));
-	//_pTilemap->LoadTileMap();
-
+	_pWaveController = new WaveController(this);
 }
