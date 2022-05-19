@@ -7,6 +7,7 @@ std::string TileMapEditor::_spritesheetName = "spritesheet";
 glm::vec2 TileMapEditor::_mapSizeInUnits = glm::vec2(32.0);
 SelectedTile TileMapEditor::_selectedTile;
 int TileMapEditor::_currentLayer = 0;
+SpriteSheet* TileMapEditor::_pCurrentSpritesheet;
 
 void TileMapEditor::Update(TileMap* pTilemap)
 {
@@ -19,6 +20,10 @@ void TileMapEditor::Update(TileMap* pTilemap)
 //Along with setting up the ImGui window for the editor 
 void TileMapEditor::EditorUI(TileMap* pTilemap)
 {
+	if (_pCurrentSpritesheet == nullptr) {
+		_pCurrentSpritesheet = ResourceManager::GetSpriteSheet("testSheet");
+	}
+
 	//const auto& tex = ResourceManager::GetTexture(_spritesheetName);
 	ImGui::Begin("Tilemap Editor", 0, ImGuiWindowFlags_NoMove);
 
@@ -26,15 +31,15 @@ void TileMapEditor::EditorUI(TileMap* pTilemap)
 	{
 		ImGui::BeginChild("Select Tile", ImVec2(ImGui::GetContentRegionAvail().x * 0.5f, 400.0f));
 
-		if (pTilemap->GetSpriteSheet()) {
+		if (_pCurrentSpritesheet) {
 			//Furthest tile in X and Y axis'
-			int xMax = pTilemap->GetSpriteSheet()->GetSheetWidth();
-			int yMax = pTilemap->GetSpriteSheet()->GetSheetHeight();
+			int xMax = _pCurrentSpritesheet->GetSheetWidth();
+			int yMax = _pCurrentSpritesheet->GetSheetHeight();
 
-			float sheetWidth = pTilemap->GetSpriteSheet()->GetPixelWidth();
-			float sheetHeight = pTilemap->GetSpriteSheet()->GetPixelHeight();
-			float spriteWidth = pTilemap->GetSpriteSheet()->GetSpriteWidth();
-			float spriteHeight = pTilemap->GetSpriteSheet()->GetSpriteHeight();
+			float sheetWidth =		_pCurrentSpritesheet->GetPixelWidth();
+			float sheetHeight =		_pCurrentSpritesheet->GetPixelHeight();
+			float spriteWidth =		_pCurrentSpritesheet->GetSpriteWidth();
+			float spriteHeight =	_pCurrentSpritesheet->GetSpriteHeight();
 
 			if (ImGui::BeginTable("split", 8)) {
 				for (auto i = 0; i < yMax; i++)
@@ -47,7 +52,7 @@ void TileMapEditor::EditorUI(TileMap* pTilemap)
 
 						ImGui::TableNextColumn();
 						ImGui::PushID(i * xMax + j);
-						if (ImGui::ImageButton((void*)pTilemap->GetSpriteSheet()->GetTexture()->GetID(), ImVec2(32, 32), tr, bl))
+						if (ImGui::ImageButton((void*)_pCurrentSpritesheet->GetTexture()->GetID(), ImVec2(32, 32), tr, bl))
 						{
 							_selectedTile.tileX = j;
 							_selectedTile.tileY = i;
@@ -79,7 +84,7 @@ void TileMapEditor::EditorUI(TileMap* pTilemap)
 		ImGui::SameLine();
 		if (ImGui::Button("Fill Layer"))
 		{
-			pTilemap->FillLayer(_currentLayer, _selectedTile.tileX, _selectedTile.tileY);
+			pTilemap->FillLayer(_currentLayer, _selectedTile.tileX, _selectedTile.tileY, _pCurrentSpritesheet);
 		}
 		ImGui::SameLine();
 		if (ImGui::Button("Clear Current Layer")) {
@@ -131,7 +136,7 @@ void TileMapEditor::EditorUI(TileMap* pTilemap)
 			if (spritesheet) {
 				_loadedSheet = true;
 				_spritesheetName = spritesheetName;
-				pTilemap->SetSpriteSheet(spritesheet);
+				_pCurrentSpritesheet = spritesheet;
 			}
 			else {
 				_loadedSheet = false;
@@ -157,10 +162,10 @@ void TileMapEditor::EditorUI(TileMap* pTilemap)
 
 	if (ImGui::IsWindowFocused()) {
 		if (Input::IsMouseButtonDown(BUTTON_LEFT)) {
-			pTilemap->AddTileAt(_currentLayer, _selectedTile.tileX, _selectedTile.tileY, CameraManager::GetCamera("Editor"), _collidableToggle);
+			pTilemap->AddTileAt(_currentLayer, _selectedTile.tileX, _selectedTile.tileY, CameraManager::GetCamera("Editor"), _pCurrentSpritesheet, _collidableToggle);
 		}
 		else if (Input::IsMouseButtonDown(BUTTON_RIGHT)) {
-			pTilemap->AddTileAt(_currentLayer, 0, 0, CameraManager::GetCamera("Editor"), _collidableToggle);
+			pTilemap->AddTileAt(_currentLayer, 0, 0, CameraManager::GetCamera("Editor"), _pCurrentSpritesheet, _collidableToggle);
 		}
 	}
 	ImGui::End();

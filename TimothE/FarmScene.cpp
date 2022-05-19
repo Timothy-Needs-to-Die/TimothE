@@ -47,9 +47,9 @@ void FarmScene::UpdateObjects()
 		}
 	}
 
-	if (Input::IsKeyDown(KEY_G)) {
-		_pTilemap->AddTileAt(2, 15, 12, CameraManager::CurrentCamera());
-	}
+	//if (Input::IsKeyDown(KEY_G)) {
+	//	//_pTilemap->AddTileAt(2, 15, 12, CameraManager::CurrentCamera());
+	//}
 }
 
 void FarmScene::InitScene()
@@ -78,7 +78,7 @@ void FarmScene::InitScene()
 	_pWeaponObject->GetTransform()->SetPosition({1.5f, 0.0f});
 	SpriteComponent* pWeaponSC = _pWeaponObject->AddComponent<SpriteComponent>(new SpriteComponent(_pWeaponObject));
 
-	AnimatedSpritesheet* pWeaSS = new AnimatedSpritesheet(ResourceManager::GetTexture("swords"), 16, 16, false);
+	AnimatedSpritesheet* pWeaSS = new AnimatedSpritesheet(ResourceManager::GetTexture("swords"), 16, 16, "weaponAnim", false);
 	pWeaponSC->SetSprite(pWeaSS->GetSpriteAtIndex(6));
 
 	AddGameObject(_pWeaponObject);
