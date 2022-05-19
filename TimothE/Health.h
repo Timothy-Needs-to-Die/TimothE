@@ -5,10 +5,10 @@ class Health : public Component
 {
 
 public:
-	COMPONENT_STATIC_TYPE(HealthType);
+	COMPONENT_STATIC_TYPE(Health_Type);
 
 	Health(GameObject* pOwner) : Component(pOwner) {
-		SetType(Component::Types::HealthType);
+		SetType(Component::Types::Health_Type);
 	}
 
 	void SetMaxHealth(int amount) {

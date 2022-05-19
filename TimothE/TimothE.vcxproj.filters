@@ -333,12 +333,32 @@
     <ClInclude Include="Wave.h">
       <Filter>Headers</Filter>
     </ClInclude>
-    <ClInclude Include="WeaponConfig.h">
+    <ClInclude Include="MovementComponent.h" />
+    <ClInclude Include="AudioSource.h" />
+    <ClInclude Include="TownScene.h" />
+    <ClInclude Include="Tag.h" />
+    <ClInclude Include="PlayerResourceManager.h" />
+    <ClInclude Include="PlayerResource.h" />
+    <ClInclude Include="CoreResourceType.h" />
+    <ClInclude Include="PlantResourceType.h" />
+    <ClInclude Include="BaseTrader.h" />
+    <ClInclude Include="TraderConfig.h" />
+    <ClInclude Include="ItemConfig.h" />
+    <ClInclude Include="Core.h" />
+    <ClInclude Include="Day.h">
       <Filter>Headers</Filter>
     </ClInclude>
     <ClInclude Include="pch.h">
       <Filter>Headers</Filter>
     </ClInclude>
+    <ClInclude Include="Character.h" />
+    <ClInclude Include="Player.h" />
+    <ClInclude Include="CoreResourceType.h" />
+    <ClInclude Include="PlayerResource.h" />
+    <ClInclude Include="PurchaseableConfig.h" />
+    <ClInclude Include="ToolConfig.h" />
+    <ClInclude Include="SellableConfig.h" />
+    <ClInclude Include="CropConfig.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="AStar.cpp">
@@ -545,11 +565,25 @@
     <ClCompile Include="Transform.cpp">
       <Filter>Source</Filter>
     </ClCompile>
-    <ClCompile Include="Wave.cpp">
+    <ClCompile Include="pch.cpp">
+      <Filter>Source</Filter>
+    </ClCompile>
+    <ClCompile Include="MovementComponent.cpp" />
+    <ClCompile Include="AudioSource.cpp" />
+    <ClCompile Include="TownScene.cpp" />
+    <ClCompile Include="Tag.cpp" />
+    <ClCompile Include="PlayerResourceManager.cpp" />
+    <ClCompile Include="PlayerResource.cpp" />
+    <ClCompile Include="BaseTrader.cpp" />
+    <ClCompile Include="ItemResourceType.h" />
+    <ClCompile Include="Day.cpp">
       <Filter>Source</Filter>
     </ClCompile>
     <ClCompile Include="pch.cpp">
       <Filter>Source</Filter>
     </ClCompile>
+    <ClCompile Include="Character.cpp" />
+    <ClCompile Include="Player.cpp" />
+    <ClCompile Include="PlayerResource.cpp" />
   </ItemGroup>
 </Project>
