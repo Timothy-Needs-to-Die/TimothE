@@ -9,7 +9,11 @@
 #include "Tag.h"
 #include <vector>
 #include "Day.h"
-
+//Configs
+#include "ItemConfig.h"
+#include "ToolConfig.h"
+#include "CropConfig.h"
+#include "CSVReader.h"
 //TODO: Document and order this class
 
 class Scene
@@ -130,11 +134,17 @@ public:
 	GameObject* FindObjectWithTag(const std::string& tagName);
 	std::vector<GameObject*> FindGameObjectsWithTag(const std::string& tagName);
 
-
+	void PopulateToolVector();
+	void PopulateSeedVector();
+	void PopulateCropVector();
 protected:
 	//Stores the name of the scene
 	std::string _name;
 	TileMap* _pTilemap;
+
+	std::vector<ToolConfig> _toolConfigs;
+	std::vector<SeedConfig> _seedConfigs;
+	std::vector<CropConfig> _cropConfigs;
 
 private:
 	//Stores an id for the scene
@@ -150,7 +160,4 @@ protected:
 	std::vector<GameObject*> _gameObjectsToRemove;
 
 	bool _isInitialized = false;
-
-	Day* _pDay;
-	bool _timeProgression = true;
 };

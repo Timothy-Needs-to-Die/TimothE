@@ -3,7 +3,6 @@
 #include "SpriteComponent.h"
 #include "CameraManager.h"
 #include "Player.h"
-#include "ResourceNodeObject.h"
 
 FarmScene::~FarmScene()
 {
@@ -47,29 +46,29 @@ void FarmScene::UpdateObjects()
 		}
 	}
 
-	//if (Input::IsKeyDown(KEY_G)) {
-	//	//_pTilemap->AddTileAt(2, 15, 12, CameraManager::CurrentCamera());
-	//}
+	if (Input::IsKeyDown(KEY_G)) {
+		_pTilemap->AddTileAt(2, 15, 12, CameraManager::CurrentCamera());
+	}
 }
 
 void FarmScene::InitScene()
 {
-	Scene::InitScene();
-
 	_listOfGameObjects.clear();
 	_listOfDrawableGameObjects.clear();
 
 	_pSpritesheet = ResourceManager::GetSpriteSheet("testSheet");
 
-	//_pStartButton = new GameObject("BUTTON", "UI");
-	//_pStartButton->AddComponent(new Button(_pStartButton));
-	//_pStartButton->AddComponent(new BoxColliderComponent(_pStartButton));
+	_pStartButton = new GameObject("BUTTON", "UI");
+	_pStartButton->AddComponent(new Button(_pStartButton));
+	_pStartButton->AddComponent(new BoxColliderComponent(_pStartButton));
 	//_pStartButton->AddComponent(new TextComponent(_pTestObject));
-	//_pStartButton->AddComponent(ResourceManager::GetTexture("Button"));
-	//AddGameObject(_pStartButton);
 
-	//_pStartButton->GetTransform()->SetPosition(0.0f, 0.0f);
-	//_pStartButton->GetTransform()->SetScale({ 0.2f, 0.2f });
+	_pStartButton->AddComponent(ResourceManager::GetTexture("Button"));
+
+	AddGameObject(_pStartButton);
+
+	_pStartButton->GetTransform()->SetPosition(0.0f, 0.0f);
+	_pStartButton->GetTransform()->SetScale({ 0.2f, 0.2f });
 
 
 	_pWeaponObject = new GameObject("Weapon");
@@ -78,7 +77,7 @@ void FarmScene::InitScene()
 	_pWeaponObject->GetTransform()->SetPosition({1.5f, 0.0f});
 	SpriteComponent* pWeaponSC = _pWeaponObject->AddComponent<SpriteComponent>(new SpriteComponent(_pWeaponObject));
 
-	AnimatedSpritesheet* pWeaSS = new AnimatedSpritesheet(ResourceManager::GetTexture("swords"), 16, 16, "weaponAnim", false);
+	AnimatedSpritesheet* pWeaSS = new AnimatedSpritesheet(ResourceManager::GetTexture("swords"), 16, 16, false);
 	pWeaponSC->SetSprite(pWeaSS->GetSpriteAtIndex(6));
 
 	AddGameObject(_pWeaponObject);
@@ -88,11 +87,17 @@ void FarmScene::InitScene()
 
 	_pTilemap = new TileMap(_name);
 
-	_pWaveController = new WaveController(this);
+	//_pWaveController = new WaveController(this);
 
+	//_pDay = new Day();
+	//_pDay->SetWaveController(_pWaveController);
+	
 	_pWoodNode = new ResourceNodeObject(Wood);
 	_pWoodNode->GetTransform()->SetPosition(5.0f, 1.0f);
 	AddGameObject(_pWoodNode);
+
+	farmland = new FarmlandManager("Farmland Manager");
+	AddGameObject(farmland);
 
 	Physics::SetupScenePhysics();
 }
