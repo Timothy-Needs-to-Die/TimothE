@@ -50,7 +50,8 @@ public:
 		SpriteType = BIT(16),
 		Trader_Type = BIT(17),
 		Fighter_Type = BIT(18),
-		Health_Type = BIT(19)
+		Health_Type = BIT(19),
+		ResourceNode_Type = BIT(20)
 	};
 
 	//enums for different categories of components

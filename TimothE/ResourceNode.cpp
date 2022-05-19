@@ -5,7 +5,7 @@
 ResourceNode::ResourceNode(GameObject* owner, CoreResourceType type)
 	: Component(owner), _resourceType(type)
 {
-	SetType(Component::ResourceNodeType);
+	SetType(Component::ResourceNode_Type);
 }
 
 void ResourceNode::Interact()

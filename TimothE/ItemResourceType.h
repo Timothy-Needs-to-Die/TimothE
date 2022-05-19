@@ -1,11 +1,11 @@
 #pragma once 
 
-enum ItemType
-{
-	Axe,
-	Pickaxe,
-	Sword
-};
+//enum ItemType
+//{
+//	Axe,
+//	Pickaxe,
+//	Sword
+//};
 //
 //struct HotbarItem
 //{
