@@ -41,6 +41,7 @@ private:
 	//class WaveController* _pWaveController = nullptr;
 
 	class Player* _pPlayer;
+	class OffensiveStructureObject* _pTower = nullptr;
 
 	//Day* _pDay;
 	bool _timeProgression = true;

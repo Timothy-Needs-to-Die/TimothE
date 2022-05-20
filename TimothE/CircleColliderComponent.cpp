@@ -18,7 +18,7 @@ void CircleColliderComponent::OnUpdate()
 {
 	Transform* pOwnerTransform = _pParentObject->GetTransform();
 
-	_radius = pOwnerTransform->GetScale().x;
+	_radius = pOwnerTransform->GetScale().x * _scale;
 	_position = pOwnerTransform->GetPosition();
 }
 

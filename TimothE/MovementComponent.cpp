@@ -146,7 +146,9 @@ void MovementComponent::OnStart()
 
 void MovementComponent::OnUpdate()
 {
-
+	if (_constantlyMove) {
+		Move(_desiredDirection);
+	}
 }
 
 void MovementComponent::OnEnd()
