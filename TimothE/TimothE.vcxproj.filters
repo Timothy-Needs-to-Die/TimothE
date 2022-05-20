@@ -333,6 +333,8 @@
     <ClInclude Include="CircleColliderComponent.h" />
     <ClInclude Include="ResourceNode.h" />
     <ClInclude Include="ResourceNodeObject.h" />
+    <ClInclude Include="AIController.h" />
+    <ClInclude Include="AIMovementCompnent.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="AStar.cpp">
@@ -538,5 +540,7 @@
     <ClCompile Include="CircleColliderComponent.cpp" />
     <ClCompile Include="ResourceNode.cpp" />
     <ClCompile Include="ResourceNodeObject.cpp" />
+    <ClCompile Include="AIController.cpp" />
+    <ClCompile Include="AIMovementCompnent.cpp" />
   </ItemGroup>
 </Project>

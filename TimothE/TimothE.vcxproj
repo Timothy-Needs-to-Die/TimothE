@@ -81,6 +81,7 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClInclude Include="AIController.h" />
+    <ClInclude Include="AIMovementCompnent.h" />
     <ClInclude Include="AStar.h" />
     <ClInclude Include="AnimatedSpritesheet.h" />
     <ClInclude Include="Application.h" />
@@ -194,6 +195,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="AIController.cpp" />
+    <ClCompile Include="AIMovementCompnent.cpp" />
     <ClCompile Include="AStar.cpp" />
     <ClCompile Include="AnimatedSpritesheet.cpp" />
     <ClCompile Include="Application.cpp" />

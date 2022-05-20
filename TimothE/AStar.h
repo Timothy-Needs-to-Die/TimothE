@@ -66,7 +66,7 @@ public:
 	/// <summary>
 	/// This function returns the node path list to the user
 	/// </summary>
-	std::list<Node*> GetPathOfNodes();
+	std::vector<Node*> GetPathOfNodes();
 	void SetMap(TileMap* map);
 
 private:
@@ -78,7 +78,7 @@ private:
 	Node* mEndNode = nullptr;
 
 	//This list contains the directions the player needs to take in the form of Nodes. 
-	std::list<Node*> mPathOfNodes;
+	std::vector<Node*> mPathOfNodes;
 
 	std::vector<Node> _mMapNodes;
 	float width;

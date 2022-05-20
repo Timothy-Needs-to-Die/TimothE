@@ -152,7 +152,7 @@ void AStar::ProcessDirections()
 				//adds the node to the path of nodes
 				auto it = std::find(mPathOfNodes.begin(), mPathOfNodes.end(), previousNode);
 				if (it == mPathOfNodes.end()) {
-					mPathOfNodes.push_front(previousNode);
+					mPathOfNodes.push_back(previousNode);
 				}
 
 				//Sets the previous node to the parent of this node
@@ -165,7 +165,7 @@ void AStar::ProcessDirections()
 
 
 #pragma region Getters
-std::list<Node*> AStar::GetPathOfNodes()
+std::vector<Node*> AStar::GetPathOfNodes()
 {
 	return mPathOfNodes;
 }
