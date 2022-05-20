@@ -1,8 +1,8 @@
 #include "AnimatedSpritesheet.h"
 #include "Time.h"
 
-AnimatedSpritesheet::AnimatedSpritesheet(Texture2D* texture, int spriteWidth, int spriteHeight, bool playAll)
-	: SpriteSheet(texture, spriteWidth, spriteHeight), _rows(_sheetHeightInPixels / _spriteHeight)
+AnimatedSpritesheet::AnimatedSpritesheet(Texture2D* texture, int spriteWidth, int spriteHeight, std::string resourceName, bool playAll)
+	: SpriteSheet(texture, spriteWidth, spriteHeight, resourceName), _rows(_sheetHeightInPixels / _spriteHeight)
 {
 	_spritesPerRow = _numOfSprites / _rows;
 	_framerate = 4;

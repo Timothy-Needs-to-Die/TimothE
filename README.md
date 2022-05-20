@@ -1,5 +1,5 @@
 <p align="center">
-<img width="500" src="https://user-images.githubusercontent.com/57398964/149774311-0fb7181f-933e-4d16-880d-58614a61b4cd.png" alt="TimothE Logo">
+<img width="500" src="https://github.com/Timothy-Needs-to-Die/TimothE/blob/d42c760a7e2f53a3ae6db48032a8a797655e50ae/TimothE/Resources/Images/TimothE%20Red.png" alt="TimothE Logo">
 </p>
 
 # The TimothE Engine
@@ -29,8 +29,9 @@ The libraries currently being used within the engine are:
 | Benji Rea | Project Manager | benji-rea |
 | Toby Coles | Audio Lead | Toby-Coles |
 | Isaac Dunn | AI Lead | IsaacdmDunn |
+| Ryan Goldsmith | Gameplay Programmer | ryangoldsmith |
 | Lucy Eames | UI Lead | LucyEames |
 | Jacob Dexter | Graphics Lead | JacobDexter |
 | Jack Dobie | AI Programmer | JackDobie |
-| Ryan Goldsmith | UI Programmer | ryangoldsmith |
+
 

@@ -3,7 +3,7 @@
 class AnimatedSpritesheet : public SpriteSheet
 {
 public:
-	AnimatedSpritesheet(Texture2D* texture, int spriteWidth, int spriteHeight, bool playAll = false);
+	AnimatedSpritesheet(Texture2D* texture, int spriteWidth, int spriteHeight, std::string resourceName, bool playAll = false);
 
 	int GetFramerate() const { return _framerate; }
 	void SetFramerate(int framerate);

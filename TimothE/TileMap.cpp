@@ -24,7 +24,7 @@ TileMap::TileMap(std::string name)
 
 	_gapBetweenTiles = 1.0f / _tilesPerUnit;
 
-	SetSpriteSheet(ResourceManager::GetSpriteSheet("testSheet"));
+	//SetSpriteSheet(ResourceManager::GetSpriteSheet("testSheet"));
 	LoadTileMap();
 
 }
@@ -72,7 +72,12 @@ void TileMap::SaveTilemap() {
 		{
 			int index = var.texIndex;
 
-			tileLayout += std::to_string(index) + " " + std::to_string((int)var.collidable) + ",";
+			std::string resourceName = "spritesheet";
+			if (var._pSpritesheet != nullptr) {
+				resourceName = var._pSpritesheet->GetResourceName();
+			}
+
+			tileLayout += std::to_string(index) + " " + std::to_string((int)var.collidable) + " " + resourceName + ",";
 		}
 		file["tiles" + std::to_string(layer)] = tileLayout;
 	}
@@ -125,21 +130,28 @@ void TileMap::LoadTileMap()
 				std::string s2;
 				getline(ss, s2, ' ');
 
+				
+				std::string s3;
+				getline(ss, s3, ' ');
+
+				if (s3 != "") {
+					std::string resourceName = s3;
+					_tileArr[layer][i]._pSpritesheet = ResourceManager::GetSpriteSheet(resourceName);
+				}
+				else {
+					_tileArr[layer][i]._pSpritesheet = ResourceManager::GetSpriteSheet("spritesheet");
+				}
 				int index = std::stoi(s1);
 
 				bool collidable = std::stoi(s2);
 
+
 				_tileArr[layer][i].texIndex = index;
-				_tileArr[layer][i]._pSprite = _pSpritesheet->GetSpriteAtIndex(index);
+				_tileArr[layer][i]._pSprite = _tileArr[layer][i]._pSpritesheet->GetSpriteAtIndex(index);
 				_tileArr[layer][i].collidable = collidable;
 
 				int row = i / _mapInTiles.x;
 				int xIndex = i - (row * _mapInTiles.x);
-
-				if (collidable) {
-					std::cout << "Tile at X: " << xIndex << ", Y: " << row << std::endl;
-				}
-				//int xIndex = 
 
 				float xPos = (float)xIndex * _gapBetweenTiles;
 				float yPos = ((float)row * _gapBetweenTiles);
@@ -158,7 +170,7 @@ void TileMap::LoadTileMap()
 				bool collidable = false;
 
 				_tileArr[layer][i].texIndex = index;
-				_tileArr[layer][i]._pSprite = _pSpritesheet->GetSpriteAtIndex(index);
+				_tileArr[layer][i]._pSprite = ResourceManager::GetSpriteSheet("spritesheet")->GetSpriteAtIndex(0);
 				_tileArr[layer][i].collidable = collidable;
 
 				int row = i / _mapInTiles.x;
@@ -177,10 +189,8 @@ void TileMap::LoadTileMap()
 
 }
 
-void TileMap::AddTileAt(unsigned int layer, unsigned int uvX, unsigned int uvY, Camera* cam, bool shouldCollide /*= false*/)
+void TileMap::AddTileAt(unsigned int layer, unsigned int uvX, unsigned int uvY, Camera* cam, SpriteSheet* sp, bool shouldCollide /*= false*/)
 {
-	if (_pSpritesheet == nullptr) return;
-
 	glm::vec2 worldPos = MousePosToTile(cam);
 
 	int index = _mapInTiles.x * (int)(worldPos.y * _tilesPerUnit) + (int)(worldPos.x * _tilesPerUnit);
@@ -195,7 +205,7 @@ void TileMap::AddTileAt(unsigned int layer, unsigned int uvX, unsigned int uvY, 
 	glm::vec2 colPos = glm::vec2(xPos, yPos);
 
 	TileData newTile;
-	newTile.texIndex = uvY * _pSpritesheet->GetSheetWidth() + uvX;
+	newTile.texIndex = uvY * sp->GetSheetWidth() + uvX;
 	newTile.layer = layer;
 	newTile.collidable = shouldCollide;
 	newTile.size = _gapBetweenTiles;
@@ -203,17 +213,17 @@ void TileMap::AddTileAt(unsigned int layer, unsigned int uvX, unsigned int uvY, 
 	newTile.colYPos = colPos.y;
 
 
-	newTile._pSpritesheet = _pSpritesheet;
-	newTile._pSprite = _pSpritesheet->GetSpriteAtIndex(_pSpritesheet->GetSheetWidth() * uvY + uvX);
+	newTile._pSpritesheet = sp;
+	newTile._pSprite = sp->GetSpriteAtIndex(sp->GetSheetWidth() * uvY + uvX);
 	_tileArr[layer][index] = newTile;
 }
 
-void TileMap::FillLayer(unsigned int layer, int uvX, int uvY)
+void TileMap::FillLayer(unsigned int layer, int uvX, int uvY, SpriteSheet* sp)
 {
 	for (int i = 0; i < _tileArr[layer].size(); i++) {
-		_tileArr[layer][i].texIndex = uvY * _pSpritesheet->GetSheetWidth() + uvX;
-		_tileArr[layer][i]._pSpritesheet = _pSpritesheet;
-		_tileArr[layer][i]._pSprite = _pSpritesheet->GetSpriteAtIndex(_pSpritesheet->GetSheetWidth() * uvY + uvX);
+		_tileArr[layer][i].texIndex = uvY * sp->GetSheetWidth() + uvX;
+		_tileArr[layer][i]._pSpritesheet = sp;
+		_tileArr[layer][i]._pSprite = sp->GetSpriteAtIndex(sp->GetSheetWidth() * uvY + uvX);
 	}
 }
 

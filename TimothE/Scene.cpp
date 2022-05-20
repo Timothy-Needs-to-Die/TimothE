@@ -12,21 +12,12 @@
 #include "SpriteComponent.h"
 #include "Time.h"
 
-int Scene::nextID = 0;
 std::vector<GameObject*> Scene::_listOfGameObjects;
 std::vector<GameObject*> Scene::_listOfDrawableGameObjects;
 
 Scene::Scene(std::string name)
 {
-	_id = ++nextID;
 	_name = name;
-
-	InitScene();
-	//_pTilemap->SetSpriteSheet(_pSpritesheet);
-
-	//////////////////
-	//END OF TEST CODE
-	//////////////////
 }
 
 Scene::~Scene()
@@ -35,7 +26,6 @@ Scene::~Scene()
 	{
 		delete(obj);
 	}
-	delete(_pDay);
 }
 
 void Scene::SceneStart()
@@ -54,8 +44,6 @@ void Scene::InitScene()
 	/////////////
 
 	Heap* gameObjectHeap = HeapManager::CreateHeap("GameObject", "Root");
-
-	_pDay = new Day();
 }
 
 void Scene::SceneEnd()
@@ -86,34 +74,8 @@ void Scene::EditorUpdate()
 
 void Scene::Update()
 {
-	if (_timeProgression)
-	{
-		_pDay->Update();
-	}
 	UpdateObjects();
 	UpdateUI();
-
-	/////////////
-	//TEST CODE//     BOX COLISSIONS
-	/////////////
-	//if (_listOfGameObjects[0]->GetComponent<BoxColliderComponent>()->Intersects(_listOfGameObjects[1]->GetComponent<BoxColliderComponent>()->GetCollisionRect()))
-	//{
-	//	std::cout << "Boxes are colliding" << std::endl;
-	//}
-	//glm::vec2 pos = _listOfGameObjects[1]->GetTransform()->GetPosition();
-	//if (Input::IsKeyDown(KEY_T))
-	//{
-	//	_listOfGameObjects[1]->GetTransform()->SetPosition(pos.x + 0.5, pos.y );
-	//}
-	//if (Input::IsKeyDown(KEY_G))
-	//{
-	//	_listOfGameObjects[1]->GetTransform()->SetPosition(pos.x - 0.5, pos.y );
-	//}
-	//Physics::Intersects(_pCircleTest->GetComponent<CircleCollider>(), _pTestObject2->GetComponent<BoxColliderComponent>());
-	//Physics::Intersects(_pTriggerBox->GetComponent<BoxColliderComponent>(), _pPlayer->GetComponent<BoxColliderComponent>());
-	//////////////////
-	//END OF TEST CODE
-	//////////////////
 }
 
 void Scene::UpdateUI()
@@ -149,15 +111,15 @@ void Scene::RenderScene(Camera* cam)
 	for (auto& obj : _listOfDrawableGameObjects) {
 		//TODO: Text won't render here as it uses its own internal texture data.
 		Texture2D* objTex = obj->GetComponent<Texture2D>();
+		SpriteComponent* sc = obj->GetComponent<SpriteComponent>();
 
-		if (objTex != nullptr) {
+		if (objTex != nullptr || sc != nullptr) {
 			if (obj->GetTag() == "UI") {
 				Renderer2D::DrawUIQuad(obj->GetTransform()->GetRenderQuad(), obj->GetComponent<Texture2D>());
 			}
 			else {
-				SpriteComponent* sc = obj->GetComponent<SpriteComponent>();
 				if (sc) {
-					Renderer2D::DrawQuad(obj->GetTransform()->GetRenderQuad(), objTex, sc->GetSprite()->GetTexCoords());
+					Renderer2D::DrawQuad(obj->GetTransform()->GetRenderQuad(), sc->GetSprite()->GetTexture(), sc->GetSprite()->GetTexCoords());
 				}
 				else {
 					Renderer2D::DrawQuad(obj->GetTransform()->GetRenderQuad(), objTex);
@@ -165,9 +127,6 @@ void Scene::RenderScene(Camera* cam)
 			}
 		}
 	}
-
-	//Renderer2D::DrawQuad(_pPlayer->GetTransform()->GetRenderQuad(), ResourceManager::GetTexture("character"),
-	//	_pPlayer->GetComponent<SpriteComponent>()->GetSprite()->GetTexCoords());
 
 	Renderer2D::EndRender();
 }
@@ -185,17 +144,12 @@ void Scene::SceneBox()
 GameObject* Scene::AddGameObject(GameObject* gameObject)
 {
 	_listOfGameObjects.push_back(gameObject);
-	Physics::SetupScenePhysics();
 	return gameObject;
 }
 
 void Scene::RemoveGameObject(GameObject* gameObject)
 {
 	_gameObjectsToRemove.emplace_back(gameObject);
-	//Searches for the desired object and deletes it if it is found
-	//_listOfGameObjects.erase(std::find(_listOfGameObjects.begin(), _listOfGameObjects.end(), gameObject));
-	//delete gameObject;
-	//gameObject = nullptr;
 }
 
 void Scene::AddedComponentHandler(GameObject* gameObject, Component* comp)
@@ -357,4 +311,49 @@ std::vector<GameObject*> Scene::FindGameObjectsWithTag(const std::string& tagNam
 		}
 	}
 	return objects;
+}
+
+void Scene::PopulateToolVector()
+{
+	std::vector<std::vector<std::string>> loadedData = CSVReader::RequestDataFromFile("Resources/Data/ItemsConfig.csv");
+		for (int i = 0; i < loadedData.size(); i++) {
+			ToolConfig newConfig;
+			newConfig.price = std::stoi(loadedData[i][2]);
+			newConfig.name = loadedData[i][0];
+			newConfig.resourceCost.woodRequired = std::stoi(loadedData[i][3]);
+			newConfig.resourceCost.stoneRequired = std::stoi(loadedData[i][4]);
+			newConfig.resourceCost.metalRequired = std::stoi(loadedData[i][5]);
+			newConfig.resourceCost.coalRequired = std::stoi(loadedData[i][6]);
+			newConfig.type = (ToolType)std::stoi(loadedData[i][11]);
+			newConfig.damagePerHit = std::stoi (loadedData[i][7]);
+			newConfig.townLevelRequired = std::stoi(loadedData[i][10]);
+
+		}
+}
+
+void Scene::PopulateSeedVector()
+{
+	std::vector<std::vector<std::string>> loadedData = CSVReader::RequestDataFromFile("Resources/Data/SeedConfigs");
+
+	for (int i = 0; i < loadedData.size(); i++) {
+		SeedConfig newConfig;
+		newConfig.name = loadedData[i][1];
+		newConfig.price = std::stoi(loadedData[i][2]);
+		newConfig.description = loadedData[i][3];
+		newConfig.growthRate = std::stoi(loadedData[i][4]);
+		newConfig.type = (CropType)std::stoi(loadedData[i][5]);
+	}
+}
+
+void Scene::PopulateCropVector()
+{
+	std::vector<std::vector<std::string>> loadedData = CSVReader::RequestDataFromFile("Resources/Data/CropsConfig.csv");
+
+	for (int i = 0; i < loadedData.size(); i++) {
+		CropConfig newConfig;
+		newConfig.name = loadedData[i][1];
+		newConfig.sellPrice = std::stoi(loadedData[i][2]);
+		newConfig.description = loadedData[i][3];
+		newConfig.type = (CropType)std::stoi(loadedData[i][5]);
+	}
 }

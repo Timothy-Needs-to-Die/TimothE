@@ -67,9 +67,4 @@ private:
 	bool _mGameRunning = false;
 
 	bool _tileMapEditorEnabled = false;
-
-	Scene* _pCurrentScene;
-
-	//TileMap* _pTilemap;
-	//SpriteSheet* _pSpritesheet;
 };

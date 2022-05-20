@@ -79,19 +79,10 @@ void Application::Init(bool devMode)
 
 	Renderer2D::Init();
 
-	ResourceManager::GetScene("FarmScene")->InitScene();
-
-	//_pCurrentScene = ResourceManager::GetScene("FarmScene");
-
-	SceneManager::Init();
-	_pCurrentScene = SceneManager::CreateScene(ResourceManager::GetScene("FarmScene"));
-	//_pCurrentScene = SceneManager::CreateScene(ResourceManager::GetScene("TownScene"));
-	_pCurrentScene->InitScene();
-	_pCurrentScene->SceneStart();
-	SceneManager::SetCurrentScene(_pCurrentScene);
-
-	//SceneManager::SetCurrentScene(new FarmScene("FarmSceen"));
-	//SceneManager::GetCurrentScene()->InitScene();
+	
+	//SceneManager::SetCurrentScene(SceneManager::CreateScene(ResourceManager::GetScene("FarmScene")));
+	SceneManager::SetCurrentScene(SceneManager::CreateScene(ResourceManager::GetScene("TownScene")));
+	
 
 	//initializes editor with scene
 
@@ -119,24 +110,10 @@ void Application::GameLoop()
 	//Intial mem bookmark
 	int memBookmark = HeapManager::GetMemoryBookmark();
 
-	//std::vector<std::vector<std::string>> cropDetails = CSVReader::RequestDataFromFile("Resources/Data/CropsConfig.csv");
-	//std::vector<CropConfig> cropConfigs;
-	//for (int i = 0; i < cropDetails.size(); i++) {
-	//	CropConfig newCrop;
-	//	newCrop.name = cropDetails[i][0];
-	//	newCrop.price = std::stoi(cropDetails[i][1]);
-	//	newCrop.description = cropDetails[i][2];
-	//	cropConfigs.emplace_back(newCrop);
-	//}
-
-
-
-
 	//creates new audio engine
 	_pAudio = new AudioEngine;
 
 	//enables depth in opengl
-	//GLCall(glEnable(GL_DEPTH_TEST));
 
 	//time update
 	double previousTime = glfwGetTime();
@@ -176,10 +153,8 @@ void Application::GameLoop()
 			_pEditor->_pEditorFramebuffer->BindFramebuffer();
 			GameBeginRender();
 			GameRender(CameraManager::GetCamera("Editor"));
-			_pEditor->EditorLoop(_pCurrentScene, _tileMapEditorEnabled, _mPaused);
+			_pEditor->EditorLoop(SceneManager::GetCurrentScene(), _tileMapEditorEnabled, _mPaused);
 
-			//_pEditor->EditorStartRender();
-			//DisplayTileEditor();
 			_pEditor->_pEditorFramebuffer->UnbindFramebuffer();
 			_pEditor->EditorRender();
 
@@ -248,19 +223,19 @@ void Application::GameBeginRender()
 void Application::GameRender(Camera* cam)
 {
 	//_pTilemap->RenderMap(cam);
-	_pCurrentScene->RenderScene(cam);
+	SceneManager::GetCurrentScene()->RenderScene(cam);
 }
 
 //updates game scene
 void Application::GameUpdate()
 {
 	CameraManager::CurrentCamera()->OnUpdate();
-	_pCurrentScene->Update();
+	SceneManager::GetCurrentScene()->Update();
 }
 
 void Application::DisplayTileEditor()
 {
-	TileMapEditor::Update(_pCurrentScene->GetTileMap());
+	TileMapEditor::Update(SceneManager::GetCurrentScene()->GetTileMap());
 }
 
 //stop and play buttons switches play states

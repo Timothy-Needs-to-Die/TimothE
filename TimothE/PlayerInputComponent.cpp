@@ -16,7 +16,7 @@ void PlayerInputComponent::OnStart()
 void PlayerInputComponent::OnUpdate()
 {
 	if (_pMovement == nullptr) {
-		TIM_LOG_ERROR("Player does not have movement component attached");
+		TIM_LOG_ERROR("Character does not have movement component attached");
 		return;
 	}
 
@@ -81,6 +81,15 @@ void PlayerInputComponent::NearbyResourceNode(class ResourceNode* nearbyResource
 void PlayerInputComponent::OnTriggerEnter(ColliderBase* other)
 {
 	if (other->GetParent()->GetTag() == "RESOURCE_NODE") {
+		TIM_LOG_LOG("OnTriggerEnter");
 		_pNearbyResourceNode = other->GetParent()->GetComponent<ResourceNode>();
+	}
+}
+
+void PlayerInputComponent::OnTriggerExit(ColliderBase* other)
+{
+	if (other->GetParent()->GetTag() == "RESOURCE_NODE") {
+		TIM_LOG_LOG("OnTriggerExit");
+		_pNearbyResourceNode = nullptr;
 	}
 }

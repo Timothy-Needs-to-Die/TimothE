@@ -20,7 +20,7 @@ void AIMovementCompnent::OnUpdate()
 
 	GameObject* parent = GetParent();
 	
-	if (hasDestination) return;
+	if (!hasDestination) return;
 
 	float dist = glm::distance(parent->GetTransform()->GetPosition(), currentTarget);
 	if (dist < tolerance)

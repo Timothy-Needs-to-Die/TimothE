@@ -53,14 +53,14 @@ void Fighter::Attack()
 
 		
 
-		std::cout << "Dot: " << dot << std::endl;
+		//std::cout << "Dot: " << dot << std::endl;
 
 		if (dot >= 0.0f) {
 			obj->TakeDamage(_weaponConfig.damage);
-			std::cout << "Would hit!" << std::endl;
+			//std::cout << "Would hit!" << std::endl;
 		}
 		else {
-			std::cout << "Would not hit!" << std::endl;
+			//std::cout << "Would not hit!" << std::endl;
 		}
 	}
 

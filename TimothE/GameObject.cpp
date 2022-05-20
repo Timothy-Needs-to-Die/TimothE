@@ -150,7 +150,23 @@ void GameObject::OnTriggerEnter(ColliderBase* other)
 
 void GameObject::OnColliderEnter(ColliderBase* other)
 {
+	for (auto& comp : _pComponents) {
+		comp->OnCollisionEnter(other);
+	}
+}
 
+void GameObject::OnTriggerExit(ColliderBase* other)
+{
+	for (auto& comp : _pComponents) {
+		comp->OnTriggerExit(other);
+	}
+}
+
+void GameObject::OnColliderExit(ColliderBase* other)
+{
+	for (auto& comp : _pComponents) {
+		comp->OnCollisionExit(other);
+	}
 }
 
 void GameObject::UniqueLogic()

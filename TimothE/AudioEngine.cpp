@@ -324,21 +324,21 @@ void AudioEngine::SetVolume(FMOD::Channel* channel, float value)
 // To Utilise these methods first get the frequency of the channel you wish to modify and store it as a float
 // Then create a new float 'newFrequency' variable and set it equal to a function call to either method, passing in
 // frequency and the required change of value
-float AudioEngine::ChangeOctave(float frequency, float ammount) {
+float AudioEngine::ChangeOctave(float frequency, float amount) {
 	static float octaveRatio = 2.0f;
-	return frequency * pow(octaveRatio, ammount);
+	return frequency * pow(octaveRatio, amount);
 }
 
-float AudioEngine::ChangeSemitone(float frequency, float ammount) {
+float AudioEngine::ChangeSemitone(float frequency, float amount) {
 	static float semitoneRatio = pow(2.0f, 1.0f / 12.0f);
-	return frequency * pow(semitoneRatio, ammount);
+	return frequency * pow(semitoneRatio, amount);
 }
 
 //Set the panning of the channel (Left/right)
 //								   (-1/1)
-void AudioEngine::SetPanning(FMOD::Channel* channel, float ammount) {
+void AudioEngine::SetPanning(FMOD::Channel* channel, float amount) {
 
-	channel->setPan(ammount);
+	channel->setPan(amount);
 }
 
 void AudioEngine::SetMasterVolume(float volume)

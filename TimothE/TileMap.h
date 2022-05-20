@@ -21,23 +21,14 @@ public:
 	void ClearAllLayers();
 	void UpdateLogic(Camera* cam);
 
-	//Sets the new spritesheet for this tilemap. 
-	void SetSpriteSheet(SpriteSheet* spritesheet) {
-		_pSpritesheet = spritesheet;
-		_tileSize = { _pSpritesheet->GetSpriteWidth(), _pSpritesheet->GetSpriteHeight() };
-		_spritemapResolution = { _pSpritesheet->GetPixelWidth(), _pSpritesheet->GetPixelHeight() };
-	}
-
 	void LoadTileMap();
 
-	//Returns the spritesheet for this tilemap
-	SpriteSheet* GetSpriteSheet() { return _pSpritesheet; }
 
 	//Adds a tile to a specified layer with a specified x and y index for the sprite, oritented around a camera and taked in a flag for collisions
-	void AddTileAt(unsigned int layer, unsigned int uvX, unsigned int uvY, Camera* cam, bool shouldCollide = false);
+	void AddTileAt(unsigned int layer, unsigned int uvX, unsigned int uvY, Camera* cam, SpriteSheet* sp, bool shouldCollide = false);
 
 	//Fills a specified layer with a texture at uvX and uvY coordinates
-	void FillLayer(unsigned int layer, int uvX, int uvY);
+	void FillLayer(unsigned int layer, int uvX, int uvY, SpriteSheet* sp);
 
 	//Gets the size of a tile in units. (e.g. 0.25 x 0.25)
 
@@ -125,9 +116,6 @@ private:
 	
 	//The index of the current tile that the mouse is hovering over
 	int _currentTileIndex;
-
-	//The spritesheet for this spritemap
-	SpriteSheet* _pSpritesheet = nullptr;
 
 	//Array/Vector which holds the tiles. //TODO: Make this not magic and link to the _numLayers variable
 	std::vector<std::vector<TileData>> _tileArr;

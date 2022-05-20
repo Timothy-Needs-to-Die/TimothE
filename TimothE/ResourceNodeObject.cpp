@@ -1,4 +1,6 @@
 #include "ResourceNodeObject.h"
+#include "ResourceNode.h"
+#include "BoxColliderComponent.h"
 
 ResourceNodeObject::ResourceNodeObject(CoreResourceType type, std::string name /*= "Resource Node"*/, std::string tag /*= "RESOURCE_NODE"*/)
 	: GameObject(name,tag)

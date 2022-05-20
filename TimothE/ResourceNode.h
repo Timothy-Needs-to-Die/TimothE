@@ -1,10 +1,11 @@
 #pragma once
 #include "Component.h"
 #include "CoreResourceType.h"
+
 class ResourceNode : public Component
 {
 public:
-	COMPONENT_STATIC_TYPE(ResourceNodeType);
+	COMPONENT_STATIC_TYPE(ResourceNode_Type);
 
 	ResourceNode(GameObject* owner, CoreResourceType type);
 

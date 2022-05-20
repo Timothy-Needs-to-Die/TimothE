@@ -1,5 +1,5 @@
 #pragma once
-#include "Scene.h"
+
 #include "GameObject.h"
 #include "Health.h"
 #include <vector>
@@ -29,7 +29,7 @@ public:
 private:
 	void SpawnWave();
 
-	Scene* _pCurrentScene;
+	class Scene* _pCurrentScene;
 	std::vector<GameObject*> _enemies;
 
 	int _remainingWaves = 0;

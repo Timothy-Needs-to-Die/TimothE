@@ -1,5 +1,6 @@
 #include "Wave.h"
 #include "CSVReader.h"
+#include "Scene.h"
 
 WaveController::WaveController(Scene* scene) : _pCurrentScene(scene)
 {
@@ -72,7 +73,7 @@ void WaveController::SpawnWave()
 	{
 		_enemies.push_back(new GameObject("Enemy", "ENEMY"));
 		// todo change the texture
-		_enemies[i]->AddComponent<Texture2D>(new Texture2D("whiteTexture.png"));
+		_enemies[i]->AddComponent<Texture2D>(new Texture2D("whiteTexture.png", "whiteTexture"));
 
 		// spawn on random edge
 		//glm::vec2 tilesize = _pCurrentScene->GetTileMap()->GetTileSize();
@@ -112,6 +113,7 @@ void WaveController::SpawnWave()
 		Health* h = new Health(_enemies[i]);
 		h->SetMaxHealth(50);
 		_enemies[i]->AddComponent(h);
+		_pCurrentScene->AddGameObject(_enemies[i]);
 	}
 	std::cout << "Created " << _enemies.size() << " enemies" << std::endl;
 }

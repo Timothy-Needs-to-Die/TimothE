@@ -11,7 +11,8 @@ enum ColliderType {
 class ColliderBase : public Component
 {
 public:
-	ColliderBase(GameObject* parent, ColliderType type) : Component(parent), _type(type) {}
+	ColliderBase(GameObject* parent, ColliderType type);
+	~ColliderBase();
 
 	COMPONENT_STATIC_TYPE(Collider)
 
