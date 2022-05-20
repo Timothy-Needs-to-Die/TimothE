@@ -58,7 +58,7 @@ private:
 	Node* mEndNode = nullptr;
 
 	//This list contains the directions the player needs to take in the form of Nodes. 
-	std::vector<Node*> mPathOfNodes;
+	std::vector<Node> mPathOfNodes;
 
 	std::vector<Node> _mMapNodes;
 	float width;

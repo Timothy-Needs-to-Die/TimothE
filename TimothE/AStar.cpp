@@ -95,35 +95,33 @@ std::vector<glm::vec2> AStar::FindPath(glm::vec2 start, glm::vec2 end)
 
 		//if (mEnd != nullptr) {
 			//Sets the previousNode to the endPoint as the A* algorithm works backwards
-		Node* previousNode = mEndNode;
+		Node& previousNode = *mEndNode;
 
-		if (previousNode != nullptr) {
-			//keep looping until the previousNode no longer has a parent this can only be the starting node
-			while (previousNode != nullptr && previousNode->parentNode != start)
+		//keep looping until the previousNode no longer has a parent this can only be the starting node
+		while (previousNode.parentNode != start)
+		{
+
+			//parent node check here
+			if (previousNode.parentNode.y == ERROR_PATH_POSITION || previousNode.parentNode.x == ERROR_PATH_POSITION)
 			{
-
-				//parent node check here
-				if (previousNode->parentNode.y == ERROR_PATH_POSITION || previousNode->parentNode.x == ERROR_PATH_POSITION)
-				{
-					break;
-				}
-
-				//adds the node to the path of nodes
-				auto it = std::find(mPathOfNodes.begin(), mPathOfNodes.end(), previousNode);
-				if (it == mPathOfNodes.end()) {
-					mPathOfNodes.push_back(previousNode);
-				}
-
-				//Sets the previous node to the parent of this node
-				previousNode = &_mMapNodes.at((previousNode->parentNode.y * tilesPerUnit) * width + (previousNode->parentNode.x * tilesPerUnit));
-
+				break;
 			}
+
+			//adds the node to the path of nodes
+			//auto it = std::find(mPathOfNodes.begin(), mPathOfNodes.end(), previousNode);
+			//if (it == mPathOfNodes.end()) {
+				mPathOfNodes.push_back(previousNode);
+			//}
+
+			//Sets the previous node to the parent of this node
+			previousNode = _mMapNodes.at((previousNode.parentNode.y * tilesPerUnit) * width + (previousNode.parentNode.x * tilesPerUnit));
+
 		}
 	}
 
 	std::vector<glm::vec2> processedPath;
 	for (int i = 0; i < mPathOfNodes.size(); i++) {
-		processedPath.push_back(mPathOfNodes[i]->pos);
+		processedPath.push_back(mPathOfNodes[i].pos);
 	}
 	mPathOfNodes.clear();
 
