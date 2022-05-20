@@ -42,13 +42,6 @@ public:
 	//The default constructor for the class
 	AStar() = default;
 
-	/// <summary>
-	/// The constructor for the class which initializes the start and end nodes 
-	/// </summary>
-	/// <param name="startNode">The node that the player starts on</param>
-	/// <param name="endNode">The node that the player ends on</param>
-	AStar(glm::vec2* startNode, glm::vec2* endNode);
-
 	//Overriding the default destructor to delete the memory associated with the direction and path lists
 	~AStar();
 
@@ -56,29 +49,16 @@ public:
 	/// This function will calculate the shortest path for the maze. Using the A* Pathfinding Algorithm
 	/// </summary>
 	/// <returns>This function returns true if a path is found and false if a path is not found</returns>
-	bool FindPath();
+	std::vector<glm::vec2> FindPath(glm::vec2 start, glm::vec2 end);
 
-	/// <summary>
-	/// This function will process the node list to find the directions the player needs to go in to get to the end
-	/// </summary>
-	void ProcessDirections();
-
-	/// <summary>
-	/// This function returns the node path list to the user
-	/// </summary>
-	std::list<Node*> GetPathOfNodes();
 	void SetMap(TileMap* map);
 
 private:
-	//The starting node
-	glm::vec2* mStartNode = nullptr;
 
-	//The ending node
-	glm::vec2* mEnd = nullptr;
 	Node* mEndNode = nullptr;
 
 	//This list contains the directions the player needs to take in the form of Nodes. 
-	std::list<Node*> mPathOfNodes;
+	std::vector<Node*> mPathOfNodes;
 
 	std::vector<Node> _mMapNodes;
 	float width;

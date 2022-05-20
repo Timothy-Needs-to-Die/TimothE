@@ -4,7 +4,8 @@ AIMovementCompnent::AIMovementCompnent(GameObject* owner)
 	: MovementComponent(owner)
 {
 
-	aStar = new AStar(&s, &e);
+	aStar = new AStar();
+	aStar->SetMap(SceneManager::GetCurrentScene()->GetTileMap());
 	SetMovementSpeed(0.5f); //TODO: Get from config
 }
 
@@ -12,17 +13,16 @@ void AIMovementCompnent::SetDestination(glm::vec2 targetPos)
 {
 	_constantlyMove = true;
 	hasDestination = true;
-	aStar->SetMap(SceneManager::GetCurrentScene()->GetTileMap());
-	aStar->FindPath();
-	aStar->ProcessDirections();
-	std::list<Node*> tempPath = aStar->GetPathOfNodes();
+	std::vector<glm::vec2> tempPath = aStar->FindPath(GetParent()->GetTransform()->GetPosition(),targetPos);
+
 	int size = tempPath.size();
 	for (int i = 0; i < size; i++)
 	{
-		pathToFollow.push(tempPath.front()->pos);
-		tempPath.pop_front();
+		pathToFollow.push(tempPath[i]);
+		//tempPath.pop_front();
 		//pathToFollow.pop();
 	}
+
 	currentTarget = GetNextTarget();
 	tempPath.clear();
 }

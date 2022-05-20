@@ -24,8 +24,5 @@ private:
 	AStar* aStar;
 
 	glm::vec2 GetNextTarget();
-
-	glm::vec2 s = glm::vec2(1.0f, 1.0f);
-	glm::vec2 e = glm::vec2(6.0f, 6.0f);
 };
 

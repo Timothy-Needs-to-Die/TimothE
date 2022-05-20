@@ -1,7 +1,5 @@
 #include "AStar.h"
 
-//Using a initializer list to initialize the mStartNode and mEndNode variables
-AStar::AStar(glm::vec2* startNode, glm::vec2* endNode) : mStartNode(startNode), mEnd(endNode) {}
 
 AStar::~AStar()
 {
@@ -9,21 +7,21 @@ AStar::~AStar()
 	mPathOfNodes.clear();
 }
 
-bool AStar::FindPath()
+std::vector<glm::vec2> AStar::FindPath(glm::vec2 start, glm::vec2 end)
 {
 	/// <summary>
 	/// Lambda expression to get the distance between two nodes on the map. 
 	/// </summary>
 	/// <returns>The distance between two nodes</returns>
-	auto distance = [](glm::vec2* a, glm::vec2* b)
-	{
-		//Returns the distance between the two nodes
-
-		float ySeparation = b->y - a->y;
-		float xSeparation = b->x - a->x;
-
-		return sqrt(ySeparation * ySeparation + xSeparation * xSeparation);
-	};
+	//auto distance = [](glm::vec2 a, glm::vec2 b)
+	//{
+	//	//Returns the distance between the two nodes
+	//
+	//	float ySeparation = b->y - a->y;
+	//	float xSeparation = b->x - a->x;
+	//
+	//	return sqrt(ySeparation * ySeparation + xSeparation * xSeparation);
+	//};
 
 	/// <summary>
 	/// Lambda expression used to calculate the heuristic value between two nodes.
@@ -40,9 +38,9 @@ bool AStar::FindPath()
 	std::list<Node*> untestedNodes;
 
 	Node* currentNode = new Node();
-	currentNode->pos = *mStartNode;
+	currentNode->pos = start;
 	currentNode->localGoal = 0.0f;
-	currentNode->globalGoal = distance(&currentNode->pos, mEnd);
+	currentNode->globalGoal = glm::distance(currentNode->pos, end);
 	//currentNode->isObstacle = mStartNode->isObstacle;
 	//currentNode->isVisited = mStartNode->isVisited;
 	currentNode->neighborNodes = _mMapNodes.at(0).neighborNodes;
@@ -97,7 +95,7 @@ bool AStar::FindPath()
 
 
 			//Calculates the neighbors 'potentially' lower distance 
-			float potentiallyLowerGoal = currentNode->localGoal + distance(&currentNode->pos, &nodeNeighbor->pos);
+			float potentiallyLowerGoal = currentNode->localGoal + glm::distance(currentNode->pos, nodeNeighbor->pos);
 
 			//If the distance between this node and the neighbors is lower than the local score of the neighbor is then this should be the new parent node of the neighbor 
 			if (potentiallyLowerGoal < nodeNeighbor->localGoal) {
@@ -108,39 +106,31 @@ bool AStar::FindPath()
 				nodeNeighbor->localGoal = potentiallyLowerGoal;
 
 				//Calculate the heuristic value of the neighbor based on there local goal and the distance to the end point
-				nodeNeighbor->globalGoal = nodeNeighbor->localGoal + distance(&nodeNeighbor->pos, mEnd);
+				nodeNeighbor->globalGoal = nodeNeighbor->localGoal + glm::distance(nodeNeighbor->pos, end);
 			}
 
 			/*if the distance between the neighbor node and the end node is 0 then it means a path has been found.
 			However it may not be the shortest path*/
-			float dist = distance(&nodeNeighbor->pos, mEnd);
-			if (dist < 5) {
-				int i = 4;
-			}
+			float dist = glm::distance(nodeNeighbor->pos, end);
+
 			if (dist == 0)
 			{
 				mEndNode = nodeNeighbor;
 				pathFound = true;
-
 			}
 		}
 	}
 
-	//returns if the path has been found
-	return pathFound;
-}
+	if (pathFound) {
+		mPathOfNodes.clear();
 
-void AStar::ProcessDirections()
-{
-	mPathOfNodes.clear();
-
-	if (mEnd != nullptr) {
-		//Sets the previousNode to the endPoint as the A* algorithm works backwards
+		//if (mEnd != nullptr) {
+			//Sets the previousNode to the endPoint as the A* algorithm works backwards
 		Node* previousNode = mEndNode;
 
 		if (previousNode != nullptr) {
 			//keep looping until the previousNode no longer has a parent this can only be the starting node
-			while (previousNode != nullptr && previousNode->parentNode != *mStartNode)
+			while (previousNode != nullptr && previousNode->parentNode != start)
 			{
 
 				//parent node check here
@@ -148,7 +138,7 @@ void AStar::ProcessDirections()
 				{
 					break;
 				}
-				
+
 				//adds the node to the path of nodes
 				auto it = std::find(mPathOfNodes.begin(), mPathOfNodes.end(), previousNode);
 				if (it == mPathOfNodes.end()) {
@@ -157,18 +147,35 @@ void AStar::ProcessDirections()
 
 				//Sets the previous node to the parent of this node
 				previousNode = &_mMapNodes.at((previousNode->parentNode.y * tilesPerUnit) * width + (previousNode->parentNode.x * tilesPerUnit));
-					
+
 			}
 		}
 	}
+
+	std::vector<glm::vec2> processedPath;
+	for (int i = 0; i < mPathOfNodes.size(); i++) {
+		processedPath.push_back(mPathOfNodes[i]->pos);
+	}
+	mPathOfNodes.clear();
+
+	return processedPath;
+	//}
+
+	//returns if the path has been found
+	return std::vector<glm::vec2>();
 }
 
+//void AStar::ProcessDirections()
+//{
+//
+//}
 
-#pragma region Getters
-std::list<Node*> AStar::GetPathOfNodes()
-{
-	return mPathOfNodes;
-}
+
+//#pragma region Getters
+//std::list<Node*> AStar::GetPathOfNodes()
+//{
+//	return mPathOfNodes;
+//}
 void AStar::SetMap(TileMap* map)
 {
 	tilesPerUnit = map->GetTilesPerUnit();
@@ -180,7 +187,7 @@ void AStar::SetMap(TileMap* map)
 		Node tile;
 		tile.isObstacle = tiles.at(i).collidable;
 		tile.pos = { tiles.at(i).colXPos, tiles.at(i).colYPos };
-		
+
 		_mMapNodes.push_back(tile);
 
 	}
