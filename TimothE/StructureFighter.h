@@ -9,7 +9,9 @@ public:
 
 	void Attack(GameObject* pTarget);
 
+	virtual void OnStart() override;
 	virtual void OnUpdate() override;
+	virtual void OnEnd() override;
 
 private:
 	float _attackRate = 1.0f;

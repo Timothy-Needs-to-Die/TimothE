@@ -15,9 +15,10 @@ public:
 	virtual void UniqueLogic() override;
 
 private:
-	Enemy* _pCurrentTarget = nullptr;
+	GameObject* _pCurrentTarget = nullptr;
 	std::vector<GameObject*> _pEnemiesInRange;
 	class StructureFighter* _pStructureFighter = nullptr;
+	class CircleColliderComponent* _pCircleCollider = nullptr;
 
 };
 

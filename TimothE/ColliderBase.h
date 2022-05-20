@@ -21,8 +21,12 @@ public:
 
 	ColliderType GetType() const { return _type; }
 
+	float GetScale() const { return _scale; }
+	void SetScale(float val) { _scale = val; }
+
 protected:
 	bool _isTrigger;
+	float _scale = 1.0f;
 
 	ColliderType _type;
 };

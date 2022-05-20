@@ -5,6 +5,7 @@
 #include "Player.h"
 #include "ResourceNodeObject.h"
 #include "Wave.h"
+#include "OffensiveStructureObject.h"
 
 FarmScene::~FarmScene()
 {
@@ -102,4 +103,7 @@ void FarmScene::InitScene()
 
 	farmland = new FarmlandManager("Farmland Manager");
 	AddGameObject(farmland);
+
+	OffensiveStructureObject* _pTower = new OffensiveStructureObject("Test Tower");
+	AddGameObject(_pTower);
 }
