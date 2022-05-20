@@ -5,6 +5,8 @@
 #include <stack>
 #include "vector"
 #include "AStar.h"
+#include "SceneManager.h"
+#include "Scene.h"
 class AIMovementCompnent : public MovementComponent
 {
 public:

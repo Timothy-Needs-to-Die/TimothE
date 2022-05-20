@@ -2,10 +2,14 @@
 
 void AIMovementCompnent::SetDestination(glm::vec2 targetPos)
 {
-	std::vector<Node*> tempPath = aStar->GetPathOfNodes();
+	aStar->SetMap(SceneManager::GetCurrentScene()->GetTileMap());
+	aStar->FindPath();
+	aStar->ProcessDirections();
+	std::list<Node*> tempPath = aStar->GetPathOfNodes();
 	for (int i = 0; i < tempPath.size(); i++)
 	{
-		pathToFollow.push(tempPath.at(i)->pos);
+		pathToFollow.push(tempPath.front()->pos);
+		pathToFollow.pop();
 	}
 	tempPath.clear();
 }

@@ -165,7 +165,7 @@ void AStar::ProcessDirections()
 
 
 #pragma region Getters
-std::vector<Node*> AStar::GetPathOfNodes()
+std::list<Node*> AStar::GetPathOfNodes()
 {
 	return mPathOfNodes;
 }
@@ -189,9 +189,6 @@ void AStar::SetMap(TileMap* map)
 	{
 		_mMapNodes[i].neighborNodes.clear();
 
-		if (_mMapNodes[i].pos == glm::vec2{6.0f, 6.0f}) {
-			int i = 3;
-		}
 
 		glm::vec2 pos = _mMapNodes[i].pos;
 
