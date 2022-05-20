@@ -46,7 +46,7 @@ void BoxColliderComponent::OnUpdate()
 	{
 		// Update our center and size from the transform incase its moved.
 		glm::vec2 position = _pParentObject->GetTransform()->GetPosition();
-		glm::vec2 scale = _pParentObject->GetTransform()->GetScale();
+		glm::vec2 scale = _pParentObject->GetTransform()->GetScale() * _scale;
 
 		// Update our collider to the correct position
 		_boxCollider->xPos = position.x;
