@@ -42,6 +42,8 @@ public:
 
 	Direction GetDirection() const { return _direction; }
 
+	void SetAllowCollisions(bool val) { _allowCollisions = val; }
+
 	void OnStart() override;
 	void OnUpdate() override;
 	void OnEnd() override;
@@ -52,10 +54,15 @@ public:
 private:
 	float _movementSpeed = 3.0f;
 	bool _moving;
-	bool _constantlyMove;
-	glm::vec2 _desiredDirection;
+	bool _allowCollisions = true;
+
+	
 
 	Direction _direction;
+
+protected:
+	bool _constantlyMove;
+	glm::vec2 _desiredDirection;
 
 };
 

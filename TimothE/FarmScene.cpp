@@ -6,6 +6,7 @@
 #include "ResourceNodeObject.h"
 #include "Wave.h"
 #include "OffensiveStructureObject.h"
+#include "AIMovementCompnent.h"
 
 FarmScene::~FarmScene()
 {
@@ -59,6 +60,7 @@ void FarmScene::UpdateObjects()
 void FarmScene::InitScene()
 {
 	Scene::InitScene();
+	_pTilemap = new TileMap(_name);
 
 	_listOfGameObjects.clear();
 	_listOfDrawableGameObjects.clear();
@@ -90,7 +92,6 @@ void FarmScene::InitScene()
 	_pPlayer = new Player();
 	AddGameObject(_pPlayer);
 
-	_pTilemap = new TileMap(_name);
 
 	//_pWaveController = new WaveController(this);
 
@@ -106,4 +107,15 @@ void FarmScene::InitScene()
 
 	OffensiveStructureObject* _pTower = new OffensiveStructureObject("Test Tower");
 	AddGameObject(_pTower);
+
+	_pAITester = new GameObject("AI Test");
+	_pAITester->GetTransform()->SetScale({ 0.25f, 0.25f });
+
+	AIMovementCompnent* mover = _pAITester->AddComponent(new AIMovementCompnent(_pAITester));
+	_pAITester->AddComponent(ResourceManager::GetTexture("fish"));
+	mover->SetAllowCollisions(false);
+
+	mover->SetDestination(glm::vec2(6.0f, 6.0f));
+
+	AddGameObject(_pAITester);
 }

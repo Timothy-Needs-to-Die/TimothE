@@ -174,12 +174,12 @@ void AStar::SetMap(TileMap* map)
 	tilesPerUnit = map->GetTilesPerUnit();
 	width = map->GetMapSize().x * tilesPerUnit;
 	height = map->GetMapSize().y * tilesPerUnit;
-	std::vector<TileData>* tiles = &map->GetAllTilesInLayer(0);
-	for (int i = 0; i < tiles->size(); i++)
+	std::vector<TileData> tiles = map->GetAllTilesInLayer(0);
+	for (int i = 0; i < tiles.size(); i++)
 	{
 		Node tile;
-		tile.isObstacle = tiles->at(i).collidable;
-		tile.pos = { tiles->at(i).colXPos, tiles->at(i).colYPos };
+		tile.isObstacle = tiles.at(i).collidable;
+		tile.pos = { tiles.at(i).colXPos, tiles.at(i).colYPos };
 		
 		_mMapNodes.push_back(tile);
 
@@ -189,26 +189,29 @@ void AStar::SetMap(TileMap* map)
 	{
 		_mMapNodes[i].neighborNodes.clear();
 
+		int yIndex = i / width;
+		int xIndex = i - (yIndex * width);
+
 
 		glm::vec2 pos = _mMapNodes[i].pos;
 
 		//Left
-		if (i > 0) {
+		if (xIndex > 0) {
 			_mMapNodes[i].neighborNodes.push_back(&_mMapNodes[i - 1]);
 		}
 
 		//Right
-		if (i < width) {
+		if (xIndex < width) {
 			_mMapNodes[i].neighborNodes.push_back(&_mMapNodes[i + 1]);
 		}
 
-		//Top
-		if (i < i + width) {
+		//Top 
+		if (yIndex < height) {
 			_mMapNodes[i].neighborNodes.push_back(&_mMapNodes[i + width]);
 		}
 
 		//Bottom
-		if (i > i - width) {
+		if (yIndex > height) {
 			_mMapNodes[i].neighborNodes.push_back(&_mMapNodes[i - width]);
 		}
 

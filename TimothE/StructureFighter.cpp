@@ -25,9 +25,13 @@ void StructureFighter::Attack(GameObject* pTarget)
 	newProjectile->GetTransform()->SetScale({ 0.15f,0.15f });
 	newProjectile->GetTransform()->SetPosition(towerPos);
 	newProjectile->AddComponent(new BoxColliderComponent(newProjectile))->SetTrigger(true);
+	
+	
 	MovementComponent* mc = newProjectile->AddComponent(new MovementComponent(newProjectile));
+
 	mc->SetConstantlyMove(true);
 	mc->SetMoveDirection(directionToTarget);
+	mc->SetAllowCollisions(false);
 
 	SceneManager::GetCurrentScene()->AddGameObject(newProjectile);
 

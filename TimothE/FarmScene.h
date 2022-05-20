@@ -35,6 +35,7 @@ protected:
 private:
 	GameObject* _pStartButton = nullptr;
 	GameObject* _pWeaponObject = nullptr;
+	GameObject* _pAITester = nullptr;
 
 	SpriteSheet* _pSpritesheet;
 

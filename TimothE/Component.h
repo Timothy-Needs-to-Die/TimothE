@@ -53,7 +53,8 @@ public:
 		Health_Type = BIT(19),
 		ResourceNode_Type = BIT(20),
 		StructureFighter_Type = BIT(21),
-		AIControllerType = BIT(22)
+		AIControllerType = BIT(22),
+		AIMovement_Type = BIT(23)
 	};
 
 	//enums for different categories of components
