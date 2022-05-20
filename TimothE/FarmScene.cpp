@@ -80,10 +80,7 @@ void FarmScene::InitScene()
 	//_pTilemap->SetSpriteSheet(ResourceManager::GetSpriteSheet("testSheet"));
 	//_pTilemap->LoadTileMap();
 
-	LightSource ls;
-	ls.baseLightLevel = 7;
-	ls.fallOffRate = 1;
-	ls.range = 10;
+	LightSource ls = LightSource();
 	ls.worldPos = glm::vec2(30.0f, 30.0f);
 
 	_pLightManager->AddLightSource(ls);

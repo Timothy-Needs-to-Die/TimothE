@@ -10,7 +10,7 @@ void LightLevelManager::UpdateLightMap(TileMap* tileMap)
 		float tileXSize = tileMap->GetTileSize().x;
 		float tileYSize = tileMap->GetTileSize().y;
 
-		for (const LightSource& source : _lightSources)
+		for (auto const& source : _lightSources)
 		{
 			//needs to loop through layers
 			xMin = tileMap->GetTileAtWorldPos(0, glm::vec2(source.worldPos.x - (source.range * tileMap->GetTileSize().x), source.worldPos.y))->colXPos;
@@ -26,6 +26,7 @@ void LightLevelManager::UpdateLightMap(TileMap* tileMap)
 
 					//get affective light value = baselight - (falloff * distance of tiles between source and tile rounded)
 					int affectiveValue = source.baseLightLevel - (source.fallOffRate * (int)round(glm::distance(glm::vec2(x, y), source.worldPos) / tileXSize));
+
 					//get final light value and apply to tile
 					tile->lightLevel += affectiveValue;
 				}

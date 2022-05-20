@@ -6,6 +6,11 @@ class TileMap;
 
 struct LightSource
 {
+	LightSource() : baseLightLevel(7), fallOffRate(1), range(10), worldPos(glm::vec2(0.0f, 0.0f))
+	{
+
+	}
+
 	int baseLightLevel;
 	int fallOffRate;
 	int range;
@@ -14,7 +19,7 @@ struct LightSource
 
 class LightLevelManager
 {
-private:
+public:
 	std::vector<LightSource> _lightSources;
 public:
 	void AddLightSource(LightSource lightSource);
