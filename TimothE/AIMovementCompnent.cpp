@@ -52,7 +52,7 @@ glm::vec2 AIMovementCompnent::GetNextTarget()
 		_constantlyMove = false;
 		hasDestination = false;
 
-		SetDestination(glm::vec2{ 0.0f,0.0f });
+		//SetDestination(glm::vec2{ 0.0f,0.0f });
 
 		return glm::vec2(0, 0);
 	}
