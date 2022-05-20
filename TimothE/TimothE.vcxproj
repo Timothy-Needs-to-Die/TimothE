@@ -84,7 +84,9 @@
     <ClInclude Include="AnimatedSpritesheet.h" />
     <ClInclude Include="Application.h" />
     <ClInclude Include="BaseTrader.h" />
+    <ClInclude Include="Enemy.h" />
     <ClInclude Include="ItemConfig.h" />
+    <ClInclude Include="OffensiveStructureObject.h" />
     <ClInclude Include="PlayerResource.h" />
     <ClInclude Include="CoreResourceType.h" />
     <ClInclude Include="AudioEngine.h" />
@@ -185,6 +187,9 @@
     <ClInclude Include="SpriteSheet.h" />
     <ClInclude Include="Stream.h" />
     <ClInclude Include="StreamFile.h" />
+    <ClInclude Include="StructureFighter.h" />
+    <ClInclude Include="StructureHealth.h" />
+    <ClInclude Include="StructureObject.h" />
     <ClInclude Include="Tag.h" />
     <ClInclude Include="TestComponent.h" />
     <ClInclude Include="TextComponent.h" />
@@ -219,7 +224,9 @@
     <ClCompile Include="CircleColliderComponent.cpp" />
     <ClCompile Include="ColliderBase.cpp" />
     <ClCompile Include="Console.cpp" />
+    <ClCompile Include="Enemy.cpp" />
     <ClCompile Include="ItemResourceType.h" />
+    <ClCompile Include="OffensiveStructureObject.cpp" />
     <ClCompile Include="PlayerResource.cpp" />
     <ClCompile Include="Core\Graphics\Framebuffer.cpp" />
     <ClCompile Include="Core\Graphics\IBO.cpp" />
@@ -270,6 +277,9 @@
     <ClCompile Include="SpriteSheet.cpp" />
     <ClCompile Include="StreamFile.cpp" />
     <ClCompile Include="StreamHelpers.cpp" />
+    <ClCompile Include="StructureFighter.cpp" />
+    <ClCompile Include="StructureHealth.cpp" />
+    <ClCompile Include="StructureObject.cpp" />
     <ClCompile Include="Tag.cpp" />
     <ClCompile Include="TestComponent.cpp" />
     <ClCompile Include="TextComponent.cpp" />

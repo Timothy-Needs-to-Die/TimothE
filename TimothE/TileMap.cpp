@@ -72,7 +72,12 @@ void TileMap::SaveTilemap() {
 		{
 			int index = var.texIndex;
 
-			tileLayout += std::to_string(index) + " " + std::to_string((int)var.collidable) + " " + var._pSpritesheet->GetResourceName() + ",";
+			std::string resourceName = "spritesheet";
+			if (var._pSpritesheet != nullptr) {
+				resourceName = var._pSpritesheet->GetResourceName();
+			}
+
+			tileLayout += std::to_string(index) + " " + std::to_string((int)var.collidable) + " " + resourceName + ",";
 		}
 		file["tiles" + std::to_string(layer)] = tileLayout;
 	}
@@ -133,6 +138,9 @@ void TileMap::LoadTileMap()
 					std::string resourceName = s3;
 					_tileArr[layer][i]._pSpritesheet = ResourceManager::GetSpriteSheet(resourceName);
 				}
+				else {
+					_tileArr[layer][i]._pSpritesheet = ResourceManager::GetSpriteSheet("spritesheet");
+				}
 				int index = std::stoi(s1);
 
 				bool collidable = std::stoi(s2);
@@ -162,7 +170,7 @@ void TileMap::LoadTileMap()
 				bool collidable = false;
 
 				_tileArr[layer][i].texIndex = index;
-				_tileArr[layer][i]._pSprite = ResourceManager::GetSpriteSheet("testSheet")->GetSpriteAtIndex(0);
+				_tileArr[layer][i]._pSprite = ResourceManager::GetSpriteSheet("spritesheet")->GetSpriteAtIndex(0);
 				_tileArr[layer][i].collidable = collidable;
 
 				int row = i / _mapInTiles.x;

@@ -51,7 +51,8 @@ public:
 		Trader_Type = BIT(17),
 		Fighter_Type = BIT(18),
 		Health_Type = BIT(19),
-		ResourceNode_Type = BIT(20)
+		ResourceNode_Type = BIT(20),
+		StructureFighter_Type = BIT(21)
 	};
 
 	//enums for different categories of components
