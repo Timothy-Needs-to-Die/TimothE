@@ -9,31 +9,6 @@ AStar::~AStar()
 
 std::vector<glm::vec2> AStar::FindPath(glm::vec2 start, glm::vec2 end)
 {
-	/// <summary>
-	/// Lambda expression to get the distance between two nodes on the map. 
-	/// </summary>
-	/// <returns>The distance between two nodes</returns>
-	//auto distance = [](glm::vec2 a, glm::vec2 b)
-	//{
-	//	//Returns the distance between the two nodes
-	//
-	//	float ySeparation = b->y - a->y;
-	//	float xSeparation = b->x - a->x;
-	//
-	//	return sqrt(ySeparation * ySeparation + xSeparation * xSeparation);
-	//};
-
-	/// <summary>
-	/// Lambda expression used to calculate the heuristic value between two nodes.
-	/// </summary>
-	/// <returns>The heuristic value between nodes on the map</returns>
-	//auto heuristic = [distance](Node* a, Node* b) {
-	//	/*Currently the heuristic value is based upon the overall distance between two nodes,
-	//	however this could be changed to take further variables into mind such as the players speed
-	//	on a particular type of tile. e.g. the player would move slower through water than on solid stone*/
-	//	return distance(a, b);
-	//};
-
 	//This list will contain the untested nodes that will be used to cycle through each node in the map 
 	std::list<Node*> untestedNodes;
 
@@ -45,7 +20,7 @@ std::vector<glm::vec2> AStar::FindPath(glm::vec2 start, glm::vec2 end)
 	//currentNode->isVisited = mStartNode->isVisited;
 	currentNode->neighborNodes = _mMapNodes.at(0).neighborNodes;
 
-	currentNode->parentNode = { 0, 0 };
+	//currentNode->parentNode = { 0, 0 };
 
 
 	untestedNodes.push_back(currentNode);
@@ -78,12 +53,6 @@ std::vector<glm::vec2> AStar::FindPath(glm::vec2 start, glm::vec2 end)
 		//sets the current node to the front of the list
 		currentNode = untestedNodes.front();
 		currentNode->isVisited = true; //Nodes only need to be calculated once
-
-		if (currentNode->neighborNodes.size() > 6) {
-			untestedNodes.pop_front();
-			continue;
-
-		}
 
 		//Explore this node's neighbors
 		for (auto nodeNeighbor : currentNode->neighborNodes) {
@@ -159,23 +128,9 @@ std::vector<glm::vec2> AStar::FindPath(glm::vec2 start, glm::vec2 end)
 	mPathOfNodes.clear();
 
 	return processedPath;
-	//}
 
-	//returns if the path has been found
-	return std::vector<glm::vec2>();
 }
 
-//void AStar::ProcessDirections()
-//{
-//
-//}
-
-
-//#pragma region Getters
-//std::list<Node*> AStar::GetPathOfNodes()
-//{
-//	return mPathOfNodes;
-//}
 void AStar::SetMap(TileMap* map)
 {
 	tilesPerUnit = map->GetTilesPerUnit();
@@ -221,24 +176,6 @@ void AStar::SetMap(TileMap* map)
 		if (yIndex > height) {
 			_mMapNodes[i].neighborNodes.push_back(&_mMapNodes[i - width]);
 		}
-
-		//
-		//if (pos.x > 0) {
-		//	_mMapNodes[i].neighborNodes.push_back(&_mMapNodes[pos.y * width + (pos.x - 1)]);
-		//}
-		////if the node is not on the right most side then add the right hand node to the nodes neighbors
-		//if (pos.x < width - 1) {
-		//	_mMapNodes[i].neighborNodes.push_back(&_mMapNodes[pos.y * width + (pos.x + 1)]);
-		//}
-		////if the node is not on top of the map then add the node above to the nodes neighbors
-		//if (pos.y > 0) {
-		//	_mMapNodes[i].neighborNodes.push_back(&_mMapNodes[(pos.y - 1) * width + pos.x]);
-		//}
-		////if the node is not at the bottom of the map then add the node below it to the nodes neighbors
-		//if (pos.y < height - 1) {
-		//	_mMapNodes[i].neighborNodes.push_back(&_mMapNodes[(pos.y + 1) * width + pos.x]);
-		//}
 	}
 
 }
-#pragma endregion 
