@@ -57,11 +57,11 @@ public:
 	//TODO: Implement unloading logic.
 	void Unload() {
 		for (auto& obj : _listOfGameObjects) {
-			delete obj;
-			obj = nullptr;
+			_gameObjectsToRemove.emplace_back(obj);
 		}
-		_listOfGameObjects.clear();
-		_listOfDrawableGameObjects.clear();
+
+		//_listOfGameObjects.clear();
+		//_listOfDrawableGameObjects.clear();
 
 		delete _pTilemap;
 		_pTilemap = nullptr;
