@@ -12,5 +12,5 @@ void TownScene::UpdateObjects()
 
 void TownScene::InitScene()
 {
-	_pTilemap = new TileMap(_name);
+	Scene::InitScene();
 }

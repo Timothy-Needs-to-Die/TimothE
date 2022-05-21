@@ -37,13 +37,12 @@ void Scene::SceneStart()
 
 void Scene::InitScene()
 {
-	//_listOfGameObjects.clear();
+	_listOfGameObjects.clear();
+	_listOfDrawableGameObjects.clear();
+	_gameObjectsToRemove.clear();
 
-	/////////////
-	//TEST CODE//
-	/////////////
 
-	Heap* gameObjectHeap = HeapManager::CreateHeap("GameObject", "Root");
+	_pTilemap = new TileMap(_name);
 }
 
 void Scene::SceneEnd()

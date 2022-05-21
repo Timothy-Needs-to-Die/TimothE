@@ -60,10 +60,6 @@ void FarmScene::UpdateObjects()
 void FarmScene::InitScene()
 {
 	Scene::InitScene();
-	_pTilemap = new TileMap(_name);
-
-	_listOfGameObjects.clear();
-	_listOfDrawableGameObjects.clear();
 
 	_pSpritesheet = ResourceManager::GetSpriteSheet("testSheet");
 
