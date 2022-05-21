@@ -169,6 +169,8 @@ void Application::GameLoop()
 		Window::SwapBuffers();
 
 		previousTime = deltaTime;
+
+		SceneManager::GetCurrentScene()->FrameEnd();
 	}
 
 	//saves scene

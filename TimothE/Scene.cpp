@@ -91,15 +91,22 @@ void Scene::UpdateObjects()
 		obj->Update();
 	}
 
+	Physics::UpdateWorld();
+}
+
+void Scene::FrameEnd()
+{
 	for (GameObject* obj : _gameObjectsToRemove) {
 		_listOfGameObjects.erase(std::find(_listOfGameObjects.begin(), _listOfGameObjects.end(), obj));
-		
+
+		std::vector<GameObject*>::iterator it = std::find(_listOfDrawableGameObjects.begin(), _listOfDrawableGameObjects.end(), obj);
+		if (it != _listOfDrawableGameObjects.end()) {
+			_listOfDrawableGameObjects.erase(it);
+		}
 
 		delete obj;
 	}
 	_gameObjectsToRemove.clear();
-
-	Physics::UpdateWorld();
 }
 
 void Scene::RenderScene(Camera* cam)

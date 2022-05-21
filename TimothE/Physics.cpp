@@ -220,6 +220,7 @@ void Physics::UpdateWorld()
 
 	for (int i = 0; i < _pCollidersToRemove.size(); ++i) {
 		_pColliders.erase(std::find(_pColliders.begin(), _pColliders.end(), _pCollidersToRemove[i]));
+		TIM_LOG_LOG("No of Colliders in scene: " << _pColliders.size());
 	}
 
 	_pCollidersToRemove.clear();

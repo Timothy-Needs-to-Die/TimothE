@@ -48,6 +48,8 @@ public:
 	virtual void UpdateUI();
 	virtual void UpdateObjects();
 
+	void FrameEnd();
+
 
 
 	void RenderScene(Camera* cam);
