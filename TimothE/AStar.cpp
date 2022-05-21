@@ -174,6 +174,25 @@ void AStar::SetMap(TileMap* map)
 		if (yIndex > height) {
 			_mMapNodes[i].neighborNodes.push_back(&_mMapNodes[i - width]);
 		}
+
+		//TopLeft
+		if (xIndex > 0 && yIndex < height) {
+			_mMapNodes[i].neighborNodes.push_back(&_mMapNodes[i - 1 + width]);
+		}
+
+		//TopRight
+		if (xIndex < width && yIndex < height) {
+			_mMapNodes[i].neighborNodes.push_back(&_mMapNodes[i + 1 + width]);
+		}
+		//BottomLeft
+		if (xIndex > 0 && yIndex > height) {
+			_mMapNodes[i].neighborNodes.push_back(&_mMapNodes[i - 1 - width]);
+		}
+
+		//BottomRight
+		if (xIndex < width && yIndex > height) {
+			_mMapNodes[i].neighborNodes.push_back(&_mMapNodes[i + 1 - width]);
+		}
 	}
 
 }
