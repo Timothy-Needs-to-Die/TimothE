@@ -21,6 +21,7 @@ class LightLevelManager
 {
 public:
 	std::vector<LightSource> _lightSources;
+
 public:
 	void AddLightSource(LightSource lightSource);
 	void RemoveLightSource(LightSource lightSource);

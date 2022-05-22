@@ -18,9 +18,9 @@ void LightLevelManager::UpdateLightMap(TileMap* tileMap)
 			yMin = tileMap->GetTileAtWorldPos(0, glm::vec2(source.worldPos.x, source.worldPos.y - (source.range * tileMap->GetTileSize().y)))->colYPos;
 			yMax = tileMap->GetTileAtWorldPos(0, glm::vec2(source.worldPos.x, source.worldPos.y + (source.range * tileMap->GetTileSize().y)))->colYPos;
 
-			for (float y = yMin; y <= yMax; tileYSize++)
+			for (float y = yMin; y <= yMax; y += tileYSize)
 			{
-				for (float x = xMin; x <= xMax; tileXSize++)
+				for (float x = xMin; x <= xMax; x+= tileXSize)
 				{
 					TileData* tile = tileMap->GetTileAtWorldPos(0, glm::vec2(x, y));
 

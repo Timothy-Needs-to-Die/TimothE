@@ -1,6 +1,7 @@
 #include "FarmScene.h"
 #include "Button.h"
 #include "SpriteComponent.h"
+#include "SceneManager.h"
 
 void FarmScene::UpdateUI()
 {
@@ -83,6 +84,7 @@ void FarmScene::InitScene()
 	LightSource ls = LightSource();
 	ls.worldPos = glm::vec2(30.0f, 30.0f);
 
+	_pLightManager = new LightLevelManager();
 	_pLightManager->AddLightSource(ls);
 
 	_pLightManager->UpdateLightMap(_pTilemap);
