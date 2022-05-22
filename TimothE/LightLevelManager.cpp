@@ -37,7 +37,7 @@ void LightLevelManager::UpdateLightMap(TileMap* tileMap)
 
 void LightLevelManager::AddLightSource(LightSource lightSource)
 {
-	_lightSources.push_back(lightSource);
+	//_lightSources.push_back(lightSource);
 }
 
 void LightLevelManager::RemoveLightSource(LightSource lightSource)

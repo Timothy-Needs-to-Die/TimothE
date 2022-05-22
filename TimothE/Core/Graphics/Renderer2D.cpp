@@ -224,7 +224,7 @@ void Renderer2D::DrawUIQuad(const Quad& quad, Texture2D* texture /*= nullptr*/, 
 	DrawUIQuad(transform, texture, uvCoordinates, tilingFactor, tintColor);
 }
 
-void Renderer2D::DrawQuad(const glm::mat4& transform, Texture2D* texture, glm::vec2* uvCoordinates, float tilingFactor, glm::vec4& tintColor)
+void Renderer2D::DrawQuad(const glm::mat4& transform, Texture2D* texture, glm::vec2* uvCoordinates, float tilingFactor, glm::vec4& tintColor, int lightLevel /*= 5*/)
 {
 	constexpr size_t quadVertexCount = 4;
 	glm::vec2 textureCoords[] = { { 0.0f, 0.0f }, { 1.0f, 0.0f }, { 1.0f, 1.0f }, { 0.0f, 1.0f } };
@@ -269,7 +269,7 @@ void Renderer2D::DrawQuad(const glm::mat4& transform, Texture2D* texture, glm::v
 		_data.quadVertexBufferPtr->position = transform * _data.quadVertexPositions[i];
 		_data.quadVertexBufferPtr->color = tintColor;
 		_data.quadVertexBufferPtr->texCoord = textureCoords[i];
-		_data.quadVertexBufferPtr->lightLevel = 5;
+		_data.quadVertexBufferPtr->lightLevel = lightLevel;
 		_data.quadVertexBufferPtr->texIndex = textureIndex;
 		_data.quadVertexBufferPtr->tilingFactor = tilingFactor;
 		_data.quadVertexBufferPtr++;
@@ -278,10 +278,10 @@ void Renderer2D::DrawQuad(const glm::mat4& transform, Texture2D* texture, glm::v
 	_data.quadIndexCount += 6;
 }
 
-void Renderer2D::DrawQuad(const Quad& quad, Texture2D* texture, glm::vec2* uvCoordinates /* = nullptr */, glm::vec4& tintColor /*= glm::vec4(1.0f)*/, float tilingFactor /*= 1.0f*/)
+void Renderer2D::DrawQuad(const Quad& quad, Texture2D* texture, glm::vec2* uvCoordinates /* = nullptr */, int lightLevel /*= 5*/, glm::vec4& tintColor /*= glm::vec4(1.0f)*/, float tilingFactor /*= 1.0f*/)
 {
 	glm::mat4 transform = glm::translate(glm::mat4(1.0f), glm::vec3(quad.position, 0.0f)) * glm::scale(glm::mat4(1.0f), glm::vec3(quad.size, 1.0f));
-	DrawQuad(transform, texture, uvCoordinates, tilingFactor, tintColor);
+	DrawQuad(transform, texture, uvCoordinates, tilingFactor, tintColor, lightLevel);
 }
 
 void Renderer2D::DrawIndexed(const std::shared_ptr<VAO>& vertexArray, uint32_t indexCount)

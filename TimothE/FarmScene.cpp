@@ -82,7 +82,7 @@ void FarmScene::InitScene()
 	//_pTilemap->LoadTileMap();
 
 	LightSource ls = LightSource();
-	ls.worldPos = glm::vec2(30.0f, 30.0f);
+	ls.worldPos = glm::vec2(0.0f, 0.0f);
 
 	_pLightManager = new LightLevelManager();
 	_pLightManager->AddLightSource(ls);
