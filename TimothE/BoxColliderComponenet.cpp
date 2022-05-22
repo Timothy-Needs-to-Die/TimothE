@@ -2,10 +2,11 @@
 #include "GameObject.h"
 #include "imgui.h"
 #include "Input.h"
+#include "Physics.h"
 
-BoxColliderComponent::BoxColliderComponent(GameObject* parent) : ColliderBase(parent)
+BoxColliderComponent::BoxColliderComponent(GameObject* parent) : ColliderBase(parent, Box)
 {
-	SetType(Component::Boxcollision_Type);
+	SetType(Component::Collider);
 	SetCategory(Component::Collisions_Category);
 
 	// Set the boxcollider to be enabled by default
@@ -25,6 +26,8 @@ BoxColliderComponent::BoxColliderComponent(GameObject* parent) : ColliderBase(pa
 	
 	// Editor UI Vars
 	_editorIsEnabled = &_isEnabled;
+
+	
 }
 
 BoxColliderComponent::~BoxColliderComponent()
@@ -43,7 +46,7 @@ void BoxColliderComponent::OnUpdate()
 	{
 		// Update our center and size from the transform incase its moved.
 		glm::vec2 position = _pParentObject->GetTransform()->GetPosition();
-		glm::vec2 scale = _pParentObject->GetTransform()->GetScale();
+		glm::vec2 scale = _pParentObject->GetTransform()->GetScale() * _scale;
 
 		// Update our collider to the correct position
 		_boxCollider->xPos = position.x;
@@ -80,7 +83,7 @@ bool BoxColliderComponent::Intersects(Rect* box)
 
 bool BoxColliderComponent::IsPointInside(glm::vec2 point)
 {
-	if (Component::IsEnabled())
+	//if (Component::IsEnabled())
 	{
 		if (point.x > _boxCollider->xPos && point.x < _boxCollider->xPos + _boxCollider->width
 			&& point.y > _boxCollider->yPos && point.y < _boxCollider->yPos + _boxCollider->height)
@@ -90,8 +93,6 @@ bool BoxColliderComponent::IsPointInside(glm::vec2 point)
 	}
 	return false;
 }
-
-
 
 void BoxColliderComponent::DrawEditorUI()
 {

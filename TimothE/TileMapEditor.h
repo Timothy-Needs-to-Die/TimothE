@@ -43,5 +43,7 @@ private:
 	static SelectedTile _selectedTile;
 	
 	static void EditorUI(TileMap* pTilemap);
+
+	static SpriteSheet* _pCurrentSpritesheet;
 };
 

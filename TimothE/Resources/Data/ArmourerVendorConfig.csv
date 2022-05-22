@@ -1,0 +1,4 @@
+﻿Town Upgrade Level,Item,Item Description,Cost,Wood,Stone,Metal,Coal,Damage Reduction,Where to Find
+2,Leather Armour,Studded leather armour` it fits like a glove,20,,,1,,2,Purchase from armourer
+3,Chainmail Armour,Carefully woven chain armour' very shiny,35,,,5,,4,Purchase from armourer
+4,Iron Armour,Solid armour that looks like it needs a few new dents,50,,,10,,6,Purchase from armourer

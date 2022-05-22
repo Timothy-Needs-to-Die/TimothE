@@ -137,7 +137,7 @@ void Heap::CheckIntegrity()
 		while (pCurrent != NULL) {
 			//Check we have the correct check code
 			if (pCurrent->checkCode != deadcode) {
-				std::cout << "[ERROR: Heap::CheckIntegrity]: Header check code does not match" << std::endl;
+				TIM_LOG_ERROR("Header check code does not match");
 				errorFound = true;
 				totalErrors++;
 			}
@@ -151,10 +151,10 @@ void Heap::CheckIntegrity()
 	}
 
 	if (errorFound) {
-		std::cout << "[ERROR: Heap::CheckIntegrity]: Error(s) found: " << totalErrors << std::endl;
+		TIM_LOG_ERROR("Error(s) found: " << totalErrors);
 	}
 	else {
-		std::cout << "[MESSAGE: Heap::CheckIntegrity]: No Errors found in " << _name << std::endl;
+		TIM_LOG_ERROR("No errors found in " << _name);
 	}
 }
 

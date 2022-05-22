@@ -21,23 +21,14 @@ public:
 	void ClearAllLayers();
 	void UpdateLogic(Camera* cam);
 
-	//Sets the new spritesheet for this tilemap. 
-	void SetSpriteSheet(SpriteSheet* spritesheet) {
-		_pSpritesheet = spritesheet;
-		_tileSize = { _pSpritesheet->GetSpriteWidth(), _pSpritesheet->GetSpriteHeight() };
-		_spritemapResolution = { _pSpritesheet->GetPixelWidth(), _pSpritesheet->GetPixelHeight() };
-	}
-
 	void LoadTileMap();
 
-	//Returns the spritesheet for this tilemap
-	SpriteSheet* GetSpriteSheet() { return _pSpritesheet; }
 
 	//Adds a tile to a specified layer with a specified x and y index for the sprite, oritented around a camera and taked in a flag for collisions
-	void AddTileAt(unsigned int layer, unsigned int uvX, unsigned int uvY, Camera* cam, bool shouldCollide = false);
+	void AddTileAt(unsigned int layer, unsigned int uvX, unsigned int uvY, Camera* cam, SpriteSheet* sp, bool shouldCollide = false);
 
 	//Fills a specified layer with a texture at uvX and uvY coordinates
-	void FillLayer(unsigned int layer, int uvX, int uvY);
+	void FillLayer(unsigned int layer, int uvX, int uvY, SpriteSheet* sp);
 
 	//Gets the size of a tile in units. (e.g. 0.25 x 0.25)
 
@@ -54,20 +45,41 @@ public:
 	{
 		_mapInTiles = mapSize;
 		int elementSize = _mapInTiles.x * _mapInTiles.y;
-		_tileArr[0].resize(elementSize);
-		_tileArr[1].resize(elementSize);
-		_tileArr[2].resize(elementSize);
+		//_tileArr[0].resize(elementSize);
+		//_tileArr[1].resize(elementSize);
+		//_tileArr[2].resize(elementSize);
+
+		for (int i = 0; i < _tileArr.size(); i++) {
+			_tileArr[i].resize(elementSize);
+		}
 
 		_mapSizeInUnits = glm::vec2(_mapInTiles.x / _tilesPerUnit, _mapInTiles.y / _tilesPerUnit);
 	}
 
 	std::vector<TileData> GetTiles() { return _tileArr[3]; }
+	
+	glm::vec2 GetTileMapDimensions() const {
+		return _mapInTiles;
+	}
+
 
 	int GetTilesPerUnit() const {
 		return _tilesPerUnit;
 	}
+
+	glm::vec2 GetMapSize() const {
+		return _mapSizeInUnits;
+	}
 	
 	TileData* GetTileAtWorldPos(int layer, glm::vec2 worldPos);
+
+	std::vector<std::vector<TileData>> GetAllTiles() const {
+		return _tileArr;
+	}
+	
+	std::vector<TileData> GetAllTilesInLayer(int layer) const {
+		return _tileArr[layer];
+	}
 	
 	void ClearLayer(int layer);
 	
@@ -84,7 +96,7 @@ public:
 
 
 private:
-	int _numLayers = 3;
+	int _numLayers = 6;
 
 	//How large the map is in units. e.g. 32 meters by 20 meters. 
 	glm::vec2 _mapSizeInUnits;
@@ -107,11 +119,8 @@ private:
 	//The index of the current tile that the mouse is hovering over
 	int _currentTileIndex;
 
-	//The spritesheet for this spritemap
-	SpriteSheet* _pSpritesheet = nullptr;
-
 	//Array/Vector which holds the tiles. //TODO: Make this not magic and link to the _numLayers variable
-	std::vector<TileData> _tileArr[3];
+	std::vector<std::vector<TileData>> _tileArr;
 
 	//How many tiles are there per unit in the X and Y axis
 	int _tilesPerUnit = 4;

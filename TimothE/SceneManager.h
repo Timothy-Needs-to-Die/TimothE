@@ -8,9 +8,6 @@ class SceneManager
 public:
 	static void Init();
 
-	//Creates a new scene object with the specified name and returns the scene object
-	static Scene* CreateScene(std::string name);
-
 	static Scene* CreateScene(Scene* scene);
 
 	//Gets a scene with the specified name

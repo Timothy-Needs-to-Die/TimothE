@@ -6,7 +6,7 @@
 class SpriteSheet
 {
 public:
-	SpriteSheet(Texture2D* texture, int spriteWidth, int spriteHeight);
+	SpriteSheet(Texture2D* texture, int spriteWidth, int spriteHeight, std::string resourceName);
 
 	//Returns the total number of sprites in the sprite sheet
 	int GetNumberOfSprites() const { return _numOfSprites; }
@@ -38,6 +38,8 @@ public:
 	//Returns the sprite at a specified position on the sheet.
 	Sprite* GetSpriteAtPosition(int x, int y) { return _sprites[y * _spriteWidth + x]; }
 
+	std::string GetResourceName() const { return _resourceName; }
+
 protected:
 	//Number of sprites on the spritesheet
 	int _numOfSprites;
@@ -67,5 +69,7 @@ protected:
 
 	//Name of the sprite sheet in the resource manager
 	std::string _name;
+
+	std::string _resourceName;
 };
 

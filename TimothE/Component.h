@@ -45,12 +45,19 @@ public:
 		TileMap_Type = BIT(11),
 		Camera_Type = BIT(12),
 		Collider = BIT(13),
-		PlayerMovement = BIT(14),
+		PlayerInput = BIT(14),
 		Movement = BIT(15),
-		SpriteType
+		SpriteType = BIT(16),
+		Trader_Type = BIT(17),
+		Fighter_Type = BIT(18),
+		Health_Type = BIT(19),
+		ResourceNode_Type = BIT(20),
+		StructureFighter_Type = BIT(21),
+		AIControllerType = BIT(22),
+		AIMovement_Type = BIT(23)
 	};
 
-	//enums for different catagories of components
+	//enums for different categories of components
 	enum Categories {
 		None_Category = 0,
 		Transform_Category = BIT(0),
@@ -65,9 +72,14 @@ public:
 	COMPONENT_STATIC_TYPE(None)
 
 	//constructor and destructor calling start and end methods
-	Component(GameObject* pParent) : _pParentObject(pParent) { }
-	Component() {}
-	~Component() {}
+	Component(GameObject* pParent) : _pParentObject(pParent), _type(None), _category(None_Category) { }
+	Component() = default;
+	~Component() 
+	{
+		//delete _editorIsEnabled;
+		//_editorIsEnabled = nullptr;
+		_pParentObject = nullptr;
+	}
 
 	//virtual function for sub class of components
 	virtual void OnStart() = 0;
@@ -83,7 +95,7 @@ public:
 		}
 	}
 
-	//gets the component type and catagory
+	//gets the component type and category
 	Categories GetCategory() const { return _category; }
 	Types GetType() const { return _type; }
 
@@ -96,7 +108,7 @@ public:
 	// Getter
 	GameObject* GetParent() { return _pParentObject; }
 
-	//checks if item is in catagory and type enums
+	//checks if item is in category and type enums
 	inline bool IsInCategory(Categories category) { return GetCategory() & category; }
 	inline bool IsInTypes(Types type) { return GetType() & type; }
 
@@ -113,6 +125,12 @@ public:
 	virtual bool LoadState(IStream& stream) override {
 		return true;
 	}
+
+	virtual void OnTriggerEnter(class ColliderBase* other) {}
+	virtual void OnCollisionEnter(class ColliderBase* other) {}
+
+	virtual void OnTriggerExit(class ColliderBase* other) {}
+	virtual void OnCollisionExit(class ColliderBase* other) {}
 
 	// IsEnabled Get & Set
 	bool IsEnabled() { return _isEnabled; }
