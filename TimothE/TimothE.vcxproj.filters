@@ -396,6 +396,8 @@
     <ClInclude Include="pch.h">
       <Filter>Headers</Filter>
     </ClInclude>
+    <ClInclude Include="ProjectileObject.h" />
+    <ClInclude Include="EnemyHealth.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="AIController.cpp">
@@ -644,5 +646,7 @@
     <ClCompile Include="pch.cpp">
       <Filter>Source</Filter>
     </ClCompile>
+    <ClCompile Include="ProjectileObject.cpp" />
+    <ClCompile Include="EnemyHealth.cpp" />
   </ItemGroup>
 </Project>

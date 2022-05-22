@@ -125,6 +125,7 @@
     <ClInclude Include="Dirent.h" />
     <ClInclude Include="Editor.h" />
     <ClInclude Include="Enemy.h" />
+    <ClInclude Include="EnemyHealth.h" />
     <ClInclude Include="FarmScene.h" />
     <ClInclude Include="FarmlandManager.h" />
     <ClInclude Include="Fighter.h" />
@@ -158,6 +159,7 @@
     <ClInclude Include="PlayerInputComponent.h" />
     <ClInclude Include="PlayerResource.h" />
     <ClInclude Include="PlayerResourceManager.h" />
+    <ClInclude Include="ProjectileObject.h" />
     <ClInclude Include="PurchaseableConfig.h" />
     <ClInclude Include="Quad.h" />
     <ClInclude Include="ResourceManager.h" />
@@ -242,6 +244,7 @@
     <ClCompile Include="DestroyAfterSecondsComponent.cpp" />
     <ClCompile Include="Editor.cpp" />
     <ClCompile Include="Enemy.cpp" />
+    <ClCompile Include="EnemyHealth.cpp" />
     <ClCompile Include="FarmScene.cpp" />
     <ClCompile Include="FarmlandManager.cpp" />
     <ClCompile Include="Fighter.cpp" />
@@ -269,6 +272,7 @@
     <ClCompile Include="PlayerInputComponent.cpp" />
     <ClCompile Include="PlayerResource.cpp" />
     <ClCompile Include="PlayerResourceManager.cpp" />
+    <ClCompile Include="ProjectileObject.cpp" />
     <ClCompile Include="ResourceManager.cpp" />
     <ClCompile Include="ResourceNode.cpp" />
     <ClCompile Include="ResourceNodeObject.cpp" />

@@ -7,7 +7,7 @@
 class OffensiveStructureObject : public StructureObject
 {
 public:
-	OffensiveStructureObject(std::string name = "Offensive Structure", std::string tag = "WALL");
+	OffensiveStructureObject(std::string name = "Offensive Structure", std::string tag = "TOWER");
 
 
 	virtual void OnTriggerEnter(ColliderBase* other) override;

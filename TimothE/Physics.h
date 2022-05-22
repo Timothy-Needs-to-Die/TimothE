@@ -41,6 +41,7 @@ public:
 	static void HandleNoCollision(ColliderBase* c1, ColliderBase* c2);
 
 	static void UpdateWorld();
+	static void EndFrame();
 
 private:
 

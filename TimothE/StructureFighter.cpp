@@ -1,13 +1,14 @@
 #include "StructureFighter.h"
 #include "GameObject.h"
-#include "MovementComponent.h"
+//#include "MovementComponent.h"
 #include "Transform.h"
 #include "Time.h"
 #include "SceneManager.h"
-#include "DestroyAfterSecondsComponent.h"
+//#include "DestroyAfterSecondsComponent.h"
+#include "ProjectileObject.h"
 
 StructureFighter::StructureFighter(GameObject* owner)
-	: Component(owner)
+	: Component(owner), _timeSinceLastAttack(0.0)
 {
 	SetType(StructureFighter_Type);
 }
@@ -18,27 +19,13 @@ void StructureFighter::Attack(GameObject* pTarget)
 
 	_timeSinceLastAttack = 0.0f;
 
-	glm::vec2 towerPos = GetParent()->GetTransform()->GetPosition();
-	glm::vec2 directionToTarget = pTarget->GetTransform()->GetPosition() - towerPos;
+	glm::vec2 towerPos = _pParentObject->GetTransform()->GetPosition();
+	glm::vec2 directionToTarget = glm::normalize(pTarget->GetTransform()->GetPosition() - towerPos);
 
-	GameObject* newProjectile = new GameObject("Projectile", "PROJECTILE");
-	//newProjectile->AddComponent(ResourceManager::GetTexture("lenna"));
-	newProjectile->AddComponent(new Texture2D("lenna3.jpg"));
-	newProjectile->GetTransform()->SetScale({ 0.15f,0.15f });
-	newProjectile->GetTransform()->SetPosition(towerPos);
-	newProjectile->AddComponent(new BoxColliderComponent(newProjectile))->SetTrigger(true);
-	newProjectile->AddComponent(new DestroyAfterSecondsComponent(newProjectile, 5.0f));
-	
-	
-	MovementComponent* mc = newProjectile->AddComponent(new MovementComponent(newProjectile));
+	towerPos += (directionToTarget * 3.0f) / 4.0f;
 
-
-	mc->SetConstantlyMove(true);
-	mc->SetMoveDirection(directionToTarget);
-	mc->SetAllowCollisions(false);
-
-	SceneManager::GetCurrentScene()->AddGameObject(newProjectile);
-
+	ProjectileObject* pProjectileObject = new ProjectileObject(towerPos, directionToTarget);
+	SceneManager::GetCurrentScene()->AddGameObject(pProjectileObject);
 }
 
 void StructureFighter::OnStart()
