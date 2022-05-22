@@ -2,7 +2,6 @@
 #include "Camera.h"
 #include "Core/Graphics/Window.h"
 #include <vector>
-#include "Core.h"
 
 class CameraManager
 {
@@ -36,7 +35,7 @@ public:
 			if (_pCameras[i]->_mName == cameraID) return _pCameras[i];
 		}
 
-		TIM_LOG_ERROR("Camera with ID: " << cameraID << " could not be found");
+		std::cout << "[ERROR: CameraManager::GetCamera]: Camera with ID: " << cameraID << " could not be found" << std::endl;
 
 		return nullptr;
 	}//return _pCameras.at(cameraID);

@@ -35,34 +35,19 @@ public:
 	}
 	float GetMovementSpeed() const { return _movementSpeed; }
 
-	void SetMoveDirection(glm::vec2 dir) { _desiredDirection = dir; }
-	glm::vec2 GetMoveDirection() const { return _desiredDirection; }
-
 	bool IsMoving() const { return _moving; }
 
 	Direction GetDirection() const { return _direction; }
-
-	void SetAllowCollisions(bool val) { _allowCollisions = val; }
 
 	void OnStart() override;
 	void OnUpdate() override;
 	void OnEnd() override;
 
-	void SetConstantlyMove(bool val) { _constantlyMove = val; }
-
-
 private:
 	float _movementSpeed = 3.0f;
 	bool _moving;
-	bool _allowCollisions = true;
-
-	
 
 	Direction _direction;
-
-protected:
-	bool _constantlyMove;
-	glm::vec2 _desiredDirection;
 
 };
 

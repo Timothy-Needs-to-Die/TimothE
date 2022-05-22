@@ -1,6 +1,5 @@
 #include "Font.h"
 #include "Core/Graphics/OpenGLError.h"
-#include "Core.h"
 
 Font::Font(std::string font)
 {
@@ -9,19 +8,19 @@ Font::Font(std::string font)
 	FT_Library ft;
 	if (FT_Init_FreeType(&ft))
 	{
-		TIM_LOG_ERROR("Failed to initialize Freetype");
+		std::cout << "ERROR::FREETYPE: Could not init FreeType Library" << std::endl;
 		return;
 	}
 	FT_Face face;
 	if (FT_New_Face(ft, font.c_str(), 0, &face))
 	{
-		TIM_LOG_ERROR("Failed to load Font");
+		std::cout << "ERROR::FREETYPE: Failed to load font" << std::endl;
 		return;
 	}
 	FT_Set_Pixel_Sizes(face, 0, 48);
 	if (FT_Load_Char(face, 'X', FT_LOAD_RENDER))
 	{
-		TIM_LOG_ERROR("Failed to load Glyph");
+		std::cout << "ERROR::FREETYPE: Failed to load Glyph" << std::endl;
 		return;
 	}
 
@@ -33,7 +32,7 @@ Font::Font(std::string font)
 		// load character gylph
 		if (FT_Load_Char(face, c, FT_LOAD_RENDER))
 		{
-			TIM_LOG_ERROR("Failed to load Glyph");
+			std::cout << "ERROR::FREETYPE: Failed to load Glyph" << std::endl;
 			continue;
 		}
 		// generate texture
@@ -57,13 +56,13 @@ Font::Font(std::string font)
 		GLCall(glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR));
 		GLCall(glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR));
 		// now store character for later use
-		TextCharacter character = {
+		Character character = {
 			texture,
 			glm::ivec2(face->glyph->bitmap.width, face->glyph->bitmap.rows),
 			glm::ivec2(face->glyph->bitmap_left, face->glyph->bitmap_top),
 			face->glyph->advance.x
 		};
-		_characters.insert(std::pair<char, TextCharacter>(c, character));
+		_characters.insert(std::pair<char, Character>(c, character));
 	}
 
 	FT_Done_Face(face);
@@ -90,11 +89,11 @@ Font::~Font()
 void Font::RenderText(Shader& s, std::string text, float x = 0.0f, float y = 0.0f, float scale = 1.0f, glm::vec3 color = { 1.0f, 1.0f, 1.0f })
 {
 	if (_VBO == 0) {
-		TIM_LOG_ERROR("VBO associated with font: " << _name << " is 0");
+		std::cout << "[Error: Font::RenderText]: VBO associated with font: " << _name << " is 0" << std::endl;
 		return;
 	}
 	if (_VAO == 0) {
-		TIM_LOG_ERROR("VAO associated with font: " << _name << " is 0");
+		std::cout << "[Error: Font::RenderText]: VAO associated with font: " << _name << " is 0" << std::endl;
 		return;
 	}
 
@@ -115,7 +114,7 @@ void Font::RenderText(Shader& s, std::string text, float x = 0.0f, float y = 0.0
 	std::string::const_iterator c;
 	for (c = text.begin(); c != text.end(); c++)
 	{
-		TextCharacter ch = _characters[*c];
+		Character ch = _characters[*c];
 		if (*c == '\n')
 		{
 			newline++;

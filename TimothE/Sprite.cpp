@@ -19,8 +19,6 @@ Sprite::Sprite(Texture2D* texture, glm::vec2* pTexCoords /*= nullptr*/)
 
 Sprite::~Sprite()
 {
-	if (_pTexCoords != nullptr) {
-		delete _pTexCoords;
-		_pTexCoords = nullptr;
-	}
+	delete _pTexCoords;
+	_pTexCoords = nullptr;
 }

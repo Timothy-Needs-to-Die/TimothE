@@ -93,7 +93,7 @@ void Renderer2D::Init()
 	_uiData.quadVertexArray->SetIndexBuffer(quadIB);
 	delete[] quadIndices;
 
-	_data.whiteTexture = new Texture2D("whiteTexture.png", "WhiteTexture");
+	_data.whiteTexture = new Texture2D("whiteTexture.png");
 	_uiData.whiteTexture = _data.whiteTexture;
 
 	unsigned int samplers[_data.maxTextureSlots];

@@ -7,28 +7,18 @@
 #include "BoxColliderComponent.h"
 #include "ResourceManager.h"
 #include "Scene.h"
-#include "Core.h"
 
-GameObject::GameObject(std::string name, std::string tag) 
-	: _name(name), _tag(tag)
+GameObject::GameObject(std::string name, ObjectType tag, Transform* transform) 
+	: _name(name), _tag(tag), _pTransform(transform)
 {
 	_UID = UID::GenerateUID();
 
-	//If name is empty apply default name
-	if (name.empty()) {
-		name = "New GameObject";
-	}
+	if (_pTransform == nullptr)
+		_pTransform = new Transform(this);
 
-	//Check the tag exists 
-	if (Tag::CheckTag(tag)) {
-		_tag = tag;
-	}
-	else {
-		Tag::AddTag(tag);
-		_tag = tag;
-	}
+	AddComponent<Transform>(_pTransform);
 
-	_pTransform = AddComponent<Transform>(new Transform(this));
+	SetShader("default");
 
 	Start();
 }
@@ -61,8 +51,6 @@ void GameObject::Update()
 			p->SetParentTransform(_pTransform);
 		}
 	}
-
-	UniqueLogic();
 }
 
 void GameObject::Exit()
@@ -70,6 +58,20 @@ void GameObject::Exit()
 	for (Component* c : _pComponents)
 	{
 		c->OnEnd();
+	}
+}
+
+void GameObject::LoadTexture(Texture2D* texture)
+{
+	if (texture == nullptr)
+	{
+		Console::Print("[Error] Texture is equal too nullptr!");
+		return;
+	}
+	else
+	{
+		_textureID = texture->GetID();
+		AddComponent<Texture2D>(texture);
 	}
 }
 
@@ -83,12 +85,25 @@ void GameObject::DisplayInEditor()
 
 }
 
+void GameObject::SetShader(std::string name)
+{
+	_shaderName = name;
+	_pShader = ResourceManager::GetShader(_shaderName);
+	if (_pShader != nullptr) {
+		_shaderID = _pShader->GetProgramID();
+	}else{
+		std::cout << "[ERROR: GameObject::SetShader]: " << name << " does not exist" << std::endl;
+	}
+}
+
 bool GameObject::SaveState(IStream& stream) const
 {
 	//Writes name to serialized object
 	WriteString(stream, _name);
 
 	WriteString(stream, _UID);
+
+	WriteString(stream, _shaderName);
 
 	//Writes number of components
 	WriteInt(stream, _pComponents.size());
@@ -110,6 +125,8 @@ bool GameObject::LoadState(IStream& stream)
 
 	_UID = ReadString(stream);
 
+	SetShader(ReadString(stream));
+
 	//Reserve the amount of components
 	int noComponents = ReadInt(stream);
 
@@ -125,7 +142,7 @@ bool GameObject::LoadState(IStream& stream)
 			//Make instance of component
 			auto* c = ComponentFactory::GetComponent(type, this);
 			if (c == nullptr) {
-				TIM_LOG_ERROR("Failed to load Gameobject: " << _name << " Component is null");
+				std::cout << "Failed to load Gameobject: " << _name << " Component is null" << std::endl;
 				return false;
 			}
 
@@ -136,41 +153,13 @@ bool GameObject::LoadState(IStream& stream)
 			AddComponent(c);
 		}
 	}
+
 	Texture2D* texture = GetComponent<Texture2D>();
+	if (texture != nullptr) {
+		_textureID = texture->GetID();
+	}
 
 	return true;
-}
-
-void GameObject::OnTriggerEnter(ColliderBase* other)
-{
-	for (auto& comp : _pComponents) {
-		comp->OnTriggerEnter(other);
-	}
-}
-
-void GameObject::OnColliderEnter(ColliderBase* other)
-{
-	for (auto& comp : _pComponents) {
-		comp->OnCollisionEnter(other);
-	}
-}
-
-void GameObject::OnTriggerExit(ColliderBase* other)
-{
-	for (auto& comp : _pComponents) {
-		comp->OnTriggerExit(other);
-	}
-}
-
-void GameObject::OnColliderExit(ColliderBase* other)
-{
-	for (auto& comp : _pComponents) {
-		comp->OnCollisionExit(other);
-	}
-}
-
-void GameObject::UniqueLogic()
-{
 }
 
 Component* GameObject::GetComponentInChild(Component::Types type)
@@ -245,6 +234,10 @@ void GameObject::SetName(std::string name)
 	_name = name;
 }
 
+void GameObject::SetType(ObjectType tag)
+{
+	_tag = tag;
+}
 
 void GameObject::SetParent(GameObject* parent)
 {

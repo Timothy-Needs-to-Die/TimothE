@@ -1,19 +1,10 @@
 #pragma once
 #include "Scene.h"
+#include "PlayerMovement.h"
 #include "SpriteComponent.h"
 #include "AnimatedSpritesheet.h"
 #include "MovementComponent.h"
 #include "LightLevelManager.h"
-#include "Fighter.h"
-#include "Health.h"
-
-#include "ResourceNode.h"
-#include "FarmlandManager.h"
-#include "PlantResourceType.h"
-#include "Button.h"
-#include "CameraManager.h"
-
-
 
 class FarmScene : public Scene
 {
@@ -24,8 +15,6 @@ public:
 
 	}
 
-	~FarmScene();
-
 	void UpdateUI() override;
 	void UpdateObjects() override;
 	void InitScene() override;
@@ -35,24 +24,17 @@ protected:
 
 private:
 	GameObject* _pStartButton = nullptr;
-	GameObject* _pWeaponObject = nullptr;
-	GameObject* _pAITester = nullptr;
+	GameObject* _pPlayerObject = nullptr;
+
+	PlayerMovement* _pPlayerMovement = nullptr;
+	MovementComponent* _pMovement = nullptr;
+
+	AnimatedSpritesheet* _pAnimSheet;
+
+	SpriteComponent* _pSc = nullptr;
 
 	SpriteSheet* _pSpritesheet;
 
 	LightLevelManager* _pLightManager;
-	//class WaveController* _pWaveController = nullptr;
-
-	class Player* _pPlayer;
-	class OffensiveStructureObject* _pTower = nullptr;
-
-	//Day* _pDay;
-	bool _timeProgression = true;
-	
-	class ResourceNodeObject* _pWoodNode = nullptr;
-
-	//Farmland
-	FarmlandManager* farmland;
-	bool farmKeyPressed = false;
 };
 

@@ -10,15 +10,14 @@
 #include "Camera.h"
 #include "Button.h"
 #include "TextComponent.h"
-#include "PlayerInputComponent.h"
-#include "Core.h"
+#include "PlayerMovement.h"
 
 class ComponentFactory {
 public:
 	static Component* GetComponent(Component::Types type, GameObject* pParent) {
 		switch (type) {
 		case Component::Types::None:
-			TIM_LOG_ERROR("Component of NONE type attempting to be loaded");
+			std::cout << "Error: Component of NONE type attempting to be loaded" << std::endl;
 			return nullptr;
 
 		case Component::Types::Transform_Type:
@@ -35,8 +34,8 @@ public:
 			return new Button(pParent);
 		case Component::Types::Text_Type:
 			return new TextComponent(pParent);
-		case Component::PlayerInput:
-			return new PlayerInputComponent(pParent);
+		case Component::PlayerMovement:
+			return new PlayerMovement(pParent);
 		}
 	}
 };

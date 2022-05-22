@@ -7,5 +7,5 @@ void Console::Print(std::string message)
 		output.erase(output.begin());
 	}
 	output.push_back(message);
-	std::cout << message << "\n";
+	std::cout << message << std::endl;
 }

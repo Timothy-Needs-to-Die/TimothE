@@ -8,7 +8,7 @@ Camera::Camera(float left, float right, float bottom, float top, std::string nam
 	std::cout << "Camera created" << std::endl;
 	_cameraPos = glm::vec3(0.0f, 0.0f, -1.0f);
 	_view = glm::mat4(1.0f);
-	_projection = glm::ortho(left, right, bottom, top, -2.0f, 2.0f);
+	_projection = glm::ortho(left, right, bottom, top, -1.0f, 1.0f);
 	_rotation = 0.0f;
 	_aspectRatio = abs(left);
 	_zoomLevel = abs(bottom);

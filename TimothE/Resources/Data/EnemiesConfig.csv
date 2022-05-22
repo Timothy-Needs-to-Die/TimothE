@@ -1,4 +1,0 @@
-﻿Name,EnemyHealth,BaseArmour,Damage,PriorityTarget,SecondaryTarget,TertiaryTarget
-Scout,6,0,1,Crops,Player,Defences
-Warrior,10,0,2,Player,Defences,Crops
-Heavy,15,0,2,Defences,Crops,Player

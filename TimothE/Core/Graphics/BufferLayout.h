@@ -2,7 +2,6 @@
 
 #include <vector>
 #include <iostream>
-#include "../../Core.h"
 
 enum class ShaderDataTypes {
 	None = 0, Float, Float2, Float3, Float4, Mat3, Mat4, Int, Int2, Int3, Int4, Bool
@@ -23,7 +22,7 @@ static unsigned int GetShaderDataTypeSize(ShaderDataTypes type) {
 	case ShaderDataTypes::Bool: return 1;
 	}
 
-	TIM_LOG_ERROR("Type passed in does not have a size defined");
+	std::cout << "[Error: BufferLayout.h::GetShaderDataTypeSize]: Type passed in does not have a size defined" << std::endl;
 	return 0;
 }
 
@@ -55,7 +54,7 @@ struct BufferElement {
 		case ShaderDataTypes::Bool:		return 1;
 		}
 
-		TIM_LOG_ERROR("Type passed in does not have a count defined");
+	std::cout << "[Error: BufferLayout.h::GetComponentCount]: Type passed in does not have a count defined" << std::endl;
 	return 0;
 	}
 };

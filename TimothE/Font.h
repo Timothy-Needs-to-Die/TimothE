@@ -9,9 +9,8 @@
 #include <glm.hpp>
 #include <gtc/matrix_transform.hpp>
 #include "Core/Graphics/Shader.h"
-#include "Core.h"
 
-struct TextCharacter
+struct Character
 {
 	unsigned int _textureID; // ID handle of the glyph texture
 	glm::ivec2 _size;		// Size of glyph
@@ -25,7 +24,7 @@ private:
 	unsigned int _VAO = 0;
 	unsigned int _VBO = 0;
 	std::string _name;
-	std::map<char, TextCharacter> _characters;
+	std::map<char, Character> _characters;
 	
 public:
 	Font(std::string font);

@@ -3,7 +3,7 @@
 void CameraManager::Init()
 {
 	float aspectRatio = Window::GetAspectRatio();
-	float zoomLevel = 2.0f;
+	float zoomLevel = 1.0f;
 	float left = -aspectRatio * zoomLevel;
 	float right = aspectRatio * zoomLevel;
 	float bottom = -zoomLevel;
@@ -95,7 +95,7 @@ void CameraManager::AddCamera(Camera* newCamera)
 void CameraManager::AddCamera(std::string name)
 {
 	float aspectRatio = Window::GetAspectRatio();
-	float zoomLevel = 2.0f;
+	float zoomLevel = 1.0f;
 	float left = -aspectRatio * zoomLevel;
 	float right = aspectRatio * zoomLevel;
 	float bottom = -zoomLevel;
