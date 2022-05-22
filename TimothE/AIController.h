@@ -1,6 +1,12 @@
 #pragma once
 #include "Component.h"
-
+#include "GameObject.h"
+#include "Transform.h"
+#include "Scene.h"
+#include "TileMap.h"
+#include "Time.h"
+#include "SceneManager.h"
+#include "Player.h"
 
 
 
@@ -35,10 +41,19 @@ public:
 	void OnUpdate() override;
 	void OnEnd() override;
 
+	void SetTargetFromTag(string tagA, string tagB, string tagC);
+	void FindTarget();
+	void AttackedBy(GameObject object);
+
 private:
 	float _movementSpeed = 3.0f;
 	bool _moving = true;
 
+	class Fighter* _pFighter = nullptr;
+	GameObject* currentTarget = nullptr;
+	string targetArr[3];
+	Player player;
 
+	GameObject* FindClosestTargetFromList(std::vector<GameObject*> targets);
 };
 
