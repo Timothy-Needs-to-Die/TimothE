@@ -6,6 +6,7 @@
 #include "Core.h"
 #include "ResourceNode.h"
 #include "PlayerResourceManager.h"
+#include "PurchaseableConfig.h"
 
 void PlayerInputComponent::OnStart()
 {
@@ -37,7 +38,7 @@ void PlayerInputComponent::OnUpdate()
 	}
 
 	_pMovement->Move(moveVec);
-
+	
 	CameraManager::GetCamera(-1)->SetPosition({ _pParentObject->GetTransform()->GetPosition(), -2.0f });
 
 	if (_pFighter == nullptr) {
@@ -66,6 +67,26 @@ void PlayerInputComponent::OnUpdate()
 		TIM_LOG_LOG("Metal: " << metalAmount);
 		TIM_LOG_LOG("Stone: " << stoneAmount);
 	}
+
+	if (Input::IsKeyDown(KEY_1)) {
+		ResourceCost wallCost;
+		wallCost.woodRequired = 1;
+
+		if (PlayerResourceManager::CanAfford(wallCost)) {
+
+		}
+	}
+
+	if (Input::IsKeyDown(KEY_2)) {
+		ResourceCost towerCost;
+		towerCost.woodRequired = 3;
+		towerCost.stoneRequired = 5;
+
+		if (PlayerResourceManager::CanAfford(towerCost)) {
+
+		}
+	}
+
 }
 
 void PlayerInputComponent::OnEnd()

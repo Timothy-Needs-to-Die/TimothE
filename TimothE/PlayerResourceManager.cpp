@@ -26,6 +26,18 @@ PlayerResource* PlayerResourceManager::GetPlantResource(PlantResourceType type)
 	return &_plantResourceMap[type];
 }
 
+bool PlayerResourceManager::CanAfford(const ResourceCost& cost)
+{
+	if(_coreResourceMap[Wood].CanAfford(cost.woodRequired) && 
+		_coreResourceMap[Stone].CanAfford(cost.stoneRequired) &&
+		_coreResourceMap[Metal].CanAfford(cost.metalRequired) &&
+		_coreResourceMap[Coal].CanAfford(cost.coalRequired)) {
+		return true;
+	}
+
+	return false;
+}
+
 //PlayerResource* PlayerResourceManager::GetHotbarItem(HotbarItem item)
 //{
 //	return &_hotbarItemMap[item];

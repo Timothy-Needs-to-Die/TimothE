@@ -16,6 +16,8 @@
 #include "CropsConfig.h"
 #include "Core.h"
 
+#define DEV_MODE 1
+
 #define BIND_EVENT_FN(x) std::bind(&Application::x, this, std::placeholders::_1)
 
 double Time::_deltaTime;
@@ -143,10 +145,12 @@ void Application::GameLoop()
 
 		//_pTilemap->UpdateLogic(CameraManager::GetCamera("Editor"));
 
-		if (Input::IsKeyDown(TimothEKeyCode::KEY_0)) {
-			_tileMapEditorEnabled = !_tileMapEditorEnabled;
-			std::string cameraName = _tileMapEditorEnabled ? "Editor" : "Main Camera";
-			CameraManager::SetCamera(cameraName);
+		if (DEV_MODE) {
+			if (Input::IsKeyDown(TimothEKeyCode::KEY_0)) {
+				_tileMapEditorEnabled = !_tileMapEditorEnabled;
+				std::string cameraName = _tileMapEditorEnabled ? "Editor" : "Main Camera";
+				CameraManager::SetCamera(cameraName);
+			}
 		}
 
 		if (_tileMapEditorEnabled) {
@@ -169,6 +173,8 @@ void Application::GameLoop()
 		Window::SwapBuffers();
 
 		previousTime = deltaTime;
+
+		SceneManager::GetCurrentScene()->FrameEnd();
 	}
 
 	//saves scene

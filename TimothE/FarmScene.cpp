@@ -22,6 +22,11 @@ void FarmScene::UpdateObjects()
 {
 	Scene::UpdateObjects();
 
+	if (Input::IsKeyDown(KEY_5)) {
+		SceneManager::SetCurrentScene(SceneManager::CreateScene(ResourceManager::GetScene("TownScene")));
+	}
+
+
 	//glm::vec2 forward = _pPlayerObject->GetTransform()->GetForward();
 	//glm::vec2 pos = forward * 0.1f;
 	//pos.y += 0.1f;
@@ -60,10 +65,6 @@ void FarmScene::UpdateObjects()
 void FarmScene::InitScene()
 {
 	Scene::InitScene();
-	_pTilemap = new TileMap(_name);
-
-	_listOfGameObjects.clear();
-	_listOfDrawableGameObjects.clear();
 
 	_pSpritesheet = ResourceManager::GetSpriteSheet("testSheet");
 

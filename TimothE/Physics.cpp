@@ -12,7 +12,11 @@ void Physics::AddCollider(ColliderBase* collider)
 
 void Physics::RemoveCollider(ColliderBase* collider)
 {
-	_pCollidersToRemove.emplace_back(collider);
+	std::vector<ColliderBase*>::const_iterator it = std::find(_pCollidersToRemove.begin(), _pCollidersToRemove.end(), collider);
+
+	if (it == _pCollidersToRemove.end()) {
+		_pCollidersToRemove.emplace_back(collider);
+	}
 }
 
 
@@ -167,10 +171,14 @@ void Physics::HandleCollision(ColliderBase* c1, ColliderBase* c2 /*= nullptr*/)
 		_collidingBodies.emplace_back(std::make_pair(c1, c2));
 
 		if (c1->IsTrigger()) {
-			c1->GetParent()->OnTriggerEnter(c2);
+			if (c2->GetParent() != nullptr) {
+				c1->GetParent()->OnTriggerEnter(c2);
+			}
 		}
 		if (c2->IsTrigger()) {
-			c2->GetParent()->OnTriggerEnter(c1);
+			if (c1->GetParent() != nullptr) {
+				c2->GetParent()->OnTriggerEnter(c1);
+			}
 		}
 	}
 }
@@ -179,12 +187,16 @@ void Physics::HandleNoCollision(ColliderBase* c1, ColliderBase* c2)
 {
 	std::vector<std::pair<ColliderBase*, ColliderBase*>>::iterator it = std::find(_collidingBodies.begin(), _collidingBodies.end(), std::make_pair(c1, c2));
 	if (it != _collidingBodies.end()) {
-		if (c1->IsTrigger()) {
-			c1->GetParent()->OnTriggerExit(c2);
+		if (c1->GetParent() != nullptr && c1->IsTrigger()) {
+			if (c2->GetParent() != nullptr) {
+				c1->GetParent()->OnTriggerExit(c2);
+			}
 		}
 
-		if (c2->IsTrigger()) {
-			c2->GetParent()->OnTriggerExit(c1);
+		if (c2->GetParent() != nullptr && c2->IsTrigger()) {
+			if (c1->GetParent() != nullptr) {
+				c2->GetParent()->OnTriggerExit(c1);
+			}
 		}
 
 		_collidingBodies.erase(it);
@@ -218,9 +230,21 @@ void Physics::UpdateWorld()
 		}
 	}
 
-	for (int i = 0; i < _pCollidersToRemove.size(); ++i) {
-		_pColliders.erase(std::find(_pColliders.begin(), _pColliders.end(), _pCollidersToRemove[i]));
+
+}
+
+void Physics::EndFrame()
+{
+	if (_pCollidersToRemove.empty()) return;
+
+	for (std::vector<ColliderBase*>::iterator it = _pCollidersToRemove.begin(); it != _pCollidersToRemove.end(); ++it) {
+		_pColliders.erase(std::find(_pColliders.begin(), _pColliders.end(), *it));
+		TIM_LOG_LOG("No of Colliders in scene: " << _pColliders.size());
 	}
+
+	//for (std::vector<ColliderBase*>::iterator it = _pCollidersToRemove.begin(); it != _pCollidersToRemove.end(); ++it) {
+	//	delete *it;
+	//}
 
 	_pCollidersToRemove.clear();
 }

@@ -33,6 +33,7 @@ BoxColliderComponent::BoxColliderComponent(GameObject* parent) : ColliderBase(pa
 BoxColliderComponent::~BoxColliderComponent()
 {
 	delete _boxCollider;
+	ColliderBase::~ColliderBase();
 }
 
 void BoxColliderComponent::OnStart()

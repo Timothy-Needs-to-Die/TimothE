@@ -37,13 +37,12 @@ void Scene::SceneStart()
 
 void Scene::InitScene()
 {
-	//_listOfGameObjects.clear();
+	_listOfGameObjects.clear();
+	_listOfDrawableGameObjects.clear();
+	_gameObjectsToRemove.clear();
 
-	/////////////
-	//TEST CODE//
-	/////////////
 
-	Heap* gameObjectHeap = HeapManager::CreateHeap("GameObject", "Root");
+	_pTilemap = new TileMap(_name);
 }
 
 void Scene::SceneEnd()
@@ -91,15 +90,34 @@ void Scene::UpdateObjects()
 		obj->Update();
 	}
 
-	for (GameObject* obj : _gameObjectsToRemove) {
-		_listOfGameObjects.erase(std::find(_listOfGameObjects.begin(), _listOfGameObjects.end(), obj));
-		
-
-		delete obj;
-	}
-	_gameObjectsToRemove.clear();
-
 	Physics::UpdateWorld();
+}
+
+void Scene::FrameEnd()
+{
+	Physics::EndFrame();
+
+	for (GameObject* obj : _gameObjectsToRemove) {
+
+		std::vector<GameObject*>::iterator it = std::find(_listOfDrawableGameObjects.begin(), _listOfDrawableGameObjects.end(), obj);
+		if (it != _listOfDrawableGameObjects.end()) {
+			_listOfDrawableGameObjects.erase(it);
+		}
+
+		
+		std::vector<GameObject*>::iterator it2 = std::find(_listOfGameObjects.begin(), _listOfGameObjects.end(), obj);
+		if (it2 != _listOfGameObjects.end()) {
+			_listOfGameObjects.erase(it2);
+		}
+	}
+
+	for (std::vector<GameObject*>::iterator it = _gameObjectsToRemove.begin(); it != _gameObjectsToRemove.end(); ++it) {
+		if (*it != nullptr) {
+			delete *it;
+		}
+	}
+
+	_gameObjectsToRemove.clear();
 }
 
 void Scene::RenderScene(Camera* cam)
@@ -149,7 +167,11 @@ GameObject* Scene::AddGameObject(GameObject* gameObject)
 
 void Scene::RemoveGameObject(GameObject* gameObject)
 {
-	_gameObjectsToRemove.emplace_back(gameObject);
+	std::vector<GameObject*>::const_iterator it = std::find(_gameObjectsToRemove.begin(), _gameObjectsToRemove.end(), gameObject);
+
+	if (it == _gameObjectsToRemove.end()) {
+		_gameObjectsToRemove.emplace_back(gameObject);
+	}
 }
 
 void Scene::AddedComponentHandler(GameObject* gameObject, Component* comp)
