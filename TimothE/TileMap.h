@@ -27,13 +27,6 @@ public:
 	//Fills a specified layer with a texture at uvX and uvY coordinates
 	void FillLayer(unsigned int layer, int uvX, int uvY, SpriteSheet* sp);
 
-	//Gets the size of a tile in units. (e.g. 0.25 x 0.25)
-
-	glm::vec2 GetTileSize() const
-	{
-		return _tileSize;
-	}
-
 	//Converts the mouse position to a tile, takes in a camera to base the calculations around
 	glm::vec2 MousePosToTile(Camera* cam);
 
@@ -42,9 +35,6 @@ public:
 	{
 		_mapInTiles = mapSize;
 		int elementSize = _mapInTiles.x * _mapInTiles.y;
-		//_tileArr[0].resize(elementSize);
-		//_tileArr[1].resize(elementSize);
-		//_tileArr[2].resize(elementSize);
 
 		for (int i = 0; i < _tileArr.size(); i++) {
 			_tileArr[i].resize(elementSize);
@@ -77,11 +67,6 @@ public:
 	}
 	
 	void ClearLayer(int layer);
-	
-	glm::vec2 ConvertWorldToScreen(glm::vec2 inPos) {
-		glm::vec2 outPos{ inPos.x / 1920.0f, inPos.y / 1080.0f };
-		return outPos;
-	}
 
 	void RenderMap(Camera* cam);
 

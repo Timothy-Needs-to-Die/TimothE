@@ -17,9 +17,6 @@ TileMap::TileMap(std::string name)
 	: _name(name)
 {
 	_tileArr.resize(_numLayers);
-	SetTileMapSize({ 256.0f, 32.0f });
-
-	_tileSize = glm::vec2(128.0f);
 
 	_gapBetweenTiles = 1.0f / _tilesPerUnit;
 
@@ -97,6 +94,8 @@ void TileMap::LoadTileMap()
 
 	_mapInTiles.x = (float)file["sizeX"];
 	_mapInTiles.y = (float)file["sizeY"];
+
+	SetTileMapSize(_mapInTiles);
 
 	_tilesPerUnit = (int)file["tilePerUnit"];
 
@@ -264,14 +263,16 @@ void TileMap::RenderMap(Camera* cam)
 	//Calculate the extents of the camera based on the aspect ratio and zoom level. 
 	//Multiplying by 2 stops tiles suddenly being rendered or unrendered. 
 
-	float extents = cam->GetAspectRatio() + 5.0f;
+	float extents = 5.0f;
 	//float extents = 7.0f;
 
 	//Pre-calculate the min and max values of the camera's extents to avoid recalculating them. Optimisation 
-	float xMin = camPos.x - extents;
-	float xMax = camPos.x + extents;
-	float yMin = camPos.y - extents;
-	float yMax = camPos.y + extents;
+	float xMin = camPos.x - (extents);
+	float xMax = camPos.x + (extents);
+	float yMin = camPos.y - (extents);
+	float yMax = camPos.y + (extents);
+
+	//TIM_LOG_LOG("Extents: X:(" << xMin << "-" << xMax << ") Y:(" << yMin << "-" << yMax << ")");
 
 	if (xMin < 0) xMin = 0.0f;
 	if (xMax > _mapSizeInUnits.x) xMax = _mapSizeInUnits.x;
@@ -315,9 +316,11 @@ void TileMap::RenderMap(Camera* cam)
 		//Cycle through each layer
 		for (int i = 0; i < _numLayers; i++) {
 			//Cycle through the Y axis
-			for (float y = yMin; y <= yMax; y += _gapBetweenTiles) {
+			for (float y = 0.0f; y <= _mapSizeInUnits.y; y += _gapBetweenTiles) {
 				//Cycle through the X axis
-				for (float x = xMin; x <= xMax; x += _gapBetweenTiles) {
+				for (float x = 0.0f; x <= _mapSizeInUnits.x; x += _gapBetweenTiles) {
+					if (x < xMin || x > xMax || y < yMin || y > yMax) continue;
+
 
 					//Get the index of the tile
 					int index = _mapInTiles.x * (int)(y * _tilesPerUnit) + (int)(x * _tilesPerUnit);
