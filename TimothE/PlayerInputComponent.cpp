@@ -7,6 +7,9 @@
 #include "ResourceNode.h"
 #include "PlayerResourceManager.h"
 #include "PurchaseableConfig.h"
+#include "FarmScene.h"
+#include "StructureObject.h"
+#include "OffensiveStructureObject.h"
 
 void PlayerInputComponent::OnStart()
 {
@@ -38,7 +41,7 @@ void PlayerInputComponent::OnUpdate()
 	}
 
 	_pMovement->Move(moveVec);
-	
+
 	CameraManager::GetCamera(-1)->SetPosition({ _pParentObject->GetTransform()->GetPosition(), -2.0f });
 
 	if (_pFighter == nullptr) {
@@ -68,30 +71,56 @@ void PlayerInputComponent::OnUpdate()
 		TIM_LOG_LOG("Stone: " << stoneAmount);
 	}
 
-	if (Input::IsKeyDown(KEY_1)) {
-		ResourceCost wallCost;
-		wallCost.woodRequired = 1;
+	FarmScene* pFarmScene = dynamic_cast<FarmScene*>(SceneManager::GetCurrentScene());
+	if (pFarmScene) {
+		TileMap* pTilemap = pFarmScene->GetTileMap();
 
-		if (PlayerResourceManager::CanAfford(wallCost)) {
-			TIM_LOG_LOG("Can Afford Wall");
+		if (Input::IsKeyDown(KEY_1)) {
+			ResourceCost wallCost;
+			wallCost.woodRequired = 1;
+
+			if (PlayerResourceManager::CanAfford(wallCost)) {
+				glm::vec2 pos = { pTilemap->GetTileAtWorldPos(0, _pParentObject->GetTransform()->GetPosition())->colXPos, pTilemap->GetTileAtWorldPos(0, _pParentObject->GetTransform()->GetPosition())->colYPos };
+
+				if (!pTilemap->CollidableAtPosition(pos)) {
+					StructureObject* pObject = new StructureObject("Wall", "WALL");
+
+					Transform* pTransform = pObject->GetTransform();
+
+					pTilemap->SetCollidableAtLayer(5, pos, true);
+
+					pTransform->SetPosition(pos);
+					pTransform->SetScale({ 0.25f,0.25f });
+
+					pFarmScene->AddStructure(pObject);
+				}
+			}
 		}
-		else {
-			TIM_LOG_LOG("Can't Afford Wall");
+
+		if (Input::IsKeyDown(KEY_2)) {
+			ResourceCost towerCost;
+			towerCost.woodRequired = 3;
+			towerCost.stoneRequired = 5;
+
+			if (PlayerResourceManager::CanAfford(towerCost)) {
+				glm::vec2 pos = { pFarmScene->GetTileMap()->GetTileAtWorldPos(0, _pParentObject->GetTransform()->GetPosition())->colXPos, pTilemap->GetTileAtWorldPos(0, _pParentObject->GetTransform()->GetPosition())->colYPos };
+
+				if (!pTilemap->CollidableAtPosition(pos)) {
+					OffensiveStructureObject* pObject = new OffensiveStructureObject("Tower", "TOWER");
+
+					Transform* pTransform = pObject->GetTransform();
+
+					pTilemap->SetCollidableAtLayer(5, pos, true);
+
+					pTransform->SetPosition(pos);
+					pTransform->SetScale({ 0.25f,0.25f });
+
+					pFarmScene->AddStructure(pObject);
+				}
+			}
 		}
 	}
 
-	if (Input::IsKeyDown(KEY_2)) {
-		ResourceCost towerCost;
-		towerCost.woodRequired = 3;
-		towerCost.stoneRequired = 5;
-
-		if (PlayerResourceManager::CanAfford(towerCost)) {
-			TIM_LOG_LOG("Can Afford Tower");
-		}
-		else{
-			TIM_LOG_LOG("Can't Afford Tower");
-		}
-	}
 
 }
 
@@ -108,7 +137,7 @@ void PlayerInputComponent::NearbyResourceNode(class ResourceNode* nearbyResource
 void PlayerInputComponent::OnTriggerEnter(ColliderBase* other)
 {
 	if (other->GetParent()->GetTag() == "RESOURCE_NODE") {
-		TIM_LOG_LOG("OnTriggerEnter");
+		//TIM_LOG_LOG("OnTriggerEnter");
 		_pNearbyResourceNode = other->GetParent()->GetComponent<ResourceNode>();
 	}
 }
@@ -116,7 +145,7 @@ void PlayerInputComponent::OnTriggerEnter(ColliderBase* other)
 void PlayerInputComponent::OnTriggerExit(ColliderBase* other)
 {
 	if (other->GetParent()->GetTag() == "RESOURCE_NODE") {
-		TIM_LOG_LOG("OnTriggerExit");
+		//TIM_LOG_LOG("OnTriggerExit");
 		_pNearbyResourceNode = nullptr;
 	}
 }

@@ -7,6 +7,7 @@
 #include "Wave.h"
 #include "OffensiveStructureObject.h"
 #include "AIMovementCompnent.h"
+#include "StructureObject.h"
 
 FarmScene::~FarmScene()
 {
@@ -103,11 +104,24 @@ void FarmScene::InitScene()
 	_pWoodNode->GetTransform()->SetPosition(5.0f, 1.0f);
 	AddGameObject(_pWoodNode);
 
+	_pMetalNode = new ResourceNodeObject(Metal);
+	_pMetalNode->GetTransform()->SetPosition(6.0, 1.0f);
+	AddGameObject(_pMetalNode);
+
+	_pStoneNode = new ResourceNodeObject(Stone);
+	_pStoneNode->GetTransform()->SetPosition(7.0, 1.0f);
+	AddGameObject(_pStoneNode);
+
+
+	_pCoalNode = new ResourceNodeObject(Coal);
+	_pCoalNode->GetTransform()->SetPosition(8.0, 1.0f);
+	AddGameObject(_pCoalNode);
+
 	farmland = new FarmlandManager("Farmland Manager");
 	AddGameObject(farmland);
 
-	OffensiveStructureObject* _pTower = new OffensiveStructureObject("Test Tower");
-	AddGameObject(_pTower);
+	//OffensiveStructureObject* _pTower = new OffensiveStructureObject("Test Tower");
+	//AddGameObject(_pTower);
 
 	_pAITester = new GameObject("AI Test");
 	_pAITester->GetTransform()->SetScale({ 0.25f, 0.25f });
@@ -119,4 +133,10 @@ void FarmScene::InitScene()
 	mover->SetDestination(glm::vec2(2.0f, 1.5f));
 
 	AddGameObject(_pAITester);
+}
+
+void FarmScene::AddStructure(StructureObject* object)
+{
+	AddGameObject(object);
+	_pStructures.emplace_back(object);
 }

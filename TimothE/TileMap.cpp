@@ -366,6 +366,22 @@ bool TileMap::CollidableAtPosition(glm::vec2 worldPos)
 	return CollidableAtPosition(index);
 }
 
+void TileMap::SetCollidableAtLayer(int layer, glm::vec2 pos, bool val)
+{
+	
+	int index = GetTileIndexFromPosition(pos);
+
+	_tileArr[layer][index].collidable = val;
+}
+
+int TileMap::GetTileIndexFromPosition(glm::vec2 pos)
+{
+	TileData* td = GetTileAtWorldPos(0, pos);
+
+	int index = _mapInTiles.x * (int)(pos.y * _tilesPerUnit) + (int)(pos.x * _tilesPerUnit);
+	return index;
+}
+
 bool TileMap::CollidableAtPosition(const int index)
 {
 	for (int layer = 0; layer < _numLayers; layer++) {

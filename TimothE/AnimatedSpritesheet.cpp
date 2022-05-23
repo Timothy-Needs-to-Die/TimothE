@@ -38,8 +38,6 @@ void AnimatedSpritesheet::Update()
 		}
 
 		_currentIndex += (_currentRow * _spritesPerRow);
-
-		std::cout << "Current Index: " << _currentIndex << std::endl;
 	}
 
 }
