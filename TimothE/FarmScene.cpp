@@ -60,6 +60,16 @@ void FarmScene::UpdateObjects()
 		//_pTilemap->AddTileAt(2, 15, 12, CameraManager::CurrentCamera());
 	}
 
+	if (Input::IsKeyDown(KEY_I)) {
+		//if (_pInventoryScreen == nullptr)
+		//{
+			_pInventoryScreen = new InventoryScreen();
+			_pInventoryScreen->GetTransform()->SetPosition(0.0f, 0.0f);
+			_pInventoryScreen->GetTransform()->SetScale({ 0.1f, 0.1f });
+			AddGameObject(_pInventoryScreen);
+		//}
+	}
+
 	Physics::UpdateWorld();
 }
 

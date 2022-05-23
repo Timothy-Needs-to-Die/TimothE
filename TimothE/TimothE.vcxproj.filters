@@ -398,6 +398,7 @@
     </ClInclude>
     <ClInclude Include="ProjectileObject.h" />
     <ClInclude Include="EnemyHealth.h" />
+    <ClInclude Include="InventoryScreen.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="AIController.cpp">
@@ -648,5 +649,6 @@
     </ClCompile>
     <ClCompile Include="ProjectileObject.cpp" />
     <ClCompile Include="EnemyHealth.cpp" />
+    <ClCompile Include="InventoryScreen.cpp" />
   </ItemGroup>
 </Project>

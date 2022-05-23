@@ -5,6 +5,7 @@
 #include "MovementComponent.h"
 #include "Fighter.h"
 #include "Health.h"
+#include "InventoryScreen.h"
 
 #include "ResourceNode.h"
 #include "FarmlandManager.h"
@@ -38,6 +39,7 @@ private:
 	GameObject* _pStartButton = nullptr;
 	GameObject* _pWeaponObject = nullptr;
 	GameObject* _pAITester = nullptr;
+	InventoryScreen* _pInventoryScreen;
 
 	SpriteSheet* _pSpritesheet;
 

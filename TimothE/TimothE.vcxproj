@@ -145,6 +145,7 @@
     <ClInclude Include="Imgui\imstb_textedit.h" />
     <ClInclude Include="Imgui\imstb_truetype.h" />
     <ClInclude Include="Input.h" />
+    <ClInclude Include="InventoryScreen.h" />
     <ClInclude Include="ItemConfig.h" />
     <ClInclude Include="ItemResourceType.h" />
     <ClInclude Include="MemoryManager.h" />
@@ -261,6 +262,7 @@
     <ClCompile Include="Imgui\imgui_tables.cpp" />
     <ClCompile Include="Imgui\imgui_widgets.cpp" />
     <ClCompile Include="Input.cpp" />
+    <ClCompile Include="InventoryScreen.cpp" />
     <ClCompile Include="MemoryManager.cpp" />
     <ClCompile Include="MovementComponent.cpp" />
     <ClCompile Include="OffensiveStructureObject.cpp" />
