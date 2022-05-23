@@ -21,7 +21,7 @@ void FarmlandManager::PlaceFarmLand(glm::vec2 position)
 		}
 	}
 
-	glm::vec2 tilePlayerIsOnPos = SceneManager::GetCurrentScene()->GetTileMap()->GetTileAtWorldPos(0, position)->pos;
+	glm::vec2 tilePlayerIsOnPos = { SceneManager::GetCurrentScene()->GetTileMap()->GetTileAtWorldPos(0, position)->colXPos, SceneManager::GetCurrentScene()->GetTileMap()->GetTileAtWorldPos(0, position)->colYPos };
 	// If there isnt any existing farmland on that plot
 	if (!plotAlreadyOnTile)
 	{

@@ -23,9 +23,6 @@ ResourceNodeObject::ResourceNodeObject(CoreResourceType type, std::string name /
 	case Gold:
 
 		break;
-	case Coal:
-		AddComponent(ResourceManager::GetTexture("small_coal"));
-		break;
 	default:
 		break;
 	}

@@ -7,7 +7,7 @@ class StructureHealth : public Health
 public:
 	COMPONENT_STATIC_TYPE(Health_Type);
 
-	StructureHealth(GameObject* owner, int health);
+	StructureHealth(GameObject* owner);
 
 private:
 	virtual void OnDamage() override;
