@@ -132,13 +132,32 @@ void TileMap::LoadTileMap()
 			int row = i / _mapInTiles.x;
 			int xIndex = i - (row * _mapInTiles.x);
 
-			//int xIndex = 
+				float xPos = (float)xIndex * _gapBetweenTiles;
+				float yPos = ((float)row * _gapBetweenTiles);
+				glm::vec2 colPos = glm::vec2(xPos, yPos);
+				_tileArr[layer][i].pos = { xPos, yPos };
 
-			float xPos = (float)xIndex * _gapBetweenTiles;
-			float yPos = ((float)row * _gapBetweenTiles);
-			glm::vec2 colPos = glm::vec2(xPos, yPos);
-			_tileArr[layer][i].colXPos = xPos;
-			_tileArr[layer][i].colYPos = yPos;
+				_tileArr[layer][i].size = _gapBetweenTiles;
+			}
+		}
+		else {
+			for (int i = 0; i < dimensions; i++) {
+
+				int index = 0;
+
+				bool collidable = false;
+
+				_tileArr[layer][i].texIndex = index;
+				_tileArr[layer][i]._pSprite = ResourceManager::GetSpriteSheet("spritesheet")->GetSpriteAtIndex(0);
+				_tileArr[layer][i].collidable = collidable;
+
+				int row = i / _mapInTiles.x;
+				int xIndex = i - (row * _mapInTiles.x);
+
+				float xPos = (float)xIndex * _gapBetweenTiles;
+				float yPos = ((float)row * _gapBetweenTiles);
+				glm::vec2 colPos = glm::vec2(xPos, yPos);
+				_tileArr[layer][i].pos = { xPos, yPos };
 
 			_tileArr[layer][i].size = _gapBetweenTiles;
 		}
@@ -168,9 +187,7 @@ void TileMap::AddTileAt(unsigned int layer, unsigned int uvX, unsigned int uvY, 
 	newTile.layer = layer;
 	newTile.collidable = shouldCollide;
 	newTile.size = _gapBetweenTiles;
-	newTile.colXPos = colPos.x;
-	newTile.colYPos = colPos.y;
-
+	newTile.pos = colPos;
 
 	newTile._pSpritesheet = _pSpritesheet;
 	newTile._pSprite = _pSpritesheet->GetSpriteAtIndex(_pSpritesheet->GetSheetWidth() * uvY + uvX);
@@ -290,8 +307,26 @@ bool TileMap::CollidableAtPosition(glm::vec2 worldPos)
 	return CollidableAtPosition(index);
 }
 
+void TileMap::SetCollidableAtLayer(int layer, glm::vec2 pos, bool val)
+{
+	
+	int index = GetTileIndexFromPosition(pos);
+
+	_tileArr[layer][index].collidable = val;
+}
+
+int TileMap::GetTileIndexFromPosition(glm::vec2 pos)
+{
+	TileData* td = GetTileAtWorldPos(0, pos);
+
+	int index = _mapInTiles.x * (int)(pos.y * _tilesPerUnit) + (int)(pos.x * _tilesPerUnit);
+	return index;
+}
+
 bool TileMap::CollidableAtPosition(const int index)
 {
+	if (index < 0 || index > _tileArr[0].size()) return false;
+
 	for (int layer = 0; layer < _numLayers; layer++) {
 		if (_tileArr[layer][index].collidable) return true;
 	}

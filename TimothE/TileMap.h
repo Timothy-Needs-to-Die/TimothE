@@ -82,6 +82,8 @@ public:
 	bool CollidableAtPosition(const int index);
 	bool CollidableAtPosition(glm::vec2 worldPos) ;
 
+	void SetCollidableAtLayer(int layer, glm::vec2 pos, bool val);
+	int GetTileIndexFromPosition(glm::vec2 pos);
 
 private:
 	int _numLayers = 3;

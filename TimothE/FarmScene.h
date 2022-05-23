@@ -19,6 +19,8 @@ public:
 	void UpdateObjects() override;
 	void InitScene() override;
 
+	void AddStructure(class StructureObject* object);
+
 protected:
 
 
@@ -31,10 +33,24 @@ private:
 
 	AnimatedSpritesheet* _pAnimSheet;
 
-	SpriteComponent* _pSc = nullptr;
-
-	SpriteSheet* _pSpritesheet;
+	class Player* _pPlayer;
 
 	LightLevelManager* _pLightManager;
+
+	//class OffensiveStructureObject* _pTower = nullptr;
+
+	//Day* _pDay;
+	bool _timeProgression = true;
+	
+	class ResourceNodeObject* _pWoodNode = nullptr;
+	class ResourceNodeObject* _pMetalNode = nullptr;
+	class ResourceNodeObject* _pStoneNode = nullptr;
+	class ResourceNodeObject* _pCoalNode = nullptr;
+
+	//Farmland
+	FarmlandManager* farmland;
+	bool farmKeyPressed = false;
+
+	std::vector<class StructureObject*> _pStructures;
 };
 

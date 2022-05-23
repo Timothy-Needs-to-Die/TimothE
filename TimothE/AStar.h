@@ -1,36 +1,66 @@
 #pragma once
-#include <vector>
-#include <vec3.hpp>
-#include <stdlib.h>
-#include <vector>
+#include "List"
+#include <iostream>
 #include <algorithm>
-class MapNode {
-public:
-	glm::vec3 position;
-	int fCost;
-	int gCost;
-	int hCost;
-	int id;
-	MapNode* previousNodePAth = NULL;
+#include <vector>
+#include <glm.hpp>
+#include "TileMap.h"
+
+#define ERROR_PATH_POSITION -1
+
+/// <summary>
+/// The Node struct is used to represent the information of a cell in the maze
+/// </summary>
+struct Node {
+	//Is this node an obstacle i.e a wall
+	bool isObstacle = false;
+	//Has this node already been visited 
+	bool isVisited = false;
+
+	//Distance to the end node
+	float globalGoal = FLT_MAX;
+
+	//Distance to the end node from here
+	float localGoal = FLT_MAX;
+
+	//X and Y position of the node in the map
+	/*int xPos = 0;
+	int yPos = 0;*/
+
+	glm::vec2 pos;
+
+	//A vector containing all of the nodes in the maze level
+	std::vector<Node*> neighborNodes;
+	//A pointer to the neighbor node that is closest to the start node
+	glm::vec2 parentNode = { ERROR_PATH_POSITION, ERROR_PATH_POSITION };
 };
-
-
 
 class AStar
 {
 public:
+	//The default constructor for the class
+	AStar() = default;
 
-	glm::vec3 PathFinding(glm::vec3 startPos);
-	std::vector<glm::vec3> GetPathPoints();
-	void SetPathPoints(std::vector<glm::vec3> _points);
-	void SetMapCoords(std::vector<glm::vec3> mapTiles, int sizeX, int sizeY);
+	//Overriding the default destructor to delete the memory associated with the direction and path lists
+	~AStar();
+
+	/// <summary>
+	/// This function will calculate the shortest path for the maze. Using the A* Pathfinding Algorithm
+	/// </summary>
+	/// <returns>This function returns true if a path is found and false if a path is not found</returns>
+	std::vector<glm::vec2> FindPath(glm::vec2 start, glm::vec2 end);
+
+	void SetMap(TileMap* map);
 
 private:
-	std::vector<glm::vec3> _mPoints;
-	std::vector<MapNode> _mMapNodes;
-	std::vector<MapNode> _mPath;
-	int _mMapTilesX;
-	int _mMapTilesY;
 
-	int CalculateDistance(MapNode nodeA, MapNode nodeB);
+	Node* mEndNode = nullptr;
+
+	//This list contains the directions the player needs to take in the form of Nodes. 
+	std::vector<Node> mPathOfNodes;
+
+	std::vector<Node> _mMapNodes;
+	float width;
+	float height;
+	float tilesPerUnit;
 };

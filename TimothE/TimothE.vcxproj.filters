@@ -45,6 +45,9 @@
     <ClInclude Include="Console.h">
       <Filter>Headers</Filter>
     </ClInclude>
+    <ClInclude Include="Core.h">
+      <Filter>Headers</Filter>
+    </ClInclude>
     <ClInclude Include="Core\Events\ApplicationEvent.h">
       <Filter>Headers</Filter>
     </ClInclude>
@@ -93,19 +96,34 @@
     <ClInclude Include="Core\Graphics\Window.h">
       <Filter>Headers</Filter>
     </ClInclude>
+    <ClInclude Include="CoreResourceType.h">
+      <Filter>Headers</Filter>
+    </ClInclude>
+    <ClInclude Include="DestroyAfterSecondsComponent.h">
+      <Filter>Headers</Filter>
+    </ClInclude>
     <ClInclude Include="Dirent.h">
       <Filter>Headers</Filter>
     </ClInclude>
     <ClInclude Include="Editor.h">
       <Filter>Headers</Filter>
     </ClInclude>
+    <ClInclude Include="EnemyHealth.h">
+      <Filter>Headers</Filter>
+    </ClInclude>
     <ClInclude Include="FarmScene.h">
+      <Filter>Headers</Filter>
+    </ClInclude>
+    <ClInclude Include="FarmlandManager.h">
       <Filter>Headers</Filter>
     </ClInclude>
     <ClInclude Include="Font.h">
       <Filter>Headers</Filter>
     </ClInclude>
     <ClInclude Include="GameObject.h">
+      <Filter>Headers</Filter>
+    </ClInclude>
+    <ClInclude Include="Health.h">
       <Filter>Headers</Filter>
     </ClInclude>
     <ClInclude Include="Heap.h">
@@ -147,7 +165,16 @@
     <ClInclude Include="Input.h">
       <Filter>Headers</Filter>
     </ClInclude>
+    <ClInclude Include="LightLevelManager.h">
+      <Filter>Headers</Filter>
+    </ClInclude>
     <ClInclude Include="MemoryManager.h">
+      <Filter>Headers</Filter>
+    </ClInclude>
+    <ClInclude Include="MovementComponent.h">
+      <Filter>Headers</Filter>
+    </ClInclude>
+    <ClInclude Include="OffensiveStructureObject.h">
       <Filter>Headers</Filter>
     </ClInclude>
     <ClInclude Include="Particle.h">
@@ -160,6 +187,15 @@
       <Filter>Headers</Filter>
     </ClInclude>
     <ClInclude Include="PlayerMovement.h">
+      <Filter>Headers</Filter>
+    </ClInclude>
+    <ClInclude Include="PlayerResourceManager.h">
+      <Filter>Headers</Filter>
+    </ClInclude>
+    <ClInclude Include="ProjectileObject.h">
+      <Filter>Headers</Filter>
+    </ClInclude>
+    <ClInclude Include="PurchaseableConfig.h">
       <Filter>Headers</Filter>
     </ClInclude>
     <ClInclude Include="Quad.h">
@@ -243,6 +279,12 @@
     <ClInclude Include="StreamFile.h">
       <Filter>Headers</Filter>
     </ClInclude>
+    <ClInclude Include="StructureHealth.h">
+      <Filter>Headers</Filter>
+    </ClInclude>
+    <ClInclude Include="StructureObject.h">
+      <Filter>Headers</Filter>
+    </ClInclude>
     <ClInclude Include="TestComponent.h">
       <Filter>Headers</Filter>
     </ClInclude>
@@ -276,8 +318,6 @@
     <ClInclude Include="pch.h">
       <Filter>Headers</Filter>
     </ClInclude>
-    <ClInclude Include="MovementComponent.h" />
-    <ClInclude Include="LightLevelManager.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="AStar.cpp">
@@ -337,10 +377,19 @@
     <ClCompile Include="Core\Graphics\Window.cpp">
       <Filter>Source</Filter>
     </ClCompile>
+    <ClCompile Include="DestroyAfterSecondsComponent.cpp">
+      <Filter>Source</Filter>
+    </ClCompile>
     <ClCompile Include="Editor.cpp">
       <Filter>Source</Filter>
     </ClCompile>
+    <ClCompile Include="EnemyHealth.cpp">
+      <Filter>Source</Filter>
+    </ClCompile>
     <ClCompile Include="FarmScene.cpp">
+      <Filter>Source</Filter>
+    </ClCompile>
+    <ClCompile Include="FarmlandManager.cpp">
       <Filter>Source</Filter>
     </ClCompile>
     <ClCompile Include="Font.cpp">
@@ -379,7 +428,13 @@
     <ClCompile Include="Input.cpp">
       <Filter>Source</Filter>
     </ClCompile>
+    <ClCompile Include="LightLevelManager.cpp">
+      <Filter>Source</Filter>
+    </ClCompile>
     <ClCompile Include="MemoryManager.cpp">
+      <Filter>Source</Filter>
+    </ClCompile>
+    <ClCompile Include="MovementComponent.cpp">
       <Filter>Source</Filter>
     </ClCompile>
     <ClCompile Include="Particle.cpp">
@@ -391,10 +446,25 @@
     <ClCompile Include="Physics.cpp">
       <Filter>Source</Filter>
     </ClCompile>
+    <ClCompile Include="PlayerInputComponent.cpp">
+      <Filter>Source</Filter>
+    </ClCompile>
     <ClCompile Include="PlayerMovement.cpp">
       <Filter>Source</Filter>
     </ClCompile>
+    <ClCompile Include="PlayerResource.cpp">
+      <Filter>Source</Filter>
+    </ClCompile>
+    <ClCompile Include="PlayerResourceManager.cpp">
+      <Filter>Source</Filter>
+    </ClCompile>
+    <ClCompile Include="ProjectileObject.cpp">
+      <Filter>Source</Filter>
+    </ClCompile>
     <ClCompile Include="ResourceManager.cpp">
+      <Filter>Source</Filter>
+    </ClCompile>
+    <ClCompile Include="ResourceNodeObject.cpp">
       <Filter>Source</Filter>
     </ClCompile>
     <ClCompile Include="Scene.cpp">
@@ -421,6 +491,15 @@
     <ClCompile Include="StreamHelpers.cpp">
       <Filter>Source</Filter>
     </ClCompile>
+    <ClCompile Include="StructureFighter.cpp">
+      <Filter>Source</Filter>
+    </ClCompile>
+    <ClCompile Include="StructureHealth.cpp">
+      <Filter>Source</Filter>
+    </ClCompile>
+    <ClCompile Include="StructureObject.cpp">
+      <Filter>Source</Filter>
+    </ClCompile>
     <ClCompile Include="TestComponent.cpp">
       <Filter>Source</Filter>
     </ClCompile>
@@ -436,17 +515,14 @@
     <ClCompile Include="TileMapEditor.cpp">
       <Filter>Source</Filter>
     </ClCompile>
+    <ClCompile Include="TownScene.cpp">
+      <Filter>Source</Filter>
+    </ClCompile>
     <ClCompile Include="Transform.cpp">
       <Filter>Source</Filter>
     </ClCompile>
     <ClCompile Include="pch.cpp">
       <Filter>Source</Filter>
     </ClCompile>
-    <ClCompile Include="MovementComponent.cpp" />
-    <ClCompile Include="LightLevelManager.cpp" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="vs_Texture.vert" />
-    <None Include="fr_Texture.frag" />
   </ItemGroup>
 </Project>

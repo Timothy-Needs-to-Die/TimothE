@@ -4,6 +4,9 @@
 #include "Dirent.h"
 #include "misc/cpp/imgui_stdlib.h"
 
+#include "FarmScene.h"
+#include "TownScene.h"
+
 std::map<std::string, Texture2D*> ResourceManager::_textures;
 std::map<std::string, Shader*> ResourceManager::_shaders;
 std::map<std::string, Scene*> ResourceManager::_scenes;
@@ -19,20 +22,32 @@ void ResourceManager::Init()
 	//LOAD TEXTURES
 	ResourceManager::InstantiateTexture("lenna", new Texture2D("lenna3.jpg"));
 	ResourceManager::InstantiateTexture("fish", new Texture2D("Fish.png"));
-	ResourceManager::InstantiateTexture("character", new Texture2D("Resources/Images/Spritesheets/AlexTest.png", true));
+	ResourceManager::InstantiateTexture("character", new Texture2D("Resources/Images/Spritesheets/EnemySpritesheet.png", true));
 	ResourceManager::InstantiateTexture("spritesheet", new Texture2D("Resources/Images/Spritesheets/RPGpack_sheet.png", true));
 	ResourceManager::InstantiateTexture("Button", new Texture2D("Resources/Images/ButtonTest.png"));
+	ResourceManager::InstantiateTexture("swords", new Texture2D("Resources/Images/swords.png", true));
+	ResourceManager::InstantiateTexture("axes", new Texture2D("Resources/Images/axes.png"));
+	ResourceManager::InstantiateTexture("pickaxes", new Texture2D("Resources/Images/pickaxes.png"));
+	ResourceManager::InstantiateTexture("small_stone", new Texture2D("Resources/Images/Rock.png"));
+	ResourceManager::InstantiateTexture("small_wood", new Texture2D("Resources/Images/TreeStump.png"));
+	ResourceManager::InstantiateTexture("small_metal", new Texture2D("Resources/Images/Metal.png"));
+	ResourceManager::InstantiateTexture("small_coal", new Texture2D("Resources/Images/Coal.png"));
+	ResourceManager::InstantiateTexture("planks", new Texture2D("Resources/Images/Planks.png"));
 
 	//LOAD SPRITESHEETS
-	ResourceManager::InstantiateSpritesheet("testSheet", new SpriteSheet(ResourceManager::GetTexture("spritesheet"), 64, 64));
+	ResourceManager::InstantiateSpritesheet("spritesheet", new SpriteSheet(ResourceManager::GetTexture("spritesheet"), 64, 64, "spritesheet"));
+	ResourceManager::InstantiateSpritesheet("swords", new SpriteSheet(ResourceManager::GetTexture("swords"), 16, 16, "swords"));
+	ResourceManager::InstantiateSpritesheet("axes", new SpriteSheet(ResourceManager::GetTexture("axes"), 16, 16, "axes"));
+	ResourceManager::InstantiateSpritesheet("pickaxes", new SpriteSheet(ResourceManager::GetTexture("pickaxes"), 16, 16, "pickaxes"));
+	ResourceManager::InstantiateSpritesheet("planks", new SpriteSheet(ResourceManager::GetTexture("planks"), 64, 64, "pickaxes"));
 
 	//LOAD SHADERS
 	ResourceManager::InstantiateShader("ui", new Shader("vr_UIShader.vert", "fr_UIShader.frag"));
 	ResourceManager::InstantiateShader("default", new Shader("VertexShader.vert", "FragmentShader.frag"));
 
 	//LOAD SCENES
-	ResourceManager::InstantiateScene("CurrentScene", new Scene("Default"));
 	ResourceManager::InstantiateScene("FarmScene", new FarmScene("FarmScene"));
+	ResourceManager::InstantiateScene("TownScene", new TownScene("TownScene"));
 
 	//LOAD FONTS
 	LoadFonts();

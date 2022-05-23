@@ -47,7 +47,15 @@ public:
 		Collider = BIT(13),
 		PlayerMovement = BIT(14),
 		Movement = BIT(15),
-		SpriteType
+		SpriteType = BIT(16),
+		Trader_Type = BIT(17),
+		Fighter_Type = BIT(18),
+		Health_Type = BIT(19),
+		ResourceNode_Type = BIT(20),
+		StructureFighter_Type = BIT(21),
+		AIControllerType = BIT(22),
+		AIMovement_Type = BIT(23),
+		DestroyAfterSeconds_Type = BIT(24)
 	};
 
 	//enums for different catagories of components

@@ -46,30 +46,11 @@ void Scene::SceneStart()
 
 void Scene::InitScene()
 {
-	//_listOfGameObjects.clear();
+	_listOfGameObjects.clear();
+	_listOfDrawableGameObjects.clear();
+	_gameObjectsToRemove.clear();
 
-	/////////////
-	//TEST CODE//
-	/////////////
-
-	Heap* gameObjectHeap = HeapManager::CreateHeap("GameObject", "Root");
-
-	//ResourceManager::InstantiateTexture("fish", new Texture2D("Fish.png"));
-	//ResourceManager::InstantiateTexture("character", new Texture2D("Resources/Images/Spritesheets/AlexTest.png", true));
-
-	//AddGameObject(_pTestObject2);
-	//AddGameObject(_pButtonTestingObject);
-	//AddGameObject(_pPlayer);
-
-	//GameObject* _pTextObj = new GameObject("TEXTOBJ", ObjectType::UI);
-	//_pTextObj->AddComponent(new TextComponent(_pTextObj));
-	//_pTextObj->SetType(ObjectType::UI);
-	//AddGameObject(_pTextObj);
-
-
-
-
-
+	_pTilemap = new TileMap(_name);
 }
 
 void Scene::SceneEnd()
@@ -152,6 +133,35 @@ void Scene::UpdateObjects()
 	{
 		obj->Update();
 	}
+
+	Physics::UpdateWorld();
+}
+
+void Scene::FrameEnd()
+{
+	Physics::EndFrame();
+
+	for (GameObject* obj : _gameObjectsToRemove) {
+
+		std::vector<GameObject*>::iterator it = std::find(_listOfDrawableGameObjects.begin(), _listOfDrawableGameObjects.end(), obj);
+		if (it != _listOfDrawableGameObjects.end()) {
+			_listOfDrawableGameObjects.erase(it);
+		}
+
+		
+		std::vector<GameObject*>::iterator it2 = std::find(_listOfGameObjects.begin(), _listOfGameObjects.end(), obj);
+		if (it2 != _listOfGameObjects.end()) {
+			_listOfGameObjects.erase(it2);
+		}
+	}
+
+	for (std::vector<GameObject*>::iterator it = _gameObjectsToRemove.begin(); it != _gameObjectsToRemove.end(); ++it) {
+		if (*it != nullptr) {
+			delete *it;
+		}
+	}
+
+	_gameObjectsToRemove.clear();
 }
 
 void Scene::RenderScene(Camera* cam)
@@ -203,10 +213,11 @@ GameObject* Scene::AddGameObject(GameObject* gameObject)
 
 void Scene::RemoveGameObject(GameObject* gameObject)
 {
-	//Searches for the desired object and deletes it if it is found
-	_listOfGameObjects.erase(std::find(_listOfGameObjects.begin(), _listOfGameObjects.end(), gameObject));
-	delete gameObject;
-	gameObject = nullptr;
+	std::vector<GameObject*>::const_iterator it = std::find(_gameObjectsToRemove.begin(), _gameObjectsToRemove.end(), gameObject);
+
+	if (it == _gameObjectsToRemove.end()) {
+		_gameObjectsToRemove.emplace_back(gameObject);
+	}
 }
 
 void Scene::AddedComponentHandler(GameObject* gameObject, Component* comp)

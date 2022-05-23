@@ -1,12 +1,24 @@
 #include "Physics.h"
 
-void Physics::SetupScenePhysics()
-{
-	std::vector<ColliderBase*> colliders = Scene::FindObjectsOfType<ColliderBase>();
-	std::cout << "No. Of Colliders: " << colliders.size() << std::endl;
+std::vector<ColliderBase*> Physics::_pColliders = std::vector<ColliderBase*>();
+std::vector<ColliderBase*> Physics::_pCollidersToRemove = std::vector<ColliderBase*>();
+std::vector<std::pair<ColliderBase*, ColliderBase*>> Physics::_collidingBodies = std::vector<std::pair<ColliderBase*, ColliderBase*>>();
 
-	if (colliders.size() == 1) return;
+void Physics::AddCollider(ColliderBase* collider)
+{
+	_pColliders.emplace_back(collider);
+	TIM_LOG_LOG("No of Colliders in scene: " << _pColliders.size());
 }
+
+void Physics::RemoveCollider(ColliderBase* collider)
+{
+	std::vector<ColliderBase*>::const_iterator it = std::find(_pCollidersToRemove.begin(), _pCollidersToRemove.end(), collider);
+
+	if (it == _pCollidersToRemove.end()) {
+		_pCollidersToRemove.emplace_back(collider);
+	}
+}
+
 
 bool Physics::Intersects(BoxColliderComponent* b1, BoxColliderComponent* b2)
 {
@@ -32,49 +44,30 @@ bool Physics::Intersects(BoxColliderComponent* b1, BoxColliderComponent* b2)
 			float yOverlap = r1Extents + r2Extents - abs(n.y);
 
 			if (yOverlap > 0) {
-				if (n.x < 0) {
-					col.collisionNormal = { -1.0f,0.0f };
-				}
-				else {
-					col.collisionNormal = { 0.0f,0.0f };
-				}
+				col.collisionNormal = n.x < 0 ? glm::vec2(-1.0f, 0.0f) : glm::vec2(1.0f, 0.0f);
 				col.penetration = xOverlap;
 			}
 			else
 			{
-				if (n.y < 0) {
-					col.collisionNormal = { 0.0f,-1.0f };
-				}
-				else
-				{
-					col.collisionNormal = { 0.0f,1.0f };
-				}
+				col.collisionNormal = n.y < 0 ? glm::vec2{0.0f, -1.0f} : glm::vec2{0.0f, 1.0f};
 				col.penetration = yOverlap;
 			}
-
-			HandleCollision(b1, b2);
 		}
 		else {
-			if (b1->IsTrigger()) {
-				b1->Triggered();
-			}
-			if (b2->IsTrigger()) {
-				b2->Triggered();
-			}
+			HandleCollision(b1, b2);
 		}
 
 		return true;
 	}
+	HandleNoCollision(b1, b2);
 	return false;
-
-	
 }
 
 bool Physics::Intersects(BoxColliderComponent* b1, glm::vec2 p)
 {
 	Rect* r1 = b1->GetCollisionRect();
 	if (p.x > r1->xPos && p.x < r1->xPos + r1->width && p.y > r1->yPos && p.y < r1->yPos + r1->height) {
-		
+
 		return true;
 	}
 	return false;
@@ -92,16 +85,167 @@ bool Physics::Intersects(ColQuad& a, ColQuad& b)
 	return false;
 }
 
-void Physics::HandleCollision(ColliderBase* c1, ColliderBase* c2)
+bool Physics::Intersects(CircleColliderComponent* c1, CircleColliderComponent* c2)
 {
-	c1->Collided();
-	c2->Collided();
+	float distance = glm::distance(c1->GetPosition(), c2->GetPosition());
+
+	float resultingRadius = c1->GetRadius() + c2->GetRadius();
+
+	if (distance < resultingRadius) {
+		HandleCollision(c1, c2);
+
+		return true;
+	}
+
+	HandleNoCollision(c1, c2);
+	return false;
 }
 
+bool Physics::Intersects(CircleColliderComponent* c1, BoxColliderComponent* b1)
+{
+	glm::vec2 cPos = c1->GetPosition();
+	glm::vec2 bPos = { b1->GetCollisionRect()->xPos, b1->GetCollisionRect()->yPos };
+	glm::vec2 bSize = { b1->GetCollisionRect()->width, b1->GetCollisionRect()->height };
 
+	float cX;
+	if (cPos.x < bPos.x) {
+		cX = bPos.x;
+	}
+	else if (cPos.x > bPos.x + bSize.x) {
+		cX = bPos.x + bSize.x;
+	}
+	else {
+		cX = bPos.x;
+	}
+
+	float cY;
+	if (cPos.y < bPos.y) {
+		cY = bPos.y;
+	}
+	else if (cPos.y > bPos.y + bSize.y) {
+		cY = bPos.y + bSize.y;
+	}
+	else {
+		cY = bPos.y;
+	}
+
+	float dX = cX - cPos.x;
+	float dY = cY - cPos.y;
+	float d = dX * dX + dY * dY;
+
+	if (d < c1->GetRadius() * c1->GetRadius()) {
+		HandleCollision(c1, b1);
+
+		return true;
+	}
+	
+	HandleNoCollision(c1, b1);
+	return false;
+}
+
+bool Physics::Intersects(CircleColliderComponent* c1, glm::vec2 point)
+{
+	glm::vec2 cPos = c1->GetPosition();
+
+	float distX = point.x - cPos.x;
+	float distY = point.y - cPos.y;
+
+	float distance = sqrt((distX * distX) + (distY * distY));
+
+	if (distance < c1->GetRadius()) {
+		return true;
+	}
+
+	return false;
+}
 
 bool Physics::Intersects(glm::vec2 p, BoxColliderComponent* b1)
 {
 	return Intersects(b1, p);
+}
+
+void Physics::HandleCollision(ColliderBase* c1, ColliderBase* c2 /*= nullptr*/)
+{
+	std::vector<std::pair<ColliderBase*, ColliderBase*>>::iterator it = std::find(_collidingBodies.begin(), _collidingBodies.end(), std::make_pair(c1, c2));
+	if (it == _collidingBodies.end()) {
+		_collidingBodies.emplace_back(std::make_pair(c1, c2));
+
+		if (c1->IsTrigger()) {
+			if (c1->GetParent() != nullptr && c2->GetParent() != nullptr) {
+				c1->GetParent()->OnTriggerEnter(c2);
+			}
+		}
+		if (c2->IsTrigger()) {
+			if (c2->GetParent() != nullptr && c1->GetParent() != nullptr) {
+				c2->GetParent()->OnTriggerEnter(c1);
+			}
+		}
+	}
+}
+
+void Physics::HandleNoCollision(ColliderBase* c1, ColliderBase* c2)
+{
+	std::vector<std::pair<ColliderBase*, ColliderBase*>>::iterator it = std::find(_collidingBodies.begin(), _collidingBodies.end(), std::make_pair(c1, c2));
+	if (it != _collidingBodies.end()) {
+		if (c1->GetParent() != nullptr && c1->IsTrigger()) {
+			if (c2->GetParent() != nullptr) {
+				c1->GetParent()->OnTriggerExit(c2);
+			}
+		}
+
+		if (c2->GetParent() != nullptr && c2->IsTrigger()) {
+			if (c1->GetParent() != nullptr) {
+				c2->GetParent()->OnTriggerExit(c1);
+			}
+		}
+
+		_collidingBodies.erase(it);
+	}
+}
+
+void Physics::UpdateWorld()
+{
+	for (int i = 0; i < _pColliders.size(); ++i) {
+		ColliderBase* pColA = _pColliders[i];
+		ColliderType aType = pColA->GetType();
+
+		for (int j = i; j < _pColliders.size(); ++j) {
+			if (j == i) continue;
+
+			ColliderBase* pColB = _pColliders[j];
+			ColliderType bType = pColB->GetType();
+
+			if (aType == Circle && bType == Circle) {
+				Intersects((CircleColliderComponent*)pColA, (CircleColliderComponent*)pColB);
+			}
+			else if (aType == Box && bType == Box) {
+				Intersects((BoxColliderComponent*)pColA, (BoxColliderComponent*)pColB);
+			}
+			else if (aType == Box && bType == Circle) {
+				Intersects((CircleColliderComponent*)pColB, (BoxColliderComponent*)pColA);
+			}
+			else if (aType == Circle && bType == Box) {
+				Intersects((CircleColliderComponent*)pColA, (BoxColliderComponent*)pColB);
+			}
+		}
+	}
+
+
+}
+
+void Physics::EndFrame()
+{
+	if (_pCollidersToRemove.empty()) return;
+
+	for (std::vector<ColliderBase*>::iterator it = _pCollidersToRemove.begin(); it != _pCollidersToRemove.end(); ++it) {
+		_pColliders.erase(std::find(_pColliders.begin(), _pColliders.end(), *it));
+		TIM_LOG_LOG("No of Colliders in scene: " << _pColliders.size());
+	}
+
+	//for (std::vector<ColliderBase*>::iterator it = _pCollidersToRemove.begin(); it != _pCollidersToRemove.end(); ++it) {
+	//	delete *it;
+	//}
+
+	_pCollidersToRemove.clear();
 }
 

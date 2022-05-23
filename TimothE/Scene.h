@@ -43,12 +43,20 @@ public:
 	virtual void UpdateUI();
 	virtual void UpdateObjects();
 
+	void FrameEnd();
+
 
 
 	void RenderScene(Camera* cam);
 
 	//TODO: Implement unloading logic.
 	void Unload() {
+		for (auto& obj : _listOfGameObjects) {
+			_gameObjectsToRemove.emplace_back(obj);
+		}
+
+		//_listOfGameObjects.clear();
+		//_listOfDrawableGameObjects.clear();
 
 	}
 
@@ -112,6 +120,15 @@ public:
 		}
 		return compList;
 	}
+
+	// Tag Handling // 
+	GameObject* FindObjectWithTag(const std::string& tagName);
+	std::vector<GameObject*> FindGameObjectsWithTag(const std::string& tagName);
+
+	void PopulateToolVector();
+	void PopulateSeedVector();
+	void PopulateCropVector();
+	
 
 protected:
 	//Stores the name of the scene
