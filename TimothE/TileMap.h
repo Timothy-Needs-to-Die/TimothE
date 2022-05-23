@@ -71,6 +71,8 @@ public:
 	
 	TileData* GetTileAtWorldPos(int layer, glm::vec2 worldPos);
 
+	TileData GetTileAtIndex(int layer, int index) { return _tileArr[layer][index]; }
+
 	std::vector<std::vector<TileData>> GetAllTiles() const {
 		return _tileArr;
 	}

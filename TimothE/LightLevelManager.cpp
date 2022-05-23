@@ -12,11 +12,13 @@ void LightLevelManager::UpdateLightMap(TileMap* tileMap)
 
 		for (auto const& source : _lightSources)
 		{
+			//tileMap->GetTileIndexFromPosition
+
 			//needs to loop through layers
-			xMin = tileMap->GetTileAtWorldPos(0, glm::vec2(source.worldPos.x - (source.range * tileMap->GetTileSize().x), source.worldPos.y))->pos.x;
-			xMax = tileMap->GetTileAtWorldPos(0, glm::vec2(source.worldPos.x + (source.range * tileMap->GetTileSize().x), source.worldPos.y))->pos.x;
-			yMin = tileMap->GetTileAtWorldPos(0, glm::vec2(source.worldPos.x, source.worldPos.y - (source.range * tileMap->GetTileSize().y)))->pos.y;
-			yMax = tileMap->GetTileAtWorldPos(0, glm::vec2(source.worldPos.x, source.worldPos.y + (source.range * tileMap->GetTileSize().y)))->pos.y;
+			xMin = tileMap->GetTileAtWorldPos(0, glm::vec2(source.worldPos.x - (source.range * tileXSize), source.worldPos.y))->pos.x;
+			xMax = tileMap->GetTileAtWorldPos(0, glm::vec2(source.worldPos.x + (source.range * tileXSize), source.worldPos.y))->pos.x;
+			yMin = tileMap->GetTileAtWorldPos(0, glm::vec2(source.worldPos.x, source.worldPos.y - (source.range * tileYSize)))->pos.y;
+			yMax = tileMap->GetTileAtWorldPos(0, glm::vec2(source.worldPos.x, source.worldPos.y + (source.range * tileYSize)))->pos.y;
 
 			for (float y = yMin; y <= yMax; y += tileYSize)
 			{

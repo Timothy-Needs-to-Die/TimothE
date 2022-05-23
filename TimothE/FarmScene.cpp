@@ -138,7 +138,7 @@ void FarmScene::InitScene()
 	_pLightManager = new LightLevelManager();
 
 	LightSource ls = LightSource();
-	ls.worldPos = glm::vec2(0.0f, 0.0f);
+	ls.worldPos = glm::vec2(512.0f, 512.0f);
 
 	_pLightManager->AddLightSource(ls);
 
