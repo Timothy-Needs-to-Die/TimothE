@@ -1,4 +1,5 @@
 #include "PlayerResource.h"
+#include "Core.h"
 
 PlayerResource::PlayerResource(int amount)
 {
@@ -11,24 +12,21 @@ PlayerResource::~PlayerResource()
 
 bool PlayerResource::CanAfford(int amount)
 {
-
-	return _amount > amount;
-
-	
+	return _amount >= amount;
 }
 
 void PlayerResource::SpendResource(int amount)
 {
 	if (CanAfford(amount)) {
 		_amount -= amount;
-		std::cout << "[LOG: PlayerResouce::SpendResource]: Player Resource spent: " << amount << std::endl;
+		TIM_LOG_LOG("Player Resource Spend: " << amount);
 	}
 	else
-		std::cout << "[LOG: PlayerResouce::SpendResource]: Player does not have the resources to spend: " << amount << std::endl;
+		TIM_LOG_LOG("Player does not have the resources to spend");
 }
 
 void PlayerResource::GainResource(int amount)
 {
-	std::cout << "[LOG: PlayerResouce::GainResource]: Player Resource Gained: " << amount << std::endl;
+	TIM_LOG_LOG("Player Resource Gained: " << amount);
 	_amount += amount;
 }

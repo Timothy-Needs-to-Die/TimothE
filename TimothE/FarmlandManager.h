@@ -62,7 +62,7 @@ public:
 		//std::cout << "Searching for CropPlot at: x:" << pos.x << " y:" << pos.y;
 		for (CropPlot* go : _pCropPlotObjects)
 		{
-			if (go->GetComponent<BoxColliderComponent>()->IsPointInside(pos))
+			if(Physics::Intersects(go->GetComponent<BoxColliderComponent>(), pos))
 			{
 				//std::cout << "Success!" << std::endl;
 				return go;

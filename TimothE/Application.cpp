@@ -16,8 +16,6 @@
 #include "CropsConfig.h"
 #include "Core.h"
 
-#define DEV_MODE 1
-
 #define BIND_EVENT_FN(x) std::bind(&Application::x, this, std::placeholders::_1)
 
 double Time::_deltaTime;
