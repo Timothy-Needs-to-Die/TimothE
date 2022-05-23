@@ -187,12 +187,16 @@ void Physics::HandleNoCollision(ColliderBase* c1, ColliderBase* c2)
 {
 	std::vector<std::pair<ColliderBase*, ColliderBase*>>::iterator it = std::find(_collidingBodies.begin(), _collidingBodies.end(), std::make_pair(c1, c2));
 	if (it != _collidingBodies.end()) {
-		if (c1->IsTrigger()) {
-			c1->GetParent()->OnTriggerExit(c2);
+		if (c1->GetParent() != nullptr && c1->IsTrigger()) {
+			if (c2->GetParent() != nullptr) {
+				c1->GetParent()->OnTriggerExit(c2);
+			}
 		}
 
-		if (c2->IsTrigger()) {
-			c2->GetParent()->OnTriggerExit(c1);
+		if (c2->GetParent() != nullptr && c2->IsTrigger()) {
+			if (c1->GetParent() != nullptr) {
+				c2->GetParent()->OnTriggerExit(c1);
+			}
 		}
 
 		_collidingBodies.erase(it);
