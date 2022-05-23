@@ -1,4 +1,5 @@
 #include "Button.h"
+#include "Physics.h"
 
 Button::Button(GameObject* parent) : Component(parent)
 {
@@ -18,19 +19,10 @@ Button::Button(GameObject* parent) : Component(parent)
 	if (GetParent()->GetComponent<BoxColliderComponent>() == nullptr)
 	{
 		// Print to console to let the user know a new component was added
-		Console::Print("[LOG: Button::Constructor]: Created Component::BoxCollider");// as is required for Button::OnUpdate");
+		Console::Print("BUTTON COMPONENT: Created Component::BoxCollider as is required for Button::OnUpdate");
 		//std::cout << "BUTTON COMPONENT: created default box component for object" << std::endl;
 		GetParent()->AddComponent(new BoxColliderComponent(GetParent()));
 	}
-	// If there is no text component, add one since the button needs one
-	if (GetParent()->GetComponent<TextComponent>() == nullptr)
-	{
-		// Print to console to let the user know a new component was added
-		Console::Print("[LOG: Button::Constructor]: Created Component::TextComponent");
-		//std::cout << "BUTTON COMPONENT: created default text component for object" << std::endl;
-		GetParent()->AddComponent(new TextComponent(GetParent()));
-	}
-
 }
 
 Button::~Button()
@@ -47,39 +39,33 @@ void Button::OnUpdate()
 	if (Component::IsEnabled())
 	{
 		// Check if the mouse is inside the button
-		if (GetParent()->GetComponent<BoxColliderComponent>()->IsPointInside(Input::GetMousePos()))
+		if (Physics::Intersects(_pParentObject->GetComponent<BoxColliderComponent>(), Input::GetMousePos()))
 		{
 			// If the mouse is inside the button then we are now hovering over the button;
 			_isHovering = true;
 
 			// Check if the button is now being clicked
-			if (!_isClicked)
+			if (Input::IsMouseButtonDown(BUTTON_1))
 			{
-				if (Input::IsMouseButtonDown(BUTTON_1))
+				_isClicked = true;
+
+				// debug
+				std::cout << "Button Clicked" << std::endl;
+
+				// If we have function calls to perform when the button is clicked
+				if (!_onClickCalls.empty())
 				{
-					_isClicked = true;
-
-					// debug
-					std::cout << "[LOG: Button::OnUpdate]: Button Clicked" << std::endl;
-
-					// If we have function calls to perform when the button is clicked
-					if (!_onClickCalls.empty())
+					// Perform them all
+					for (int i = 0; i < _onClickCalls.size(); i++)
 					{
-						// Perform them all
-						for (int i = 0; i < _onClickCalls.size(); i++)
-						{
-							_onClickCalls[i]();
-						}
+						_onClickCalls[i]();
 					}
 				}
 			}
 			else
 			{
-				if (Input::IsMouseButtonUp(BUTTON_1))
-				{
-					// We are not clicking the button
-					_isClicked = false;
-				}
+				// We are not clicking the button
+				_isClicked = false;
 			}
 		}
 		else

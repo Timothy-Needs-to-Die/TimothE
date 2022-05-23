@@ -17,11 +17,11 @@ public:
 	void SetDestination(glm::vec2);
 	virtual void OnUpdate() override;
 private:
-	std::list<glm::vec2> _mPathToFollow;
-	glm::vec2 _mCurrentTarget;
-	float _mTolerance = 0.05f;
-	bool _mHasDestination;
-	AStar* _pAStar;
+	std::stack<glm::vec2> pathToFollow;
+	glm::vec2 currentTarget;
+	float tolerance = 0.05f;
+	bool hasDestination;
+	AStar* aStar;
 
 	glm::vec2 GetNextTarget();
 };

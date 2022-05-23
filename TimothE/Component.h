@@ -55,8 +55,7 @@ public:
 		StructureFighter_Type = BIT(21),
 		AIControllerType = BIT(22),
 		AIMovement_Type = BIT(23),
-		DestroyAfterSeconds_Type = BIT(24),
-		Pathfinding = BIT(25),
+		DestroyAfterSeconds_Type = BIT(24)
 	};
 
 	//enums for different categories of components

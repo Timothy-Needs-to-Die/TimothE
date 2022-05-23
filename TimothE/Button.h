@@ -8,7 +8,6 @@
 #include "Texture2D.h"
 #include "Input.h"
 #include "Console.h"
-#include "TextComponent.h"
 
 using std::string;
 using std::vector;

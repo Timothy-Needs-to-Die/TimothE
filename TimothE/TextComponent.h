@@ -4,13 +4,7 @@
 #include "Core/Graphics/Shader.h"
 #include "GameObject.h"
 #include "Component.h"
-#include "Console.h"
 
-enum TextAlignment {
-	LEFT = 0,
-	CENTER,
-	RIGHT
-};
 
 class TextComponent : public Component
 {
@@ -25,8 +19,7 @@ public:
 	void OnEnd();
 	void OnUpdate();
 
-	void SetFont(string font) { _font = ResourceManager::GetFont(font); }
-	void SetText(string text) { _text = text; }
+	void SetFont(Font* font) { _font = font; }
 
 	void RenderText(Shader& s, std::string text, float x, float y, float _tileScale, glm::vec3 color);
 
@@ -49,15 +42,15 @@ public:
 
 		return true;
 	}
-public:
-	Font* _font;
-	std::string _text;
-	float _scale;
-	glm::vec3 _color;
-	TextAlignment _alignment;
 private:
 	std::string _UID;
+
+	Font* _font;
+	std::vector<std::string> _fonts;
+	std::string _text;
 	Shader* _shader;
+	float _scale;
+	glm::vec3 _color;
 	GameObject* _parentObject;
 
 	bool _hasInit = false;
