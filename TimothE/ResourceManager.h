@@ -25,7 +25,7 @@ public:
 	static void InstantiateFont(std::string name, Font* sound);
 
 	//get functions
-	static Texture2D* GetTexture(std::string name) { return _textures[name]; };
+	static std::shared_ptr<Texture2D> GetTexture(std::string name) { return std::make_shared<Texture2D>(_textures[name]); };
 	static Shader* GetShader(std::string name) { return _shaders[name]; };
 	static Scene* GetScene(std::string name) { return _scenes[name]; };
 	static SpriteSheet* GetSpriteSheet(std::string name) { return _spritesheets[name]; }

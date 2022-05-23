@@ -11,5 +11,5 @@ StructureObject::StructureObject(std::string name, std::string tag)
 		AddComponent(ResourceManager::GetTexture("lenna"));
 	}
 
-	AddComponent(new StructureHealth(this, 10));
+	_pHealth = AddComponent(new StructureHealth(this, 10));
 }

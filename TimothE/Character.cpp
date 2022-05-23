@@ -7,8 +7,8 @@
 Character::Character(std::string name, std::string tag) 
 	: GameObject(name, tag) 
 {
-	AddComponent(ResourceManager::GetTexture("character"));
-	_pAnimSheet = new AnimatedSpritesheet(ResourceManager::GetTexture("character"), 16, 32, "AnimatedCharacter");
+	AddComponent(ResourceManager::GetTexture("character").get());
+	_pAnimSheet = new AnimatedSpritesheet(ResourceManager::GetTexture("character").get(), 16, 32, "AnimatedCharacter");
 	_pMovement = AddComponent(new MovementComponent(this));
 	_pMovement->SetMovementSpeed(1.0f);
 	_pSc = AddComponent<SpriteComponent>(new SpriteComponent(this));

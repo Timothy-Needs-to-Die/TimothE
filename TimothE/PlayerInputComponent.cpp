@@ -111,31 +111,15 @@ void PlayerInputComponent::BuildControls()
 		_selectedStructure = StructureType::Tower;
 	}
 
+	glm::vec2 mousePos = Input::GetMousePos();
+	glm::vec2 size = CameraManager::CurrentCamera()->Size();
+	glm::vec2 convertedPos = _pParentObject->GetTransform()->GetPosition() + (mousePos * size);
+
+	if (convertedPos.x < 0.0f || convertedPos.y < 0.0f) return;
+	
+	glm::vec2 tilePos = pTilemap->GetTileAtWorldPos(0, convertedPos)->pos;
 
 	if (Input::IsMouseButtonDown(BUTTON_1)) {
-
-		glm::vec2 mousePos = Input::GetMousePos();
-
-		TIM_LOG_LOG("Mouse Pos: " << mousePos.x << ", " << mousePos.y);
-
-
-		glm::vec2 size = CameraManager::CurrentCamera()->Size();
-
-		glm::vec2 cameraPos = CameraManager::CurrentCamera()->PositionXY();
-		cameraPos *= size;
-		//cameraPos -= size;
-		glm::vec2 convertedPos = cameraPos + mousePos;
-
-		convertedPos = _pParentObject->GetTransform()->GetPosition() + (mousePos * size);
-
-		
-		
-		TIM_LOG_LOG("Converted Pos: " << convertedPos.x << ", " << convertedPos.y);
-
-
-
-		if (convertedPos.x < 0.0f || convertedPos.y < 0.0f) return;
-
 		ResourceCost cost;
 
 		switch (_selectedStructure) {
@@ -150,8 +134,7 @@ void PlayerInputComponent::BuildControls()
 			return;
 		}
 
-		//if (PlayerResourceManager::CanAfford(cost)) {
-			glm::vec2 tilePos = pTilemap->GetTileAtWorldPos(0, convertedPos)->pos;
+		if (PlayerResourceManager::CanAfford(cost)) {
 
 			if (!pTilemap->CollidableAtPosition(tilePos)) {
 				StructureObject* pObject;
@@ -180,65 +163,29 @@ void PlayerInputComponent::BuildControls()
 
 				pFarmScene->AddStructure(pObject);
 
-				//PlayerResourceManager::SpendResources(cost);
+				PlayerResourceManager::SpendResources(cost);
 
 			}
-		//}
+		}
 	}
 
-	//FarmScene* pFarmScene = dynamic_cast<FarmScene*>(SceneManager::GetCurrentScene());
-	//if (pFarmScene) {
-	//	TileMap* pTilemap = pFarmScene->GetTileMap();
+	if (Input::IsMouseButtonDown(BUTTON_RIGHT)) {
+		std::vector<StructureObject*> structuresInScene = pFarmScene->GetStructures();
 
-		//if (Input::IsKeyDown(KEY_1)) {
-		//	//ResourceCost wallCost;
-		//	//wallCost.woodRequired = 1;
-		//
-		//	//if (PlayerResourceManager::CanAfford(wallCost)) {
-		//		//glm::vec2 pos = pTilemap->GetTileAtWorldPos(0, _pParentObject->GetTransform()->GetPosition())->pos;
-		//
-		//		if (!pTilemap->CollidableAtPosition(pos)) {
-		//			StructureObject* pObject = new StructureObject("Wall", "WALL");
-		//
-		//			Transform* pTransform = pObject->GetTransform();
-		//
-		//			pTilemap->SetCollidableAtLayer(5, pos, true);
-		//
-		//			pTransform->SetPosition(pos);
-		//			pTransform->SetScale({ 0.25f,0.25f });
-		//
-		//			pFarmScene->AddStructure(pObject);
-		//
-		//			PlayerResourceManager::SpendResources(wallCost);
-		//		}
-		//	}
-		//}
-		//
-		//if (Input::IsKeyDown(KEY_2)) {
-		//	//ResourceCost towerCost;
-		//	//towerCost.woodRequired = 3;
-		//	//towerCost.stoneRequired = 5;
-		//
-		//	//if (PlayerResourceManager::CanAfford(towerCost)) {
-		//		glm::vec2 pos = pFarmScene->GetTileMap()->GetTileAtWorldPos(0, _pParentObject->GetTransform()->GetPosition())->pos;
-		//
-		//		if (!pTilemap->CollidableAtPosition(pos)) {
-		//			OffensiveStructureObject* pObject = new OffensiveStructureObject("Tower", "TOWER");
-		//
-		//			Transform* pTransform = pObject->GetTransform();
-		//
-		//			pTilemap->SetCollidableAtLayer(5, pos, true);
-		//
-		//			pTransform->SetPosition(pos);
-		//			pTransform->SetScale({ 0.25f,0.25f });
-		//
-		//			pFarmScene->AddStructure(pObject);
-		//
-		//			PlayerResourceManager::SpendResources(towerCost);
-		//		}
-		//	}
-		//}
-	//}
+		if (structuresInScene.empty()) return;
+
+		for (int i = 0; i < structuresInScene.size(); ++i) {
+			glm::vec2 pos = structuresInScene[i]->GetTransform()->GetPosition();
+
+			if (pos != tilePos) continue;
+
+			pTilemap->SetCollidableAtLayer(5, tilePos, false);
+
+			pFarmScene->RemoveStructure(structuresInScene[i]);
+
+			break;
+		}
+	}
 }
 
 void PlayerInputComponent::NearbyResourceNode(class ResourceNode* nearbyResource)
