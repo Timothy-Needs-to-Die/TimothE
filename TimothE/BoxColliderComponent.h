@@ -24,7 +24,7 @@ class BoxColliderComponent : public ColliderBase
 {
 public:
 
-	COMPONENT_STATIC_TYPE(Boxcollision_Type)
+	COMPONENT_STATIC_TYPE(Collider)
 		
 	// Constructor & Deconstructor
 	BoxColliderComponent(GameObject* parent);
@@ -35,12 +35,7 @@ public:
 	void OnUpdate() override;
 	void OnEnd() override;
 	virtual void DrawEditorUI() override;
-	//virtual void GetComponent() = 0;
 
-	// Collision Methods
-	bool Intersects(Rect* box);
-	bool IsPointInside(glm::vec2 point);
-	
 	// Getters & Setters
 	bool IsEnabled() { return _isEnabled; }
 	void SetEnabled(bool state) { _isEnabled = state; }

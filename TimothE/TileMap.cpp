@@ -2,6 +2,8 @@
 #include "Core/Graphics/Renderer2D.h"
 #include "Core/Graphics/Window.h"
 #include "Quad.h"
+#include "TileMapEditor.h"
+#include "Core.h"
 
 
 std::ostream& operator<<(std::ostream& os, glm::vec2 v) {
@@ -14,14 +16,17 @@ std::ostream& operator<<(std::ostream& os, glm::vec2 v) {
 TileMap::TileMap(std::string name)
 	: _name(name)
 {
-	SetTileMapSize({ 32.0f, 32.0f });
+	_tileArr.resize(_numLayers);
+	//_tileArr = new std::vector<TileData>[_numLayers];
+	SetTileMapSize({ 256.0f, 32.0f });
 
 	_tileSize = glm::vec2(128.0f);
 
 	_gapBetweenTiles = 1.0f / _tilesPerUnit;
 
-	SetSpriteSheet(ResourceManager::GetSpriteSheet("testSheet"));
+	//SetSpriteSheet(ResourceManager::GetSpriteSheet("testSheet"));
 	LoadTileMap();
+
 }
 
 TileMap::~TileMap()
@@ -57,7 +62,6 @@ void TileMap::SaveTilemap() {
 
 	//TODO: Change this to getting the spritesheet name
 	file["spritesheet"] = "testSheet";
-
 	file["sizeX"] = _mapInTiles.x;
 	file["sizeY"] = _mapInTiles.y;
 	file["tilePerUnit"] = _tilesPerUnit;
@@ -68,10 +72,16 @@ void TileMap::SaveTilemap() {
 		{
 			int index = var.texIndex;
 
-			tileLayout += std::to_string(index) + " " + std::to_string((int)var.collidable) + ",";
+			std::string resourceName = "spritesheet";
+			if (var._pSpritesheet != nullptr) {
+				resourceName = var._pSpritesheet->GetResourceName();
+			}
+
+			tileLayout += std::to_string(index) + " " + std::to_string((int)var.collidable) + " " + resourceName + ",";
 		}
 		file["tiles" + std::to_string(layer)] = tileLayout;
 	}
+
 
 
 	outfile << file;
@@ -84,7 +94,7 @@ void TileMap::LoadTileMap()
 	std::ifstream inFile(filename);
 
 	if (!inFile.good()) {
-		std::cout << "[ERROR: TileMap::LoadTileMap]: TileMap file: " << filename << " could not be loaded" << std::endl;
+		TIM_LOG_ERROR("[ERROR: TileMap::LoadTileMap]: TileMap file: " << filename << " could not be loaded");
 		return;
 	}
 
@@ -98,58 +108,87 @@ void TileMap::LoadTileMap()
 	_tilesPerUnit = (int)file["tilePerUnit"];
 
 	int dimensions = _mapInTiles.x * _mapInTiles.y;
-	
+
 	for (int layer = 0; layer < _numLayers; layer++) {
 		_tileArr[layer].resize(dimensions);
-		std::string tileInfo = file["tiles" + std::to_string(layer)];
-		std::stringstream ss(tileInfo);
 
-		std::vector<std::string> results;
-		while (ss.good()) {
-			std::string substr;
-			getline(ss, substr, ',');
-			results.push_back(substr);
+		if (file.contains("tiles" + std::to_string(layer))) {
+			std::string tileInfo = file["tiles" + std::to_string(layer)];
+			std::stringstream ss(tileInfo);
+
+			std::vector<std::string> results;
+			while (ss.good()) {
+				std::string substr;
+				getline(ss, substr, ',');
+				results.push_back(substr);
+			}
+
+			for (int i = 0; i < dimensions; i++) {
+				std::stringstream ss(results[i]);
+				std::string s1;
+				getline(ss, s1, ' ');
+				std::string s2;
+				getline(ss, s2, ' ');
+
+				
+				std::string s3;
+				getline(ss, s3, ' ');
+
+				if (s3 != "") {
+					std::string resourceName = s3;
+					_tileArr[layer][i]._pSpritesheet = ResourceManager::GetSpriteSheet(resourceName);
+				}
+				else {
+					_tileArr[layer][i]._pSpritesheet = ResourceManager::GetSpriteSheet("spritesheet");
+				}
+				int index = std::stoi(s1);
+
+				bool collidable = std::stoi(s2);
+
+
+				_tileArr[layer][i].texIndex = index;
+				_tileArr[layer][i]._pSprite = _tileArr[layer][i]._pSpritesheet->GetSpriteAtIndex(index);
+				_tileArr[layer][i].collidable = collidable;
+
+				int row = i / _mapInTiles.x;
+				int xIndex = i - (row * _mapInTiles.x);
+
+				float xPos = (float)xIndex * _gapBetweenTiles;
+				float yPos = ((float)row * _gapBetweenTiles);
+				glm::vec2 colPos = glm::vec2(xPos, yPos);
+				_tileArr[layer][i].pos = { xPos, yPos };
+
+				_tileArr[layer][i].size = _gapBetweenTiles;
+			}
 		}
+		else {
+			for (int i = 0; i < dimensions; i++) {
 
-		for (int i = 0; i < dimensions; i++) {
+				int index = 0;
 
-			//std::cout << results[i] << std::endl;
+				bool collidable = false;
 
-			std::stringstream ss(results[i]);
-			std::string s1;
-			getline(ss, s1, ' ');
-			std::string s2;
-			getline(ss, s2, ' ');
+				_tileArr[layer][i].texIndex = index;
+				_tileArr[layer][i]._pSprite = ResourceManager::GetSpriteSheet("spritesheet")->GetSpriteAtIndex(0);
+				_tileArr[layer][i].collidable = collidable;
 
-			int index = std::stoi(s1);
+				int row = i / _mapInTiles.x;
+				int xIndex = i - (row * _mapInTiles.x);
 
-			bool collidable = std::stoi(s2);
+				float xPos = (float)xIndex * _gapBetweenTiles;
+				float yPos = ((float)row * _gapBetweenTiles);
+				glm::vec2 colPos = glm::vec2(xPos, yPos);
+				_tileArr[layer][i].pos = { xPos, yPos };
 
-			_tileArr[layer][i].texIndex = index;
-			_tileArr[layer][i]._pSprite = _pSpritesheet->GetSpriteAtIndex(index);
-			_tileArr[layer][i].collidable = collidable;
-
-			int row = i / _mapInTiles.x;
-			int xIndex = i - (row * _mapInTiles.x);
-
-			//int xIndex = 
-
-			float xPos = (float)xIndex * _gapBetweenTiles;
-			float yPos = ((float)row * _gapBetweenTiles);
-			glm::vec2 colPos = glm::vec2(xPos, yPos);
-			_tileArr[layer][i].colXPos = xPos;
-			_tileArr[layer][i].colYPos = yPos;
-
-			_tileArr[layer][i].size = _gapBetweenTiles;
+				_tileArr[layer][i].size = _gapBetweenTiles;
+			}
 		}
 	}
 
 }
 
-void TileMap::AddTileAt(unsigned int layer, unsigned int uvX, unsigned int uvY, Camera* cam, bool shouldCollide /*= false*/)
+void TileMap::AddTileAt(unsigned int layer, unsigned int uvX, unsigned int uvY, Camera* cam, SpriteSheet* sp, bool shouldCollide /*= false*/)
 {
-	if (_pSpritesheet == nullptr) return;
-
 	glm::vec2 worldPos = MousePosToTile(cam);
 
 	int index = _mapInTiles.x * (int)(worldPos.y * _tilesPerUnit) + (int)(worldPos.x * _tilesPerUnit);
@@ -164,25 +203,23 @@ void TileMap::AddTileAt(unsigned int layer, unsigned int uvX, unsigned int uvY, 
 	glm::vec2 colPos = glm::vec2(xPos, yPos);
 
 	TileData newTile;
-	newTile.texIndex = uvY * _pSpritesheet->GetSheetWidth() + uvX;
+	newTile.texIndex = uvY * sp->GetSheetWidth() + uvX;
 	newTile.layer = layer;
 	newTile.collidable = shouldCollide;
 	newTile.size = _gapBetweenTiles;
-	newTile.colXPos = colPos.x;
-	newTile.colYPos = colPos.y;
+	newTile.pos = colPos;
 
-
-	newTile._pSpritesheet = _pSpritesheet;
-	newTile._pSprite = _pSpritesheet->GetSpriteAtIndex(_pSpritesheet->GetSheetWidth() * uvY + uvX);
+	newTile._pSpritesheet = sp;
+	newTile._pSprite = sp->GetSpriteAtIndex(sp->GetSheetWidth() * uvY + uvX);
 	_tileArr[layer][index] = newTile;
 }
 
-void TileMap::FillLayer(unsigned int layer, int uvX, int uvY)
+void TileMap::FillLayer(unsigned int layer, int uvX, int uvY, SpriteSheet* sp)
 {
 	for (int i = 0; i < _tileArr[layer].size(); i++) {
-		_tileArr[layer][i].texIndex = uvY * _pSpritesheet->GetSheetWidth() + uvX;
-		_tileArr[layer][i]._pSpritesheet = _pSpritesheet;
-		_tileArr[layer][i]._pSprite = _pSpritesheet->GetSpriteAtIndex(_pSpritesheet->GetSheetWidth() * uvY + uvX);
+		_tileArr[layer][i].texIndex = uvY * sp->GetSheetWidth() + uvX;
+		_tileArr[layer][i]._pSpritesheet = sp;
+		_tileArr[layer][i]._pSprite = sp->GetSpriteAtIndex(sp->GetSheetWidth() * uvY + uvX);
 	}
 }
 
@@ -200,7 +237,7 @@ glm::vec2 TileMap::MousePosToTile(Camera* cam)
 		//Puts tile on furthest right index
 		convertedPosition.y = _mapSizeInUnits.y - _gapBetweenTiles;
 	}
-	
+
 	//std::cout << "Camera Pos: " << camPos << std::endl;
 	//std::cout << "Mouse Pos: " << mousePos << std::endl;
 	//std::cout << "Converted Pos: " << convertedPosition << std::endl << std::endl;
@@ -236,7 +273,9 @@ void TileMap::RenderMap(Camera* cam)
 
 	//Calculate the extents of the camera based on the aspect ratio and zoom level. 
 	//Multiplying by 2 stops tiles suddenly being rendered or unrendered. 
-	float extents = cam->GetAspectRatio() * cam->GetZoomLevel() * 2.0f;
+
+	float extents = cam->GetAspectRatio() + 5.0f;
+	//float extents = 7.0f;
 
 	//Pre-calculate the min and max values of the camera's extents to avoid recalculating them. Optimisation 
 	float xMin = camPos.x - extents;
@@ -244,26 +283,59 @@ void TileMap::RenderMap(Camera* cam)
 	float yMin = camPos.y - extents;
 	float yMax = camPos.y + extents;
 
+	if (xMin < 0) xMin = 0.0f;
+	if (xMax > _mapSizeInUnits.x) xMax = _mapSizeInUnits.x;
+	if (yMin < 0) yMin = 0.0f;
+	if (yMax > _mapSizeInUnits.y) yMax = _mapSizeInUnits.y;
+
 	//Start the batch render for the tilemap
 	Renderer2D::BeginRender(cam);
 
-	//Cycle through each layer
-	for (int i = 0; i < _numLayers; i++) {
-		//Cycle through the Y axis
-		for (float y = 0; y < _mapSizeInUnits.y; y += _gapBetweenTiles) {
-			//Cycle through the X axis
-			for (float x = 0; x < _mapSizeInUnits.x; x += _gapBetweenTiles) {
-				//If the tile is outside of the cameras range
-				if (x < xMin || x > xMax || y < yMin || y > yMax) continue;
+	//Using this if check here means that we don't have to do the if check inside each tile, massively reducing comparisons on each tile (roughly 9000 comparisons per frame)
+	if (TileMapEditor::_showCollisionMap) {
+		//Predefine these here to reduce the amount of created objects inside the loop.
+		glm::vec4 red = glm::vec4(1.0f, 0.0f, 0.0f, 1.0f);
+		glm::vec4 green = glm::vec4(0.0f, 1.0f, 0.0f, 1.0f);
+		glm::vec4 color;
 
-				//Get the index of the tile
-				int index = _mapInTiles.x * (int)(y * _tilesPerUnit) + (int)(x * _tilesPerUnit);
+		//Cycle through each layer
+		for (int i = 0; i < _numLayers; i++) {
+			//Cycle through the Y axis
+			for (float y = yMin; y <= yMax; y += _gapBetweenTiles) {
+				//Cycle through the X axis
+				for (float x = xMin; x <= xMax; x += _gapBetweenTiles) {
 
-				//if this tile does not have a sprite then go to next cycle
-				if (_tileArr[i][index]._pSprite == nullptr) continue;
+					//Get the index of the tile
+					int index = _mapInTiles.x * (int)(y * _tilesPerUnit) + (int)(x * _tilesPerUnit);
 
-				//Draw this tile
-				Renderer2D::DrawQuad(Quad{ { x,y }, { _gapBetweenTiles,_gapBetweenTiles } }, _tileArr[i][index]._pSprite->GetTexture(), _tileArr[i][index]._pSprite->GetTexCoords(), _tileArr[i][index].lightLevel);
+					//if this tile does not have a sprite then go to next cycle
+					if (_tileArr[i][index]._pSprite == nullptr) continue;
+
+					//Decide the color based on the tiles collidability
+					color = (_tileArr[i][index].collidable) ? red : green;
+
+					Renderer2D::DrawQuad(Quad{ { x,y }, { _gapBetweenTiles,_gapBetweenTiles } }, _tileArr[i][index]._pSprite->GetTexture(), _tileArr[i][index]._pSprite->GetTexCoords(), _tileArr[i][index].lightLevel, color);
+				}
+			}
+		}
+	}
+	else {
+		//Cycle through each layer
+		for (int i = 0; i < _numLayers; i++) {
+			//Cycle through the Y axis
+			for (float y = yMin; y <= yMax; y += _gapBetweenTiles) {
+				//Cycle through the X axis
+				for (float x = xMin; x <= xMax; x += _gapBetweenTiles) {
+
+					//Get the index of the tile
+					int index = _mapInTiles.x * (int)(y * _tilesPerUnit) + (int)(x * _tilesPerUnit);
+
+					//if this tile does not have a sprite then go to next cycle
+					if (_tileArr[i][index]._pSprite == nullptr) continue;
+
+					//Draw this tile
+					Renderer2D::DrawQuad(Quad{ { x,y }, { _gapBetweenTiles,_gapBetweenTiles } }, _tileArr[i][index]._pSprite->GetTexture(), _tileArr[i][index]._pSprite->GetTexCoords());
+				}
 			}
 		}
 	}
@@ -284,14 +356,32 @@ bool TileMap::CollidableAtPosition(const int x, const int y) const
 bool TileMap::CollidableAtPosition(glm::vec2 worldPos)
 {
 	TileData* td = GetTileAtWorldPos(0, worldPos);
-	
+
 	int index = _mapInTiles.x * (int)(worldPos.y * _tilesPerUnit) + (int)(worldPos.x * _tilesPerUnit);
-	
+
 	return CollidableAtPosition(index);
+}
+
+void TileMap::SetCollidableAtLayer(int layer, glm::vec2 pos, bool val)
+{
+	
+	int index = GetTileIndexFromPosition(pos);
+
+	_tileArr[layer][index].collidable = val;
+}
+
+int TileMap::GetTileIndexFromPosition(glm::vec2 pos)
+{
+	TileData* td = GetTileAtWorldPos(0, pos);
+
+	int index = _mapInTiles.x * (int)(pos.y * _tilesPerUnit) + (int)(pos.x * _tilesPerUnit);
+	return index;
 }
 
 bool TileMap::CollidableAtPosition(const int index)
 {
+	if (index < 0 || index > _tileArr[0].size()) return false;
+
 	for (int layer = 0; layer < _numLayers; layer++) {
 		if (_tileArr[layer][index].collidable) return true;
 	}

@@ -51,7 +51,7 @@ void Renderer2D::Init()
 			{ ShaderDataTypes::Float3, "a_Position"     },
 			{ ShaderDataTypes::Float4, "a_Color"        },
 			{ ShaderDataTypes::Float2, "a_TexCoord"     },
-			{ ShaderDataTypes::Int,  "a_LightLevel"		},
+			{ ShaderDataTypes::Int, "a_LightLevel"     },
 			{ ShaderDataTypes::Float,  "a_TexIndex"     },
 			{ ShaderDataTypes::Float,  "a_TilingFactor" },
 			{ ShaderDataTypes::Int,  "a_EntityID" }
@@ -65,6 +65,8 @@ void Renderer2D::Init()
 			{ ShaderDataTypes::Float,  "a_TilingFactor" },
 			{ ShaderDataTypes::Int,  "a_EntityID" }
 		});
+
+
 
 	_data.quadVertexArray->AddVertexBuffer(_data.quadVertexBuffer);
 	_uiData.quadVertexArray->AddVertexBuffer(_uiData.quadVertexBuffer);
@@ -93,7 +95,7 @@ void Renderer2D::Init()
 	_uiData.quadVertexArray->SetIndexBuffer(quadIB);
 	delete[] quadIndices;
 
-	_data.whiteTexture = new Texture2D("whiteTexture.png");
+	_data.whiteTexture = new Texture2D("whiteTexture.png", "WhiteTexture");
 	_uiData.whiteTexture = _data.whiteTexture;
 
 	unsigned int samplers[_data.maxTextureSlots];

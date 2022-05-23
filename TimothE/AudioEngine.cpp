@@ -2,6 +2,16 @@
 
 
 
+FMOD::Channel* AudioEngine::_currentSongChannel = 0;
+const char* AudioEngine::_currentSongPath = 0;
+AudioEngine::FadeState AudioEngine::fade;
+FMOD::System* AudioEngine::_fmodSystem;
+FMOD::ChannelGroup* AudioEngine::_master;
+FMOD::ChannelGroup* AudioEngine::_groups[Type_Count];
+AudioEngine::LoadedSoundMap AudioEngine::_loadedSFX;
+AudioEngine::LoadedSoundMap AudioEngine::_loadedMusic;
+SoundStruct AudioEngine::_nextSong;
+
 // ============================== System Functions =============================== // 
 AudioEngine::AudioEngine()
 {
@@ -24,13 +34,14 @@ AudioEngine::AudioEngine()
 	modes[Type_Song] = FMOD_DEFAULT | FMOD_CREATESTREAM | FMOD_LOOP_NORMAL;
 
 	_currentSongChannel = nullptr;
-	
+
+
 }
 
 AudioEngine::~AudioEngine()
 {
 	//Release remaining sounds
-	
+
 
 }
 
@@ -38,8 +49,8 @@ AudioEngine::~AudioEngine()
 // the first parameter represents the total audio channels that will be created. 
 void AudioEngine::Initialize()
 {
-	
-	
+
+
 }
 
 //This must be called within the main game loop in order for FMOD 
@@ -76,13 +87,13 @@ void AudioEngine::AudioUpdate(float elapsed)
 		else
 			_currentSongChannel->setVolume(nextVolume);
 	}
-	else if (_currentSongChannel == 0 && !_nextSong.filePath == 0 ) {
-		PlaySong(_nextSong);
+	/*else if (_currentSongChannel == 0 && !_nextSong.filePath == 0 ) {
+		PlaySound(_nextSong);
 		_nextSong.filePath = 0;
-	}
+	}*/
 
 
-	
+
 }
 
 //Shut down the audio system. 
@@ -95,7 +106,7 @@ void AudioEngine::ShutDownAudio()
 //If an error was detected with a certain issue this will print an error string
 //to aid with debugging
 void AudioEngine::CheckForErrors(FMOD_RESULT result)
- 
+
 {
 	if (result != FMOD_OK)
 	{
@@ -204,7 +215,7 @@ void AudioEngine::SetGroupPitch(FMOD::ChannelGroup* group, float value) {
 //void AudioEngine::Load(AudioType type, const char* filePath)
 
 
-SoundStruct AudioEngine::LoadSound(const char* name, const char* filePath, AudioType type)
+void AudioEngine::LoadSound(const char* name, const char* filePath, AudioType type)
 {
 	SoundStruct newSound = SoundStruct();
 	newSound.name = name;
@@ -212,22 +223,24 @@ SoundStruct AudioEngine::LoadSound(const char* name, const char* filePath, Audio
 	newSound.type = type;
 
 	FMOD::Sound* soundToLoad;
-	
-
 
 	FMOD_RESULT result = _fmodSystem->createSound(newSound.filePath, FMOD_DEFAULT, 0, &soundToLoad);
 	newSound.sound = soundToLoad;
 
 	CheckForErrors(result);
 	std::cout << "Sound Loaded: " << newSound.name << std::endl;
-	return newSound;
+	if (type == AudioType::Type_SFX) {
+		_loadedSFX[newSound.name] = newSound;
+	}
+	else
+		_loadedMusic[newSound.name] = newSound;
 }
 
 
 //Creates an audio stream.
 //Audio streams are ideal for streaming long audio files such as soundtracks or voicelines
 //As it is not as necaserry to load these into memory. 
-FMOD::Sound* AudioEngine::CreateAudioStream( const char* filePath)
+FMOD::Sound* AudioEngine::CreateAudioStream(const char* filePath)
 {
 	FMOD::Sound* soundToStream;;
 	FMOD_RESULT result = _fmodSystem->createStream(filePath, FMOD_DEFAULT, 0, &soundToStream);
@@ -238,37 +251,47 @@ FMOD::Sound* AudioEngine::CreateAudioStream( const char* filePath)
 
 //Play sound effects
 //Pass in values for min and max pitch to allow for slight variations in pitch for repeating sounds (footsteps, attacks etc)
-void AudioEngine::PlaySFX(SoundStruct sound, float minVolume, float maxVolume, float minPitch, float maxPitch)
+FMOD::Channel* AudioEngine::PlaySound(std::string soundName, float minVolume, float maxVolume, float minPitch, float maxPitch)
 {
-  
-	//Calculate random value between pitch in the desired range
-	float volume = RandomBetween(minVolume, maxVolume);
-	float pitch = RandomBetween(minPitch, maxPitch);
+	auto sound = _loadedSFX.find(soundName);
+	if (sound == _loadedSFX.end()) {
+		std::cout << "Sound not found in loaded sounds" << std::endl;
+		return 0;
+	}
 
-	//Play the sound effects while applying values to the channel 
-	FMOD::Channel* channel;
-	_fmodSystem->playSound(sound.sound, NULL, false, &channel);
-	channel->setChannelGroup(_groups[Type_SFX]);
-	channel->setVolume(volume);
-	float frequency;
-	channel->getFrequency(&frequency);
-	channel->setFrequency(ChangeSemitone(frequency, pitch));
-	channel->setPaused(false);
+	if (sound->second.type == AudioType::Type_SFX) {
+		//Calculate random value between pitch in the desired range
+		float volume = RandomBetween(minVolume, maxVolume);
+		float pitch = RandomBetween(minPitch, maxPitch);
+
+		//Play the sound effects while applying values to the channel 
+		FMOD::Channel* channel;
+		_fmodSystem->playSound(sound->second.sound, NULL, false, &channel);
+		channel->setChannelGroup(_groups[Type_SFX]);
+		channel->setVolume(volume);
+		float frequency;
+		channel->getFrequency(&frequency);
+		channel->setFrequency(ChangeSemitone(frequency, pitch));
+		channel->setPaused(false);
+		return channel;
+	}
+	else if (sound->second.type == AudioType::Type_Song) {
+		//Start playing song with volume set to 0 then fade in 
+
+		FMOD::Channel* channel;
+		FMOD_RESULT result = _fmodSystem->playSound(sound->second.sound, _groups[Type_Song], false, &channel);
+		std::cout << "PlaySong";
+		CheckForErrors(result);
+		_currentSongChannel->setChannelGroup(_groups[Type_Song]);
+		_currentSongChannel->setVolume(0.0f);
+		fade = Fade_In;
+
+
+		return channel;
+	}
+
 }
 
-void AudioEngine::PlaySong(SoundStruct sound)
-{
-
-	//Start playing song with volume set to 0 then fade in 
-	_currentSongPath = sound.filePath;
-	FMOD_RESULT result = _fmodSystem->playSound(sound.sound, _groups[Type_Song], false, 0);
-	std::cout << "PlaySong";
-	CheckForErrors(result);
-	_currentSongChannel->setChannelGroup(_groups[Type_Song]);
-	_currentSongChannel->setVolume(0.0f);
-	fade = Fade_In;
-
-}
 
 void AudioEngine::StopSongs()
 {
@@ -301,21 +324,21 @@ void AudioEngine::SetVolume(FMOD::Channel* channel, float value)
 // To Utilise these methods first get the frequency of the channel you wish to modify and store it as a float
 // Then create a new float 'newFrequency' variable and set it equal to a function call to either method, passing in
 // frequency and the required change of value
-float AudioEngine::ChangeOctave(float frequency, float ammount) {
+float AudioEngine::ChangeOctave(float frequency, float amount) {
 	static float octaveRatio = 2.0f;
-	return frequency * pow(octaveRatio, ammount);
+	return frequency * pow(octaveRatio, amount);
 }
 
-float AudioEngine::ChangeSemitone(float frequency, float ammount) {
+float AudioEngine::ChangeSemitone(float frequency, float amount) {
 	static float semitoneRatio = pow(2.0f, 1.0f / 12.0f);
-	return frequency * pow(semitoneRatio, ammount);
+	return frequency * pow(semitoneRatio, amount);
 }
 
 //Set the panning of the channel (Left/right)
 //								   (-1/1)
-void AudioEngine::SetPanning(FMOD::Channel* channel, float ammount) {
+void AudioEngine::SetPanning(FMOD::Channel* channel, float amount) {
 
-	channel->setPan(ammount);
+	channel->setPan(amount);
 }
 
 void AudioEngine::SetMasterVolume(float volume)
@@ -332,7 +355,3 @@ void AudioEngine::SetMusicVolume(float volume)
 {
 	_groups[Type_Song]->setVolume(volume);
 }
-
-
-
-

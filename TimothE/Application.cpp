@@ -12,6 +12,9 @@
 #include "TileMap.h"
 #include "Time.h"
 #include "FarmScene.h"
+#include "CSVReader.h"
+#include "CropsConfig.h"
+#include "Core.h"
 
 #define BIND_EVENT_FN(x) std::bind(&Application::x, this, std::placeholders::_1)
 
@@ -43,7 +46,7 @@ void Application::Init(bool devMode)
 
 	//checks if glfw initialsed
 	if (!glfwInit()) {
-		std::cout << "[ERROR: Application::Init()]: glfw failed to initialize" << std::endl;
+		TIM_LOG_ERROR("glfw failed to initialize");
 	}
 
 	//sets up new window
@@ -76,17 +79,10 @@ void Application::Init(bool devMode)
 
 	Renderer2D::Init();
 
-	ResourceManager::GetScene("FarmScene")->InitScene();
-
-	//_pCurrentScene = ResourceManager::GetScene("FarmScene");
-
-	SceneManager::Init();
-	_pCurrentScene = SceneManager::CreateScene(ResourceManager::GetScene("FarmScene"));
-	_pCurrentScene->SceneStart();
-	SceneManager::SetCurrentScene(_pCurrentScene);
-
-	//SceneManager::SetCurrentScene(new FarmScene("FarmSceen"));
-	//SceneManager::GetCurrentScene()->InitScene();
+	
+	SceneManager::SetCurrentScene(SceneManager::CreateScene(ResourceManager::GetScene("FarmScene")));
+	//SceneManager::SetCurrentScene(SceneManager::CreateScene(ResourceManager::GetScene("TownScene")));
+	
 
 	//initializes editor with scene
 
@@ -118,7 +114,6 @@ void Application::GameLoop()
 	_pAudio = new AudioEngine;
 
 	//enables depth in opengl
-	//GLCall(glEnable(GL_DEPTH_TEST));
 
 	//time update
 	double previousTime = glfwGetTime();
@@ -148,20 +143,20 @@ void Application::GameLoop()
 
 		//_pTilemap->UpdateLogic(CameraManager::GetCamera("Editor"));
 
-		if (Input::IsKeyDown(TimothEKeyCode::KEY_0)) {
-			_tileMapEditorEnabled = !_tileMapEditorEnabled;
-			std::string cameraName = _tileMapEditorEnabled ? "Editor" : "Main Camera";
-			CameraManager::SetCamera(cameraName);
+		if (DEV_MODE) {
+			if (Input::IsKeyDown(TimothEKeyCode::KEY_0)) {
+				_tileMapEditorEnabled = !_tileMapEditorEnabled;
+				std::string cameraName = _tileMapEditorEnabled ? "Editor" : "Main Camera";
+				CameraManager::SetCamera(cameraName);
+			}
 		}
 
 		if (_tileMapEditorEnabled) {
 			_pEditor->_pEditorFramebuffer->BindFramebuffer();
 			GameBeginRender();
 			GameRender(CameraManager::GetCamera("Editor"));
-			_pEditor->EditorLoop(_pCurrentScene, _tileMapEditorEnabled, _mPaused);
+			_pEditor->EditorLoop(SceneManager::GetCurrentScene(), _tileMapEditorEnabled, _mPaused);
 
-			//_pEditor->EditorStartRender();
-			//DisplayTileEditor();
 			_pEditor->_pEditorFramebuffer->UnbindFramebuffer();
 			_pEditor->EditorRender();
 
@@ -176,10 +171,12 @@ void Application::GameLoop()
 		Window::SwapBuffers();
 
 		previousTime = deltaTime;
+
+		SceneManager::GetCurrentScene()->FrameEnd();
 	}
 
 	//saves scene
-	_pCurrentScene->SaveScene("Resources/Scenes/" + _pCurrentScene->GetName() + ".scene");
+	//_pCurrentScene->SaveScene("Resources/Scenes/" + _pCurrentScene->GetName() + ".scene");
 
 	//delete
 	ImGuiManager::DestroyImGui();
@@ -230,19 +227,19 @@ void Application::GameBeginRender()
 void Application::GameRender(Camera* cam)
 {
 	//_pTilemap->RenderMap(cam);
-	_pCurrentScene->RenderScene(cam);
+	SceneManager::GetCurrentScene()->RenderScene(cam);
 }
 
 //updates game scene
 void Application::GameUpdate()
 {
 	CameraManager::CurrentCamera()->OnUpdate();
-	_pCurrentScene->Update();
+	SceneManager::GetCurrentScene()->Update();
 }
 
 void Application::DisplayTileEditor()
 {
-	TileMapEditor::Update(_pCurrentScene->GetTileMap());
+	TileMapEditor::Update(SceneManager::GetCurrentScene()->GetTileMap());
 }
 
 //stop and play buttons switches play states

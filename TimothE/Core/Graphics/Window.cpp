@@ -68,7 +68,7 @@ void Window::CreateWindow()
 
 	//Syncs to monitor refresh rate
 	//1: Vsync. 0: No Vsync
-	glfwSwapInterval(1);
+	glfwSwapInterval(0);
 
 	glfwSetWindowUserPointer(_pWindow, &_windowData);
 
@@ -90,6 +90,8 @@ void Window::CreateWindow()
 			WindowCloseEvent event;
 			data._eventCallback(event);
 		});
+
+	//glfwSetInputMode(_pWindow, GLFW_STICKY_KEYS, GLFW_TRUE);
 
 	//Sets the callback for pressing a key
 	glfwSetKeyCallback(_pWindow, [](GLFWwindow* window, int key, int scancode, int action, int mods) 
