@@ -5,6 +5,7 @@
 #include <string>
 #include "ToolConfig.h"
 #include "ArmourConfig.h"
+#include "SeedConfig.h"
 
 class CSVReader;
 class PlayerResourceManager;

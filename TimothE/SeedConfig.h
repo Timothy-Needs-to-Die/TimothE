@@ -8,7 +8,8 @@ enum SeedType {
 	AppleSeed
 };
 
-struct SeedConfig {
+struct SeedConfig : PurchaseableConfig {
 	SeedConfig() = default;
 	SeedType type;
+	int growthPerDay;
 };
