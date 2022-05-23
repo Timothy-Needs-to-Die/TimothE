@@ -78,7 +78,9 @@ void FarmScene::InitScene()
 
 	//_pStartButton->GetTransform()->SetPosition(0.0f, 0.0f);
 	//_pStartButton->GetTransform()->SetScale({ 0.2f, 0.2f });
-
+	GameObject* pPathFinder = new GameObject("Pathfinder");
+	pPathFinder->AddComponent<AStar>(new AStar(pPathFinder));
+	AddGameObject(pPathFinder);
 
 	_pWeaponObject = new GameObject("Weapon");
 	_pWeaponObject->AddComponent<Texture2D>(ResourceManager::GetTexture("swords"));
@@ -124,15 +126,27 @@ void FarmScene::InitScene()
 	//AddGameObject(_pTower);
 
 	_pAITester = new GameObject("AI Test");
-	_pAITester->GetTransform()->SetScale({ 0.25f, 0.25f });
+	_pAITester->GetTransform()->SetScale({ 0.25f, 0.25f }); 
+	_pAITester->GetTransform()->SetPosition({ 5.25f, 2.25f });
+	_pAITester2 = new GameObject("AI Test2");
+	_pAITester2->GetTransform()->SetScale({ 0.25f, 0.25f });
+	_pAITester2->GetTransform()->SetPosition({ 5.25f, 5.25f });
 
 	AIMovementCompnent* mover = _pAITester->AddComponent(new AIMovementCompnent(_pAITester));
 	_pAITester->AddComponent(ResourceManager::GetTexture("fish"));
 	mover->SetAllowCollisions(false);
 
-	mover->SetDestination(glm::vec2(2.0f, 1.5f));
+	mover->SetDestination(glm::vec2(7.0f, 1.5f));
 
 	AddGameObject(_pAITester);
+
+	AIMovementCompnent* mover2 = _pAITester2->AddComponent(new AIMovementCompnent(_pAITester2));
+	_pAITester2->AddComponent(ResourceManager::GetTexture("fish"));
+	mover2->SetAllowCollisions(false);
+
+	mover2->SetDestination(glm::vec2(7.25f, 2.25f));
+
+	AddGameObject(_pAITester2);
 }
 
 void FarmScene::AddStructure(StructureObject* object)

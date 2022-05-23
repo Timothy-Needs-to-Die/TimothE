@@ -38,6 +38,8 @@ private:
 	GameObject* _pStartButton = nullptr;
 	GameObject* _pWeaponObject = nullptr;
 	GameObject* _pAITester = nullptr;
+	GameObject* _pAITester2 = nullptr;
+	GameObject* _pAStar = nullptr;
 
 	SpriteSheet* _pSpritesheet;
 
