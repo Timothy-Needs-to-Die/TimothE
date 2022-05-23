@@ -16,7 +16,7 @@ class AIController : public Component
 public:
 	AIController(GameObject* gameObject) : Component(gameObject) 
 	{
-		_moving = false;
+		_mMoving = false;
 		SetType(Types::AIControllerType);
 	}
 
@@ -30,11 +30,11 @@ public:
 	void DecideDirection(glm::vec2& moveVec);
 
 	void SetMovementSpeed(const float speed) {
-		_movementSpeed = speed;
+		_mMovementSpeed = speed;
 	}
-	float GetMovementSpeed() const { return _movementSpeed; }
+	float GetMovementSpeed() const { return _mMovementSpeed; }
 
-	bool IsMoving() const { return _moving; }
+	bool IsMoving() const { return _mMoving; }
 
 
 	void OnStart() override;
@@ -46,13 +46,13 @@ public:
 	void AttackedBy(GameObject object);
 
 private:
-	float _movementSpeed = 3.0f;
-	bool _moving = true;
+	float _mMovementSpeed = 3.0f;
+	bool _mMoving = true;
 
 	class Fighter* _pFighter = nullptr;
-	GameObject* currentTarget = nullptr;
-	string targetArr[3];
-	Player player;
+	GameObject* _pCurrentTarget = nullptr;
+	string _mTargetArr[3];
+	Player _mPlayer;
 
 	GameObject* FindClosestTargetFromList(std::vector<GameObject*> targets);
 };
