@@ -139,7 +139,7 @@ void AStar::SetMap(TileMap* map)
 	{
 		Node tile;
 		tile.isObstacle = tiles.at(i).collidable;
-		tile.pos = { tiles.at(i).colXPos, tiles.at(i).colYPos };
+		tile.pos = tiles.at(i).pos;
 
 		_mMapNodes.push_back(tile);
 

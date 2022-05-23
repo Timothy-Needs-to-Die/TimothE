@@ -156,8 +156,7 @@ void TileMap::LoadTileMap()
 				float xPos = (float)xIndex * _gapBetweenTiles;
 				float yPos = ((float)row * _gapBetweenTiles);
 				glm::vec2 colPos = glm::vec2(xPos, yPos);
-				_tileArr[layer][i].colXPos = xPos;
-				_tileArr[layer][i].colYPos = yPos;
+				_tileArr[layer][i].pos = { xPos, yPos };
 
 				_tileArr[layer][i].size = _gapBetweenTiles;
 			}
@@ -179,8 +178,7 @@ void TileMap::LoadTileMap()
 				float xPos = (float)xIndex * _gapBetweenTiles;
 				float yPos = ((float)row * _gapBetweenTiles);
 				glm::vec2 colPos = glm::vec2(xPos, yPos);
-				_tileArr[layer][i].colXPos = xPos;
-				_tileArr[layer][i].colYPos = yPos;
+				_tileArr[layer][i].pos = { xPos, yPos };
 
 				_tileArr[layer][i].size = _gapBetweenTiles;
 			}
@@ -209,9 +207,7 @@ void TileMap::AddTileAt(unsigned int layer, unsigned int uvX, unsigned int uvY, 
 	newTile.layer = layer;
 	newTile.collidable = shouldCollide;
 	newTile.size = _gapBetweenTiles;
-	newTile.colXPos = colPos.x;
-	newTile.colYPos = colPos.y;
-
+	newTile.pos = colPos;
 
 	newTile._pSpritesheet = sp;
 	newTile._pSprite = sp->GetSpriteAtIndex(sp->GetSheetWidth() * uvY + uvX);

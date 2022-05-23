@@ -80,7 +80,7 @@ void PlayerInputComponent::OnUpdate()
 			wallCost.woodRequired = 1;
 
 			if (PlayerResourceManager::CanAfford(wallCost)) {
-				glm::vec2 pos = { pTilemap->GetTileAtWorldPos(0, _pParentObject->GetTransform()->GetPosition())->colXPos, pTilemap->GetTileAtWorldPos(0, _pParentObject->GetTransform()->GetPosition())->colYPos };
+				glm::vec2 pos = pTilemap->GetTileAtWorldPos(0, _pParentObject->GetTransform()->GetPosition())->pos;
 
 				if (!pTilemap->CollidableAtPosition(pos)) {
 					StructureObject* pObject = new StructureObject("Wall", "WALL");
@@ -93,6 +93,8 @@ void PlayerInputComponent::OnUpdate()
 					pTransform->SetScale({ 0.25f,0.25f });
 
 					pFarmScene->AddStructure(pObject);
+
+					PlayerResourceManager::SpendResources(wallCost);
 				}
 			}
 		}
@@ -103,7 +105,7 @@ void PlayerInputComponent::OnUpdate()
 			towerCost.stoneRequired = 5;
 
 			if (PlayerResourceManager::CanAfford(towerCost)) {
-				glm::vec2 pos = { pFarmScene->GetTileMap()->GetTileAtWorldPos(0, _pParentObject->GetTransform()->GetPosition())->colXPos, pTilemap->GetTileAtWorldPos(0, _pParentObject->GetTransform()->GetPosition())->colYPos };
+				glm::vec2 pos = pFarmScene->GetTileMap()->GetTileAtWorldPos(0, _pParentObject->GetTransform()->GetPosition())->pos;
 
 				if (!pTilemap->CollidableAtPosition(pos)) {
 					OffensiveStructureObject* pObject = new OffensiveStructureObject("Tower", "TOWER");
@@ -116,6 +118,8 @@ void PlayerInputComponent::OnUpdate()
 					pTransform->SetScale({ 0.25f,0.25f });
 
 					pFarmScene->AddStructure(pObject);
+
+					PlayerResourceManager::SpendResources(towerCost);
 				}
 			}
 		}
