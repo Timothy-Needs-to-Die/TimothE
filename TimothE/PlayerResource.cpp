@@ -11,10 +11,7 @@ PlayerResource::~PlayerResource()
 
 bool PlayerResource::CanAfford(int amount)
 {
-
-	return _amount > amount;
-
-	
+	return _amount >= amount;
 }
 
 void PlayerResource::SpendResource(int amount)

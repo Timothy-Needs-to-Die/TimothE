@@ -73,7 +73,10 @@ void PlayerInputComponent::OnUpdate()
 		wallCost.woodRequired = 1;
 
 		if (PlayerResourceManager::CanAfford(wallCost)) {
-
+			TIM_LOG_LOG("Can Afford Wall");
+		}
+		else {
+			TIM_LOG_LOG("Can't Afford Wall");
 		}
 	}
 
@@ -83,7 +86,10 @@ void PlayerInputComponent::OnUpdate()
 		towerCost.stoneRequired = 5;
 
 		if (PlayerResourceManager::CanAfford(towerCost)) {
-
+			TIM_LOG_LOG("Can Afford Tower");
+		}
+		else{
+			TIM_LOG_LOG("Can't Afford Tower");
 		}
 	}
 
