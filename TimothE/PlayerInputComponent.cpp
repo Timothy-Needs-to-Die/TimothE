@@ -116,14 +116,20 @@ void PlayerInputComponent::BuildControls()
 
 		glm::vec2 mousePos = Input::GetMousePos();
 
+		TIM_LOG_LOG("Mouse Pos: " << mousePos.x << ", " << mousePos.y);
+
 
 		glm::vec2 size = CameraManager::CurrentCamera()->Size();
 
-		glm::vec2 cameraPos = CameraManager::CurrentCamera()->PositionXY() / 2.0f;
+		glm::vec2 cameraPos = CameraManager::CurrentCamera()->PositionXY();
 		cameraPos *= size;
-		cameraPos -= size;
+		//cameraPos -= size;
 		glm::vec2 convertedPos = cameraPos + mousePos;
 
+		convertedPos = _pParentObject->GetTransform()->GetPosition() + (mousePos * size);
+
+		
+		
 		TIM_LOG_LOG("Converted Pos: " << convertedPos.x << ", " << convertedPos.y);
 
 
@@ -144,7 +150,7 @@ void PlayerInputComponent::BuildControls()
 			return;
 		}
 
-		if (PlayerResourceManager::CanAfford(cost)) {
+		//if (PlayerResourceManager::CanAfford(cost)) {
 			glm::vec2 tilePos = pTilemap->GetTileAtWorldPos(0, convertedPos)->pos;
 
 			if (!pTilemap->CollidableAtPosition(tilePos)) {
@@ -174,10 +180,10 @@ void PlayerInputComponent::BuildControls()
 
 				pFarmScene->AddStructure(pObject);
 
-				PlayerResourceManager::SpendResources(cost);
+				//PlayerResourceManager::SpendResources(cost);
 
 			}
-		}
+		//}
 	}
 
 	//FarmScene* pFarmScene = dynamic_cast<FarmScene*>(SceneManager::GetCurrentScene());
