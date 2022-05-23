@@ -17,16 +17,10 @@ TileMap::TileMap(std::string name)
 	: _name(name)
 {
 	_tileArr.resize(_numLayers);
-	//_tileArr = new std::vector<TileData>[_numLayers];
-	SetTileMapSize({ 256.0f, 32.0f });
-
-	_tileSize = glm::vec2(128.0f);
 
 	_gapBetweenTiles = 1.0f / _tilesPerUnit;
 
-	//SetSpriteSheet(ResourceManager::GetSpriteSheet("testSheet"));
 	LoadTileMap();
-
 }
 
 TileMap::~TileMap()
@@ -37,8 +31,6 @@ void TileMap::ClearAllLayers()
 {
 	for (int i = 0; i < _numLayers; i++) {
 		for (int j = 0; j < _mapInTiles.x * _mapInTiles.y; j++) {
-			//_tileArr[i][j]._pSprite = nullptr;
-			//_tileArr[i][j].texIndex = 0;
 			_tileArr[i][j] = TileData();
 		}
 	}
@@ -82,8 +74,6 @@ void TileMap::SaveTilemap() {
 		file["tiles" + std::to_string(layer)] = tileLayout;
 	}
 
-
-
 	outfile << file;
 }
 
@@ -104,6 +94,8 @@ void TileMap::LoadTileMap()
 
 	_mapInTiles.x = (float)file["sizeX"];
 	_mapInTiles.y = (float)file["sizeY"];
+
+	SetTileMapSize(_mapInTiles);
 
 	_tilesPerUnit = (int)file["tilePerUnit"];
 
@@ -189,6 +181,8 @@ void TileMap::LoadTileMap()
 
 void TileMap::AddTileAt(unsigned int layer, unsigned int uvX, unsigned int uvY, Camera* cam, SpriteSheet* sp, bool shouldCollide /*= false*/)
 {
+	if (sp == nullptr) return;
+
 	glm::vec2 worldPos = MousePosToTile(cam);
 
 	int index = _mapInTiles.x * (int)(worldPos.y * _tilesPerUnit) + (int)(worldPos.x * _tilesPerUnit);
@@ -238,9 +232,6 @@ glm::vec2 TileMap::MousePosToTile(Camera* cam)
 		convertedPosition.y = _mapSizeInUnits.y - _gapBetweenTiles;
 	}
 
-	//std::cout << "Camera Pos: " << camPos << std::endl;
-	//std::cout << "Mouse Pos: " << mousePos << std::endl;
-	//std::cout << "Converted Pos: " << convertedPosition << std::endl << std::endl;
 
 	return convertedPosition;
 }
@@ -274,14 +265,15 @@ void TileMap::RenderMap(Camera* cam)
 	//Calculate the extents of the camera based on the aspect ratio and zoom level. 
 	//Multiplying by 2 stops tiles suddenly being rendered or unrendered. 
 
-	float extents = cam->GetAspectRatio() + 5.0f;
-	//float extents = 7.0f;
+	const float extents = 4.0f;
 
 	//Pre-calculate the min and max values of the camera's extents to avoid recalculating them. Optimisation 
-	float xMin = camPos.x - extents;
-	float xMax = camPos.x + extents;
-	float yMin = camPos.y - extents;
-	float yMax = camPos.y + extents;
+	float xMin = camPos.x - (extents);
+	float xMax = camPos.x + (extents);
+	float yMin = camPos.y - (extents);
+	float yMax = camPos.y + (extents);
+
+	//TIM_LOG_LOG("Extents: X:(" << xMin << "-" << xMax << ") Y:(" << yMin << "-" << yMax << ")");
 
 	if (xMin < 0) xMin = 0.0f;
 	if (xMax > _mapSizeInUnits.x) xMax = _mapSizeInUnits.x;
@@ -301,9 +293,9 @@ void TileMap::RenderMap(Camera* cam)
 		//Cycle through each layer
 		for (int i = 0; i < _numLayers; i++) {
 			//Cycle through the Y axis
-			for (float y = yMin; y <= yMax; y += _gapBetweenTiles) {
+			for (float y = 0.0f; y <= _mapSizeInUnits.y; y += _gapBetweenTiles) {
 				//Cycle through the X axis
-				for (float x = xMin; x <= xMax; x += _gapBetweenTiles) {
+				for (float x = 0.0f; x <= _mapSizeInUnits.x; x += _gapBetweenTiles) {
 
 					//Get the index of the tile
 					int index = _mapInTiles.x * (int)(y * _tilesPerUnit) + (int)(x * _tilesPerUnit);
@@ -320,12 +312,16 @@ void TileMap::RenderMap(Camera* cam)
 		}
 	}
 	else {
+		glm::vec4 tileTint = glm::vec4(1.0f, 1.0f, 1.0f,1.0f);
+
 		//Cycle through each layer
 		for (int i = 0; i < _numLayers; i++) {
 			//Cycle through the Y axis
-			for (float y = yMin; y <= yMax; y += _gapBetweenTiles) {
+			for (float y = 0.0f; y <= _mapSizeInUnits.y; y += _gapBetweenTiles) {
 				//Cycle through the X axis
-				for (float x = xMin; x <= xMax; x += _gapBetweenTiles) {
+				for (float x = 0.0f; x <= _mapSizeInUnits.x; x += _gapBetweenTiles) {
+					if (x < xMin || x > xMax || y < yMin || y > yMax) continue;
+
 
 					//Get the index of the tile
 					int index = _mapInTiles.x * (int)(y * _tilesPerUnit) + (int)(x * _tilesPerUnit);
@@ -333,8 +329,16 @@ void TileMap::RenderMap(Camera* cam)
 					//if this tile does not have a sprite then go to next cycle
 					if (_tileArr[i][index]._pSprite == nullptr) continue;
 
+					if (TileMapEditor::_active) {
+						tileTint = glm::vec4(1.0f);
+						if (index == _currentTileIndex) {
+							tileTint.r = 0.0f;
+							tileTint.b = 0.0f;
+						}
+					}
+
 					//Draw this tile
-					Renderer2D::DrawQuad(Quad{ { x,y }, { _gapBetweenTiles,_gapBetweenTiles } }, _tileArr[i][index]._pSprite->GetTexture(), _tileArr[i][index]._pSprite->GetTexCoords());
+					Renderer2D::DrawQuad(Quad{ { x,y }, { _gapBetweenTiles,_gapBetweenTiles } }, _tileArr[i][index]._pSprite->GetTexture(), _tileArr[i][index]._pSprite->GetTexCoords(), tileTint);
 				}
 			}
 		}

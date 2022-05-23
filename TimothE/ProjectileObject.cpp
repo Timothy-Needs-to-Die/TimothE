@@ -8,7 +8,7 @@
 ProjectileObject::ProjectileObject(glm::vec2 spawnPosition, glm::vec2 direction, std::string name /*= "PROJECTILE"*/, std::string tag /*= "PROJECTILE"*/)
 	: GameObject(name, tag)
 {
-	AddComponent(new Texture2D("lenna"));
+	AddComponent(new Texture2D("Resources/Images/Fireball.png"));
 	_pTransform->SetScale({ 0.15f,0.15f });
 	_pTransform->SetPosition(spawnPosition);
 

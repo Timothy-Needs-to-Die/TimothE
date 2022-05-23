@@ -83,14 +83,14 @@ void VAO::AddVertexBuffer(const std::shared_ptr<VBO>& vertexBuffer)
                 GLCall(glEnableVertexAttribArray(_vertexBufferIndex));
                 GLCall(glVertexAttribPointer(_vertexBufferIndex,
                     count,
-                    element.normalized ? GL_TRUE : GL_FALSE,
                     GL_FLOAT,
+                    element.normalized ? GL_TRUE : GL_FALSE,
                     layout.GetStride(),
                     (const void*)(element.offset + sizeof(float) * count * i)));
                 GLCall(glVertexAttribDivisor(_vertexBufferIndex, 1));
                 _vertexBufferIndex++;
-                break;
             }
+            break; 
         }
         default:
             std::cout << "[Error: VAO::AddVertexBuffer]: Shader Data Type not defined" << std::endl;

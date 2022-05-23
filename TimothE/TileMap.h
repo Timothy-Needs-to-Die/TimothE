@@ -8,9 +8,6 @@
 #include "ResourceManager.h"
 #include "TileData.h"
 
-
-
-
 class TileMap
 {
 public:
@@ -30,13 +27,6 @@ public:
 	//Fills a specified layer with a texture at uvX and uvY coordinates
 	void FillLayer(unsigned int layer, int uvX, int uvY, SpriteSheet* sp);
 
-	//Gets the size of a tile in units. (e.g. 0.25 x 0.25)
-
-	glm::vec2 GetTileSize() const
-	{
-		return _tileSize;
-	}
-
 	//Converts the mouse position to a tile, takes in a camera to base the calculations around
 	glm::vec2 MousePosToTile(Camera* cam);
 
@@ -45,9 +35,6 @@ public:
 	{
 		_mapInTiles = mapSize;
 		int elementSize = _mapInTiles.x * _mapInTiles.y;
-		//_tileArr[0].resize(elementSize);
-		//_tileArr[1].resize(elementSize);
-		//_tileArr[2].resize(elementSize);
 
 		for (int i = 0; i < _tileArr.size(); i++) {
 			_tileArr[i].resize(elementSize);
@@ -80,11 +67,6 @@ public:
 	}
 	
 	void ClearLayer(int layer);
-	
-	glm::vec2 ConvertWorldToScreen(glm::vec2 inPos) {
-		glm::vec2 outPos{ inPos.x / 1920.0f, inPos.y / 1080.0f };
-		return outPos;
-	}
 
 	void RenderMap(Camera* cam);
 
@@ -94,6 +76,8 @@ public:
 
 	void SetCollidableAtLayer(int layer, glm::vec2 pos, bool val);
 	int GetTileIndexFromPosition(glm::vec2 pos);
+
+	std::string GetName() const { return _name; }
 
 private:
 	int _numLayers = 6;
@@ -119,12 +103,13 @@ private:
 	//The index of the current tile that the mouse is hovering over
 	int _currentTileIndex;
 
-	//Array/Vector which holds the tiles. //TODO: Make this not magic and link to the _numLayers variable
+	//vector of vectors which holds the tiles on each layer. _tileArr[0][5] refers to tile five of the first layer. 
 	std::vector<std::vector<TileData>> _tileArr;
 
 	//How many tiles are there per unit in the X and Y axis
 	int _tilesPerUnit = 4;
 
+	//The name of the tilemap is used to save and load the map
 	std::string _name;
 };
 

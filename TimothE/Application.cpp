@@ -146,6 +146,7 @@ void Application::GameLoop()
 		if (DEV_MODE) {
 			if (Input::IsKeyDown(TimothEKeyCode::KEY_0)) {
 				_tileMapEditorEnabled = !_tileMapEditorEnabled;
+				TileMapEditor::_active = _tileMapEditorEnabled;
 				std::string cameraName = _tileMapEditorEnabled ? "Editor" : "Main Camera";
 				CameraManager::SetCamera(cameraName);
 			}

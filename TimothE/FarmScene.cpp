@@ -154,3 +154,18 @@ void FarmScene::AddStructure(StructureObject* object)
 	AddGameObject(object);
 	_pStructures.emplace_back(object);
 }
+
+void FarmScene::RemoveStructure(class StructureObject* object)
+{
+	std::vector<StructureObject*>::iterator it = std::find(_pStructures.begin(), _pStructures.end(), object);
+
+	if (it != _pStructures.end()) {
+		_pStructures.erase(it);
+		RemoveGameObject(object);
+	}
+}
+
+std::vector<class StructureObject*> FarmScene::GetStructures() const
+{
+	return _pStructures;
+}

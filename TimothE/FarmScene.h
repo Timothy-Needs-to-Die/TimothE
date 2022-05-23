@@ -30,6 +30,8 @@ public:
 	void InitScene() override;
 
 	void AddStructure(class StructureObject* object);
+	void RemoveStructure(class StructureObject* object);
+	std::vector<class StructureObject*> GetStructures() const;
 
 protected:
 
