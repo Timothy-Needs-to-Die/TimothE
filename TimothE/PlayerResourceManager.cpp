@@ -31,11 +31,37 @@ bool PlayerResourceManager::CanAfford(const ResourceCost& cost)
 	if(_coreResourceMap[Wood].CanAfford(cost.woodRequired) && 
 		_coreResourceMap[Stone].CanAfford(cost.stoneRequired) &&
 		_coreResourceMap[Metal].CanAfford(cost.metalRequired) &&
-		_coreResourceMap[Coal].CanAfford(cost.coalRequired)) {
+		_coreResourceMap[Coal].CanAfford(cost.coalRequired) &&
+		_coreResourceMap[Gold].CanAfford(cost.goldRequired)) {
 		return true;
 	}
 
 	return false;
+}
+
+bool PlayerResourceManager::CanAfford(int gold)
+{
+	int currentGold = GetCoreResource(CoreResourceType::Gold)->GetAmount();
+	if (gold > currentGold) {
+		return true;
+	}
+	else {
+		return false;
+	}
+}
+
+void PlayerResourceManager::SetTool(ToolConfig tool)
+{
+	if (tool.type == ToolType::Pickaxe) {
+		_currentPickaxe = tool;
+	}
+	else if (tool.type == ToolType::Axe) {
+		_currentAxe = tool;
+	}
+	else if (tool.type == ToolType::Sword) {
+		_currentSword = tool;
+	}
+
 }
 
 //PlayerResource* PlayerResourceManager::GetHotbarItem(HotbarItem item)

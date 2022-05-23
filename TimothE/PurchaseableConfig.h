@@ -6,6 +6,7 @@ struct ResourceCost {
 	int stoneRequired;
 	int metalRequired;
 	int coalRequired;
+	int goldRequired;
 };
 
 struct PurchaseableConfig : ItemConfig {

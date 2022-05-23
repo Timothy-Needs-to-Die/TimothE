@@ -42,6 +42,39 @@ void BaseTrader::OnNewDay()
 //		std::cout << "[LOG: BaseTrader::OnBuy: Player can not afford item" << std::endl; 
 //	}
 //}
+void BaseTrader::OnBuy(PurchaseableConfig item){
+	//If the item is in the traders inventory (shouldnt be necesarry if UI is set up correctly
+	if (std::find(_config.itemsToSell.begin(), _config.itemsToSell.end(), item) != _config.itemsToSell.end()) {
+		
+
+	}
+}
+
+void BaseTrader::OnBuyTool(ToolConfig tool)
+{
+	if (_config.type == TraderType::Blacksmith) {
+		if (PlayerResourceManager::CanAfford(tool.resourceCost)) {
+			PlayerResourceManager::GetCoreResource(CoreResourceType::Wood)->SpendResource(tool.resourceCost.woodRequired);
+			PlayerResourceManager::GetCoreResource(CoreResourceType::Stone)->SpendResource(tool.resourceCost.stoneRequired);
+			PlayerResourceManager::GetCoreResource(CoreResourceType::Metal)->SpendResource(tool.resourceCost.metalRequired);
+			PlayerResourceManager::GetCoreResource(CoreResourceType::Coal)->SpendResource(tool.resourceCost.coalRequired);
+			PlayerResourceManager::GetCoreResource(CoreResourceType::Gold)->SpendResource(tool.resourceCost.goldRequired);
+			PlayerResourceManager::SetTool(tool);
+		}
+		else
+		{
+			//Player cannot afford the item, throw text message to them saying so
+		}
+	}
+	
+}
+
+void BaseTrader::OnBuySeed(SeedConfig seed)
+{
+	if (_config.type == TraderType::Farmer) {
+		if(PlayerResourceManager::GetPlantResource((PlantResourceType)seed.type)->CanAfford(seed.price)
+	}
+}
 
 void BaseTrader::OnSell()
 {
@@ -116,7 +149,6 @@ void BaseTrader::SetTraderConfig(std::string configPath)
 			traderItem.type = (SeedType)std::stoi(loadedData[i][5]);
 			traderItem.growthPerDay = std::stoi(loadedData[i][4]);
 			newConfig.itemsToSell.push_back(traderItem);
-
 		}
 		
 	}

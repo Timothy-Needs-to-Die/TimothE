@@ -25,7 +25,10 @@ public:
 	void OnNewDay();
 
 
-	void OnBuy(ItemConfig item, PlantResourceType type, int amount);
+	void OnBuy(PurchaseableConfig item);
+	void OnBuyTool(ToolConfig tool);
+	void OnBuySeed(SeedConfig seed);
+	
 	//void OnBuy(ItemConfig item, HotbarItem type, int amount);
 
 	void OnSell();
