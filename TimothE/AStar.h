@@ -36,15 +36,15 @@ struct Node {
 	glm::vec2 _mParentNode = { ERROR_PATH_POSITION, ERROR_PATH_POSITION };
 };
 
-class AStar
+class AStar : public Component
 {
 public:
-	//The default constructor for the class
-	AStar() = default;
+	AStar(GameObject* gameObject) : Component(gameObject) {
+		SetType(Types::Pathfinding);
+	}
 
-	//Overriding the default destructor to delete the memory associated with the direction and path lists
 	~AStar();
-
+	COMPONENT_STATIC_TYPE(Pathfinding);
 	/// <summary>
 	/// This function will calculate the shortest path for the maze. Using the A* Pathfinding Algorithm
 	/// </summary>
@@ -64,6 +64,11 @@ private:
 	float _mWidth;
 	float _mHeight;
 	float _mTilesPerUnit;
+
+	// Inherited via Component
+	virtual void OnStart() override;
+	virtual void OnUpdate() override;
+	virtual void OnEnd() override;
 };
 
 

@@ -18,7 +18,7 @@ std::vector<glm::vec2> AStar::FindPath(glm::vec2 start, glm::vec2 end)
 	currentNode->_mGlobalGoal = glm::distance(currentNode->_mPos, end);
 	//currentNode->isObstacle = mStartNode->isObstacle;
 	//currentNode->isVisited = mStartNode->isVisited;
-	currentNode->_mNeighborNodes = _mMapNodes.at(0)._mNeighborNodes;
+	currentNode->_mNeighborNodes = _mMapNodes.at(start.y * _mTilesPerUnit * _mWidth  + start.x * _mTilesPerUnit)._mNeighborNodes;
 
 	//currentNode->parentNode = { 0, 0 };
 
@@ -196,4 +196,16 @@ void AStar::SetMap(TileMap* map)
 		}
 	}
 
+}
+
+void AStar::OnStart()
+{
+}
+
+void AStar::OnUpdate()
+{
+}
+
+void AStar::OnEnd()
+{
 }

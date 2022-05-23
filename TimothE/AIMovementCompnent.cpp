@@ -4,8 +4,8 @@
 AIMovementCompnent::AIMovementCompnent(GameObject* owner)
 	: MovementComponent(owner)
 {
-
-	_mAStar = new AStar();
+	_pAStar = SceneManager::GetCurrentScene()->FindObjectOfType<AStar>();
+	//_mAStar = new AStar();
 	SetMovementSpeed(0.5f); //TODO: Get from config
 }
 
@@ -18,8 +18,8 @@ void AIMovementCompnent::SetDestination(glm::vec2 targetPos)
 	_mHasDestination = true;
 
 	//sets map and finds path
-	_mAStar->SetMap(SceneManager::GetCurrentScene()->GetTileMap());
-	std::vector<glm::vec2> tempPath = _mAStar->FindPath(GetParent()->GetTransform()->GetPosition(), targetPos);
+	_pAStar->SetMap(SceneManager::GetCurrentScene()->GetTileMap());
+	std::vector<glm::vec2> tempPath = _pAStar->FindPath(GetParent()->GetTransform()->GetPosition(), targetPos);
 	
 	//set path
 	int size = tempPath.size();
@@ -32,7 +32,7 @@ void AIMovementCompnent::SetDestination(glm::vec2 targetPos)
 	_mCurrentTarget = GetNextTarget();
 
 	//clear paths
-	_mAStar->processedPath.clear();
+	_pAStar->processedPath.clear();
 	tempPath.clear();
 
 }
@@ -77,7 +77,7 @@ glm::vec2 AIMovementCompnent::GetNextTarget()
 
 
 	//set target to move as the first path position
-	_mCurrentTarget = _mPathToFollow.front();
+	_mCurrentTarget = _mPathToFollow.back();
 	_mPathToFollow.erase(_mPathToFollow.begin());
 
 	return _mCurrentTarget; //return target

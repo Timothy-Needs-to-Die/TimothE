@@ -21,7 +21,7 @@ private:
 	glm::vec2 _mCurrentTarget;
 	float _mTolerance = 0.05f;
 	bool _mHasDestination;
-	AStar* _mAStar;
+	AStar* _pAStar;
 
 	glm::vec2 GetNextTarget();
 };
