@@ -148,12 +148,10 @@ void Application::GameLoop()
 
 		//_pTilemap->UpdateLogic(CameraManager::GetCamera("Editor"));
 
-		if (DEV_MODE) {
-			if (Input::IsKeyDown(TimothEKeyCode::KEY_0)) {
-				_tileMapEditorEnabled = !_tileMapEditorEnabled;
-				std::string cameraName = _tileMapEditorEnabled ? "Editor" : "Main Camera";
-				CameraManager::SetCamera(cameraName);
-			}
+		if (Input::IsKeyDown(TimothEKeyCode::KEY_0)) {
+			_tileMapEditorEnabled = !_tileMapEditorEnabled;
+			std::string cameraName = _tileMapEditorEnabled ? "Editor" : "Main Camera";
+			CameraManager::SetCamera(cameraName);
 		}
 
 		if (_tileMapEditorEnabled) {
@@ -178,8 +176,6 @@ void Application::GameLoop()
 		Window::SwapBuffers();
 
 		previousTime = deltaTime;
-
-		SceneManager::GetCurrentScene()->FrameEnd();
 	}
 
 	//saves scene

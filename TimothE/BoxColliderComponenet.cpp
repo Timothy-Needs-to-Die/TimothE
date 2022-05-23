@@ -30,7 +30,6 @@ BoxColliderComponent::BoxColliderComponent(GameObject* parent) : ColliderBase(pa
 BoxColliderComponent::~BoxColliderComponent()
 {
 	delete _boxCollider;
-	ColliderBase::~ColliderBase();
 }
 
 void BoxColliderComponent::OnStart()
@@ -63,6 +62,36 @@ void BoxColliderComponent::OnEnd()
 {
 
 }
+
+bool BoxColliderComponent::Intersects(Rect* box)
+{
+	if (Component::IsEnabled())
+	{
+		if ((_boxCollider->xPos + _boxCollider->width >= box->xPos)
+			&& (box->xPos + _boxCollider->width >= _boxCollider->xPos)
+			&& (_boxCollider->yPos + _boxCollider->height >= box->yPos)
+			&& (box->yPos + _boxCollider->height >= _boxCollider->yPos))
+		{
+			return true;
+		}
+	}
+	return false;
+}
+
+bool BoxColliderComponent::IsPointInside(glm::vec2 point)
+{
+	if (Component::IsEnabled())
+	{
+		if (point.x > _boxCollider->xPos && point.x < _boxCollider->xPos + _boxCollider->width
+			&& point.y > _boxCollider->yPos && point.y < _boxCollider->yPos + _boxCollider->height)
+		{
+			return true;
+		}
+	}
+	return false;
+}
+
+
 
 void BoxColliderComponent::DrawEditorUI()
 {

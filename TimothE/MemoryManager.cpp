@@ -15,7 +15,7 @@ void* operator new(size_t size, Heap* heap)
 
 	//Allocates memory for the heap (handles the linked list)
 	heap->AllocateMemory(pHeader, size);
-
+	
 	//Gets the start of the usable memory block
 	void* pStartMemBlock = pMem + sizeof(Header);
 	return pStartMemBlock;

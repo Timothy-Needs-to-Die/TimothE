@@ -60,7 +60,7 @@ void MovementComponent::CollisionCheck(glm::vec2& newPos)
 				TileData* tile = pTilemap->GetTileAtWorldPos(0, pos);
 
 				ColQuad tileQuad;
-				tileQuad.pos = tile->pos;
+				tileQuad.pos = { tile->colXPos, tile->colYPos };
 				tileQuad.size = glm::vec2(tile->size, tile->size);
 				tileQuad.CalculateMax();
 
