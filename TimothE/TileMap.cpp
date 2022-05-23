@@ -380,6 +380,8 @@ int TileMap::GetTileIndexFromPosition(glm::vec2 pos)
 
 bool TileMap::CollidableAtPosition(const int index)
 {
+	if (index < 0 || index > _tileArr[0].size()) return false;
+
 	for (int layer = 0; layer < _numLayers; layer++) {
 		if (_tileArr[layer][index].collidable) return true;
 	}
