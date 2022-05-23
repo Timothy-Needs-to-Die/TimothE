@@ -3,6 +3,8 @@
 
 bool TileMapEditor::_collidableToggle = false;
 bool TileMapEditor::_showCollisionMap = false;
+bool TileMapEditor::_active = false;
+
 std::string TileMapEditor::_spritesheetName = "spritesheet";
 glm::vec2 TileMapEditor::_mapSizeInUnits = glm::vec2(32.0);
 SelectedTile TileMapEditor::_selectedTile;

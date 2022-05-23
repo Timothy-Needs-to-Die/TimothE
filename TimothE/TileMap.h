@@ -8,9 +8,6 @@
 #include "ResourceManager.h"
 #include "TileData.h"
 
-
-
-
 class TileMap
 {
 public:
@@ -119,12 +116,13 @@ private:
 	//The index of the current tile that the mouse is hovering over
 	int _currentTileIndex;
 
-	//Array/Vector which holds the tiles. //TODO: Make this not magic and link to the _numLayers variable
+	//vector of vectors which holds the tiles on each layer. _tileArr[0][5] refers to tile five of the first layer. 
 	std::vector<std::vector<TileData>> _tileArr;
 
 	//How many tiles are there per unit in the X and Y axis
 	int _tilesPerUnit = 4;
 
+	//The name of the tilemap is used to save and load the map
 	std::string _name;
 };
 

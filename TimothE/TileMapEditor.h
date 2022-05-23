@@ -28,6 +28,7 @@ public:
 
 	// Says if we can see the collision map or not in the editor.
 	static bool _showCollisionMap;
+	static bool _active;
 private:
 	//Name of the spritesheet used for this tilemap.
 	static std::string _spritesheetName;
@@ -40,6 +41,7 @@ private:
 
 	//Should the tile we are placing down be collidable
 	static bool _collidableToggle;
+
 
 
 	

@@ -310,6 +310,8 @@ void TileMap::RenderMap(Camera* cam)
 		}
 	}
 	else {
+		glm::vec4 tileTint = glm::vec4(1.0f, 1.0f, 1.0f,1.0f);
+
 		//Cycle through each layer
 		for (int i = 0; i < _numLayers; i++) {
 			//Cycle through the Y axis
@@ -323,8 +325,16 @@ void TileMap::RenderMap(Camera* cam)
 					//if this tile does not have a sprite then go to next cycle
 					if (_tileArr[i][index]._pSprite == nullptr) continue;
 
+					if (TileMapEditor::_active) {
+						tileTint = glm::vec4(1.0f);
+						if (index == _currentTileIndex) {
+							tileTint.r = 0.0f;
+							tileTint.b = 0.0f;
+						}
+					}
+
 					//Draw this tile
-					Renderer2D::DrawQuad(Quad{ { x,y }, { _gapBetweenTiles,_gapBetweenTiles } }, _tileArr[i][index]._pSprite->GetTexture(), _tileArr[i][index]._pSprite->GetTexCoords());
+					Renderer2D::DrawQuad(Quad{ { x,y }, { _gapBetweenTiles,_gapBetweenTiles } }, _tileArr[i][index]._pSprite->GetTexture(), _tileArr[i][index]._pSprite->GetTexCoords(), tileTint);
 				}
 			}
 		}
