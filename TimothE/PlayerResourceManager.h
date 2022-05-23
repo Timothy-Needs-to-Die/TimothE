@@ -3,6 +3,8 @@
 #include <unordered_map>
 #include "PlayerResource.h"
 #include "ItemResourceType.h"
+#include "ItemConfig.h"
+#include "PurchaseableConfig.h"
 
 
 static class PlayerResourceManager
@@ -14,6 +16,9 @@ public:
 	//Gets the desired resource enabling you to access the functions of PlayerResource
 	static PlayerResource* GetCoreResource(CoreResourceType type);
 	static PlayerResource* GetPlantResource(PlantResourceType type);
+
+
+	static bool CanAfford(const ResourceCost& cost);
 	//static PlayerResource* GetHotbarItem(HotbarItem item);
 
 private:
