@@ -42,10 +42,6 @@ private:
 	//Should the tile we are placing down be collidable
 	static bool _collidableToggle;
 
-
-
-	
-
 	//The tile we want to place down.
 	static SelectedTile _selectedTile;
 	

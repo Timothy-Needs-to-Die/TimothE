@@ -77,6 +77,8 @@ public:
 	void SetCollidableAtLayer(int layer, glm::vec2 pos, bool val);
 	int GetTileIndexFromPosition(glm::vec2 pos);
 
+	std::string GetName() const { return _name; }
+
 private:
 	int _numLayers = 6;
 

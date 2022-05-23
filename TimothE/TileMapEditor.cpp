@@ -78,6 +78,8 @@ void TileMapEditor::EditorUI(TileMap* pTilemap)
 	{
 		ImGui::BeginChild("Tilemap Settings", ImVec2(0, ImGui::GetContentRegionAvail().y * 0.75f));
 
+		ImGui::Text("Currently Editing: %s", pTilemap->GetName());
+
 		ImGui::Text("Layer: ");
 		ImGui::SameLine();
 		ImGui::PushItemWidth(150.0f);

@@ -181,6 +181,8 @@ void TileMap::LoadTileMap()
 
 void TileMap::AddTileAt(unsigned int layer, unsigned int uvX, unsigned int uvY, Camera* cam, SpriteSheet* sp, bool shouldCollide /*= false*/)
 {
+	if (sp == nullptr) return;
+
 	glm::vec2 worldPos = MousePosToTile(cam);
 
 	int index = _mapInTiles.x * (int)(worldPos.y * _tilesPerUnit) + (int)(worldPos.x * _tilesPerUnit);
@@ -263,8 +265,7 @@ void TileMap::RenderMap(Camera* cam)
 	//Calculate the extents of the camera based on the aspect ratio and zoom level. 
 	//Multiplying by 2 stops tiles suddenly being rendered or unrendered. 
 
-	float extents = 5.0f;
-	//float extents = 7.0f;
+	const float extents = 4.0f;
 
 	//Pre-calculate the min and max values of the camera's extents to avoid recalculating them. Optimisation 
 	float xMin = camPos.x - (extents);
@@ -292,9 +293,9 @@ void TileMap::RenderMap(Camera* cam)
 		//Cycle through each layer
 		for (int i = 0; i < _numLayers; i++) {
 			//Cycle through the Y axis
-			for (float y = yMin; y <= yMax; y += _gapBetweenTiles) {
+			for (float y = 0.0f; y <= _mapSizeInUnits.y; y += _gapBetweenTiles) {
 				//Cycle through the X axis
-				for (float x = xMin; x <= xMax; x += _gapBetweenTiles) {
+				for (float x = 0.0f; x <= _mapSizeInUnits.x; x += _gapBetweenTiles) {
 
 					//Get the index of the tile
 					int index = _mapInTiles.x * (int)(y * _tilesPerUnit) + (int)(x * _tilesPerUnit);
