@@ -1,6 +1,7 @@
 #pragma once
-#include "ItemResourceType.h"
+#include "ToolConfig.h"
 #include "PlantResourceType.h"
+#include "ArmourConfig.h"
 
 enum TraderType
 {
@@ -11,17 +12,12 @@ enum TraderType
 	Farmer   
 };
 
-struct TraderInventory {
-	//std::vector<HotbarItem> hotbarItemsToSell;
-	std::vector<PlantResourceType> plantItemsToSell;
-};
-
 
 struct TraderConfig
 {
 	TraderType type;
-	int goldAtLevel[4];
-	TraderInventory  inventory;
+	int goldAtLevel[4] = {100, 200, 300, 400};
+	std::vector<PurchaseableConfig> itemsToSell;
 
 }; 
 

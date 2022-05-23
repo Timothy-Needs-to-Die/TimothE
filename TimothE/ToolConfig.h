@@ -12,6 +12,6 @@ struct ToolConfig : PurchaseableConfig {
 	ToolType type;
 	int currentLevel;
 	int damagePerHit;
-	int townLevelRequired;
+
 };
 

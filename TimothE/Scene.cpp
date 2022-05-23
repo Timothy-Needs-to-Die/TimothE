@@ -337,18 +337,18 @@ std::vector<GameObject*> Scene::FindGameObjectsWithTag(const std::string& tagNam
 
 void Scene::PopulateToolVector()
 {
-	std::vector<std::vector<std::string>> loadedData = CSVReader::RequestDataFromFile("Resources/Data/ItemsConfig.csv");
+	std::vector<std::vector<std::string>> loadedData = CSVReader::RequestDataFromFile("Resources/Data/BlacksmithVendorConfig.csv");
 		for (int i = 0; i < loadedData.size(); i++) {
 			ToolConfig newConfig;
-			newConfig.price = std::stoi(loadedData[i][2]);
-			newConfig.name = loadedData[i][0];
-			newConfig.resourceCost.woodRequired = std::stoi(loadedData[i][3]);
-			newConfig.resourceCost.stoneRequired = std::stoi(loadedData[i][4]);
-			newConfig.resourceCost.metalRequired = std::stoi(loadedData[i][5]);
-			newConfig.resourceCost.coalRequired = std::stoi(loadedData[i][6]);
-			newConfig.type = (ToolType)std::stoi(loadedData[i][11]);
-			newConfig.damagePerHit = std::stoi (loadedData[i][7]);
-			newConfig.townLevelRequired = std::stoi(loadedData[i][10]);
+			newConfig.price = std::stoi(loadedData[i][3]);
+			newConfig.name = loadedData[i][1];
+			newConfig.resourceCost.woodRequired = std::stoi(loadedData[i][4]);
+			newConfig.resourceCost.stoneRequired = std::stoi(loadedData[i][5]);
+			newConfig.resourceCost.metalRequired = std::stoi(loadedData[i][6]);
+			newConfig.resourceCost.coalRequired = std::stoi(loadedData[i][7]);
+			newConfig.type = (ToolType)std::stoi(loadedData[i][10]);
+			newConfig.damagePerHit = std::stoi (loadedData[i][8]);
+			newConfig.townLevelRequired = std::stoi(loadedData[i][0]);
 
 		}
 }

@@ -2,8 +2,11 @@
 #include "Component.h"
 #include "TraderConfig.h"
 #include "ItemConfig.h"
+#include <string>
+#include "ToolConfig.h"
+#include "ArmourConfig.h"
 
-
+class CSVReader;
 class PlayerResourceManager;
 enum PlantResourceType; 
 enum CoreResourceType;
@@ -12,7 +15,7 @@ struct HotbarItem;
 class BaseTrader : Component
 {
 public:
-	BaseTrader(TraderConfig config);
+	BaseTrader(std::string configPath, std::string name);
 	~BaseTrader();
 	
 	COMPONENT_STATIC_TYPE(Trader_Type);
@@ -29,7 +32,7 @@ public:
 	void LevelUpTrader();
 	TraderConfig* GetConfig() { return &_config; }
 
-	void SetTraderConfig(TraderConfig config);
+	void SetTraderConfig(std::string configPath);
 private:
 	void GenerateDailyGoldamount();
 	TraderConfig _config; 

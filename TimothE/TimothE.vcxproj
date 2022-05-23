@@ -82,6 +82,7 @@
   <ItemGroup>
     <ClInclude Include="AIController.h" />
     <ClInclude Include="AIMovementCompnent.h" />
+    <ClInclude Include="ArmourConfig.h" />
     <ClInclude Include="AStar.h" />
     <ClInclude Include="AnimatedSpritesheet.h" />
     <ClInclude Include="Application.h" />

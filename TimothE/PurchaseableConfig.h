@@ -12,6 +12,7 @@ struct PurchaseableConfig : ItemConfig {
 	int price;
 	ResourceCost resourceCost;
 	bool useResourceCost; 
+	int townLevelRequired;
 
 };
 
