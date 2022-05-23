@@ -171,12 +171,12 @@ void Physics::HandleCollision(ColliderBase* c1, ColliderBase* c2 /*= nullptr*/)
 		_collidingBodies.emplace_back(std::make_pair(c1, c2));
 
 		if (c1->IsTrigger()) {
-			if (c2->GetParent() != nullptr) {
+			if (c1->GetParent() != nullptr && c2->GetParent() != nullptr) {
 				c1->GetParent()->OnTriggerEnter(c2);
 			}
 		}
 		if (c2->IsTrigger()) {
-			if (c1->GetParent() != nullptr) {
+			if (c2->GetParent() != nullptr && c1->GetParent() != nullptr) {
 				c2->GetParent()->OnTriggerEnter(c1);
 			}
 		}

@@ -19,6 +19,7 @@ public:
 
 
 	static bool CanAfford(const ResourceCost& cost);
+	static void SpendResources(const ResourceCost& cost);
 	//static PlayerResource* GetHotbarItem(HotbarItem item);
 
 private:
