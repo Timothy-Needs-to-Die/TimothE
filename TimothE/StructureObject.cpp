@@ -5,7 +5,7 @@ StructureObject::StructureObject(std::string name, std::string tag)
 	:  GameObject(name, tag)
 {
 	if (tag == "WALL") {
-		AddComponent(ResourceManager::GetTexture("fish"));
+		AddComponent(ResourceManager::GetTexture("wall"));
 	}
 	else {
 		AddComponent(ResourceManager::GetTexture("lenna"));

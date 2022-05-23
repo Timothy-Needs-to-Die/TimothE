@@ -21,6 +21,7 @@ void Input::SetKey(TimothEKeyCode keycode, TimothEInputState state)
 		return;
 
 	_pKeyArr[keycode] = state;
+
 }
 
 void Input::SetMouseButton(TimothEMouseCode button, TimothEInputState state)

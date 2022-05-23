@@ -17,16 +17,13 @@ TileMap::TileMap(std::string name)
 	: _name(name)
 {
 	_tileArr.resize(_numLayers);
-	//_tileArr = new std::vector<TileData>[_numLayers];
 	SetTileMapSize({ 256.0f, 32.0f });
 
 	_tileSize = glm::vec2(128.0f);
 
 	_gapBetweenTiles = 1.0f / _tilesPerUnit;
 
-	//SetSpriteSheet(ResourceManager::GetSpriteSheet("testSheet"));
 	LoadTileMap();
-
 }
 
 TileMap::~TileMap()
@@ -37,8 +34,6 @@ void TileMap::ClearAllLayers()
 {
 	for (int i = 0; i < _numLayers; i++) {
 		for (int j = 0; j < _mapInTiles.x * _mapInTiles.y; j++) {
-			//_tileArr[i][j]._pSprite = nullptr;
-			//_tileArr[i][j].texIndex = 0;
 			_tileArr[i][j] = TileData();
 		}
 	}
@@ -81,8 +76,6 @@ void TileMap::SaveTilemap() {
 		}
 		file["tiles" + std::to_string(layer)] = tileLayout;
 	}
-
-
 
 	outfile << file;
 }
@@ -238,9 +231,6 @@ glm::vec2 TileMap::MousePosToTile(Camera* cam)
 		convertedPosition.y = _mapSizeInUnits.y - _gapBetweenTiles;
 	}
 
-	//std::cout << "Camera Pos: " << camPos << std::endl;
-	//std::cout << "Mouse Pos: " << mousePos << std::endl;
-	//std::cout << "Converted Pos: " << convertedPosition << std::endl << std::endl;
 
 	return convertedPosition;
 }
