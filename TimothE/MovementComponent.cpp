@@ -31,7 +31,9 @@ void MovementComponent::Move(glm::vec2 moveVec)
 
 	newPos += moveVec * _movementSpeed * (float)Time::GetDeltaTime();
 
-	CollisionCheck(newPos);
+	if (_allowCollisions) {
+		CollisionCheck(newPos);
+	}
 
 
 	transform->SetPosition(newPos);
@@ -146,7 +148,9 @@ void MovementComponent::OnStart()
 
 void MovementComponent::OnUpdate()
 {
-
+	if (_constantlyMove) {
+		Move(_desiredDirection);
+	}
 }
 
 void MovementComponent::OnEnd()

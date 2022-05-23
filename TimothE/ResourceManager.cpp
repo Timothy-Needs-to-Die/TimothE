@@ -35,6 +35,7 @@ void ResourceManager::Init()
 	ResourceManager::InstantiateTexture("small_stone", new Texture2D("Resources/Images/Rock.png"));
 	ResourceManager::InstantiateTexture("small_wood", new Texture2D("Resources/Images/TreeStump.png"));
 	ResourceManager::InstantiateTexture("small_metal", new Texture2D("Resources/Images/Metal.png"));
+	ResourceManager::InstantiateTexture("planks", new Texture2D("Resources/Images/Planks.png"));
 
 	//LOAD SPRITESHEETS
 	ResourceManager::InstantiateSpritesheet("spritesheet", new SpriteSheet(ResourceManager::GetTexture("spritesheet"), 64, 64, "spritesheet"));
@@ -45,13 +46,13 @@ void ResourceManager::Init()
 	ResourceManager::InstantiateSpritesheet("swords", new SpriteSheet(ResourceManager::GetTexture("swords"), 16, 16, "swords"));
 	ResourceManager::InstantiateSpritesheet("axes", new SpriteSheet(ResourceManager::GetTexture("axes"), 16, 16, "axes"));
 	ResourceManager::InstantiateSpritesheet("pickaxes", new SpriteSheet(ResourceManager::GetTexture("pickaxes"), 16, 16, "pickaxes"));
+	ResourceManager::InstantiateSpritesheet("planks", new SpriteSheet(ResourceManager::GetTexture("planks"), 64, 64, "pickaxes"));
 
 	//LOAD SHADERS
 	ResourceManager::InstantiateShader("ui", new Shader("vr_UIShader.vert", "fr_UIShader.frag"));
 	ResourceManager::InstantiateShader("default", new Shader("VertexShader.vert", "FragmentShader.frag"));
 
 	//LOAD SCENES
-	ResourceManager::InstantiateScene("CurrentScene", new Scene("Default"));
 	ResourceManager::InstantiateScene("FarmScene", new FarmScene("FarmScene"));
 	ResourceManager::InstantiateScene("TownScene", new TownScene("TownScene"));
 

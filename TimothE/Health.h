@@ -18,7 +18,7 @@ public:
 
 	void TakeDamage(int val);
 
-private:
+protected:
 	int _currentHealth;
 	int _maxHealth;
 	bool _isDead = false;

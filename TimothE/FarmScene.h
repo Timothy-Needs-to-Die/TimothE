@@ -35,12 +35,14 @@ protected:
 private:
 	GameObject* _pStartButton = nullptr;
 	GameObject* _pWeaponObject = nullptr;
+	GameObject* _pAITester = nullptr;
 
 	SpriteSheet* _pSpritesheet;
 
 	//class WaveController* _pWaveController = nullptr;
 
 	class Player* _pPlayer;
+	class OffensiveStructureObject* _pTower = nullptr;
 
 	//Day* _pDay;
 	bool _timeProgression = true;

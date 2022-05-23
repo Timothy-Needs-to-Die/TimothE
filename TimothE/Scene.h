@@ -23,8 +23,6 @@ public:
 
 		_name = "DefaultScene";
 		_pTilemap = new TileMap("DefaultScene");
-		//Save();
-		InitScene();
 	}
 
 	Scene(std::string name);
@@ -50,6 +48,8 @@ public:
 	virtual void UpdateUI();
 	virtual void UpdateObjects();
 
+	void FrameEnd();
+
 
 
 	void RenderScene(Camera* cam);
@@ -57,11 +57,11 @@ public:
 	//TODO: Implement unloading logic.
 	void Unload() {
 		for (auto& obj : _listOfGameObjects) {
-			delete obj;
-			obj = nullptr;
+			_gameObjectsToRemove.emplace_back(obj);
 		}
-		_listOfGameObjects.clear();
-		_listOfDrawableGameObjects.clear();
+
+		//_listOfGameObjects.clear();
+		//_listOfDrawableGameObjects.clear();
 
 		delete _pTilemap;
 		_pTilemap = nullptr;
@@ -137,6 +137,8 @@ public:
 	void PopulateToolVector();
 	void PopulateSeedVector();
 	void PopulateCropVector();
+	
+
 protected:
 	//Stores the name of the scene
 	std::string _name;
@@ -147,11 +149,6 @@ protected:
 	std::vector<CropConfig> _cropConfigs;
 
 private:
-	//Stores an id for the scene
-	int _id;
-
-	//Stores the next id for the scene
-	static int nextID;
 
 protected:
 	//Stores a vector of game objects. This is refreshed every time a scene loads.

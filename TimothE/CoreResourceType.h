@@ -5,5 +5,6 @@ enum CoreResourceType
 	Wood,
 	Stone,
 	Metal, 
-	Gold
+	Gold,
+	Coal
 };

@@ -72,7 +72,12 @@ void TileMap::SaveTilemap() {
 		{
 			int index = var.texIndex;
 
-			tileLayout += std::to_string(index) + " " + std::to_string((int)var.collidable) + " " + var._pSpritesheet->GetResourceName() + ",";
+			std::string resourceName = "spritesheet";
+			if (var._pSpritesheet != nullptr) {
+				resourceName = var._pSpritesheet->GetResourceName();
+			}
+
+			tileLayout += std::to_string(index) + " " + std::to_string((int)var.collidable) + " " + resourceName + ",";
 		}
 		file["tiles" + std::to_string(layer)] = tileLayout;
 	}
@@ -148,11 +153,6 @@ void TileMap::LoadTileMap()
 				int row = i / _mapInTiles.x;
 				int xIndex = i - (row * _mapInTiles.x);
 
-				if (collidable) {
-					std::cout << "Tile at X: " << xIndex << ", Y: " << row << std::endl;
-				}
-				//int xIndex = 
-
 				float xPos = (float)xIndex * _gapBetweenTiles;
 				float yPos = ((float)row * _gapBetweenTiles);
 				glm::vec2 colPos = glm::vec2(xPos, yPos);
@@ -170,7 +170,7 @@ void TileMap::LoadTileMap()
 				bool collidable = false;
 
 				_tileArr[layer][i].texIndex = index;
-				_tileArr[layer][i]._pSprite = ResourceManager::GetSpriteSheet("testSheet")->GetSpriteAtIndex(0);
+				_tileArr[layer][i]._pSprite = ResourceManager::GetSpriteSheet("spritesheet")->GetSpriteAtIndex(0);
 				_tileArr[layer][i].collidable = collidable;
 
 				int row = i / _mapInTiles.x;
@@ -191,8 +191,6 @@ void TileMap::LoadTileMap()
 
 void TileMap::AddTileAt(unsigned int layer, unsigned int uvX, unsigned int uvY, Camera* cam, SpriteSheet* sp, bool shouldCollide /*= false*/)
 {
-	//if (_pSpritesheet == nullptr) return;
-
 	glm::vec2 worldPos = MousePosToTile(cam);
 
 	int index = _mapInTiles.x * (int)(worldPos.y * _tilesPerUnit) + (int)(worldPos.x * _tilesPerUnit);

@@ -24,23 +24,29 @@ struct ColQuad {
 class Physics
 {
 public:
-	static void SetupScenePhysics();
+	static void AddCollider(ColliderBase* collider);
+	static void RemoveCollider(ColliderBase* collider);
+
 	static bool Intersects(ColQuad& a, ColQuad& b);
 	static bool Intersects(BoxColliderComponent* b1, BoxColliderComponent* b2);
 	static bool Intersects(BoxColliderComponent* b1, glm::vec2 p);
-	
+
 	static bool Intersects(CircleColliderComponent* c1, CircleColliderComponent* c2);
 	static bool Intersects(CircleColliderComponent* c1, BoxColliderComponent* b1);
 	static bool Intersects(CircleColliderComponent* c1, glm::vec2 point);
 
 	static bool Intersects(glm::vec2 p, BoxColliderComponent* b1);
 
+	static void HandleCollision(ColliderBase* c1, ColliderBase* c2);
+	static void HandleNoCollision(ColliderBase* c1, ColliderBase* c2);
+
 	static void UpdateWorld();
+	static void EndFrame();
 
 private:
-	static void HandleCollision(ColliderBase* c1, ColliderBase* c2);
 
-
-	static std::vector<ColliderBase*> colliders;
+	static std::vector<ColliderBase*> _pColliders;
+	static std::vector<ColliderBase*> _pCollidersToRemove;
+	static std::vector<std::pair<ColliderBase*, ColliderBase*>> _collidingBodies;
 };
 

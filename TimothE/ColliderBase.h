@@ -11,7 +11,8 @@ enum ColliderType {
 class ColliderBase : public Component
 {
 public:
-	ColliderBase(GameObject* parent, ColliderType type) : Component(parent), _type(type) {}
+	ColliderBase(GameObject* parent, ColliderType type);
+	~ColliderBase();
 
 	COMPONENT_STATIC_TYPE(Collider)
 
@@ -20,8 +21,12 @@ public:
 
 	ColliderType GetType() const { return _type; }
 
+	float GetScale() const { return _scale; }
+	void SetScale(float val) { _scale = val; }
+
 protected:
 	bool _isTrigger;
+	float _scale = 1.0f;
 
 	ColliderType _type;
 };

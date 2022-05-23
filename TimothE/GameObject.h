@@ -126,6 +126,9 @@ public:
 	virtual void OnTriggerEnter(ColliderBase* other);
 	virtual void OnColliderEnter(ColliderBase* other);
 
+	virtual void OnTriggerExit(ColliderBase* other);
+	virtual void OnColliderExit(ColliderBase* other);
+
 
 private:
 	///////////////////////////////////

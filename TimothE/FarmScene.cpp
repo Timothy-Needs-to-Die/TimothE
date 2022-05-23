@@ -5,6 +5,8 @@
 #include "Player.h"
 #include "ResourceNodeObject.h"
 #include "Wave.h"
+#include "OffensiveStructureObject.h"
+#include "AIMovementCompnent.h"
 
 FarmScene::~FarmScene()
 {
@@ -19,6 +21,11 @@ void FarmScene::UpdateUI()
 void FarmScene::UpdateObjects()
 {
 	Scene::UpdateObjects();
+
+	if (Input::IsKeyDown(KEY_5)) {
+		SceneManager::SetCurrentScene(SceneManager::CreateScene(ResourceManager::GetScene("TownScene")));
+	}
+
 
 	//glm::vec2 forward = _pPlayerObject->GetTransform()->GetForward();
 	//glm::vec2 pos = forward * 0.1f;
@@ -51,24 +58,23 @@ void FarmScene::UpdateObjects()
 	if (Input::IsKeyDown(KEY_G)) {
 		//_pTilemap->AddTileAt(2, 15, 12, CameraManager::CurrentCamera());
 	}
+
+	Physics::UpdateWorld();
 }
 
 void FarmScene::InitScene()
 {
-	_listOfGameObjects.clear();
-	_listOfDrawableGameObjects.clear();
+	Scene::InitScene();
 
 	_pSpritesheet = ResourceManager::GetSpriteSheet("testSheet");
 
 	//_pStartButton = new GameObject("BUTTON", "UI");
 	//_pStartButton->AddComponent(new Button(_pStartButton));
 	//_pStartButton->AddComponent(new BoxColliderComponent(_pStartButton));
-	////_pStartButton->AddComponent(new TextComponent(_pTestObject));
-	//
+	//_pStartButton->AddComponent(new TextComponent(_pTestObject));
 	//_pStartButton->AddComponent(ResourceManager::GetTexture("Button"));
-	//
 	//AddGameObject(_pStartButton);
-	//
+
 	//_pStartButton->GetTransform()->SetPosition(0.0f, 0.0f);
 	//_pStartButton->GetTransform()->SetScale({ 0.2f, 0.2f });
 
@@ -87,7 +93,6 @@ void FarmScene::InitScene()
 	_pPlayer = new Player();
 	AddGameObject(_pPlayer);
 
-	_pTilemap = new TileMap(_name);
 
 	//_pWaveController = new WaveController(this);
 
@@ -101,5 +106,17 @@ void FarmScene::InitScene()
 	farmland = new FarmlandManager("Farmland Manager");
 	AddGameObject(farmland);
 
-	Physics::SetupScenePhysics();
+	OffensiveStructureObject* _pTower = new OffensiveStructureObject("Test Tower");
+	AddGameObject(_pTower);
+
+	_pAITester = new GameObject("AI Test");
+	_pAITester->GetTransform()->SetScale({ 0.25f, 0.25f });
+
+	AIMovementCompnent* mover = _pAITester->AddComponent(new AIMovementCompnent(_pAITester));
+	_pAITester->AddComponent(ResourceManager::GetTexture("fish"));
+	mover->SetAllowCollisions(false);
+
+	mover->SetDestination(glm::vec2(2.0f, 1.5f));
+
+	AddGameObject(_pAITester);
 }
