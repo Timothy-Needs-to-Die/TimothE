@@ -121,17 +121,17 @@ void FarmScene::InitScene()
 
 	AIMovementCompnent* mover = _pAITester->AddComponent(new AIMovementCompnent(_pAITester));
 	_pAITester->AddComponent(ResourceManager::GetTexture("fish"));
-	mover->SetAllowCollisions(true);
+	mover->SetAllowCollisions(false);
 
-	mover->SetDestination(glm::vec2(2.0f, 5.5f));
+	mover->SetDestination(glm::vec2(2.0f, 1.5f));
 
 	AddGameObject(_pAITester);
 
 	AIMovementCompnent* mover2 = _pAITester2->AddComponent(new AIMovementCompnent(_pAITester2));
 	_pAITester2->AddComponent(ResourceManager::GetTexture("fish"));
-	mover2->SetAllowCollisions(true);
+	mover2->SetAllowCollisions(false);
 
-	mover2->SetDestination(glm::vec2(1.0f, 1.5f));
+	mover2->SetDestination(glm::vec2(3.25f, 2.25f));
 
 	AddGameObject(_pAITester2);
 }
