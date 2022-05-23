@@ -1,4 +1,5 @@
 #include "Button.h"
+#include "Physics.h"
 
 Button::Button(GameObject* parent) : Component(parent)
 {
@@ -38,7 +39,7 @@ void Button::OnUpdate()
 	if (Component::IsEnabled())
 	{
 		// Check if the mouse is inside the button
-		if (GetParent()->GetComponent<BoxColliderComponent>()->IsPointInside(Input::GetMousePos()))
+		if (Physics::Intersects(_pParentObject->GetComponent<BoxColliderComponent>(), Input::GetMousePos()))
 		{
 			// If the mouse is inside the button then we are now hovering over the button;
 			_isHovering = true;

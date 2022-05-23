@@ -7,6 +7,7 @@
 #include "Wave.h"
 #include "OffensiveStructureObject.h"
 #include "AIMovementCompnent.h"
+#include "StructureObject.h"
 
 FarmScene::~FarmScene()
 {
@@ -77,7 +78,9 @@ void FarmScene::InitScene()
 
 	//_pStartButton->GetTransform()->SetPosition(0.0f, 0.0f);
 	//_pStartButton->GetTransform()->SetScale({ 0.2f, 0.2f });
-
+	GameObject* pPathFinder = new GameObject("Pathfinder");
+	pPathFinder->AddComponent<AStar>(new AStar(pPathFinder));
+	AddGameObject(pPathFinder);
 
 	_pWeaponObject = new GameObject("Weapon");
 	_pWeaponObject->AddComponent<Texture2D>(ResourceManager::GetTexture("swords"));
@@ -103,20 +106,51 @@ void FarmScene::InitScene()
 	_pWoodNode->GetTransform()->SetPosition(5.0f, 1.0f);
 	AddGameObject(_pWoodNode);
 
+	_pMetalNode = new ResourceNodeObject(Metal);
+	_pMetalNode->GetTransform()->SetPosition(6.0, 1.0f);
+	AddGameObject(_pMetalNode);
+
+	_pStoneNode = new ResourceNodeObject(Stone);
+	_pStoneNode->GetTransform()->SetPosition(7.0, 1.0f);
+	AddGameObject(_pStoneNode);
+
+
+	_pCoalNode = new ResourceNodeObject(Coal);
+	_pCoalNode->GetTransform()->SetPosition(8.0, 1.0f);
+	AddGameObject(_pCoalNode);
+
 	farmland = new FarmlandManager("Farmland Manager");
 	AddGameObject(farmland);
 
-	OffensiveStructureObject* _pTower = new OffensiveStructureObject("Test Tower");
-	AddGameObject(_pTower);
+	//OffensiveStructureObject* _pTower = new OffensiveStructureObject("Test Tower");
+	//AddGameObject(_pTower);
 
 	_pAITester = new GameObject("AI Test");
-	_pAITester->GetTransform()->SetScale({ 0.25f, 0.25f });
+	_pAITester->GetTransform()->SetScale({ 0.25f, 0.25f }); 
+	_pAITester->GetTransform()->SetPosition({ 5.25f, 2.25f });
+	_pAITester2 = new GameObject("AI Test2");
+	_pAITester2->GetTransform()->SetScale({ 0.25f, 0.25f });
+	_pAITester2->GetTransform()->SetPosition({ 5.25f, 5.25f });
 
 	AIMovementCompnent* mover = _pAITester->AddComponent(new AIMovementCompnent(_pAITester));
 	_pAITester->AddComponent(ResourceManager::GetTexture("fish"));
 	mover->SetAllowCollisions(false);
 
-	mover->SetDestination(glm::vec2(2.0f, 1.5f));
+	mover->SetDestination(glm::vec2(7.0f, 1.5f));
 
 	AddGameObject(_pAITester);
+
+	AIMovementCompnent* mover2 = _pAITester2->AddComponent(new AIMovementCompnent(_pAITester2));
+	_pAITester2->AddComponent(ResourceManager::GetTexture("fish"));
+	mover2->SetAllowCollisions(false);
+
+	mover2->SetDestination(glm::vec2(7.25f, 2.25f));
+
+	AddGameObject(_pAITester2);
+}
+
+void FarmScene::AddStructure(StructureObject* object)
+{
+	AddGameObject(object);
+	_pStructures.emplace_back(object);
 }

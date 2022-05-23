@@ -14,37 +14,37 @@
 /// </summary>
 struct Node {
 	//Is this node an obstacle i.e a wall
-	bool isObstacle = false;
+	bool _mIsObstacle = false;
 	//Has this node already been visited 
-	bool isVisited = false;
+	bool _mIsVisited = false;
 
 	//Distance to the end node
-	float globalGoal = FLT_MAX;
+	float _mGlobalGoal = FLT_MAX;
 
 	//Distance to the end node from here
-	float localGoal = FLT_MAX;
+	float _mLocalGoal = FLT_MAX;
 
 	//X and Y position of the node in the map
 	/*int xPos = 0;
 	int yPos = 0;*/
 
-	glm::vec2 pos;
+	glm::vec2 _mPos;
 
 	//A vector containing all of the nodes in the maze level
-	std::vector<Node*> neighborNodes;
+	std::vector<Node*> _mNeighborNodes;
 	//A pointer to the neighbor node that is closest to the start node
-	glm::vec2 parentNode = { ERROR_PATH_POSITION, ERROR_PATH_POSITION };
+	glm::vec2 _mParentNode = { ERROR_PATH_POSITION, ERROR_PATH_POSITION };
 };
 
-class AStar
+class AStar : public Component
 {
 public:
-	//The default constructor for the class
-	AStar() = default;
+	AStar(GameObject* gameObject) : Component(gameObject) {
+		SetType(Types::Pathfinding);
+	}
 
-	//Overriding the default destructor to delete the memory associated with the direction and path lists
 	~AStar();
-
+	COMPONENT_STATIC_TYPE(Pathfinding);
 	/// <summary>
 	/// This function will calculate the shortest path for the maze. Using the A* Pathfinding Algorithm
 	/// </summary>
@@ -52,18 +52,23 @@ public:
 	std::vector<glm::vec2> FindPath(glm::vec2 start, glm::vec2 end);
 
 	void SetMap(TileMap* map);
-
+	std::vector<glm::vec2> processedPath;
 private:
 
-	Node* mEndNode = nullptr;
+	Node* _mEndNode = nullptr;
 
 	//This list contains the directions the player needs to take in the form of Nodes. 
-	std::vector<Node> mPathOfNodes;
+	std::vector<Node> _mPathOfNodes;
 
 	std::vector<Node> _mMapNodes;
-	float width;
-	float height;
-	float tilesPerUnit;
+	float _mWidth;
+	float _mHeight;
+	float _mTilesPerUnit;
+
+	// Inherited via Component
+	virtual void OnStart() override;
+	virtual void OnUpdate() override;
+	virtual void OnEnd() override;
 };
 
 
