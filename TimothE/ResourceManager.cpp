@@ -28,6 +28,8 @@ void ResourceManager::Init()
 	ResourceManager::InstantiateTexture("roguespritesheet", new Texture2D("Resources/Images/Spritesheets/RogueSprites.png", true));
 	ResourceManager::InstantiateTexture("itemspritesheet", new Texture2D("Resources/Images/Spritesheets/ItemsSheet.png", true));
 	ResourceManager::InstantiateTexture("animalspritesheet", new Texture2D("Resources/Images/Spritesheets/AnimalSheet.png", true));
+	ResourceManager::InstantiateTexture("extraspritesheet", new Texture2D("Resources/Images/Spritesheets/ExtraSpriteSheet.png", true));
+	ResourceManager::InstantiateTexture("buildspritesheet", new Texture2D("Resources/Images/Spritesheets/BuildingSheet.png", true));
 	ResourceManager::InstantiateTexture("Button", new Texture2D("Resources/Images/ButtonTest.png"));
 	ResourceManager::InstantiateTexture("swords", new Texture2D("Resources/Images/swords.png", true));
 	ResourceManager::InstantiateTexture("axes", new Texture2D("Resources/Images/axes.png"));
@@ -43,6 +45,8 @@ void ResourceManager::Init()
 	ResourceManager::InstantiateSpritesheet("itemspritesheet", new SpriteSheet(ResourceManager::GetTexture("itemspritesheet"), 128, 128, "itemspritesheet"));
 	ResourceManager::InstantiateSpritesheet("roguespritesheet", new SpriteSheet(ResourceManager::GetTexture("roguespritesheet"), 17, 17, "roguespritesheet"));
 	ResourceManager::InstantiateSpritesheet("animalspritesheet", new SpriteSheet(ResourceManager::GetTexture("animalspritesheet"), 32, 32, "animalspritesheet"));
+	ResourceManager::InstantiateSpritesheet("extraspritesheet", new SpriteSheet(ResourceManager::GetTexture("extraspritesheet"), 15, 15, "extraspritesheet"));
+	ResourceManager::InstantiateSpritesheet("buildspritesheet", new SpriteSheet(ResourceManager::GetTexture("buildspritesheet"), 32, 32, "buildspritesheet"));
 	ResourceManager::InstantiateSpritesheet("swords", new SpriteSheet(ResourceManager::GetTexture("swords"), 16, 16, "swords"));
 	ResourceManager::InstantiateSpritesheet("axes", new SpriteSheet(ResourceManager::GetTexture("axes"), 16, 16, "axes"));
 	ResourceManager::InstantiateSpritesheet("pickaxes", new SpriteSheet(ResourceManager::GetTexture("pickaxes"), 16, 16, "pickaxes"));
