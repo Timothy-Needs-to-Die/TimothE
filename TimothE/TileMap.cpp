@@ -293,9 +293,9 @@ void TileMap::RenderMap(Camera* cam)
 		//Cycle through each layer
 		for (int i = 0; i < _numLayers; i++) {
 			//Cycle through the Y axis
-			for (float y = 0.0f; y <= _mapSizeInUnits.y; y += _gapBetweenTiles) {
+			for (float y = 0.0f; y < _mapSizeInUnits.y; y += _gapBetweenTiles) {
 				//Cycle through the X axis
-				for (float x = 0.0f; x <= _mapSizeInUnits.x; x += _gapBetweenTiles) {
+				for (float x = 0.0f; x < _mapSizeInUnits.x; x += _gapBetweenTiles) {
 
 					//Get the index of the tile
 					int index = _mapInTiles.x * (int)(y * _tilesPerUnit) + (int)(x * _tilesPerUnit);
@@ -317,9 +317,9 @@ void TileMap::RenderMap(Camera* cam)
 		//Cycle through each layer
 		for (int i = 0; i < _numLayers; i++) {
 			//Cycle through the Y axis
-			for (float y = 0.0f; y <= _mapSizeInUnits.y; y += _gapBetweenTiles) {
+			for (float y = 0.0f; y < _mapSizeInUnits.y; y += _gapBetweenTiles) {
 				//Cycle through the X axis
-				for (float x = 0.0f; x <= _mapSizeInUnits.x; x += _gapBetweenTiles) {
+				for (float x = 0.0f; x < _mapSizeInUnits.x; x += _gapBetweenTiles) {
 					if (x < xMin || x > xMax || y < yMin || y > yMax) continue;
 
 
