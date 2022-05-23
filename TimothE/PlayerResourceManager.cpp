@@ -38,14 +38,6 @@ bool PlayerResourceManager::CanAfford(const ResourceCost& cost)
 	return false;
 }
 
-void PlayerResourceManager::SpendResources(const ResourceCost& cost)
-{
-	_coreResourceMap[Wood].SpendResource(cost.woodRequired);
-	_coreResourceMap[Metal].SpendResource(cost.metalRequired);
-	_coreResourceMap[Stone].SpendResource(cost.stoneRequired);
-	_coreResourceMap[Coal].SpendResource(cost.coalRequired);
-}
-
 //PlayerResource* PlayerResourceManager::GetHotbarItem(HotbarItem item)
 //{
 //	return &_hotbarItemMap[item];

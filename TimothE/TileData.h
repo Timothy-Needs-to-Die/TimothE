@@ -9,8 +9,8 @@ struct TileData {
 
 	bool collidable;
 	float size;
-
-	glm::vec2 pos;
+	float colXPos;
+	float colYPos;
 
 	Sprite* _pSprite;
 	SpriteSheet* _pSpritesheet;

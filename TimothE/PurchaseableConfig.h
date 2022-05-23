@@ -2,10 +2,10 @@
 #include "ItemConfig.h"
 
 struct ResourceCost {
-	int woodRequired = 0;
-	int stoneRequired = 0;
-	int metalRequired = 0;
-	int coalRequired = 0;
+	int woodRequired;
+	int stoneRequired;
+	int metalRequired;
+	int coalRequired;
 };
 
 struct PurchaseableConfig : ItemConfig {

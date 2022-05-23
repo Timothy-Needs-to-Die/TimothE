@@ -1,10 +1,10 @@
 #include "StructureHealth.h"
 
 
-StructureHealth::StructureHealth(GameObject* owner, int health)
+StructureHealth::StructureHealth(GameObject* owner)
 	: Health(owner)
 {
-	SetMaxHealth(health);
+
 }
 
 void StructureHealth::OnDamage()
