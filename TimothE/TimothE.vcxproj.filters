@@ -398,6 +398,7 @@
     <ClInclude Include="ArmourConfig.h" />
     <ClInclude Include="SeedConfig.h" />
     <ClInclude Include="WaveManager.h" />
+    <ClInclude Include="InventoryScreen.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="AIController.cpp">
@@ -646,5 +647,6 @@
     <ClCompile Include="ProjectileObject.cpp" />
     <ClCompile Include="EnemyHealth.cpp" />
     <ClCompile Include="WaveManager.cpp" />
+    <ClCompile Include="InventoryScreen.cpp" />
   </ItemGroup>
 </Project>

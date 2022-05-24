@@ -5,6 +5,7 @@
 #include "MovementComponent.h"
 #include "Fighter.h"
 #include "Health.h"
+#include "InventoryScreen.h"
 
 #include "ResourceNode.h"
 #include "FarmlandManager.h"
@@ -42,6 +43,7 @@ private:
 	GameObject* _pAITester = nullptr;
 	GameObject* _pAITester2 = nullptr;
 	GameObject* _pAStar = nullptr;
+	InventoryScreen* _pInventoryScreen;
 
 	SpriteSheet* _pSpritesheet;
 
@@ -61,6 +63,7 @@ private:
 	//Farmland
 	FarmlandManager* farmland;
 	bool farmKeyPressed = false;
+	bool _inventoryKeyPressed = false;
 
 	std::vector<class StructureObject*> _pStructures;
 };
