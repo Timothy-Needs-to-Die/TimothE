@@ -82,6 +82,7 @@
   <ItemGroup>
     <ClInclude Include="AIController.h" />
     <ClInclude Include="AIMovementCompnent.h" />
+    <ClInclude Include="ArmourConfig.h" />
     <ClInclude Include="AStar.h" />
     <ClInclude Include="AnimatedSpritesheet.h" />
     <ClInclude Include="Application.h" />
@@ -165,6 +166,7 @@
     <ClInclude Include="ResourceManager.h" />
     <ClInclude Include="ResourceNode.h" />
     <ClInclude Include="ResourceNodeObject.h" />
+    <ClInclude Include="SeedConfig.h" />
     <ClInclude Include="SOIL\SOIL2.h" />
     <ClInclude Include="SOIL\image_DXT.h" />
     <ClInclude Include="SOIL\image_helper.h" />

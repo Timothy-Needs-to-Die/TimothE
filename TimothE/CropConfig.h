@@ -8,11 +8,11 @@ enum CropType {
 	Apple
 };
 
-struct SeedConfig : SellableConfig {
-	CropType type;
-	int price;
-	int growthRate;
-};
+//struct SeedConfig : PurchaseableConfig {
+//	CropType type;
+//	int price;
+//	int growthRate;
+//};
 
 struct CropConfig : SellableConfig {
 	CropType type;

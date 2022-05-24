@@ -1,6 +1,6 @@
 #pragma once
 #include "ItemConfig.h"
-
+#include <string>
 struct ResourceCost {
 	int woodRequired = 0;
 	int stoneRequired = 0;
@@ -9,9 +9,11 @@ struct ResourceCost {
 };
 
 struct PurchaseableConfig : ItemConfig {
+	std::string name;
 	int price;
 	ResourceCost resourceCost;
 	bool useResourceCost; 
+	int townLevelRequired;
 
 };
 
