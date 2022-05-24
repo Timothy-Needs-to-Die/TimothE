@@ -59,6 +59,7 @@ private:
 	//Farmland
 	FarmlandManager* farmland;
 	bool farmKeyPressed = false;
+	bool _inventoryKeyPressed = false;
 
 	std::vector<class StructureObject*> _pStructures;
 };

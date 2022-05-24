@@ -60,13 +60,23 @@ void FarmScene::UpdateObjects()
 		//_pTilemap->AddTileAt(2, 15, 12, CameraManager::CurrentCamera());
 	}
 
+	if (Input::IsKeyUp(KEY_I)) {
+		_inventoryKeyPressed = false;
+	}
+
 	if (Input::IsKeyDown(KEY_I)) {
+		if (_inventoryKeyPressed) return;
+
+		_inventoryKeyPressed = true;
+
+		bool current = _pInventoryScreen->GetAllActive();
+
+		_pInventoryScreen->SetAllActive(!current);
+		_pInventoryScreen->OnUpdate();
 		//if (_pInventoryScreen == nullptr)
 		//{
-			_pInventoryScreen = new InventoryScreen();
-			_pInventoryScreen->GetTransform()->SetPosition(0.0f, 0.0f);
-			_pInventoryScreen->GetTransform()->SetScale({ 0.1f, 0.1f });
-			AddGameObject(_pInventoryScreen);
+			//_pInventoryScreen->GetTransform()->SetPosition(50.0f, 50.0f);
+			//_pInventoryScreen->GetTransform()->SetScale({ 0.25f, 0.25f });
 		//}
 	}
 
@@ -76,6 +86,10 @@ void FarmScene::UpdateObjects()
 void FarmScene::InitScene()
 {
 	Scene::InitScene();
+
+	_pInventoryScreen = new InventoryScreen();
+	AddGameObject(_pInventoryScreen);
+	_pInventoryScreen->SetAllActive(false);
 
 	_pSpritesheet = ResourceManager::GetSpriteSheet("testSheet");
 

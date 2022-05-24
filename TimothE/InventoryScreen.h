@@ -7,8 +7,19 @@ class InventoryScreen : public GameObject
 public:
 	InventoryScreen(string name = "InventoryScreen", string tag = "UI");
 
-private:
+	void OnUpdate();
+
+	void SetAllActive(bool val);
+	bool GetAllActive();
+
 	
+
+private:
+	GameObject* _pPanel;
+	GameObject* _pInventoryTitle;
 	GameObject* _pInventoryBody;
+	//GameObject* _pInventoryTitle;
+
+	void Display();
 };
 
