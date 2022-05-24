@@ -157,8 +157,15 @@ void FarmScene::AddStructure(StructureObject* object)
 
 void FarmScene::RemoveStructure(class StructureObject* object)
 {
-	std::vector<StructureObject*>::iterator it = std::find(_pStructures.begin(), _pStructures.end(), object);
+	for (int i = 0; i < _pStructures.size(); ++i) {
+		StructureObject* pObject = _pStructures[i];
 
+		if (pObject != object) continue;
+
+		_pTilemap->SetCollidableAtLayer(5, pObject->GetTransform()->GetPosition(), false);
+	}
+
+	std::vector<StructureObject*>::iterator it = std::find(_pStructures.begin(), _pStructures.end(), object);
 	if (it != _pStructures.end()) {
 		_pStructures.erase(it);
 		RemoveGameObject(object);

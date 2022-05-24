@@ -179,7 +179,7 @@ void PlayerInputComponent::BuildControls()
 
 			if (pos != tilePos) continue;
 
-			pTilemap->SetCollidableAtLayer(5, tilePos, false);
+			//pTilemap->SetCollidableAtLayer(5, tilePos, false);
 
 			pFarmScene->RemoveStructure(structuresInScene[i]);
 
