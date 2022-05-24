@@ -12,7 +12,7 @@ class AIMovementCompnent : public MovementComponent
 public:
 
 
-	AIMovementCompnent(GameObject* owner);
+	AIMovementCompnent(GameObject* owner, AStar* pAStar);
 
 	void SetDestination(glm::vec2);
 	virtual void OnUpdate() override;

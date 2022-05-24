@@ -1,10 +1,10 @@
 #include "AIMovementCompnent.h"
 
 //constructor
-AIMovementCompnent::AIMovementCompnent(GameObject* owner)
+AIMovementCompnent::AIMovementCompnent(GameObject* owner, AStar* pAStar)
 	: MovementComponent(owner)
 {
-	_pAStar = SceneManager::GetCurrentScene()->FindObjectOfType<AStar>();
+	_pAStar = pAStar;
 	//_mAStar = new AStar();
 	SetMovementSpeed(0.5f); //TODO: Get from config
 }
@@ -18,8 +18,9 @@ void AIMovementCompnent::SetDestination(glm::vec2 targetPos)
 	_mHasDestination = true;
 
 	//sets map and finds path
-	_pAStar->SetMap(SceneManager::GetCurrentScene()->GetTileMap());
-	std::vector<glm::vec2> tempPath = _pAStar->FindPath(GetParent()->GetTransform()->GetPosition(), targetPos);
+	
+	glm::vec2 tilePos = SceneManager::GetCurrentScene()->GetTileMap()->GetTileAtWorldPos(0, GetParent()->GetTransform()->GetPosition())->pos;
+	std::vector<glm::vec2> tempPath = _pAStar->FindPath(tilePos, targetPos);
 
 	//set path
 	int size = tempPath.size();

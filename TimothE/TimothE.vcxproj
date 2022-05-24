@@ -149,6 +149,7 @@
     <ClInclude Include="ItemResourceType.h" />
     <ClInclude Include="MemoryManager.h" />
     <ClInclude Include="MovementComponent.h" />
+    <ClInclude Include="NodeHeap.h" />
     <ClInclude Include="OffensiveStructureObject.h" />
     <ClInclude Include="Particle.h" />
     <ClInclude Include="ParticleSystem.h" />
@@ -297,6 +298,9 @@
     <ClCompile Include="Transform.cpp" />
     <ClCompile Include="Wave.cpp" />
     <ClCompile Include="pch.cpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Node.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

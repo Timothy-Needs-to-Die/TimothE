@@ -57,6 +57,11 @@ void FarmScene::UpdateObjects()
 	//	}
 	//}
 
+	if (Input::IsKeyDown(KEY_T)) {
+		AIMovementCompnent* mover = _pAITester->GetComponent<AIMovementCompnent>();
+		mover->SetDestination(glm::vec2(5.0f, 2.0f));
+	}
+
 	if (Input::IsKeyDown(KEY_G)) {
 		//_pTilemap->AddTileAt(2, 15, 12, CameraManager::CurrentCamera());
 	}
@@ -97,6 +102,9 @@ void FarmScene::InitScene()
 	_pPlayer = new Player();
 	AddGameObject(_pPlayer);
 
+	_pAStar = new GameObject("Pather");
+	AStar* path = _pAStar->AddComponent(new AStar(_pAStar));
+	path->SetMap(SceneManager::GetCurrentScene()->GetTileMap());
 
 	//_pWaveController = new WaveController(this);
 
@@ -133,7 +141,7 @@ void FarmScene::InitScene()
 	_pAITester2->GetTransform()->SetScale({ 0.25f, 0.25f });
 	_pAITester2->GetTransform()->SetPosition({ 5.25f, 5.25f });
 
-	AIMovementCompnent* mover = _pAITester->AddComponent(new AIMovementCompnent(_pAITester));
+	AIMovementCompnent* mover = _pAITester->AddComponent(new AIMovementCompnent(_pAITester, path));
 	_pAITester->AddComponent(ResourceManager::GetTexture("fish"));
 	//AIController* pAI1 = _pAITester->AddComponent(new AIController(_pAITester));
 	//pAI1->SetTargetFromTag("PLAYER", "TOWER", "WALL");
@@ -143,10 +151,10 @@ void FarmScene::InitScene()
 
 	AddGameObject(_pAITester);
 
-	AIMovementCompnent* mover2 = _pAITester2->AddComponent(new AIMovementCompnent(_pAITester2));
+	AIMovementCompnent* mover2 = _pAITester2->AddComponent(new AIMovementCompnent(_pAITester2, path));
 	_pAITester2->AddComponent(ResourceManager::GetTexture("fish"));
-	AIController* pAI2 = _pAITester2->AddComponent(new AIController(_pAITester2));
-	pAI2->SetTargetFromTag("WALL", "TOWER", "PLAYER");
+	//AIController* pAI2 = _pAITester2->AddComponent(new AIController(_pAITester2));
+	//pAI2->SetTargetFromTag("WALL", "TOWER", "PLAYER");
 
 	mover2->SetAllowCollisions(false);
 

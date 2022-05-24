@@ -1,16 +1,27 @@
 #include "AStar.h"
 
 
+
 AStar::~AStar()
 {
 	//clears the nodes list
 	_mPathOfNodes.clear();
 }
 
+struct node_greater_than {
+	bool operator()(Node const* a, Node const* b) const {
+		return a->_mGlobalGoal > b->_mGlobalGoal;
+	}
+};
+
 std::vector<glm::vec2> AStar::FindPath(glm::vec2 start, glm::vec2 end)
 {
 	//This list will contain the untested nodes that will be used to cycle through each node in the map 
-	std::list<Node*> untestedNodes;
+	std::vector<Node*> untestedNodes;
+
+	//for (int i = 0; i < _mMapNodes.size(); ++i) {
+	//	_mMapNodes[i]._mIsVisited = false;
+	//}
 
 	Node* currentNode = new Node();
 	currentNode->_mPos = start;
@@ -35,16 +46,20 @@ std::vector<glm::vec2> AStar::FindPath(glm::vec2 start, glm::vec2 end)
 		This is done as lists do not have iterative access meaning it is harder to grab an
 		element at a specified index.
 		*/
-		untestedNodes.sort(
-			[](const Node* nodeA, const Node* nodeB) {
-				return nodeA->_mGlobalGoal < nodeB->_mGlobalGoal;
-			});
+
+		//untestedNodes.sort(
+		//	[](const Node* nodeA, const Node* nodeB) {
+		//		return nodeA->_mGlobalGoal < nodeB->_mGlobalGoal;
+		//	});
+
+		//std::make_heap(untestedNodes.begin(), untestedNodes.end(), node_greater_than());
+
 
 		//The elements at the start of the list may have already been visited, meaning that testing them would use unnecessary resources.
 		while (!untestedNodes.empty() && untestedNodes.front()->_mIsVisited)
 		{
 			//remove the front node if it has been visited
-			untestedNodes.pop_front();
+			untestedNodes.erase(untestedNodes.begin());
 		}
 
 		//if there are no nodes available then break out of the loop
@@ -109,9 +124,9 @@ std::vector<glm::vec2> AStar::FindPath(glm::vec2 start, glm::vec2 end)
 			}
 
 			//adds the node to the path of nodes
-			//auto it = std::find(mPathOfNodes.begin(), mPathOfNodes.end(), previousNode);
-			//if (it == mPathOfNodes.end()) {
-			_mPathOfNodes.push_back(previousNode);
+			//auto it = std::find(_mPathOfNodes.begin(), _mPathOfNodes.end(), previousNode);
+			//if (it == _mPathOfNodes.end()) {
+				_mPathOfNodes.push_back(previousNode);
 			//}
 
 			//Sets the previous node to the parent of this node
