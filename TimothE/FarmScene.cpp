@@ -143,8 +143,8 @@ void FarmScene::InitScene()
 
 	AIMovementCompnent* mover = _pAITester->AddComponent(new AIMovementCompnent(_pAITester, path));
 	_pAITester->AddComponent(ResourceManager::GetTexture("fish"));
-	//AIController* pAI1 = _pAITester->AddComponent(new AIController(_pAITester));
-	//pAI1->SetTargetFromTag("PLAYER", "TOWER", "WALL");
+	AIController* pAI1 = _pAITester->AddComponent(new AIController(_pAITester));
+	pAI1->SetTargetTags("PLAYER", "TOWER", "WALL");
 	mover->SetAllowCollisions(false);
 
 	mover->SetDestination(glm::vec2(0.0f, 0.0f));

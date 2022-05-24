@@ -18,38 +18,24 @@ public:
 
 	COMPONENT_STATIC_TYPE(AIControllerType);
 
-
-	void Move(glm::vec2 moveVec);
-
-	void CollisionCheck(glm::vec2& newPos);
-
-	void DecideDirection(glm::vec2& moveVec);
-
-	void SetMovementSpeed(const float speed) {
-		_mMovementSpeed = speed;
-	}
-	float GetMovementSpeed() const { return _mMovementSpeed; }
-
-	bool IsMoving() const { return _mMoving; }
-
-
 	void OnStart() override;
 	void OnUpdate() override;
 	void OnEnd() override;
 
-	void SetTargetFromTag(string tagA, string tagB, string tagC);
+	void SetTargetTags(std::string tagA, std::string tagB, std::string tagC);
 	void FindTarget();
 	void SetTarget(GameObject* target);
 	void AttackedBy(GameObject* instigator);
 
 private:
-	float _mMovementSpeed = 3.0f;
-	bool _mMoving = true;
-
 	class Fighter* _pFighter = nullptr;
 	GameObject* _pCurrentTarget = nullptr;
 	string _mTargetArr[3];
-	Player* _mPlayer;
+	Player* _pPlayer;
 	GameObject* FindClosestTargetFromList(std::vector<GameObject*> targets);
+
+	class Transform* _pPlayerTransform = nullptr;
+	class Transform* _pOwnerTransform = nullptr;
+	class Transform* _pTargetTransform = nullptr;
 };
 

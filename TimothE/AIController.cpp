@@ -6,19 +6,13 @@
 
 AIController::AIController(GameObject* gameObject) : Component(gameObject)
 {
-	_mMoving = false;
 	SetType(Types::AIControllerType);
 	_pFighter = _pParentObject->AddComponent(new Fighter(_pParentObject));
-	_mPlayer = dynamic_cast<Player*>(SceneManager::GetCurrentScene()->GetGameObjectByName("Player"));
+	_pPlayer = dynamic_cast<Player*>(SceneManager::GetCurrentScene()->GetGameObjectByName("Player"));
+
+	_pPlayerTransform = _pPlayer->GetTransform();
+	_pOwnerTransform = _pParentObject->GetTransform();
 }
-
-void AIController::Move(glm::vec2 moveToVec)
-{
-	Transform* transform = _pParentObject->GetTransform();
-	transform->SetPosition(moveToVec);
-}
-
-
 
 void AIController::OnStart()
 {
@@ -27,11 +21,11 @@ void AIController::OnStart()
 
 void AIController::OnUpdate()
 {
-	float distToPlayer = glm::distance(_pParentObject->GetTransform()->GetPosition(), _mPlayer->GetTransform()->GetPosition()); //ai position
+	float distToPlayer = glm::distance(_pOwnerTransform->GetPosition(), _pPlayerTransform->GetPosition()); //ai position
 
 	if (distToPlayer < 2.5) //config.tolerance
 	{
-		_pCurrentTarget = _mPlayer;
+		_pCurrentTarget = _pPlayer;
 	}
 
 	if (_pCurrentTarget == nullptr || _pCurrentTarget->GetParent() == nullptr)
@@ -39,9 +33,9 @@ void AIController::OnUpdate()
 		FindTarget();
 	}
 
-	float distToTarget = glm::distance(_pParentObject->GetTransform()->GetPosition(), _pCurrentTarget->GetTransform()->GetPosition());//ai pos
+	float distToTarget = glm::distance(_pOwnerTransform->GetPosition(), _pCurrentTarget->GetTransform()->GetPosition());//ai pos
 
-	if (distToTarget < 0.3)//config.attackRange
+	if (distToTarget < 0.3) //config.attackRange
 	{
 		_pFighter->Attack(_pParentObject);
 		return;
@@ -53,7 +47,7 @@ void AIController::OnEnd()
 
 }
 
-void AIController::SetTargetFromTag(string tagA, string tagB, string tagC)
+void AIController::SetTargetTags(std::string tagA, std::string tagB, std::string tagC)
 {
 	_mTargetArr[0] = tagA;
 	_mTargetArr[1] = tagB;
@@ -62,54 +56,56 @@ void AIController::SetTargetFromTag(string tagA, string tagB, string tagC)
 
 void AIController::FindTarget()
 {
-	GameObject* targetObj = nullptr;
 	std::vector<GameObject*> aTargets = SceneManager::GetCurrentScene()->FindGameObjectsWithTag(_mTargetArr[0]);
-	std::vector<GameObject*> bTargets = SceneManager::GetCurrentScene()->FindGameObjectsWithTag(_mTargetArr[1]);
-	std::vector<GameObject*> cTargets = SceneManager::GetCurrentScene()->FindGameObjectsWithTag(_mTargetArr[2]);
 	if (aTargets.size() != 0)
 	{
 		SetTarget( FindClosestTargetFromList(aTargets));
 		return;
 	}
-	else if (bTargets.size() != 0)
+
+
+	std::vector<GameObject*> bTargets = SceneManager::GetCurrentScene()->FindGameObjectsWithTag(_mTargetArr[1]);
+	if (bTargets.size() != 0)
 	{
 		SetTarget(FindClosestTargetFromList(bTargets));
 		return;
 	}
-	else if (cTargets.size() != 0)
+
+	std::vector<GameObject*> cTargets = SceneManager::GetCurrentScene()->FindGameObjectsWithTag(_mTargetArr[2]);
+	if (cTargets.size() != 0)
 	{
 		SetTarget(FindClosestTargetFromList(cTargets));
 		return;
 	}
 
-	if (targetObj != nullptr)
-	{
-		return;
-	}
-
-	float distToPlayer = glm::distance(_pParentObject->GetTransform()->GetPosition(), _mPlayer->GetTransform()->GetPosition());
-	float distToBed = glm::distance(_pParentObject->GetTransform()->GetPosition(), _mPlayer->GetTransform()->GetPosition()); //change player pos to bed pos
+	float distToPlayer = glm::distance(_pOwnerTransform->GetPosition(), _pPlayerTransform->GetPosition());
+	float distToBed = 1000.0f;  //TODO: change to getting distance to bed object
 	if (distToPlayer < distToBed)
 	{
-		SetTarget(_mPlayer);
+		SetTarget(_pPlayer);
 	}
 	else
 	{
-		SetTarget(_mPlayer); // change to bed
+		//TODO: Set Target Bed
 	}
 }
 
 void AIController::SetTarget(GameObject* target)
 {
 	_pCurrentTarget = target;
-	_pParentObject->GetComponent<AIMovementCompnent>()->SetDestination(_pCurrentTarget->GetTransform()->GetPosition());
+	_pTargetTransform = _pCurrentTarget->GetTransform();
+
+	float mag = glm::length(_pTargetTransform->GetPosition() + _pOwnerTransform->GetPosition());
+	if (mag > 1.0f) {
+		_pParentObject->GetComponent<AIMovementCompnent>()->SetDestination(_pTargetTransform->GetPosition());
+	}
 }
 
 void AIController::AttackedBy(GameObject* instigator)
 {
 	if (instigator->GetTag() == "PLAYER")
 	{	
-		SetTarget(_mPlayer);
+		SetTarget(_pPlayer);
 		return;
 	}
 	if (instigator->GetTag() == "TOWER")
@@ -130,7 +126,7 @@ GameObject* AIController::FindClosestTargetFromList(std::vector<GameObject*> tar
 	float closestDistance = FLT_MAX;
 	for each (GameObject* go in targets)
 	{
-		float dist = glm::distance(this->GetParent()->GetTransform()->GetPosition(), go->GetTransform()->GetPosition());
+		float dist = glm::distance(_pOwnerTransform->GetPosition(), go->GetTransform()->GetPosition());
 		if (dist < closestDistance)
 		{
 			closestDistance = dist;

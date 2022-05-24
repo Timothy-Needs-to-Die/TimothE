@@ -19,6 +19,7 @@ std::vector<glm::vec2> AStar::FindPath(glm::vec2 start, glm::vec2 end)
 	//This list will contain the untested nodes that will be used to cycle through each node in the map 
 	std::vector<Node*> untestedNodes;
 
+	//Reset all nodes on map.
 	for (int i = 0; i < _mMapNodes.size(); ++i) {
 		_mMapNodes[i]._mIsVisited = false;
 		_mMapNodes[i]._mParentNode = glm::vec2(-1);
@@ -30,33 +31,16 @@ std::vector<glm::vec2> AStar::FindPath(glm::vec2 start, glm::vec2 end)
 	currentNode->_mPos = start;
 	currentNode->_mLocalGoal = 0.0f;
 	currentNode->_mGlobalGoal = glm::distance(currentNode->_mPos, end);
-	//currentNode->isObstacle = mStartNode->isObstacle;
-	//currentNode->isVisited = mStartNode->isVisited;
-	//(previousNode._mParentNode.y * _mTilesPerUnit)* _mWidth + (previousNode._mParentNode.x * _mTilesPerUnit)
 	currentNode->_mNeighborNodes = _mMapNodes.at((start.y * _mTilesPerUnit) * _mWidth + (start.x * _mTilesPerUnit))._mNeighborNodes;
 
-	//currentNode->parentNode = { 0, 0 };
-
-
 	untestedNodes.push_back(currentNode);
-
 
 	bool pathFound = false;
 
 	while (!untestedNodes.empty())
 	{
-		/*Sorts the list by order of distance in ascending order.
-		This is done as lists do not have iterative access meaning it is harder to grab an
-		element at a specified index.
-		*/
-
-		//untestedNodes.sort(
-		//	[](const Node* nodeA, const Node* nodeB) {
-		//		return nodeA->_mGlobalGoal < nodeB->_mGlobalGoal;
-		//	});
-
+		//Converts the untested nodes into a binary heap
 		std::make_heap(untestedNodes.begin(), untestedNodes.end(), node_greater_than());
-
 
 		//The elements at the start of the list may have already been visited, meaning that testing them would use unnecessary resources.
 		while (!untestedNodes.empty() && untestedNodes.front()->_mIsVisited)

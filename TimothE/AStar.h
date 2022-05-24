@@ -20,6 +20,7 @@ public:
 
 	~AStar();
 	COMPONENT_STATIC_TYPE(Pathfinding);
+
 	/// <summary>
 	/// This function will calculate the shortest path for the maze. Using the A* Pathfinding Algorithm
 	/// </summary>
