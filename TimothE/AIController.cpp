@@ -42,7 +42,7 @@ void AIController::OnUpdate()
 
 	if (distToTarget < 0.3)//config.attackRange
 	{
-		_pFighter->Attack();
+		_pFighter->Attack(_pParentObject);
 		return;
 	}
 }

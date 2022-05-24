@@ -6,7 +6,7 @@
 #include "GameObject.h"
 #include "Transform.h"
 
-void Fighter::Attack()
+void Fighter::Attack(GameObject* instigator)
 {
 	if (!_canAttack) return;
 	_canAttack = false;
@@ -56,7 +56,7 @@ void Fighter::Attack()
 		//std::cout << "Dot: " << dot << std::endl;
 
 		if (dot >= 0.0f) {
-			obj->TakeDamage(_weaponConfig.damage);
+			obj->TakeDamage(_weaponConfig.damage, instigator);
 			//std::cout << "Would hit!" << std::endl;
 		}
 		else {

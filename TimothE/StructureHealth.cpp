@@ -7,11 +7,11 @@ StructureHealth::StructureHealth(GameObject* owner, int health)
 	SetMaxHealth(health);
 }
 
-void StructureHealth::OnDamage()
+void StructureHealth::OnDamage(GameObject* instigator)
 {
 }
 
-void StructureHealth::OnDeath()
+void StructureHealth::OnDeath(GameObject* instigator)
 {
 }
 

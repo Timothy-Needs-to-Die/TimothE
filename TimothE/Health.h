@@ -16,16 +16,16 @@ public:
 		_currentHealth = _maxHealth;
 	}
 
-	void TakeDamage(int val);
+	void TakeDamage(int val, GameObject* instigator);
 
 protected:
 	int _currentHealth;
 	int _maxHealth;
 	bool _isDead = false;
 
-	virtual void OnDeath();
+	virtual void OnDeath(GameObject* instigator);
 	virtual void OnHeal();
-	virtual void OnDamage();
+	virtual void OnDamage(GameObject* instigator);
 
 	// Inherited via Component
 	virtual void OnStart() override;

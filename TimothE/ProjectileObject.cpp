@@ -32,7 +32,7 @@ void ProjectileObject::OnTriggerEnter(ColliderBase* other)
 	if (other->GetParent()->GetTag() == "TOWER") return;
 
 	if (other->GetParent()->GetTag() == "ENEMY") {
-		other->GetParent()->GetComponent<EnemyHealth>()->TakeDamage(5.0f);
+		other->GetParent()->GetComponent<EnemyHealth>()->TakeDamage(5.0f, NULL);
 	}
 	//else if (other->GetParent()->GetTag() == "PLAYER") {
 	//	other->GetParent()->GetComponent<Health>()->TakeDamage(5.0f);

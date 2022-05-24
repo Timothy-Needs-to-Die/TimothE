@@ -27,7 +27,7 @@ void PlayerInputComponent::OnUpdate()
 	}
 
 	if (Input::IsKeyDown(KEY_SPACE)) {
-		_pFighter->Attack();
+		_pFighter->Attack(_pParentObject);
 	}
 
 	if (_pNearbyResourceNode != nullptr) {
