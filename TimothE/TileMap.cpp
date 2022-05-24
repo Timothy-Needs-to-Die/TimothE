@@ -210,6 +210,8 @@ void TileMap::AddTileAt(unsigned int layer, unsigned int uvX, unsigned int uvY, 
 
 void TileMap::FillLayer(unsigned int layer, int uvX, int uvY, SpriteSheet* sp)
 {
+	if (sp == nullptr) return;
+
 	for (int i = 0; i < _tileArr[layer].size(); i++) {
 		_tileArr[layer][i].texIndex = uvY * sp->GetSheetWidth() + uvX;
 		_tileArr[layer][i]._pSpritesheet = sp;
@@ -236,6 +238,20 @@ glm::vec2 TileMap::MousePosToTile(Camera* cam)
 	return convertedPosition;
 }
 
+//Sets the size of the tilemap in tiles. e.g a 256 x 140 tile map.
+
+void TileMap::SetTileMapSize(glm::vec2 mapSize)
+{
+	_mapInTiles = mapSize;
+	int elementSize = _mapInTiles.x * _mapInTiles.y;
+
+	for (int i = 0; i < _tileArr.size(); i++) {
+		_tileArr[i].resize(elementSize);
+	}
+
+	_mapSizeInUnits = glm::vec2(_mapInTiles.x / _tilesPerUnit, _mapInTiles.y / _tilesPerUnit);
+}
+
 TileData* TileMap::GetTileAtWorldPos(int layer, glm::vec2 worldPos)
 {
 	//Calculates the index of the tile
@@ -243,7 +259,7 @@ TileData* TileMap::GetTileAtWorldPos(int layer, glm::vec2 worldPos)
 
 	//Protection incase specified position results in a tile outside of the map
 	if (index < 0) index = 0;
-	if (index > _mapInTiles.x * _mapInTiles.y) index = _mapInTiles.x * _mapInTiles.y;
+	if (index > _mapInTiles.x * _mapInTiles.y) index = (_mapInTiles.x * _mapInTiles.y) - 1;
 
 	//Gets the tile on the specified layer
 	return &_tileArr[layer][index];
@@ -251,6 +267,9 @@ TileData* TileMap::GetTileAtWorldPos(int layer, glm::vec2 worldPos)
 
 void TileMap::ClearLayer(int layer)
 {
+	if (layer < 0) layer = 0;
+	if (layer >= _numLayers) layer = _numLayers - 1;
+
 	//Cycle through all tiles on this layer and remove their sprite
 	for (int i = 0; i < _mapInTiles.x * _mapInTiles.y; i++) {
 		_tileArr[layer][i] = TileData();
@@ -369,7 +388,11 @@ bool TileMap::CollidableAtPosition(glm::vec2 worldPos)
 
 void TileMap::SetCollidableAtLayer(int layer, glm::vec2 pos, bool val)
 {
-	
+	//Safeguards against putting a layer greater than the number of layers in
+	if (layer >= _numLayers) layer = _numLayers -1;
+	//Safeguards against putting a layer in thats below 0
+	if (layer < 0) layer = 0;
+
 	int index = GetTileIndexFromPosition(pos);
 
 	_tileArr[layer][index].collidable = val;
@@ -383,7 +406,7 @@ int TileMap::GetTileIndexFromPosition(glm::vec2 pos)
 	return index;
 }
 
-bool TileMap::CollidableAtPosition(const int index)
+bool TileMap::CollidableAtPosition(const int index) const
 {
 	if (index < 0 || index > _tileArr[0].size()) return false;
 
