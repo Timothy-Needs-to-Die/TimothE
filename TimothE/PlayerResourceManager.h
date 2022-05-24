@@ -21,10 +21,11 @@ public:
 	
 
 	static bool CanAfford(const ResourceCost& cost);
-	static bool CanAfford(int gold);
+	//static bool CanAfford(int gold);
 	//static PlayerResource* GetHotbarItem(HotbarItem item);
 
 	static void SetTool(ToolConfig tool);
+	static void SetArmour(ArmourConfig armour);
 
 private:
 	

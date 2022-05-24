@@ -20,35 +20,6 @@ void BaseTrader::OnNewDay()
 	GenerateDailyGoldamount();
 }
 
-//
-//void BaseTrader::OnBuy(ItemConfig item, PlantResourceType type, int amount)
-//{
-//	if (PlayerResourceManager::GetPlantResource(type)->CanAfford(item.price * amount)) {
-//		PlayerResourceManager::GetPlantResource(type)->GainResource(amount);
-//		std::cout << "[LOG: BaseTrader::OnBuy: Item bought by player" << std::endl;
-//	}
-//	else {
-//		std::cout << "[LOG: BaseTrader::OnBuy: Player can not afford item" << std::endl; 
-//	}
-//}
-
-//void BaseTrader::OnBuy(ItemConfig item, HotbarItem type, int amount)
-//{
-//	if (PlayerResourceManager::GetHotbarItem(type)->CanAfford(item.price * amount)) {
-//		PlayerResourceManager::GetHotbarItem(type)->GainResource(amount);
-//		std::cout << "[LOG: BaseTrader::OnBuy: Item bought by player" << std::endl;
-//	}
-//	else {
-//		std::cout << "[LOG: BaseTrader::OnBuy: Player can not afford item" << std::endl; 
-//	}
-//}
-void BaseTrader::OnBuy(PurchaseableConfig item){
-	//If the item is in the traders inventory (shouldnt be necesarry if UI is set up correctly
-	if (std::find(_config.itemsToSell.begin(), _config.itemsToSell.end(), item) != _config.itemsToSell.end()) {
-		
-
-	}
-}
 
 void BaseTrader::OnBuyTool(ToolConfig tool)
 {
@@ -72,7 +43,21 @@ void BaseTrader::OnBuyTool(ToolConfig tool)
 void BaseTrader::OnBuySeed(SeedConfig seed)
 {
 	if (_config.type == TraderType::Farmer) {
-		if(PlayerResourceManager::GetPlantResource((PlantResourceType)seed.type)->CanAfford(seed.price)
+		if (PlayerResourceManager::CanAfford(seed.resourceCost)/*PlayerResourceManager::GetPlantResource((PlantResourceType)seed.type)->CanAfford(seed.price)*/) {
+			PlayerResourceManager::GetPlantResource((PlantResourceType)seed.type)->GainResource(1);
+
+		}
+	}
+}
+
+void BaseTrader::OnBuyArmour(ArmourConfig armour) {
+	if (_config.type == TraderType::Armourer) {
+		if (PlayerResourceManager::CanAfford(armour.resourceCost)) {
+			PlayerResourceManager::SetArmour(armour);
+		}
+		else {
+			//Player cannot afford the item, throw text message to them saying so
+		}
 	}
 }
 

@@ -39,16 +39,7 @@ bool PlayerResourceManager::CanAfford(const ResourceCost& cost)
 	return false;
 }
 
-bool PlayerResourceManager::CanAfford(int gold)
-{
-	int currentGold = GetCoreResource(CoreResourceType::Gold)->GetAmount();
-	if (gold > currentGold) {
-		return true;
-	}
-	else {
-		return false;
-	}
-}
+
 
 void PlayerResourceManager::SetTool(ToolConfig tool)
 {
@@ -62,6 +53,11 @@ void PlayerResourceManager::SetTool(ToolConfig tool)
 		_currentSword = tool;
 	}
 
+}
+
+void PlayerResourceManager::SetArmour(ArmourConfig armour)
+{
+	_currentArmour = armour;
 }
 
 //PlayerResource* PlayerResourceManager::GetHotbarItem(HotbarItem item)

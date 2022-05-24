@@ -6,10 +6,10 @@
 
 enum TraderType
 {
-	Builder,
+	Builder, // Screw the builder
 	Blacksmith,
 	Armourer,
-	Wizard,
+	Wizard, // The wizzard shall not exist 
 	Farmer   
 };
 

@@ -28,6 +28,8 @@ public:
 	void OnBuy(PurchaseableConfig item);
 	void OnBuyTool(ToolConfig tool);
 	void OnBuySeed(SeedConfig seed);
+
+	void OnBuyArmour(ArmourConfig armour);
 	
 	//void OnBuy(ItemConfig item, HotbarItem type, int amount);
 
