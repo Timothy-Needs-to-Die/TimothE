@@ -14,11 +14,7 @@ class AIController : public Component
 {
 
 public:
-	AIController(GameObject* gameObject) : Component(gameObject)
-	{
-		_mMoving = false;
-		SetType(Types::AIControllerType);
-	}
+	AIController(GameObject* gameObject);
 
 	COMPONENT_STATIC_TYPE(AIControllerType);
 
@@ -43,7 +39,8 @@ public:
 
 	void SetTargetFromTag(string tagA, string tagB, string tagC);
 	void FindTarget();
-	void AttackedBy(GameObject object);
+	void SetTarget(GameObject* target);
+	void AttackedBy(GameObject* instigator);
 
 private:
 	float _mMovementSpeed = 3.0f;
@@ -53,7 +50,6 @@ private:
 	GameObject* _pCurrentTarget = nullptr;
 	string _mTargetArr[3];
 	Player _mPlayer;
-
 	GameObject* FindClosestTargetFromList(std::vector<GameObject*> targets);
 };
 

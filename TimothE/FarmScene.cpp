@@ -8,6 +8,7 @@
 #include "OffensiveStructureObject.h"
 #include "AIMovementCompnent.h"
 #include "StructureObject.h"
+#include "AIController.h"
 
 FarmScene::~FarmScene()
 {
@@ -134,17 +135,22 @@ void FarmScene::InitScene()
 
 	AIMovementCompnent* mover = _pAITester->AddComponent(new AIMovementCompnent(_pAITester));
 	_pAITester->AddComponent(ResourceManager::GetTexture("fish"));
+	//AIController* pAI1 = _pAITester->AddComponent(new AIController(_pAITester));
+	//pAI1->SetTargetFromTag("PLAYER", "TOWER", "WALL");
 	mover->SetAllowCollisions(false);
 
-	mover->SetDestination(glm::vec2(7.0f, 1.5f));
+	mover->SetDestination(glm::vec2(0.0f, 0.0f));
 
 	AddGameObject(_pAITester);
 
 	AIMovementCompnent* mover2 = _pAITester2->AddComponent(new AIMovementCompnent(_pAITester2));
 	_pAITester2->AddComponent(ResourceManager::GetTexture("fish"));
+	AIController* pAI2 = _pAITester2->AddComponent(new AIController(_pAITester2));
+	pAI2->SetTargetFromTag("PLAYER", "TOWER", "WALL");
+
 	mover2->SetAllowCollisions(false);
 
-	mover2->SetDestination(glm::vec2(7.25f, 2.25f));
+	mover2->SetDestination(glm::vec2(0.0f, 0.0f));
 
 	AddGameObject(_pAITester2);
 }

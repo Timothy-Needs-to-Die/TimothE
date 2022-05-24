@@ -18,7 +18,8 @@ std::vector<glm::vec2> AStar::FindPath(glm::vec2 start, glm::vec2 end)
 	currentNode->_mGlobalGoal = glm::distance(currentNode->_mPos, end);
 	//currentNode->isObstacle = mStartNode->isObstacle;
 	//currentNode->isVisited = mStartNode->isVisited;
-	currentNode->_mNeighborNodes = _mMapNodes.at(start.y * _mTilesPerUnit * _mWidth + start.x * _mTilesPerUnit)._mNeighborNodes;
+	//(previousNode._mParentNode.y * _mTilesPerUnit)* _mWidth + (previousNode._mParentNode.x * _mTilesPerUnit)
+	currentNode->_mNeighborNodes = _mMapNodes.at((start.y * _mTilesPerUnit) * _mWidth + (start.x * _mTilesPerUnit))._mNeighborNodes;
 
 	//currentNode->parentNode = { 0, 0 };
 
@@ -114,7 +115,8 @@ std::vector<glm::vec2> AStar::FindPath(glm::vec2 start, glm::vec2 end)
 			//}
 
 			//Sets the previous node to the parent of this node
-			previousNode = _mMapNodes.at((previousNode._mParentNode.y * _mTilesPerUnit) * _mWidth + (previousNode._mParentNode.x * _mTilesPerUnit));
+			int index = (previousNode._mParentNode.y * _mTilesPerUnit) * _mWidth + (previousNode._mParentNode.x * _mTilesPerUnit);
+			previousNode = _mMapNodes.at(index);
 
 		}
 	}
@@ -131,6 +133,10 @@ std::vector<glm::vec2> AStar::FindPath(glm::vec2 start, glm::vec2 end)
 
 void AStar::SetMap(TileMap* map)
 {
+	for (int i = 0; i < _mMapNodes.size(); ++i) {
+		_mMapNodes[i]._mNeighborNodes.clear();
+	}
+
 	_mMapNodes.clear();
 	_mTilesPerUnit = map->GetTilesPerUnit();
 	_mWidth = map->GetMapSize().x * _mTilesPerUnit;
@@ -172,28 +178,28 @@ void AStar::SetMap(TileMap* map)
 		}
 
 		//Bottom
-		if (yIndex > _mHeight) {
+		if (yIndex > 0) {
 			_mMapNodes[i]._mNeighborNodes.push_back(&_mMapNodes[i - _mWidth]);
 		}
 
 		//TopLeft
-		if (xIndex > 0 && yIndex < _mHeight) {
-			_mMapNodes[i]._mNeighborNodes.push_back(&_mMapNodes[i - 1 + _mWidth]);
-		}
-
-		//TopRight
-		if (xIndex < _mWidth && yIndex < _mHeight) {
-			_mMapNodes[i]._mNeighborNodes.push_back(&_mMapNodes[i + 1 + _mWidth]);
-		}
-		//BottomLeft
-		if (xIndex > 0 && yIndex > _mHeight) {
-			_mMapNodes[i]._mNeighborNodes.push_back(&_mMapNodes[i - 1 - _mWidth]);
-		}
-
-		//BottomRight
-		if (xIndex < _mWidth && yIndex > _mHeight) {
-			_mMapNodes[i]._mNeighborNodes.push_back(&_mMapNodes[i + 1 - _mWidth]);
-		}
+		//if (xIndex > 0 && yIndex < _mHeight) {
+		//	_mMapNodes[i]._mNeighborNodes.push_back(&_mMapNodes[i - 1 + _mWidth]);
+		//}
+		//
+		////TopRight
+		//if (xIndex < _mWidth && yIndex < _mHeight) {
+		//	_mMapNodes[i]._mNeighborNodes.push_back(&_mMapNodes[i + 1 + _mWidth]);
+		//}
+		////BottomLeft
+		//if (xIndex > 0 && yIndex > _mHeight) {
+		//	_mMapNodes[i]._mNeighborNodes.push_back(&_mMapNodes[i - 1 - _mWidth]);
+		//}
+		//
+		////BottomRight
+		//if (xIndex < _mWidth && yIndex > _mHeight) {
+		//	_mMapNodes[i]._mNeighborNodes.push_back(&_mMapNodes[i + 1 - _mWidth]);
+		//}
 	}
 
 }
