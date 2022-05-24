@@ -135,13 +135,13 @@ void FarmScene::InitScene()
 	AddGameObject(_pAITester);
 
 	//LIGHTING TEST CODE//
-	_pLightManager = new LightLevelManager();
+	_pLightManager = new LightLevelManager(_pTilemap);
 
 	LightSource ls = LightSource();
 
 	_pLightManager->AddLightSource(ls);
 
-	_pLightManager->UpdateLightMap(_pTilemap);
+	_pLightManager->UpdateLightMap();
 }
 
 void FarmScene::AddStructure(StructureObject* object)

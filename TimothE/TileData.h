@@ -15,5 +15,5 @@ struct TileData {
 	Sprite* _pSprite;
 	SpriteSheet* _pSpritesheet;
 
-	int lightLevel = 2;//default 5
+	int lightLevel = 5;//default 5
 };
