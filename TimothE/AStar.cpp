@@ -50,15 +50,14 @@ std::vector<glm::vec2> AStar::FindPath(glm::vec2 start, glm::vec2 end)
 		}
 
 		//if there are no nodes available then break out of the loop
-		if (untestedNodes.empty())
-			break;
+		if (untestedNodes.empty()) break;
 
 		//sets the current node to the front of the list
 		currentNode = untestedNodes.front();
 		currentNode->_mIsVisited = true; //Nodes only need to be calculated once
 
 		//Explore this node's neighbors
-		for (auto nodeNeighbor : currentNode->_mNeighborNodes) {
+		for (auto& nodeNeighbor : currentNode->_mNeighborNodes) {
 			//if the neighbor node is not visited and is not an obstacle then add it to the untestedNode list
 			if (!nodeNeighbor->_mIsVisited && !nodeNeighbor->_mIsObstacle) {
 				//Adds the neighboring node to the list
@@ -67,7 +66,7 @@ std::vector<glm::vec2> AStar::FindPath(glm::vec2 start, glm::vec2 end)
 
 
 			//Calculates the neighbors 'potentially' lower distance 
-			float potentiallyLowerGoal = currentNode->_mLocalGoal + glm::distance(currentNode->_mPos, nodeNeighbor->_mPos);
+			float potentiallyLowerGoal = currentNode->_mLocalGoal + glm::length(currentNode->_mPos + nodeNeighbor->_mPos);
 
 			//If the distance between this node and the neighbors is lower than the local score of the neighbor is then this should be the new parent node of the neighbor 
 			if (potentiallyLowerGoal < nodeNeighbor->_mLocalGoal) {
@@ -78,7 +77,7 @@ std::vector<glm::vec2> AStar::FindPath(glm::vec2 start, glm::vec2 end)
 				nodeNeighbor->_mLocalGoal = potentiallyLowerGoal;
 
 				//Calculate the heuristic value of the neighbor based on there local goal and the distance to the end point
-				nodeNeighbor->_mGlobalGoal = nodeNeighbor->_mLocalGoal + glm::distance(nodeNeighbor->_mPos, end);
+				nodeNeighbor->_mGlobalGoal = nodeNeighbor->_mLocalGoal + glm::length(nodeNeighbor->_mPos + end);
 			}
 
 			/*if the distance between the neighbor node and the end node is 0 then it means a path has been found.
@@ -118,6 +117,7 @@ std::vector<glm::vec2> AStar::FindPath(glm::vec2 start, glm::vec2 end)
 
 			//Sets the previous node to the parent of this node
 			int index = (previousNode._mParentNode.y * _mTilesPerUnit) * _mWidth + (previousNode._mParentNode.x * _mTilesPerUnit);
+			if (index < 0) index = 0;
 			previousNode = _mMapNodes.at(index);
 
 		}
