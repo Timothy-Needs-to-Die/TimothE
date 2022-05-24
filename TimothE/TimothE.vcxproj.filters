@@ -387,9 +387,6 @@
     <ClInclude Include="UID.h">
       <Filter>Headers</Filter>
     </ClInclude>
-    <ClInclude Include="Wave.h">
-      <Filter>Headers</Filter>
-    </ClInclude>
     <ClInclude Include="WeaponConfig.h">
       <Filter>Headers</Filter>
     </ClInclude>
@@ -401,6 +398,10 @@
     <ClInclude Include="ArmourConfig.h" />
     <ClInclude Include="SeedConfig.h" />
     <ClInclude Include="GameTimeManager.h" />
+    <ClInclude Include="InventoryScreen.h" />
+    <ClInclude Include="WaveManager.h" />
+    <ClInclude Include="Bed.h" />
+    <ClInclude Include="BedHealth.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="AIController.cpp">
@@ -643,14 +644,15 @@
     <ClCompile Include="Transform.cpp">
       <Filter>Source</Filter>
     </ClCompile>
-    <ClCompile Include="Wave.cpp">
-      <Filter>Source</Filter>
-    </ClCompile>
     <ClCompile Include="pch.cpp">
       <Filter>Source</Filter>
     </ClCompile>
     <ClCompile Include="ProjectileObject.cpp" />
     <ClCompile Include="EnemyHealth.cpp" />
     <ClCompile Include="GameTimeManager.cpp" />
+    <ClCompile Include="InventoryScreen.cpp" />
+    <ClCompile Include="WaveManager.cpp" />
+    <ClCompile Include="Bed.cpp" />
+    <ClCompile Include="BedHealth.cpp" />
   </ItemGroup>
 </Project>

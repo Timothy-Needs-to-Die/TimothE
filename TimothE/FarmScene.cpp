@@ -9,6 +9,7 @@
 #include "AIMovementCompnent.h"
 #include "StructureObject.h"
 #include "GameTimeManager.h"
+#include "Bed.h"
 
 FarmScene::~FarmScene()
 {
@@ -29,35 +30,6 @@ void FarmScene::UpdateObjects()
 	if (Input::IsKeyDown(KEY_5)) {
 		SceneManager::SetCurrentScene(SceneManager::CreateScene(ResourceManager::GetScene("TownScene")));
 	}
-
-
-	//glm::vec2 forward = _pPlayerObject->GetTransform()->GetForward();
-	//glm::vec2 pos = forward * 0.1f;
-	//pos.y += 0.1f;
-	//
-	////TIM_LOG_LOG("Player forward: " << forward.x << ", " << forward.y);
-	////TIM_LOG_LOG("Weapon Pos: " << pos.x << ", " << pos.y);
-	//_pWeaponObject->GetTransform()->SetPosition(pos);
-
-	//if (_pDay->NightStart())
-	//{
-	//	_pWaveController->StartWaves(_pDay->GetDayCount());
-	//
-	//	for (GameObject* go : _pWaveController->GetEnemies())
-	//	{
-	//		AddGameObject(go);
-	//	}
-	//}
-	//else if (!_pDay->IsDay())
-	//{
-	//	if (_pWaveController->TryNewWave())
-	//	{
-	//		for (GameObject* enemy : _pWaveController->GetEnemies())
-	//		{
-	//			AddGameObject(enemy);
-	//		}
-	//	}
-	//}
 
 	if (Input::IsKeyDown(KEY_G)) {
 		//_pTilemap->AddTileAt(2, 15, 12, CameraManager::CurrentCamera());
@@ -190,6 +162,10 @@ void FarmScene::InitScene()
 	mover2->SetDestination(glm::vec2(7.25f, 2.25f));
 
 	AddGameObject(_pAITester2);
+
+	_pBed = new Bed();
+	_pBed->GetTransform()->SetPosition(7.0f, 3.0f);
+	AddGameObject(_pBed);
 }
 
 void FarmScene::AddStructure(StructureObject* object)
@@ -218,4 +194,10 @@ void FarmScene::RemoveStructure(class StructureObject* object)
 std::vector<class StructureObject*> FarmScene::GetStructures() const
 {
 	return _pStructures;
+}
+
+void FarmScene::GameOver()
+{
+	// todo: add gameover
+	TIM_LOG_LOG("Bed destroyed");
 }

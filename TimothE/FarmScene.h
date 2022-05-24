@@ -13,8 +13,6 @@
 #include "Button.h"
 #include "CameraManager.h"
 
-
-
 class FarmScene : public Scene
 {
 public:
@@ -33,8 +31,10 @@ public:
 	void AddStructure(class StructureObject* object);
 	void RemoveStructure(class StructureObject* object);
 	std::vector<class StructureObject*> GetStructures() const;
-	  
 
+	void GameOver() override;
+
+	class GameTimeManager* GetGameTime() { return _pGameTime; }
 
 private:
 	GameObject* _pStartButton = nullptr;
@@ -50,9 +50,6 @@ private:
 
 	class Player* _pPlayer;
 	//class OffensiveStructureObject* _pTower = nullptr;
-
-	//Day* _pDay;
-	bool _timeProgression = true;
 	
 	class ResourceNodeObject* _pWoodNode = nullptr;
 	class ResourceNodeObject* _pMetalNode = nullptr;
@@ -67,5 +64,7 @@ private:
 	bool _inventoryKeyPressed = false;
 
 	std::vector<class StructureObject*> _pStructures;
+
+	class Bed* _pBed;
 };
 

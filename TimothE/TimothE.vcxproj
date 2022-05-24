@@ -89,6 +89,8 @@
     <ClInclude Include="AudioEngine.h" />
     <ClInclude Include="AudioSource.h" />
     <ClInclude Include="BaseTrader.h" />
+    <ClInclude Include="Bed.h" />
+    <ClInclude Include="BedHealth.h" />
     <ClInclude Include="BoxColliderComponent.h" />
     <ClInclude Include="Button.h" />
     <ClInclude Include="CSVReader.h" />
@@ -225,6 +227,8 @@
     <ClCompile Include="AudioEngine.cpp" />
     <ClCompile Include="AudioSource.cpp" />
     <ClCompile Include="BaseTrader.cpp" />
+    <ClCompile Include="Bed.cpp" />
+    <ClCompile Include="BedHealth.cpp" />
     <ClCompile Include="BoxColliderComponenet.cpp" />
     <ClCompile Include="Button.cpp" />
     <ClCompile Include="CSVReader.cpp" />

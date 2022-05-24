@@ -139,6 +139,7 @@ public:
 	void PopulateSeedVector();
 	void PopulateCropVector();
 	
+	virtual void GameOver() {}
 
 protected:
 	//Stores the name of the scene
