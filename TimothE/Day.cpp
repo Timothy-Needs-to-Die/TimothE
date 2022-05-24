@@ -1,6 +1,6 @@
 #include "Day.h"
 #include <iostream>
-#include "Wave.h"
+#include "WaveManager.h"
 #include "CSVReader.h"
 
 Day::Day() : _currentTime(0.0f), _oldDaytime(0.0f), _isDaytime(true), _dayCount(0)

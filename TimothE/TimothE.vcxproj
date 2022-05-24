@@ -82,10 +82,10 @@
   <ItemGroup>
     <ClInclude Include="AIController.h" />
     <ClInclude Include="AIMovementCompnent.h" />
-    <ClInclude Include="ArmourConfig.h" />
     <ClInclude Include="AStar.h" />
     <ClInclude Include="AnimatedSpritesheet.h" />
     <ClInclude Include="Application.h" />
+    <ClInclude Include="ArmourConfig.h" />
     <ClInclude Include="AudioEngine.h" />
     <ClInclude Include="AudioSource.h" />
     <ClInclude Include="BaseTrader.h" />
@@ -167,7 +167,6 @@
     <ClInclude Include="ResourceManager.h" />
     <ClInclude Include="ResourceNode.h" />
     <ClInclude Include="ResourceNodeObject.h" />
-    <ClInclude Include="SeedConfig.h" />
     <ClInclude Include="SOIL\SOIL2.h" />
     <ClInclude Include="SOIL\image_DXT.h" />
     <ClInclude Include="SOIL\image_helper.h" />
@@ -187,6 +186,7 @@
     <ClInclude Include="SOIL\wfETC.h" />
     <ClInclude Include="Scene.h" />
     <ClInclude Include="SceneManager.h" />
+    <ClInclude Include="SeedConfig.h" />
     <ClInclude Include="SellableConfig.h" />
     <ClInclude Include="Serializable.h" />
     <ClInclude Include="Sprite.h" />
@@ -299,8 +299,8 @@
     <ClCompile Include="TileMapEditor.cpp" />
     <ClCompile Include="TownScene.cpp" />
     <ClCompile Include="Transform.cpp" />
-    <ClCompile Include="pch.cpp" />
     <ClCompile Include="WaveManager.cpp" />
+    <ClCompile Include="pch.cpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
