@@ -19,9 +19,12 @@ std::vector<glm::vec2> AStar::FindPath(glm::vec2 start, glm::vec2 end)
 	//This list will contain the untested nodes that will be used to cycle through each node in the map 
 	std::vector<Node*> untestedNodes;
 
-	//for (int i = 0; i < _mMapNodes.size(); ++i) {
-	//	_mMapNodes[i]._mIsVisited = false;
-	//}
+	for (int i = 0; i < _mMapNodes.size(); ++i) {
+		_mMapNodes[i]._mIsVisited = false;
+		_mMapNodes[i]._mParentNode = glm::vec2(-1);
+		_mMapNodes[i]._mGlobalGoal = FLT_MAX;
+		_mMapNodes[i]._mLocalGoal = FLT_MAX;
+	}
 
 	Node* currentNode = new Node();
 	currentNode->_mPos = start;
@@ -52,7 +55,7 @@ std::vector<glm::vec2> AStar::FindPath(glm::vec2 start, glm::vec2 end)
 		//		return nodeA->_mGlobalGoal < nodeB->_mGlobalGoal;
 		//	});
 
-		//std::make_heap(untestedNodes.begin(), untestedNodes.end(), node_greater_than());
+		std::make_heap(untestedNodes.begin(), untestedNodes.end(), node_greater_than());
 
 
 		//The elements at the start of the list may have already been visited, meaning that testing them would use unnecessary resources.
@@ -98,7 +101,7 @@ std::vector<glm::vec2> AStar::FindPath(glm::vec2 start, glm::vec2 end)
 			However it may not be the shortest path*/
 			float dist = glm::distance(nodeNeighbor->_mPos, end);
 
-			if (dist == 0)
+			if (dist <= 0.25f)
 			{
 				_mEndNode = nodeNeighbor;
 				pathFound = true;

@@ -18,10 +18,6 @@ struct Node {
 	float _mLocalGoal = FLT_MAX;
 
 	//X and Y position of the node in the map
-	/*int xPos = 0;
-	int yPos = 0;*/
-
-	int heapIndex;
 
 	glm::vec2 _mPos;
 

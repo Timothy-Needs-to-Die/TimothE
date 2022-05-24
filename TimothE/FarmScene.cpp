@@ -59,7 +59,7 @@ void FarmScene::UpdateObjects()
 
 	if (Input::IsKeyDown(KEY_T)) {
 		AIMovementCompnent* mover = _pAITester->GetComponent<AIMovementCompnent>();
-		mover->SetDestination(glm::vec2(5.0f, 2.0f));
+		mover->SetDestination(glm::vec2(2.5f, 0.0f));
 	}
 
 	if (Input::IsKeyDown(KEY_G)) {
