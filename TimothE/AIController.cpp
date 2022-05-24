@@ -9,6 +9,7 @@ AIController::AIController(GameObject* gameObject) : Component(gameObject)
 	_mMoving = false;
 	SetType(Types::AIControllerType);
 	_pFighter = _pParentObject->AddComponent(new Fighter(_pParentObject));
+	_mPlayer = dynamic_cast<Player*>(SceneManager::GetCurrentScene()->GetGameObjectByName("Player"));
 }
 
 void AIController::Move(glm::vec2 moveToVec)
@@ -26,14 +27,14 @@ void AIController::OnStart()
 
 void AIController::OnUpdate()
 {
-	float distToPlayer = glm::distance(_pParentObject->GetTransform()->GetPosition(), _mPlayer.GetTransform()->GetPosition()); //ai position
+	float distToPlayer = glm::distance(_pParentObject->GetTransform()->GetPosition(), _mPlayer->GetTransform()->GetPosition()); //ai position
 
 	if (distToPlayer < 2.5) //config.tolerance
 	{
-		_pCurrentTarget = _mPlayer.GetParent();
+		_pCurrentTarget = _mPlayer;
 	}
 
-	if (_pCurrentTarget == nullptr)
+	if (_pCurrentTarget == nullptr || _pCurrentTarget->GetParent() == nullptr)
 	{
 		FindTarget();
 	}
@@ -86,15 +87,15 @@ void AIController::FindTarget()
 		return;
 	}
 
-	float distToPlayer = glm::distance(_pParentObject->GetTransform()->GetPosition(), _mPlayer.GetTransform()->GetPosition());
-	float distToBed = glm::distance(_pParentObject->GetTransform()->GetPosition(), _mPlayer.GetTransform()->GetPosition()); //change player pos to bed pos
+	float distToPlayer = glm::distance(_pParentObject->GetTransform()->GetPosition(), _mPlayer->GetTransform()->GetPosition());
+	float distToBed = glm::distance(_pParentObject->GetTransform()->GetPosition(), _mPlayer->GetTransform()->GetPosition()); //change player pos to bed pos
 	if (distToPlayer < distToBed)
 	{
-		SetTarget(_mPlayer.GetParent());
+		SetTarget(_mPlayer);
 	}
 	else
 	{
-		SetTarget(_mPlayer.GetParent()); // change to bed
+		SetTarget(_mPlayer); // change to bed
 	}
 }
 
@@ -108,7 +109,7 @@ void AIController::AttackedBy(GameObject* instigator)
 {
 	if (instigator->GetTag() == "PLAYER")
 	{	
-		SetTarget(_mPlayer.GetParent());
+		SetTarget(_mPlayer);
 		return;
 	}
 	if (instigator->GetTag() == "TOWER")

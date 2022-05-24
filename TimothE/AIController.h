@@ -49,7 +49,7 @@ private:
 	class Fighter* _pFighter = nullptr;
 	GameObject* _pCurrentTarget = nullptr;
 	string _mTargetArr[3];
-	Player _mPlayer;
+	Player* _mPlayer;
 	GameObject* FindClosestTargetFromList(std::vector<GameObject*> targets);
 };
 

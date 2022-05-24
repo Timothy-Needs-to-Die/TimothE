@@ -25,7 +25,7 @@ void AIMovementCompnent::SetDestination(glm::vec2 targetPos)
 	int size = tempPath.size();
 	for (int i = 0; i < size; i++)
 	{
-		_mPathToFollow.push_front(tempPath[i]);
+   		_mPathToFollow.push_front(tempPath[i]);
 	}
 
 	//set next target
@@ -77,7 +77,7 @@ glm::vec2 AIMovementCompnent::GetNextTarget()
 
 
 	//set target to move as the first path position
-	_mCurrentTarget = _mPathToFollow.back();
+	_mCurrentTarget = _mPathToFollow.front();
 	_mPathToFollow.erase(_mPathToFollow.begin());
 
 	return _mCurrentTarget; //return target
