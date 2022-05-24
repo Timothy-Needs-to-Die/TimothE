@@ -210,7 +210,7 @@
     <ClInclude Include="TraderConfig.h" />
     <ClInclude Include="Transform.h" />
     <ClInclude Include="UID.h" />
-    <ClInclude Include="Wave.h" />
+    <ClInclude Include="WaveManager.h" />
     <ClInclude Include="WeaponConfig.h" />
     <ClInclude Include="pch.h" />
   </ItemGroup>
@@ -297,8 +297,8 @@
     <ClCompile Include="TileMapEditor.cpp" />
     <ClCompile Include="TownScene.cpp" />
     <ClCompile Include="Transform.cpp" />
-    <ClCompile Include="Wave.cpp" />
     <ClCompile Include="pch.cpp" />
+    <ClCompile Include="WaveManager.cpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
