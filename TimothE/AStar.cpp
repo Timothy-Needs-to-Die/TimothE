@@ -102,30 +102,21 @@ std::vector<glm::vec2> AStar::FindPath(glm::vec2 start, glm::vec2 end)
 		//keep looping until the previousNode no longer has a parent this can only be the starting node
 		while (previousNode._mParentNode != start)
 		{
-
-			//parent node check here
-			if (previousNode._mParentNode.y == ERROR_PATH_POSITION || previousNode._mParentNode.x == ERROR_PATH_POSITION)
-			{
-				break;
-			}
+			//Check the parent node is valid
+			if (previousNode._mParentNode.y == ERROR_PATH_POSITION) break;
 
 			//adds the node to the path of nodes
-			//auto it = std::find(_mPathOfNodes.begin(), _mPathOfNodes.end(), previousNode);
-			//if (it == _mPathOfNodes.end()) {
-				_mPathOfNodes.push_back(previousNode);
-			//}
+			_mPathOfNodes.push_back(previousNode);
 
 			//Sets the previous node to the parent of this node
 			int index = (previousNode._mParentNode.y * _mTilesPerUnit) * _mWidth + (previousNode._mParentNode.x * _mTilesPerUnit);
 			if (index < 0) index = 0;
 			previousNode = _mMapNodes.at(index);
-
 		}
 	}
 
-
-	for (int i = 0; i < _mPathOfNodes.size(); i++) {
-		processedPath.push_back(_mPathOfNodes[i]._mPos);
+	for (std::vector<Node>::iterator it = _mPathOfNodes.begin(); it != _mPathOfNodes.end(); ++it) {
+		processedPath.push_back(it->_mPos);
 	}
 	_mPathOfNodes.clear();
 
@@ -143,6 +134,7 @@ void AStar::SetMap(TileMap* map)
 	_mTilesPerUnit = map->GetTilesPerUnit();
 	_mWidth = map->GetMapSize().x * _mTilesPerUnit;
 	_mHeight = map->GetMapSize().y * _mTilesPerUnit;
+
 	std::vector<TileData> tiles = map->GetAllTilesInLayer(0);
 	for (int i = 0; i < tiles.size(); i++)
 	{
@@ -151,7 +143,6 @@ void AStar::SetMap(TileMap* map)
 		tile._mPos = tiles.at(i).pos;
 
 		_mMapNodes.push_back(tile);
-
 	}
 
 	for (int i = 0; i < _mMapNodes.size(); i++)
@@ -160,7 +151,6 @@ void AStar::SetMap(TileMap* map)
 
 		int yIndex = i / _mWidth;
 		int xIndex = i - (yIndex * _mWidth);
-
 
 		glm::vec2 pos = _mMapNodes[i]._mPos;
 
@@ -203,7 +193,6 @@ void AStar::SetMap(TileMap* map)
 		//	_mMapNodes[i]._mNeighborNodes.push_back(&_mMapNodes[i + 1 - _mWidth]);
 		//}
 	}
-
 }
 
 void AStar::OnStart()
