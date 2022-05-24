@@ -15,8 +15,11 @@ public:
 	AIMovementCompnent(GameObject* owner, AStar* pAStar);
 
 	void SetDestination(glm::vec2);
+	glm::vec2 GetDestination() const { return _destination;  }
+
 	virtual void OnUpdate() override;
 private:
+	glm::vec2 _destination;
 	std::list<glm::vec2> _mPathToFollow;
 	glm::vec2 _mCurrentTarget;
 	float _mTolerance = 0.05f;

@@ -153,8 +153,8 @@ void FarmScene::InitScene()
 
 	AIMovementCompnent* mover2 = _pAITester2->AddComponent(new AIMovementCompnent(_pAITester2, path));
 	_pAITester2->AddComponent(ResourceManager::GetTexture("fish"));
-	//AIController* pAI2 = _pAITester2->AddComponent(new AIController(_pAITester2));
-	//pAI2->SetTargetFromTag("WALL", "TOWER", "PLAYER");
+	AIController* pAI2 = _pAITester2->AddComponent(new AIController(_pAITester2));
+	pAI2->SetTargetTags("WALL", "TOWER", "PLAYER");
 
 	mover2->SetAllowCollisions(false);
 

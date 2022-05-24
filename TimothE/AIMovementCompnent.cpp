@@ -22,6 +22,8 @@ void AIMovementCompnent::SetDestination(glm::vec2 targetPos)
 	glm::vec2 tilePos = SceneManager::GetCurrentScene()->GetTileMap()->GetTileAtWorldPos(0, GetParent()->GetTransform()->GetPosition())->pos;
 	std::vector<glm::vec2> tempPath = _pAStar->FindPath(tilePos, targetPos);
 
+	_destination = targetPos;
+
 	//set path
 	int size = tempPath.size();
 	for (int i = 0; i < size; i++)

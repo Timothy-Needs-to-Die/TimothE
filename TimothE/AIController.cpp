@@ -12,6 +12,7 @@ AIController::AIController(GameObject* gameObject) : Component(gameObject)
 
 	_pPlayerTransform = _pPlayer->GetTransform();
 	_pOwnerTransform = _pParentObject->GetTransform();
+	_pMover = _pParentObject->GetComponent<AIMovementCompnent>();
 }
 
 void AIController::OnStart()
@@ -21,6 +22,13 @@ void AIController::OnStart()
 
 void AIController::OnUpdate()
 {
+	if (_pCurrentTarget)
+	{
+		if (glm::distance(_pMover->GetDestination(), _pTargetTransform->GetPosition()) > 1.0f) {
+			_pMover->SetDestination(_pTargetTransform->GetPosition());
+		}
+	}
+
 	float distToPlayer = glm::distance(_pOwnerTransform->GetPosition(), _pPlayerTransform->GetPosition()); //ai position
 
 	if (distToPlayer < 2.5) //config.tolerance
@@ -28,8 +36,9 @@ void AIController::OnUpdate()
 		_pCurrentTarget = _pPlayer;
 	}
 
-	if (_pCurrentTarget == nullptr || _pCurrentTarget->GetParent() == nullptr)
+	if (_pCurrentTarget == nullptr)
 	{
+		TIM_LOG_LOG("Finding Target");
 		FindTarget();
 	}
 
@@ -97,7 +106,7 @@ void AIController::SetTarget(GameObject* target)
 
 	float mag = glm::length(_pTargetTransform->GetPosition() + _pOwnerTransform->GetPosition());
 	if (mag > 1.0f) {
-		_pParentObject->GetComponent<AIMovementCompnent>()->SetDestination(_pTargetTransform->GetPosition());
+		_pMover->SetDestination(_pTargetTransform->GetPosition());
 	}
 }
 

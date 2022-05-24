@@ -37,5 +37,6 @@ private:
 	class Transform* _pPlayerTransform = nullptr;
 	class Transform* _pOwnerTransform = nullptr;
 	class Transform* _pTargetTransform = nullptr;
+	class AIMovementCompnent* _pMover = nullptr;
 };
 
