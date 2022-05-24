@@ -50,7 +50,7 @@ void PlayerResourceManager::SpendResources(const ResourceCost& cost)
 	_coreResourceMap[Stone].SpendResource(cost.stoneRequired);
 	_coreResourceMap[Coal].SpendResource(cost.coalRequired);
 
-
+}
 void PlayerResourceManager::SetTool(ToolConfig tool)
 {
 	if (tool.type == ToolType::Pickaxe) {
