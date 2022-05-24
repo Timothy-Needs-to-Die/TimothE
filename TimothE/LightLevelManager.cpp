@@ -3,7 +3,7 @@
 
 LightLevelManager::LightLevelManager(TileMap* tileMap) : _pTileMap(tileMap)
 {
-	SetWorldLightLevel(5);
+	SetWorldLightLevel(0);
 }
 
 void LightLevelManager::UpdateLightMap()
@@ -38,9 +38,9 @@ void LightLevelManager::UpdateLightMap()
 							tile->lightLevel = _worldLightLevel;
 							continue;
 						}
-						else if ((tile->lightLevel + affectiveValue) > 8)
+						else if ((tile->lightLevel + affectiveValue) > _maxLightLevel)
 						{
-							tile->lightLevel = 8;
+							tile->lightLevel = _maxLightLevel;
 							continue;
 						}
 
@@ -59,6 +59,8 @@ void LightLevelManager::SetWorldLightLevel(int value)
 	_worldLightLevel = value;
 
 	//loop through all tiles in map and set light level
+
+	UpdateLightMap();
 }
 
 void LightLevelManager::AddLightSource(LightSource lightSource)

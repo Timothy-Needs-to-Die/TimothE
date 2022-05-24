@@ -136,6 +136,9 @@ void FarmScene::InitScene()
 
 	//LIGHTING TEST CODE//
 	_pLightManager = new LightLevelManager(_pTilemap);
+	_pLightManager->SetWorldLightLevel(1);
+	_pLightManager->SetMinLightLevel(1);
+	_pLightManager->SetMaxLightLevel(8);
 
 	LightSource ls = LightSource();
 
