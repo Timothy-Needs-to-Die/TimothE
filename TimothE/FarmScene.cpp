@@ -8,6 +8,7 @@
 #include "OffensiveStructureObject.h"
 #include "AIMovementCompnent.h"
 #include "StructureObject.h"
+#include "GameTimeManager.h"
 
 FarmScene::~FarmScene()
 {
@@ -22,6 +23,8 @@ void FarmScene::UpdateUI()
 void FarmScene::UpdateObjects()
 {
 	Scene::UpdateObjects();
+
+	_pGameTime->Update();
 
 	if (Input::IsKeyDown(KEY_5)) {
 		SceneManager::SetCurrentScene(SceneManager::CreateScene(ResourceManager::GetScene("TownScene")));
@@ -59,6 +62,13 @@ void FarmScene::UpdateObjects()
 	if (Input::IsKeyDown(KEY_G)) {
 		//_pTilemap->AddTileAt(2, 15, 12, CameraManager::CurrentCamera());
 	}
+	
+	if (!_pGameTime->IsDay()) {
+		if (Input::IsKeyDown(KEY_P)) {
+			_pGameTime->EndNight();
+			_pGameTime->StartNewDay();
+		}
+	}
 
 	Physics::UpdateWorld();
 }
@@ -68,6 +78,8 @@ void FarmScene::InitScene()
 	Scene::InitScene();
 
 	_pSpritesheet = ResourceManager::GetSpriteSheet("testSheet");
+
+	_pGameTime = new GameTimeManager();
 
 	//_pStartButton = new GameObject("BUTTON", "UI");
 	//_pStartButton->AddComponent(new Button(_pStartButton));

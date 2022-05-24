@@ -32,8 +32,7 @@ public:
 	void AddStructure(class StructureObject* object);
 	void RemoveStructure(class StructureObject* object);
 	std::vector<class StructureObject*> GetStructures() const;
-
-protected:
+	  
 
 
 private:
@@ -57,6 +56,8 @@ private:
 	class ResourceNodeObject* _pMetalNode = nullptr;
 	class ResourceNodeObject* _pStoneNode = nullptr;
 	class ResourceNodeObject* _pCoalNode = nullptr;
+
+	class GameTimeManager* _pGameTime = nullptr;
 
 	//Farmland
 	FarmlandManager* farmland;

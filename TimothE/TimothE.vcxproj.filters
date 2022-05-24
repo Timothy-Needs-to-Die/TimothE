@@ -400,6 +400,7 @@
     <ClInclude Include="EnemyHealth.h" />
     <ClInclude Include="ArmourConfig.h" />
     <ClInclude Include="SeedConfig.h" />
+    <ClInclude Include="GameTimeManager.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="AIController.cpp">
@@ -650,5 +651,6 @@
     </ClCompile>
     <ClCompile Include="ProjectileObject.cpp" />
     <ClCompile Include="EnemyHealth.cpp" />
+    <ClCompile Include="GameTimeManager.cpp" />
   </ItemGroup>
 </Project>

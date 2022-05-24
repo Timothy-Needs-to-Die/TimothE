@@ -132,6 +132,7 @@
     <ClInclude Include="Fighter.h" />
     <ClInclude Include="Font.h" />
     <ClInclude Include="GameObject.h" />
+    <ClInclude Include="GameTimeManager.h" />
     <ClInclude Include="Health.h" />
     <ClInclude Include="Heap.h" />
     <ClInclude Include="HeapManager.h" />
@@ -252,6 +253,7 @@
     <ClCompile Include="Fighter.cpp" />
     <ClCompile Include="Font.cpp" />
     <ClCompile Include="GameObject.cpp" />
+    <ClCompile Include="GameTimeManager.cpp" />
     <ClCompile Include="Health.cpp" />
     <ClCompile Include="Heap.cpp" />
     <ClCompile Include="HeapManager.cpp" />
