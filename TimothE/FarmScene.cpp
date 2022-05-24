@@ -4,7 +4,7 @@
 #include "CameraManager.h"
 #include "Player.h"
 #include "ResourceNodeObject.h"
-#include "Wave.h"
+#include "WaveManager.h"
 #include "OffensiveStructureObject.h"
 #include "AIMovementCompnent.h"
 #include "StructureObject.h"
@@ -131,6 +131,13 @@ void FarmScene::InitScene()
 	_pAITester2 = new GameObject("AI Test2");
 	_pAITester2->GetTransform()->SetScale({ 0.25f, 0.25f });
 	_pAITester2->GetTransform()->SetPosition({ 5.25f, 5.25f });
+
+	WaveManager* pWave = new WaveManager();
+
+	for (int i = 0; i < 100; ++i) {
+		pWave->_daysPast++;
+		pWave->GenerateWave();
+	}
 
 	AIMovementCompnent* mover = _pAITester->AddComponent(new AIMovementCompnent(_pAITester));
 	_pAITester->AddComponent(ResourceManager::GetTexture("fish"));
