@@ -296,6 +296,7 @@ void TileMap::RenderMap(Camera* cam)
 			for (float y = 0.0f; y < _mapSizeInUnits.y; y += _gapBetweenTiles) {
 				//Cycle through the X axis
 				for (float x = 0.0f; x < _mapSizeInUnits.x; x += _gapBetweenTiles) {
+					if (x < xMin || x > xMax || y < yMin || y > yMax) continue;
 
 					//Get the index of the tile
 					int index = _mapInTiles.x * (int)(y * _tilesPerUnit) + (int)(x * _tilesPerUnit);
