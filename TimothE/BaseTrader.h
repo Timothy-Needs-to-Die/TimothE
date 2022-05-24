@@ -6,6 +6,7 @@
 #include "ToolConfig.h"
 #include "ArmourConfig.h"
 #include "SeedConfig.h"
+#include "CropConfig.h"
 
 class CSVReader;
 class PlayerResourceManager;
@@ -25,15 +26,17 @@ public:
 	void OnNewDay();
 
 
-	void OnBuy(PurchaseableConfig item);
+	//void OnBuy(PurchaseableConfig item);
 	void OnBuyTool(ToolConfig tool);
 	void OnBuySeed(SeedConfig seed);
 
 	void OnBuyArmour(ArmourConfig armour);
+
+	void OnSellCrop(CropConfig crop);
 	
 	//void OnBuy(ItemConfig item, HotbarItem type, int amount);
 
-	void OnSell();
+	//void OnSell();
 	void UpdateUI();
 	void LevelUpTrader();
 	TraderConfig* GetConfig() { return &_config; }

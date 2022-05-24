@@ -14,6 +14,7 @@
 #include "ToolConfig.h"
 #include "CropConfig.h"
 #include "CSVReader.h"
+#include "SeedConfig.h"
 //TODO: Document and order this class
 
 class Scene

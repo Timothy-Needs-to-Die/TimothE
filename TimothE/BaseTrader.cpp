@@ -3,6 +3,7 @@
 #include "PlantResourceType.h"
 #include "CoreResourceType.h"
 #include "ItemResourceType.h"
+
 #include "CSVReader.h"
 
 
@@ -47,6 +48,10 @@ void BaseTrader::OnBuySeed(SeedConfig seed)
 			PlayerResourceManager::GetPlantResource((PlantResourceType)seed.type)->GainResource(1);
 
 		}
+		else {
+			//Player cannot afford the item, throw text message to them saying so
+
+		}
 	}
 }
 
@@ -61,9 +66,18 @@ void BaseTrader::OnBuyArmour(ArmourConfig armour) {
 	}
 }
 
-void BaseTrader::OnSell()
+void BaseTrader::OnSellCrop(CropConfig crop)
 {
+	if (PlayerResourceManager::GetPlantResource((PlantResourceType)crop.type)->GetAmount() > 0) {
+		PlayerResourceManager::GetPlantResource((PlantResourceType)crop.type)->SpendResource(1);
+		PlayerResourceManager::GetCoreResource(CoreResourceType::Gold)->GainResource(crop.sellPrice);
+	}
+	else {
+		//Player does not have the resource to sell, throw text message saying so
+	}
 }
+
+
 
 void BaseTrader::UpdateUI()
 {

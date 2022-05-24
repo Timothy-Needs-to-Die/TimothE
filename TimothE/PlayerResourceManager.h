@@ -31,7 +31,7 @@ private:
 	
 	static std::unordered_map<CoreResourceType, PlayerResource> _coreResourceMap;
 	static std::unordered_map<PlantResourceType, PlayerResource> _plantResourceMap;
-	static std::unordered_map<ToolType, PlayerResource> _toolMap; 
+	//static std::unordered_map<ToolType, PlayerResource> _toolMap; 
 	static ArmourConfig _currentArmour; 
 	static ToolConfig _currentSword;
 	static ToolConfig _currentPickaxe;

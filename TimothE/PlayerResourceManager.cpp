@@ -3,6 +3,10 @@
 std::unordered_map<CoreResourceType, PlayerResource> PlayerResourceManager::_coreResourceMap = std::unordered_map<CoreResourceType, PlayerResource>();
 std::unordered_map<PlantResourceType, PlayerResource> PlayerResourceManager::_plantResourceMap = std::unordered_map<PlantResourceType, PlayerResource>();
 //std::unordered_map<HotbarItem, PlayerResource> PlayerResourceManager::_hotbarItemMap = std::unordered_map<HotbarItem, PlayerResource>();
+ArmourConfig PlayerResourceManager::_currentArmour;
+ToolConfig PlayerResourceManager::_currentSword;
+ToolConfig PlayerResourceManager::_currentAxe;
+ToolConfig PlayerResourceManager::_currentPickaxe;
 
 PlayerResourceManager::PlayerResourceManager()
 {

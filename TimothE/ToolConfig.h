@@ -1,6 +1,7 @@
 #pragma once
 #include "PurchaseableConfig.h"
 
+
 enum ToolType {
 	Sword,
 	Pickaxe,

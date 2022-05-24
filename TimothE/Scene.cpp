@@ -362,8 +362,8 @@ void Scene::PopulateSeedVector()
 		newConfig.name = loadedData[i][1];
 		newConfig.price = std::stoi(loadedData[i][2]);
 		newConfig.description = loadedData[i][3];
-		newConfig.growthRate = std::stoi(loadedData[i][4]);
-		newConfig.type = (CropType)std::stoi(loadedData[i][5]);
+		newConfig.growthPerDay = std::stoi(loadedData[i][4]);
+		newConfig.type = (SeedType)std::stoi(loadedData[i][5]);
 	}
 }
 

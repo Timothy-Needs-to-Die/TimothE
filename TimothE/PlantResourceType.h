@@ -1,12 +1,12 @@
 #pragma once
 enum PlantResourceType
 {
-	WheatSeed,
-	CarrotSeed,
-	PotatoSeed,
-	AppleSeed,
-	Wheat,
-	Carrot,
-	Potato,
-	Apple
+	WheatSeedRes,
+	CarrotSeedRes,
+	PotatoSeedRes,
+	AppleSeedRes,
+	WheatRes,
+	CarrotRes,
+	PotatoRes,
+	AppleRes
 };
