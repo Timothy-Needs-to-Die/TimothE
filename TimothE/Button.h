@@ -8,6 +8,7 @@
 #include "Texture2D.h"
 #include "Input.h"
 #include "Console.h"
+#include "TextComponent.h"
 
 using std::string;
 using std::vector;
@@ -34,7 +35,7 @@ public:
 	bool IsHovering() { return _isHovering; }
 	bool IsClicked() { return _isClicked; }
 
-private:	
+private:
 	bool _isHovering;
 	bool _isClicked;
 

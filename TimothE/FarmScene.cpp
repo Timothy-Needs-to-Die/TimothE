@@ -4,7 +4,7 @@
 #include "CameraManager.h"
 #include "Player.h"
 #include "ResourceNodeObject.h"
-#include "Wave.h"
+#include "WaveManager.h"
 #include "OffensiveStructureObject.h"
 #include "AIMovementCompnent.h"
 #include "StructureObject.h"
@@ -70,12 +70,36 @@ void FarmScene::UpdateObjects()
 		}
 	}
 
+	if (Input::IsKeyUp(KEY_I)) {
+		_inventoryKeyPressed = false;
+	}
+
+	if (Input::IsKeyDown(KEY_I)) {
+		if (_inventoryKeyPressed) return;
+
+		_inventoryKeyPressed = true;
+
+		bool current = _pInventoryScreen->GetAllActive();
+
+		_pInventoryScreen->SetAllActive(!current);
+		_pInventoryScreen->OnUpdate();
+		//if (_pInventoryScreen == nullptr)
+		//{
+			//_pInventoryScreen->GetTransform()->SetPosition(50.0f, 50.0f);
+			//_pInventoryScreen->GetTransform()->SetScale({ 0.25f, 0.25f });
+		//}
+	}
+
 	Physics::UpdateWorld();
 }
 
 void FarmScene::InitScene()
 {
 	Scene::InitScene();
+
+	_pInventoryScreen = new InventoryScreen();
+	AddGameObject(_pInventoryScreen);
+	_pInventoryScreen->SetAllActive(false);
 
 	_pSpritesheet = ResourceManager::GetSpriteSheet("testSheet");
 
@@ -143,6 +167,13 @@ void FarmScene::InitScene()
 	_pAITester2 = new GameObject("AI Test2");
 	_pAITester2->GetTransform()->SetScale({ 0.25f, 0.25f });
 	_pAITester2->GetTransform()->SetPosition({ 5.25f, 5.25f });
+
+	WaveManager* pWave = new WaveManager();
+
+	for (int i = 0; i < 100; ++i) {
+		pWave->_daysPast++;
+		pWave->GenerateWave();
+	}
 
 	AIMovementCompnent* mover = _pAITester->AddComponent(new AIMovementCompnent(_pAITester));
 	_pAITester->AddComponent(ResourceManager::GetTexture("fish"));

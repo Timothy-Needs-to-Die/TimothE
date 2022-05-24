@@ -22,15 +22,14 @@ struct TextCharacter
 class Font
 {
 private:
-	unsigned int _VAO = 0;
-	unsigned int _VBO = 0;
+	unsigned int _VAO;// = 0;
+	unsigned int _VBO;// = 0;
 	std::string _name;
 	std::map<char, TextCharacter> _characters;
-	
+
 public:
 	Font(std::string font);
 	~Font();
 
 	void RenderText(Shader& s, std::string text, float x, float y, float scale, glm::vec3 color);
 };
-

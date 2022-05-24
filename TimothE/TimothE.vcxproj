@@ -82,10 +82,10 @@
   <ItemGroup>
     <ClInclude Include="AIController.h" />
     <ClInclude Include="AIMovementCompnent.h" />
-    <ClInclude Include="ArmourConfig.h" />
     <ClInclude Include="AStar.h" />
     <ClInclude Include="AnimatedSpritesheet.h" />
     <ClInclude Include="Application.h" />
+    <ClInclude Include="ArmourConfig.h" />
     <ClInclude Include="AudioEngine.h" />
     <ClInclude Include="AudioSource.h" />
     <ClInclude Include="BaseTrader.h" />
@@ -147,6 +147,7 @@
     <ClInclude Include="Imgui\imstb_textedit.h" />
     <ClInclude Include="Imgui\imstb_truetype.h" />
     <ClInclude Include="Input.h" />
+    <ClInclude Include="InventoryScreen.h" />
     <ClInclude Include="ItemConfig.h" />
     <ClInclude Include="ItemResourceType.h" />
     <ClInclude Include="MemoryManager.h" />
@@ -167,7 +168,6 @@
     <ClInclude Include="ResourceManager.h" />
     <ClInclude Include="ResourceNode.h" />
     <ClInclude Include="ResourceNodeObject.h" />
-    <ClInclude Include="SeedConfig.h" />
     <ClInclude Include="SOIL\SOIL2.h" />
     <ClInclude Include="SOIL\image_DXT.h" />
     <ClInclude Include="SOIL\image_helper.h" />
@@ -187,6 +187,7 @@
     <ClInclude Include="SOIL\wfETC.h" />
     <ClInclude Include="Scene.h" />
     <ClInclude Include="SceneManager.h" />
+    <ClInclude Include="SeedConfig.h" />
     <ClInclude Include="SellableConfig.h" />
     <ClInclude Include="Serializable.h" />
     <ClInclude Include="Sprite.h" />
@@ -211,7 +212,7 @@
     <ClInclude Include="TraderConfig.h" />
     <ClInclude Include="Transform.h" />
     <ClInclude Include="UID.h" />
-    <ClInclude Include="Wave.h" />
+    <ClInclude Include="WaveManager.h" />
     <ClInclude Include="WeaponConfig.h" />
     <ClInclude Include="pch.h" />
   </ItemGroup>
@@ -265,6 +266,7 @@
     <ClCompile Include="Imgui\imgui_tables.cpp" />
     <ClCompile Include="Imgui\imgui_widgets.cpp" />
     <ClCompile Include="Input.cpp" />
+    <ClCompile Include="InventoryScreen.cpp" />
     <ClCompile Include="MemoryManager.cpp" />
     <ClCompile Include="MovementComponent.cpp" />
     <ClCompile Include="OffensiveStructureObject.cpp" />
@@ -299,7 +301,7 @@
     <ClCompile Include="TileMapEditor.cpp" />
     <ClCompile Include="TownScene.cpp" />
     <ClCompile Include="Transform.cpp" />
-    <ClCompile Include="Wave.cpp" />
+    <ClCompile Include="WaveManager.cpp" />
     <ClCompile Include="pch.cpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
