@@ -58,14 +58,8 @@ void Fighter::Attack(GameObject* instigator)
 		
 		float dot = glm::dot(dir, fighterForward);
 
-		//std::cout << "Dot: " << dot << std::endl;
-
-		if (dot >= 0.0f) {
+		if (dot >= 0.3f) {
 			obj->TakeDamage(_weaponConfig.damage, instigator);
-			//std::cout << "Would hit!" << std::endl;
-		}
-		else {
-			//std::cout << "Would not hit!" << std::endl;
 		}
 	}
 
@@ -73,6 +67,7 @@ void Fighter::Attack(GameObject* instigator)
 
 void Fighter::OnStart()
 {
+
 }
 
 void Fighter::OnUpdate()
