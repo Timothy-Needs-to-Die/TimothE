@@ -11,10 +11,12 @@
 #include "GameTimeManager.h"
 #include "Bed.h"
 #include "PlayerHealth.h"
+#include "AIController.h"
+#include "Enemy.h"
 
 FarmScene::~FarmScene()
 {
-	
+
 }
 
 void FarmScene::UpdateUI()
@@ -46,7 +48,7 @@ void FarmScene::UpdateObjects()
 			}
 		}
 	}*/
-	
+
 	if (!_pGameTime->IsDay()) {
 		if (Input::IsKeyDown(KEY_P)) {
 			_pGameTime->EndNight();
@@ -74,6 +76,7 @@ void FarmScene::UpdateObjects()
 		//}
 	}
 
+
 	Physics::UpdateWorld();
 }
 
@@ -98,9 +101,9 @@ void FarmScene::InitScene()
 
 	//_pStartButton->GetTransform()->SetPosition(0.0f, 0.0f);
 	//_pStartButton->GetTransform()->SetScale({ 0.2f, 0.2f });
-	GameObject* pPathFinder = new GameObject("Pathfinder");
-	pPathFinder->AddComponent<AStar>(new AStar(pPathFinder));
-	AddGameObject(pPathFinder);
+	//GameObject* pPathFinder = new GameObject("Pathfinder");
+	//pPathFinder->AddComponent<AStar>(new AStar(pPathFinder));
+	//AddGameObject(pPathFinder);
 
 	_pWeaponObject = new GameObject("Weapon");
 	_pWeaponObject->AddComponent<Texture2D>(ResourceManager::GetTexture("swords"));
@@ -116,11 +119,15 @@ void FarmScene::InitScene()
 	_pPlayer = new Player();
 	AddGameObject(_pPlayer);
 
+	//_pAStar = new GameObject("Pather");
+	//AStar* path = _pAStar->AddComponent(new AStar(_pAStar));
+	//path->SetMap(SceneManager::GetCurrentScene()->GetTileMap());
+
 	//_pWaveController = new WaveController(this);
 
 	//_pDay = new Day();
 	//_pDay->SetWaveController(_pWaveController);
-	
+
 	_pWoodNode = new ResourceNodeObject(Wood);
 	_pWoodNode->GetTransform()->SetPosition(5.0f, 1.0f);
 	AddGameObject(_pWoodNode);
@@ -140,65 +147,13 @@ void FarmScene::InitScene()
 
 	farmland = new FarmlandManager("Farmland Manager");
 	AddGameObject(farmland);
-
-	//OffensiveStructureObject* _pTower = new OffensiveStructureObject("Test Tower");
-	//AddGameObject(_pTower);
-
-	_pAITester = new GameObject("AI Test");
-	_pAITester->GetTransform()->SetScale({ 0.25f, 0.25f }); 
-	_pAITester->GetTransform()->SetPosition({ 5.25f, 2.25f });
-	_pAITester2 = new GameObject("AI Test2");
-	_pAITester2->GetTransform()->SetScale({ 0.25f, 0.25f });
-	_pAITester2->GetTransform()->SetPosition({ 5.25f, 5.25f });
-
-	WaveManager* pWave = new WaveManager();
-
-	for (int i = 0; i < 100; ++i) {
-		pWave->_daysPast++;
-		pWave->GenerateWave();
-	}
-
-	AIMovementCompnent* mover = _pAITester->AddComponent(new AIMovementCompnent(_pAITester));
-	_pAITester->AddComponent(ResourceManager::GetTexture("fish"));
-	mover->SetAllowCollisions(false);
-
-	mover->SetDestination(glm::vec2(7.0f, 1.5f));
-
-	AddGameObject(_pAITester);
-
-	//LIGHTING TEST CODE//
-	//Light Level Manager Setup
-	_pLightManager = new LightLevelManager(_pTilemap);
-	_pLightManager->SetWorldLightLevel(5);
-	_pLightManager->SetMinLightLevel(1);
-	_pLightManager->SetMaxLightLevel(8);
-
-	//Add Light Sources
-	LightSource campfire = LightSource();
-	campfire.worldPos = glm::vec2(16.75f, 3.0f);
-	_pLightManager->AddLightSource(campfire);
-
-	//Update Light Map
-	_pLightManager->UpdateLightMap();
-	//LIGHTING END//
-	
-	AIMovementCompnent* mover2 = _pAITester2->AddComponent(new AIMovementCompnent(_pAITester2));
-	_pAITester2->AddComponent(ResourceManager::GetTexture("fish"));
-	mover2->SetAllowCollisions(false);
-
-	mover2->SetDestination(glm::vec2(7.25f, 2.25f));
-
-	AddGameObject(_pAITester2);
-
-	_pBed = new Bed();
-	_pBed->GetTransform()->SetPosition(7.0f, 3.0f);
-	AddGameObject(_pBed);
 }
 
 void FarmScene::AddStructure(StructureObject* object)
 {
 	AddGameObject(object);
 	_pStructures.emplace_back(object);
+	_pAstarObject->UpdateNodeObstacleStatus(_pTilemap->GetTileAtWorldPos(0, object->GetTransform()->GetPosition())->pos, true);
 }
 
 void FarmScene::RemoveStructure(StructureObject* object)
@@ -209,6 +164,8 @@ void FarmScene::RemoveStructure(StructureObject* object)
 		if (pObject != object) continue;
 
 		_pTilemap->SetCollidableAtLayer(5, pObject->GetTransform()->GetPosition(), false);
+
+		_pAstarObject->UpdateNodeObstacleStatus(_pTilemap->GetTileAtWorldPos(0, pObject->GetTransform()->GetPosition())->pos, false);
 	}
 
 	std::vector<StructureObject*>::iterator it = std::find(_pStructures.begin(), _pStructures.end(), object);

@@ -3,7 +3,7 @@
 class ProjectileObject : public GameObject
 {
 public:
-	ProjectileObject(glm::vec2 spawnPosition, glm::vec2 direction, std::string name = "PROJECTILE", std::string tag = "PROJECTILE");
+	ProjectileObject(glm::vec2 spawnPosition, glm::vec2 direction, GameObject* owner, std::string name = "PROJECTILE", std::string tag = "PROJECTILE");
 
 	virtual void UniqueLogic() override;
 
@@ -13,7 +13,7 @@ private:
 
 	class MovementComponent* _pMover = nullptr;
 	class BoxColliderComponent* _pBoxCollider = nullptr;
-	
+	GameObject* _pOwningTower = nullptr;
 
 
 };

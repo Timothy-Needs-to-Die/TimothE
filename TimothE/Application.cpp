@@ -170,6 +170,7 @@ void Application::GameLoop()
 		ImGuiManager::ImGuiEndFrame();
 
 		Window::SwapBuffers();
+		Window::ShowFPS(Time::GetDeltaTime());
 
 		previousTime = deltaTime;
 

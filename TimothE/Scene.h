@@ -68,9 +68,6 @@ public:
 		_pTilemap = nullptr;
 	}
 
-	static void CircleBoxTest();
-	static void SceneBox();
-
 	std::string GetName() const { return _name; }
 
 	GameObject* AddGameObject(GameObject* gameObject);
@@ -108,6 +105,8 @@ public:
 	template<typename T>
 	static T* FindObjectOfType() {
 		for (GameObject* obj : _listOfGameObjects) {
+			if (obj->IsToBeDestroyed()) continue;
+
 			T* comp = obj->GetComponent<T>();
 			if (comp != nullptr)
 			{
@@ -122,6 +121,8 @@ public:
 	static std::vector<T*> FindObjectsOfType() {
 		std::vector<T*> compList;
 		for (GameObject* obj : _listOfGameObjects) {
+			if (obj->IsToBeDestroyed()) continue;
+
 			T* comp = obj->GetComponent<T>();
 			if (comp != nullptr)
 			{
@@ -138,6 +139,8 @@ public:
 	void PopulateToolVector();
 	void PopulateSeedVector();
 	void PopulateCropVector();
+
+	class AStar* GetAStar() const;
 	
 	virtual void GameOver() {}
 
@@ -159,4 +162,6 @@ protected:
 	std::vector<GameObject*> _gameObjectsToRemove;
 
 	bool _isInitialized = false;
+
+	class AStar* _pAstarObject = nullptr;
 };

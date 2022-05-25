@@ -1,5 +1,6 @@
 #include "Renderer2D.h"
 #include "OpenGLError.h"
+#include "../../ResourceManager.h"
 
 struct QuadVertex {
 	glm::vec3 position;
@@ -95,7 +96,7 @@ void Renderer2D::Init()
 	_uiData.quadVertexArray->SetIndexBuffer(quadIB);
 	delete[] quadIndices;
 
-	_data.whiteTexture = new Texture2D("whiteTexture.png", "WhiteTexture");
+	_data.whiteTexture = ResourceManager::GetTexture("whiteTexture");
 	_uiData.whiteTexture = _data.whiteTexture;
 
 	unsigned int samplers[_data.maxTextureSlots];
@@ -105,7 +106,7 @@ void Renderer2D::Init()
 
 	_data.textureShader = std::make_shared<Shader>("vs_Texture.vert", "fr_Texture.frag");
 	_uiData.textureShader = std::make_shared<Shader>("vr_UIShader.vert", "fr_UIShader.frag");
-	
+
 	_data.textureSlots[0] = _data.whiteTexture;
 	_uiData.textureSlots[0] = _uiData.whiteTexture;
 
@@ -220,7 +221,7 @@ void Renderer2D::DrawUIQuad(const glm::mat4& transform, Texture2D* texture, glm:
 	_uiData.quadIndexCount += 6;
 }
 
-void Renderer2D::DrawUIQuad(const Quad& quad, Texture2D* texture /*= nullptr*/, glm::vec2* uvCoordinates /*= nullptr*/ , glm::vec4& tintColor /*= glm::vec4(1.0f)*/, float tilingFactor /*= 1.0f*/)
+void Renderer2D::DrawUIQuad(const Quad& quad, Texture2D* texture /*= nullptr*/, glm::vec2* uvCoordinates /*= nullptr*/, glm::vec4& tintColor /*= glm::vec4(1.0f)*/, float tilingFactor /*= 1.0f*/)
 {
 	glm::mat4 transform = glm::translate(glm::mat4(1.0f), glm::vec3(quad.position, 0.0f)) * glm::scale(glm::mat4(1.0f), glm::vec3(quad.size, 1.0f));
 	DrawUIQuad(transform, texture, uvCoordinates, tilingFactor, tintColor);
@@ -245,7 +246,7 @@ void Renderer2D::DrawQuad(const glm::mat4& transform, Texture2D* texture, glm::v
 	if (texture == nullptr) {
 		textureIndex = 0.0f;
 	}
-	else{
+	else {
 		for (uint32_t i = 1; i < _data.textureSlotIndex; i++)
 		{
 			if (_data.textureSlots[i] == texture)

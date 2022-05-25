@@ -659,4 +659,7 @@
     <ClCompile Include="PlayerHealth.cpp" />
     <ClCompile Include="LightLevelManager.cpp" />
   </ItemGroup>
+  <ItemGroup>
+    <None Include="Node.h" />
+  </ItemGroup>
 </Project>

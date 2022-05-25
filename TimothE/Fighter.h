@@ -17,7 +17,7 @@ public:
 		_weaponConfig = config;
 	}
 
-	void Attack();
+	void Attack(GameObject* instigator);
 
 
 	// Inherited via Component

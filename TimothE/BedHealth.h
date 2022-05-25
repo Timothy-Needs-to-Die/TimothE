@@ -9,7 +9,7 @@ public:
 	BedHealth(GameObject* pOwner, int health);
 
 protected:
-	virtual void OnDeath() override;
-	virtual void OnDamage() override;
+	virtual void OnDeath(GameObject* instigator) override;
+	virtual void OnDamage(GameObject* instigator) override;
 };
 

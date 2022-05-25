@@ -40,6 +40,10 @@ void ResourceManager::Init()
 	ResourceManager::InstantiateTexture("small_coal", new Texture2D("Resources/Images/Coal.png"));
 	ResourceManager::InstantiateTexture("planks", new Texture2D("Resources/Images/Planks.png"));
 	ResourceManager::InstantiateTexture("wall", new Texture2D("Resources/Images/Wall.png", true));
+	ResourceManager::InstantiateTexture("tower", new Texture2D("Resources/Images/Tower.png", true));
+	ResourceManager::InstantiateTexture("fireball", new Texture2D("Resources/Images/Fireball.png", true));
+	ResourceManager::InstantiateTexture("whiteTexture", new Texture2D("Resources/Images/whiteTexture.png"));
+
 
 	//LOAD SPRITESHEETS
 	ResourceManager::InstantiateSpritesheet("spritesheet", new SpriteSheet(ResourceManager::GetTexture("spritesheet"), 64, 64, "spritesheet"));

@@ -1,17 +1,15 @@
 #include "EnemyHealth.h"
+#include "AIController.h"
 
 EnemyHealth::EnemyHealth(GameObject* pOwner, int startingHealth)
-	: Health(pOwner)
+	: Health(pOwner, startingHealth) {}
+
+void EnemyHealth::OnDeath(GameObject* instigator)
 {
-	SetMaxHealth(startingHealth);
+	SceneManager::GetCurrentScene()->RemoveGameObject(_pParentObject);
 }
 
-void EnemyHealth::OnDeath()
+void EnemyHealth::OnDamage(GameObject* instigator)
 {
-
-}
-
-void EnemyHealth::OnDamage()
-{
-
+	_pParentObject->GetComponent<AIController>()->AttackedBy(instigator);
 }

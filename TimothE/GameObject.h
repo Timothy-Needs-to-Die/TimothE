@@ -131,11 +131,13 @@ public:
 
 
 	bool IsActive() { return _isActive; }
-	void SetActive(bool val) { 
-		_isActive = val; 
+	void SetActive(bool val) {
+		_isActive = val;
 		TIM_LOG_LOG("IsActive: " << _isActive);
 	}
 
+	bool IsToBeDestroyed() const { return _toBeDestroyed; }
+	void SetToBeDestroyed(bool val) { _toBeDestroyed = val; }
 
 private:
 	///////////////////////////////////
@@ -159,6 +161,8 @@ protected:
 	/////////////
 	GameObject* _pParent = nullptr;
 	GameObject* _pChild = nullptr;
+
+	bool _toBeDestroyed = false;
 
 	virtual void UniqueLogic();
 };

@@ -12,6 +12,8 @@
 #include "SpriteComponent.h"
 #include "Time.h"
 
+#include "AStar.h"
+
 std::vector<GameObject*> Scene::_listOfGameObjects;
 std::vector<GameObject*> Scene::_listOfDrawableGameObjects;
 
@@ -43,6 +45,9 @@ void Scene::InitScene()
 
 
 	_pTilemap = new TileMap(_name);
+
+	_pAstarObject = new AStar();
+	_pAstarObject->SetMap(_pTilemap);
 }
 
 void Scene::SceneEnd()
@@ -62,6 +67,8 @@ void Scene::EditorUpdate()
 	//Cycles through all gameobjects in the scene and calculates there transform.
 	//Needed for the editor window to work smoothly
 	for (GameObject* obj : _listOfGameObjects) {
+		if (obj->IsToBeDestroyed()) continue;
+
 		obj->GetTransform()->CalculateTransformMatrix();
 		TextComponent* tc = obj->GetComponent<TextComponent>();
 		if (tc != nullptr) {
@@ -87,9 +94,11 @@ void Scene::UpdateObjects()
 	//Cycles through all gameobjects in the scene and updates them
 	for (GameObject* obj : _listOfGameObjects)
 	{
+		if (obj->IsToBeDestroyed()) continue;
 		if (obj->IsActive()) {
 			obj->Update();
 		}
+
 	}
 
 	Physics::UpdateWorld();
@@ -130,6 +139,7 @@ void Scene::RenderScene(Camera* cam)
 
 	for (auto& obj : _listOfDrawableGameObjects) {
 		if (!obj->IsActive()) continue;
+		if (obj->IsToBeDestroyed()) continue;
 
 		//TODO: Text won't render here as it uses its own internal texture data.
 		Texture2D* objTex = obj->GetComponent<Texture2D>();
@@ -173,16 +183,6 @@ void Scene::RenderScene(Camera* cam)
 	}
 }
 
-void Scene::CircleBoxTest()
-{
-	std::cout << "Circle Box Collision" << std::endl;
-}
-
-void Scene::SceneBox()
-{
-	std::cout << "Collide with scene transfer" << std::endl;
-}
-
 GameObject* Scene::AddGameObject(GameObject* gameObject)
 {
 	_listOfGameObjects.push_back(gameObject);
@@ -192,6 +192,8 @@ GameObject* Scene::AddGameObject(GameObject* gameObject)
 void Scene::RemoveGameObject(GameObject* gameObject)
 {
 	std::vector<GameObject*>::const_iterator it = std::find(_gameObjectsToRemove.begin(), _gameObjectsToRemove.end(), gameObject);
+
+	gameObject->SetToBeDestroyed(true);
 
 	if (it == _gameObjectsToRemove.end()) {
 		_gameObjectsToRemove.emplace_back(gameObject);
@@ -293,6 +295,7 @@ GameObject* Scene::GetGameObjectByName(std::string name)
 	//Cycles through all gameobjects in the scene
 	for (GameObject* obj : _listOfGameObjects) {
 		if (!obj->IsActive()) continue;
+		if (obj->IsToBeDestroyed()) continue;
 
 		//if the gameobjects name matches the passed in one
 		if (obj->GetName() == name) {
@@ -309,6 +312,7 @@ GameObject* Scene::GetGameObjectByID(std::string id)
 	for (GameObject* obj : _listOfGameObjects) {
 		if (!obj->IsActive()) continue;
 
+		if (obj->IsToBeDestroyed()) continue;
 		//if the ID matches
 		if (obj->GetUID() == id) {
 			//Returns the object
@@ -330,6 +334,7 @@ std::vector<GameObject*> Scene::GetGameObjectsByName(std::string name)
 	for (GameObject* obj : _listOfGameObjects) {
 		if (!obj->IsActive()) continue;
 
+		if (obj->IsToBeDestroyed()) continue;
 		//Checks if the names matchup
 		if (obj->GetName() == name) {
 			//Adds the object to the vector
@@ -343,11 +348,12 @@ std::vector<GameObject*> Scene::GetGameObjectsByName(std::string name)
 
 
 
-//Find first GameObject with the desired tag 
+//Find first GameObject with the desired tag
 GameObject* Scene::FindObjectWithTag(const std::string& tagName)
 {
 	for (GameObject* obj : _listOfGameObjects) {
 		if (!obj->IsActive()) continue;
+		if (obj->IsToBeDestroyed()) continue;
 
 		if (obj->GetTag() == tagName) {
 			return obj;
@@ -361,6 +367,7 @@ std::vector<GameObject*> Scene::FindGameObjectsWithTag(const std::string& tagNam
 	std::vector<GameObject*> objects;
 	for (GameObject* obj : _listOfGameObjects) {
 		if (!obj->IsActive()) continue;
+		if (obj->IsToBeDestroyed()) continue;
 
 		if (obj->GetTag() == tagName) {
 			objects.emplace_back(obj);
@@ -412,4 +419,9 @@ void Scene::PopulateCropVector()
 		newConfig.description = loadedData[i][3];
 		newConfig.type = (CropType)std::stoi(loadedData[i][5]);
 	}
+}
+
+class AStar* Scene::GetAStar() const
+{
+	return _pAstarObject;
 }

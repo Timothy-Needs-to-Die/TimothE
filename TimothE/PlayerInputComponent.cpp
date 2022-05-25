@@ -27,7 +27,7 @@ void PlayerInputComponent::OnUpdate()
 	}
 
 	if (Input::IsKeyDown(KEY_SPACE)) {
-		_pFighter->Attack();
+		_pFighter->Attack(_pParentObject);
 	}
 
 	if (_pNearbyResourceNode != nullptr) {
@@ -134,7 +134,7 @@ void PlayerInputComponent::BuildControls()
 			return;
 		}
 
-		if (PlayerResourceManager::CanAfford(cost)) {
+		//if (PlayerResourceManager::CanAfford(cost)) {
 
 			if (!pTilemap->CollidableAtPosition(tilePos)) {
 				StructureObject* pObject;
@@ -159,14 +159,13 @@ void PlayerInputComponent::BuildControls()
 				pTilemap->SetCollidableAtLayer(5, tilePos, true);
 
 				pTransform->SetPosition(tilePos);
-				pTransform->SetScale({ 0.25f,0.25f });
 
 				pFarmScene->AddStructure(pObject);
 
-				PlayerResourceManager::SpendResources(cost);
+				//PlayerResourceManager::SpendResources(cost);
 
 			}
-		}
+		//}
 	}
 
 	if (Input::IsMouseButtonDown(BUTTON_RIGHT)) {

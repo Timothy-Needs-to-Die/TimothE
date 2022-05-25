@@ -5,11 +5,11 @@ StructureObject::StructureObject(std::string name, std::string tag)
 	:  GameObject(name, tag)
 {
 	if (tag == "WALL") {
-		AddComponent(new Texture2D("Resources/Images/Wall.png", true));
+		AddComponent(ResourceManager::GetTexture("wall"));
 	}
 	else {
-		AddComponent(new Texture2D("Resources/Images/Tower.png", true));
+		AddComponent(ResourceManager::GetTexture("tower"));
 	}
 
-	_pHealth = AddComponent(new StructureHealth(this, 10));
+	_pHealth = AddComponent(new StructureHealth(this, 100));
 }
