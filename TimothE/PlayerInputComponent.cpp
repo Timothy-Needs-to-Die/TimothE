@@ -155,9 +155,6 @@ void PlayerInputComponent::BuildControls()
 				}
 
 				Transform* pTransform = pObject->GetTransform();
-
-				pTilemap->SetCollidableAtLayer(5, tilePos, true);
-
 				pTransform->SetPosition(tilePos);
 
 				pFarmScene->AddStructure(pObject);

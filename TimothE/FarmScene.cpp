@@ -13,6 +13,7 @@
 #include "PlayerHealth.h"
 #include "AIController.h"
 #include "Enemy.h"
+#include "StreamFile.h"
 
 FarmScene::~FarmScene()
 {
@@ -76,6 +77,13 @@ void FarmScene::UpdateObjects()
 		//}
 	}
 
+	if (Input::IsKeyDown(KEY_1)) {
+		SaveScene("Resources/PlayerSaves/FarmSceneSaveData.sav");
+	}
+	
+	if (Input::IsKeyDown(KEY_2)) {
+		LoadScene("Resources/PlayerSaves/FarmSceneSaveData.sav");
+	}
 
 	Physics::UpdateWorld();
 }
@@ -117,6 +125,7 @@ void FarmScene::InitScene()
 	AddGameObject(_pWeaponObject);
 
 	_pPlayer = new Player();
+	_pPlayer->GetTransform()->SetPosition(7.0f, 3.5f);
 	AddGameObject(_pPlayer);
 
 	//_pWaveController = new WaveController(this);
@@ -152,12 +161,64 @@ void FarmScene::InitScene()
 
 	//Add Light Sources
 	LightSource campfire = LightSource();
-	campfire.worldPos = glm::vec2(16.75f, 3.0f);
+	campfire.worldPos = glm::vec2(4.0f, 3.0f);
 	_pLightManager->AddLightSource(campfire);
 
 	//Update Light Map
 	_pLightManager->UpdateLightMap();
 	//LIGHTING END//
+
+	LoadScene("Resources/PlayerSaves/FarmSceneSaveData.sav");
+}
+
+void FarmScene::SaveScene(std::string filename)
+{
+	StreamFile stream;
+
+	stream.OpenWrite(filename);
+
+	WriteInt(stream, _pStructures.size());
+
+	for (int i = 0; i < _pStructures.size(); ++i) {
+		StructureObject* obj = _pStructures[i];
+
+		WriteVec2(stream, obj->GetTransform()->GetPosition());
+
+		WriteString(stream, obj->GetTag());
+	}
+
+	stream.Close();
+}
+
+void FarmScene::LoadScene(std::string filename)
+{
+	_pStructures.clear();
+
+	StreamFile stream;
+
+	stream.OpenRead(filename);
+
+	//_pStructures.resize(ReadInt(stream));
+	int size = ReadInt(stream);
+
+	for (int i = 0; i < size; ++i) {
+		StructureObject* object;
+
+		glm::vec2 pos = ReadVec2(stream);
+		std::string tag = ReadString(stream);
+
+		if (tag == "WALL") {
+			object = new StructureObject("Wall", tag);
+		}
+		else if (tag == "TOWER") {
+			object = new OffensiveStructureObject("Tower", tag);
+		}
+
+		object->GetTransform()->SetPosition(pos);
+		AddStructure(object);
+	}
+
+	stream.Close();
 }
 
 void FarmScene::AddStructure(StructureObject* object)
@@ -165,6 +226,7 @@ void FarmScene::AddStructure(StructureObject* object)
 	AddGameObject(object);
 	_pStructures.emplace_back(object);
 	_pAstarObject->UpdateNodeObstacleStatus(_pTilemap->GetTileAtWorldPos(0, object->GetTransform()->GetPosition())->pos, true);
+	_pTilemap->GetTileAtWorldPos(5, object->GetTransform()->GetPosition())->collidable = true;
 }
 
 void FarmScene::RemoveStructure(StructureObject* object)
@@ -177,6 +239,7 @@ void FarmScene::RemoveStructure(StructureObject* object)
 		_pTilemap->SetCollidableAtLayer(5, pObject->GetTransform()->GetPosition(), false);
 
 		_pAstarObject->UpdateNodeObstacleStatus(_pTilemap->GetTileAtWorldPos(0, pObject->GetTransform()->GetPosition())->pos, false);
+		_pTilemap->GetTileAtWorldPos(5, pObject->GetTransform()->GetPosition())->collidable = false;
 	}
 
 	std::vector<StructureObject*>::iterator it = std::find(_pStructures.begin(), _pStructures.end(), object);
