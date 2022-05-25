@@ -403,6 +403,7 @@
     <ClInclude Include="Bed.h" />
     <ClInclude Include="BedHealth.h" />
     <ClInclude Include="PlayerHealth.h" />
+    <ClInclude Include="GameOverScreen.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="AIController.cpp">
@@ -656,6 +657,7 @@
     <ClCompile Include="Bed.cpp" />
     <ClCompile Include="BedHealth.cpp" />
     <ClCompile Include="PlayerHealth.cpp" />
+    <ClCompile Include="GameOverScreen.cpp" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Node.h" />

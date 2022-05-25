@@ -6,6 +6,7 @@
 #include "Fighter.h"
 #include "Health.h"
 #include "InventoryScreen.h"
+#include "GameOverScreen.h"
 
 #include "ResourceNode.h"
 #include "FarmlandManager.h"
@@ -55,6 +56,7 @@ private:
 	class GameTimeManager* _pGameTime = nullptr;
 
 	class InventoryScreen* _pInventoryScreen = nullptr;
+	class GameOverScreen* _pGameOverScreen = nullptr;
 
 	//Farmland
 	FarmlandManager* farmland;
