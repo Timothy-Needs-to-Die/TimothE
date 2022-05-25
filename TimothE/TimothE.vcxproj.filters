@@ -398,7 +398,6 @@
     </ClInclude>
     <ClInclude Include="ProjectileObject.h" />
     <ClInclude Include="EnemyHealth.h" />
-    <ClInclude Include="NodeHeap.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="AIController.cpp">

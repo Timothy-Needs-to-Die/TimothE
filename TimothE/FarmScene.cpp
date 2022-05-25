@@ -58,6 +58,18 @@ void FarmScene::UpdateObjects()
 	//	}
 	//}
 
+	if (Input::IsKeyUp(KEY_E)) {
+		spawnEnemyKey = true;
+	}
+
+	if (Input::IsKeyDown(KEY_E)) {
+		if (spawnEnemyKey) {
+			spawnEnemyKey = false;
+			Enemy* pEnemy = new Enemy();
+			AddGameObject(pEnemy);
+		}
+	}
+
 	if (Input::IsKeyDown(KEY_G)) {
 		//_pTilemap->AddTileAt(2, 15, 12, CameraManager::CurrentCamera());
 	}
@@ -126,18 +138,6 @@ void FarmScene::InitScene()
 
 	farmland = new FarmlandManager("Farmland Manager");
 	AddGameObject(farmland);
-
-	//OffensiveStructureObject* _pTower = new OffensiveStructureObject("Test Tower");
-	//AddGameObject(_pTower);
-
-	_pEnemyA = new Enemy();
-	_pEnemyA->GetTransform()->SetPosition({ 5.25f, 2.25f });
-	AddGameObject(_pEnemyA);
-
-	_pEnemyB = new Enemy();
-	_pEnemyB->GetTransform()->SetPosition({ 5.25f, 5.25f });
-	AddGameObject(_pEnemyB);
-
 }
 
 void FarmScene::AddStructure(StructureObject* object)

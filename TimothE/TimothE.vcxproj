@@ -149,7 +149,6 @@
     <ClInclude Include="ItemResourceType.h" />
     <ClInclude Include="MemoryManager.h" />
     <ClInclude Include="MovementComponent.h" />
-    <ClInclude Include="NodeHeap.h" />
     <ClInclude Include="OffensiveStructureObject.h" />
     <ClInclude Include="Particle.h" />
     <ClInclude Include="ParticleSystem.h" />

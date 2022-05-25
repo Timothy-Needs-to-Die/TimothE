@@ -42,9 +42,6 @@ private:
 	GameObject* _pStartButton = nullptr;
 	GameObject* _pWeaponObject = nullptr;
 
-	class Enemy* _pEnemyA = nullptr;
-	class Enemy* _pEnemyB = nullptr;
-
 	SpriteSheet* _pSpritesheet;
 
 	//class WaveController* _pWaveController = nullptr;
@@ -63,6 +60,7 @@ private:
 	//Farmland
 	FarmlandManager* farmland;
 	bool farmKeyPressed = false;
+	bool spawnEnemyKey = false;
 
 	std::vector<class StructureObject*> _pStructures;
 };

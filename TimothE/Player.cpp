@@ -8,7 +8,7 @@ Player::Player(std::string name /*= "Player"*/, std::string tag /*= "PLAYER"*/)
 	: Character(name, tag)
 {
 	_pInput = AddComponent(new PlayerInputComponent(this));
-	_pHealth = AddComponent(new Health(this));
+	_pHealth = AddComponent(new Health(this, 100));
 	_pFighter = AddComponent(new Fighter(this));
 	_pCollider = AddComponent(new BoxColliderComponent(this));
 	_pCollider->SetTrigger(true);
@@ -17,6 +17,4 @@ Player::Player(std::string name /*= "Player"*/, std::string tag /*= "PLAYER"*/)
 void Player::UniqueLogic()
 {
 	Character::UniqueLogic();
-
-
 }

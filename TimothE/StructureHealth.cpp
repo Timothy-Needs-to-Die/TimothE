@@ -5,10 +5,7 @@
 
 
 StructureHealth::StructureHealth(GameObject* owner, int health)
-	: Health(owner)
-{
-	SetMaxHealth(health);
-}
+	: Health(owner, health) {}
 
 void StructureHealth::OnDamage(GameObject* instigator)
 {

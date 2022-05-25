@@ -110,7 +110,7 @@ void WaveController::SpawnWave()
 
 		_enemies[i]->GetTransform()->SetPosition(x, y);
 		_enemies[i]->GetTransform()->SetScale({ 0.25f, 0.45f });
-		Health* h = new Health(_enemies[i]);
+		Health* h = new Health(_enemies[i], 20);
 		h->SetMaxHealth(50);
 		_enemies[i]->AddComponent(h);
 		_pCurrentScene->AddGameObject(_enemies[i]);
