@@ -53,6 +53,8 @@ void FarmScene::UpdateObjects()
 		if (Input::IsKeyDown(KEY_P)) {
 			_pGameTime->EndNight();
 			_pGameTime->StartNewDay();
+			// Tell the farmland that a new day has dawned
+			_pPlayer->GetComponent<FarmlandManager>()->OnNewDay();
 		}
 	}
 
