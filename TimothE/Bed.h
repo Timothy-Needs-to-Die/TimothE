@@ -10,8 +10,7 @@ public:
 	void OnTriggerEnter(ColliderBase* other) override;
 
 private:
-	class BedHealth* _pHealth;
+	class StructureHealth* _pHealth;
 	BoxColliderComponent* _pBoxCollider;
 	Texture2D* _pTexture;
 };
-
