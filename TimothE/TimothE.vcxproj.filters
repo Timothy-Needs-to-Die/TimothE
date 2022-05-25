@@ -403,6 +403,7 @@
     <ClInclude Include="Bed.h" />
     <ClInclude Include="BedHealth.h" />
     <ClInclude Include="PlayerHealth.h" />
+    <ClInclude Include="LightLevelManager.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="AIController.cpp">
@@ -656,5 +657,6 @@
     <ClCompile Include="Bed.cpp" />
     <ClCompile Include="BedHealth.cpp" />
     <ClCompile Include="PlayerHealth.cpp" />
+    <ClCompile Include="LightLevelManager.cpp" />
   </ItemGroup>
 </Project>

@@ -26,7 +26,6 @@ public:
 	//Loads the tilemap
 	void LoadTileMap();
 
-
 	/// <summary>
 	/// Adds a tile to the specified layer with a specified x and y coordinate on a specified spritesheet
 	/// </summary>
@@ -78,12 +77,16 @@ public:
 	/// <param name="worldPos">The world position you want to query</param>
 	TileData* GetTileAtWorldPos(int layer, glm::vec2 worldPos);
 
+	/// <summary>
 	//Returns the entirety of the tileArr (Large object. Use with caution)
+	/// </summary>
 	std::vector<std::vector<TileData>> GetAllTiles() const {
 		return _tileArr;
 	}
 	
+	/// <summary>
 	//Returns a vector of TileData of the specified layer
+	/// </summary>
 	std::vector<TileData> GetAllTilesInLayer(int layer) const {
 		//Range check the passed in layer
 		if (layer < 0) layer = 0;
@@ -131,6 +134,12 @@ public:
 	/// <param name="val">Should the tile be collidable</param>
 	void SetCollidableAtLayer(int layer, glm::vec2 pos, bool val);
 	int GetTileIndexFromPosition(glm::vec2 pos);
+
+	/// <summary>
+	/// Set a broad light level for every tile in the tile map (Intensive, Use carefully!).
+	/// </summary>
+	/// <param name="level"> Applicable light level for tiles.</param>
+	void SetAllTilesLightLevel(int level);
 
 	//Returns the name of the tilemap
 	std::string GetName() const { return _name; }

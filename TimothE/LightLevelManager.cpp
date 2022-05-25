@@ -16,36 +16,39 @@ void LightLevelManager::UpdateLightMap()
 
 		for (auto const& source : _lightSources)
 		{
-			for (int i = 0; i < 6; i++)
+			if (source.isEnabled)
 			{
-				//needs to loop through layers
-				xMin = _pTileMap->GetTileAtWorldPos(i, glm::vec2(source.worldPos.x - (source.range * tileSize), source.worldPos.y))->pos.x;
-				xMax = _pTileMap->GetTileAtWorldPos(i, glm::vec2(source.worldPos.x + (source.range * tileSize), source.worldPos.y))->pos.x;
-				yMin = _pTileMap->GetTileAtWorldPos(i, glm::vec2(source.worldPos.x, source.worldPos.y - (source.range * tileSize)))->pos.y;
-				yMax = _pTileMap->GetTileAtWorldPos(i, glm::vec2(source.worldPos.x, source.worldPos.y + (source.range * tileSize)))->pos.y;
-
-				for (float y = yMin; y <= yMax; y += tileSize)
+				for (int i = 0; i < 6; i++)
 				{
-					for (float x = xMin; x <= xMax; x += tileSize)
+					//needs to loop through layers
+					xMin = _pTileMap->GetTileAtWorldPos(i, glm::vec2(source.worldPos.x - (source.range * tileSize), source.worldPos.y))->pos.x;
+					xMax = _pTileMap->GetTileAtWorldPos(i, glm::vec2(source.worldPos.x + (source.range * tileSize), source.worldPos.y))->pos.x;
+					yMin = _pTileMap->GetTileAtWorldPos(i, glm::vec2(source.worldPos.x, source.worldPos.y - (source.range * tileSize)))->pos.y;
+					yMax = _pTileMap->GetTileAtWorldPos(i, glm::vec2(source.worldPos.x, source.worldPos.y + (source.range * tileSize)))->pos.y;
+
+					for (float y = yMin; y <= yMax; y += tileSize)
 					{
-						TileData* tile = _pTileMap->GetTileAtWorldPos(i, glm::vec2(x, y));
-
-						//get affective light value = baselight - (falloff * distance of tiles between source and tile rounded)
-						int affectiveValue = source.baseLightLevel - (source.fallOffRate * (int)round(glm::distance(glm::vec2(x, y), source.worldPos) / tileSize));
-
-						if ((tile->lightLevel + affectiveValue) < _worldLightLevel)
+						for (float x = xMin; x <= xMax; x += tileSize)
 						{
-							tile->lightLevel = _worldLightLevel;
-							continue;
-						}
-						else if ((tile->lightLevel + affectiveValue) > _maxLightLevel)
-						{
-							tile->lightLevel = _maxLightLevel;
-							continue;
-						}
+							TileData* tile = _pTileMap->GetTileAtWorldPos(i, glm::vec2(x, y));
 
-						//get final light value and apply to tile
-						tile->lightLevel += affectiveValue;
+							//get affective light value = baselight - (falloff * distance of tiles between source and tile rounded)
+							int affectiveValue = source.baseLightLevel - (source.fallOffRate * (int)round(glm::distance(glm::vec2(x, y), source.worldPos) / tileSize));
+
+							if ((tile->lightLevel + affectiveValue) < _worldLightLevel)
+							{
+								tile->lightLevel = _worldLightLevel;
+								continue;
+							}
+							else if ((tile->lightLevel + affectiveValue) > _maxLightLevel)
+							{
+								tile->lightLevel = _maxLightLevel;
+								continue;
+							}
+
+							//get final light value and apply to tile
+							tile->lightLevel += affectiveValue;
+						}
 					}
 				}
 			}
@@ -58,7 +61,7 @@ void LightLevelManager::SetWorldLightLevel(int value)
 	//set light level variable
 	_worldLightLevel = value;
 
-	//loop through all tiles in map and set light level
+	_pTileMap->SetAllTilesLightLevel(value);
 
 	UpdateLightMap();
 }

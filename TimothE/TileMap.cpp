@@ -415,3 +415,16 @@ bool TileMap::CollidableAtPosition(const int index) const
 	}
 	return false;
 }
+
+void TileMap::SetAllTilesLightLevel(int level)
+{
+	//loop through all tiles in map and set light level
+	for (int y = 0; y < 5; y++)
+	{
+		//Cycle through tiles on layer
+		for (float x = 0.0f; x < GetTileMapDimensions().x * GetTileMapDimensions().y; x += 0.25f)
+		{
+			_tileArr[y][x].lightLevel = level;
+		}
+	}
+}
