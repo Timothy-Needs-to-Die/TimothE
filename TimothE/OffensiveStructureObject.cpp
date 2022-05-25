@@ -11,8 +11,6 @@ OffensiveStructureObject::OffensiveStructureObject(std::string name, std::string
 	_pCircleCollider->SetTrigger(true);
 	_pCircleCollider->SetScale(10.0f);
 	AddComponent(ResourceManager::GetTexture("lenna"));
-
-	GetTransform()->SetScale({ 0.25f,0.25f });
 }
 
 void OffensiveStructureObject::OnTriggerEnter(ColliderBase* other)

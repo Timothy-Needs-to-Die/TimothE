@@ -9,6 +9,7 @@
 #include "AIMovementCompnent.h"
 #include "StructureObject.h"
 #include "AIController.h"
+#include "Enemy.h"
 
 FarmScene::~FarmScene()
 {
@@ -57,11 +58,6 @@ void FarmScene::UpdateObjects()
 	//	}
 	//}
 
-	if (Input::IsKeyDown(KEY_T)) {
-		AIMovementCompnent* mover = _pAITester->GetComponent<AIMovementCompnent>();
-		mover->SetDestination(glm::vec2(2.5f, 0.0f));
-	}
-
 	if (Input::IsKeyDown(KEY_G)) {
 		//_pTilemap->AddTileAt(2, 15, 12, CameraManager::CurrentCamera());
 	}
@@ -84,9 +80,9 @@ void FarmScene::InitScene()
 
 	//_pStartButton->GetTransform()->SetPosition(0.0f, 0.0f);
 	//_pStartButton->GetTransform()->SetScale({ 0.2f, 0.2f });
-	GameObject* pPathFinder = new GameObject("Pathfinder");
-	pPathFinder->AddComponent<AStar>(new AStar(pPathFinder));
-	AddGameObject(pPathFinder);
+	//GameObject* pPathFinder = new GameObject("Pathfinder");
+	//pPathFinder->AddComponent<AStar>(new AStar(pPathFinder));
+	//AddGameObject(pPathFinder);
 
 	_pWeaponObject = new GameObject("Weapon");
 	_pWeaponObject->AddComponent<Texture2D>(ResourceManager::GetTexture("swords"));
@@ -102,9 +98,9 @@ void FarmScene::InitScene()
 	_pPlayer = new Player();
 	AddGameObject(_pPlayer);
 
-	_pAStar = new GameObject("Pather");
-	AStar* path = _pAStar->AddComponent(new AStar(_pAStar));
-	path->SetMap(SceneManager::GetCurrentScene()->GetTileMap());
+	//_pAStar = new GameObject("Pather");
+	//AStar* path = _pAStar->AddComponent(new AStar(_pAStar));
+	//path->SetMap(SceneManager::GetCurrentScene()->GetTileMap());
 
 	//_pWaveController = new WaveController(this);
 
@@ -134,33 +130,14 @@ void FarmScene::InitScene()
 	//OffensiveStructureObject* _pTower = new OffensiveStructureObject("Test Tower");
 	//AddGameObject(_pTower);
 
-	_pAITester = new GameObject("AI Test");
-	_pAITester->GetTransform()->SetScale({ 0.25f, 0.25f }); 
-	_pAITester->GetTransform()->SetPosition({ 5.25f, 2.25f });
-	_pAITester2 = new GameObject("AI Test2");
-	_pAITester2->GetTransform()->SetScale({ 0.25f, 0.25f });
-	_pAITester2->GetTransform()->SetPosition({ 5.25f, 5.25f });
+	_pEnemyA = new Enemy();
+	_pEnemyA->GetTransform()->SetPosition({ 5.25f, 2.25f });
+	AddGameObject(_pEnemyA);
 
-	AIMovementCompnent* mover = _pAITester->AddComponent(new AIMovementCompnent(_pAITester, path));
-	_pAITester->AddComponent(ResourceManager::GetTexture("fish"));
-	AIController* pAI1 = _pAITester->AddComponent(new AIController(_pAITester));
-	pAI1->SetTargetTags("PLAYER", "TOWER", "WALL");
-	mover->SetAllowCollisions(false);
+	_pEnemyB = new Enemy();
+	_pEnemyB->GetTransform()->SetPosition({ 5.25f, 5.25f });
+	AddGameObject(_pEnemyB);
 
-	mover->SetDestination(glm::vec2(0.0f, 0.0f));
-
-	AddGameObject(_pAITester);
-
-	AIMovementCompnent* mover2 = _pAITester2->AddComponent(new AIMovementCompnent(_pAITester2, path));
-	_pAITester2->AddComponent(ResourceManager::GetTexture("fish"));
-	AIController* pAI2 = _pAITester2->AddComponent(new AIController(_pAITester2));
-	pAI2->SetTargetTags("WALL", "TOWER", "PLAYER");
-
-	mover2->SetAllowCollisions(false);
-
-	mover2->SetDestination(glm::vec2(0.0f, 0.0f));
-
-	AddGameObject(_pAITester2);
 }
 
 void FarmScene::AddStructure(StructureObject* object)

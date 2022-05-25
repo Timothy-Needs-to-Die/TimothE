@@ -16,6 +16,8 @@ struct node_greater_than {
 
 std::vector<glm::vec2> AStar::FindPath(glm::vec2 start, glm::vec2 end)
 {
+	_mPathOfNodes.clear();
+
 	//This list will contain the untested nodes that will be used to cycle through each node in the map 
 	std::vector<Node*> untestedNodes;
 
@@ -93,12 +95,11 @@ std::vector<glm::vec2> AStar::FindPath(glm::vec2 start, glm::vec2 end)
 	}
 
 	if (pathFound) {
-		_mPathOfNodes.clear();
-
 		//if (mEnd != nullptr) {
 			//Sets the previousNode to the endPoint as the A* algorithm works backwards
 		Node& previousNode = *_mEndNode;
-
+		
+		int size = _mPathOfNodes.size();
 		//keep looping until the previousNode no longer has a parent this can only be the starting node
 		while (previousNode._mParentNode != start)
 		{
@@ -106,7 +107,17 @@ std::vector<glm::vec2> AStar::FindPath(glm::vec2 start, glm::vec2 end)
 			if (previousNode._mParentNode.y == ERROR_PATH_POSITION) break;
 
 			//adds the node to the path of nodes
+			for (int i = 0; i < size; ++i) {
+				if (_mPathOfNodes[i]._mPos == previousNode._mPos) {
+					int index = (start.y * _mTilesPerUnit) * _mWidth + (start.x * _mTilesPerUnit);
+					if (index < 0) index = 0;
+					previousNode = _mMapNodes.at(index);
+					continue;
+				}
+			}
+
 			_mPathOfNodes.push_back(previousNode);
+			size++;
 
 			//Sets the previous node to the parent of this node
 			int index = (previousNode._mParentNode.y * _mTilesPerUnit) * _mWidth + (previousNode._mParentNode.x * _mTilesPerUnit);
@@ -115,13 +126,15 @@ std::vector<glm::vec2> AStar::FindPath(glm::vec2 start, glm::vec2 end)
 		}
 	}
 
+	//for (int i = 0; i < _mPathOfNodes.size(); ++i) {
+	//	processedPath.emplace_back(_mPathOfNodes[i]->_mPos);
+	//}
+
 	for (std::vector<Node>::iterator it = _mPathOfNodes.begin(); it != _mPathOfNodes.end(); ++it) {
 		processedPath.push_back(it->_mPos);
 	}
-	_mPathOfNodes.clear();
 
 	return processedPath;
-
 }
 
 void AStar::SetMap(TileMap* map)
@@ -175,34 +188,22 @@ void AStar::SetMap(TileMap* map)
 		}
 
 		//TopLeft
-		//if (xIndex > 0 && yIndex < _mHeight) {
-		//	_mMapNodes[i]._mNeighborNodes.push_back(&_mMapNodes[i - 1 + _mWidth]);
-		//}
-		//
-		////TopRight
-		//if (xIndex < _mWidth && yIndex < _mHeight) {
-		//	_mMapNodes[i]._mNeighborNodes.push_back(&_mMapNodes[i + 1 + _mWidth]);
-		//}
-		////BottomLeft
-		//if (xIndex > 0 && yIndex > _mHeight) {
-		//	_mMapNodes[i]._mNeighborNodes.push_back(&_mMapNodes[i - 1 - _mWidth]);
-		//}
-		//
-		////BottomRight
-		//if (xIndex < _mWidth && yIndex > _mHeight) {
-		//	_mMapNodes[i]._mNeighborNodes.push_back(&_mMapNodes[i + 1 - _mWidth]);
-		//}
+		if (xIndex > 0 && yIndex < _mHeight) {
+			_mMapNodes[i]._mNeighborNodes.push_back(&_mMapNodes[i - 1 + _mWidth]);
+		}
+
+		//TopRight
+		if (xIndex < _mWidth && yIndex < _mHeight) {
+			_mMapNodes[i]._mNeighborNodes.push_back(&_mMapNodes[i + 1 + _mWidth]);
+		}
+		//BottomLeft
+		if (xIndex > 0 && yIndex > _mHeight) {
+			_mMapNodes[i]._mNeighborNodes.push_back(&_mMapNodes[i - 1 - _mWidth]);
+		}
+
+		//BottomRight
+		if (xIndex < _mWidth && yIndex > _mHeight) {
+			_mMapNodes[i]._mNeighborNodes.push_back(&_mMapNodes[i + 1 - _mWidth]);
+		}
 	}
-}
-
-void AStar::OnStart()
-{
-}
-
-void AStar::OnUpdate()
-{
-}
-
-void AStar::OnEnd()
-{
 }

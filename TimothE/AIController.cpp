@@ -131,7 +131,7 @@ void AIController::AttackedBy(GameObject* instigator)
 
 GameObject* AIController::FindClosestTargetFromList(std::vector<GameObject*> targets)
 {
-	GameObject* closestObj = nullptr;
+	GameObject* closestObj = targets[0];
 	float closestDistance = FLT_MAX;
 	for each (GameObject* go in targets)
 	{

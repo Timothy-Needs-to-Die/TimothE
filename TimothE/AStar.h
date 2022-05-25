@@ -11,15 +11,12 @@
 
 
 
-class AStar : public Component
+class AStar
 {
 public:
-	AStar(GameObject* gameObject) : Component(gameObject) {
-		SetType(Types::Pathfinding);
-	}
+	AStar(){ }
 
 	~AStar();
-	COMPONENT_STATIC_TYPE(Pathfinding);
 
 	/// <summary>
 	/// This function will calculate the shortest path for the maze. Using the A* Pathfinding Algorithm
@@ -40,11 +37,6 @@ private:
 	float _mWidth;
 	float _mHeight;
 	float _mTilesPerUnit;
-
-	// Inherited via Component
-	virtual void OnStart() override;
-	virtual void OnUpdate() override;
-	virtual void OnEnd() override;
 };
 
 

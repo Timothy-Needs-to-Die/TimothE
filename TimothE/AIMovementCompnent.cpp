@@ -4,9 +4,12 @@
 AIMovementCompnent::AIMovementCompnent(GameObject* owner, AStar* pAStar)
 	: MovementComponent(owner)
 {
+	SetType(Component::AIMovement_Type);
+
 	_pAStar = pAStar;
 	//_mAStar = new AStar();
 	SetMovementSpeed(0.5f); //TODO: Get from config
+	_mPathToFollow = std::list<glm::vec2>();
 }
 
 //sets target destination of AI to move to

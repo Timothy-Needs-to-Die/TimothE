@@ -33,15 +33,17 @@ public:
 	void RemoveStructure(class StructureObject* object);
 	std::vector<class StructureObject*> GetStructures() const;
 
+
+	
 protected:
 
 
 private:
 	GameObject* _pStartButton = nullptr;
 	GameObject* _pWeaponObject = nullptr;
-	GameObject* _pAITester = nullptr;
-	GameObject* _pAITester2 = nullptr;
-	GameObject* _pAStar = nullptr;
+
+	class Enemy* _pEnemyA = nullptr;
+	class Enemy* _pEnemyB = nullptr;
 
 	SpriteSheet* _pSpritesheet;
 

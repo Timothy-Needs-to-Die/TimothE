@@ -4,7 +4,7 @@
 
 
 Transform::Transform(GameObject* pParent)
-	: _transformationMatrix(glm::mat4(1.0f)), _globalPosition(glm::vec2(0.0f)), _rotation(0.0f), _size(glm::vec2(1.0f)), Component(pParent)
+	: _transformationMatrix(glm::mat4(1.0f)), _globalPosition(glm::vec2(0.0f)), _rotation(0.0f), _size(glm::vec2(0.25f)), _localPosition(0.0f), Component(pParent)
 {
 	//Sets the type and category for the component
 	SetType(Component::Transform_Type);

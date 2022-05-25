@@ -12,6 +12,8 @@
 #include "SpriteComponent.h"
 #include "Time.h"
 
+#include "AStar.h"
+
 std::vector<GameObject*> Scene::_listOfGameObjects;
 std::vector<GameObject*> Scene::_listOfDrawableGameObjects;
 
@@ -43,6 +45,9 @@ void Scene::InitScene()
 
 
 	_pTilemap = new TileMap(_name);
+
+	_pAstarObject = new AStar();
+	_pAstarObject->SetMap(_pTilemap);
 }
 
 void Scene::SceneEnd()
@@ -378,4 +383,9 @@ void Scene::PopulateCropVector()
 		newConfig.description = loadedData[i][3];
 		newConfig.type = (CropType)std::stoi(loadedData[i][5]);
 	}
+}
+
+class AStar* Scene::GetAStar() const
+{
+	return _pAstarObject;
 }

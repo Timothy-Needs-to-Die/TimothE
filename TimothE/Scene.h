@@ -137,6 +137,8 @@ public:
 	void PopulateToolVector();
 	void PopulateSeedVector();
 	void PopulateCropVector();
+
+	class AStar* GetAStar() const;
 	
 
 protected:
@@ -157,4 +159,6 @@ protected:
 	std::vector<GameObject*> _gameObjectsToRemove;
 
 	bool _isInitialized = false;
+
+	class AStar* _pAstarObject = nullptr;
 };

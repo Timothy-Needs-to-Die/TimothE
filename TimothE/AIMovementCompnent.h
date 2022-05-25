@@ -10,7 +10,7 @@
 class AIMovementCompnent : public MovementComponent
 {
 public:
-
+	COMPONENT_STATIC_TYPE(AIMovement_Type);
 
 	AIMovementCompnent(GameObject* owner, AStar* pAStar);
 

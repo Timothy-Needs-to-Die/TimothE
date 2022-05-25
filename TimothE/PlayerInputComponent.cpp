@@ -159,7 +159,6 @@ void PlayerInputComponent::BuildControls()
 				pTilemap->SetCollidableAtLayer(5, tilePos, true);
 
 				pTransform->SetPosition(tilePos);
-				pTransform->SetScale({ 0.25f,0.25f });
 
 				pFarmScene->AddStructure(pObject);
 
