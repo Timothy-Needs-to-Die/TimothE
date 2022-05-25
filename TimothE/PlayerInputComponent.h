@@ -9,6 +9,7 @@
 #include "Physics.h"
 #include "MovementComponent.h"
 #include "Fighter.h"
+#include "FarmlandManager.h"
 
 
 enum class StructureType {
@@ -45,6 +46,8 @@ private:
 	TileMap* _pTileMap;
 	MovementComponent* _pMovement = nullptr;
 	Fighter* _pFighter = nullptr;
+
+	FarmlandManager* _pFarmlandManager = nullptr;
 
 	class ResourceNode* _pNearbyResourceNode = nullptr;
 

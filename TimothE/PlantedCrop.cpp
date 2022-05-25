@@ -11,11 +11,15 @@
 
 */
 
-PlantedCrop::PlantedCrop(PlantResourceType cropType, int daysToGrow, std::string name, std::string tag) : GameObject(name, tag)
+PlantedCrop::PlantedCrop(PlantResourceType cropType, int daysToGrow, GameObject* parent) : Component(parent)
 {
 	/*int sheetX = 6, sheetY = 11;
 	SpriteSheet* sheet = ResourceManager::GetSpriteSheet("testSheet");
 	_currentSprite->SetSprite(sheet->GetSpriteAtIndex(sheet->GetSheetWidth() * sheetX + sheetY));*/
+
+	// Set the sprite
+	_pSpriteComponent = parent->GetComponent<SpriteComponent>();
+	_pSpriteComponent->SetSprite(ResourceManager::GetSpriteSheet("spritesheet")->GetSpriteAtIndex(24));
 
 	_type = cropType;
 	_daysToGrow = daysToGrow;
@@ -39,5 +43,17 @@ void PlantedCrop::AddGrowth(int growTime)
 void PlantedCrop::Harvest()
 {
 
+}
+
+void PlantedCrop::OnStart()
+{
+}
+
+void PlantedCrop::OnUpdate()
+{
+}
+
+void PlantedCrop::OnEnd()
+{
 }
 

@@ -15,6 +15,7 @@ void PlayerInputComponent::OnStart()
 {
 	_pMovement = _pParentObject->GetComponent<MovementComponent>();
 	_pFighter = _pParentObject->GetComponent<Fighter>();
+	_pFarmlandManager = _pParentObject->GetComponent<FarmlandManager>();
 }
 
 void PlayerInputComponent::OnUpdate()
@@ -26,16 +27,40 @@ void PlayerInputComponent::OnUpdate()
 		return;
 	}
 
+	// Fighting
 	if (Input::IsKeyDown(KEY_SPACE)) {
 		_pFighter->Attack(_pParentObject);
 	}
 
+	// Resource Gathering
 	if (_pNearbyResourceNode != nullptr) {
 		if (Input::IsMouseButtonDown(BUTTON_1)) {
 			_pNearbyResourceNode->Interact();
 		}
 	}
 
+	// Farming
+	if (Input::IsKeyDown(KEY_F))
+	{
+		glm::vec2 target = _pParentObject->GetTransform()->GetPosition();
+		// Targets the midpoint of the player
+		target.x += _pParentObject->GetTransform()->GetScale().x / 2;
+		target.y += _pParentObject->GetTransform()->GetScale().y / 2;
+		_pFarmlandManager->PlaceFarmLand(target);
+	}
+
+	if (Input::IsKeyDown(KEY_G))
+	{
+		glm::vec2 target = _pParentObject->GetTransform()->GetPosition();
+		// Targets the midpoint of the player
+		target.x += _pParentObject->GetTransform()->GetScale().x / 2;
+		target.y += _pParentObject->GetTransform()->GetScale().y / 2;
+
+		// Add logic for what resource the player has in hand?
+		_pFarmlandManager->PlantSeed(target, PlantResourceType::WheatRes);
+	}
+
+	// Inventory
 	if (Input::IsKeyDown(KEY_I)) {
 		int goldAmount = PlayerResourceManager::GetCoreResource(CoreResourceType::Gold)->GetAmount();
 		int woodAmount = PlayerResourceManager::GetCoreResource(CoreResourceType::Wood)->GetAmount();
@@ -48,6 +73,8 @@ void PlayerInputComponent::OnUpdate()
 		TIM_LOG_LOG("Stone: " << stoneAmount);
 	}
 
+
+	// Building
 	if (Input::IsKeyUp(KEY_B)) {
 		_bReadyforbuildPress = true;
 	}

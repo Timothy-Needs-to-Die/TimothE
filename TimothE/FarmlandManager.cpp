@@ -1,6 +1,6 @@
 #include "FarmlandManager.h"
 
-FarmlandManager::FarmlandManager(std::string name, std::string tag) : GameObject(name, tag)
+FarmlandManager::FarmlandManager(GameObject* parent) : Component(parent)
 {
 	
 }
@@ -37,7 +37,7 @@ void FarmlandManager::PlaceFarmLand(glm::vec2 position)
 		
 		// Add the sprite  - index needs to be changed at a later date currently uses temp sprites
 		SpriteComponent* sprite = newCropPlot->AddComponent(new SpriteComponent(newCropPlot));
-		sprite->SetSprite(ResourceManager::GetSpriteSheet("testSheet")->GetSpriteAtIndex(130));
+		sprite->SetSprite(ResourceManager::GetSpriteSheet("spritesheet")->GetSpriteAtIndex(130));
 
 		// Add it to the managers list
 		_pCropPlotObjects.push_back(newCropPlot);
@@ -64,10 +64,12 @@ void FarmlandManager::PlantSeed(glm::vec2 position, PlantResourceType cropType)
 			// Set its correct W and H
 			// Make the plot its on its parent
 			plantObject->SetParent(cropPlot);
-
+			
 			// Set the sprite
 			SpriteComponent* s = plantObject->AddComponent(new SpriteComponent(plantObject));
-			s->SetSprite(ResourceManager::GetSpriteSheet("testSheet")->GetSpriteAtIndex(24));
+			PlantedCrop* crop = new PlantedCrop(PlantResourceType::WheatRes, 4, plantObject);
+
+			
 			// The plot now has a plant on it so it is occupied
 			cropPlot->SetOccupied(true);
 
@@ -78,4 +80,16 @@ void FarmlandManager::PlantSeed(glm::vec2 position, PlantResourceType cropType)
 			std::cout << "Succesfully Planted Crop: type:" << cropType << " x:" << finalPos.x << " y:" << finalPos.y << std::endl;
 		}
 	}
+}
+
+void FarmlandManager::OnStart()
+{
+}
+
+void FarmlandManager::OnUpdate()
+{
+}
+
+void FarmlandManager::OnEnd()
+{
 }

@@ -2,16 +2,22 @@
 
 #include "GameObject.h"
 #include "PlantResourceType.h"
+#include "SpriteComponent.h"
 
-class PlantedCrop : public GameObject
+class PlantedCrop : public Component
 {
 public:
-	PlantedCrop(PlantResourceType cropType, int daysToGrow, std::string name = "Planted Crop", std::string tag = "UNTAGGED");
+	PlantedCrop(PlantResourceType cropType, int daysToGrow, GameObject* parent);
 	~PlantedCrop();
 
 	void AddGrowth(int growTime);
 	void Harvest();
 
+	// Inherited via Component
+	virtual void OnStart() override;
+	virtual void OnUpdate() override;
+	virtual void OnEnd() override;
+	
 	// Get & Set Methods
 	bool IsReady() { return _isReady; }
 	int GetCurrentGrowTime() { return _currentGrowTime; }
@@ -19,8 +25,7 @@ public:
 private:
 	bool _isReady;
 	
-	class SpriteSheet* _cropSheet;
-	class SpriteComponent* _currentSprite;
+	SpriteComponent* _pSpriteComponent = nullptr;
 	PlantResourceType _type;
 
 	int _daysToGrow;

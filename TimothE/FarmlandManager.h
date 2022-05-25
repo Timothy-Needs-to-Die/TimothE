@@ -5,17 +5,17 @@
 
 #include "CropPlot.h"
 #include "PlantResourceType.h"
+#include "PlantedCrop.h"
 
-class FarmlandManager : public GameObject
+class FarmlandManager : public Component
 {
 public:
 
 	/// <summary>
 	/// Constructor - Sets up the gameobject constructor using set params
 	/// </summary>
-	/// <param name="name"> GameObject name</param>
-	/// <param name="tag"> GameObject Tag</param>
-	FarmlandManager(std::string name = "Farmland", std::string tag = "UNTAGGED");
+	/// <param> GameObject - parent the component is being attached to </param>
+	FarmlandManager(GameObject* parent);
 
 	/// <summary>
 	/// Place a "CropPlot" at the desired location
@@ -30,6 +30,11 @@ public:
 	/// <param name="position"> The position of the plot we wish to plant a seed on</param>
 	/// <param name="cropType"> The type of crop we wish to plant</param>
 	void PlantSeed(glm::vec2 position, PlantResourceType cropType);
+
+	// Inherited via Component
+	virtual void OnStart() override;
+	virtual void OnUpdate() override;
+	virtual void OnEnd() override;
 
 	/// <summary>
 	/// Function to get a "CropPlot" at a given position - Uses true positions (bottom left corner)
