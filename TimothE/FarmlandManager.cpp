@@ -61,24 +61,32 @@ void FarmlandManager::PlantSeed(glm::vec2 position, PlantResourceType cropType)
 		{
 			// Create the plan
 			GameObject* plantObject = new GameObject("Plant");
-			// Set its correct W and H
+	
 			// Make the plot its on its parent
 			plantObject->SetParent(cropPlot);
+			cropPlot->SetChild(plantObject);
 			
-			// Set the sprite
+			// Add Sprite component as the PlantedCrop needs it
 			SpriteComponent* s = plantObject->AddComponent(new SpriteComponent(plantObject));
 			PlantedCrop* crop = new PlantedCrop(PlantResourceType::WheatRes, 4, plantObject);
-
 			
 			// The plot now has a plant on it so it is occupied
 			cropPlot->SetOccupied(true);
-
-			// Add it to the scenes gameobjects
+			
 			SceneManager::GetCurrentScene()->AddGameObject(plantObject);
+			// Add it to the scenes gameobjects
 			// Debug message
 			glm::vec2 finalPos = cropPlot->GetTransform()->GetPosition();
 			std::cout << "Succesfully Planted Crop: type:" << cropType << " x:" << finalPos.x << " y:" << finalPos.y << std::endl;
 		}
+	}
+}
+
+void FarmlandManager::OnNewDay()
+{
+	for (CropPlot* plot : _pCropPlotObjects)
+	{
+		plot->OnNewDay();
 	}
 }
 

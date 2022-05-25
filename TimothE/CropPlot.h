@@ -1,5 +1,6 @@
 #pragma once
 #include "GameObject.h"
+#include "PlantedCrop.h"
 #include "PlantResourceType.h"
 
 class CropPlot : public GameObject

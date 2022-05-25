@@ -60,6 +60,12 @@ void PlayerInputComponent::OnUpdate()
 		_pFarmlandManager->PlantSeed(target, PlantResourceType::WheatRes);
 	}
 
+	// Debug
+	if (Input::IsKeyDown(KEY_H))
+	{
+		_pFarmlandManager->OnNewDay();
+	}
+
 	// Inventory
 	if (Input::IsKeyDown(KEY_I)) {
 		int goldAmount = PlayerResourceManager::GetCoreResource(CoreResourceType::Gold)->GetAmount();

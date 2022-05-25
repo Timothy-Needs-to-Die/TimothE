@@ -34,9 +34,9 @@ void PlantedCrop::AddGrowth(int growTime)
 {
 	_currentGrowTime += growTime;
 
-	if (_currentGrowTime > _daysToGrow)
+	if (_currentGrowTime >= _daysToGrow)
 	{
-		_isReady = true;
+		_isHarvestable = true;
 	}	
 }
 

@@ -19,11 +19,11 @@ public:
 	virtual void OnEnd() override;
 	
 	// Get & Set Methods
-	bool IsReady() { return _isReady; }
+	bool IsHarvestable() { return _isHarvestable; }
 	int GetCurrentGrowTime() { return _currentGrowTime; }
 
 private:
-	bool _isReady;
+	bool _isHarvestable;
 	
 	SpriteComponent* _pSpriteComponent = nullptr;
 	PlantResourceType _type;
