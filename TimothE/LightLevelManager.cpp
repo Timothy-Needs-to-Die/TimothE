@@ -8,9 +8,10 @@ LightLevelManager::LightLevelManager(TileMap* tileMap) : _pTileMap(tileMap)
 
 void LightLevelManager::UpdateLightMap()
 {
+	_pTileMap->SetAllTilesLightLevel(_worldLightLevel);
+
 	if (_lightSources.size() > 0)
 	{
-		_pTileMap->SetAllTilesLightLevel(_worldLightLevel);
 
 		float xMin, xMax;
 		float yMin, yMax;
@@ -82,7 +83,7 @@ void LightLevelManager::RemoveLightSource(LightSource* lightSource)
 
 	if (it != _lightSources.end()) {
 		_lightSources.erase(it);
-		UpdateLightMap();
 	}
+	UpdateLightMap();
 	//_lightSources.erase(std::find(_lightSources.begin(), _lightSources.end(), lightSource));
 }

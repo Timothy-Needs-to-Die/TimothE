@@ -82,9 +82,6 @@ void FarmScene::UpdateObjects()
 		SaveScene("Resources/PlayerSaves/FarmSceneSaveData.sav");
 	}
 	
-	if (Input::IsKeyDown(KEY_2)) {
-		LoadScene("Resources/PlayerSaves/FarmSceneSaveData.sav");
-	}
 
 	Physics::UpdateWorld();
 }
@@ -159,9 +156,6 @@ void FarmScene::InitScene()
 	_pLightManager->SetWorldLightLevel(5);
 	_pLightManager->SetMinLightLevel(1);
 	_pLightManager->SetMaxLightLevel(8);
-
-	LightsourceObject* pLight = new LightsourceObject({ 4.0f, 3.0f }, "Light");
-	AddGameObject(pLight);
 
 	LoadScene("Resources/PlayerSaves/FarmSceneSaveData.sav");
 }
