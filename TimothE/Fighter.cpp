@@ -4,11 +4,20 @@
 #include "Scene.h"
 #include "Health.h"
 #include "GameObject.h"
+#include "WeaponComponent.h"
 #include "Transform.h"
+
+Fighter::Fighter(GameObject* pOwner) : Component(pOwner)
+{
+	SetType(Component::Types::Fighter_Type);
+	_pWeaponComponent = dynamic_cast<WeaponComponent*>(_pParentObject->GetComponentInChild(Weapon_Type));
+}
 
 void Fighter::Attack(GameObject* instigator)
 {
 	if (!_canAttack) return;
+	_pWeaponComponent->EndAttack();
+
 	_canAttack = false;
 	TIM_LOG_LOG("Attacking");
 
@@ -74,6 +83,7 @@ void Fighter::OnUpdate()
 		if (_timeSinceLastAttack > _weaponConfig.attackSpeed) {
 			_timeSinceLastAttack = 0.0f;
 			_canAttack = true;
+			_pWeaponComponent->StartAttack();
 		}
 	}
 

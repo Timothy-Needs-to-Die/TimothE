@@ -403,6 +403,8 @@
     <ClInclude Include="Bed.h" />
     <ClInclude Include="BedHealth.h" />
     <ClInclude Include="PlayerHealth.h" />
+    <ClInclude Include="WeaponComponent.h" />
+    <ClInclude Include="WeaponObject.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="AIController.cpp">
@@ -656,6 +658,8 @@
     <ClCompile Include="Bed.cpp" />
     <ClCompile Include="BedHealth.cpp" />
     <ClCompile Include="PlayerHealth.cpp" />
+    <ClCompile Include="WeaponComponent.cpp" />
+    <ClCompile Include="WeaponObject.cpp" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Node.h" />

@@ -13,5 +13,4 @@ protected:
 	virtual void OnDamage(GameObject* instigator) override;
 	virtual void OnDeath(GameObject* instigator) override;
 	virtual void OnHeal() override;
-
 };

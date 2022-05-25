@@ -119,10 +119,6 @@ void FarmScene::InitScene()
 	_pPlayer = new Player();
 	AddGameObject(_pPlayer);
 
-	//_pAStar = new GameObject("Pather");
-	//AStar* path = _pAStar->AddComponent(new AStar(_pAStar));
-	//path->SetMap(SceneManager::GetCurrentScene()->GetTileMap());
-
 	//_pWaveController = new WaveController(this);
 
 	//_pDay = new Day();
