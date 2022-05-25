@@ -6,11 +6,11 @@
 #include "GameObject.h"
 #include "Transform.h"
 
-void Fighter::Attack()
+void Fighter::Attack(GameObject* instigator)
 {
 	if (!_canAttack) return;
 	_canAttack = false;
-
+	TIM_LOG_LOG("Attacking");
 
 	//Find all objects with a health component atached to them in scene
 	std::vector<Health*> healthObjects = SceneManager::GetCurrentScene()->FindObjectsOfType<Health>();
@@ -44,19 +44,15 @@ void Fighter::Attack()
 
 	//Cycles through each nearby health object
 	for (auto& obj : nearbyHealthObjects) {
-		
-
 		//Calculate the direction vector
 		glm::vec2 dir = obj->GetParent()->GetTransform()->GetPosition() - fighterPos;
 		
 		float dot = glm::dot(dir, fighterForward);
 
-		
-
 		//std::cout << "Dot: " << dot << std::endl;
 
 		if (dot >= 0.0f) {
-			obj->TakeDamage(_weaponConfig.damage);
+			obj->TakeDamage(_weaponConfig.damage, instigator);
 			//std::cout << "Would hit!" << std::endl;
 		}
 		else {

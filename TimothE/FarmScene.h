@@ -39,10 +39,6 @@ public:
 private:
 	GameObject* _pStartButton = nullptr;
 	GameObject* _pWeaponObject = nullptr;
-	GameObject* _pAITester = nullptr;
-	GameObject* _pAITester2 = nullptr;
-	GameObject* _pAStar = nullptr;
-	InventoryScreen* _pInventoryScreen;
 
 	SpriteSheet* _pSpritesheet;
 
@@ -50,7 +46,7 @@ private:
 
 	class Player* _pPlayer;
 	//class OffensiveStructureObject* _pTower = nullptr;
-	
+
 	class ResourceNodeObject* _pWoodNode = nullptr;
 	class ResourceNodeObject* _pMetalNode = nullptr;
 	class ResourceNodeObject* _pStoneNode = nullptr;
@@ -62,9 +58,9 @@ private:
 	FarmlandManager* farmland;
 	bool farmKeyPressed = false;
 	bool _inventoryKeyPressed = false;
+	bool spawnEnemyKey = false;
 
 	std::vector<class StructureObject*> _pStructures;
 
 	class Bed* _pBed;
 };
-

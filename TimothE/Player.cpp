@@ -17,6 +17,4 @@ Player::Player(std::string name /*= "Player"*/, std::string tag /*= "PLAYER"*/)
 void Player::UniqueLogic()
 {
 	Character::UniqueLogic();
-
-
 }

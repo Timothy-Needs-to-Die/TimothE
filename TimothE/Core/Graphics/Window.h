@@ -44,6 +44,9 @@ public:
 
 	static float GetHeight();
 	static float GetWidth();
+
+	static void ShowFPS(float dt);
+
 private:
 
 

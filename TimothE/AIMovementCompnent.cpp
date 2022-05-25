@@ -1,12 +1,15 @@
 #include "AIMovementCompnent.h"
 
 //constructor
-AIMovementCompnent::AIMovementCompnent(GameObject* owner)
+AIMovementCompnent::AIMovementCompnent(GameObject* owner, AStar* pAStar)
 	: MovementComponent(owner)
 {
-	_pAStar = SceneManager::GetCurrentScene()->FindObjectOfType<AStar>();
+	SetType(Component::AIMovement_Type);
+
+	_pAStar = pAStar;
 	//_mAStar = new AStar();
 	SetMovementSpeed(0.5f); //TODO: Get from config
+	_mPathToFollow = std::list<glm::vec2>();
 }
 
 //sets target destination of AI to move to
@@ -18,14 +21,17 @@ void AIMovementCompnent::SetDestination(glm::vec2 targetPos)
 	_mHasDestination = true;
 
 	//sets map and finds path
-	_pAStar->SetMap(SceneManager::GetCurrentScene()->GetTileMap());
-	std::vector<glm::vec2> tempPath = _pAStar->FindPath(GetParent()->GetTransform()->GetPosition(), targetPos);
+	
+	glm::vec2 tilePos = SceneManager::GetCurrentScene()->GetTileMap()->GetTileAtWorldPos(0, GetParent()->GetTransform()->GetPosition())->pos;
+	std::vector<glm::vec2> tempPath = _pAStar->FindPath(tilePos, targetPos);
+
+	_destination = targetPos;
 
 	//set path
 	int size = tempPath.size();
 	for (int i = 0; i < size; i++)
 	{
-		_mPathToFollow.push_front(tempPath[i]);
+   		_mPathToFollow.push_front(tempPath[i]);
 	}
 
 	//set next target
@@ -77,7 +83,7 @@ glm::vec2 AIMovementCompnent::GetNextTarget()
 
 
 	//set target to move as the first path position
-	_mCurrentTarget = _mPathToFollow.back();
+	_mCurrentTarget = _mPathToFollow.front();
 	_mPathToFollow.erase(_mPathToFollow.begin());
 
 	return _mCurrentTarget; //return target

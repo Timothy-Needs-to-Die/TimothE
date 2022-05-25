@@ -29,8 +29,6 @@ ResourceNodeObject::ResourceNodeObject(CoreResourceType type, std::string name /
 	default:
 		break;
 	}
-
-	GetTransform()->SetScale({ 0.25f, 0.25f });
 }
 
 void ResourceNodeObject::OnTriggerEnter(ColliderBase* other)

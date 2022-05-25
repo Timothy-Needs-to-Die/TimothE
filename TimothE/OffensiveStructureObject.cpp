@@ -11,13 +11,11 @@ OffensiveStructureObject::OffensiveStructureObject(std::string name, std::string
 	_pCircleCollider->SetTrigger(true);
 	_pCircleCollider->SetScale(10.0f);
 	AddComponent(ResourceManager::GetTexture("lenna"));
-
-	GetTransform()->SetScale({ 0.25f,0.25f });
 }
 
 void OffensiveStructureObject::OnTriggerEnter(ColliderBase* other)
 {
-	if (other->GetParent()->GetTag() == "PLAYER") {
+	if (other->GetParent()->GetTag() == "ENEMY") {
 		TIM_LOG_LOG("Target in range");
 		_pEnemiesInRange.emplace_back(other->GetParent());
 	}
@@ -25,7 +23,7 @@ void OffensiveStructureObject::OnTriggerEnter(ColliderBase* other)
 
 void OffensiveStructureObject::OnTriggerExit(ColliderBase* other)
 {
-	if (other->GetParent()->GetTag() == "PLAYER") {
+	if (other->GetParent()->GetTag() == "ENEMY") {
 		TIM_LOG_LOG("Target not in range");
 
 		GameObject* enemy = other->GetParent();
@@ -68,5 +66,4 @@ void OffensiveStructureObject::UniqueLogic()
 	if (closestEnemy != nullptr) {
 		_pCurrentTarget = closestEnemy;
 	}
-
 }

@@ -657,4 +657,7 @@
     <ClCompile Include="BedHealth.cpp" />
     <ClCompile Include="PlayerHealth.cpp" />
   </ItemGroup>
+  <ItemGroup>
+    <None Include="Node.h" />
+  </ItemGroup>
 </Project>

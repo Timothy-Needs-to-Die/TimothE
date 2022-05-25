@@ -176,6 +176,12 @@ float Window::GetWidth()
 	return _windowData._width;
 }
 
+void Window::ShowFPS(float dt)
+{
+	std::string title = "Timothe RE FPS: " + std::to_string((int)(1 / dt));
+	glfwSetWindowTitle(_pWindow, title.c_str());
+}
+
 GLFWwindow* Window::_pWindow;
 
 Window::WindowData Window::_windowData;

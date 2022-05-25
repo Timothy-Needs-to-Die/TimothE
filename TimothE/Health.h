@@ -7,8 +7,9 @@ class Health : public Component
 public:
 	COMPONENT_STATIC_TYPE(Health_Type);
 
-	Health(GameObject* pOwner) : Component(pOwner) {
+	Health(GameObject* pOwner, int startingHealth) : Component(pOwner) {
 		SetType(Component::Types::Health_Type);
+		SetMaxHealth(startingHealth);
 	}
 
 	void SetMaxHealth(int amount) {
@@ -20,16 +21,16 @@ public:
 	int GetCurrentHealth() { return _currentHealth; }
 	void SetHealth(int val) { _currentHealth = val; }
 
-	void TakeDamage(int val);
+	void TakeDamage(int val, GameObject* instigator);
 
 protected:
 	int _currentHealth;
 	int _maxHealth;
 	bool _isDead = false;
 
-	virtual void OnDeath();
+	virtual void OnDeath(GameObject* instigator);
 	virtual void OnHeal();
-	virtual void OnDamage();
+	virtual void OnDamage(GameObject* instigator);
 
 	// Inherited via Component
 	virtual void OnStart() override;
