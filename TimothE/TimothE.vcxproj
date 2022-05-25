@@ -217,8 +217,10 @@
     <ClInclude Include="Transform.h" />
     <ClInclude Include="UID.h" />
     <ClInclude Include="WaveManager.h" />
+    <ClInclude Include="WeaponComponent.h" />
     <ClInclude Include="WeaponConfig.h" />
     <ClInclude Include="pch.h" />
+    <ClInclude Include="WeaponObject.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="AIController.cpp" />
@@ -311,6 +313,8 @@
     <ClCompile Include="Transform.cpp" />
     <ClCompile Include="WaveManager.cpp" />
     <ClCompile Include="pch.cpp" />
+    <ClCompile Include="WeaponComponent.cpp" />
+    <ClCompile Include="WeaponObject.cpp" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Node.h" />
