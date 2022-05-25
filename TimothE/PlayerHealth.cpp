@@ -1,19 +1,19 @@
 #include "PlayerHealth.h"
 #include "SceneManager.h"
 
-PlayerHealth::PlayerHealth(GameObject* pOwner, int health) : Health(pOwner)
+PlayerHealth::PlayerHealth(GameObject* pOwner, int health) : Health(pOwner, health)
 {
 	_maxHealth = health;
 	_currentHealth = health;
 }
 
-void PlayerHealth::OnDeath()
+void PlayerHealth::OnDeath(GameObject* instigator)
 {
 	SceneManager::GetCurrentScene()->GameOver();
-	Health::OnDeath();
+	Health::OnDeath(instigator);
 }
 
-void PlayerHealth::OnDamage()
+void PlayerHealth::OnDamage(GameObject* instigator)
 {
-	Health::OnDamage();
+	Health::OnDamage(instigator);
 }

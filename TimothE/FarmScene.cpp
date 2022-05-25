@@ -76,6 +76,7 @@ void FarmScene::UpdateObjects()
 		//}
 	}
 
+
 	Physics::UpdateWorld();
 }
 

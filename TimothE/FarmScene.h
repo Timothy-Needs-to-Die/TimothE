@@ -54,6 +54,8 @@ private:
 
 	class GameTimeManager* _pGameTime = nullptr;
 
+	class InventoryScreen* _pInventoryScreen = nullptr;
+
 	//Farmland
 	FarmlandManager* farmland;
 	bool farmKeyPressed = false;

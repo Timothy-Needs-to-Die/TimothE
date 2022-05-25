@@ -6,13 +6,13 @@ BedHealth::BedHealth(GameObject* pOwner, int health) : StructureHealth(pOwner, h
 {
 }
 
-void BedHealth::OnDeath()
+void BedHealth::OnDeath(GameObject* instigator)
 {
 	SceneManager::GetCurrentScene()->GameOver();
-	StructureHealth::OnDeath();
+	StructureHealth::OnDeath(instigator);
 }
 
-void BedHealth::OnDamage()
+void BedHealth::OnDamage(GameObject* instigator)
 {
-	StructureHealth::OnDamage();
+	StructureHealth::OnDamage(instigator);
 }

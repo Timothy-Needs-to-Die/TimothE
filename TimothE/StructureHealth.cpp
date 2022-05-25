@@ -10,7 +10,7 @@ StructureHealth::StructureHealth(GameObject* owner, int health)
 
 void StructureHealth::OnDamage(GameObject* instigator)
 {
-	Health::OnDamage();
+	Health::OnDamage(instigator);
 }
 
 void StructureHealth::OnDeath(GameObject* instigator)
