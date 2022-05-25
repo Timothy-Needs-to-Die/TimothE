@@ -130,6 +130,9 @@ public:
 	virtual void OnColliderExit(ColliderBase* other);
 
 
+	bool IsToBeDestroyed() const { return _toBeDestroyed; }
+	void SetToBeDestroyed(bool val) { _toBeDestroyed = val; }
+
 private:
 	///////////////////////////////////
 	//Properties (Unique Identifiers)//
@@ -150,6 +153,8 @@ protected:
 	/////////////
 	GameObject* _pParent = nullptr;
 	GameObject* _pChild = nullptr;
+
+	bool _toBeDestroyed = false;
 
 	virtual void UniqueLogic();
 };

@@ -27,6 +27,9 @@ public:
 	void SetTarget(GameObject* target);
 	void AttackedBy(GameObject* instigator);
 
+
+	void CheckTarget(GameObject* obj);
+
 private:
 	class Fighter* _pFighter = nullptr;
 	GameObject* _pCurrentTarget = nullptr;

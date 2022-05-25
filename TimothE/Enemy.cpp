@@ -17,7 +17,7 @@ Enemy::Enemy(std::string name, std::string tag)
 
 	_pMovement = _pMover;
 
-	_pController->SetTargetTags("WALL", "TOWER", "PLAYER");
+	_pController->SetTargetTags("WALL", "TOWER", "CROPS");
 }
 
 void Enemy::UniqueLogic()

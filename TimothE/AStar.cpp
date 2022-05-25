@@ -112,7 +112,8 @@ std::vector<glm::vec2> AStar::FindPath(glm::vec2 start, glm::vec2 end)
 					int index = (start.y * _mTilesPerUnit) * _mWidth + (start.x * _mTilesPerUnit);
 					if (index < 0) index = 0;
 					previousNode = _mMapNodes.at(index);
-					continue;
+					_mPathOfNodes.emplace_back(previousNode);
+					break;
 				}
 			}
 

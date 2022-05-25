@@ -1,6 +1,7 @@
 #include "AIController.h"
 #include "Fighter.h"
 #include "AIMovementCompnent.h"
+#include "GameObject.h"
 
 
 
@@ -31,9 +32,18 @@ void AIController::OnUpdate()
 
 	float distToPlayer = glm::distance(_pOwnerTransform->GetPosition(), _pPlayerTransform->GetPosition()); //ai position
 
-	if (distToPlayer < 0.75) //config.tolerance
+	if (distToPlayer < 0.5) //config.tolerance
 	{
 		SetTarget(_pPlayer);
+	}
+	else if (distToPlayer > 5.0f && _pCurrentTarget == _pPlayer) {
+		if (_mTargetArr[0] != "PLAYER" && _mTargetArr[1] != "PLAYER" && _mTargetArr[2] != "PLAYER") {
+			FindTarget();
+		}
+	}
+
+	if (_pCurrentTarget && _pCurrentTarget->IsToBeDestroyed()) {
+		FindTarget();
 	}
 
 	if (_pCurrentTarget == nullptr)
@@ -43,10 +53,8 @@ void AIController::OnUpdate()
 	}
 
 	float distToTarget = glm::distance(_pOwnerTransform->GetPosition(), _pCurrentTarget->GetTransform()->GetPosition());//ai pos
-
-	if (distToTarget < 0.3) //config.attackRange
+	if (distToTarget < 0.25) //config.attackRange
 	{
-		
 		_pFighter->Attack(_pParentObject);
 		return;
 	}
@@ -128,6 +136,13 @@ void AIController::AttackedBy(GameObject* instigator)
 	if (_pCurrentTarget->GetTag() == "TOWER") return;
 	SetTarget(instigator);
 	return;
+}
+
+void AIController::CheckTarget(GameObject* obj)
+{
+	if (_pCurrentTarget == obj) {
+		FindTarget();
+	}
 }
 
 GameObject* AIController::FindClosestTargetFromList(std::vector<GameObject*> targets)
