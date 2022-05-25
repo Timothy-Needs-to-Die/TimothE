@@ -10,6 +10,7 @@
 #include "StructureObject.h"
 #include "GameTimeManager.h"
 #include "Bed.h"
+#include "PlayerHealth.h"
 
 FarmScene::~FarmScene()
 {
@@ -34,6 +35,17 @@ void FarmScene::UpdateObjects()
 	if (Input::IsKeyDown(KEY_G)) {
 		//_pTilemap->AddTileAt(2, 15, 12, CameraManager::CurrentCamera());
 	}
+	/*if (Input::IsKeyDown(KEY_H))
+	{
+		if (_pPlayer != nullptr)
+		{
+			PlayerHealth* h = _pPlayer->GetComponent<PlayerHealth>();
+			if (h != nullptr)
+			{
+				h->TakeDamage(50);
+			}
+		}
+	}*/
 	
 	if (!_pGameTime->IsDay()) {
 		if (Input::IsKeyDown(KEY_P)) {
@@ -174,7 +186,7 @@ void FarmScene::AddStructure(StructureObject* object)
 	_pStructures.emplace_back(object);
 }
 
-void FarmScene::RemoveStructure(class StructureObject* object)
+void FarmScene::RemoveStructure(StructureObject* object)
 {
 	for (int i = 0; i < _pStructures.size(); ++i) {
 		StructureObject* pObject = _pStructures[i];
@@ -198,6 +210,6 @@ std::vector<class StructureObject*> FarmScene::GetStructures() const
 
 void FarmScene::GameOver()
 {
-	// todo: add gameover
-	TIM_LOG_LOG("Bed destroyed");
+	// todo: add proper gameover
+	TIM_LOG_LOG("Game over");
 }

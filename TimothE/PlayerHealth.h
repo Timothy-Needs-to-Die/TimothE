@@ -1,15 +1,13 @@
 #pragma once
-#include "StructureHealth.h"
+#include "Health.h"
 
-class BedHealth : public StructureHealth
+class PlayerHealth : public Health
 {
 public:
 	COMPONENT_STATIC_TYPE(Health_Type);
 
-	BedHealth(GameObject* pOwner, int health);
+	PlayerHealth(GameObject* pOwner, int health);
 
-protected:
 	virtual void OnDeath() override;
 	virtual void OnDamage() override;
 };
-

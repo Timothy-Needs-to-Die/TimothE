@@ -12,6 +12,7 @@ StructureHealth::StructureHealth(GameObject* owner, int health)
 
 void StructureHealth::OnDamage()
 {
+	Health::OnDamage();
 }
 
 void StructureHealth::OnDeath()
@@ -21,8 +22,11 @@ void StructureHealth::OnDeath()
 	if (pFarmScene) {
 		pFarmScene->RemoveStructure(dynamic_cast<StructureObject*>(_pParentObject));
 	}
+	
+	Health::OnDeath();
 }
 
 void StructureHealth::OnHeal()
 {
+	Health::OnHeal();
 }

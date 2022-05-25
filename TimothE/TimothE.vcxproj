@@ -161,6 +161,7 @@
     <ClInclude Include="PlantResourceType.h" />
     <ClInclude Include="PlantedCrop.h" />
     <ClInclude Include="Player.h" />
+    <ClInclude Include="PlayerHealth.h" />
     <ClInclude Include="PlayerInputComponent.h" />
     <ClInclude Include="PlayerResource.h" />
     <ClInclude Include="PlayerResourceManager.h" />
@@ -279,6 +280,7 @@
     <ClCompile Include="Physics.cpp" />
     <ClCompile Include="PlantedCrop.cpp" />
     <ClCompile Include="Player.cpp" />
+    <ClCompile Include="PlayerHealth.cpp" />
     <ClCompile Include="PlayerInputComponent.cpp" />
     <ClCompile Include="PlayerResource.cpp" />
     <ClCompile Include="PlayerResourceManager.cpp" />

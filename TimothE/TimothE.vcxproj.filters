@@ -402,6 +402,7 @@
     <ClInclude Include="WaveManager.h" />
     <ClInclude Include="Bed.h" />
     <ClInclude Include="BedHealth.h" />
+    <ClInclude Include="PlayerHealth.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="AIController.cpp">
@@ -654,5 +655,6 @@
     <ClCompile Include="WaveManager.cpp" />
     <ClCompile Include="Bed.cpp" />
     <ClCompile Include="BedHealth.cpp" />
+    <ClCompile Include="PlayerHealth.cpp" />
   </ItemGroup>
 </Project>

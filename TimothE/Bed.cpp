@@ -2,11 +2,10 @@
 #include "BedHealth.h"
 #include "GameTimeManager.h"
 #include "FarmScene.h"
-#include "StructureHealth.h"
 
 Bed::Bed() : GameObject("Bed", "BED")
 {
-	_pHealth = AddComponent<StructureHealth>(new StructureHealth(this, 100));
+	_pHealth = AddComponent<BedHealth>(new BedHealth(this, 100));
 	_pHealth->SetHealth(100);
 	_pBoxCollider = AddComponent<BoxColliderComponent>(new BoxColliderComponent(this));
 	_pBoxCollider->SetTrigger(true);

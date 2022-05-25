@@ -1,17 +1,18 @@
 #include "BedHealth.h"
 #include "SceneManager.h"
+#include "StructureHealth.h"
 
-BedHealth::BedHealth(GameObject* pOwner) : Health(pOwner)
+BedHealth::BedHealth(GameObject* pOwner, int health) : StructureHealth(pOwner, health)
 {
 }
 
 void BedHealth::OnDeath()
 {
 	SceneManager::GetCurrentScene()->GameOver();
-	Health::OnDeath();
+	StructureHealth::OnDeath();
 }
 
 void BedHealth::OnDamage()
 {
-	Health::OnDamage();
+	StructureHealth::OnDamage();
 }
