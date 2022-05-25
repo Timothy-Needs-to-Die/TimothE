@@ -14,6 +14,7 @@
 #include "ToolConfig.h"
 #include "CropConfig.h"
 #include "CSVReader.h"
+#include "SeedConfig.h"
 //TODO: Document and order this class
 
 class Scene
@@ -138,6 +139,7 @@ public:
 	void PopulateSeedVector();
 	void PopulateCropVector();
 	
+	virtual void GameOver() {}
 
 protected:
 	//Stores the name of the scene

@@ -2,8 +2,13 @@
 #include "Component.h"
 #include "TraderConfig.h"
 #include "ItemConfig.h"
+#include <string>
+#include "ToolConfig.h"
+#include "ArmourConfig.h"
+#include "SeedConfig.h"
+#include "CropConfig.h"
 
-
+class CSVReader;
 class PlayerResourceManager;
 enum PlantResourceType; 
 enum CoreResourceType;
@@ -12,7 +17,7 @@ struct HotbarItem;
 class BaseTrader : Component
 {
 public:
-	BaseTrader(TraderConfig config);
+	BaseTrader(std::string configPath, std::string name);
 	~BaseTrader();
 	
 	COMPONENT_STATIC_TYPE(Trader_Type);
@@ -21,15 +26,22 @@ public:
 	void OnNewDay();
 
 
-	void OnBuy(ItemConfig item, PlantResourceType type, int amount);
+	//void OnBuy(PurchaseableConfig item);
+	void OnBuyTool(ToolConfig tool);
+	void OnBuySeed(SeedConfig seed);
+
+	void OnBuyArmour(ArmourConfig armour);
+
+	void OnSellCrop(CropConfig crop);
+	
 	//void OnBuy(ItemConfig item, HotbarItem type, int amount);
 
-	void OnSell();
+	//void OnSell();
 	void UpdateUI();
 	void LevelUpTrader();
 	TraderConfig* GetConfig() { return &_config; }
 
-	void SetTraderConfig(TraderConfig config);
+	void SetTraderConfig(std::string configPath);
 private:
 	void GenerateDailyGoldamount();
 	TraderConfig _config; 

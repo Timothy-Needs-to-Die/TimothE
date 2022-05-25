@@ -58,7 +58,7 @@ void MovementComponent::CollisionCheck(glm::vec2& newPos)
 	playerQuad.size.y /= 2.0f;
 	playerQuad.CalculateMax();
 	
-
+	TileData* tile = pTilemap->GetTileAtWorldPos(0, newPos);
 
 	for (float x = newPos.x - 0.25f; x <= newPos.x + 0.25f; x += 0.25f) {
 		for (float y = newPos.y - 0.25f; y <= newPos.y + 0.25f; y += 0.25f) {

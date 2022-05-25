@@ -12,7 +12,7 @@ struct QuadVertex {
 };
 
 struct RendererData {
-	static const unsigned int maxQuads = 20000;
+	static const unsigned int maxQuads = 1000;
 	static const unsigned int maxVertices = maxQuads * 4;
 	static const unsigned int maxIndices = maxQuads * 6;
 	static const unsigned int maxTextureSlots = 32;

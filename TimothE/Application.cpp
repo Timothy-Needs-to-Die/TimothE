@@ -146,6 +146,7 @@ void Application::GameLoop()
 		if (DEV_MODE) {
 			if (Input::IsKeyDown(TimothEKeyCode::KEY_0)) {
 				_tileMapEditorEnabled = !_tileMapEditorEnabled;
+				TileMapEditor::_active = _tileMapEditorEnabled;
 				std::string cameraName = _tileMapEditorEnabled ? "Editor" : "Main Camera";
 				CameraManager::SetCamera(cameraName);
 			}
@@ -219,7 +220,8 @@ void Application::PollInput()
 //clears and adds background
 void Application::GameBeginRender()
 {
-	Window::SetWindowColour(0.0f, 0.0f, 0.0f, 1.0f);
+	//Benji did this because they're an amazing programmer/genius.
+	Window::SetWindowColour(0.553f, 0.768f, 0.207f, 1.0f);
 	GLCall(glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT));
 }
 

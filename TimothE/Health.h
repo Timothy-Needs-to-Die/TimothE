@@ -15,6 +15,10 @@ public:
 		_maxHealth = amount;
 		_currentHealth = _maxHealth;
 	}
+	int GetMaxHealth() { return _maxHealth; }
+
+	int GetCurrentHealth() { return _currentHealth; }
+	void SetHealth(int val) { _currentHealth = val; }
 
 	void TakeDamage(int val);
 

@@ -87,7 +87,9 @@ void Scene::UpdateObjects()
 	//Cycles through all gameobjects in the scene and updates them
 	for (GameObject* obj : _listOfGameObjects)
 	{
-		obj->Update();
+		if (obj->IsActive()) {
+			obj->Update();
+		}
 	}
 
 	Physics::UpdateWorld();
@@ -104,7 +106,7 @@ void Scene::FrameEnd()
 			_listOfDrawableGameObjects.erase(it);
 		}
 
-		
+
 		std::vector<GameObject*>::iterator it2 = std::find(_listOfGameObjects.begin(), _listOfGameObjects.end(), obj);
 		if (it2 != _listOfGameObjects.end()) {
 			_listOfGameObjects.erase(it2);
@@ -113,7 +115,7 @@ void Scene::FrameEnd()
 
 	for (std::vector<GameObject*>::iterator it = _gameObjectsToRemove.begin(); it != _gameObjectsToRemove.end(); ++it) {
 		if (*it != nullptr) {
-			delete *it;
+			delete* it;
 		}
 	}
 
@@ -122,31 +124,53 @@ void Scene::FrameEnd()
 
 void Scene::RenderScene(Camera* cam)
 {
-	Renderer2D::BeginRender(cam);
-
 	_pTilemap->RenderMap(cam);
 
+	Renderer2D::BeginRender(cam);
+
 	for (auto& obj : _listOfDrawableGameObjects) {
+		if (!obj->IsActive()) continue;
+
 		//TODO: Text won't render here as it uses its own internal texture data.
 		Texture2D* objTex = obj->GetComponent<Texture2D>();
 		SpriteComponent* sc = obj->GetComponent<SpriteComponent>();
 
-		if (objTex != nullptr || sc != nullptr) {
-			if (obj->GetTag() == "UI") {
+		//if (objTex != nullptr || sc != nullptr) {
+		if (obj->GetTag() == "UI") {
+			if (objTex != nullptr) {
 				Renderer2D::DrawUIQuad(obj->GetTransform()->GetRenderQuad(), obj->GetComponent<Texture2D>());
 			}
+			//else {
+			//	TextComponent* tc = obj->GetComponent<TextComponent>();
+			//
+			//	if (tc != nullptr) {
+			//		tc->OnUpdate();
+			//	}
+			//}
+		}
+		else {
+			if (sc) {
+				Renderer2D::DrawQuad(obj->GetTransform()->GetRenderQuad(), sc->GetSprite()->GetTexture(), sc->GetSprite()->GetTexCoords());
+			}
 			else {
-				if (sc) {
-					Renderer2D::DrawQuad(obj->GetTransform()->GetRenderQuad(), sc->GetSprite()->GetTexture(), sc->GetSprite()->GetTexCoords());
-				}
-				else {
-					Renderer2D::DrawQuad(obj->GetTransform()->GetRenderQuad(), objTex);
-				}
+				Renderer2D::DrawQuad(obj->GetTransform()->GetRenderQuad(), objTex);
 			}
 		}
+		//}
 	}
-
 	Renderer2D::EndRender();
+
+	for (auto& obj : _listOfDrawableGameObjects) {
+		if (!obj->IsActive()) continue;
+
+		if (obj->GetTag() != "UI") continue;
+
+		TextComponent* tc = obj->GetComponent<TextComponent>();
+
+		if (tc != nullptr) {
+			tc->OnUpdate();
+		}
+	}
 }
 
 void Scene::CircleBoxTest()
@@ -268,6 +292,8 @@ GameObject* Scene::GetGameObjectByName(std::string name)
 {
 	//Cycles through all gameobjects in the scene
 	for (GameObject* obj : _listOfGameObjects) {
+		if (!obj->IsActive()) continue;
+
 		//if the gameobjects name matches the passed in one
 		if (obj->GetName() == name) {
 			//Return the object
@@ -281,6 +307,8 @@ GameObject* Scene::GetGameObjectByID(std::string id)
 {
 	//Cycles through all gameobjects in the scene
 	for (GameObject* obj : _listOfGameObjects) {
+		if (!obj->IsActive()) continue;
+
 		//if the ID matches
 		if (obj->GetUID() == id) {
 			//Returns the object
@@ -300,6 +328,8 @@ std::vector<GameObject*> Scene::GetGameObjectsByName(std::string name)
 	std::vector<GameObject*> list;
 	//Cycles through all the gameobjects in the scene
 	for (GameObject* obj : _listOfGameObjects) {
+		if (!obj->IsActive()) continue;
+
 		//Checks if the names matchup
 		if (obj->GetName() == name) {
 			//Adds the object to the vector
@@ -317,6 +347,8 @@ std::vector<GameObject*> Scene::GetGameObjectsByName(std::string name)
 GameObject* Scene::FindObjectWithTag(const std::string& tagName)
 {
 	for (GameObject* obj : _listOfGameObjects) {
+		if (!obj->IsActive()) continue;
+
 		if (obj->GetTag() == tagName) {
 			return obj;
 		}
@@ -328,6 +360,8 @@ std::vector<GameObject*> Scene::FindGameObjectsWithTag(const std::string& tagNam
 {
 	std::vector<GameObject*> objects;
 	for (GameObject* obj : _listOfGameObjects) {
+		if (!obj->IsActive()) continue;
+
 		if (obj->GetTag() == tagName) {
 			objects.emplace_back(obj);
 		}
@@ -337,20 +371,20 @@ std::vector<GameObject*> Scene::FindGameObjectsWithTag(const std::string& tagNam
 
 void Scene::PopulateToolVector()
 {
-	std::vector<std::vector<std::string>> loadedData = CSVReader::RequestDataFromFile("Resources/Data/ItemsConfig.csv");
+	std::vector<std::vector<std::string>> loadedData = CSVReader::RequestDataFromFile("Resources/Data/BlacksmithVendorConfig.csv");
 		for (int i = 0; i < loadedData.size(); i++) {
 			ToolConfig newConfig;
-			newConfig.price = std::stoi(loadedData[i][2]);
-			newConfig.name = loadedData[i][0];
-			newConfig.resourceCost.woodRequired = std::stoi(loadedData[i][3]);
-			newConfig.resourceCost.stoneRequired = std::stoi(loadedData[i][4]);
-			newConfig.resourceCost.metalRequired = std::stoi(loadedData[i][5]);
-			newConfig.resourceCost.coalRequired = std::stoi(loadedData[i][6]);
-			newConfig.type = (ToolType)std::stoi(loadedData[i][11]);
-			newConfig.damagePerHit = std::stoi (loadedData[i][7]);
-			newConfig.townLevelRequired = std::stoi(loadedData[i][10]);
+			newConfig.price = std::stoi(loadedData[i][3]);
+			newConfig.name = loadedData[i][1];
+			newConfig.resourceCost.woodRequired = std::stoi(loadedData[i][4]);
+			newConfig.resourceCost.stoneRequired = std::stoi(loadedData[i][5]);
+			newConfig.resourceCost.metalRequired = std::stoi(loadedData[i][6]);
+			newConfig.resourceCost.coalRequired = std::stoi(loadedData[i][7]);
+			newConfig.type = (ToolType)std::stoi(loadedData[i][10]);
+			newConfig.damagePerHit = std::stoi (loadedData[i][8]);
+			newConfig.townLevelRequired = std::stoi(loadedData[i][0]);
 
-		}
+	}
 }
 
 void Scene::PopulateSeedVector()
@@ -362,8 +396,8 @@ void Scene::PopulateSeedVector()
 		newConfig.name = loadedData[i][1];
 		newConfig.price = std::stoi(loadedData[i][2]);
 		newConfig.description = loadedData[i][3];
-		newConfig.growthRate = std::stoi(loadedData[i][4]);
-		newConfig.type = (CropType)std::stoi(loadedData[i][5]);
+		newConfig.growthPerDay = std::stoi(loadedData[i][4]);
+		newConfig.type = (SeedType)std::stoi(loadedData[i][5]);
 	}
 }
 

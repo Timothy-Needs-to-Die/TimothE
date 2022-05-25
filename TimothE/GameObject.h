@@ -130,6 +130,13 @@ public:
 	virtual void OnColliderExit(ColliderBase* other);
 
 
+	bool IsActive() { return _isActive; }
+	void SetActive(bool val) { 
+		_isActive = val; 
+		TIM_LOG_LOG("IsActive: " << _isActive);
+	}
+
+
 private:
 	///////////////////////////////////
 	//Properties (Unique Identifiers)//
@@ -137,6 +144,8 @@ private:
 	std::string _UID;
 	std::string _name;
 	std::string _tag;
+
+	bool _isActive = true;
 
 protected:
 	//////////////

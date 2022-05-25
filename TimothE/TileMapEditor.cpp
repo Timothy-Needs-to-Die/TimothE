@@ -3,6 +3,8 @@
 
 bool TileMapEditor::_collidableToggle = false;
 bool TileMapEditor::_showCollisionMap = false;
+bool TileMapEditor::_active = false;
+
 std::string TileMapEditor::_spritesheetName = "spritesheet";
 glm::vec2 TileMapEditor::_mapSizeInUnits = glm::vec2(32.0);
 SelectedTile TileMapEditor::_selectedTile;
@@ -75,6 +77,8 @@ void TileMapEditor::EditorUI(TileMap* pTilemap)
 
 	{
 		ImGui::BeginChild("Tilemap Settings", ImVec2(0, ImGui::GetContentRegionAvail().y * 0.75f));
+
+		ImGui::Text("Currently Editing: %s", pTilemap->GetName());
 
 		ImGui::Text("Layer: ");
 		ImGui::SameLine();
