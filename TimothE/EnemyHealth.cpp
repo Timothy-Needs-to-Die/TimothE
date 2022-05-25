@@ -6,7 +6,7 @@ EnemyHealth::EnemyHealth(GameObject* pOwner, int startingHealth)
 
 void EnemyHealth::OnDeath(GameObject* instigator)
 {
-
+	SceneManager::GetCurrentScene()->RemoveGameObject(_pParentObject);
 }
 
 void EnemyHealth::OnDamage(GameObject* instigator)

@@ -30,6 +30,8 @@ public:
 
 	std::vector<glm::vec2> processedPath;
 private:
+	std::vector<glm::vec2> ProcessPath();
+
 
 	Node* _mEndNode = nullptr;
 

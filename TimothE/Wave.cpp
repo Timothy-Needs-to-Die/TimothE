@@ -73,7 +73,7 @@ void WaveController::SpawnWave()
 	{
 		_enemies.push_back(new GameObject("Enemy", "ENEMY"));
 		// todo change the texture
-		_enemies[i]->AddComponent<Texture2D>(new Texture2D("whiteTexture.png", "whiteTexture"));
+		_enemies[i]->AddComponent<Texture2D>(ResourceManager::GetTexture("whiteTexture"));
 
 		// spawn on random edge
 		//glm::vec2 tilesize = _pCurrentScene->GetTileMap()->GetTileSize();

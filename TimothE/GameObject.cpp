@@ -38,6 +38,7 @@ GameObject::~GameObject()
 	Exit();
 	for (Component* c : _pComponents)
 	{
+		if(c->GetType() == Component::Texture_Type) continue;
 		delete(c);
 	}
 }

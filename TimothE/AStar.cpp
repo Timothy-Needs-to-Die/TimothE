@@ -35,7 +35,7 @@ std::vector<glm::vec2> AStar::FindPath(glm::vec2 start, glm::vec2 end)
 	currentNode->_mGlobalGoal = glm::distance(currentNode->_mPos, end);
 	currentNode->_mNeighborNodes = _mMapNodes.at((start.y * _mTilesPerUnit) * _mWidth + (start.x * _mTilesPerUnit))._mNeighborNodes;
 
-	untestedNodes.push_back(currentNode);
+	untestedNodes.emplace_back(currentNode);
 
 	bool pathFound = false;
 
@@ -63,7 +63,7 @@ std::vector<glm::vec2> AStar::FindPath(glm::vec2 start, glm::vec2 end)
 			//if the neighbor node is not visited and is not an obstacle then add it to the untestedNode list
 			if (!nodeNeighbor->_mIsVisited && !nodeNeighbor->_mIsObstacle) {
 				//Adds the neighboring node to the list
-				untestedNodes.push_back(nodeNeighbor);
+				untestedNodes.emplace_back(nodeNeighbor);
 			}
 
 
@@ -112,12 +112,12 @@ std::vector<glm::vec2> AStar::FindPath(glm::vec2 start, glm::vec2 end)
 					int index = (start.y * _mTilesPerUnit) * _mWidth + (start.x * _mTilesPerUnit);
 					if (index < 0) index = 0;
 					previousNode = _mMapNodes.at(index);
-					_mPathOfNodes.emplace_back(previousNode);
-					break;
+					previousNode._mParentNode = start;
+					return ProcessPath();
 				}
 			}
 
-			_mPathOfNodes.push_back(previousNode);
+			_mPathOfNodes.emplace_back(previousNode);
 			size++;
 
 			//Sets the previous node to the parent of this node
@@ -126,16 +126,7 @@ std::vector<glm::vec2> AStar::FindPath(glm::vec2 start, glm::vec2 end)
 			previousNode = _mMapNodes.at(index);
 		}
 	}
-
-	//for (int i = 0; i < _mPathOfNodes.size(); ++i) {
-	//	processedPath.emplace_back(_mPathOfNodes[i]->_mPos);
-	//}
-
-	for (std::vector<Node>::iterator it = _mPathOfNodes.begin(); it != _mPathOfNodes.end(); ++it) {
-		processedPath.push_back(it->_mPos);
-	}
-
-	return processedPath;
+	return ProcessPath();
 }
 
 void AStar::SetMap(TileMap* map)
@@ -218,4 +209,12 @@ void AStar::UpdateNodeObstacleStatus(glm::vec2 worldPos, bool val)
 
 	_mMapNodes[index]._mIsObstacle = val;
 
+}
+
+std::vector<glm::vec2> AStar::ProcessPath()
+{
+	for (std::vector<Node>::iterator it = _mPathOfNodes.begin(); it != _mPathOfNodes.end(); ++it) {
+		processedPath.emplace_back(it->_mPos);
+	}
+	return processedPath;
 }

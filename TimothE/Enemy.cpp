@@ -13,6 +13,8 @@ Enemy::Enemy(std::string name, std::string tag)
 	_pFighter = AddComponent(new Fighter(this));
 	_pHealth = AddComponent(new EnemyHealth(this, 50));
 
+	AddComponent(new BoxColliderComponent(this))->SetTrigger(true);
+
 	_pMover->SetAllowCollisions(false);
 
 	_pMovement = _pMover;

@@ -15,7 +15,7 @@ OffensiveStructureObject::OffensiveStructureObject(std::string name, std::string
 
 void OffensiveStructureObject::OnTriggerEnter(ColliderBase* other)
 {
-	if (other->GetParent()->GetTag() == "PLAYER") {
+	if (other->GetParent()->GetTag() == "ENEMY") {
 		TIM_LOG_LOG("Target in range");
 		_pEnemiesInRange.emplace_back(other->GetParent());
 	}
