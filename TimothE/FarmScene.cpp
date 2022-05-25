@@ -14,6 +14,7 @@
 #include "AIController.h"
 #include "Enemy.h"
 #include "StreamFile.h"
+#include "LightsourceObject.h"
 
 FarmScene::~FarmScene()
 {
@@ -159,14 +160,8 @@ void FarmScene::InitScene()
 	_pLightManager->SetMinLightLevel(1);
 	_pLightManager->SetMaxLightLevel(8);
 
-	//Add Light Sources
-	LightSource campfire = LightSource();
-	campfire.worldPos = glm::vec2(4.0f, 3.0f);
-	_pLightManager->AddLightSource(campfire);
-
-	//Update Light Map
-	_pLightManager->UpdateLightMap();
-	//LIGHTING END//
+	LightsourceObject* pLight = new LightsourceObject({ 4.0f, 3.0f }, "Light");
+	AddGameObject(pLight);
 
 	LoadScene("Resources/PlayerSaves/FarmSceneSaveData.sav");
 }
@@ -213,6 +208,9 @@ void FarmScene::LoadScene(std::string filename)
 		else if (tag == "TOWER") {
 			object = new OffensiveStructureObject("Tower", tag);
 		}
+		else if (tag == "LIGHTSOURCE") {
+			object = new LightsourceObject(pos);
+		}
 
 		object->GetTransform()->SetPosition(pos);
 		AddStructure(object);
@@ -240,6 +238,10 @@ void FarmScene::RemoveStructure(StructureObject* object)
 
 		_pAstarObject->UpdateNodeObstacleStatus(_pTilemap->GetTileAtWorldPos(0, pObject->GetTransform()->GetPosition())->pos, false);
 		_pTilemap->GetTileAtWorldPos(5, pObject->GetTransform()->GetPosition())->collidable = false;
+	}
+
+	if (object->GetTag() == "LIGHTSOURCE") {
+		_pLightManager->RemoveLightSource(dynamic_cast<LightsourceObject*>(object)->GetLightSource());
 	}
 
 	std::vector<StructureObject*>::iterator it = std::find(_pStructures.begin(), _pStructures.end(), object);

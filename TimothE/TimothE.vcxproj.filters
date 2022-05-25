@@ -404,6 +404,9 @@
     <ClInclude Include="BedHealth.h" />
     <ClInclude Include="PlayerHealth.h" />
     <ClInclude Include="LightLevelManager.h" />
+    <ClInclude Include="WeaponComponent.h" />
+    <ClInclude Include="WeaponObject.h" />
+    <ClInclude Include="LightsourceObject.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="AIController.cpp">
@@ -658,6 +661,9 @@
     <ClCompile Include="BedHealth.cpp" />
     <ClCompile Include="PlayerHealth.cpp" />
     <ClCompile Include="LightLevelManager.cpp" />
+    <ClCompile Include="WeaponComponent.cpp" />
+    <ClCompile Include="WeaponObject.cpp" />
+    <ClCompile Include="LightsourceObject.cpp" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Node.h" />

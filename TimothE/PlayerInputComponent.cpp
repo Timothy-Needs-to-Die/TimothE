@@ -10,6 +10,7 @@
 #include "FarmScene.h"
 #include "StructureObject.h"
 #include "OffensiveStructureObject.h"
+#include "LightsourceObject.h"
 
 void PlayerInputComponent::OnStart()
 {
@@ -110,6 +111,10 @@ void PlayerInputComponent::BuildControls()
 	else if (Input::IsKeyDown(KEY_2)) {
 		_selectedStructure = StructureType::Tower;
 	}
+	else if (Input::IsKeyDown(KEY_3)) {
+		TIM_LOG_LOG("Selected campfire");
+		_selectedStructure = StructureType::Campfire;
+	}
 
 	glm::vec2 mousePos = Input::GetMousePos();
 	glm::vec2 size = CameraManager::CurrentCamera()->Size();
@@ -130,7 +135,12 @@ void PlayerInputComponent::BuildControls()
 			cost.woodRequired = 3;
 			cost.stoneRequired = 5;
 			break;
+		case StructureType::Campfire:
+			cost.woodRequired = 3;
+			cost.coalRequired = 2;
+			break;
 		default:
+			TIM_LOG_WARNING("Case not covered");
 			return;
 		}
 
@@ -146,6 +156,10 @@ void PlayerInputComponent::BuildControls()
 					break;
 				case StructureType::Tower:
 					pObject = new OffensiveStructureObject("Tower");
+					break;
+				case StructureType::Campfire:
+					TIM_LOG_LOG("Creating lightsource");
+					pObject = new LightsourceObject(tilePos);
 					break;
 				}
 

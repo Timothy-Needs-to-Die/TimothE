@@ -40,6 +40,8 @@ public:
 
 	class GameTimeManager* GetGameTime() { return _pGameTime; }
 
+	LightLevelManager* GetLightManager() const { return _pLightManager; }
+
 private:
 	GameObject* _pStartButton = nullptr;
 	GameObject* _pWeaponObject = nullptr;
