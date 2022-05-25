@@ -25,6 +25,9 @@ public:
 	std::vector<glm::vec2> FindPath(glm::vec2 start, glm::vec2 end);
 
 	void SetMap(TileMap* map);
+
+	void UpdateNodeObstacleStatus(glm::vec2 worldPos, bool val);
+
 	std::vector<glm::vec2> processedPath;
 private:
 

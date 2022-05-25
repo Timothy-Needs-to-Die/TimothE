@@ -23,7 +23,7 @@ void OffensiveStructureObject::OnTriggerEnter(ColliderBase* other)
 
 void OffensiveStructureObject::OnTriggerExit(ColliderBase* other)
 {
-	if (other->GetParent()->GetTag() == "PLAYER") {
+	if (other->GetParent()->GetTag() == "ENEMY") {
 		TIM_LOG_LOG("Target not in range");
 
 		GameObject* enemy = other->GetParent();
@@ -66,5 +66,4 @@ void OffensiveStructureObject::UniqueLogic()
 	if (closestEnemy != nullptr) {
 		_pCurrentTarget = closestEnemy;
 	}
-
 }

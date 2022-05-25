@@ -144,6 +144,7 @@ void FarmScene::AddStructure(StructureObject* object)
 {
 	AddGameObject(object);
 	_pStructures.emplace_back(object);
+	_pAstarObject->UpdateNodeObstacleStatus(_pTilemap->GetTileAtWorldPos(0, object->GetTransform()->GetPosition())->pos, true);
 }
 
 void FarmScene::RemoveStructure(class StructureObject* object)
@@ -154,6 +155,8 @@ void FarmScene::RemoveStructure(class StructureObject* object)
 		if (pObject != object) continue;
 
 		_pTilemap->SetCollidableAtLayer(5, pObject->GetTransform()->GetPosition(), false);
+
+		_pAstarObject->UpdateNodeObstacleStatus(_pTilemap->GetTileAtWorldPos(0, pObject->GetTransform()->GetPosition())->pos, false);
 	}
 
 	std::vector<StructureObject*>::iterator it = std::find(_pStructures.begin(), _pStructures.end(), object);
