@@ -147,6 +147,21 @@ void FarmScene::InitScene()
 
 	farmland = new FarmlandManager("Farmland Manager");
 	AddGameObject(farmland);
+
+	//LIGHTING TEST CODE//
+	_pLightManager = new LightLevelManager(_pTilemap);
+	_pLightManager->SetWorldLightLevel(5);
+	_pLightManager->SetMinLightLevel(1);
+	_pLightManager->SetMaxLightLevel(8);
+
+	//Add Light Sources
+	LightSource campfire = LightSource();
+	campfire.worldPos = glm::vec2(16.75f, 3.0f);
+	_pLightManager->AddLightSource(campfire);
+
+	//Update Light Map
+	_pLightManager->UpdateLightMap();
+	//LIGHTING END//
 }
 
 void FarmScene::AddStructure(StructureObject* object)
