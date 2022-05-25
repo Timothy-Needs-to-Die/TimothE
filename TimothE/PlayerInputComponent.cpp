@@ -10,6 +10,7 @@
 #include "FarmScene.h"
 #include "StructureObject.h"
 #include "OffensiveStructureObject.h"
+#include "PlayerHealth.h"
 
 void PlayerInputComponent::OnStart()
 {
@@ -35,7 +36,12 @@ void PlayerInputComponent::OnUpdate()
 			_pNearbyResourceNode->Interact();
 		}
 	}
-
+	//testing game over
+	if (Input::IsKeyDown(KEY_H)) {
+		_pParentObject->GetComponent<PlayerHealth>()->SetHealth(-1);
+		_pParentObject->GetComponent<PlayerHealth>()->OnDeath(NULL);
+		TIM_LOG_LOG(_pParentObject->GetComponent<PlayerHealth>()->GetCurrentHealth());
+	}
 	if (Input::IsKeyDown(KEY_I)) {
 		int goldAmount = PlayerResourceManager::GetCoreResource(CoreResourceType::Gold)->GetAmount();
 		int woodAmount = PlayerResourceManager::GetCoreResource(CoreResourceType::Wood)->GetAmount();
