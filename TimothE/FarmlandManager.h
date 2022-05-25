@@ -17,12 +17,8 @@ public:
 	/// <param> GameObject - parent the component is being attached to </param>
 	FarmlandManager(GameObject* parent);
 
-	/// <summary>
-	/// Place a "CropPlot" at the desired location
-	/// Checks if the plot has already got a "CropPlot" on it
-	/// </summary>
-	/// <param name="position"> The Position we want to place the CropPlot</param>
-	void PlaceFarmLand(glm::vec2 position);
+
+	bool PlaceFarmLand(glm::vec2 position);
 
 	/// <summary>
 	/// Plant the seed at the desired location

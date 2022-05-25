@@ -36,6 +36,7 @@ public:
 	virtual void OnEnd() override;
 
 	void MoveControls();
+	void FarmingControls();
 	void BuildControls();
 
 	void NearbyResourceNode(class ResourceNode* nearbyResource);
@@ -55,5 +56,10 @@ private:
 
 	bool _inBuildMode = false;
 	bool _bReadyforbuildPress = false;
+
+	// input bools
+	bool _bFkeyPressed;
+	bool _bGkeyPressed;
+	bool _bHkeyPressed;
 };
 

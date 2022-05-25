@@ -39,32 +39,7 @@ void PlayerInputComponent::OnUpdate()
 		}
 	}
 
-	// Farming
-	if (Input::IsKeyDown(KEY_F))
-	{
-		glm::vec2 target = _pParentObject->GetTransform()->GetPosition();
-		// Targets the midpoint of the player
-		target.x += _pParentObject->GetTransform()->GetScale().x / 2;
-		target.y += _pParentObject->GetTransform()->GetScale().y / 2;
-		_pFarmlandManager->PlaceFarmLand(target);
-	}
-
-	if (Input::IsKeyDown(KEY_G))
-	{
-		glm::vec2 target = _pParentObject->GetTransform()->GetPosition();
-		// Targets the midpoint of the player
-		target.x += _pParentObject->GetTransform()->GetScale().x / 2;
-		target.y += _pParentObject->GetTransform()->GetScale().y / 2;
-
-		// Add logic for what resource the player has in hand?
-		_pFarmlandManager->PlantSeed(target, PlantResourceType::WheatRes);
-	}
-
-	// Debug
-	if (Input::IsKeyDown(KEY_H))
-	{
-		_pFarmlandManager->OnNewDay();
-	}
+	FarmingControls();
 
 	// Inventory
 	if (Input::IsKeyDown(KEY_I)) {
@@ -77,6 +52,16 @@ void PlayerInputComponent::OnUpdate()
 		TIM_LOG_LOG("Wood: " << woodAmount);
 		TIM_LOG_LOG("Metal: " << metalAmount);
 		TIM_LOG_LOG("Stone: " << stoneAmount);
+	}
+
+	if (Input::IsKeyDown(KEY_O)) {
+		int wheatAmount = PlayerResourceManager::GetPlantResource(PlantResourceType::WheatRes)->GetAmount();
+		int potatoAmount = PlayerResourceManager::GetPlantResource(PlantResourceType::PotatoRes)->GetAmount();
+		int carrotAmount = PlayerResourceManager::GetPlantResource(PlantResourceType::CarrotRes)->GetAmount();
+
+		TIM_LOG_LOG("Wheat: " << wheatAmount);
+		TIM_LOG_LOG("Potato: " << potatoAmount);
+		TIM_LOG_LOG("Carrot: " << carrotAmount);
 	}
 
 
@@ -128,6 +113,55 @@ void PlayerInputComponent::MoveControls()
 	_pMovement->Move(moveVec);
 
 	CameraManager::GetCamera(-1)->SetPosition({ _pParentObject->GetTransform()->GetPosition(), -2.0f });
+}
+
+void PlayerInputComponent::FarmingControls()
+{
+	// Farming
+	if (Input::IsKeyDown(KEY_F))
+	{
+		if (_bFkeyPressed) return;
+		_bFkeyPressed = true;
+
+		glm::vec2 target = _pParentObject->GetTransform()->GetPosition();
+		// Targets the midpoint of the player
+		target.x += _pParentObject->GetTransform()->GetScale().x / 2;
+		target.y += _pParentObject->GetTransform()->GetScale().y / 2;
+		if (!_pFarmlandManager->PlaceFarmLand(target))
+		{
+			CropPlot* closestPlot = _pFarmlandManager->GetCropPlotAtPosition(target);
+			if (closestPlot != nullptr)
+			{
+				closestPlot->Harvest();
+			}
+		}
+	}
+	if (Input::IsKeyUp(KEY_F)) _bFkeyPressed = false;
+
+	if (Input::IsKeyDown(KEY_G))
+	{
+		if (_bGkeyPressed) return;
+		_bGkeyPressed = true;
+
+		glm::vec2 target = _pParentObject->GetTransform()->GetPosition();
+		// Targets the midpoint of the player
+		target.x += _pParentObject->GetTransform()->GetScale().x / 2;
+		target.y += _pParentObject->GetTransform()->GetScale().y / 2;
+
+		// Add logic for what resource the player has in hand?
+		_pFarmlandManager->PlantSeed(target, PlantResourceType::WheatRes);
+	}
+	if (Input::IsKeyUp(KEY_G)) _bGkeyPressed = false;
+
+	// Debug
+	if (Input::IsKeyDown(KEY_H))
+	{
+		if (_bHkeyPressed) return;
+		_bHkeyPressed = true;
+		_pFarmlandManager->OnNewDay();
+	}
+	if (Input::IsKeyUp(KEY_H)) _bHkeyPressed = false;
+
 }
 
 void PlayerInputComponent::BuildControls()

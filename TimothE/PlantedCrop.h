@@ -11,7 +11,7 @@ public:
 	~PlantedCrop();
 
 	void AddGrowth(int growTime);
-	void Harvest();
+	bool Harvest();
 
 	// Inherited via Component
 	virtual void OnStart() override;
@@ -21,6 +21,7 @@ public:
 	// Get & Set Methods
 	bool IsHarvestable() { return _isHarvestable; }
 	int GetCurrentGrowTime() { return _currentGrowTime; }
+	PlantResourceType GetCrop() { return _type; }
 
 private:
 	bool _isHarvestable;
@@ -30,6 +31,7 @@ private:
 
 	int _daysToGrow;
 	int _currentGrowTime;
+	int _spriteIndex;
 
 protected:
 };

@@ -5,7 +5,7 @@ FarmlandManager::FarmlandManager(GameObject* parent) : Component(parent)
 	
 }
 
-void FarmlandManager::PlaceFarmLand(glm::vec2 position)
+bool FarmlandManager::PlaceFarmLand(glm::vec2 position)
 {
 	// Bool to check if a plot has been found
 	bool plotAlreadyOnTile = false;
@@ -45,7 +45,9 @@ void FarmlandManager::PlaceFarmLand(glm::vec2 position)
 		SceneManager::GetCurrentScene()->AddGameObject(newCropPlot);
 		// Debug message
 		std::cout << "Succesfully Created CropPlot: x:"<< tilePlayerIsOnPos.x << " y:" << tilePlayerIsOnPos.y << std::endl;
+		return true;
 	}
+	return false;
 }
 
 void FarmlandManager::PlantSeed(glm::vec2 position, PlantResourceType cropType)
@@ -69,6 +71,7 @@ void FarmlandManager::PlantSeed(glm::vec2 position, PlantResourceType cropType)
 			// Add Sprite component as the PlantedCrop needs it
 			SpriteComponent* s = plantObject->AddComponent(new SpriteComponent(plantObject));
 			PlantedCrop* crop = new PlantedCrop(PlantResourceType::WheatRes, 4, plantObject);
+			plantObject->AddComponent(crop);
 			
 			// The plot now has a plant on it so it is occupied
 			cropPlot->SetOccupied(true);
