@@ -31,9 +31,9 @@ void AIController::OnUpdate()
 
 	float distToPlayer = glm::distance(_pOwnerTransform->GetPosition(), _pPlayerTransform->GetPosition()); //ai position
 
-	if (distToPlayer < 2.5) //config.tolerance
+	if (distToPlayer < 0.75) //config.tolerance
 	{
-		_pCurrentTarget = _pPlayer;
+		SetTarget(_pPlayer);
 	}
 
 	if (_pCurrentTarget == nullptr)
@@ -46,6 +46,7 @@ void AIController::OnUpdate()
 
 	if (distToTarget < 0.3) //config.attackRange
 	{
+		
 		_pFighter->Attack(_pParentObject);
 		return;
 	}

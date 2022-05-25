@@ -10,7 +10,7 @@ void Fighter::Attack(GameObject* instigator)
 {
 	if (!_canAttack) return;
 	_canAttack = false;
-
+	TIM_LOG_LOG("Attacking");
 
 	//Find all objects with a health component atached to them in scene
 	std::vector<Health*> healthObjects = SceneManager::GetCurrentScene()->FindObjectsOfType<Health>();
@@ -44,14 +44,10 @@ void Fighter::Attack(GameObject* instigator)
 
 	//Cycles through each nearby health object
 	for (auto& obj : nearbyHealthObjects) {
-		
-
 		//Calculate the direction vector
 		glm::vec2 dir = obj->GetParent()->GetTransform()->GetPosition() - fighterPos;
 		
 		float dot = glm::dot(dir, fighterForward);
-
-		
 
 		//std::cout << "Dot: " << dot << std::endl;
 
