@@ -8,9 +8,5 @@ WeaponObject::WeaponObject(std::string name /*= "Weapon"*/, std::string tag /*= 
 
 void WeaponObject::UniqueLogic()
 {
-	glm::vec2 pos = _pParent->GetTransform()->GetPosition();
-
-	pos += _pParent->GetTransform()->GetForward() * 0.25f;
-
 	_pTransform->SetPosition(_pParent->GetTransform()->GetForward() * 0.25f);
 }
