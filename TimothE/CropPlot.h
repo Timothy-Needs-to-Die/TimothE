@@ -1,8 +1,6 @@
 #pragma once
 #include "GameObject.h"
-#include "PlantedCrop.h"
 #include "PlantResourceType.h"
-#include "PlayerResourceManager.h"
 
 class CropPlot : public GameObject
 {

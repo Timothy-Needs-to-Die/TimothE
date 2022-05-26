@@ -2,6 +2,7 @@
 
 CropPlot::CropPlot(std::string name, std::string tag) : GameObject(name, tag)
 {
+	//_crop = nullptr;
 	_isOccupied = false;
 }
 
@@ -15,8 +16,7 @@ void CropPlot::OnNewDay()
 	// If theres a crop apply age to the crop
 	if (_isOccupied)
 	{
-		GetChild()->GetComponent<PlantedCrop>()->AddGrowth();
+		//_crop->AddGrowth(1);
 	}
 }
-
 

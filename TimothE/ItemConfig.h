@@ -9,7 +9,7 @@ struct ItemConfig
 	ItemConfig(const ItemConfig&) {};
 	
 	std::string description;
-	Sprite* icon;
+	Sprite icon;
 	
 
 };
