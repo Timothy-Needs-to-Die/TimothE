@@ -15,5 +15,6 @@ protected:
 	class MovementComponent* _pMovement = nullptr;
 	class AnimatedSpritesheet* _pAnimSheet;
 	class SpriteComponent* _pSc = nullptr;
+	class AudioSource* _audioSource = nullptr;
 };
 

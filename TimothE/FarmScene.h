@@ -25,12 +25,14 @@ public:
 
 	~FarmScene();
 
+
 	void UpdateUI() override;
 	void UpdateObjects() override;
 	void InitScene() override;
 
 	void SaveScene(std::string filename);
 	void LoadScene(std::string filename);
+	void RegisterSounds() override;
 
 	void AddStructure(class StructureObject* object);
 	void RemoveStructure(class StructureObject* object);

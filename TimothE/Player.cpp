@@ -6,6 +6,7 @@
 #include "SceneManager.h"
 #include "WeaponObject.h"
 
+
 Player::Player(std::string name /*= "Player"*/, std::string tag /*= "PLAYER"*/)
 	: Character(name, tag)
 {
@@ -14,6 +15,7 @@ Player::Player(std::string name /*= "Player"*/, std::string tag /*= "PLAYER"*/)
 	_pWeapon = new WeaponObject();
 	_pWeapon->SetParent(this);
 	SceneManager::GetCurrentScene()->AddGameObject(_pWeapon);
+
 
 	_pHealth = AddComponent(new PlayerHealth(this, 100));
 	_pFighter = AddComponent(new Fighter(this));

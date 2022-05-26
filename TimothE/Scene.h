@@ -9,6 +9,7 @@
 #include "Tag.h"
 #include <vector>
 #include "Day.h"
+#include "AudioEngine.h"
 //Configs
 #include "ItemConfig.h"
 #include "ToolConfig.h"
@@ -24,6 +25,7 @@ public:
 
 		_name = "DefaultScene";
 		_pTilemap = new TileMap("DefaultScene");
+		AudioEngine::AudioEngine();
 	}
 
 	Scene(std::string name);
@@ -51,7 +53,7 @@ public:
 
 	void FrameEnd();
 
-
+	virtual void RegisterSounds();
 
 	void RenderScene(Camera* cam);
 

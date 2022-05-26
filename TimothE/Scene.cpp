@@ -82,6 +82,7 @@ void Scene::Update()
 {
 	UpdateObjects();
 	UpdateUI();
+	
 }
 
 void Scene::UpdateUI()
@@ -129,6 +130,11 @@ void Scene::FrameEnd()
 	}
 
 	_gameObjectsToRemove.clear();
+}
+
+void Scene::RegisterSounds()
+{
+
 }
 
 void Scene::RenderScene(Camera* cam)

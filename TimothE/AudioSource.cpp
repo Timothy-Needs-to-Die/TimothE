@@ -1,8 +1,10 @@
 
 #include "AudioSource.h"
 
-AudioSource::AudioSource()
+AudioSource::AudioSource(GameObject* owner)
+	: Component(owner)
 {
+	SetType(Sound_Type);
 
 	_parentObject = GetParent();
 
@@ -33,5 +35,17 @@ void AudioSource::TogglePaused()
 void AudioSource::SetVolume(float value)
 {
 	AudioEngine::SetVolume(_sourceChannel, value);
+}
+
+void AudioSource::OnStart()
+{
+}
+
+void AudioSource::OnUpdate()
+{
+}
+
+void AudioSource::OnEnd()
+{
 }
 

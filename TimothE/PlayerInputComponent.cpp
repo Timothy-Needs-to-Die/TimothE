@@ -11,6 +11,7 @@
 #include "StructureObject.h"
 #include "OffensiveStructureObject.h"
 #include "LightsourceObject.h"
+#include "AudioSource.h"
 
 void PlayerInputComponent::OnStart()
 {
@@ -29,6 +30,7 @@ void PlayerInputComponent::OnUpdate()
 
 	if (Input::IsKeyDown(KEY_SPACE)) {
 		_pFighter->Attack(_pParentObject);
+		//_pParentObject->GetComponent<AudioSource>()->PlaySound("SwordSlash", 95, 100, 0.9, 1.0);
 	}
 
 	if (_pNearbyResourceNode != nullptr) {
