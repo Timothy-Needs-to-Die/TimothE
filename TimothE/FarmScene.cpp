@@ -15,6 +15,9 @@
 #include "Enemy.h"
 #include "StreamFile.h"
 #include "LightsourceObject.h"
+#include "TextObject.h"
+
+#include "GameOverScreen.h"
 
 FarmScene::~FarmScene()
 {
@@ -36,25 +39,12 @@ void FarmScene::UpdateObjects()
 		SceneManager::SetCurrentScene(SceneManager::CreateScene(ResourceManager::GetScene("TownScene")));
 	}
 
-	if (Input::IsKeyDown(KEY_G)) {
-		//_pTilemap->AddTileAt(2, 15, 12, CameraManager::CurrentCamera());
-	}
-	/*if (Input::IsKeyDown(KEY_H))
-	{
-		if (_pPlayer != nullptr)
-		{
-			PlayerHealth* h = _pPlayer->GetComponent<PlayerHealth>();
-			if (h != nullptr)
-			{
-				h->TakeDamage(50);
-			}
-		}
-	}*/
-
 	if (!_pGameTime->IsDay()) {
 		if (Input::IsKeyDown(KEY_P)) {
 			_pGameTime->EndNight();
 			_pGameTime->StartNewDay();
+			// Tell the farmland that a new day has dawned
+			_pPlayer->GetComponent<FarmlandManager>()->OnNewDay();
 		}
 	}
 
@@ -71,63 +61,29 @@ void FarmScene::UpdateObjects()
 
 		_pInventoryScreen->SetAllActive(!current);
 		_pInventoryScreen->OnUpdate();
-		//if (_pInventoryScreen == nullptr)
-		//{
-			//_pInventoryScreen->GetTransform()->SetPosition(50.0f, 50.0f);
-			//_pInventoryScreen->GetTransform()->SetScale({ 0.25f, 0.25f });
-		//}
 	}
 
 	if (Input::IsKeyDown(KEY_1)) {
 		SaveScene("Resources/PlayerSaves/FarmSceneSaveData.sav");
 	}
 	
+	if (_pInventoryScreen->GetAllActive())
+	{
+		_pInventoryScreen->OnUpdate();
+	}
 
 	Physics::UpdateWorld();
-
-	AudioEngine::AudioUpdate(Time::GetDeltaTime());
-	//Set audio Listener to player position 
-	AudioEngine::Set3DListenerAttributes(FMOD_VECTOR{ _pPlayer->GetTransform()->GetPosition().x,
-													_pPlayer->GetTransform()->GetPosition().y,
-													0.0f }, FMOD_VECTOR{ 0.0f, 0.0f, 0.0f },
-													FMOD_VECTOR{ 0.0f, 0.0f, 0.0f }, FMOD_VECTOR{ 0.0f, 0.0f, 0.0f });
 }
 
 void FarmScene::InitScene()
 {
 	Scene::InitScene();
-	
-	_pInventoryScreen = new InventoryScreen();
+
+	_pInventoryScreen = new InventoryScreen("InventoryScreen", "UI");
 	AddGameObject(_pInventoryScreen);
 	_pInventoryScreen->SetAllActive(false);
-
-	//_pSpritesheet = ResourceManager::GetSpriteSheet("testSheet");
-
-	_pGameTime = new GameTimeManager();
-
-	//_pStartButton = new GameObject("BUTTON", "UI");
-	//_pStartButton->AddComponent(new Button(_pStartButton));
-	//_pStartButton->AddComponent(new BoxColliderComponent(_pStartButton));
-	//_pStartButton->AddComponent(new TextComponent(_pTestObject));
-	//_pStartButton->AddComponent(ResourceManager::GetTexture("Button"));
-	//AddGameObject(_pStartButton);
-
-	//_pStartButton->GetTransform()->SetPosition(0.0f, 0.0f);
-	//_pStartButton->GetTransform()->SetScale({ 0.2f, 0.2f });
-	//GameObject* pPathFinder = new GameObject("Pathfinder");
-	//pPathFinder->AddComponent<AStar>(new AStar(pPathFinder));
-	//AddGameObject(pPathFinder);
-
-	/*_pWeaponObject = new GameObject("Weapon");
-	_pWeaponObject->AddComponent<Texture2D>(ResourceManager::GetTexture("swords"));
-	_pWeaponObject->GetTransform()->SetScale({0.20f, 0.20f});
-	_pWeaponObject->GetTransform()->SetPosition({1.5f, 0.0f});
-	SpriteComponent* pWeaponSC = _pWeaponObject->AddComponent<SpriteComponent>(new SpriteComponent(_pWeaponObject));*/
-
-	//AnimatedSpritesheet* pWeaSS = new AnimatedSpritesheet(ResourceManager::GetTexture("swords"), 16, 16, "weaponAnim", false);
-	//pWeaponSC->SetSprite(pWeaSS->GetSpriteAtIndex(6));
-
-	//AddGameObject(_pWeaponObject);
+	
+	_pGameTime = new GameTimeManager(_pLightManager);
 
 	_pPlayer = new Player();
 	_pPlayer->GetTransform()->SetPosition(7.0f, 3.5f);
@@ -143,29 +99,24 @@ void FarmScene::InitScene()
 	AddGameObject(_pWoodNode);
 
 	_pMetalNode = new ResourceNodeObject(Metal);
-	_pMetalNode->GetTransform()->SetPosition(6.0, 1.0f);
+	_pMetalNode->GetTransform()->SetPosition(8.25f, 1.25f);
 	AddGameObject(_pMetalNode);
 
 	_pStoneNode = new ResourceNodeObject(Stone);
-	_pStoneNode->GetTransform()->SetPosition(7.0, 1.0f);
+	_pStoneNode->GetTransform()->SetPosition(7.5, 0.75f);
 	AddGameObject(_pStoneNode);
 
 
 	_pCoalNode = new ResourceNodeObject(Coal);
-	_pCoalNode->GetTransform()->SetPosition(8.0, 1.0f);
+	_pCoalNode->GetTransform()->SetPosition(7.75f, 1.25f);
 	AddGameObject(_pCoalNode);
 
-	//farmland = new FarmlandManager("Farmland Manager");
-	//AddGameObject(farmland);
-
-	//LIGHTING TEST CODE//
-	_pLightManager = new LightLevelManager(_pTilemap);
-	_pLightManager->SetWorldLightLevel(5);
-	_pLightManager->SetMinLightLevel(1);
-	_pLightManager->SetMaxLightLevel(8);
+	PlayerResourceManager::LoadInCropData();
+	PlayerResourceManager::GetPlantResource(WheatSeedRes)->GainResource(5);
+	PlayerResourceManager::GetPlantResource(CarrotSeedRes)->GainResource(5);
+	PlayerResourceManager::GetPlantResource(PotatoSeedRes)->GainResource(5);
 
 	LoadScene("Resources/PlayerSaves/FarmSceneSaveData.sav");
-	RegisterSounds();
 }
 
 void FarmScene::SaveScene(std::string filename)
@@ -221,20 +172,6 @@ void FarmScene::LoadScene(std::string filename)
 	stream.Close();
 }
 
-void FarmScene::RegisterSounds()
-{
-	AudioEngine::LoadSound("StoneMine", "Resources/Sounds/SFX/StoneHit.mp3", AudioType::Type_SFX);
-	AudioEngine::LoadSound("WoodChop", "Resources/Sounds/SFX/WoodChop.wav", AudioType::Type_SFX);
-	AudioEngine::LoadSound("PlantSeed", "Resources/Sounds/SFX/PlantSeed.wav", AudioType::Type_SFX);
-	AudioEngine::LoadSound("FootStep", "Resources/Sounds/SFX/SingleFootsep.wav", AudioType::Type_SFX);
-	AudioEngine::LoadSound("SwordSlash", "Resources/Sounds/SFX/SwordSlash.wav", AudioType::Type_SFX);
-	AudioEngine::LoadSound("Rooster", "Resources/Sounds/SFX/Rooster.wav", AudioType::Type_SFX);
-	AudioEngine::LoadSound("EnemyHit", "Resources/Sounds/SFX/EnemyHit.wav", AudioType::Type_SFX);
-	AudioEngine::LoadSound("BuildSound", "Resources/Sounds/SFX/BuildSound.wav", AudioType::Type_SFX);
-	AudioEngine::LoadSound("NightSoundTrack", "Resources/Sounds/SFX/NightTimeMusic.wav", AudioType::Type_Song);
-
-}
-
 void FarmScene::AddStructure(StructureObject* object)
 {
 	AddGameObject(object);
@@ -274,6 +211,11 @@ std::vector<class StructureObject*> FarmScene::GetStructures() const
 
 void FarmScene::GameOver()
 {
-	// todo: add proper gameover
 	TIM_LOG_LOG("Game over");
+
+	//creates game over screen
+	_pGameOverScreen = new GameOverScreen();
+	glm::vec2 playerPos = _pPlayer->GetTransform()->GetPosition();
+	_pGameOverScreen->GetTransform()->SetPosition(playerPos.x-4, playerPos.y - 2.5); //sets position to centre on player
+	AddGameObject(_pGameOverScreen);
 }
