@@ -153,6 +153,9 @@ void FarmScene::InitScene()
 	//_pLightManager = new LightLevelManager(_pTilemap);
 
 	PlayerResourceManager::LoadInCropData();
+	PlayerResourceManager::GetPlantResource(WheatSeedRes)->GainResource(5);
+	PlayerResourceManager::GetPlantResource(CarrotSeedRes)->GainResource(5);
+	PlayerResourceManager::GetPlantResource(PotatoSeedRes)->GainResource(5);
 
 	_pBuildIndicator = new TextObject("Build Mode", "arial.ttf", "Text", "BUILDMODETEXT");
 	_pBuildIndicator->GetTransform()->SetPosition({ 850.0f, 1000.0f });
