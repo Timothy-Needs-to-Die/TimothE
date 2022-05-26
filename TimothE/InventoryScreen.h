@@ -15,10 +15,8 @@ public:
 	
 
 private:
-	GameObject* _pPanel;
 	GameObject* _pInventoryTitle;
 	GameObject* _pInventoryBody;
-	//GameObject* _pInventoryTitle;
 
 	void Display();
 };
