@@ -14,7 +14,8 @@ private:
 	CoreResourceType _resourceType;
 
 protected:
-
+	float _timeBetweenHarvests = 1.5f;
+	float _timer;
 
 	// Inherited via Component
 	virtual void OnStart() override;

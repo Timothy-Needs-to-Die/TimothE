@@ -39,21 +39,6 @@ void FarmScene::UpdateObjects()
 		SceneManager::SetCurrentScene(SceneManager::CreateScene(ResourceManager::GetScene("TownScene")));
 	}
 
-	if (Input::IsKeyDown(KEY_G)) {
-		//_pTilemap->AddTileAt(2, 15, 12, CameraManager::CurrentCamera());
-	}
-	/*if (Input::IsKeyDown(KEY_H))
-	{
-		if (_pPlayer != nullptr)
-		{
-			PlayerHealth* h = _pPlayer->GetComponent<PlayerHealth>();
-			if (h != nullptr)
-			{
-				h->TakeDamage(50);
-			}
-		}
-	}*/
-
 	if (!_pGameTime->IsDay()) {
 		if (Input::IsKeyDown(KEY_P)) {
 			_pGameTime->EndNight();
@@ -76,11 +61,6 @@ void FarmScene::UpdateObjects()
 
 		_pInventoryScreen->SetAllActive(!current);
 		_pInventoryScreen->OnUpdate();
-		//if (_pInventoryScreen == nullptr)
-		//{
-			//_pInventoryScreen->GetTransform()->SetPosition(50.0f, 50.0f);
-			//_pInventoryScreen->GetTransform()->SetScale({ 0.25f, 0.25f });
-		//}
 	}
 
 	if (Input::IsKeyDown(KEY_1)) {
@@ -103,25 +83,7 @@ void FarmScene::InitScene()
 	AddGameObject(_pInventoryScreen);
 	_pInventoryScreen->SetAllActive(false);
 	
-
-	
-	//_pGameOverScreen->OnUpdate();
-	//_pGameOverScreen->SetAllActive(false);
-
-	_pSpritesheet = ResourceManager::GetSpriteSheet("testSheet");
-
 	_pGameTime = new GameTimeManager();
-
-	//_pStartButton = new GameObject("BUTTON", "UI");
-	//_pStartButton->AddComponent(new Button(_pStartButton));
-	//_pStartButton->AddComponent(new BoxColliderComponent(_pStartButton));
-	//_pStartButton->AddComponent(new TextComponent(_pTestObject));
-	//_pStartButton->AddComponent(ResourceManager::GetTexture("Button"));
-	//_pStartButton->GetTransform()->SetPosition(0.0f, 0.0f);
-	//_pStartButton->GetTransform()->SetScale({ 0.2f, 0.2f });
-	//AddGameObject(_pStartButton);
-
-
 
 	_pPlayer = new Player();
 	_pPlayer->GetTransform()->SetPosition(7.0f, 3.5f);
@@ -137,20 +99,17 @@ void FarmScene::InitScene()
 	AddGameObject(_pWoodNode);
 
 	_pMetalNode = new ResourceNodeObject(Metal);
-	_pMetalNode->GetTransform()->SetPosition(6.0, 1.0f);
+	_pMetalNode->GetTransform()->SetPosition(8.25f, 1.25f);
 	AddGameObject(_pMetalNode);
 
 	_pStoneNode = new ResourceNodeObject(Stone);
-	_pStoneNode->GetTransform()->SetPosition(7.0, 1.0f);
+	_pStoneNode->GetTransform()->SetPosition(7.5, 0.75f);
 	AddGameObject(_pStoneNode);
 
 
 	_pCoalNode = new ResourceNodeObject(Coal);
-	_pCoalNode->GetTransform()->SetPosition(8.0, 1.0f);
+	_pCoalNode->GetTransform()->SetPosition(7.75f, 1.25f);
 	AddGameObject(_pCoalNode);
-
-	//LIGHTING TEST CODE//
-	//_pLightManager = new LightLevelManager(_pTilemap);
 
 	PlayerResourceManager::LoadInCropData();
 	PlayerResourceManager::GetPlantResource(WheatSeedRes)->GainResource(5);

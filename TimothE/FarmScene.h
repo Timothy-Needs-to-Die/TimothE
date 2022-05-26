@@ -43,13 +43,6 @@ public:
 	LightLevelManager* GetLightManager() const { return _pLightManager; }
 
 private:
-	GameObject* _pStartButton = nullptr;
-	GameObject* _pWeaponObject = nullptr;
-
-	SpriteSheet* _pSpritesheet;
-
-	
-
 	//class WaveController* _pWaveController = nullptr;
 
 	class Player* _pPlayer;
