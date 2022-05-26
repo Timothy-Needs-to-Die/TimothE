@@ -154,7 +154,7 @@ void FarmScene::InitScene()
 
 
 	_pBuildIndicator = new TextObject("Build Mode", "arial.ttf", "Text", "BUILDMODETEXT");
-	_pBuildIndicator->GetTransform()->SetPosition({ 400.0f, 600.0f });
+	_pBuildIndicator->GetTransform()->SetPosition({ 850.0f, 1000.0f });
 	_pBuildIndicator->GetTransform()->SetScale({ 1.0f, 1.0f });
 	AddGameObject(_pBuildIndicator);
 	_pBuildIndicator->SetActive(false);

@@ -168,6 +168,7 @@
     <ClInclude Include="PlayerInputComponent.h" />
     <ClInclude Include="PlayerResource.h" />
     <ClInclude Include="PlayerResourceManager.h" />
+    <ClInclude Include="PlayerUIComponent.h" />
     <ClInclude Include="ProjectileObject.h" />
     <ClInclude Include="PurchaseableConfig.h" />
     <ClInclude Include="Quad.h" />
@@ -293,6 +294,7 @@
     <ClCompile Include="PlayerInputComponent.cpp" />
     <ClCompile Include="PlayerResource.cpp" />
     <ClCompile Include="PlayerResourceManager.cpp" />
+    <ClCompile Include="PlayerUIComponent.cpp" />
     <ClCompile Include="ProjectileObject.cpp" />
     <ClCompile Include="ResourceManager.cpp" />
     <ClCompile Include="ResourceNode.cpp" />

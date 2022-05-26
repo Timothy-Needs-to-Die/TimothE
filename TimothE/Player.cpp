@@ -5,6 +5,7 @@
 #include "BoxColliderComponent.h"
 #include "SceneManager.h"
 #include "WeaponObject.h"
+#include "PlayerUIComponent.h"
 
 Player::Player(std::string name /*= "Player"*/, std::string tag /*= "PLAYER"*/)
 	: Character(name, tag)
@@ -19,6 +20,8 @@ Player::Player(std::string name /*= "Player"*/, std::string tag /*= "PLAYER"*/)
 	_pFighter = AddComponent(new Fighter(this));
 	_pCollider = AddComponent(new BoxColliderComponent(this));
 	_pCollider->SetTrigger(true);
+
+	_pUI = AddComponent(new PlayerUIComponent(this));
 }
 
 void Player::UniqueLogic()

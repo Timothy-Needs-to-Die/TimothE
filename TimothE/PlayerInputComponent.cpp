@@ -12,6 +12,7 @@
 #include "OffensiveStructureObject.h"
 #include "LightsourceObject.h"
 #include "PlayerHealth.h"
+#include "PlayerUIComponent.h"
 
 void PlayerInputComponent::OnStart()
 {
@@ -42,17 +43,6 @@ void PlayerInputComponent::OnUpdate()
 		_pParentObject->GetComponent<PlayerHealth>()->TakeDamage(10000, NULL);
 		TIM_LOG_LOG(_pParentObject->GetComponent<PlayerHealth>()->GetCurrentHealth());
 	}
-	if (Input::IsKeyDown(KEY_I)) {
-		int goldAmount = PlayerResourceManager::GetCoreResource(CoreResourceType::Gold)->GetAmount();
-		int woodAmount = PlayerResourceManager::GetCoreResource(CoreResourceType::Wood)->GetAmount();
-		int metalAmount = PlayerResourceManager::GetCoreResource(CoreResourceType::Metal)->GetAmount();
-		int stoneAmount = PlayerResourceManager::GetCoreResource(CoreResourceType::Stone)->GetAmount();
-
-		TIM_LOG_LOG("Gold: " << goldAmount);
-		TIM_LOG_LOG("Wood: " << woodAmount);
-		TIM_LOG_LOG("Metal: " << metalAmount);
-		TIM_LOG_LOG("Stone: " << stoneAmount);
-	}
 
 	if (Input::IsKeyUp(KEY_B)) {
 		_bReadyforbuildPress = true;
@@ -62,8 +52,9 @@ void PlayerInputComponent::OnUpdate()
 		_bReadyforbuildPress = false;
 		_inBuildMode = !_inBuildMode;
 		GameObject* pBBuildText = SceneManager::GetCurrentScene()->FindObjectWithTag("BUILDMODETEXT");
-		if (pBBuildText) {
-			pBBuildText->SetActive(_inBuildMode);
+		PlayerUIComponent* pUI = _pParentObject->GetComponent<PlayerUIComponent>();
+		if (pUI) {
+			pUI->SetBuildModeUIActive(_inBuildMode);
 		}
 		else {
 			TIM_LOG_LOG("No build text");

@@ -408,6 +408,8 @@
     <ClInclude Include="WeaponObject.h" />
     <ClInclude Include="LightsourceObject.h" />
     <ClInclude Include="TextObject.h" />
+    <ClInclude Include="GameOverScreen.h" />
+    <ClInclude Include="PlayerUIComponent.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="AIController.cpp">
@@ -666,6 +668,8 @@
     <ClCompile Include="WeaponObject.cpp" />
     <ClCompile Include="LightsourceObject.cpp" />
     <ClCompile Include="TextObject.cpp" />
+    <ClCompile Include="GameOverScreen.cpp" />
+    <ClCompile Include="PlayerUIComponent.cpp" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Node.h" />
