@@ -267,16 +267,39 @@ void Renderer2D::DrawQuad(const glm::mat4& transform, Texture2D* texture, glm::v
 		_data.textureSlotIndex++;
 	}
 
-	for (size_t i = 0; i < quadVertexCount; i++)
-	{
-		_data.quadVertexBufferPtr->position = transform * _data.quadVertexPositions[i];
-		_data.quadVertexBufferPtr->color = tintColor;
-		_data.quadVertexBufferPtr->texCoord = textureCoords[i];
-		_data.quadVertexBufferPtr->lightLevel = lightLevel;
-		_data.quadVertexBufferPtr->texIndex = textureIndex;
-		_data.quadVertexBufferPtr->tilingFactor = tilingFactor;
-		_data.quadVertexBufferPtr++;
-	}
+	
+	//Unrolled for loop, yielded minor fps improvements
+	_data.quadVertexBufferPtr->position = transform * _data.quadVertexPositions[0];
+	_data.quadVertexBufferPtr->color = tintColor;
+	_data.quadVertexBufferPtr->texCoord = textureCoords[0];
+	_data.quadVertexBufferPtr->lightLevel = lightLevel;
+	_data.quadVertexBufferPtr->texIndex = textureIndex;
+	_data.quadVertexBufferPtr->tilingFactor = tilingFactor;
+	_data.quadVertexBufferPtr++;
+
+	_data.quadVertexBufferPtr->position = transform * _data.quadVertexPositions[1];
+	_data.quadVertexBufferPtr->color = tintColor;
+	_data.quadVertexBufferPtr->texCoord = textureCoords[1];
+	_data.quadVertexBufferPtr->lightLevel = lightLevel;
+	_data.quadVertexBufferPtr->texIndex = textureIndex;
+	_data.quadVertexBufferPtr->tilingFactor = tilingFactor;
+	_data.quadVertexBufferPtr++;
+
+	_data.quadVertexBufferPtr->position = transform * _data.quadVertexPositions[2];
+	_data.quadVertexBufferPtr->color = tintColor;
+	_data.quadVertexBufferPtr->texCoord = textureCoords[2];
+	_data.quadVertexBufferPtr->lightLevel = lightLevel;
+	_data.quadVertexBufferPtr->texIndex = textureIndex;
+	_data.quadVertexBufferPtr->tilingFactor = tilingFactor;
+	_data.quadVertexBufferPtr++;
+
+	_data.quadVertexBufferPtr->position = transform * _data.quadVertexPositions[3];
+	_data.quadVertexBufferPtr->color = tintColor;
+	_data.quadVertexBufferPtr->texCoord = textureCoords[3];
+	_data.quadVertexBufferPtr->lightLevel = lightLevel;
+	_data.quadVertexBufferPtr->texIndex = textureIndex;
+	_data.quadVertexBufferPtr->tilingFactor = tilingFactor;
+	_data.quadVertexBufferPtr++;
 
 	_data.quadIndexCount += 6;
 }
