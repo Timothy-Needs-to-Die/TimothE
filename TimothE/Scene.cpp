@@ -150,13 +150,6 @@ void Scene::RenderScene(Camera* cam)
 			if (objTex != nullptr) {
 				Renderer2D::DrawUIQuad(obj->GetTransform()->GetRenderQuad(), obj->GetComponent<Texture2D>());
 			}
-			//else {
-			//	TextComponent* tc = obj->GetComponent<TextComponent>();
-			//
-			//	if (tc != nullptr) {
-			//		tc->OnUpdate();
-			//	}
-			//}
 		}
 		else {
 			if (sc) {
@@ -173,7 +166,7 @@ void Scene::RenderScene(Camera* cam)
 	for (auto& obj : _listOfDrawableGameObjects) {
 		if (!obj->IsActive()) continue;
 
-		if (obj->GetTag() != "UI") continue;
+		if (obj->GetTag() != "UI" && obj->GetTag() != "BUILDMODETEXT") continue;
 
 		TextComponent* tc = obj->GetComponent<TextComponent>();
 
