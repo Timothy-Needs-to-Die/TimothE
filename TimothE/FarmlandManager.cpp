@@ -148,10 +148,29 @@ void FarmlandManager::HarvestPlot(CropPlot* plot)
 			// Add the resources to the players inventory
 			PlayerResourceManager::GetPlantResource(cropConfig.produceType)->GainResource(cropConfig.yield);
 			// For now just destroy the game object - Future work: Object Pooling
+			plot->SetOccupied(false);
 			plot->GetChild()->SetToBeDestroyed(true);
 		}
 	}
 	
+}
+
+void FarmlandManager::RemoveCropPlot(CropPlot* plot)
+{
+	for (CropPlot* cp : _pCropPlotObjects)
+	{
+		if (cp == plot)
+		{
+			GameObject* plotChild = plot->GetChild();
+			if (plotChild != nullptr)
+			{
+				plotChild->SetToBeDestroyed(true);
+			}
+			
+			_pCropPlotObjects.erase(std::remove(_pCropPlotObjects.begin(), _pCropPlotObjects.end(), plot), _pCropPlotObjects.end());
+			plot->SetToBeDestroyed(true);
+		}
+	}
 }
 
 void FarmlandManager::OnStart()

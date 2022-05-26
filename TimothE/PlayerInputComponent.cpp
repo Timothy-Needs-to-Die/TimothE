@@ -155,6 +155,11 @@ void PlayerInputComponent::FarmingControls()
 					// If theres a closest plot "under the player" and it has a crop try to harvest it
 					_pFarmlandManager->HarvestPlot(closestPlot);
 				}
+				else
+				{
+					// Untill the ground if theres no crops in the farmland
+					_pFarmlandManager->RemoveCropPlot(closestPlot);
+				}
 			}
 		}
 	}
@@ -185,27 +190,24 @@ void PlayerInputComponent::FarmingControls()
 	{
 		// Plant Wheat
 		if (Input::IsKeyDown(KEY_1)) {
-			glm::vec2 target = _pParentObject->GetTransform()->GetPosition();
-			// Targets the midpoint of the player
-			target.x += _pParentObject->GetTransform()->GetScale().x / 2;
-			target.y += _pParentObject->GetTransform()->GetScale().y / 2;
-			_pFarmlandManager->PlantSeed(target, PlantResourceType::WheatSeedRes);
+			glm::vec2 playerPos = _pParentObject->GetTransform()->GetPosition();
+			_pFarmlandManager->PlantSeed(GetPlayerMidpoint(playerPos), PlantResourceType::WheatSeedRes);
 		}
 		// Plant Potato
 		else if (Input::IsKeyDown(KEY_2)) {
-			glm::vec2 target = _pParentObject->GetTransform()->GetPosition();
-			// Targets the midpoint of the player
-			target.x += _pParentObject->GetTransform()->GetScale().x / 2;
-			target.y += _pParentObject->GetTransform()->GetScale().y / 2;
-			_pFarmlandManager->PlantSeed(target, PlantResourceType::PotatoSeedRes);
+			glm::vec2 playerPos = _pParentObject->GetTransform()->GetPosition();
+			_pFarmlandManager->PlantSeed(GetPlayerMidpoint(playerPos), PlantResourceType::PotatoSeedRes);
 		}
 		// Plant Carrot
 		else if (Input::IsKeyDown(KEY_3)) {
-			glm::vec2 target = _pParentObject->GetTransform()->GetPosition();
-			// Targets the midpoint of the player
-			target.x += _pParentObject->GetTransform()->GetScale().x / 2;
-			target.y += _pParentObject->GetTransform()->GetScale().y / 2;
-			_pFarmlandManager->PlantSeed(target, PlantResourceType::CarrotSeedRes);
+			glm::vec2 playerPos = _pParentObject->GetTransform()->GetPosition();
+			_pFarmlandManager->PlantSeed(GetPlayerMidpoint(playerPos), PlantResourceType::CarrotSeedRes);
+		}
+		else if (Input::IsKeyDown(KEY_4))
+		{
+			glm::vec2 playerPos = _pParentObject->GetTransform()->GetPosition();
+			CropPlot* closestPlot = _pFarmlandManager->GetCropPlotAtPosition(GetPlayerMidpoint(playerPos));
+			_pFarmlandManager->RemoveCropPlot(closestPlot);
 		}
 	}
 }

@@ -43,6 +43,8 @@ public:
 	/// <param name="plot"> The plot desired to be harvested </param>
 	void HarvestPlot(CropPlot* plot);
 
+	void RemoveCropPlot(CropPlot* plot);
+
 	// Inherited via Component
 	virtual void OnStart() override;
 	virtual void OnUpdate() override;
