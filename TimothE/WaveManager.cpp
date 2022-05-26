@@ -71,20 +71,20 @@ void WaveManager::SpawnEnemies()
 		partySize = _remainingEnemies;*/
 
 	_remainingEnemies -= partySize;
-
-	//Decide spawn position
-	int randomIndex = rand() % _spawnPositions.size();
-	glm::vec2 position = _spawnPositions[randomIndex];
-	std::swap(_spawnPositions[randomIndex], _spawnPositions.back());
-	_spawnPositions.pop_back();
-
 	
 	for (int i = 0; i < partySize; i++) {
 		Enemy* newEnemy = new Enemy("Enemy", "ENEMY");
+
+		//Decide spawn position
+		int randomIndex = rand() % _spawnPositions.size();
+		glm::vec2 position = _spawnPositions[randomIndex];
 		newEnemy->GetTransform()->SetPosition(position);
+		std::swap(_spawnPositions[randomIndex], _spawnPositions.back());
+		_spawnPositions.pop_back();
+
 		_livingEnemies.emplace_back(newEnemy);
-		TIM_LOG_LOG("Created enemy at " + std::to_string(position.x) + ", " + std::to_string(position.y));
 		SceneManager::GetCurrentScene()->AddGameObject(newEnemy);
+		TIM_LOG_LOG("Created enemy at " + std::to_string(position.x) + ", " + std::to_string(position.y));
 	}
 
 }

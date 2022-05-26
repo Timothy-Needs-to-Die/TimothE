@@ -28,12 +28,6 @@ public:
 	void SetUVCoords();
 	void SetUVCoords(glm::vec2 topLeft, glm::vec2 topRight, glm::vec2 bottomLeft, glm::vec2 bottomRight);
 
-	virtual bool SaveState(IStream& stream) const override {
-		return true;
-	}
-	virtual bool LoadState(IStream& stream) override {
-		return true;
-	}
 private:
 	Sprite* _pSprite;
 

@@ -34,10 +34,6 @@ public:
 	//Loads an image from file into a texture. Returns true if successful or false if not
 	bool Load(std::string path, bool flip = false);
 
-	// Inherited via ISerializable
-	virtual bool SaveState(IStream& stream) const override;
-	virtual bool LoadState(IStream& stream) override;
-
 	void Bind(int slot) {
 		GLCall(glBindTextureUnit(slot, _ID));
 	}

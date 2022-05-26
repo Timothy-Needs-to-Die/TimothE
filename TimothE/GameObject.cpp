@@ -36,10 +36,11 @@ GameObject::GameObject(std::string name, std::string tag)
 GameObject::~GameObject()
 {
 	Exit();
-	for (Component* c : _pComponents)
+	for (int i = 0; i < _pComponents.size(); i++)
 	{
-		if(c->GetType() == Component::Texture_Type) continue;
-		delete(c);
+		if(_pComponents[i]->GetType() == Component::Texture_Type) continue;
+		_pComponents.erase(_pComponents.begin() + i);
+		//delete(_pComponents[i]);
 	}
 }
 
@@ -55,6 +56,10 @@ void GameObject::Update()
 {
 	for (Component* c : _pComponents)
 	{
+		if (c == nullptr) continue;
+		if (c->GetParent() == nullptr) continue;
+		if (c->GetParent()->IsToBeDestroyed()) continue;
+
 		c->OnUpdate();
 		if (c->GetType() == Component::ParticleSystem_Type)
 		{
@@ -96,7 +101,7 @@ bool GameObject::SaveState(IStream& stream) const
 
 	for (int i = 0; i < _pComponents.size(); ++i)
 	{
-		_pComponents[i]->SaveState(stream);
+		//_pComponents[i]->SaveState(stream);
 	}
 
 	//TODO: GameObjects need a child system
@@ -119,7 +124,7 @@ bool GameObject::LoadState(IStream& stream)
 		Component::Categories cat = (Component::Categories)ReadInt(stream);
 
 		if (type == Component::Transform_Type) {
-			_pTransform->LoadState(stream);
+			//_pTransform->LoadState(stream);
 		}
 		else
 		{
@@ -131,7 +136,7 @@ bool GameObject::LoadState(IStream& stream)
 			}
 
 			//Read instance
-			c->LoadState(stream);
+			//c->LoadState(stream);
 
 			//Set component
 			AddComponent(c);

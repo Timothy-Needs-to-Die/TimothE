@@ -95,10 +95,11 @@ void Scene::UpdateObjects()
 	for (GameObject* obj : _listOfGameObjects)
 	{
 		if (obj->IsToBeDestroyed()) continue;
+
 		if (obj->IsActive()) {
 			obj->Update();
 		}
-
+		//TIM_LOG_LOG(obj->IsToBeDestroyed());
 	}
 
 	Physics::UpdateWorld();
@@ -120,12 +121,14 @@ void Scene::FrameEnd()
 		if (it2 != _listOfGameObjects.end()) {
 			_listOfGameObjects.erase(it2);
 		}
+		Physics::RemoveCollider(obj->GetComponent<ColliderBase>());
 	}
 
 	for (std::vector<GameObject*>::iterator it = _gameObjectsToRemove.begin(); it != _gameObjectsToRemove.end(); ++it) {
-		if (*it != nullptr) {
+		//if (*it != nullptr) {
 			delete* it;
-		}
+			*it = nullptr;
+		//}
 	}
 
 	_gameObjectsToRemove.clear();
@@ -186,13 +189,43 @@ GameObject* Scene::AddGameObject(GameObject* gameObject)
 
 void Scene::RemoveGameObject(GameObject* gameObject)
 {
+	if (gameObject == nullptr) return;
+
 	std::vector<GameObject*>::const_iterator it = std::find(_gameObjectsToRemove.begin(), _gameObjectsToRemove.end(), gameObject);
 
 	gameObject->SetToBeDestroyed(true);
 
 	if (it == _gameObjectsToRemove.end()) {
+		RemoveGameObject(gameObject->GetChild());
 		_gameObjectsToRemove.emplace_back(gameObject);
 	}
+
+	//for (GameObject* obj : _gameObjectsToRemove) {
+
+	//	std::vector<GameObject*>::iterator it = std::find(_listOfDrawableGameObjects.begin(), _listOfDrawableGameObjects.end(), obj);
+	//	if (it != _listOfDrawableGameObjects.end()) {
+	//		_listOfDrawableGameObjects.erase(it);
+	//	}
+
+
+	//	std::vector<GameObject*>::iterator it2 = std::find(_listOfGameObjects.begin(), _listOfGameObjects.end(), obj);
+	//	if (it2 != _listOfGameObjects.end()) {
+	//		_listOfGameObjects.erase(it2);
+	//	}
+
+	//	Physics::RemoveCollider(obj->GetComponent<ColliderBase>());
+	//}
+
+	//for (int i = 0; i < _gameObjectsToRemove.size(); i++) {
+	//	_gameObjectsToRemove.erase(_gameObjectsToRemove.begin() + i);
+	//}
+	///*for (std::vector<GameObject*>::iterator it = _gameObjectsToRemove.begin(); it != _gameObjectsToRemove.end(); ++it) {
+	//	if (*it != nullptr) {
+	//		delete* it;
+	//	}
+	//}*/
+
+	//_gameObjectsToRemove.clear();
 }
 
 void Scene::AddedComponentHandler(GameObject* gameObject, Component* comp)

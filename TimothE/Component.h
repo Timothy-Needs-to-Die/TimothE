@@ -24,7 +24,7 @@ class GameObject;
 #define BIT(x) (1<<x)
 class GameObject;
 
-class Component : ISerializable
+class Component
 {
 public:
 	//enum for types of components
@@ -115,19 +115,6 @@ public:
 	inline bool IsInCategory(Categories category) { return GetCategory() & category; }
 	inline bool IsInTypes(Types type) { return GetType() & type; }
 
-	// Inherited via ISerializable
-	virtual bool SaveState(IStream& stream) const override {
-		//Write type
-		WriteInt(stream, _type);
-
-		//Write category
-		WriteInt(stream, _category);
-
-		return true;
-	}
-	virtual bool LoadState(IStream& stream) override {
-		return true;
-	}
 
 	virtual void OnTriggerEnter(class ColliderBase* other) {}
 	virtual void OnCollisionEnter(class ColliderBase* other) {}

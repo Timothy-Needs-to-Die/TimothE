@@ -15,6 +15,7 @@ StructureFighter::StructureFighter(GameObject* owner)
 
 void StructureFighter::Attack(GameObject* pTarget)
 {
+	if (pTarget == nullptr) return;
 	if (_timeSinceLastAttack < _attackRate) return;
 
 	_timeSinceLastAttack = 0.0f;
@@ -26,6 +27,7 @@ void StructureFighter::Attack(GameObject* pTarget)
 
 	ProjectileObject* pProjectileObject = new ProjectileObject(towerPos, directionToTarget, _pParentObject);
 	SceneManager::GetCurrentScene()->AddGameObject(pProjectileObject);
+
 }
 
 void StructureFighter::OnStart()

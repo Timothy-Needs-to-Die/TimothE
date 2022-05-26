@@ -17,9 +17,5 @@ public:
 
 	void Test(int x, int y);
 	
-
-	// Inherited via ISerializable
-	virtual bool SaveState(IStream& stream) const override;
-	virtual bool LoadState(IStream& stream) override;
 };
 

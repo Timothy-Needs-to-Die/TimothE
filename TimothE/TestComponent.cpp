@@ -38,19 +38,6 @@ void TestComponent::Test(int x,int y)
 
 }
 
-// Inherited via ISerializable
-
-inline bool TestComponent::SaveState(IStream& stream) const {
-	Component::SaveState(stream);
-
-	return true;
-}
-
-inline bool TestComponent::LoadState(IStream& stream) {
-	Component::LoadState(stream);
-
-	return true;
-}
 
 void TestComponent::DrawEditorUI()
 {

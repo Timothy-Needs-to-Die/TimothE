@@ -135,7 +135,7 @@ public:
 		TIM_LOG_LOG("IsActive: " << _isActive);
 	}
 
-	bool IsToBeDestroyed() const { return _toBeDestroyed; }
+	bool IsToBeDestroyed() const { return _toBeDestroyed && (_pParent == nullptr ? true : _pParent->IsToBeDestroyed()); }
 	void SetToBeDestroyed(bool val) { _toBeDestroyed = val; }
 
 private:
