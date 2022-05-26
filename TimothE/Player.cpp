@@ -19,6 +19,7 @@ Player::Player(std::string name /*= "Player"*/, std::string tag /*= "PLAYER"*/)
 	_pFighter = AddComponent(new Fighter(this));
 	_pCollider = AddComponent(new BoxColliderComponent(this));
 	_pCollider->SetTrigger(true);
+	_pFarmlandManager = AddComponent(new FarmlandManager(this));
 }
 
 void Player::UniqueLogic()

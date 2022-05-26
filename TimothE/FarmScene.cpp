@@ -58,6 +58,8 @@ void FarmScene::UpdateObjects()
 		if (Input::IsKeyDown(KEY_P)) {
 			_pGameTime->EndNight();
 			_pGameTime->StartNewDay();
+			// Tell the farmland that a new day has dawned
+			_pPlayer->GetComponent<FarmlandManager>()->OnNewDay();
 		}
 	}
 
@@ -85,6 +87,10 @@ void FarmScene::UpdateObjects()
 		SaveScene("Resources/PlayerSaves/FarmSceneSaveData.sav");
 	}
 	
+	if (_pInventoryScreen->GetAllActive())
+	{
+		_pInventoryScreen->OnUpdate();
+	}
 
 	Physics::UpdateWorld();
 }
@@ -142,9 +148,6 @@ void FarmScene::InitScene()
 	_pCoalNode = new ResourceNodeObject(Coal);
 	_pCoalNode->GetTransform()->SetPosition(8.0, 1.0f);
 	AddGameObject(_pCoalNode);
-
-	farmland = new FarmlandManager("Farmland Manager");
-	AddGameObject(farmland);
 
 	//LIGHTING TEST CODE//
 	//_pLightManager = new LightLevelManager(_pTilemap);
