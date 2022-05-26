@@ -140,7 +140,6 @@ void Scene::RenderScene(Camera* cam)
 
 	for (std::vector<GameObject*>::iterator it = _listOfDrawableGameObjects.end() - 1; it != _listOfDrawableGameObjects.begin(); --it) {
 		GameObject* obj = *it;
-
 		if (!obj->IsActive()) continue;
 		if (obj->IsToBeDestroyed()) continue;
 
