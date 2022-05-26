@@ -73,6 +73,15 @@ void FarmScene::UpdateObjects()
 	}
 
 	Physics::UpdateWorld();
+
+	AudioEngine::AudioUpdate(Time::GetDeltaTime());
+	//Set audio Listener to player position 
+	AudioEngine::Set3DListenerAttributes(FMOD_VECTOR{ _pPlayer->GetTransform()->GetPosition().x,
+													_pPlayer->GetTransform()->GetPosition().y,
+													0.0f }, FMOD_VECTOR{ 0.0f, 0.0f, 0.0f },
+		FMOD_VECTOR{ 0.0f, 0.0f, 0.0f }, FMOD_VECTOR{ 0.0f, 0.0f, 0.0f });
+
+
 }
 
 void FarmScene::InitScene()
@@ -115,7 +124,7 @@ void FarmScene::InitScene()
 	PlayerResourceManager::GetPlantResource(WheatSeedRes)->GainResource(5);
 	PlayerResourceManager::GetPlantResource(CarrotSeedRes)->GainResource(5);
 	PlayerResourceManager::GetPlantResource(PotatoSeedRes)->GainResource(5);
-
+	RegisterSounds();
 	LoadScene("Resources/PlayerSaves/FarmSceneSaveData.sav");
 }
 
@@ -136,6 +145,20 @@ void FarmScene::SaveScene(std::string filename)
 	}
 
 	stream.Close();
+}
+
+void FarmScene::RegisterSounds()
+{
+	AudioEngine::LoadSound("StoneMine", "Resources/Sounds/SFX/StoneHit.mp3", AudioType::Type_SFX);
+	AudioEngine::LoadSound("WoodChop", "Resources/Sounds/SFX/WoodChop.wav", AudioType::Type_SFX);
+	AudioEngine::LoadSound("PlantSeed", "Resources/Sounds/SFX/PlantSeed.wav", AudioType::Type_SFX);
+	AudioEngine::LoadSound("FootStep", "Resources/Sounds/SFX/SingleFootsep.wav", AudioType::Type_SFX);
+	AudioEngine::LoadSound("SwordSlash", "Resources/Sounds/SFX/SwordSlash.wav", AudioType::Type_SFX);
+	AudioEngine::LoadSound("Rooster", "Resources/Sounds/SFX/Rooster.wav", AudioType::Type_SFX);
+	AudioEngine::LoadSound("EnemyHit", "Resources/Sounds/SFX/EnemyHit.wav", AudioType::Type_SFX);
+	AudioEngine::LoadSound("BuildSound", "Resources/Sounds/SFX/BuildSound.wav", AudioType::Type_SFX);
+	AudioEngine::LoadSound("NightSoundTrack", "Resources/Sounds/SFX/NightTimeMusic.wav", AudioType::Type_Song);
+
 }
 
 void FarmScene::LoadScene(std::string filename)

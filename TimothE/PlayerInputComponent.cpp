@@ -109,16 +109,16 @@ void PlayerInputComponent::BuildControls()
 
 	if (Input::IsKeyDown(KEY_1)) {
 		_selectedStructure = StructureType::Wall;
-		AudioEngine::PlaySound("BuildSound", 80, 80, 1, 1);
+		
 	}
 	else if (Input::IsKeyDown(KEY_2)) {
 		_selectedStructure = StructureType::Tower;
-		AudioEngine::PlaySound("BuildSound", 80, 80, 1, 1);
+		
 	}
 	else if (Input::IsKeyDown(KEY_3)) {
 		TIM_LOG_LOG("Selected campfire");
 		_selectedStructure = StructureType::Campfire;
-		AudioEngine::PlaySound("BuildSound", 80, 80, 1, 1);
+		
 	}
 
 	glm::vec2 mousePos = Input::GetMousePos();
@@ -135,14 +135,17 @@ void PlayerInputComponent::BuildControls()
 		switch (_selectedStructure) {
 		case StructureType::Wall:
 			cost.woodRequired = 1;
+			AudioEngine::PlaySound("BuildSound", 80, 80, 1, 1);
 			break;
 		case StructureType::Tower:
 			cost.woodRequired = 3;
 			cost.stoneRequired = 5;
+			AudioEngine::PlaySound("BuildSound", 80, 80, 1, 1);
 			break;
 		case StructureType::Campfire:
 			cost.woodRequired = 3;
 			cost.coalRequired = 2;
+			AudioEngine::PlaySound("BuildSound", 80, 80, 1, 1);
 			break;
 		default:
 			TIM_LOG_WARNING("Case not covered");
