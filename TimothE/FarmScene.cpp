@@ -17,6 +17,8 @@
 #include "LightsourceObject.h"
 #include "TextObject.h"
 
+#include "GameOverScreen.h"
+
 FarmScene::~FarmScene()
 {
 
@@ -94,6 +96,11 @@ void FarmScene::InitScene()
 	_pInventoryScreen = new InventoryScreen();
 	AddGameObject(_pInventoryScreen);
 	_pInventoryScreen->SetAllActive(false);
+	
+
+	
+	//_pGameOverScreen->OnUpdate();
+	//_pGameOverScreen->SetAllActive(false);
 
 	_pSpritesheet = ResourceManager::GetSpriteSheet("testSheet");
 
@@ -260,6 +267,11 @@ std::vector<class StructureObject*> FarmScene::GetStructures() const
 
 void FarmScene::GameOver()
 {
-	// todo: add proper gameover
 	TIM_LOG_LOG("Game over");
+
+	//creates game over screen
+	_pGameOverScreen = new GameOverScreen();
+	glm::vec2 playerPos = _pPlayer->GetTransform()->GetPosition();
+	_pGameOverScreen->GetTransform()->SetPosition(playerPos.x-4, playerPos.y - 2.5); //sets position to centre on player
+	AddGameObject(_pGameOverScreen);
 }
