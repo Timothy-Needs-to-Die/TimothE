@@ -58,6 +58,8 @@ void FarmScene::UpdateObjects()
 		if (Input::IsKeyDown(KEY_P)) {
 			_pGameTime->EndNight();
 			_pGameTime->StartNewDay();
+			// Tell the farmland that a new day has dawned
+			_pPlayer->GetComponent<FarmlandManager>()->OnNewDay();
 		}
 	}
 
@@ -72,8 +74,8 @@ void FarmScene::UpdateObjects()
 
 		bool current = _pInventoryScreen->GetAllActive();
 
-		_pInventoryScreen->SetAllActive(!current);
-		_pInventoryScreen->OnUpdate();
+		//_pInventoryScreen->SetAllActive(!current);
+		//_pInventoryScreen->OnUpdate();
 		//if (_pInventoryScreen == nullptr)
 		//{
 			//_pInventoryScreen->GetTransform()->SetPosition(50.0f, 50.0f);
@@ -142,9 +144,6 @@ void FarmScene::InitScene()
 	_pCoalNode = new ResourceNodeObject(Coal);
 	_pCoalNode->GetTransform()->SetPosition(8.0, 1.0f);
 	AddGameObject(_pCoalNode);
-
-	farmland = new FarmlandManager("Farmland Manager");
-	AddGameObject(farmland);
 
 	//LIGHTING TEST CODE//
 	//_pLightManager = new LightLevelManager(_pTilemap);
