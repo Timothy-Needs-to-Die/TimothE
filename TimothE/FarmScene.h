@@ -45,13 +45,6 @@ public:
 	class WaveManager* GetWaveManager() const { return _pWaveManager; }
 
 private:
-	GameObject* _pStartButton = nullptr;
-	GameObject* _pWeaponObject = nullptr;
-
-	SpriteSheet* _pSpritesheet;
-
-	LightLevelManager* _pLightManager;
-
 	//class WaveController* _pWaveController = nullptr;
 
 	class Player* _pPlayer;
@@ -66,8 +59,6 @@ private:
 
 	class InventoryScreen* _pInventoryScreen = nullptr;
 	class GameOverScreen* _pGameOverScreen = nullptr;
-
-	class TextObject* _pBuildIndicator = nullptr;
 
 	//Farmland
 	FarmlandManager* farmland;

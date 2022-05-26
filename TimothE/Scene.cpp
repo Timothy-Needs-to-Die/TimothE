@@ -48,6 +48,12 @@ void Scene::InitScene()
 
 	_pAstarObject = new AStar();
 	_pAstarObject->SetMap(_pTilemap);
+
+	_pLightManager = new LightLevelManager(_pTilemap);
+	_pLightManager->SetWorldLightLevel(5);
+	_pLightManager->SetMinLightLevel(1);
+	_pLightManager->SetMaxLightLevel(8);
+	_pLightManager->UpdateLightMap();
 }
 
 void Scene::SceneEnd()
@@ -67,6 +73,7 @@ void Scene::EditorUpdate()
 	//Cycles through all gameobjects in the scene and calculates there transform.
 	//Needed for the editor window to work smoothly
 	for (GameObject* obj : _listOfGameObjects) {
+		if (!obj->IsActive()) continue;
 		if (obj->IsToBeDestroyed()) continue;
 
 		obj->GetTransform()->CalculateTransformMatrix();
@@ -146,11 +153,12 @@ void Scene::RenderScene(Camera* cam)
 
 	Renderer2D::BeginRender(cam);
 
-
-	for (std::vector<GameObject*>::iterator it = _listOfDrawableGameObjects.end() - 1; it != _listOfDrawableGameObjects.begin(); --it) {
+	if (_listOfDrawableGameObjects.size() == 0) return;
+	for (std::vector<GameObject*>::iterator it = _listOfDrawableGameObjects.begin(); it != _listOfDrawableGameObjects.end(); ++it) {
 		GameObject* obj = *it;
 		if (!obj->IsActive()) continue;
 		if (obj->IsToBeDestroyed()) continue;
+		if (obj->GetTag() == "PLAYER") continue;
 
 		//TODO: Text won't render here as it uses its own internal texture data.
 		Texture2D* objTex = obj->GetComponent<Texture2D>();
@@ -170,6 +178,12 @@ void Scene::RenderScene(Camera* cam)
 				Renderer2D::DrawQuad(obj->GetTransform()->GetRenderQuad(), objTex);
 			}
 		}
+	}
+
+	GameObject* player = FindObjectWithTag("PLAYER");
+	if (player) {
+		SpriteComponent* sc = player->GetComponent<SpriteComponent>();
+		Renderer2D::DrawQuad(player->GetTransform()->GetRenderQuad(), sc->GetSprite()->GetTexture(), sc->GetSprite()->GetTexCoords());
 	}
 
 	Renderer2D::EndRender();
@@ -451,7 +465,7 @@ void Scene::PopulateCropVector()
 		newConfig.name = loadedData[i][1];
 		newConfig.sellPrice = std::stoi(loadedData[i][2]);
 		newConfig.description = loadedData[i][3];
-		newConfig.type = (CropType)std::stoi(loadedData[i][5]);
+		//newConfig.type = (CropType)std::stoi(loadedData[i][5]);
 	}
 }
 

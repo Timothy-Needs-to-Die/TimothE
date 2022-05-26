@@ -4,7 +4,7 @@
 class Character : public GameObject
 {
 public:
-	Character(std::string name = "New Character", std::string tag = "UNTAGGED");
+	Character(std::string texutre, std::string name = "New Character", std::string tag = "UNTAGGED");
 
 private:
 	

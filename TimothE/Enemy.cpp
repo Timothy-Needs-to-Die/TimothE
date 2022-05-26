@@ -8,7 +8,7 @@
 #include "BoxColliderComponent.h"
 
 Enemy::Enemy(std::string name, std::string tag)
-	: Character(name, tag)
+	: Character("enemy", name, tag)
 {
 	_pMover = AddComponent(new AIMovementCompnent(this, SceneManager::GetCurrentScene()->GetAStar()));
 

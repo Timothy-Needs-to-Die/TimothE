@@ -4,14 +4,7 @@
 #include "SceneManager.h"
 #include "FarmScene.h"
 #include "WaveManager.h"
-
-GameTimeManager::GameTimeManager()
-{
-	if (SceneManager::GetCurrentScene()->GetName() == "FarmScene")
-	{
-		_pFarmScene = (FarmScene*)SceneManager::GetCurrentScene();
-	}
-}
+#include "LightLevelManager.h"
 
 void GameTimeManager::Update()
 {
@@ -22,19 +15,22 @@ void GameTimeManager::Update()
 	if (_dayTimer > _lengthOfDay) {
 		StartNight();
 	}
-
 }
 
 void GameTimeManager::StartNewDay()
 {
 	_dayTimer = 0.0f;
 	_inDay = true;
+
+	_pLightLevelManager->SetWorldLightLevel(5);
 }
 
 void GameTimeManager::StartNight()
 {
 	_dayTimer = 0.0f;
 	_inDay = false;
+	
+	_pLightLevelManager->SetWorldLightLevel(1);
 
 	FarmScene* scene = (FarmScene*)SceneManager::GetCurrentScene();
 	scene->GetWaveManager()->StartNight();

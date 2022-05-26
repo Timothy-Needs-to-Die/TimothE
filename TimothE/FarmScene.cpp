@@ -51,9 +51,12 @@ void FarmScene::UpdateObjects()
 	}
 	else {
 		_pWaveManager->Update();
+		
 		if (Input::IsKeyDown(KEY_P)) {
 			_pGameTime->EndNight();
 			_pGameTime->StartNewDay();
+			// Tell the farmland that a new day has dawned
+			_pPlayer->GetComponent<FarmlandManager>()->OnNewDay();
 		}
 	}
 
@@ -70,17 +73,16 @@ void FarmScene::UpdateObjects()
 
 		_pInventoryScreen->SetAllActive(!current);
 		_pInventoryScreen->OnUpdate();
-		//if (_pInventoryScreen == nullptr)
-		//{
-			//_pInventoryScreen->GetTransform()->SetPosition(50.0f, 50.0f);
-			//_pInventoryScreen->GetTransform()->SetScale({ 0.25f, 0.25f });
-		//}
 	}
 
 	if (Input::IsKeyDown(KEY_1)) {
 		SaveScene("Resources/PlayerSaves/FarmSceneSaveData.sav");
 	}
 	
+	if (_pInventoryScreen->GetAllActive())
+	{
+		_pInventoryScreen->OnUpdate();
+	}
 
 	Physics::UpdateWorld();
 }
@@ -93,25 +95,7 @@ void FarmScene::InitScene()
 	AddGameObject(_pInventoryScreen);
 	_pInventoryScreen->SetAllActive(false);
 	
-
-	
-	//_pGameOverScreen->OnUpdate();
-	//_pGameOverScreen->SetAllActive(false);
-
-	_pSpritesheet = ResourceManager::GetSpriteSheet("testSheet");
-
-	_pGameTime = new GameTimeManager();
-
-	//_pStartButton = new GameObject("BUTTON", "UI");
-	//_pStartButton->AddComponent(new Button(_pStartButton));
-	//_pStartButton->AddComponent(new BoxColliderComponent(_pStartButton));
-	//_pStartButton->AddComponent(new TextComponent(_pTestObject));
-	//_pStartButton->AddComponent(ResourceManager::GetTexture("Button"));
-	//_pStartButton->GetTransform()->SetPosition(0.0f, 0.0f);
-	//_pStartButton->GetTransform()->SetScale({ 0.2f, 0.2f });
-	//AddGameObject(_pStartButton);
-
-
+	_pGameTime = new GameTimeManager(_pLightManager);
 
 	_pPlayer = new Player();
 	_pPlayer->GetTransform()->SetPosition(7.0f, 3.5f);
@@ -127,35 +111,24 @@ void FarmScene::InitScene()
 	AddGameObject(_pWoodNode);
 
 	_pMetalNode = new ResourceNodeObject(Metal);
-	_pMetalNode->GetTransform()->SetPosition(6.0, 1.0f);
+	_pMetalNode->GetTransform()->SetPosition(8.25f, 1.25f);
 	AddGameObject(_pMetalNode);
 
 	_pStoneNode = new ResourceNodeObject(Stone);
-	_pStoneNode->GetTransform()->SetPosition(7.0, 1.0f);
+	_pStoneNode->GetTransform()->SetPosition(7.5, 0.75f);
 	AddGameObject(_pStoneNode);
 
 
 	_pCoalNode = new ResourceNodeObject(Coal);
-	_pCoalNode->GetTransform()->SetPosition(8.0, 1.0f);
+	_pCoalNode->GetTransform()->SetPosition(7.75f, 1.25f);
 	AddGameObject(_pCoalNode);
 
-	farmland = new FarmlandManager("Farmland Manager");
-	AddGameObject(farmland);
-
 	_pWaveManager = new WaveManager();
-
-	//LIGHTING TEST CODE//
-	_pLightManager = new LightLevelManager(_pTilemap);
-	_pLightManager->SetWorldLightLevel(5);
-	_pLightManager->SetMinLightLevel(1);
-	_pLightManager->SetMaxLightLevel(8);
-
-
-	_pBuildIndicator = new TextObject("Build Mode", "arial.ttf", "Text", "BUILDMODETEXT");
-	_pBuildIndicator->GetTransform()->SetPosition({ 400.0f, 600.0f });
-	_pBuildIndicator->GetTransform()->SetScale({ 1.0f, 1.0f });
-	AddGameObject(_pBuildIndicator);
-	_pBuildIndicator->SetActive(false);
+	
+	PlayerResourceManager::LoadInCropData();
+	PlayerResourceManager::GetPlantResource(WheatSeedRes)->GainResource(5);
+	PlayerResourceManager::GetPlantResource(CarrotSeedRes)->GainResource(5);
+	PlayerResourceManager::GetPlantResource(PotatoSeedRes)->GainResource(5);
 
 	LoadScene("Resources/PlayerSaves/FarmSceneSaveData.sav");
 }
