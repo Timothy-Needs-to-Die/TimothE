@@ -116,18 +116,6 @@ void FarmScene::InitScene()
 	PlayerResourceManager::GetPlantResource(CarrotSeedRes)->GainResource(5);
 	PlayerResourceManager::GetPlantResource(PotatoSeedRes)->GainResource(5);
 
-	_pBuildIndicator = new TextObject("Build Mode", "arial.ttf", "Text", "BUILDMODETEXT");
-	_pBuildIndicator->GetTransform()->SetPosition({ 850.0f, 1000.0f });
-	_pBuildIndicator->GetTransform()->SetScale({ 1.0f, 1.0f });
-	AddGameObject(_pBuildIndicator);
-	_pBuildIndicator->SetActive(false);
-
-	_pFarmingIndicator = new TextObject("Farming Mode", "arial.ttf", "Text", "FARMINGMODETEXT");
-	_pFarmingIndicator->GetTransform()->SetPosition({ 850.0f, 1000.0f });
-	_pFarmingIndicator->GetTransform()->SetScale({ 1.0f, 1.0f });
-	AddGameObject(_pFarmingIndicator);
-	_pFarmingIndicator->SetActive(false);
-
 	LoadScene("Resources/PlayerSaves/FarmSceneSaveData.sav");
 }
 
