@@ -9,15 +9,13 @@ class Fighter : public Component
 public:
 	COMPONENT_STATIC_TYPE(Fighter_Type);
 
-	Fighter(GameObject* pOwner) : Component(pOwner) {
-		SetType(Component::Types::Fighter_Type);
-	}
+	Fighter(GameObject* pOwner);
 
 	void SetWeaponConfig(const WeaponConfig& config) {
 		_weaponConfig = config;
 	}
 
-	void Attack();
+	void Attack(GameObject* instigator);
 
 
 	// Inherited via Component
@@ -29,6 +27,8 @@ public:
 
 private:
 	WeaponConfig _weaponConfig = WeaponConfig();
+
+	class WeaponComponent* _pWeaponComponent;
 	
 	float _timeSinceLastAttack = 0.0f;
 

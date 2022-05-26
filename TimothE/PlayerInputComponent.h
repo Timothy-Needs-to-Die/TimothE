@@ -11,6 +11,12 @@
 #include "Fighter.h"
 
 
+enum class StructureType {
+	Wall,
+	Tower,
+	Campfire
+};
+
 class PlayerInputComponent : public Component
 {
 public:
@@ -29,6 +35,9 @@ public:
 	virtual void OnUpdate() override;
 	virtual void OnEnd() override;
 
+	void MoveControls();
+	void BuildControls();
+
 	void NearbyResourceNode(class ResourceNode* nearbyResource);
 
 	virtual void OnTriggerEnter(ColliderBase* other) override;
@@ -39,6 +48,10 @@ private:
 	Fighter* _pFighter = nullptr;
 
 	class ResourceNode* _pNearbyResourceNode = nullptr;
-	
+
+	StructureType _selectedStructure;
+
+	bool _inBuildMode = false;
+	bool _bReadyforbuildPress = false;
 };
 

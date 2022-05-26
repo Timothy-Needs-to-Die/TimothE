@@ -130,6 +130,15 @@ public:
 	virtual void OnColliderExit(ColliderBase* other);
 
 
+	bool IsActive() { return _isActive; }
+	void SetActive(bool val) {
+		_isActive = val;
+		TIM_LOG_LOG("IsActive: " << _isActive);
+	}
+
+	bool IsToBeDestroyed() const { return _toBeDestroyed; }
+	void SetToBeDestroyed(bool val) { _toBeDestroyed = val; }
+
 private:
 	///////////////////////////////////
 	//Properties (Unique Identifiers)//
@@ -137,6 +146,8 @@ private:
 	std::string _UID;
 	std::string _name;
 	std::string _tag;
+
+	bool _isActive = true;
 
 protected:
 	//////////////
@@ -150,6 +161,8 @@ protected:
 	/////////////
 	GameObject* _pParent = nullptr;
 	GameObject* _pChild = nullptr;
+
+	bool _toBeDestroyed = false;
 
 	virtual void UniqueLogic();
 };

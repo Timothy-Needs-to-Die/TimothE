@@ -7,7 +7,7 @@ public:
 	Character(std::string name = "New Character", std::string tag = "UNTAGGED");
 
 private:
-
+	
 
 protected:
 	virtual void UniqueLogic() override;

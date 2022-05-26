@@ -6,43 +6,16 @@
 #include <vector>
 #include <glm.hpp>
 #include "TileMap.h"
+#include "Node.h"
 
-#define ERROR_PATH_POSITION -1
 
-/// <summary>
-/// The Node struct is used to represent the information of a cell in the maze
-/// </summary>
-struct Node {
-	//Is this node an obstacle i.e a wall
-	bool isObstacle = false;
-	//Has this node already been visited 
-	bool isVisited = false;
 
-	//Distance to the end node
-	float globalGoal = FLT_MAX;
-
-	//Distance to the end node from here
-	float localGoal = FLT_MAX;
-
-	//X and Y position of the node in the map
-	/*int xPos = 0;
-	int yPos = 0;*/
-
-	glm::vec2 pos;
-
-	//A vector containing all of the nodes in the maze level
-	std::vector<Node*> neighborNodes;
-	//A pointer to the neighbor node that is closest to the start node
-	glm::vec2 parentNode = { ERROR_PATH_POSITION, ERROR_PATH_POSITION };
-};
 
 class AStar
 {
 public:
-	//The default constructor for the class
-	AStar() = default;
+	AStar(){ }
 
-	//Overriding the default destructor to delete the memory associated with the direction and path lists
 	~AStar();
 
 	/// <summary>
@@ -53,17 +26,22 @@ public:
 
 	void SetMap(TileMap* map);
 
-private:
+	void UpdateNodeObstacleStatus(glm::vec2 worldPos, bool val);
 
-	Node* mEndNode = nullptr;
+	std::vector<glm::vec2> processedPath;
+private:
+	std::vector<glm::vec2> ProcessPath();
+
+
+	Node* _mEndNode = nullptr;
 
 	//This list contains the directions the player needs to take in the form of Nodes. 
-	std::vector<Node> mPathOfNodes;
+	std::vector<Node> _mPathOfNodes;
 
 	std::vector<Node> _mMapNodes;
-	float width;
-	float height;
-	float tilesPerUnit;
+	float _mWidth;
+	float _mHeight;
+	float _mTilesPerUnit;
 };
 
 

@@ -5,14 +5,14 @@
 #include "MovementComponent.h"
 #include "Fighter.h"
 #include "Health.h"
+#include "InventoryScreen.h"
 
 #include "ResourceNode.h"
 #include "FarmlandManager.h"
 #include "PlantResourceType.h"
 #include "Button.h"
 #include "CameraManager.h"
-
-
+#include "LightLevelManager.h"
 
 class FarmScene : public Scene
 {
@@ -29,35 +29,48 @@ public:
 	void UpdateObjects() override;
 	void InitScene() override;
 
+	void SaveScene(std::string filename);
+	void LoadScene(std::string filename);
+
 	void AddStructure(class StructureObject* object);
+	void RemoveStructure(class StructureObject* object);
+	std::vector<class StructureObject*> GetStructures() const;
 
-protected:
+	void GameOver() override;
 
+	class GameTimeManager* GetGameTime() { return _pGameTime; }
+
+	LightLevelManager* GetLightManager() const { return _pLightManager; }
 
 private:
 	GameObject* _pStartButton = nullptr;
 	GameObject* _pWeaponObject = nullptr;
-	GameObject* _pAITester = nullptr;
 
 	SpriteSheet* _pSpritesheet;
+
+	LightLevelManager* _pLightManager;
 
 	//class WaveController* _pWaveController = nullptr;
 
 	class Player* _pPlayer;
 	//class OffensiveStructureObject* _pTower = nullptr;
 
-	//Day* _pDay;
-	bool _timeProgression = true;
-	
 	class ResourceNodeObject* _pWoodNode = nullptr;
 	class ResourceNodeObject* _pMetalNode = nullptr;
 	class ResourceNodeObject* _pStoneNode = nullptr;
 	class ResourceNodeObject* _pCoalNode = nullptr;
 
+	class GameTimeManager* _pGameTime = nullptr;
+
+	class InventoryScreen* _pInventoryScreen = nullptr;
+
 	//Farmland
 	FarmlandManager* farmland;
 	bool farmKeyPressed = false;
+	bool _inventoryKeyPressed = false;
+	bool spawnEnemyKey = false;
 
 	std::vector<class StructureObject*> _pStructures;
-};
 
+	class Bed* _pBed;
+};

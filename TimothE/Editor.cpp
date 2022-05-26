@@ -57,8 +57,6 @@ Editor::~Editor()
 
 void Editor::EditorLoop(Scene* currentScene, bool& editorMode, bool& paused)
 {
-
-
 	EditorImGui(currentScene);
 	ImGUISwitchRender(editorMode, paused);
 

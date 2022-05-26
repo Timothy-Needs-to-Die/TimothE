@@ -9,10 +9,8 @@ public:
 
 	StructureHealth(GameObject* owner, int health);
 
-private:
-	virtual void OnDamage() override;
-	virtual void OnDeath() override;
+protected:
+	virtual void OnDamage(GameObject* instigator) override;
+	virtual void OnDeath(GameObject* instigator) override;
 	virtual void OnHeal() override;
-
 };
-

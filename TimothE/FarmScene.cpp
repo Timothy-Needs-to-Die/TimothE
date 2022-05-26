@@ -4,14 +4,21 @@
 #include "CameraManager.h"
 #include "Player.h"
 #include "ResourceNodeObject.h"
-#include "Wave.h"
+#include "WaveManager.h"
 #include "OffensiveStructureObject.h"
 #include "AIMovementCompnent.h"
 #include "StructureObject.h"
+#include "GameTimeManager.h"
+#include "Bed.h"
+#include "PlayerHealth.h"
+#include "AIController.h"
+#include "Enemy.h"
+#include "StreamFile.h"
+#include "LightsourceObject.h"
 
 FarmScene::~FarmScene()
 {
-	
+
 }
 
 void FarmScene::UpdateUI()
@@ -23,42 +30,58 @@ void FarmScene::UpdateObjects()
 {
 	Scene::UpdateObjects();
 
+	_pGameTime->Update();
+
 	if (Input::IsKeyDown(KEY_5)) {
 		SceneManager::SetCurrentScene(SceneManager::CreateScene(ResourceManager::GetScene("TownScene")));
 	}
 
-
-	//glm::vec2 forward = _pPlayerObject->GetTransform()->GetForward();
-	//glm::vec2 pos = forward * 0.1f;
-	//pos.y += 0.1f;
-	//
-	////TIM_LOG_LOG("Player forward: " << forward.x << ", " << forward.y);
-	////TIM_LOG_LOG("Weapon Pos: " << pos.x << ", " << pos.y);
-	//_pWeaponObject->GetTransform()->SetPosition(pos);
-
-	//if (_pDay->NightStart())
-	//{
-	//	_pWaveController->StartWaves(_pDay->GetDayCount());
-	//
-	//	for (GameObject* go : _pWaveController->GetEnemies())
-	//	{
-	//		AddGameObject(go);
-	//	}
-	//}
-	//else if (!_pDay->IsDay())
-	//{
-	//	if (_pWaveController->TryNewWave())
-	//	{
-	//		for (GameObject* enemy : _pWaveController->GetEnemies())
-	//		{
-	//			AddGameObject(enemy);
-	//		}
-	//	}
-	//}
-
 	if (Input::IsKeyDown(KEY_G)) {
 		//_pTilemap->AddTileAt(2, 15, 12, CameraManager::CurrentCamera());
 	}
+	/*if (Input::IsKeyDown(KEY_H))
+	{
+		if (_pPlayer != nullptr)
+		{
+			PlayerHealth* h = _pPlayer->GetComponent<PlayerHealth>();
+			if (h != nullptr)
+			{
+				h->TakeDamage(50);
+			}
+		}
+	}*/
+
+	if (!_pGameTime->IsDay()) {
+		if (Input::IsKeyDown(KEY_P)) {
+			_pGameTime->EndNight();
+			_pGameTime->StartNewDay();
+		}
+	}
+
+	if (Input::IsKeyUp(KEY_I)) {
+		_inventoryKeyPressed = false;
+	}
+
+	if (Input::IsKeyDown(KEY_I)) {
+		if (_inventoryKeyPressed) return;
+
+		_inventoryKeyPressed = true;
+
+		bool current = _pInventoryScreen->GetAllActive();
+
+		_pInventoryScreen->SetAllActive(!current);
+		_pInventoryScreen->OnUpdate();
+		//if (_pInventoryScreen == nullptr)
+		//{
+			//_pInventoryScreen->GetTransform()->SetPosition(50.0f, 50.0f);
+			//_pInventoryScreen->GetTransform()->SetScale({ 0.25f, 0.25f });
+		//}
+	}
+
+	if (Input::IsKeyDown(KEY_1)) {
+		SaveScene("Resources/PlayerSaves/FarmSceneSaveData.sav");
+	}
+	
 
 	Physics::UpdateWorld();
 }
@@ -67,7 +90,13 @@ void FarmScene::InitScene()
 {
 	Scene::InitScene();
 
+	_pInventoryScreen = new InventoryScreen();
+	AddGameObject(_pInventoryScreen);
+	_pInventoryScreen->SetAllActive(false);
+
 	_pSpritesheet = ResourceManager::GetSpriteSheet("testSheet");
+
+	_pGameTime = new GameTimeManager();
 
 	//_pStartButton = new GameObject("BUTTON", "UI");
 	//_pStartButton->AddComponent(new Button(_pStartButton));
@@ -78,7 +107,9 @@ void FarmScene::InitScene()
 
 	//_pStartButton->GetTransform()->SetPosition(0.0f, 0.0f);
 	//_pStartButton->GetTransform()->SetScale({ 0.2f, 0.2f });
-
+	//GameObject* pPathFinder = new GameObject("Pathfinder");
+	//pPathFinder->AddComponent<AStar>(new AStar(pPathFinder));
+	//AddGameObject(pPathFinder);
 
 	_pWeaponObject = new GameObject("Weapon");
 	_pWeaponObject->AddComponent<Texture2D>(ResourceManager::GetTexture("swords"));
@@ -92,14 +123,14 @@ void FarmScene::InitScene()
 	AddGameObject(_pWeaponObject);
 
 	_pPlayer = new Player();
+	_pPlayer->GetTransform()->SetPosition(7.0f, 3.5f);
 	AddGameObject(_pPlayer);
-
 
 	//_pWaveController = new WaveController(this);
 
 	//_pDay = new Day();
 	//_pDay->SetWaveController(_pWaveController);
-	
+
 	_pWoodNode = new ResourceNodeObject(Wood);
 	_pWoodNode->GetTransform()->SetPosition(5.0f, 1.0f);
 	AddGameObject(_pWoodNode);
@@ -120,23 +151,107 @@ void FarmScene::InitScene()
 	farmland = new FarmlandManager("Farmland Manager");
 	AddGameObject(farmland);
 
-	//OffensiveStructureObject* _pTower = new OffensiveStructureObject("Test Tower");
-	//AddGameObject(_pTower);
+	//LIGHTING TEST CODE//
+	_pLightManager = new LightLevelManager(_pTilemap);
+	_pLightManager->SetWorldLightLevel(5);
+	_pLightManager->SetMinLightLevel(1);
+	_pLightManager->SetMaxLightLevel(8);
 
-	_pAITester = new GameObject("AI Test");
-	_pAITester->GetTransform()->SetScale({ 0.25f, 0.25f });
+	LoadScene("Resources/PlayerSaves/FarmSceneSaveData.sav");
+}
 
-	AIMovementCompnent* mover = _pAITester->AddComponent(new AIMovementCompnent(_pAITester));
-	_pAITester->AddComponent(ResourceManager::GetTexture("fish"));
-	mover->SetAllowCollisions(false);
+void FarmScene::SaveScene(std::string filename)
+{
+	StreamFile stream;
 
-	mover->SetDestination(glm::vec2(2.0f, 1.5f));
+	stream.OpenWrite(filename);
 
-	AddGameObject(_pAITester);
+	WriteInt(stream, _pStructures.size());
+
+	for (int i = 0; i < _pStructures.size(); ++i) {
+		StructureObject* obj = _pStructures[i];
+
+		WriteVec2(stream, obj->GetTransform()->GetPosition());
+
+		WriteString(stream, obj->GetTag());
+	}
+
+	stream.Close();
+}
+
+void FarmScene::LoadScene(std::string filename)
+{
+	_pStructures.clear();
+
+	StreamFile stream;
+
+	stream.OpenRead(filename);
+
+	//_pStructures.resize(ReadInt(stream));
+	int size = ReadInt(stream);
+
+	for (int i = 0; i < size; ++i) {
+		StructureObject* object;
+
+		glm::vec2 pos = ReadVec2(stream);
+		std::string tag = ReadString(stream);
+
+		if (tag == "WALL") {
+			object = new StructureObject("Wall", tag);
+		}
+		else if (tag == "TOWER") {
+			object = new OffensiveStructureObject("Tower", tag);
+		}
+		else if (tag == "LIGHTSOURCE") {
+			object = new LightsourceObject(pos);
+		}
+
+		object->GetTransform()->SetPosition(pos);
+		AddStructure(object);
+	}
+
+	stream.Close();
 }
 
 void FarmScene::AddStructure(StructureObject* object)
 {
 	AddGameObject(object);
 	_pStructures.emplace_back(object);
+	_pAstarObject->UpdateNodeObstacleStatus(_pTilemap->GetTileAtWorldPos(0, object->GetTransform()->GetPosition())->pos, true);
+	_pTilemap->GetTileAtWorldPos(5, object->GetTransform()->GetPosition())->collidable = true;
+}
+
+void FarmScene::RemoveStructure(StructureObject* object)
+{
+	for (int i = 0; i < _pStructures.size(); ++i) {
+		StructureObject* pObject = _pStructures[i];
+
+		if (pObject != object) continue;
+
+		_pTilemap->SetCollidableAtLayer(5, pObject->GetTransform()->GetPosition(), false);
+
+		_pAstarObject->UpdateNodeObstacleStatus(_pTilemap->GetTileAtWorldPos(0, pObject->GetTransform()->GetPosition())->pos, false);
+		_pTilemap->GetTileAtWorldPos(5, pObject->GetTransform()->GetPosition())->collidable = false;
+	}
+
+	if (object->GetTag() == "LIGHTSOURCE") {
+		_pLightManager->RemoveLightSource(dynamic_cast<LightsourceObject*>(object)->GetLightSource());
+	}
+
+	std::vector<StructureObject*>::iterator it = std::find(_pStructures.begin(), _pStructures.end(), object);
+	if (it != _pStructures.end()) {
+		_pStructures.erase(it);
+		RemoveGameObject(object);
+	}
+}
+
+std::vector<class StructureObject*> FarmScene::GetStructures() const
+{
+	return _pStructures;
+}
+
+void FarmScene::GameOver()
+{
+	// todo: add proper gameover
+	TIM_LOG_LOG("Game over");
 }

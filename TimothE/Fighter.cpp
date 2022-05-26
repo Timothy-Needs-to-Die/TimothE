@@ -4,13 +4,22 @@
 #include "Scene.h"
 #include "Health.h"
 #include "GameObject.h"
+#include "WeaponComponent.h"
 #include "Transform.h"
 
-void Fighter::Attack()
+Fighter::Fighter(GameObject* pOwner) : Component(pOwner)
+{
+	SetType(Component::Types::Fighter_Type);
+	_pWeaponComponent = dynamic_cast<WeaponComponent*>(_pParentObject->GetComponentInChild(Weapon_Type));
+}
+
+void Fighter::Attack(GameObject* instigator)
 {
 	if (!_canAttack) return;
-	_canAttack = false;
+	_pWeaponComponent->EndAttack();
 
+	_canAttack = false;
+	TIM_LOG_LOG("Attacking");
 
 	//Find all objects with a health component atached to them in scene
 	std::vector<Health*> healthObjects = SceneManager::GetCurrentScene()->FindObjectsOfType<Health>();
@@ -44,23 +53,13 @@ void Fighter::Attack()
 
 	//Cycles through each nearby health object
 	for (auto& obj : nearbyHealthObjects) {
-		
-
 		//Calculate the direction vector
 		glm::vec2 dir = obj->GetParent()->GetTransform()->GetPosition() - fighterPos;
 		
 		float dot = glm::dot(dir, fighterForward);
 
-		
-
-		//std::cout << "Dot: " << dot << std::endl;
-
-		if (dot >= 0.0f) {
-			obj->TakeDamage(_weaponConfig.damage);
-			//std::cout << "Would hit!" << std::endl;
-		}
-		else {
-			//std::cout << "Would not hit!" << std::endl;
+		if (dot >= 0.3f) {
+			obj->TakeDamage(_weaponConfig.damage, instigator);
 		}
 	}
 
@@ -68,6 +67,7 @@ void Fighter::Attack()
 
 void Fighter::OnStart()
 {
+
 }
 
 void Fighter::OnUpdate()
@@ -78,6 +78,7 @@ void Fighter::OnUpdate()
 		if (_timeSinceLastAttack > _weaponConfig.attackSpeed) {
 			_timeSinceLastAttack = 0.0f;
 			_canAttack = true;
+			_pWeaponComponent->StartAttack();
 		}
 	}
 

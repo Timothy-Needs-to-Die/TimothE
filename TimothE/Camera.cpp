@@ -47,7 +47,10 @@ void Camera::DrawEditorUI()
 
 void Camera::OnUpdate()
 {
-	PollInput();
+	if (_mName == "Editor") {
+		PollInput();
+	}
+
 	RecalculateViewMatrix();
 }
 
@@ -83,21 +86,21 @@ void Camera::RecalculateViewMatrix()
 //polls for movement for control
 void Camera::PollInput()
 {
-	if (Input::IsKeyDown(KEY_W)) {
+	if (Input::IsKeyDown(KEY_W) || Input::IsKeyHeld(KEY_W)) {
 		float yOffset = cos(glm::radians(_rotation)) * _cameraSpeed * Time::GetDeltaTime();
 		float xOffset = -sin(glm::radians(_rotation)) * _cameraSpeed * Time::GetDeltaTime();
 		_cameraPos.x += xOffset;
 		_cameraPos.y += yOffset;
 	}
-	if (Input::IsKeyDown(KEY_S)) {
+	if (Input::IsKeyDown(KEY_S) || Input::IsKeyHeld(KEY_S)) {
 		_cameraPos.x -= -sin(glm::radians(_rotation)) * _cameraSpeed * Time::GetDeltaTime();
 		_cameraPos.y -= cos(glm::radians(_rotation)) * _cameraSpeed * Time::GetDeltaTime();
 	}
-	if (Input::IsKeyDown(KEY_A)) {
+	if (Input::IsKeyDown(KEY_A) || Input::IsKeyHeld(KEY_A)) {
 		_cameraPos.x -= cos(glm::radians(_rotation)) * _cameraSpeed * Time::GetDeltaTime();
 		_cameraPos.y -= sin(glm::radians(_rotation)) * _cameraSpeed * Time::GetDeltaTime();
 	}
-	if (Input::IsKeyDown(KEY_D)) {
+	if (Input::IsKeyDown(KEY_D) || Input::IsKeyHeld(KEY_D)) {
 		_cameraPos.x += cos(glm::radians(_rotation)) * _cameraSpeed * Time::GetDeltaTime();
 		_cameraPos.y += sin(glm::radians(_rotation)) * _cameraSpeed * Time::GetDeltaTime();
 	}

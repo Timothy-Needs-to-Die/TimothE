@@ -32,7 +32,6 @@ void FarmlandManager::PlaceFarmLand(glm::vec2 position)
 		newCropPlot = new CropPlot(gameObjectName);
 		// Put it in the correct place
 		newCropPlot->GetTransform()->SetPosition(tilePlayerIsOnPos);
-		newCropPlot->GetTransform()->SetScale(glm::vec2(0.25f, 0.25f));
 		// Add a collider for collisions
 		newCropPlot->AddComponent(new BoxColliderComponent(newCropPlot));
 		
@@ -63,7 +62,6 @@ void FarmlandManager::PlantSeed(glm::vec2 position, PlantResourceType cropType)
 			// Create the plan
 			GameObject* plantObject = new GameObject("Plant");
 			// Set its correct W and H
-			plantObject->GetTransform()->SetScale(glm::vec2(0.25f, 0.25f));
 			// Make the plot its on its parent
 			plantObject->SetParent(cropPlot);
 

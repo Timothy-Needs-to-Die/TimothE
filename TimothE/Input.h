@@ -17,6 +17,8 @@ public:
 	static float GetMouseY() { return _mouseYPos; }
 	static glm::vec2 GetMousePos() { return glm::vec2(_mouseXPos, _mouseYPos); }
 
+	
+
 	//Is the key pressed?
 	static bool IsKeyDown(TimothEKeyCode keycode);
 

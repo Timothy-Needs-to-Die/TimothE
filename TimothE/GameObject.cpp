@@ -38,6 +38,7 @@ GameObject::~GameObject()
 	Exit();
 	for (Component* c : _pComponents)
 	{
+		if(c->GetType() == Component::Texture_Type) continue;
 		delete(c);
 	}
 }
@@ -249,6 +250,7 @@ void GameObject::SetName(std::string name)
 void GameObject::SetParent(GameObject* parent)
 {
 	_pParent = parent;
+	_pParent->SetChild(this);
 }
 
 void GameObject::SetChild(GameObject* child)

@@ -24,7 +24,7 @@ void StructureFighter::Attack(GameObject* pTarget)
 
 	towerPos += (directionToTarget * 3.0f) / 4.0f;
 
-	ProjectileObject* pProjectileObject = new ProjectileObject(towerPos, directionToTarget);
+	ProjectileObject* pProjectileObject = new ProjectileObject(towerPos, directionToTarget, _pParentObject);
 	SceneManager::GetCurrentScene()->AddGameObject(pProjectileObject);
 }
 

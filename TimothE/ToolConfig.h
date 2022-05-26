@@ -1,6 +1,7 @@
 #pragma once
 #include "PurchaseableConfig.h"
 
+
 enum ToolType {
 	Sword,
 	Pickaxe,
@@ -12,6 +13,6 @@ struct ToolConfig : PurchaseableConfig {
 	ToolType type;
 	int currentLevel;
 	int damagePerHit;
-	int townLevelRequired;
+
 };
 

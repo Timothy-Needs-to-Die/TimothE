@@ -85,9 +85,12 @@
     <ClInclude Include="AStar.h" />
     <ClInclude Include="AnimatedSpritesheet.h" />
     <ClInclude Include="Application.h" />
+    <ClInclude Include="ArmourConfig.h" />
     <ClInclude Include="AudioEngine.h" />
     <ClInclude Include="AudioSource.h" />
     <ClInclude Include="BaseTrader.h" />
+    <ClInclude Include="Bed.h" />
+    <ClInclude Include="BedHealth.h" />
     <ClInclude Include="BoxColliderComponent.h" />
     <ClInclude Include="Button.h" />
     <ClInclude Include="CSVReader.h" />
@@ -131,6 +134,7 @@
     <ClInclude Include="Fighter.h" />
     <ClInclude Include="Font.h" />
     <ClInclude Include="GameObject.h" />
+    <ClInclude Include="GameTimeManager.h" />
     <ClInclude Include="Health.h" />
     <ClInclude Include="Heap.h" />
     <ClInclude Include="HeapManager.h" />
@@ -145,8 +149,11 @@
     <ClInclude Include="Imgui\imstb_textedit.h" />
     <ClInclude Include="Imgui\imstb_truetype.h" />
     <ClInclude Include="Input.h" />
+    <ClInclude Include="InventoryScreen.h" />
     <ClInclude Include="ItemConfig.h" />
     <ClInclude Include="ItemResourceType.h" />
+    <ClInclude Include="LightLevelManager.h" />
+    <ClInclude Include="LightsourceObject.h" />
     <ClInclude Include="MemoryManager.h" />
     <ClInclude Include="MovementComponent.h" />
     <ClInclude Include="OffensiveStructureObject.h" />
@@ -156,6 +163,7 @@
     <ClInclude Include="PlantResourceType.h" />
     <ClInclude Include="PlantedCrop.h" />
     <ClInclude Include="Player.h" />
+    <ClInclude Include="PlayerHealth.h" />
     <ClInclude Include="PlayerInputComponent.h" />
     <ClInclude Include="PlayerResource.h" />
     <ClInclude Include="PlayerResourceManager.h" />
@@ -184,6 +192,7 @@
     <ClInclude Include="SOIL\wfETC.h" />
     <ClInclude Include="Scene.h" />
     <ClInclude Include="SceneManager.h" />
+    <ClInclude Include="SeedConfig.h" />
     <ClInclude Include="SellableConfig.h" />
     <ClInclude Include="Serializable.h" />
     <ClInclude Include="Sprite.h" />
@@ -208,9 +217,11 @@
     <ClInclude Include="TraderConfig.h" />
     <ClInclude Include="Transform.h" />
     <ClInclude Include="UID.h" />
-    <ClInclude Include="Wave.h" />
+    <ClInclude Include="WaveManager.h" />
+    <ClInclude Include="WeaponComponent.h" />
     <ClInclude Include="WeaponConfig.h" />
     <ClInclude Include="pch.h" />
+    <ClInclude Include="WeaponObject.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="AIController.cpp" />
@@ -221,6 +232,8 @@
     <ClCompile Include="AudioEngine.cpp" />
     <ClCompile Include="AudioSource.cpp" />
     <ClCompile Include="BaseTrader.cpp" />
+    <ClCompile Include="Bed.cpp" />
+    <ClCompile Include="BedHealth.cpp" />
     <ClCompile Include="BoxColliderComponenet.cpp" />
     <ClCompile Include="Button.cpp" />
     <ClCompile Include="CSVReader.cpp" />
@@ -250,6 +263,7 @@
     <ClCompile Include="Fighter.cpp" />
     <ClCompile Include="Font.cpp" />
     <ClCompile Include="GameObject.cpp" />
+    <ClCompile Include="GameTimeManager.cpp" />
     <ClCompile Include="Health.cpp" />
     <ClCompile Include="Heap.cpp" />
     <ClCompile Include="HeapManager.cpp" />
@@ -261,6 +275,9 @@
     <ClCompile Include="Imgui\imgui_tables.cpp" />
     <ClCompile Include="Imgui\imgui_widgets.cpp" />
     <ClCompile Include="Input.cpp" />
+    <ClCompile Include="InventoryScreen.cpp" />
+    <ClCompile Include="LightLevelManager.cpp" />
+    <ClCompile Include="LightsourceObject.cpp" />
     <ClCompile Include="MemoryManager.cpp" />
     <ClCompile Include="MovementComponent.cpp" />
     <ClCompile Include="OffensiveStructureObject.cpp" />
@@ -269,6 +286,7 @@
     <ClCompile Include="Physics.cpp" />
     <ClCompile Include="PlantedCrop.cpp" />
     <ClCompile Include="Player.cpp" />
+    <ClCompile Include="PlayerHealth.cpp" />
     <ClCompile Include="PlayerInputComponent.cpp" />
     <ClCompile Include="PlayerResource.cpp" />
     <ClCompile Include="PlayerResourceManager.cpp" />
@@ -295,8 +313,13 @@
     <ClCompile Include="TileMapEditor.cpp" />
     <ClCompile Include="TownScene.cpp" />
     <ClCompile Include="Transform.cpp" />
-    <ClCompile Include="Wave.cpp" />
+    <ClCompile Include="WaveManager.cpp" />
     <ClCompile Include="pch.cpp" />
+    <ClCompile Include="WeaponComponent.cpp" />
+    <ClCompile Include="WeaponObject.cpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Node.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
