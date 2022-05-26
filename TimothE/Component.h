@@ -57,8 +57,7 @@ public:
 		AIMovement_Type = BIT(23),
 		DestroyAfterSeconds_Type = BIT(24),
 		Pathfinding = BIT(25),
-		Weapon_Type = BIT(26),
-		PlayerUI_Type = BIT(27)
+		Weapon_Type = BIT(26)
 	};
 
 	//enums for different categories of components

@@ -58,6 +58,8 @@ void FarmScene::UpdateObjects()
 		if (Input::IsKeyDown(KEY_P)) {
 			_pGameTime->EndNight();
 			_pGameTime->StartNewDay();
+			// Tell the farmland that a new day has dawned
+			_pPlayer->GetComponent<FarmlandManager>()->OnNewDay();
 		}
 	}
 
@@ -85,9 +87,9 @@ void FarmScene::UpdateObjects()
 		SaveScene("Resources/PlayerSaves/FarmSceneSaveData.sav");
 	}
 	
-	if (_pPlayer->GetComponent<PlayerHealth>() != nullptr)
+	if (_pInventoryScreen->GetAllActive())
 	{
-		_pPlayer->GetComponent<TextComponent>()->SetText(std::to_string(_pPlayer->GetComponent<PlayerHealth>()->GetCurrentHealth()));
+		_pInventoryScreen->OnUpdate();
 	}
 
 	Physics::UpdateWorld();
@@ -101,6 +103,7 @@ void FarmScene::InitScene()
 	AddGameObject(_pInventoryScreen);
 	_pInventoryScreen->SetAllActive(false);
 	
+
 	
 	//_pGameOverScreen->OnUpdate();
 	//_pGameOverScreen->SetAllActive(false);
@@ -146,16 +149,13 @@ void FarmScene::InitScene()
 	_pCoalNode->GetTransform()->SetPosition(8.0, 1.0f);
 	AddGameObject(_pCoalNode);
 
-	farmland = new FarmlandManager("Farmland Manager");
-	AddGameObject(farmland);
-
 	//LIGHTING TEST CODE//
 	//_pLightManager = new LightLevelManager(_pTilemap);
 
 
 
 	_pBuildIndicator = new TextObject("Build Mode", "arial.ttf", "Text", "BUILDMODETEXT");
-	_pBuildIndicator->GetTransform()->SetPosition({ 850.0f, 1000.0f });
+	_pBuildIndicator->GetTransform()->SetPosition({ 400.0f, 600.0f });
 	_pBuildIndicator->GetTransform()->SetScale({ 1.0f, 1.0f });
 	AddGameObject(_pBuildIndicator);
 	_pBuildIndicator->SetActive(false);
@@ -256,16 +256,10 @@ std::vector<class StructureObject*> FarmScene::GetStructures() const
 void FarmScene::GameOver()
 {
 	TIM_LOG_LOG("Game over");
-	for each (GameObject* go in _listOfDrawableGameObjects)
-	{
-		go->SetActive(false);
-	}
+
 	//creates game over screen
 	_pGameOverScreen = new GameOverScreen();
 	glm::vec2 playerPos = _pPlayer->GetTransform()->GetPosition();
 	_pGameOverScreen->GetTransform()->SetPosition(playerPos.x-4, playerPos.y - 2.5); //sets position to centre on player
-
 	AddGameObject(_pGameOverScreen);
-	
-	
 }

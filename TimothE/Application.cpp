@@ -13,7 +13,7 @@
 #include "Time.h"
 #include "FarmScene.h"
 #include "CSVReader.h"
-#include "CropsConfig.h"
+#include "CropConfig.h"
 #include "Core.h"
 
 #define BIND_EVENT_FN(x) std::bind(&Application::x, this, std::placeholders::_1)
@@ -80,8 +80,8 @@ void Application::Init(bool devMode)
 	Renderer2D::Init();
 
 	
-	SceneManager::SetCurrentScene(SceneManager::CreateScene(ResourceManager::GetScene("FarmScene")));
-	//SceneManager::SetCurrentScene(SceneManager::CreateScene(ResourceManager::GetScene("TownScene")));
+	//SceneManager::SetCurrentScene(SceneManager::CreateScene(ResourceManager::GetScene("FarmScene")));
+	SceneManager::SetCurrentScene(SceneManager::CreateScene(ResourceManager::GetScene("TownScene")));
 	
 
 	//initializes editor with scene

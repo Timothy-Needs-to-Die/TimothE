@@ -52,6 +52,7 @@ void Button::OnUpdate()
 		{
 			// If the mouse is inside the button then we are now hovering over the button;
 			_isHovering = true;
+			std::cout << "Hovering" << std::endl;
 
 			// Check if the button is now being clicked
 			if (!_isClicked)
