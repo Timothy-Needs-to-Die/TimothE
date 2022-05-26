@@ -84,10 +84,6 @@ void PlayerInputComponent::OnUpdate()
 		
 		_bReadyforbuildPress = false;
 		_inBuildMode = !_inBuildMode;
-		GameObject* pBBuildText = SceneManager::GetCurrentScene()->FindObjectWithTag("BUILDMODETEXT");
-		if (pBBuildText) {
-			//pBBuildText->SetActive(_inBuildMode); //TODO: Remove this comment in final demo
-		}
 		PlayerUIComponent* pUI = _pParentObject->GetComponent<PlayerUIComponent>();
 		if (pUI) {
 			pUI->SetBuildModeUIActive(_inBuildMode);

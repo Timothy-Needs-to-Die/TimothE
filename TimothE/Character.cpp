@@ -4,11 +4,11 @@
 #include "SpriteComponent.h"
 #include "GameObject.h"
 
-Character::Character(std::string name, std::string tag) 
+Character::Character(std::string texture, std::string name, std::string tag) 
 	: GameObject(name, tag) 
 {
-	AddComponent(ResourceManager::GetTexture("character"));
-	_pAnimSheet = new AnimatedSpritesheet(ResourceManager::GetTexture("character"), 16, 32, "AnimatedCharacter");
+	AddComponent(ResourceManager::GetTexture(texture));
+	_pAnimSheet = new AnimatedSpritesheet(ResourceManager::GetTexture(texture), 16, 32, "AnimatedCharacter");
 
 
 	_pMovement = AddComponent(new MovementComponent(this));

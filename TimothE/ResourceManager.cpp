@@ -22,7 +22,9 @@ void ResourceManager::Init()
 	//LOAD TEXTURES
 	ResourceManager::InstantiateTexture("lenna", new Texture2D("lenna3.jpg"));
 	ResourceManager::InstantiateTexture("fish", new Texture2D("Fish.png"));
-	ResourceManager::InstantiateTexture("character", new Texture2D("Resources/Images/Spritesheets/EnemySpritesheet.png", true));
+	ResourceManager::InstantiateTexture("player", new Texture2D("Resources/Images/Spritesheets/PlayerSpritesheet.png", true));
+	ResourceManager::InstantiateTexture("enemy", new Texture2D("Resources/Images/Spritesheets/EnemySpritesheet.png", true));
+	ResourceManager::InstantiateTexture("bed", new Texture2D("Resources/Images/Bed.png", true));
 	ResourceManager::InstantiateTexture("cropspritesheet", new Texture2D("Resources/Images/Spritesheets/CropsSheet.png", true));
 	ResourceManager::InstantiateTexture("spritesheet", new Texture2D("Resources/Images/Spritesheets/RPGpack_sheet.png", true));
 	ResourceManager::InstantiateTexture("medispritesheet", new Texture2D("Resources/Images/Spritesheets/MediSprites.png", true));

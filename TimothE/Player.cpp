@@ -9,7 +9,7 @@
 #include "TextComponent.h"
 
 Player::Player(std::string name /*= "Player"*/, std::string tag /*= "PLAYER"*/)
-	: Character(name, tag)
+	: Character("player", name, tag)
 {
 	_pInput = AddComponent(new PlayerInputComponent(this));
 
