@@ -110,8 +110,6 @@ void FarmScene::InitScene()
 
 	_pSpritesheet = ResourceManager::GetSpriteSheet("testSheet");
 
-	_pGameTime = new GameTimeManager();
-
 	//_pStartButton = new GameObject("BUTTON", "UI");
 	//_pStartButton->AddComponent(new Button(_pStartButton));
 	//_pStartButton->AddComponent(new BoxColliderComponent(_pStartButton));
@@ -153,6 +151,7 @@ void FarmScene::InitScene()
 	//_pLightManager = new LightLevelManager(_pTilemap);
 
 
+	_pGameTime = new GameTimeManager(_pLightManager);
 
 	_pBuildIndicator = new TextObject("Build Mode", "arial.ttf", "Text", "BUILDMODETEXT");
 	_pBuildIndicator->GetTransform()->SetPosition({ 400.0f, 600.0f });
