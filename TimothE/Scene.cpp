@@ -127,14 +127,15 @@ void Scene::FrameEnd()
 	// 
 	// 	   in fighter or wherever just check if object is active before trying to shoot/collide etc.
 	
-	//for (auto& obj : _gameObjectsToRemove) {
-	//	delete obj;
-	//	obj = nullptr;
-	//	//if (*it != nullptr) {
-	//	//	delete* it;
-	//	//	*it = nullptr;
-	//	//}
-	//}
+	for (auto& obj : _gameObjectsToRemove) {
+		obj->SetActive(false);
+		/*delete obj;
+		obj = nullptr;*/
+		////if (*it != nullptr) {
+		////	delete* it;
+		////	*it = nullptr;
+		////}
+	}
 
 	_gameObjectsToRemove.clear();
 }

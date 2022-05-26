@@ -133,9 +133,13 @@ public:
 	void SetActive(bool val) {
 		_isActive = val;
 		TIM_LOG_LOG("IsActive: " << _isActive);
+		if (_pChild != nullptr)
+		{
+			_pChild->SetActive(false);
+		}
 	}
 
-	bool IsToBeDestroyed() const { return _toBeDestroyed && (_pParent == nullptr ? true : _pParent->IsToBeDestroyed()); }
+	bool IsToBeDestroyed() const { return _toBeDestroyed; }
 	void SetToBeDestroyed(bool val) { _toBeDestroyed = val; }
 
 private:

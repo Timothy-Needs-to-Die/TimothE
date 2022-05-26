@@ -58,7 +58,7 @@ void GameObject::Update()
 	{
 		if (c == nullptr) continue;
 		if (c->GetParent() == nullptr) continue;
-		if (c->GetParent()->IsToBeDestroyed()) continue;
+		if (c->GetParent()->IsToBeDestroyed() || !c->GetParent()->IsActive()) continue;
 
 		c->OnUpdate();
 		if (c->GetType() == Component::ParticleSystem_Type)
