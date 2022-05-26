@@ -17,8 +17,13 @@ private:
 
 	class WeaponObject* _pWeapon = nullptr;
 
+	GameObject* _pHealthObj;
+
 protected:
 	virtual void UniqueLogic() override;
+
+	void DisplayPlayerUI();
+
 
 };
 
