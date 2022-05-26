@@ -15,8 +15,13 @@ private:
 	class FarmlandManager* _pFarmlandManager = nullptr;
 	class WeaponObject* _pWeapon = nullptr;
 
+	class TextComponent* _pInteractableUI = nullptr;
+	class TextComponent* _pHealthUI = nullptr;
+
+	GameObject* _pHealthObj;
+
 protected:
 	virtual void UniqueLogic() override;
-
+	void DisplayPlayerUI();
 };
 

@@ -52,6 +52,11 @@ void PlayerInputComponent::OnUpdate()
 
 	// Inventory
 
+	if (Input::IsKeyDown(KEY_H)) {
+		_pParentObject->GetComponent<PlayerHealth>()->TakeDamage(10, NULL);
+		TIM_LOG_LOG(_pParentObject->GetComponent<PlayerHealth>()->GetCurrentHealth());
+	}
+
 	if (Input::IsKeyDown(KEY_O)) {
 		int wheatAmount = PlayerResourceManager::GetPlantResource(PlantResourceType::WheatRes)->GetAmount();
 		int potatoAmount = PlayerResourceManager::GetPlantResource(PlantResourceType::PotatoRes)->GetAmount();
