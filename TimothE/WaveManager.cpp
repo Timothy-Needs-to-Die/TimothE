@@ -76,6 +76,11 @@ void WaveManager::AddSpawnPosition(glm::vec2 pos)
 	_spawnPositions.emplace_back(pos);
 }
 
+bool WaveManager::GetWaveCleared()
+{
+	return _nightCleared;
+}
+
 void WaveManager::GenerateSpawnTime()
 {
 	_currentSpawnTime = rand() % _maxSpawnTime + _minSpawnTime;

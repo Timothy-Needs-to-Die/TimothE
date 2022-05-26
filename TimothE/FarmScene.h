@@ -54,7 +54,7 @@ private:
 	class ResourceNodeObject* _pCoalNode = nullptr;
 
 	class GameTimeManager* _pGameTime = nullptr;
-
+	class Bed* _pBed;
 	class InventoryScreen* _pInventoryScreen = nullptr;
 	class GameOverScreen* _pGameOverScreen = nullptr;
 
@@ -66,5 +66,4 @@ private:
 
 	std::vector<class StructureObject*> _pStructures;
 
-	class Bed* _pBed;
 };

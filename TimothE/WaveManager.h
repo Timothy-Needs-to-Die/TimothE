@@ -16,7 +16,7 @@ public:
 	void EndNight();
 	void SpawnEnemies();
 	void AddSpawnPosition(glm::vec2 pos);
-
+	bool GetWaveCleared();
 	
 	int _daysPast = 0;
 private:
