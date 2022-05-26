@@ -123,6 +123,10 @@ void Scene::FrameEnd()
 		}
 	}
 
+	//cycle through list, disable object,
+	// 
+	// 	   in fighter or wherever just check if object is active before trying to shoot/collide etc.
+	
 	//for (auto& obj : _gameObjectsToRemove) {
 	//	delete obj;
 	//	obj = nullptr;
