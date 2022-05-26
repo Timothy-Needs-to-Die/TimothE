@@ -74,8 +74,8 @@ void FarmScene::UpdateObjects()
 
 		bool current = _pInventoryScreen->GetAllActive();
 
-		//_pInventoryScreen->SetAllActive(!current);
-		//_pInventoryScreen->OnUpdate();
+		_pInventoryScreen->SetAllActive(!current);
+		_pInventoryScreen->OnUpdate();
 		//if (_pInventoryScreen == nullptr)
 		//{
 			//_pInventoryScreen->GetTransform()->SetPosition(50.0f, 50.0f);
@@ -87,6 +87,10 @@ void FarmScene::UpdateObjects()
 		SaveScene("Resources/PlayerSaves/FarmSceneSaveData.sav");
 	}
 	
+	if (_pInventoryScreen->GetAllActive())
+	{
+		_pInventoryScreen->OnUpdate();
+	}
 
 	Physics::UpdateWorld();
 }
