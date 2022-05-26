@@ -73,7 +73,10 @@ void PlayerInputComponent::OnUpdate()
 	}
 
 	// Selling
-	
+	if (Input::IsKeyDown(KEY_F1))
+	{
+		PlayerResourceManager::SellAll();
+	}
 
 	// Building
 	if (Input::IsKeyUp(KEY_B)) {

@@ -1,5 +1,7 @@
 #include "FarmlandManager.h"
 
+//std::vector<CropConfig> FarmlandManager::_pCropData = std::vector<CropConfig>();
+
 FarmlandManager::FarmlandManager(GameObject* parent) : Component(parent)
 {
 }

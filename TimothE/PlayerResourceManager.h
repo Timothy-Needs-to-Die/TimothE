@@ -7,7 +7,13 @@
 #include "PurchaseableConfig.h"
 #include "ToolConfig.h"
 #include "ArmourConfig.h"
+#include "CSVReader.h"
 
+struct CropSellingData
+{
+	PlantResourceType type;
+	int sellPrice;
+};
 
 static class PlayerResourceManager
 {
@@ -24,6 +30,9 @@ public:
 	static void SpendResources(const ResourceCost& cost);
 	//static bool CanAfford(int gold);
 	//static PlayerResource* GetHotbarItem(HotbarItem item);
+	static void SellAll();
+	static void LoadInCropData();
+
 
 	static void SetTool(ToolConfig tool);
 	static void SetArmour(ArmourConfig armour);
@@ -38,7 +47,7 @@ private:
 	static ToolConfig _currentPickaxe;
 	static ToolConfig _currentAxe;
 
-
+	static std::vector<CropSellingData> _cropSellingData;
 }; 
 
 
