@@ -12,10 +12,16 @@ public:
 
 	void Update();
 
+	//Check if time is day.
 	bool IsDay() const { return _inDay; }
 
+	//Start new day.
 	void StartNewDay();
+
+	//End the night.
 	void EndNight();
+
+	//Set game time to night.
 	void SetNight() { _dayTimer = _lengthOfDay + 1.0f; }
 
 private:

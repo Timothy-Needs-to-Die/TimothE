@@ -53,8 +53,6 @@ public:
 
 	void FrameEnd();
 
-
-
 	void RenderScene(Camera* cam);
 
 	//TODO: Implement unloading logic.
