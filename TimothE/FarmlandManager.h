@@ -27,10 +27,20 @@ public:
 	/// <param name="cropType"> The type of crop we wish to plant</param>
 	void PlantSeed(glm::vec2 position, PlantResourceType cropType);
 
+	/// <summary>
+	/// Calls the OnNewDay method for every placed CropPlot
+	/// </summary>
 	void OnNewDay();
 
+	/// <summary>
+	/// Loads in the crops data from the CSV files
+	/// </summary>
 	void LoadInCropData();
 
+	/// <summary>
+	/// Attempt to harvest the given plot of its crops
+	/// </summary>
+	/// <param name="plot"> The plot desired to be harvested </param>
 	void HarvestPlot(CropPlot* plot);
 
 	// Inherited via Component

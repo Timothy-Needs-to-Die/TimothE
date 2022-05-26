@@ -16,7 +16,6 @@ public:
 	~CropPlot();
 
 	void OnNewDay();
-	void Harvest();
 
 	bool IsOccupied() { return _isOccupied; }
 	void SetOccupied(bool state) { _isOccupied = state; }

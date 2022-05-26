@@ -127,6 +127,7 @@ void FarmlandManager::LoadInCropData()
 
 void FarmlandManager::HarvestPlot(CropPlot* plot)
 {
+	// If the plot exists
 	if (plot != nullptr)
 	{
 		PlantedCrop* plantedCrop = plot->GetChild()->GetComponent<PlantedCrop>();
@@ -134,15 +135,19 @@ void FarmlandManager::HarvestPlot(CropPlot* plot)
 		CropConfig cropConfig;
 		for (CropConfig c : _pCropData)
 		{
+			// If the data is that of the current crop being harvested
 			if (c.type == plantedCrop->GetCrop())
 			{
 				cropConfig = c;
 			}
 		}
 
+		// If we can succesfully harvest the crop
 		if (plantedCrop->Harvest())
 		{
+			// Add the resources to the players inventory
 			PlayerResourceManager::GetPlantResource(cropConfig.produceType)->GainResource(cropConfig.yield);
+			// For now just destroy the game object - Future work: Object Pooling
 			plot->GetChild()->SetToBeDestroyed(true);
 		}
 	}

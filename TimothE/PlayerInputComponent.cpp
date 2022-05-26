@@ -129,22 +129,30 @@ void PlayerInputComponent::MoveControls()
 void PlayerInputComponent::FarmingControls()
 {
 	// Farming
+
+	// Harvesitng / Tilling Land
 	if (Input::IsKeyDown(KEY_F))
 	{
+		// Stops method being called multiple times
 		if (_bFkeyPressed) return;
 		_bFkeyPressed = true;
 
+		// Get our players pos
 		glm::vec2 target = _pParentObject->GetTransform()->GetPosition();
 		// Targets the midpoint of the player
 		target.x += _pParentObject->GetTransform()->GetScale().x / 2;
 		target.y += _pParentObject->GetTransform()->GetScale().y / 2;
+		
+		// If we cant place farm land
 		if (!_pFarmlandManager->PlaceFarmLand(target))
 		{
+			// Lets try harvest land
 			CropPlot* closestPlot = _pFarmlandManager->GetCropPlotAtPosition(target);
 			if (closestPlot != nullptr)
 			{
 				if (closestPlot->IsOccupied())
 				{
+					// If theres a closest plot "under the player" and it has a crop try to harvest it
 					_pFarmlandManager->HarvestPlot(closestPlot);
 				}
 			}
@@ -152,6 +160,7 @@ void PlayerInputComponent::FarmingControls()
 	}
 	if (Input::IsKeyUp(KEY_F)) _bFkeyPressed = false;
 
+	// Farming mode Toggle
 	if (Input::IsKeyDown(KEY_G))
 	{
 		if (_bGkeyPressed) return;
@@ -174,6 +183,7 @@ void PlayerInputComponent::FarmingControls()
 
 	if (_bFarmMode)
 	{
+		// Plant Wheat
 		if (Input::IsKeyDown(KEY_1)) {
 			glm::vec2 target = _pParentObject->GetTransform()->GetPosition();
 			// Targets the midpoint of the player
@@ -181,6 +191,7 @@ void PlayerInputComponent::FarmingControls()
 			target.y += _pParentObject->GetTransform()->GetScale().y / 2;
 			_pFarmlandManager->PlantSeed(target, PlantResourceType::WheatSeedRes);
 		}
+		// Plant Potato
 		else if (Input::IsKeyDown(KEY_2)) {
 			glm::vec2 target = _pParentObject->GetTransform()->GetPosition();
 			// Targets the midpoint of the player
@@ -188,6 +199,7 @@ void PlayerInputComponent::FarmingControls()
 			target.y += _pParentObject->GetTransform()->GetScale().y / 2;
 			_pFarmlandManager->PlantSeed(target, PlantResourceType::PotatoSeedRes);
 		}
+		// Plant Carrot
 		else if (Input::IsKeyDown(KEY_3)) {
 			glm::vec2 target = _pParentObject->GetTransform()->GetPosition();
 			// Targets the midpoint of the player

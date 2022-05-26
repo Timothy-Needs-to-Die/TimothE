@@ -19,20 +19,4 @@ void CropPlot::OnNewDay()
 	}
 }
 
-void CropPlot::Harvest()
-{
-	if (_isOccupied)
-	{
-		PlantedCrop* plantedCrop = GetChild()->GetComponent<PlantedCrop>();
-
-		if (plantedCrop->Harvest())
-		{
-			PlayerResourceManager::GetPlantResource(plantedCrop->GetCrop())->GainResource(1);
-
-			// Just destroy the object for now
-			GetChild()->SetToBeDestroyed(true);
-			_isOccupied = false;
-		}
-	}
-}
 
