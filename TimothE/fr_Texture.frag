@@ -17,7 +17,7 @@ layout (location = 5) in flat int v_EntityID;
 
 layout(binding = 0) uniform sampler2D u_Textures[32];
 
-vec4 darkest = vec4(0.1f, 0.1f, 0.0f, 0.75f);
+vec4 darkest = vec4(0.2f, 0.2f, 0.0f, 0.0f);
 
 void main()
 {
@@ -61,7 +61,7 @@ void main()
 	if(texColor.a < 0.1)
 		discard;
 
-	color = texColor * vec4(darkest * LightLevel);
+	color = texColor * float(darkest * LightLevel);
 
 	color2 = v_EntityID;
 }

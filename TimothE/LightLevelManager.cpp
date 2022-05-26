@@ -62,10 +62,10 @@ void LightLevelManager::UpdateLightMap()
 
 void LightLevelManager::SetWorldLightLevel(int value)
 {
-	//set world light level
+	//set light level variable
 	_worldLightLevel = value;
 
-	//_pTileMap->SetAllTilesLightLevel(value);
+	_pTileMap->SetAllTilesLightLevel(value);
 
 	UpdateLightMap();
 }
@@ -84,6 +84,6 @@ void LightLevelManager::RemoveLightSource(LightSource* lightSource)
 	if (it != _lightSources.end()) {
 		_lightSources.erase(it);
 	}
-
 	UpdateLightMap();
+	//_lightSources.erase(std::find(_lightSources.begin(), _lightSources.end(), lightSource));
 }

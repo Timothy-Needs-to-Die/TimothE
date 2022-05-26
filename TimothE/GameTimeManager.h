@@ -1,15 +1,9 @@
 #pragma once
 
-class LightLevelManager;
 
 class GameTimeManager
 {
 public:
-	GameTimeManager(LightLevelManager* lightManager) : _pLightLevelManager(lightManager)
-	{
-
-	}
-
 	void Update();
 
 	bool IsDay() const { return _inDay; }
@@ -23,6 +17,5 @@ private:
 
 	bool _inDay = true;
 
-	LightLevelManager* _pLightLevelManager;
 };
 
