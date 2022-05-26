@@ -101,7 +101,7 @@ void FarmScene::InitScene()
 	AddGameObject(_pInventoryScreen);
 	_pInventoryScreen->SetAllActive(false);
 
-	_pSpritesheet = ResourceManager::GetSpriteSheet("testSheet");
+	//_pSpritesheet = ResourceManager::GetSpriteSheet("testSheet");
 
 	_pGameTime = new GameTimeManager();
 
@@ -118,16 +118,16 @@ void FarmScene::InitScene()
 	//pPathFinder->AddComponent<AStar>(new AStar(pPathFinder));
 	//AddGameObject(pPathFinder);
 
-	_pWeaponObject = new GameObject("Weapon");
+	/*_pWeaponObject = new GameObject("Weapon");
 	_pWeaponObject->AddComponent<Texture2D>(ResourceManager::GetTexture("swords"));
 	_pWeaponObject->GetTransform()->SetScale({0.20f, 0.20f});
 	_pWeaponObject->GetTransform()->SetPosition({1.5f, 0.0f});
-	SpriteComponent* pWeaponSC = _pWeaponObject->AddComponent<SpriteComponent>(new SpriteComponent(_pWeaponObject));
+	SpriteComponent* pWeaponSC = _pWeaponObject->AddComponent<SpriteComponent>(new SpriteComponent(_pWeaponObject));*/
 
-	AnimatedSpritesheet* pWeaSS = new AnimatedSpritesheet(ResourceManager::GetTexture("swords"), 16, 16, "weaponAnim", false);
-	pWeaponSC->SetSprite(pWeaSS->GetSpriteAtIndex(6));
+	//AnimatedSpritesheet* pWeaSS = new AnimatedSpritesheet(ResourceManager::GetTexture("swords"), 16, 16, "weaponAnim", false);
+	//pWeaponSC->SetSprite(pWeaSS->GetSpriteAtIndex(6));
 
-	AddGameObject(_pWeaponObject);
+	//AddGameObject(_pWeaponObject);
 
 	_pPlayer = new Player();
 	_pPlayer->GetTransform()->SetPosition(7.0f, 3.5f);
@@ -155,8 +155,8 @@ void FarmScene::InitScene()
 	_pCoalNode->GetTransform()->SetPosition(8.0, 1.0f);
 	AddGameObject(_pCoalNode);
 
-	farmland = new FarmlandManager("Farmland Manager");
-	AddGameObject(farmland);
+	//farmland = new FarmlandManager("Farmland Manager");
+	//AddGameObject(farmland);
 
 	//LIGHTING TEST CODE//
 	_pLightManager = new LightLevelManager(_pTilemap);
@@ -232,8 +232,6 @@ void FarmScene::RegisterSounds()
 	AudioEngine::LoadSound("EnemyHit", "Resources/Sounds/SFX/EnemyHit.wav", AudioType::Type_SFX);
 	AudioEngine::LoadSound("BuildSound", "Resources/Sounds/SFX/BuildSound.wav", AudioType::Type_SFX);
 	AudioEngine::LoadSound("NightSoundTrack", "Resources/Sounds/SFX/NightTimeMusic.wav", AudioType::Type_Song);
-
-
 
 }
 

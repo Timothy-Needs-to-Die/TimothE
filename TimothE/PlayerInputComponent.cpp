@@ -109,6 +109,7 @@ void PlayerInputComponent::BuildControls()
 
 	if (Input::IsKeyDown(KEY_1)) {
 		_selectedStructure = StructureType::Wall;
+		AudioEngine::PlaySound("BuildSound", 80, 80, 1, 1);
 	}
 	else if (Input::IsKeyDown(KEY_2)) {
 		_selectedStructure = StructureType::Tower;
