@@ -44,6 +44,7 @@ void ResourceManager::Init()
 	ResourceManager::InstantiateTexture("fireball", new Texture2D("Resources/Images/Fireball.png", true));
 	ResourceManager::InstantiateTexture("whiteTexture", new Texture2D("Resources/Images/whiteTexture.png"));
 	ResourceManager::InstantiateTexture("campfire", new Texture2D("Resources/Images/Campfire.png", true));
+	ResourceManager::InstantiateTexture("gameover_bg", new Texture2D("Resources/Images/Game Over.png", true));
 
 
 	//LOAD SPRITESHEETS

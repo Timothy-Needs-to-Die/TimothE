@@ -65,6 +65,7 @@ private:
 	class GameTimeManager* _pGameTime = nullptr;
 
 	class InventoryScreen* _pInventoryScreen = nullptr;
+	class GameOverScreen* _pGameOverScreen = nullptr;
 
 	class TextObject* _pBuildIndicator = nullptr;
 

@@ -48,10 +48,11 @@ void Button::OnUpdate()
 	if (Component::IsEnabled())
 	{
 		// Check if the mouse is inside the button
-		if (Physics::Intersects(_pParentObject->GetComponent<BoxColliderComponent>(), Input::GetMousePos()))
+		if (Physics::Intersects(_pParentObject->GetComponent<BoxColliderComponent>(), Input::GetMouseScreenCoords()))
 		{
 			// If the mouse is inside the button then we are now hovering over the button;
 			_isHovering = true;
+			std::cout << "Hovering" << std::endl;
 
 			// Check if the button is now being clicked
 			if (!_isClicked)
