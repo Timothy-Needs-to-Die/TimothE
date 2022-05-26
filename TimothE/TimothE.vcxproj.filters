@@ -410,6 +410,8 @@
     <ClInclude Include="TextObject.h" />
     <ClInclude Include="GameOverScreen.h" />
     <ClInclude Include="PlayerUIComponent.h" />
+    <ClInclude Include="MainMenuScene.h" />
+    <ClInclude Include="MainMenuUI.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="AIController.cpp">
@@ -670,6 +672,8 @@
     <ClCompile Include="TextObject.cpp" />
     <ClCompile Include="GameOverScreen.cpp" />
     <ClCompile Include="PlayerUIComponent.cpp" />
+    <ClCompile Include="MainMenuScene.cpp" />
+    <ClCompile Include="MainMenuUI.cpp" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Node.h" />
