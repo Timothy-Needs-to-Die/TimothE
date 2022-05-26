@@ -152,7 +152,7 @@ void FarmScene::InitScene()
 	//LIGHTING TEST CODE//
 	//_pLightManager = new LightLevelManager(_pTilemap);
 
-
+	PlayerResourceManager::LoadInCropData();
 
 	_pBuildIndicator = new TextObject("Build Mode", "arial.ttf", "Text", "BUILDMODETEXT");
 	_pBuildIndicator->GetTransform()->SetPosition({ 850.0f, 1000.0f });

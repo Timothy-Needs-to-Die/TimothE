@@ -67,6 +67,11 @@ void PlayerInputComponent::OnUpdate()
 		TIM_LOG_LOG("Carrot: " << carrotAmount);
 	}
 
+	// Selling
+	if (Input::IsKeyDown(KEY_F1))
+	{
+		PlayerResourceManager::SellAll();
+	}
 
 	// Building
 	if (Input::IsKeyUp(KEY_B)) {
