@@ -153,6 +153,7 @@
     <ClInclude Include="ItemConfig.h" />
     <ClInclude Include="ItemResourceType.h" />
     <ClInclude Include="LightLevelManager.h" />
+    <ClInclude Include="LightsourceObject.h" />
     <ClInclude Include="MemoryManager.h" />
     <ClInclude Include="MovementComponent.h" />
     <ClInclude Include="Node.h" />
@@ -206,6 +207,7 @@
     <ClInclude Include="Tag.h" />
     <ClInclude Include="TestComponent.h" />
     <ClInclude Include="TextComponent.h" />
+    <ClInclude Include="TextObject.h" />
     <ClInclude Include="Texture2D.h" />
     <ClInclude Include="TileData.h" />
     <ClInclude Include="TileMap.h" />
@@ -218,8 +220,10 @@
     <ClInclude Include="Transform.h" />
     <ClInclude Include="UID.h" />
     <ClInclude Include="WaveManager.h" />
+    <ClInclude Include="WeaponComponent.h" />
     <ClInclude Include="WeaponConfig.h" />
     <ClInclude Include="pch.h" />
+    <ClInclude Include="WeaponObject.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="AIController.cpp" />
@@ -275,6 +279,7 @@
     <ClCompile Include="Input.cpp" />
     <ClCompile Include="InventoryScreen.cpp" />
     <ClCompile Include="LightLevelManager.cpp" />
+    <ClCompile Include="LightsourceObject.cpp" />
     <ClCompile Include="MemoryManager.cpp" />
     <ClCompile Include="MovementComponent.cpp" />
     <ClCompile Include="OffensiveStructureObject.cpp" />
@@ -305,6 +310,7 @@
     <ClCompile Include="Tag.cpp" />
     <ClCompile Include="TestComponent.cpp" />
     <ClCompile Include="TextComponent.cpp" />
+    <ClCompile Include="TextObject.cpp" />
     <ClCompile Include="Texture2D.cpp" />
     <ClCompile Include="TileMap.cpp" />
     <ClCompile Include="TileMapEditor.cpp" />
@@ -312,6 +318,8 @@
     <ClCompile Include="Transform.cpp" />
     <ClCompile Include="WaveManager.cpp" />
     <ClCompile Include="pch.cpp" />
+    <ClCompile Include="WeaponComponent.cpp" />
+    <ClCompile Include="WeaponObject.cpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

@@ -137,7 +137,10 @@ void Scene::RenderScene(Camera* cam)
 
 	Renderer2D::BeginRender(cam);
 
-	for (auto& obj : _listOfDrawableGameObjects) {
+
+	for (std::vector<GameObject*>::iterator it = _listOfDrawableGameObjects.end() - 1; it != _listOfDrawableGameObjects.begin(); --it) {
+		GameObject* obj = *it;
+
 		if (!obj->IsActive()) continue;
 		if (obj->IsToBeDestroyed()) continue;
 
@@ -150,13 +153,6 @@ void Scene::RenderScene(Camera* cam)
 			if (objTex != nullptr) {
 				Renderer2D::DrawUIQuad(obj->GetTransform()->GetRenderQuad(), obj->GetComponent<Texture2D>());
 			}
-			//else {
-			//	TextComponent* tc = obj->GetComponent<TextComponent>();
-			//
-			//	if (tc != nullptr) {
-			//		tc->OnUpdate();
-			//	}
-			//}
 		}
 		else {
 			if (sc) {
@@ -166,14 +162,14 @@ void Scene::RenderScene(Camera* cam)
 				Renderer2D::DrawQuad(obj->GetTransform()->GetRenderQuad(), objTex);
 			}
 		}
-		//}
 	}
+
 	Renderer2D::EndRender();
 
 	for (auto& obj : _listOfDrawableGameObjects) {
 		if (!obj->IsActive()) continue;
 
-		if (obj->GetTag() != "UI") continue;
+		if (obj->GetTag() != "UI" && obj->GetTag() != "BUILDMODETEXT") continue;
 
 		TextComponent* tc = obj->GetComponent<TextComponent>();
 
@@ -352,7 +348,7 @@ std::vector<GameObject*> Scene::GetGameObjectsByName(std::string name)
 GameObject* Scene::FindObjectWithTag(const std::string& tagName)
 {
 	for (GameObject* obj : _listOfGameObjects) {
-		if (!obj->IsActive()) continue;
+		//if (!obj->IsActive()) continue;
 		if (obj->IsToBeDestroyed()) continue;
 
 		if (obj->GetTag() == tagName) {

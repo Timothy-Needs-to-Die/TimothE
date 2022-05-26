@@ -7,8 +7,11 @@ StructureObject::StructureObject(std::string name, std::string tag)
 	if (tag == "WALL") {
 		AddComponent(ResourceManager::GetTexture("wall"));
 	}
-	else {
+	else if (tag == "TOWER") {
 		AddComponent(ResourceManager::GetTexture("tower"));
+	}
+	else if (tag == "LIGHTSOURCE") {
+		AddComponent(ResourceManager::GetTexture("campfire"));
 	}
 
 	_pHealth = AddComponent(new StructureHealth(this, 100));

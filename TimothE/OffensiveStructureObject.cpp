@@ -10,7 +10,6 @@ OffensiveStructureObject::OffensiveStructureObject(std::string name, std::string
 	_pCircleCollider = AddComponent<CircleColliderComponent>(new CircleColliderComponent(this));
 	_pCircleCollider->SetTrigger(true);
 	_pCircleCollider->SetScale(10.0f);
-	AddComponent(ResourceManager::GetTexture("lenna"));
 }
 
 void OffensiveStructureObject::OnTriggerEnter(ColliderBase* other)

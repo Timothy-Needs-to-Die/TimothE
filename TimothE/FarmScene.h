@@ -29,6 +29,9 @@ public:
 	void UpdateObjects() override;
 	void InitScene() override;
 
+	void SaveScene(std::string filename);
+	void LoadScene(std::string filename);
+
 	void AddStructure(class StructureObject* object);
 	void RemoveStructure(class StructureObject* object);
 	std::vector<class StructureObject*> GetStructures() const;
@@ -36,6 +39,8 @@ public:
 	void GameOver() override;
 
 	class GameTimeManager* GetGameTime() { return _pGameTime; }
+
+	LightLevelManager* GetLightManager() const { return _pLightManager; }
 
 private:
 	GameObject* _pStartButton = nullptr;
@@ -58,6 +63,8 @@ private:
 	class GameTimeManager* _pGameTime = nullptr;
 
 	class InventoryScreen* _pInventoryScreen = nullptr;
+
+	class TextObject* _pBuildIndicator = nullptr;
 
 	//Farmland
 	FarmlandManager* farmland;

@@ -4,11 +4,20 @@
 #include "Scene.h"
 #include "Health.h"
 #include "GameObject.h"
+#include "WeaponComponent.h"
 #include "Transform.h"
+
+Fighter::Fighter(GameObject* pOwner) : Component(pOwner)
+{
+	SetType(Component::Types::Fighter_Type);
+	_pWeaponComponent = dynamic_cast<WeaponComponent*>(_pParentObject->GetComponentInChild(Weapon_Type));
+}
 
 void Fighter::Attack(GameObject* instigator)
 {
 	if (!_canAttack) return;
+	_pWeaponComponent->EndAttack();
+
 	_canAttack = false;
 	TIM_LOG_LOG("Attacking");
 
@@ -49,14 +58,8 @@ void Fighter::Attack(GameObject* instigator)
 		
 		float dot = glm::dot(dir, fighterForward);
 
-		//std::cout << "Dot: " << dot << std::endl;
-
-		if (dot >= 0.0f) {
+		if (dot >= 0.3f) {
 			obj->TakeDamage(_weaponConfig.damage, instigator);
-			//std::cout << "Would hit!" << std::endl;
-		}
-		else {
-			//std::cout << "Would not hit!" << std::endl;
 		}
 	}
 
@@ -64,6 +67,7 @@ void Fighter::Attack(GameObject* instigator)
 
 void Fighter::OnStart()
 {
+
 }
 
 void Fighter::OnUpdate()
@@ -74,6 +78,7 @@ void Fighter::OnUpdate()
 		if (_timeSinceLastAttack > _weaponConfig.attackSpeed) {
 			_timeSinceLastAttack = 0.0f;
 			_canAttack = true;
+			_pWeaponComponent->StartAttack();
 		}
 	}
 

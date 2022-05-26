@@ -12,5 +12,6 @@ private:
 	class AIController* _pController = nullptr;
 	class EnemyHealth* _pHealth = nullptr;
 	class Fighter* _pFighter = nullptr;
+	class WeaponObject* _pWeapon = nullptr;
 };
 

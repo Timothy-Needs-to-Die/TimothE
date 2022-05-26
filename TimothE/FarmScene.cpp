@@ -13,6 +13,9 @@
 #include "PlayerHealth.h"
 #include "AIController.h"
 #include "Enemy.h"
+#include "StreamFile.h"
+#include "LightsourceObject.h"
+#include "TextObject.h"
 
 FarmScene::~FarmScene()
 {
@@ -78,6 +81,10 @@ void FarmScene::UpdateObjects()
 		//}
 	}
 
+	if (Input::IsKeyDown(KEY_1)) {
+		SaveScene("Resources/PlayerSaves/FarmSceneSaveData.sav");
+	}
+	
 
 	Physics::UpdateWorld();
 }
@@ -86,7 +93,7 @@ void FarmScene::InitScene()
 {
 	Scene::InitScene();
 
-	_pInventoryScreen = new InventoryScreen();
+	_pInventoryScreen = new InventoryScreen("InventoryScreen", "UI");
 	AddGameObject(_pInventoryScreen);
 	_pInventoryScreen->SetAllActive(false);
 
@@ -99,31 +106,15 @@ void FarmScene::InitScene()
 	//_pStartButton->AddComponent(new BoxColliderComponent(_pStartButton));
 	//_pStartButton->AddComponent(new TextComponent(_pTestObject));
 	//_pStartButton->AddComponent(ResourceManager::GetTexture("Button"));
-	//AddGameObject(_pStartButton);
-
 	//_pStartButton->GetTransform()->SetPosition(0.0f, 0.0f);
 	//_pStartButton->GetTransform()->SetScale({ 0.2f, 0.2f });
-	//GameObject* pPathFinder = new GameObject("Pathfinder");
-	//pPathFinder->AddComponent<AStar>(new AStar(pPathFinder));
-	//AddGameObject(pPathFinder);
+	//AddGameObject(_pStartButton);
 
-	_pWeaponObject = new GameObject("Weapon");
-	_pWeaponObject->AddComponent<Texture2D>(ResourceManager::GetTexture("swords"));
-	_pWeaponObject->GetTransform()->SetScale({0.20f, 0.20f});
-	_pWeaponObject->GetTransform()->SetPosition({1.5f, 0.0f});
-	SpriteComponent* pWeaponSC = _pWeaponObject->AddComponent<SpriteComponent>(new SpriteComponent(_pWeaponObject));
 
-	AnimatedSpritesheet* pWeaSS = new AnimatedSpritesheet(ResourceManager::GetTexture("swords"), 16, 16, "weaponAnim", false);
-	pWeaponSC->SetSprite(pWeaSS->GetSpriteAtIndex(6));
-
-	AddGameObject(_pWeaponObject);
 
 	_pPlayer = new Player();
+	_pPlayer->GetTransform()->SetPosition(7.0f, 3.5f);
 	AddGameObject(_pPlayer);
-
-	//_pAStar = new GameObject("Pather");
-	//AStar* path = _pAStar->AddComponent(new AStar(_pAStar));
-	//path->SetMap(SceneManager::GetCurrentScene()->GetTileMap());
 
 	//_pWaveController = new WaveController(this);
 
@@ -153,14 +144,67 @@ void FarmScene::InitScene()
 	_pLightManager->SetMinLightLevel(1);
 	_pLightManager->SetMaxLightLevel(8);
 
-	//Add Light Sources
-	LightSource campfire = LightSource();
-	campfire.worldPos = glm::vec2(16.75f, 3.0f);
-	_pLightManager->AddLightSource(campfire);
 
-	//Update Light Map
-	_pLightManager->UpdateLightMap();
-	//LIGHTING END//
+	_pBuildIndicator = new TextObject("Build Mode", "arial.ttf", "Text", "BUILDMODETEXT");
+	_pBuildIndicator->GetTransform()->SetPosition({ 400.0f, 410.0f });
+	_pBuildIndicator->GetTransform()->SetScale({ 1.0f, 1.0f });
+	AddGameObject(_pBuildIndicator);
+	_pBuildIndicator->SetActive(false);
+
+	LoadScene("Resources/PlayerSaves/FarmSceneSaveData.sav");
+}
+
+void FarmScene::SaveScene(std::string filename)
+{
+	StreamFile stream;
+
+	stream.OpenWrite(filename);
+
+	WriteInt(stream, _pStructures.size());
+
+	for (int i = 0; i < _pStructures.size(); ++i) {
+		StructureObject* obj = _pStructures[i];
+
+		WriteVec2(stream, obj->GetTransform()->GetPosition());
+
+		WriteString(stream, obj->GetTag());
+	}
+
+	stream.Close();
+}
+
+void FarmScene::LoadScene(std::string filename)
+{
+	_pStructures.clear();
+
+	StreamFile stream;
+
+	stream.OpenRead(filename);
+
+	//_pStructures.resize(ReadInt(stream));
+	int size = ReadInt(stream);
+
+	for (int i = 0; i < size; ++i) {
+		StructureObject* object;
+
+		glm::vec2 pos = ReadVec2(stream);
+		std::string tag = ReadString(stream);
+
+		if (tag == "WALL") {
+			object = new StructureObject("Wall", tag);
+		}
+		else if (tag == "TOWER") {
+			object = new OffensiveStructureObject("Tower", tag);
+		}
+		else if (tag == "LIGHTSOURCE") {
+			object = new LightsourceObject(pos);
+		}
+
+		object->GetTransform()->SetPosition(pos);
+		AddStructure(object);
+	}
+
+	stream.Close();
 }
 
 void FarmScene::AddStructure(StructureObject* object)
@@ -168,6 +212,7 @@ void FarmScene::AddStructure(StructureObject* object)
 	AddGameObject(object);
 	_pStructures.emplace_back(object);
 	_pAstarObject->UpdateNodeObstacleStatus(_pTilemap->GetTileAtWorldPos(0, object->GetTransform()->GetPosition())->pos, true);
+	_pTilemap->GetTileAtWorldPos(5, object->GetTransform()->GetPosition())->collidable = true;
 }
 
 void FarmScene::RemoveStructure(StructureObject* object)
@@ -180,6 +225,11 @@ void FarmScene::RemoveStructure(StructureObject* object)
 		_pTilemap->SetCollidableAtLayer(5, pObject->GetTransform()->GetPosition(), false);
 
 		_pAstarObject->UpdateNodeObstacleStatus(_pTilemap->GetTileAtWorldPos(0, pObject->GetTransform()->GetPosition())->pos, false);
+		_pTilemap->GetTileAtWorldPos(5, pObject->GetTransform()->GetPosition())->collidable = false;
+	}
+
+	if (object->GetTag() == "LIGHTSOURCE") {
+		_pLightManager->RemoveLightSource(dynamic_cast<LightsourceObject*>(object)->GetLightSource());
 	}
 
 	std::vector<StructureObject*>::iterator it = std::find(_pStructures.begin(), _pStructures.end(), object);

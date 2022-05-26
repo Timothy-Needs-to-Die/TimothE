@@ -10,6 +10,7 @@
 #include "FarmScene.h"
 #include "StructureObject.h"
 #include "OffensiveStructureObject.h"
+#include "LightsourceObject.h"
 
 void PlayerInputComponent::OnStart()
 {
@@ -73,6 +74,14 @@ void PlayerInputComponent::OnUpdate()
 	if (_bReadyforbuildPress && Input::IsKeyDown(KEY_B)) {
 		_bReadyforbuildPress = false;
 		_inBuildMode = !_inBuildMode;
+		GameObject* pBBuildText = SceneManager::GetCurrentScene()->FindObjectWithTag("BUILDMODETEXT");
+		if (pBBuildText) {
+			pBBuildText->SetActive(_inBuildMode);
+		}
+		else {
+			TIM_LOG_LOG("No build text");
+		}
+
 		TIM_LOG_LOG("In Build Mode: " << _inBuildMode);
 	}
 
@@ -177,6 +186,10 @@ void PlayerInputComponent::BuildControls()
 	else if (Input::IsKeyDown(KEY_2)) {
 		_selectedStructure = StructureType::Tower;
 	}
+	else if (Input::IsKeyDown(KEY_3)) {
+		TIM_LOG_LOG("Selected campfire");
+		_selectedStructure = StructureType::Campfire;
+	}
 
 	glm::vec2 mousePos = Input::GetMousePos();
 	glm::vec2 size = CameraManager::CurrentCamera()->Size();
@@ -197,7 +210,12 @@ void PlayerInputComponent::BuildControls()
 			cost.woodRequired = 3;
 			cost.stoneRequired = 5;
 			break;
+		case StructureType::Campfire:
+			cost.woodRequired = 3;
+			cost.coalRequired = 2;
+			break;
 		default:
+			TIM_LOG_WARNING("Case not covered");
 			return;
 		}
 
@@ -214,6 +232,10 @@ void PlayerInputComponent::BuildControls()
 				case StructureType::Tower:
 					pObject = new OffensiveStructureObject("Tower");
 					break;
+				case StructureType::Campfire:
+					TIM_LOG_LOG("Creating lightsource");
+					pObject = new LightsourceObject(tilePos);
+					break;
 				}
 
 				if (pObject == nullptr) {
@@ -222,9 +244,6 @@ void PlayerInputComponent::BuildControls()
 				}
 
 				Transform* pTransform = pObject->GetTransform();
-
-				pTilemap->SetCollidableAtLayer(5, tilePos, true);
-
 				pTransform->SetPosition(tilePos);
 
 				pFarmScene->AddStructure(pObject);

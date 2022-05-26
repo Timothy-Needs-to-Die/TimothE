@@ -14,7 +14,8 @@
 
 enum class StructureType {
 	Wall,
-	Tower
+	Tower,
+	Campfire
 };
 
 class PlayerInputComponent : public Component

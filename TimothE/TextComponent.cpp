@@ -3,7 +3,7 @@
 #include "Dirent.h"
 #include "misc/cpp/imgui_stdlib.h"
 
-TextComponent::TextComponent(GameObject* parentObject) : Component()
+TextComponent::TextComponent(GameObject* parentObject) : Component(parentObject)
 {
 	_UID = UID::GenerateUID();
 	SetFont("arial.ttf");
@@ -14,7 +14,6 @@ TextComponent::TextComponent(GameObject* parentObject) : Component()
 	_alignment = CENTER;
 	SetType(Component::Types::Text_Type);
 	SetCategory(Component::Categories::Graphics_Category);
-	_parentObject = parentObject;
 }
 
 TextComponent::~TextComponent()
@@ -32,7 +31,7 @@ void TextComponent::OnEnd()
 
 void TextComponent::OnUpdate()
 {
-	RenderText(*_shader, _text, _parentObject->GetTransform()->GetPosition().x, _parentObject->GetTransform()->GetPosition().y, _scale, _color); // pass in _alignment
+	RenderText(*_shader, _text, _pParentObject->GetTransform()->GetPosition().x, _pParentObject->GetTransform()->GetPosition().y, _scale, _color); // pass in _alignment
 
 }
 

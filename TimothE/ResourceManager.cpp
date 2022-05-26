@@ -44,6 +44,7 @@ void ResourceManager::Init()
 	ResourceManager::InstantiateTexture("tower", new Texture2D("Resources/Images/Tower.png", true));
 	ResourceManager::InstantiateTexture("fireball", new Texture2D("Resources/Images/Fireball.png", true));
 	ResourceManager::InstantiateTexture("whiteTexture", new Texture2D("Resources/Images/whiteTexture.png"));
+	ResourceManager::InstantiateTexture("campfire", new Texture2D("Resources/Images/Campfire.png", true));
 
 
 	//LOAD SPRITESHEETS
@@ -99,7 +100,8 @@ void ResourceManager::LoadFonts()
 		{
 			if (dirent->d_type == 32768)
 			{
-				InstantiateFont(dirent->d_name, new Font(dirent->d_name));
+				std::string fn = "fonts/" + std::string(dirent->d_name);
+				InstantiateFont(dirent->d_name, new Font(fn));
 
 				std::cout << "Font loaded: " << dirent->d_name << std::endl;
 			}

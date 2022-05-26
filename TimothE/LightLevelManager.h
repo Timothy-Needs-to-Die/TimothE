@@ -23,8 +23,8 @@ class LightLevelManager
 public:
 	LightLevelManager(TileMap* tileMap);
 public:
-	void AddLightSource(LightSource lightSource);
-	void RemoveLightSource(LightSource lightSource);
+	void AddLightSource(LightSource* lightSource);
+	void RemoveLightSource(LightSource* lightSource);
 	void UpdateLightMap();
 
 public:
@@ -32,7 +32,7 @@ public:
 	int GetWorldLightLevel() { return _worldLightLevel; }
 	int GetMinTileLightLevel() { return _minLightLevel; }
 	int GetMaxTileLightLevel() { return _maxLightLevel; }
-	bool GetSourceEnabledState(int index) { return _lightSources[index].isEnabled; }
+	bool GetSourceEnabledState(int index) { return _lightSources[index]->isEnabled; }
 
 	//setters
 	
@@ -58,9 +58,9 @@ public:
 	{ 
 		if (index <= _lightSources.size() - 1)
 		{
-			if (_lightSources[index].isEnabled != state)
+			if (_lightSources[index]->isEnabled != state)
 			{
-				_lightSources[index].isEnabled = state;
+				_lightSources[index]->isEnabled = state;
 
 				SetWorldLightLevel(_worldLightLevel);
 				UpdateLightMap();
@@ -69,7 +69,7 @@ public:
 	}
 	
 private:
-	std::vector<LightSource> _lightSources;
+	std::vector<LightSource*> _lightSources;
 	int _worldLightLevel;
 	int _minLightLevel;
 	int _maxLightLevel;
