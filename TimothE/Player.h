@@ -10,13 +10,20 @@ private:
 	class Fighter* _pFighter = nullptr;
 	class PlayerHealth* _pHealth = nullptr;
 	class PlayerInputComponent* _pInput = nullptr;
+	class PlayerUIComponent* _pUI = nullptr;
 	class BoxColliderComponent* _pCollider = nullptr;
+	class FarmlandManager* _pFarmlandManager = nullptr;
 	class WeaponObject* _pWeapon = nullptr;
 	
 	
 
+	class TextComponent* _pInteractableUI = nullptr;
+	class TextComponent* _pHealthUI = nullptr;
+
+	GameObject* _pHealthObj;
+
 protected:
 	virtual void UniqueLogic() override;
-
+	void DisplayPlayerUI();
 };
 

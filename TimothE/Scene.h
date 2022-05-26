@@ -16,6 +16,8 @@
 #include "CropConfig.h"
 #include "CSVReader.h"
 #include "SeedConfig.h"
+#include "LightLevelManager.h"
+
 //TODO: Document and order this class
 
 class Scene
@@ -166,4 +168,5 @@ protected:
 	bool _isInitialized = false;
 
 	class AStar* _pAstarObject = nullptr;
+	LightLevelManager* _pLightManager;
 };

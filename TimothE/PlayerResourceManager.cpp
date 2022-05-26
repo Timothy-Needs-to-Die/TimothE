@@ -7,6 +7,7 @@ ArmourConfig PlayerResourceManager::_currentArmour;
 ToolConfig PlayerResourceManager::_currentSword;
 ToolConfig PlayerResourceManager::_currentAxe;
 ToolConfig PlayerResourceManager::_currentPickaxe;
+std::vector<CropSellingData> PlayerResourceManager::_cropSellingData = std::vector<CropSellingData>();
 
 PlayerResourceManager::PlayerResourceManager()
 {
@@ -68,6 +69,51 @@ void PlayerResourceManager::SetTool(ToolConfig tool)
 void PlayerResourceManager::SetArmour(ArmourConfig armour)
 {
 	_currentArmour = armour;
+}
+
+void PlayerResourceManager::SellAll()
+{
+	int totalIncome = 0;
+
+	for (CropSellingData cropConfig : _cropSellingData)
+	{
+		if (cropConfig.type == WheatRes)
+		{
+			int wheatAmount = _plantResourceMap[WheatRes].GetAmount();
+			totalIncome += wheatAmount * cropConfig.sellPrice;
+			_plantResourceMap[WheatRes].SpendResource(wheatAmount);
+		}
+
+		if (cropConfig.type == PotatoRes)
+		{
+			int potatoAmount = _plantResourceMap[PotatoRes].GetAmount();
+			totalIncome += potatoAmount * cropConfig.sellPrice;
+			_plantResourceMap[PotatoRes].SpendResource(potatoAmount);
+		}
+
+		if (cropConfig.type == CarrotRes)
+		{
+			int carrotAmount = _plantResourceMap[CarrotRes].GetAmount();
+			totalIncome += carrotAmount * cropConfig.sellPrice;
+			_plantResourceMap[CarrotRes].SpendResource(carrotAmount);
+		}
+	}
+
+	PlayerResourceManager::GetCoreResource(Gold)->GainResource(totalIncome);
+}
+
+void PlayerResourceManager::LoadInCropData()
+{
+	std::vector<std::vector<std::string>> loadedData = CSVReader::RequestDataFromFile("Resources/Data/SeedsConfig.csv");
+	for (int i = 0; i < loadedData.size(); i++)
+	{
+		CropSellingData	newConfig;
+
+		newConfig.sellPrice = std::stoi(loadedData[i][2]);
+		newConfig.type = (PlantResourceType)std::stoi(loadedData[i][9]);
+
+		_cropSellingData.emplace_back(newConfig);
+	}
 }
 
 //PlayerResource* PlayerResourceManager::GetHotbarItem(HotbarItem item)

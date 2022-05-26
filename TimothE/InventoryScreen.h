@@ -5,7 +5,7 @@
 class InventoryScreen : public GameObject
 {
 public:
-	InventoryScreen(string name = "InventoryScreen", string tag = "UI");
+	InventoryScreen(string name = "InventoryScreen", string tag = "UNTAGGED");
 
 	void OnUpdate();
 
@@ -15,10 +15,8 @@ public:
 	
 
 private:
-	GameObject* _pPanel;
 	GameObject* _pInventoryTitle;
 	GameObject* _pInventoryBody;
-	//GameObject* _pInventoryTitle;
 
 	void Display();
 };

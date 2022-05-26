@@ -202,6 +202,7 @@ void TileMap::AddTileAt(unsigned int layer, unsigned int uvX, unsigned int uvY, 
 	newTile.collidable = shouldCollide;
 	newTile.size = _gapBetweenTiles;
 	newTile.pos = colPos;
+	newTile.lightLevel = 5;
 
 	newTile._pSpritesheet = sp;
 	newTile._pSprite = sp->GetSpriteAtIndex(sp->GetSheetWidth() * uvY + uvX);
@@ -342,6 +343,7 @@ void TileMap::RenderMap(Camera* cam)
 				for (float x = 0.0f; x < _mapSizeInUnits.x; x += _gapBetweenTiles) {
 					if (x < xMin || x > xMax || y < yMin || y > yMax) continue;
 
+					tileTint = glm::vec4(1.0f);
 
 					//Get the index of the tile
 					int index = _mapInTiles.x * (int)(y * _tilesPerUnit) + (int)(x * _tilesPerUnit);

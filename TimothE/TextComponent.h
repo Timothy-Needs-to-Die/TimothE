@@ -30,14 +30,6 @@ public:
 
 	void RenderText(Shader& s, std::string text, float x, float y, float _tileScale, glm::vec3 color);
 
-	void SetGameObject(GameObject* newparent) {
-		_parentObject = newparent;
-	}
-	// Getter
-	GameObject* GetGameObject() {
-		return _parentObject;
-	}
-
 	// Inherited via ISerializable
 	virtual bool SaveState(IStream& stream) const override {
 		Component::SaveState(stream);
@@ -58,7 +50,6 @@ public:
 private:
 	std::string _UID;
 	Shader* _shader;
-	GameObject* _parentObject;
 
 	bool _hasInit = false;
 };
