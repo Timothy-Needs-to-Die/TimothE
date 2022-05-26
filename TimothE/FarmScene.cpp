@@ -85,6 +85,10 @@ void FarmScene::UpdateObjects()
 		SaveScene("Resources/PlayerSaves/FarmSceneSaveData.sav");
 	}
 	
+	if (_pPlayer->GetComponent<PlayerHealth>() != nullptr)
+	{
+		_pPlayer->GetComponent<TextComponent>()->SetText(std::to_string(_pPlayer->GetComponent<PlayerHealth>()->GetCurrentHealth()));
+	}
 
 	Physics::UpdateWorld();
 }
@@ -97,7 +101,6 @@ void FarmScene::InitScene()
 	AddGameObject(_pInventoryScreen);
 	_pInventoryScreen->SetAllActive(false);
 	
-
 	
 	//_pGameOverScreen->OnUpdate();
 	//_pGameOverScreen->SetAllActive(false);

@@ -3,6 +3,7 @@
 #include "PlayerHealth.h"
 #include "GameObject.h"
 #include "BoxColliderComponent.h"
+#include "TextComponent.h"
 #include "SceneManager.h"
 #include "WeaponObject.h"
 
@@ -19,6 +20,9 @@ Player::Player(std::string name /*= "Player"*/, std::string tag /*= "PLAYER"*/)
 	_pFighter = AddComponent(new Fighter(this));
 	_pCollider = AddComponent(new BoxColliderComponent(this));
 	_pCollider->SetTrigger(true);
+
+	_pHealthUI = AddComponent(new TextComponent(this));
+	_pInteractableUI = AddComponent(new TextComponent(this));
 }
 
 void Player::UniqueLogic()
