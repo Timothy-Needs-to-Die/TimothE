@@ -83,7 +83,7 @@ void FarmScene::InitScene()
 	AddGameObject(_pInventoryScreen);
 	_pInventoryScreen->SetAllActive(false);
 	
-	_pGameTime = new GameTimeManager();
+	_pGameTime = new GameTimeManager(_pLightManager);
 
 	_pPlayer = new Player();
 	_pPlayer->GetTransform()->SetPosition(7.0f, 3.5f);
