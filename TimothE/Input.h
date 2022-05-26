@@ -3,6 +3,7 @@
 #include "TimothEInputCodes.h"
 
 #include <cassert>
+#include "Core.h"
 
 class Input
 {
@@ -18,6 +19,16 @@ public:
 	static glm::vec2 GetMousePos() { return glm::vec2(_mouseXPos, _mouseYPos); }
 
 	
+	static glm::vec2 GetMouseScreenCoords() {
+		float absX = (_mouseXPos + 1.0f) * 0.5f * 1920;
+		float absY = (_mouseYPos + 1.0f) * 0.5f * 1080;
+		glm::vec2 result = { absX, absY };
+
+		//TIM_LOG_LOG("X: " << absX << ", Y: " << absY);
+
+		return result;
+	}
+
 
 	//Is the key pressed?
 	static bool IsKeyDown(TimothEKeyCode keycode);

@@ -8,7 +8,7 @@ public:
 	static void TryAgainBTNClick();
 private:
 	GameObject* _tryAgainBTN = nullptr;
-	//GameObject* _gameOverTxt = nullptr;
+	GameObject* _gameOverTxt = nullptr;
 
 };
 

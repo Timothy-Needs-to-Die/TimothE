@@ -1,7 +1,7 @@
 #include "GameOverScreen.h"
 #include "Button.h"
 #include "TextComponent.h"
-
+#include "SceneManager.h"
 
 
 GameOverScreen::GameOverScreen(std::string name, std::string tag) : GameObject(name, tag)
@@ -9,17 +9,23 @@ GameOverScreen::GameOverScreen(std::string name, std::string tag) : GameObject(n
 	//creates a black background image to cover screen
 	AddComponent(ResourceManager::GetTexture("gameover_bg"));
 	GetTransform()->SetScale({ 8.0f, 5.0f });
-	
+
 
 	//adds button to restart game
-	//_tryAgainBTN = new GameObject("TryAgainButton","UI");
-	//_tryAgainBTN->AddComponent(new Button(this));
-	//_tryAgainBTN->GetComponent<Button>()->AddClickEvent(GameOverScreen::TryAgainBTNClick);
+	_tryAgainBTN = new GameObject("TryAgainButton", "UI");
+	_tryAgainBTN->AddComponent(new Button(_tryAgainBTN));
+	_tryAgainBTN->GetComponent<TextComponent>()->SetText("Try Again");
+	//_tryAgainBTN->GetComponent<BoxColliderComponent>()->SetScale(100);
+	_tryAgainBTN->GetComponent<Button>()->AddClickEvent(GameOverScreen::TryAgainBTNClick);
+	_tryAgainBTN->GetTransform()->SetPosition(300,300);
+	_tryAgainBTN->GetTransform()->SetScale({ 10050.0f, 10050.0f });
+	SceneManager::GetCurrentScene()->AddGameObject(_tryAgainBTN);
+	
 
 	//adds game over text
-	/*_gameOverTxt = new GameObject("GameOverText", "UI");
-	_gameOverTxt->AddComponent(new TextComponent(this));
-	_gameOverTxt->GetComponent<TextComponent>()->SetText("Game Over");*/
+	_gameOverTxt = new GameObject("GameOverText", "UI");
+	_gameOverTxt->AddComponent(new TextComponent(_gameOverTxt));
+	_gameOverTxt->GetComponent<TextComponent>()->SetText("Game Over");
 	
 }
 
