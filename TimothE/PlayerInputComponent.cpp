@@ -79,6 +79,9 @@ void PlayerInputComponent::OnUpdate()
 	}
 
 	if (_bReadyforbuildPress && Input::IsKeyDown(KEY_B)) {
+		
+		if (_bFarmMode) { return; }
+		
 		_bReadyforbuildPress = false;
 		_inBuildMode = !_inBuildMode;
 		GameObject* pBBuildText = SceneManager::GetCurrentScene()->FindObjectWithTag("BUILDMODETEXT");
@@ -97,7 +100,6 @@ void PlayerInputComponent::OnUpdate()
 	}
 
 	if (_inBuildMode) {
-		if (_bFarmMode) { _bFarmMode = false; }
 		BuildControls();
 	}
 
@@ -181,8 +183,13 @@ void PlayerInputComponent::FarmingControls()
 		if (_bGkeyPressed) return;
 		_bGkeyPressed = true;
 
+		if (_inBuildMode) { return; }
+
 		_bFarmMode = !_bFarmMode;
-		if (_inBuildMode) { _inBuildMode = false; }
+		PlayerUIComponent* pUI = _pParentObject->GetComponent<PlayerUIComponent>();
+		if (pUI) {
+			pUI->SetFarmModeUIActive(_bFarmMode);
+		}
 	}
 	if (Input::IsKeyUp(KEY_G)) _bGkeyPressed = false;
 

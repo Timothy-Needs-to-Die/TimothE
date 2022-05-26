@@ -163,6 +163,12 @@ void FarmScene::InitScene()
 	AddGameObject(_pBuildIndicator);
 	_pBuildIndicator->SetActive(false);
 
+	_pFarmingIndicator = new TextObject("Farming Mode", "arial.ttf", "Text", "FARMINGMODETEXT");
+	_pFarmingIndicator->GetTransform()->SetPosition({ 850.0f, 1000.0f });
+	_pFarmingIndicator->GetTransform()->SetScale({ 1.0f, 1.0f });
+	AddGameObject(_pFarmingIndicator);
+	_pFarmingIndicator->SetActive(false);
+
 	LoadScene("Resources/PlayerSaves/FarmSceneSaveData.sav");
 }
 
