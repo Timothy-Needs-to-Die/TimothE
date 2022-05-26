@@ -37,7 +37,7 @@ bool FarmlandManager::PlaceFarmLand(glm::vec2 position)
 		
 		// Add the sprite  - index needs to be changed at a later date currently uses temp sprites
 		SpriteComponent* sprite = newCropPlot->AddComponent(new SpriteComponent(newCropPlot));
-		sprite->SetSprite(ResourceManager::GetSpriteSheet("spritesheet")->GetSpriteAtIndex(130));
+		sprite->SetSprite(ResourceManager::GetSpriteSheet("cropspritesheet")->GetSpriteAtIndex(0));
 
 		// Add it to the managers list
 		_pCropPlotObjects.push_back(newCropPlot);
@@ -70,7 +70,7 @@ void FarmlandManager::PlantSeed(glm::vec2 position, PlantResourceType cropType)
 			
 			// Add Sprite component as the PlantedCrop needs it
 			SpriteComponent* s = plantObject->AddComponent(new SpriteComponent(plantObject));
-			PlantedCrop* crop = new PlantedCrop(PlantResourceType::WheatRes, 4, plantObject);
+			PlantedCrop* crop = new PlantedCrop(cropType, 2, plantObject);
 			plantObject->AddComponent(crop);
 			
 			// The plot now has a plant on it so it is occupied
