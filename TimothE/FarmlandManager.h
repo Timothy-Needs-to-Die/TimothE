@@ -29,6 +29,8 @@ public:
 
 	void OnNewDay();
 
+	void LoadInCropData();
+
 	// Inherited via Component
 	virtual void OnStart() override;
 	virtual void OnUpdate() override;
@@ -78,6 +80,7 @@ public:
 private:
 
 	vector<CropPlot*> _pCropPlotObjects;
+	std::vector<CropConfig> _pCropData;
 
 protected:
 	

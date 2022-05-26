@@ -420,7 +420,7 @@ void Scene::PopulateCropVector()
 		newConfig.name = loadedData[i][1];
 		newConfig.sellPrice = std::stoi(loadedData[i][2]);
 		newConfig.description = loadedData[i][3];
-		newConfig.type = (CropType)std::stoi(loadedData[i][5]);
+		//newConfig.type = (CropType)std::stoi(loadedData[i][5]);
 	}
 }
 

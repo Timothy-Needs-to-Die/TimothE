@@ -1,5 +1,6 @@
 #pragma once 
 #include "SellableConfig.h"
+#include "PlantResourceType.h"
 
 enum CropType {
 	Wheat,
@@ -15,6 +16,9 @@ enum CropType {
 //};
 
 struct CropConfig : SellableConfig {
-	CropType type;
+	PlantResourceType type;
+	int growthRate;
+	int quality;
+	int startSpriteIndex;
 };
 

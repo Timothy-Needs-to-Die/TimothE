@@ -122,7 +122,6 @@
     <ClInclude Include="CoreResourceType.h" />
     <ClInclude Include="CropConfig.h" />
     <ClInclude Include="CropPlot.h" />
-    <ClInclude Include="CropsConfig.h" />
     <ClInclude Include="Day.h" />
     <ClInclude Include="DestroyAfterSecondsComponent.h" />
     <ClInclude Include="Dirent.h" />

@@ -2,7 +2,6 @@
 
 FarmlandManager::FarmlandManager(GameObject* parent) : Component(parent)
 {
-	
 }
 
 bool FarmlandManager::PlaceFarmLand(glm::vec2 position)
@@ -61,6 +60,16 @@ void FarmlandManager::PlantSeed(glm::vec2 position, PlantResourceType cropType)
 		// Check if it already has a plant
 		if (!cropPlot->IsOccupied())
 		{
+			// Get our CropsConfig
+			CropConfig cropConfig;
+			for (CropConfig c : _pCropData)
+			{
+				if (c.type == cropType)
+				{
+					cropConfig = c;
+				}
+			}
+
 			// Create the plan
 			GameObject* plantObject = new GameObject("Plant");
 	
@@ -70,7 +79,8 @@ void FarmlandManager::PlantSeed(glm::vec2 position, PlantResourceType cropType)
 			
 			// Add Sprite component as the PlantedCrop needs it
 			SpriteComponent* s = plantObject->AddComponent(new SpriteComponent(plantObject));
-			PlantedCrop* crop = new PlantedCrop(cropType, 2, plantObject);
+			
+			PlantedCrop* crop = new PlantedCrop(cropConfig.type, cropConfig.growthRate, cropConfig.startSpriteIndex, plantObject);
 			plantObject->AddComponent(crop);
 			
 			// The plot now has a plant on it so it is occupied
@@ -90,6 +100,26 @@ void FarmlandManager::OnNewDay()
 	for (CropPlot* plot : _pCropPlotObjects)
 	{
 		plot->OnNewDay();
+	}
+}
+
+void FarmlandManager::LoadInCropData()
+{
+	std::vector<std::vector<std::string>> loadedData = CSVReader::RequestDataFromFile("Resources/Data/SeedsConfig.csv");
+	for (int i = 0; i < loadedData.size(); i++)
+	{
+		CropConfig newConfig;
+
+		newConfig.name = loadedData[i][1];
+		newConfig.sellPrice = std::stoi(loadedData[i][2]);
+		newConfig.description = loadedData[i][3];
+		newConfig.growthRate = std::stoi(loadedData[i][4]);
+		newConfig.type = (PlantResourceType)std::stoi(loadedData[i][5]);
+		newConfig.quality = std::stoi(loadedData[i][6]);
+		newConfig.startSpriteIndex = std::stoi(loadedData[i][7]);
+		newConfig.icon = nullptr;
+
+		_pCropData.emplace_back(newConfig);
 	}
 }
 

@@ -11,7 +11,7 @@
 
 */
 
-PlantedCrop::PlantedCrop(PlantResourceType cropType, int daysToGrow, GameObject* parent) : Component(parent)
+PlantedCrop::PlantedCrop(PlantResourceType cropType, int daysToGrow, int startSpriteIndex, GameObject* parent) : Component(parent)
 {
 	/*int sheetX = 6, sheetY = 11;
 	SpriteSheet* sheet = ResourceManager::GetSpriteSheet("testSheet");
@@ -19,8 +19,8 @@ PlantedCrop::PlantedCrop(PlantResourceType cropType, int daysToGrow, GameObject*
 
 	// Set the sprite
 	_pSpriteComponent = parent->GetComponent<SpriteComponent>();
-	_pSpriteComponent->SetSprite(ResourceManager::GetSpriteSheet("cropspritesheet")->GetSpriteAtIndex(4));
-	_spriteIndex = 4;
+	_spriteIndex = startSpriteIndex;
+	_pSpriteComponent->SetSprite(ResourceManager::GetSpriteSheet("cropspritesheet")->GetSpriteAtIndex(_spriteIndex));
 
 	_type = cropType;
 	_daysToGrow = daysToGrow;

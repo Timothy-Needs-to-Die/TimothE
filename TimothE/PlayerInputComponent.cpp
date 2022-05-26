@@ -17,6 +17,7 @@ void PlayerInputComponent::OnStart()
 	_pMovement = _pParentObject->GetComponent<MovementComponent>();
 	_pFighter = _pParentObject->GetComponent<Fighter>();
 	_pFarmlandManager = _pParentObject->GetComponent<FarmlandManager>();
+	_pFarmlandManager->LoadInCropData();
 }
 
 void PlayerInputComponent::OnUpdate()
@@ -141,7 +142,14 @@ void PlayerInputComponent::FarmingControls()
 			CropPlot* closestPlot = _pFarmlandManager->GetCropPlotAtPosition(target);
 			if (closestPlot != nullptr)
 			{
-				closestPlot->Harvest();
+				if (closestPlot->IsOccupied())
+				{
+					closestPlot->Harvest();
+				}
+				else
+				{
+					_pFarmlandManager->PlantSeed(target, PlantResourceType::CarrotSeedRes);
+				}
 			}
 		}
 	}
@@ -157,8 +165,8 @@ void PlayerInputComponent::FarmingControls()
 		target.x += _pParentObject->GetTransform()->GetScale().x / 2;
 		target.y += _pParentObject->GetTransform()->GetScale().y / 2;
 
-		// Add logic for what resource the player has in hand?
-		_pFarmlandManager->PlantSeed(target, PlantResourceType::WheatRes);
+		
+		_pFarmlandManager->PlantSeed(target, PlantResourceType::CarrotSeedRes);
 	}
 	if (Input::IsKeyUp(KEY_G)) _bGkeyPressed = false;
 
