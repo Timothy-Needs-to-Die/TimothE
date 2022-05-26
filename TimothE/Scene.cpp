@@ -137,7 +137,10 @@ void Scene::RenderScene(Camera* cam)
 
 	Renderer2D::BeginRender(cam);
 
-	for (auto& obj : _listOfDrawableGameObjects) {
+
+	for (std::vector<GameObject*>::iterator it = _listOfDrawableGameObjects.end() - 1; it != _listOfDrawableGameObjects.begin(); --it) {
+		GameObject* obj = *it;
+
 		if (!obj->IsActive()) continue;
 		if (obj->IsToBeDestroyed()) continue;
 
@@ -159,8 +162,8 @@ void Scene::RenderScene(Camera* cam)
 				Renderer2D::DrawQuad(obj->GetTransform()->GetRenderQuad(), objTex);
 			}
 		}
-		//}
 	}
+
 	Renderer2D::EndRender();
 
 	for (auto& obj : _listOfDrawableGameObjects) {

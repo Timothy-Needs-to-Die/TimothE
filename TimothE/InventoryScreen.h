@@ -5,7 +5,7 @@
 class InventoryScreen : public GameObject
 {
 public:
-	InventoryScreen(string name = "InventoryScreen", string tag = "UI");
+	InventoryScreen(string name = "InventoryScreen", string tag = "UNTAGGED");
 
 	void OnUpdate();
 

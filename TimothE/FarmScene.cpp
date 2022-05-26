@@ -93,7 +93,7 @@ void FarmScene::InitScene()
 {
 	Scene::InitScene();
 
-	_pInventoryScreen = new InventoryScreen();
+	_pInventoryScreen = new InventoryScreen("InventoryScreen", "UI");
 	AddGameObject(_pInventoryScreen);
 	_pInventoryScreen->SetAllActive(false);
 	
@@ -111,24 +111,11 @@ void FarmScene::InitScene()
 	//_pStartButton->AddComponent(new BoxColliderComponent(_pStartButton));
 	//_pStartButton->AddComponent(new TextComponent(_pTestObject));
 	//_pStartButton->AddComponent(ResourceManager::GetTexture("Button"));
-	//AddGameObject(_pStartButton);
-
 	//_pStartButton->GetTransform()->SetPosition(0.0f, 0.0f);
 	//_pStartButton->GetTransform()->SetScale({ 0.2f, 0.2f });
-	//GameObject* pPathFinder = new GameObject("Pathfinder");
-	//pPathFinder->AddComponent<AStar>(new AStar(pPathFinder));
-	//AddGameObject(pPathFinder);
+	//AddGameObject(_pStartButton);
 
-	_pWeaponObject = new GameObject("Weapon");
-	_pWeaponObject->AddComponent<Texture2D>(ResourceManager::GetTexture("swords"));
-	_pWeaponObject->GetTransform()->SetScale({0.20f, 0.20f});
-	_pWeaponObject->GetTransform()->SetPosition({1.5f, 0.0f});
-	SpriteComponent* pWeaponSC = _pWeaponObject->AddComponent<SpriteComponent>(new SpriteComponent(_pWeaponObject));
 
-	AnimatedSpritesheet* pWeaSS = new AnimatedSpritesheet(ResourceManager::GetTexture("swords"), 16, 16, "weaponAnim", false);
-	pWeaponSC->SetSprite(pWeaSS->GetSpriteAtIndex(6));
-
-	AddGameObject(_pWeaponObject);
 
 	_pPlayer = new Player();
 	_pPlayer->GetTransform()->SetPosition(7.0f, 3.5f);
@@ -167,7 +154,7 @@ void FarmScene::InitScene()
 
 
 	_pBuildIndicator = new TextObject("Build Mode", "arial.ttf", "Text", "BUILDMODETEXT");
-	_pBuildIndicator->GetTransform()->SetPosition({ -1.0f, 1.0f });
+	_pBuildIndicator->GetTransform()->SetPosition({ -1.0f, -1.0f });
 	_pBuildIndicator->GetTransform()->SetScale({ 1.0f, 1.0f });
 	AddGameObject(_pBuildIndicator);
 	_pBuildIndicator->SetActive(false);
