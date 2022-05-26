@@ -70,6 +70,11 @@ void PlayerResourceManager::SetArmour(ArmourConfig armour)
 	_currentArmour = armour;
 }
 
+void PlayerResourceManager::SellAll()
+{
+	
+}
+
 //PlayerResource* PlayerResourceManager::GetHotbarItem(HotbarItem item)
 //{
 //	return &_hotbarItemMap[item];

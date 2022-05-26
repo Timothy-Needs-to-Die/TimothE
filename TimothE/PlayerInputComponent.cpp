@@ -72,6 +72,8 @@ void PlayerInputComponent::OnUpdate()
 		TIM_LOG_LOG("Carrot: " << carrotAmount);
 	}
 
+	// Selling
+	
 
 	// Building
 	if (Input::IsKeyUp(KEY_B)) {
