@@ -113,10 +113,12 @@ void PlayerInputComponent::BuildControls()
 	}
 	else if (Input::IsKeyDown(KEY_2)) {
 		_selectedStructure = StructureType::Tower;
+		AudioEngine::PlaySound("BuildSound", 80, 80, 1, 1);
 	}
 	else if (Input::IsKeyDown(KEY_3)) {
 		TIM_LOG_LOG("Selected campfire");
 		_selectedStructure = StructureType::Campfire;
+		AudioEngine::PlaySound("BuildSound", 80, 80, 1, 1);
 	}
 
 	glm::vec2 mousePos = Input::GetMousePos();
