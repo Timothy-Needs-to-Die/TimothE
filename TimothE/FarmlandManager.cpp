@@ -24,7 +24,7 @@ bool FarmlandManager::PlaceFarmLand(glm::vec2 position)
 	// If there isnt any existing farmland on that plot
 
 	// Farm Bounds
-	Rect* r1 = new Rect(3.75, 1.25, 6.25, 5.25);
+	Rect* r1 = new Rect(4, 1.5, 6, 5);
 
 	if (tilePlayerIsOnPos.x > r1->xPos && tilePlayerIsOnPos.x < r1->xPos + r1->width && tilePlayerIsOnPos.y > r1->yPos && tilePlayerIsOnPos.y < r1->yPos + r1->height) 
 	{
