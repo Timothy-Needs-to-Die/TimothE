@@ -206,6 +206,7 @@
     <ClInclude Include="Tag.h" />
     <ClInclude Include="TestComponent.h" />
     <ClInclude Include="TextComponent.h" />
+    <ClInclude Include="TextObject.h" />
     <ClInclude Include="Texture2D.h" />
     <ClInclude Include="TileData.h" />
     <ClInclude Include="TileMap.h" />
@@ -308,6 +309,7 @@
     <ClCompile Include="Tag.cpp" />
     <ClCompile Include="TestComponent.cpp" />
     <ClCompile Include="TextComponent.cpp" />
+    <ClCompile Include="TextObject.cpp" />
     <ClCompile Include="Texture2D.cpp" />
     <ClCompile Include="TileMap.cpp" />
     <ClCompile Include="TileMapEditor.cpp" />

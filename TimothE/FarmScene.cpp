@@ -15,6 +15,7 @@
 #include "Enemy.h"
 #include "StreamFile.h"
 #include "LightsourceObject.h"
+#include "TextObject.h"
 
 FarmScene::~FarmScene()
 {
@@ -156,6 +157,13 @@ void FarmScene::InitScene()
 	_pLightManager->SetWorldLightLevel(5);
 	_pLightManager->SetMinLightLevel(1);
 	_pLightManager->SetMaxLightLevel(8);
+
+
+	_pBuildIndicator = new TextObject("Build Mode", "arial.ttf", "Text", "BUILDMODETEXT");
+	_pBuildIndicator->GetTransform()->SetPosition({ -1.0f, 1.0f });
+	_pBuildIndicator->GetTransform()->SetScale({ 1.0f, 1.0f });
+	AddGameObject(_pBuildIndicator);
+	_pBuildIndicator->SetActive(false);
 
 	LoadScene("Resources/PlayerSaves/FarmSceneSaveData.sav");
 }

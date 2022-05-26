@@ -56,6 +56,14 @@ void PlayerInputComponent::OnUpdate()
 	if (_bReadyforbuildPress && Input::IsKeyDown(KEY_B)) {
 		_bReadyforbuildPress = false;
 		_inBuildMode = !_inBuildMode;
+		GameObject* pBBuildText = SceneManager::GetCurrentScene()->FindObjectWithTag("BUILDMODETEXT");
+		if (pBBuildText) {
+			pBBuildText->SetActive(_inBuildMode);
+		}
+		else {
+			TIM_LOG_LOG("No build text");
+		}
+
 		TIM_LOG_LOG("In Build Mode: " << _inBuildMode);
 	}
 

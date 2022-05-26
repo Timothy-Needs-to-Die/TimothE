@@ -98,7 +98,8 @@ void ResourceManager::LoadFonts()
 		{
 			if (dirent->d_type == 32768)
 			{
-				InstantiateFont(dirent->d_name, new Font(dirent->d_name));
+				std::string fn = "fonts/" + std::string(dirent->d_name);
+				InstantiateFont(dirent->d_name, new Font(fn));
 
 				std::cout << "Font loaded: " << dirent->d_name << std::endl;
 			}

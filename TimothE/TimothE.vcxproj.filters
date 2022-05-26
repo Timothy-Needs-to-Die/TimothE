@@ -407,6 +407,7 @@
     <ClInclude Include="WeaponComponent.h" />
     <ClInclude Include="WeaponObject.h" />
     <ClInclude Include="LightsourceObject.h" />
+    <ClInclude Include="TextObject.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="AIController.cpp">
@@ -664,6 +665,7 @@
     <ClCompile Include="WeaponComponent.cpp" />
     <ClCompile Include="WeaponObject.cpp" />
     <ClCompile Include="LightsourceObject.cpp" />
+    <ClCompile Include="TextObject.cpp" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Node.h" />

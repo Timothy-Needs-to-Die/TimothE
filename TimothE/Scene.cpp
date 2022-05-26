@@ -352,7 +352,7 @@ std::vector<GameObject*> Scene::GetGameObjectsByName(std::string name)
 GameObject* Scene::FindObjectWithTag(const std::string& tagName)
 {
 	for (GameObject* obj : _listOfGameObjects) {
-		if (!obj->IsActive()) continue;
+		//if (!obj->IsActive()) continue;
 		if (obj->IsToBeDestroyed()) continue;
 
 		if (obj->GetTag() == tagName) {

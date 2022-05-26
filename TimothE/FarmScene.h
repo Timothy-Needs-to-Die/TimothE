@@ -64,6 +64,8 @@ private:
 
 	class InventoryScreen* _pInventoryScreen = nullptr;
 
+	class TextObject* _pBuildIndicator = nullptr;
+
 	//Farmland
 	FarmlandManager* farmland;
 	bool farmKeyPressed = false;
