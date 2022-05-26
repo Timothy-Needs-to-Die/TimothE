@@ -106,7 +106,7 @@ void Font::RenderText(Shader& s, std::string text, float x = 0.0f, float y = 0.0
 	GLCall(glActiveTexture(GL_TEXTURE0));
 	GLCall(glBindVertexArray(_VAO));
 
-	glm::mat4 projection = glm::ortho(0.0f, 800.0f, 0.0f, 600.0f);
+	glm::mat4 projection = glm::ortho(0.0f, 1920.0f, 0.0f, 1080.0f);
 	s.SetMat4("projection", projection);
 
 	int newline = 0;
