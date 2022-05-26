@@ -8,7 +8,8 @@ public:
 
 	PlayerHealth(GameObject* pOwner, int health);
 
-	virtual void OnDeath(GameObject* instigator) override;
+	
 protected:
+	virtual void OnDeath(GameObject* instigator) override;
 	virtual void OnDamage(GameObject* instigator) override;
 };

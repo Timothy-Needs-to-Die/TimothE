@@ -196,6 +196,6 @@ void FarmScene::GameOver()
 	//creates game over screen
 	_pGameOverScreen = new GameOverScreen();
 	glm::vec2 playerPos = _pPlayer->GetTransform()->GetPosition();
-	_pGameOverScreen->GetTransform()->SetPosition(playerPos.x-5, playerPos.y - 5); //sets position to centre on player
+	_pGameOverScreen->GetTransform()->SetPosition(playerPos.x-4, playerPos.y - 2.5); //sets position to centre on player
 	AddGameObject(_pGameOverScreen);
 }

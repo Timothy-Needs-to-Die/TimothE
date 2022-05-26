@@ -38,8 +38,7 @@ void PlayerInputComponent::OnUpdate()
 	}
 	//testing game over
 	if (Input::IsKeyDown(KEY_H)) {
-		_pParentObject->GetComponent<PlayerHealth>()->SetHealth(-1);
-		_pParentObject->GetComponent<PlayerHealth>()->OnDeath(NULL);
+		_pParentObject->GetComponent<PlayerHealth>()->TakeDamage(10000, NULL);
 		TIM_LOG_LOG(_pParentObject->GetComponent<PlayerHealth>()->GetCurrentHealth());
 	}
 	if (Input::IsKeyDown(KEY_I)) {

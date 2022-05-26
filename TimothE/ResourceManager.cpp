@@ -43,7 +43,7 @@ void ResourceManager::Init()
 	ResourceManager::InstantiateTexture("tower", new Texture2D("Resources/Images/Tower.png", true));
 	ResourceManager::InstantiateTexture("fireball", new Texture2D("Resources/Images/Fireball.png", true));
 	ResourceManager::InstantiateTexture("whiteTexture", new Texture2D("Resources/Images/whiteTexture.png"));
-	ResourceManager::InstantiateTexture("blackTexture", new Texture2D("Resources/Images/blackTexture.png"));
+	ResourceManager::InstantiateTexture("gameover_bg", new Texture2D("Resources/Images/Game Over.png", true));
 
 
 	//LOAD SPRITESHEETS

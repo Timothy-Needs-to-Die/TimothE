@@ -7,8 +7,9 @@
 GameOverScreen::GameOverScreen(std::string name, std::string tag) : GameObject(name, tag)
 {
 	//creates a black background image to cover screen
-	AddComponent(ResourceManager::GetTexture("blackTexture"));
-	GetTransform()->SetScale({ 10.25f, 10.25f });
+	AddComponent(ResourceManager::GetTexture("gameover_bg"));
+	GetTransform()->SetScale({ 8.0f, 5.0f });
+	
 
 	//adds button to restart game
 	//_tryAgainBTN = new GameObject("TryAgainButton","UI");
