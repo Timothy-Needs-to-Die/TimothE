@@ -147,10 +147,8 @@ void FarmScene::InitScene()
 	AddGameObject(farmland);
 
 	//LIGHTING TEST CODE//
-	_pLightManager = new LightLevelManager(_pTilemap);
-	_pLightManager->SetWorldLightLevel(5);
-	_pLightManager->SetMinLightLevel(1);
-	_pLightManager->SetMaxLightLevel(8);
+	//_pLightManager = new LightLevelManager(_pTilemap);
+
 
 
 	_pBuildIndicator = new TextObject("Build Mode", "arial.ttf", "Text", "BUILDMODETEXT");

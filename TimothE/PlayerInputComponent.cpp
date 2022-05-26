@@ -38,10 +38,10 @@ void PlayerInputComponent::OnUpdate()
 		}
 	}
 	//testing game over
-	if (Input::IsKeyDown(KEY_H)) {
-		_pParentObject->GetComponent<PlayerHealth>()->TakeDamage(10000, NULL);
-		TIM_LOG_LOG(_pParentObject->GetComponent<PlayerHealth>()->GetCurrentHealth());
-	}
+	//if (Input::IsKeyDown(KEY_H)) {
+	//	_pParentObject->GetComponent<PlayerHealth>()->TakeDamage(10000, NULL);
+	//	TIM_LOG_LOG(_pParentObject->GetComponent<PlayerHealth>()->GetCurrentHealth());
+	//}
 	if (Input::IsKeyDown(KEY_I)) {
 		int goldAmount = PlayerResourceManager::GetCoreResource(CoreResourceType::Gold)->GetAmount();
 		int woodAmount = PlayerResourceManager::GetCoreResource(CoreResourceType::Wood)->GetAmount();
@@ -63,7 +63,7 @@ void PlayerInputComponent::OnUpdate()
 		_inBuildMode = !_inBuildMode;
 		GameObject* pBBuildText = SceneManager::GetCurrentScene()->FindObjectWithTag("BUILDMODETEXT");
 		if (pBBuildText) {
-			pBBuildText->SetActive(_inBuildMode);
+			//pBBuildText->SetActive(_inBuildMode); //TODO: Remove this comment in final demo
 		}
 		else {
 			TIM_LOG_LOG("No build text");

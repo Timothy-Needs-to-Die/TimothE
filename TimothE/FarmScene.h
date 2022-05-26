@@ -48,7 +48,7 @@ private:
 
 	SpriteSheet* _pSpritesheet;
 
-	LightLevelManager* _pLightManager;
+	
 
 	//class WaveController* _pWaveController = nullptr;
 

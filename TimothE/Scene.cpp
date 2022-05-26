@@ -48,6 +48,12 @@ void Scene::InitScene()
 
 	_pAstarObject = new AStar();
 	_pAstarObject->SetMap(_pTilemap);
+
+	_pLightManager = new LightLevelManager(_pTilemap);
+	_pLightManager->SetWorldLightLevel(5);
+	_pLightManager->SetMinLightLevel(1);
+	_pLightManager->SetMaxLightLevel(8);
+	_pLightManager->UpdateLightMap();
 }
 
 void Scene::SceneEnd()
@@ -67,6 +73,7 @@ void Scene::EditorUpdate()
 	//Cycles through all gameobjects in the scene and calculates there transform.
 	//Needed for the editor window to work smoothly
 	for (GameObject* obj : _listOfGameObjects) {
+		if (!obj->IsActive()) continue;
 		if (obj->IsToBeDestroyed()) continue;
 
 		obj->GetTransform()->CalculateTransformMatrix();
@@ -137,7 +144,7 @@ void Scene::RenderScene(Camera* cam)
 
 	Renderer2D::BeginRender(cam);
 
-
+	if (_listOfDrawableGameObjects.size() == 0) return;
 	for (std::vector<GameObject*>::iterator it = _listOfDrawableGameObjects.end() - 1; it != _listOfDrawableGameObjects.begin(); --it) {
 		GameObject* obj = *it;
 
