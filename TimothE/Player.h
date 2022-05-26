@@ -10,6 +10,7 @@ private:
 	class Fighter* _pFighter = nullptr;
 	class PlayerHealth* _pHealth = nullptr;
 	class PlayerInputComponent* _pInput = nullptr;
+	class PlayerUIComponent* _pUI = nullptr;
 	class BoxColliderComponent* _pCollider = nullptr;
 	class FarmlandManager* _pFarmlandManager = nullptr;
 	class WeaponObject* _pWeapon = nullptr;

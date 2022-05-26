@@ -12,6 +12,7 @@
 #include "OffensiveStructureObject.h"
 #include "LightsourceObject.h"
 #include "PlayerHealth.h"
+#include "PlayerUIComponent.h"
 
 void PlayerInputComponent::OnStart()
 {
@@ -50,17 +51,6 @@ void PlayerInputComponent::OnUpdate()
 	FarmingControls();
 
 	// Inventory
-	if (Input::IsKeyDown(KEY_I)) {
-		int goldAmount = PlayerResourceManager::GetCoreResource(CoreResourceType::Gold)->GetAmount();
-		int woodAmount = PlayerResourceManager::GetCoreResource(CoreResourceType::Wood)->GetAmount();
-		int metalAmount = PlayerResourceManager::GetCoreResource(CoreResourceType::Metal)->GetAmount();
-		int stoneAmount = PlayerResourceManager::GetCoreResource(CoreResourceType::Stone)->GetAmount();
-
-		TIM_LOG_LOG("Gold: " << goldAmount);
-		TIM_LOG_LOG("Wood: " << woodAmount);
-		TIM_LOG_LOG("Metal: " << metalAmount);
-		TIM_LOG_LOG("Stone: " << stoneAmount);
-	}
 
 	if (Input::IsKeyDown(KEY_O)) {
 		int wheatAmount = PlayerResourceManager::GetPlantResource(PlantResourceType::WheatRes)->GetAmount();
@@ -84,6 +74,10 @@ void PlayerInputComponent::OnUpdate()
 		GameObject* pBBuildText = SceneManager::GetCurrentScene()->FindObjectWithTag("BUILDMODETEXT");
 		if (pBBuildText) {
 			//pBBuildText->SetActive(_inBuildMode); //TODO: Remove this comment in final demo
+		}
+		PlayerUIComponent* pUI = _pParentObject->GetComponent<PlayerUIComponent>();
+		if (pUI) {
+			pUI->SetBuildModeUIActive(_inBuildMode);
 		}
 		else {
 			TIM_LOG_LOG("No build text");

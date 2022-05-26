@@ -441,6 +441,7 @@
     <ClInclude Include="pch.h">
       <Filter>Headers</Filter>
     </ClInclude>
+    <ClInclude Include="PlayerUIComponent.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="AIController.cpp">
@@ -728,5 +729,6 @@
     <ClCompile Include="pch.cpp">
       <Filter>Source</Filter>
     </ClCompile>
+    <ClCompile Include="PlayerUIComponent.cpp" />
   </ItemGroup>
 </Project>
