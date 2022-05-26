@@ -138,11 +138,12 @@ void Scene::RenderScene(Camera* cam)
 	Renderer2D::BeginRender(cam);
 
 
-	for (std::vector<GameObject*>::iterator it = _listOfDrawableGameObjects.end() - 1; it != _listOfDrawableGameObjects.begin(); --it) {
+	for (std::vector<GameObject*>::iterator it = _listOfDrawableGameObjects.begin(); it != _listOfDrawableGameObjects.end(); ++it) {
 		GameObject* obj = *it;
 
 		if (!obj->IsActive()) continue;
 		if (obj->IsToBeDestroyed()) continue;
+		if (obj->GetTag() == "PLAYER") continue;
 
 		//TODO: Text won't render here as it uses its own internal texture data.
 		Texture2D* objTex = obj->GetComponent<Texture2D>();
@@ -162,6 +163,12 @@ void Scene::RenderScene(Camera* cam)
 				Renderer2D::DrawQuad(obj->GetTransform()->GetRenderQuad(), objTex);
 			}
 		}
+	}
+
+	GameObject* player = FindObjectWithTag("PLAYER");
+	if (player) {
+		SpriteComponent* sc = player->GetComponent<SpriteComponent>();
+		Renderer2D::DrawQuad(player->GetTransform()->GetRenderQuad(), sc->GetSprite()->GetTexture(), sc->GetSprite()->GetTexCoords());
 	}
 
 	Renderer2D::EndRender();
