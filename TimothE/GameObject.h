@@ -6,7 +6,6 @@
 #include "Component.h"
 #include "UID.h"
 #include "Serializable.h"
-#include "BoxColliderComponent.h"
 #include "ParticleSystem.h"
 #include "Tag.h"
 

@@ -50,7 +50,8 @@ void Transform::OnUpdate()
 	if (pParent != nullptr) {
 		Transform* pTransform = pParent->GetTransform();
 
-		_globalPosition = pTransform->GetPosition() + _localPosition;
+		if(pTransform != nullptr)
+			_globalPosition = pTransform->GetPosition() + _localPosition;
 	}
 	else {
 		_globalPosition = _localPosition;

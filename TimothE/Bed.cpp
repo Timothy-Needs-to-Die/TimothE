@@ -2,6 +2,7 @@
 #include "BedHealth.h"
 #include "GameTimeManager.h"
 #include "FarmScene.h"
+#include "BoxColliderComponent.h"
 
 Bed::Bed() : GameObject("Bed", "BED")
 {

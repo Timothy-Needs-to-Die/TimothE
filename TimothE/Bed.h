@@ -11,6 +11,6 @@ public:
 
 private:
 	class BedHealth* _pHealth;
-	BoxColliderComponent* _pBoxCollider;
-	Texture2D* _pTexture;
+	class BoxColliderComponent* _pBoxCollider;
+	class Texture2D* _pTexture;
 };

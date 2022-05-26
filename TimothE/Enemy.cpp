@@ -5,6 +5,7 @@
 #include "Fighter.h"
 #include "WeaponObject.h"
 #include "SceneManager.h"
+#include "BoxColliderComponent.h"
 
 Enemy::Enemy(std::string name, std::string tag)
 	: Character(name, tag)

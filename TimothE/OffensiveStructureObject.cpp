@@ -15,7 +15,7 @@ OffensiveStructureObject::OffensiveStructureObject(std::string name, std::string
 void OffensiveStructureObject::OnTriggerEnter(ColliderBase* other)
 {
 	if (other->GetParent()->GetTag() == "ENEMY") {
-		TIM_LOG_LOG("Target in range");
+		//TIM_LOG_LOG("Target in range");
 		_pEnemiesInRange.emplace_back(other->GetParent());
 	}
 }
@@ -23,7 +23,7 @@ void OffensiveStructureObject::OnTriggerEnter(ColliderBase* other)
 void OffensiveStructureObject::OnTriggerExit(ColliderBase* other)
 {
 	if (other->GetParent()->GetTag() == "ENEMY") {
-		TIM_LOG_LOG("Target not in range");
+		//TIM_LOG_LOG("Target not in range");
 
 		GameObject* enemy = other->GetParent();
 

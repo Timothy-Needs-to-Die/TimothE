@@ -42,6 +42,8 @@ public:
 
 	LightLevelManager* GetLightManager() const { return _pLightManager; }
 
+	class WaveManager* GetWaveManager() const { return _pWaveManager; }
+
 private:
 	GameObject* _pStartButton = nullptr;
 	GameObject* _pWeaponObject = nullptr;
@@ -75,4 +77,6 @@ private:
 	std::vector<class StructureObject*> _pStructures;
 
 	class Bed* _pBed;
+
+	class WaveManager* _pWaveManager;
 };

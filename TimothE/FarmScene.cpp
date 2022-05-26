@@ -33,26 +33,22 @@ void FarmScene::UpdateObjects()
 
 	_pGameTime->Update();
 
+
 	if (Input::IsKeyDown(KEY_5)) {
 		SceneManager::SetCurrentScene(SceneManager::CreateScene(ResourceManager::GetScene("TownScene")));
 	}
 
-	if (Input::IsKeyDown(KEY_G)) {
-		//_pTilemap->AddTileAt(2, 15, 12, CameraManager::CurrentCamera());
-	}
-	/*if (Input::IsKeyDown(KEY_H))
-	{
-		if (_pPlayer != nullptr)
-		{
-			PlayerHealth* h = _pPlayer->GetComponent<PlayerHealth>();
-			if (h != nullptr)
-			{
-				h->TakeDamage(50);
-			}
-		}
-	}*/
+	//if (Input::IsKeyDown(KEY_G)) {
+	//	_pTilemap->AddTileAt(2, 15, 12, CameraManager::CurrentCamera());
+	//}
 
-	if (!_pGameTime->IsDay()) {
+	if (_pGameTime->IsDay()) {
+		if (Input::IsKeyDown(KEY_O)) {
+			_pGameTime->StartNight();
+		}
+	}
+	else {
+		_pWaveManager->Update();
 		if (Input::IsKeyDown(KEY_P)) {
 			_pGameTime->EndNight();
 			_pGameTime->StartNewDay();
@@ -138,6 +134,8 @@ void FarmScene::InitScene()
 
 	farmland = new FarmlandManager("Farmland Manager");
 	AddGameObject(farmland);
+
+	_pWaveManager = new WaveManager();
 
 	//LIGHTING TEST CODE//
 	_pLightManager = new LightLevelManager(_pTilemap);
