@@ -323,7 +323,9 @@
     <ClCompile Include="WeaponObject.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <None Include="fr_Texture.frag" />
     <None Include="Node.h" />
+    <None Include="vs_Texture.vert" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

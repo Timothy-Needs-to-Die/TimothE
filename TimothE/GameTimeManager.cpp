@@ -1,6 +1,7 @@
 #include "GameTimeManager.h"
 #include "Time.h"
 #include "Core.h"
+#include "LightLevelManager.h"
 
 void GameTimeManager::Update()
 {
@@ -12,6 +13,8 @@ void GameTimeManager::Update()
 	if (_dayTimer > _lengthOfDay) {
 		_dayTimer = 0.0f;
 		_inDay = false;
+
+		_pLightLevelManager->SetWorldLightLevel(2);
 
 		TIM_LOG_LOG("Night Time");
 	}
