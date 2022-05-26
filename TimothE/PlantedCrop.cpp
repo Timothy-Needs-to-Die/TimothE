@@ -25,6 +25,7 @@ PlantedCrop::PlantedCrop(PlantResourceType cropType, int daysToGrow, int startSp
 	_type = cropType;
 	_daysToGrow = daysToGrow;
 	_currentGrowTime = 0;
+	_isHarvestable = false;
 }
 
 PlantedCrop::~PlantedCrop()

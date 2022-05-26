@@ -15,7 +15,7 @@ void CropPlot::OnNewDay()
 	// If theres a crop apply age to the crop
 	if (_isOccupied)
 	{
-		GetChild()->GetComponent<PlantedCrop>()->AddGrowth(1);
+		GetChild()->GetComponent<PlantedCrop>()->AddGrowth();
 	}
 }
 

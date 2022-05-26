@@ -1,11 +1,11 @@
-﻿Town Hall level,Item Name,Item Value,Item Description,Growth Rate,CropType,Quality,StartSpriteIndex
-0,Wheat Seed,5,The seeds to plant a single plot of wheat,1,0,0,4
-1,Good Wheat Seed,10,This seed will yield twice as much!,1,-1,1,-1
-1,Carrot Seed,10,The seeds to plant a single plot of carrots,2,1,0,12
-2,Better Wheat Seed,20,This seed seems to be better,1,-1,2,-1
-2,Good Carrot Seed,20,This seed will yield twice as much!,2,-1,1,-1
-2,Potato Seed,20,The seeds to plant a single plot of potatos,4,2,0,8
-3,Great Wheat Seed,40,This seed will have great yield!,1,-1,3,-1
-3,Better Carrot Seed,40,This seed seems to be better,2,-1,2,-1
-3,Good Potato Seed,40,This seed will yield twice as much!,4,-1,1,-1
-3,Apple Seed,100,The seeds to plant a single plot of apples,7,3,0,-1
+﻿Town Hall level,Item Name,Item Value,Item Description,Growth Rate,CropType,Quality,StartSpriteIndex,Yield,ProduceType
+0,Wheat Seed,5,The seeds to plant a single plot of wheat,1,0,0,4,1,4
+1,Good Wheat Seed,10,This seed will yield twice as much!,1,-1,1,-1,2,4
+1,Carrot Seed,10,The seeds to plant a single plot of carrots,2,1,0,12,1,5
+2,Better Wheat Seed,20,This seed seems to be better,1,-1,2,-1,3,4
+2,Good Carrot Seed,20,This seed will yield twice as much!,2,-1,1,-1,2,5
+2,Potato Seed,20,The seeds to plant a single plot of potatos,3,2,0,8,1,6
+3,Great Wheat Seed,40,This seed will have great yield!,1,-1,3,-1,4,4
+3,Better Carrot Seed,40,This seed seems to be better,2,-1,2,-1,3,5
+3,Good Potato Seed,40,This seed will yield twice as much!,4,-1,1,-1,2,6
+3,Apple Seed,100,The seeds to plant a single plot of apples,7,3,0,-1,1,7

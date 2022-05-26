@@ -87,6 +87,7 @@ void PlayerInputComponent::OnUpdate()
 	}
 
 	if (_inBuildMode) {
+		if (_bFarmMode) { _bFarmMode = false; }
 		BuildControls();
 	}
 
@@ -144,11 +145,7 @@ void PlayerInputComponent::FarmingControls()
 			{
 				if (closestPlot->IsOccupied())
 				{
-					closestPlot->Harvest();
-				}
-				else
-				{
-					_pFarmlandManager->PlantSeed(target, PlantResourceType::CarrotSeedRes);
+					_pFarmlandManager->HarvestPlot(closestPlot);
 				}
 			}
 		}
@@ -160,13 +157,8 @@ void PlayerInputComponent::FarmingControls()
 		if (_bGkeyPressed) return;
 		_bGkeyPressed = true;
 
-		glm::vec2 target = _pParentObject->GetTransform()->GetPosition();
-		// Targets the midpoint of the player
-		target.x += _pParentObject->GetTransform()->GetScale().x / 2;
-		target.y += _pParentObject->GetTransform()->GetScale().y / 2;
-
-		
-		_pFarmlandManager->PlantSeed(target, PlantResourceType::CarrotSeedRes);
+		_bFarmMode = !_bFarmMode;
+		if (_inBuildMode) { _inBuildMode = false; }
 	}
 	if (Input::IsKeyUp(KEY_G)) _bGkeyPressed = false;
 
@@ -179,6 +171,31 @@ void PlayerInputComponent::FarmingControls()
 	}
 	if (Input::IsKeyUp(KEY_H)) _bHkeyPressed = false;
 
+
+	if (_bFarmMode)
+	{
+		if (Input::IsKeyDown(KEY_1)) {
+			glm::vec2 target = _pParentObject->GetTransform()->GetPosition();
+			// Targets the midpoint of the player
+			target.x += _pParentObject->GetTransform()->GetScale().x / 2;
+			target.y += _pParentObject->GetTransform()->GetScale().y / 2;
+			_pFarmlandManager->PlantSeed(target, PlantResourceType::WheatSeedRes);
+		}
+		else if (Input::IsKeyDown(KEY_2)) {
+			glm::vec2 target = _pParentObject->GetTransform()->GetPosition();
+			// Targets the midpoint of the player
+			target.x += _pParentObject->GetTransform()->GetScale().x / 2;
+			target.y += _pParentObject->GetTransform()->GetScale().y / 2;
+			_pFarmlandManager->PlantSeed(target, PlantResourceType::PotatoSeedRes);
+		}
+		else if (Input::IsKeyDown(KEY_3)) {
+			glm::vec2 target = _pParentObject->GetTransform()->GetPosition();
+			// Targets the midpoint of the player
+			target.x += _pParentObject->GetTransform()->GetScale().x / 2;
+			target.y += _pParentObject->GetTransform()->GetScale().y / 2;
+			_pFarmlandManager->PlantSeed(target, PlantResourceType::CarrotSeedRes);
+		}
+	}
 }
 
 void PlayerInputComponent::BuildControls()

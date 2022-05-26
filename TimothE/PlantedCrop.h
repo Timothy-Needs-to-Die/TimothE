@@ -10,7 +10,7 @@ public:
 	PlantedCrop(PlantResourceType cropType, int daysToGrow, int startSpriteIndex, GameObject* parent);
 	~PlantedCrop();
 
-	void AddGrowth(int growTime);
+	void AddGrowth(int growTime = 1);
 	bool Harvest();
 
 	// Inherited via Component

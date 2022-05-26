@@ -117,10 +117,36 @@ void FarmlandManager::LoadInCropData()
 		newConfig.type = (PlantResourceType)std::stoi(loadedData[i][5]);
 		newConfig.quality = std::stoi(loadedData[i][6]);
 		newConfig.startSpriteIndex = std::stoi(loadedData[i][7]);
+		newConfig.yield = std::stoi(loadedData[i][8]);
+		newConfig.produceType = (PlantResourceType)std::stoi(loadedData[i][9]);
 		newConfig.icon = nullptr;
 
 		_pCropData.emplace_back(newConfig);
 	}
+}
+
+void FarmlandManager::HarvestPlot(CropPlot* plot)
+{
+	if (plot != nullptr)
+	{
+		PlantedCrop* plantedCrop = plot->GetChild()->GetComponent<PlantedCrop>();
+		// Get our CropsConfig
+		CropConfig cropConfig;
+		for (CropConfig c : _pCropData)
+		{
+			if (c.type == plantedCrop->GetCrop())
+			{
+				cropConfig = c;
+			}
+		}
+
+		if (plantedCrop->Harvest())
+		{
+			PlayerResourceManager::GetPlantResource(cropConfig.produceType)->GainResource(cropConfig.yield);
+			plot->GetChild()->SetToBeDestroyed(true);
+		}
+	}
+	
 }
 
 void FarmlandManager::OnStart()

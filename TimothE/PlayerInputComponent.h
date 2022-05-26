@@ -56,6 +56,7 @@ private:
 	StructureType _selectedStructure;
 
 	bool _inBuildMode = false;
+	bool _bFarmMode = false;
 	bool _bReadyforbuildPress = false;
 
 	// input bools

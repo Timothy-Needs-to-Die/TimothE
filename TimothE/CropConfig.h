@@ -20,5 +20,7 @@ struct CropConfig : SellableConfig {
 	int growthRate;
 	int quality;
 	int startSpriteIndex;
+	int yield;
+	PlantResourceType produceType;
 };
 
