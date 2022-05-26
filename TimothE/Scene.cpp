@@ -110,26 +110,27 @@ void Scene::FrameEnd()
 	Physics::EndFrame();
 
 	for (GameObject* obj : _gameObjectsToRemove) {
+		Physics::RemoveCollider(obj->GetComponent<ColliderBase>());
 
 		std::vector<GameObject*>::iterator it = std::find(_listOfDrawableGameObjects.begin(), _listOfDrawableGameObjects.end(), obj);
 		if (it != _listOfDrawableGameObjects.end()) {
 			_listOfDrawableGameObjects.erase(it);
 		}
 
-
 		std::vector<GameObject*>::iterator it2 = std::find(_listOfGameObjects.begin(), _listOfGameObjects.end(), obj);
 		if (it2 != _listOfGameObjects.end()) {
 			_listOfGameObjects.erase(it2);
 		}
-		Physics::RemoveCollider(obj->GetComponent<ColliderBase>());
 	}
 
-	for (std::vector<GameObject*>::iterator it = _gameObjectsToRemove.begin(); it != _gameObjectsToRemove.end(); ++it) {
-		//if (*it != nullptr) {
-			delete* it;
-			*it = nullptr;
-		//}
-	}
+	//for (auto& obj : _gameObjectsToRemove) {
+	//	delete obj;
+	//	obj = nullptr;
+	//	//if (*it != nullptr) {
+	//	//	delete* it;
+	//	//	*it = nullptr;
+	//	//}
+	//}
 
 	_gameObjectsToRemove.clear();
 }

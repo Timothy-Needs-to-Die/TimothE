@@ -12,6 +12,13 @@ OffensiveStructureObject::OffensiveStructureObject(std::string name, std::string
 	_pCircleCollider->SetScale(10.0f);
 }
 
+void OffensiveStructureObject::CheckTarget(GameObject* target)
+{
+	if (_pCurrentTarget == target) {
+		_pCurrentTarget = _pEnemiesInRange[0];
+	}
+}
+
 void OffensiveStructureObject::OnTriggerEnter(ColliderBase* other)
 {
 	if (other->GetParent()->GetTag() == "ENEMY") {
