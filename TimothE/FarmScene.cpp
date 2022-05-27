@@ -51,7 +51,7 @@ void FarmScene::UpdateObjects()
 	}
 	else {
 		_pWaveManager->Update();
-		
+
 		if (Input::IsKeyDown(KEY_P)) {
 			_pGameTime->EndNight();
 			_pGameTime->StartNewDay();
@@ -78,19 +78,19 @@ void FarmScene::UpdateObjects()
 	if (Input::IsKeyDown(KEY_1)) {
 		SaveScene("Resources/PlayerSaves/FarmSceneSaveData.sav");
 	}
-	
+
 	if (_pInventoryScreen->GetAllActive())
 	{
 		_pInventoryScreen->OnUpdate();
 	}
 
 	Physics::UpdateWorld();
-	
-		if (_pWaveManager->GetWaveCleared())
-		{
-			_pBed->canSleepThroughNight = true;
-		}
-	
+
+	if (_pWaveManager->GetWaveCleared())
+	{
+		_pBed->canSleepThroughNight = true;
+	}
+
 }
 
 void FarmScene::InitScene()
@@ -100,7 +100,7 @@ void FarmScene::InitScene()
 	_pInventoryScreen = new InventoryScreen("InventoryScreen", "UI");
 	AddGameObject(_pInventoryScreen);
 	_pInventoryScreen->SetAllActive(false);
-	
+
 	_pGameTime = new GameTimeManager(_pLightManager);
 
 	_pPlayer = new Player();
@@ -135,7 +135,7 @@ void FarmScene::InitScene()
 	AddGameObject(_pCoalNode);
 
 	_pWaveManager = new WaveManager();
-	
+
 	PlayerResourceManager::LoadInCropData();
 	PlayerResourceManager::GetPlantResource(WheatSeedRes)->GainResource(5);
 	PlayerResourceManager::GetPlantResource(CarrotSeedRes)->GainResource(5);
@@ -241,6 +241,6 @@ void FarmScene::GameOver()
 	//creates game over screen
 	_pGameOverScreen = new GameOverScreen();
 	glm::vec2 playerPos = _pPlayer->GetTransform()->GetPosition();
-	_pGameOverScreen->GetTransform()->SetPosition(playerPos.x-4, playerPos.y - 2.5); //sets position to centre on player
+	_pGameOverScreen->GetTransform()->SetPosition(playerPos.x - 4, playerPos.y - 2.5); //sets position to centre on player
 	AddGameObject(_pGameOverScreen);
 }

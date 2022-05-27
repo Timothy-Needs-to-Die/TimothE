@@ -108,7 +108,7 @@ void WaveManager::AddSpawnPosition(glm::vec2 pos)
 
 void WaveManager::AddSpawnPosition()
 {
-	float maxX = 10.0f, maxY = 10.0f;
+	float maxX = 6.0f, maxY = 6.0f;
 
 	float x = (float)(rand() / (float)(RAND_MAX / maxX));
 	float y = (float)(rand() / (float)(RAND_MAX / maxY));

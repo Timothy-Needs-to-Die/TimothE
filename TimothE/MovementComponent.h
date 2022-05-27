@@ -61,6 +61,8 @@ private:
 	Direction _direction;
 
 protected:
+	class TileMap* _pTilemap;
+	
 	bool _constantlyMove;
 	glm::vec2 _desiredDirection;
 
