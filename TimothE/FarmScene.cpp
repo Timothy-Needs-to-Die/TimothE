@@ -97,20 +97,20 @@ void FarmScene::InitScene()
 	AddGameObject(_pBed);
 
 	_pWoodNode = new ResourceNodeObject(Wood);
-	_pWoodNode->GetTransform()->SetPosition(5.0f, 1.0f);
+	_pWoodNode->GetTransform()->SetPosition(3.0f, 3.0f);
 	AddGameObject(_pWoodNode);
 
 	_pMetalNode = new ResourceNodeObject(Metal);
-	_pMetalNode->GetTransform()->SetPosition(8.25f, 1.25f);
+	_pMetalNode->GetTransform()->SetPosition(10.0f, 0.75f);
 	AddGameObject(_pMetalNode);
 
 	_pStoneNode = new ResourceNodeObject(Stone);
-	_pStoneNode->GetTransform()->SetPosition(7.5, 0.75f);
+	_pStoneNode->GetTransform()->SetPosition(9.75f, 1.75f);
 	AddGameObject(_pStoneNode);
 
 
 	_pCoalNode = new ResourceNodeObject(Coal);
-	_pCoalNode->GetTransform()->SetPosition(7.75f, 1.25f);
+	_pCoalNode->GetTransform()->SetPosition(5.5f, 1.25f);
 	AddGameObject(_pCoalNode);
 
 
