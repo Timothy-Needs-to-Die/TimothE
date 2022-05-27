@@ -17,7 +17,7 @@ public:
 	void SpawnEnemies();
 	void AddSpawnPosition(glm::vec2 pos);
 	void AddSpawnPosition();
-
+	bool GetWaveCleared();
 	
 	int _daysPast = 0;
 private:

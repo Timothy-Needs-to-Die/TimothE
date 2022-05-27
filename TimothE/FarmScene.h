@@ -56,7 +56,7 @@ private:
 	class ResourceNodeObject* _pCoalNode = nullptr;
 
 	class GameTimeManager* _pGameTime = nullptr;
-
+	class Bed* _pBed;
 	class InventoryScreen* _pInventoryScreen = nullptr;
 	class GameOverScreen* _pGameOverScreen = nullptr;
 
@@ -67,8 +67,6 @@ private:
 	bool spawnEnemyKey = false;
 
 	std::vector<class StructureObject*> _pStructures;
-
-	class Bed* _pBed;
 
 	class WaveManager* _pWaveManager;
 };

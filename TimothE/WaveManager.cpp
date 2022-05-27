@@ -97,36 +97,16 @@ void WaveManager::AddSpawnPosition(glm::vec2 pos)
 void WaveManager::AddSpawnPosition()
 {
 	float maxX = 10.0f, maxY = 10.0f;
-	//float x, y;
-	//int side = rand() % 4;
-	//switch (side)
-	//{
-	//case 0:
-	//	// top
-	//	x = (float)(rand() / (float)(RAND_MAX / maxX));
-	//	y = maxY;
-	//	break;
-	//case 1:
-	//	// right
-	//	x = maxX;
-	//	y = (float)(rand() / (float)(RAND_MAX / maxY));
-	//	break;
-	//case 2:
-	//	// bottom
-	//	x = (float)(rand() / (float)(RAND_MAX / maxX));
-	//	y = 0.0f;
-	//	break;
-	//case 3:
-	//	// left
-	//	x = 0.0f;
-	//	y = (float)(rand() / (float)(RAND_MAX / maxY));
-	//	break;
-	//}
 
 	float x = (float)(rand() / (float)(RAND_MAX / maxX));
 	float y = (float)(rand() / (float)(RAND_MAX / maxY));
 
 	_spawnPositions.emplace_back(x,y);
+}
+
+bool WaveManager::GetWaveCleared()
+{
+	return _nightCleared;
 }
 
 void WaveManager::GenerateSpawnTime()

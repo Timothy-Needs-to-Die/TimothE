@@ -85,6 +85,12 @@ void FarmScene::UpdateObjects()
 	}
 
 	Physics::UpdateWorld();
+	
+		//if (WaveManager.GetWaveCleared())
+		{
+			_pBed->canSleepThroughNight = true;
+		}
+	
 }
 
 void FarmScene::InitScene()
@@ -100,6 +106,11 @@ void FarmScene::InitScene()
 	_pPlayer = new Player();
 	_pPlayer->GetTransform()->SetPosition(7.0f, 3.5f);
 	AddGameObject(_pPlayer);
+
+	_pBed = new Bed();
+	_pBed->GetTransform()->SetPosition(5.0f, 3.5f);
+	_pBed->GetTransform()->SetScale({ .25f, .5f });
+	AddGameObject(_pBed);
 
 	//_pWaveController = new WaveController(this);
 
