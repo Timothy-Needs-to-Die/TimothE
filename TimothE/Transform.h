@@ -47,9 +47,6 @@ public:
 	//Calculates the transform matrix. Needs to be called whenever position, rotation or scale are called
 	void CalculateTransformMatrix();
 
-	// Inherited via ISerializable
-	virtual bool SaveState(IStream& stream) const override;
-	virtual bool LoadState(IStream& stream) override;
 private:
 	glm::mat4 _transformationMatrix;
 

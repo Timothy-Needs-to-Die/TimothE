@@ -8,13 +8,15 @@
 #include "ProjectileObject.h"
 
 StructureFighter::StructureFighter(GameObject* owner)
-	: Component(owner), _timeSinceLastAttack(0.0)
+	: Component(owner), _timeSinceLastAttack(0.0f), _attackRate(2.5f)
 {
 	SetType(StructureFighter_Type);
 }
 
 void StructureFighter::Attack(GameObject* pTarget)
 {
+	if (pTarget == nullptr) return;
+	if (!pTarget->IsActive()) return;
 	if (_timeSinceLastAttack < _attackRate) return;
 
 	_timeSinceLastAttack = 0.0f;

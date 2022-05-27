@@ -35,29 +35,28 @@ void FarmScene::UpdateObjects()
 
 	_pGameTime->Update();
 
+
 	if (Input::IsKeyDown(KEY_5)) {
 		SceneManager::SetCurrentScene(SceneManager::CreateScene(ResourceManager::GetScene("TownScene")));
 	}
 
-	if (Input::IsKeyDown(KEY_G)) {
-		//_pTilemap->AddTileAt(2, 15, 12, CameraManager::CurrentCamera());
-	}
-	/*if (Input::IsKeyDown(KEY_H))
-	{
-		if (_pPlayer != nullptr)
-		{
-			PlayerHealth* h = _pPlayer->GetComponent<PlayerHealth>();
-			if (h != nullptr)
-			{
-				h->TakeDamage(50);
-			}
-		}
-	}*/
+	//if (Input::IsKeyDown(KEY_G)) {
+	//	_pTilemap->AddTileAt(2, 15, 12, CameraManager::CurrentCamera());
+	//}
 
-	if (!_pGameTime->IsDay()) {
+	if (_pGameTime->IsDay()) {
+		if (Input::IsKeyDown(KEY_O)) {
+			_pGameTime->StartNight();
+		}
+	}
+	else {
+		_pWaveManager->Update();
+
 		if (Input::IsKeyDown(KEY_P)) {
 			_pGameTime->EndNight();
 			_pGameTime->StartNewDay();
+			// Tell the farmland that a new day has dawned
+			_pPlayer->GetComponent<FarmlandManager>()->OnNewDay();
 		}
 	}
 
@@ -74,23 +73,23 @@ void FarmScene::UpdateObjects()
 
 		_pInventoryScreen->SetAllActive(!current);
 		_pInventoryScreen->OnUpdate();
-		//if (_pInventoryScreen == nullptr)
-		//{
-			//_pInventoryScreen->GetTransform()->SetPosition(50.0f, 50.0f);
-			//_pInventoryScreen->GetTransform()->SetScale({ 0.25f, 0.25f });
-		//}
 	}
 
-	if (Input::IsKeyDown(KEY_1)) {
-		SaveScene("Resources/PlayerSaves/FarmSceneSaveData.sav");
-	}
-	
-	if (_pPlayer->GetComponent<PlayerHealth>() != nullptr)
+
+
+
+	if (_pInventoryScreen->GetAllActive())
 	{
-		_pPlayer->GetComponent<TextComponent>()->SetText(std::to_string(_pPlayer->GetComponent<PlayerHealth>()->GetCurrentHealth()));
+		_pInventoryScreen->OnUpdate();
 	}
 
 	Physics::UpdateWorld();
+
+	if (_pWaveManager->GetWaveCleared())
+	{
+		_pBed->canSleepThroughNight = true;
+	}
+
 }
 
 void FarmScene::InitScene()
@@ -100,29 +99,17 @@ void FarmScene::InitScene()
 	_pInventoryScreen = new InventoryScreen("InventoryScreen", "UI");
 	AddGameObject(_pInventoryScreen);
 	_pInventoryScreen->SetAllActive(false);
-	
-	
-	//_pGameOverScreen->OnUpdate();
-	//_pGameOverScreen->SetAllActive(false);
 
-	_pSpritesheet = ResourceManager::GetSpriteSheet("testSheet");
-
-	_pGameTime = new GameTimeManager();
-
-	//_pStartButton = new GameObject("BUTTON", "UI");
-	//_pStartButton->AddComponent(new Button(_pStartButton));
-	//_pStartButton->AddComponent(new BoxColliderComponent(_pStartButton));
-	//_pStartButton->AddComponent(new TextComponent(_pTestObject));
-	//_pStartButton->AddComponent(ResourceManager::GetTexture("Button"));
-	//_pStartButton->GetTransform()->SetPosition(0.0f, 0.0f);
-	//_pStartButton->GetTransform()->SetScale({ 0.2f, 0.2f });
-	//AddGameObject(_pStartButton);
-
-
+	_pGameTime = new GameTimeManager(_pLightManager);
 
 	_pPlayer = new Player();
 	_pPlayer->GetTransform()->SetPosition(7.0f, 3.5f);
 	AddGameObject(_pPlayer);
+
+	_pBed = new Bed();
+	_pBed->GetTransform()->SetPosition(5.0f, 3.5f);
+	_pBed->GetTransform()->SetScale({ .25f, .5f });
+	AddGameObject(_pBed);
 
 	//_pWaveController = new WaveController(this);
 
@@ -134,33 +121,30 @@ void FarmScene::InitScene()
 	AddGameObject(_pWoodNode);
 
 	_pMetalNode = new ResourceNodeObject(Metal);
-	_pMetalNode->GetTransform()->SetPosition(6.0, 1.0f);
+	_pMetalNode->GetTransform()->SetPosition(8.25f, 1.25f);
 	AddGameObject(_pMetalNode);
 
 	_pStoneNode = new ResourceNodeObject(Stone);
-	_pStoneNode->GetTransform()->SetPosition(7.0, 1.0f);
+	_pStoneNode->GetTransform()->SetPosition(7.5, 0.75f);
 	AddGameObject(_pStoneNode);
 
 
 	_pCoalNode = new ResourceNodeObject(Coal);
-	_pCoalNode->GetTransform()->SetPosition(8.0, 1.0f);
+	_pCoalNode->GetTransform()->SetPosition(7.75f, 1.25f);
 	AddGameObject(_pCoalNode);
 
-	farmland = new FarmlandManager("Farmland Manager");
-	AddGameObject(farmland);
 
-	//LIGHTING TEST CODE//
-	//_pLightManager = new LightLevelManager(_pTilemap);
+	_pWaveManager = new WaveManager();
 
+	PlayerResourceManager::LoadInCropData();
 
+	if (LoadScene("Resources/PlayerSaves/FarmSceneSaveData.sav")) {
 
-	_pBuildIndicator = new TextObject("Build Mode", "arial.ttf", "Text", "BUILDMODETEXT");
-	_pBuildIndicator->GetTransform()->SetPosition({ 850.0f, 1000.0f });
-	_pBuildIndicator->GetTransform()->SetScale({ 1.0f, 1.0f });
-	AddGameObject(_pBuildIndicator);
-	_pBuildIndicator->SetActive(false);
-
-	LoadScene("Resources/PlayerSaves/FarmSceneSaveData.sav");
+	}else{
+		PlayerResourceManager::GetPlantResource(WheatSeedRes)->GainResource(5);
+		PlayerResourceManager::GetPlantResource(CarrotSeedRes)->GainResource(5);
+		PlayerResourceManager::GetPlantResource(PotatoSeedRes)->GainResource(5);
+	}
 }
 
 void FarmScene::SaveScene(std::string filename)
@@ -182,13 +166,15 @@ void FarmScene::SaveScene(std::string filename)
 	stream.Close();
 }
 
-void FarmScene::LoadScene(std::string filename)
+bool FarmScene::LoadScene(std::string filename)
 {
 	_pStructures.clear();
 
 	StreamFile stream;
 
-	stream.OpenRead(filename);
+	bool result = stream.OpenRead(filename);
+
+	if (!result) return false;
 
 	//_pStructures.resize(ReadInt(stream));
 	int size = ReadInt(stream);
@@ -214,6 +200,8 @@ void FarmScene::LoadScene(std::string filename)
 	}
 
 	stream.Close();
+
+	return true;
 }
 
 void FarmScene::AddStructure(StructureObject* object)
@@ -253,19 +241,20 @@ std::vector<class StructureObject*> FarmScene::GetStructures() const
 	return _pStructures;
 }
 
+void FarmScene::PlayerSlept()
+{
+	SaveScene("Resources/PlayerSaves/FarmSceneSaveData.sav");
+	_pGameTime->EndNight();
+	_pGameTime->StartNewDay();
+}
+
 void FarmScene::GameOver()
 {
 	TIM_LOG_LOG("Game over");
-	for each (GameObject* go in _listOfDrawableGameObjects)
-	{
-		go->SetActive(false);
-	}
+
 	//creates game over screen
 	_pGameOverScreen = new GameOverScreen();
 	glm::vec2 playerPos = _pPlayer->GetTransform()->GetPosition();
-	_pGameOverScreen->GetTransform()->SetPosition(playerPos.x-4, playerPos.y - 2.5); //sets position to centre on player
-
+	_pGameOverScreen->GetTransform()->SetPosition(playerPos.x - 4, playerPos.y - 2.5); //sets position to centre on player
 	AddGameObject(_pGameOverScreen);
-	
-	
 }

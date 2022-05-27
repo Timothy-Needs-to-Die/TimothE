@@ -116,25 +116,3 @@ void Texture2D::SetFilterMode(GLenum filter)
 	GLCall(glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, filter));
 	GLCall(glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, filter));
 }
-
-// Inherited via ISerializable
-
-inline bool Texture2D::SaveState(IStream& stream) const {
-	Component::SaveState(stream);
-
-	//Save filepath
-	WriteString(stream, _filePath);
-
-	return true;
-
-}
-
-inline bool Texture2D::LoadState(IStream& stream) {
-	Component::LoadState(stream);
-
-	//Loads the texture based on the string that it reads in
-	Load(ReadString(stream));
-
-	return true;
-
-}

@@ -21,4 +21,3 @@ private:
 	std::vector<class TextObject*> _pBuildModeUI;
 	std::vector<class TextObject*> _pFarmModeUI;
 };
-

@@ -30,26 +30,22 @@ public:
 	void InitScene() override;
 
 	void SaveScene(std::string filename);
-	void LoadScene(std::string filename);
+	bool LoadScene(std::string filename);
 
 	void AddStructure(class StructureObject* object);
 	void RemoveStructure(class StructureObject* object);
 	std::vector<class StructureObject*> GetStructures() const;
 
+	void PlayerSlept();
 	void GameOver() override;
 
 	class GameTimeManager* GetGameTime() { return _pGameTime; }
 
 	LightLevelManager* GetLightManager() const { return _pLightManager; }
 
+	class WaveManager* GetWaveManager() const { return _pWaveManager; }
+
 private:
-	GameObject* _pStartButton = nullptr;
-	GameObject* _pWeaponObject = nullptr;
-
-	SpriteSheet* _pSpritesheet;
-
-	
-
 	//class WaveController* _pWaveController = nullptr;
 
 	class Player* _pPlayer;
@@ -61,11 +57,9 @@ private:
 	class ResourceNodeObject* _pCoalNode = nullptr;
 
 	class GameTimeManager* _pGameTime = nullptr;
-
+	class Bed* _pBed;
 	class InventoryScreen* _pInventoryScreen = nullptr;
 	class GameOverScreen* _pGameOverScreen = nullptr;
-
-	class TextObject* _pBuildIndicator = nullptr;
 
 	//Farmland
 	FarmlandManager* farmland;
@@ -75,5 +69,5 @@ private:
 
 	std::vector<class StructureObject*> _pStructures;
 
-	class Bed* _pBed;
+	class WaveManager* _pWaveManager;
 };

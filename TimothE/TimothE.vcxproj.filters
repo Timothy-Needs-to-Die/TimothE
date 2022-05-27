@@ -24,6 +24,9 @@
     <ClInclude Include="Application.h">
       <Filter>Headers</Filter>
     </ClInclude>
+    <ClInclude Include="ArmourConfig.h">
+      <Filter>Headers</Filter>
+    </ClInclude>
     <ClInclude Include="AudioEngine.h">
       <Filter>Headers</Filter>
     </ClInclude>
@@ -31,6 +34,12 @@
       <Filter>Headers</Filter>
     </ClInclude>
     <ClInclude Include="BaseTrader.h">
+      <Filter>Headers</Filter>
+    </ClInclude>
+    <ClInclude Include="Bed.h">
+      <Filter>Headers</Filter>
+    </ClInclude>
+    <ClInclude Include="BedHealth.h">
       <Filter>Headers</Filter>
     </ClInclude>
     <ClInclude Include="BoxColliderComponent.h">
@@ -126,9 +135,6 @@
     <ClInclude Include="CropPlot.h">
       <Filter>Headers</Filter>
     </ClInclude>
-    <ClInclude Include="CropsConfig.h">
-      <Filter>Headers</Filter>
-    </ClInclude>
     <ClInclude Include="Day.h">
       <Filter>Headers</Filter>
     </ClInclude>
@@ -144,6 +150,9 @@
     <ClInclude Include="Enemy.h">
       <Filter>Headers</Filter>
     </ClInclude>
+    <ClInclude Include="EnemyHealth.h">
+      <Filter>Headers</Filter>
+    </ClInclude>
     <ClInclude Include="FarmScene.h">
       <Filter>Headers</Filter>
     </ClInclude>
@@ -157,6 +166,12 @@
       <Filter>Headers</Filter>
     </ClInclude>
     <ClInclude Include="GameObject.h">
+      <Filter>Headers</Filter>
+    </ClInclude>
+    <ClInclude Include="GameOverScreen.h">
+      <Filter>Headers</Filter>
+    </ClInclude>
+    <ClInclude Include="GameTimeManager.h">
       <Filter>Headers</Filter>
     </ClInclude>
     <ClInclude Include="Health.h">
@@ -201,16 +216,28 @@
     <ClInclude Include="Input.h">
       <Filter>Headers</Filter>
     </ClInclude>
+    <ClInclude Include="InventoryScreen.h">
+      <Filter>Headers</Filter>
+    </ClInclude>
     <ClInclude Include="ItemConfig.h">
       <Filter>Headers</Filter>
     </ClInclude>
     <ClInclude Include="ItemResourceType.h">
       <Filter>Headers</Filter>
     </ClInclude>
+    <ClInclude Include="LightLevelManager.h">
+      <Filter>Headers</Filter>
+    </ClInclude>
+    <ClInclude Include="LightsourceObject.h">
+      <Filter>Headers</Filter>
+    </ClInclude>
     <ClInclude Include="MemoryManager.h">
       <Filter>Headers</Filter>
     </ClInclude>
     <ClInclude Include="MovementComponent.h">
+      <Filter>Headers</Filter>
+    </ClInclude>
+    <ClInclude Include="Node.h">
       <Filter>Headers</Filter>
     </ClInclude>
     <ClInclude Include="OffensiveStructureObject.h">
@@ -234,6 +261,9 @@
     <ClInclude Include="Player.h">
       <Filter>Headers</Filter>
     </ClInclude>
+    <ClInclude Include="PlayerHealth.h">
+      <Filter>Headers</Filter>
+    </ClInclude>
     <ClInclude Include="PlayerInputComponent.h">
       <Filter>Headers</Filter>
     </ClInclude>
@@ -241,6 +271,9 @@
       <Filter>Headers</Filter>
     </ClInclude>
     <ClInclude Include="PlayerResourceManager.h">
+      <Filter>Headers</Filter>
+    </ClInclude>
+    <ClInclude Include="ProjectileObject.h">
       <Filter>Headers</Filter>
     </ClInclude>
     <ClInclude Include="PurchaseableConfig.h">
@@ -315,6 +348,9 @@
     <ClInclude Include="SceneManager.h">
       <Filter>Headers</Filter>
     </ClInclude>
+    <ClInclude Include="SeedConfig.h">
+      <Filter>Headers</Filter>
+    </ClInclude>
     <ClInclude Include="SellableConfig.h">
       <Filter>Headers</Filter>
     </ClInclude>
@@ -354,6 +390,9 @@
     <ClInclude Include="TextComponent.h">
       <Filter>Headers</Filter>
     </ClInclude>
+    <ClInclude Include="TextObject.h">
+      <Filter>Headers</Filter>
+    </ClInclude>
     <ClInclude Include="Texture2D.h">
       <Filter>Headers</Filter>
     </ClInclude>
@@ -387,28 +426,21 @@
     <ClInclude Include="UID.h">
       <Filter>Headers</Filter>
     </ClInclude>
+    <ClInclude Include="WaveManager.h">
+      <Filter>Headers</Filter>
+    </ClInclude>
+    <ClInclude Include="WeaponComponent.h">
+      <Filter>Headers</Filter>
+    </ClInclude>
     <ClInclude Include="WeaponConfig.h">
+      <Filter>Headers</Filter>
+    </ClInclude>
+    <ClInclude Include="WeaponObject.h">
       <Filter>Headers</Filter>
     </ClInclude>
     <ClInclude Include="pch.h">
       <Filter>Headers</Filter>
     </ClInclude>
-    <ClInclude Include="ProjectileObject.h" />
-    <ClInclude Include="EnemyHealth.h" />
-    <ClInclude Include="ArmourConfig.h" />
-    <ClInclude Include="SeedConfig.h" />
-    <ClInclude Include="GameTimeManager.h" />
-    <ClInclude Include="InventoryScreen.h" />
-    <ClInclude Include="WaveManager.h" />
-    <ClInclude Include="Bed.h" />
-    <ClInclude Include="BedHealth.h" />
-    <ClInclude Include="PlayerHealth.h" />
-    <ClInclude Include="LightLevelManager.h" />
-    <ClInclude Include="WeaponComponent.h" />
-    <ClInclude Include="WeaponObject.h" />
-    <ClInclude Include="LightsourceObject.h" />
-    <ClInclude Include="TextObject.h" />
-    <ClInclude Include="GameOverScreen.h" />
     <ClInclude Include="PlayerUIComponent.h" />
     <ClInclude Include="MainMenuScene.h" />
     <ClInclude Include="MainMenuUI.h" />
@@ -436,6 +468,12 @@
       <Filter>Source</Filter>
     </ClCompile>
     <ClCompile Include="BaseTrader.cpp">
+      <Filter>Source</Filter>
+    </ClCompile>
+    <ClCompile Include="Bed.cpp">
+      <Filter>Source</Filter>
+    </ClCompile>
+    <ClCompile Include="BedHealth.cpp">
       <Filter>Source</Filter>
     </ClCompile>
     <ClCompile Include="BoxColliderComponenet.cpp">
@@ -507,6 +545,9 @@
     <ClCompile Include="Enemy.cpp">
       <Filter>Source</Filter>
     </ClCompile>
+    <ClCompile Include="EnemyHealth.cpp">
+      <Filter>Source</Filter>
+    </ClCompile>
     <ClCompile Include="FarmScene.cpp">
       <Filter>Source</Filter>
     </ClCompile>
@@ -520,6 +561,12 @@
       <Filter>Source</Filter>
     </ClCompile>
     <ClCompile Include="GameObject.cpp">
+      <Filter>Source</Filter>
+    </ClCompile>
+    <ClCompile Include="GameOverScreen.cpp">
+      <Filter>Source</Filter>
+    </ClCompile>
+    <ClCompile Include="GameTimeManager.cpp">
       <Filter>Source</Filter>
     </ClCompile>
     <ClCompile Include="Health.cpp">
@@ -555,6 +602,15 @@
     <ClCompile Include="Input.cpp">
       <Filter>Source</Filter>
     </ClCompile>
+    <ClCompile Include="InventoryScreen.cpp">
+      <Filter>Source</Filter>
+    </ClCompile>
+    <ClCompile Include="LightLevelManager.cpp">
+      <Filter>Source</Filter>
+    </ClCompile>
+    <ClCompile Include="LightsourceObject.cpp">
+      <Filter>Source</Filter>
+    </ClCompile>
     <ClCompile Include="MemoryManager.cpp">
       <Filter>Source</Filter>
     </ClCompile>
@@ -579,6 +635,9 @@
     <ClCompile Include="Player.cpp">
       <Filter>Source</Filter>
     </ClCompile>
+    <ClCompile Include="PlayerHealth.cpp">
+      <Filter>Source</Filter>
+    </ClCompile>
     <ClCompile Include="PlayerInputComponent.cpp">
       <Filter>Source</Filter>
     </ClCompile>
@@ -586,6 +645,9 @@
       <Filter>Source</Filter>
     </ClCompile>
     <ClCompile Include="PlayerResourceManager.cpp">
+      <Filter>Source</Filter>
+    </ClCompile>
+    <ClCompile Include="ProjectileObject.cpp">
       <Filter>Source</Filter>
     </ClCompile>
     <ClCompile Include="ResourceManager.cpp">
@@ -639,6 +701,9 @@
     <ClCompile Include="TextComponent.cpp">
       <Filter>Source</Filter>
     </ClCompile>
+    <ClCompile Include="TextObject.cpp">
+      <Filter>Source</Filter>
+    </ClCompile>
     <ClCompile Include="Texture2D.cpp">
       <Filter>Source</Filter>
     </ClCompile>
@@ -654,28 +719,20 @@
     <ClCompile Include="Transform.cpp">
       <Filter>Source</Filter>
     </ClCompile>
+    <ClCompile Include="WaveManager.cpp">
+      <Filter>Source</Filter>
+    </ClCompile>
+    <ClCompile Include="WeaponComponent.cpp">
+      <Filter>Source</Filter>
+    </ClCompile>
+    <ClCompile Include="WeaponObject.cpp">
+      <Filter>Source</Filter>
+    </ClCompile>
     <ClCompile Include="pch.cpp">
       <Filter>Source</Filter>
     </ClCompile>
-    <ClCompile Include="ProjectileObject.cpp" />
-    <ClCompile Include="EnemyHealth.cpp" />
-    <ClCompile Include="GameTimeManager.cpp" />
-    <ClCompile Include="InventoryScreen.cpp" />
-    <ClCompile Include="WaveManager.cpp" />
-    <ClCompile Include="Bed.cpp" />
-    <ClCompile Include="BedHealth.cpp" />
-    <ClCompile Include="PlayerHealth.cpp" />
-    <ClCompile Include="LightLevelManager.cpp" />
-    <ClCompile Include="WeaponComponent.cpp" />
-    <ClCompile Include="WeaponObject.cpp" />
-    <ClCompile Include="LightsourceObject.cpp" />
-    <ClCompile Include="TextObject.cpp" />
-    <ClCompile Include="GameOverScreen.cpp" />
     <ClCompile Include="PlayerUIComponent.cpp" />
     <ClCompile Include="MainMenuScene.cpp" />
     <ClCompile Include="MainMenuUI.cpp" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Node.h" />
   </ItemGroup>
 </Project>

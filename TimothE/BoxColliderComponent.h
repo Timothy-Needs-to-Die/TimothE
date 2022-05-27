@@ -42,30 +42,6 @@ public:
 
 	Rect* GetCollisionRect() { return _boxCollider; }
 
-	virtual bool SaveState(IStream& stream) const override {
-		Component::SaveState(stream);
-
-		WriteFloat(stream, _boxCollider->xPos);
-		WriteFloat(stream, _boxCollider->yPos);
-		WriteFloat(stream, _boxCollider->width);
-		WriteFloat(stream, _boxCollider->height);
-		WriteInt(stream, (int)_isEnabled);
-
-		return true;
-	}
-	virtual bool LoadState(IStream& stream) override {
-		Component::LoadState(stream);
-
-		_boxCollider = new Rect(
-			ReadFloat(stream),
-			ReadFloat(stream),
-			ReadFloat(stream),
-			ReadFloat(stream));
-
-		_isEnabled = (bool)ReadInt(stream);
-
-		return true;
-	}
 private:
 	bool _isEnabled;
 

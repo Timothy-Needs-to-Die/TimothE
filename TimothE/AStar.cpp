@@ -60,6 +60,8 @@ std::vector<glm::vec2> AStar::FindPath(glm::vec2 start, glm::vec2 end)
 
 		//Explore this node's neighbors
 		for (auto& nodeNeighbor : currentNode->_mNeighborNodes) {
+			if (nodeNeighbor == nullptr) continue;
+
 			//if the neighbor node is not visited and is not an obstacle then add it to the untestedNode list
 			if (!nodeNeighbor->_mIsVisited && !nodeNeighbor->_mIsObstacle) {
 				//Adds the neighboring node to the list

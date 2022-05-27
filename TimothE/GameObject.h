@@ -6,7 +6,6 @@
 #include "Component.h"
 #include "UID.h"
 #include "Serializable.h"
-#include "BoxColliderComponent.h"
 #include "ParticleSystem.h"
 #include "Tag.h"
 
@@ -133,7 +132,11 @@ public:
 	bool IsActive() { return _isActive; }
 	void SetActive(bool val) {
 		_isActive = val;
-		TIM_LOG_LOG("IsActive: " << _isActive);
+		//TIM_LOG_LOG("IsActive: " << _isActive);
+		if (_pChild != nullptr)
+		{
+			_pChild->SetActive(false);
+		}
 	}
 
 	bool IsToBeDestroyed() const { return _toBeDestroyed; }

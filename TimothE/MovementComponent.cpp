@@ -8,9 +8,18 @@
 #include "SceneManager.h"
 
 
+MovementComponent::MovementComponent(GameObject* gameObject) : Component(gameObject)
+{
+	_direction = Direction::STATIONARY;
+	_moving = false;
+	SetType(Types::Movement);
+
+	_pTilemap = SceneManager::GetCurrentScene()->GetTileMap();
+}
+
 void MovementComponent::Move(glm::vec2 moveVec)
 {
-	// if magnitude greater than 1 (moving diagonally), normalise to prevent moving at double speed
+	// if magnitude greater than 1 (moving diagonally), normalize to prevent moving at double speed
 	float mag = sqrt((moveVec.x * moveVec.x) + (moveVec.y * moveVec.y));
 	if (mag > 1.0f)
 	{
@@ -49,7 +58,15 @@ void MovementComponent::CollisionCheck(glm::vec2& newPos)
 		newPos.y = 0.0f;
 	}
 
-	TileMap* pTilemap = SceneManager::GetCurrentScene()->GetTileMap();
+	//These values should be retrieved from the tilemap
+	if (newPos.y > 8.0f) { //HARDCODED value for top of map
+		newPos.y = 8.0f;
+	}
+
+	if (newPos.x > 16.0f) {
+		newPos.x = 16.0f; //HARDCODED value for right side of map.
+	}
+
 
 	ColQuad playerQuad;
 	playerQuad.pos = newPos;
@@ -58,16 +75,16 @@ void MovementComponent::CollisionCheck(glm::vec2& newPos)
 	playerQuad.size.y /= 2.0f;
 	playerQuad.CalculateMax();
 	
-	TileData* tile = pTilemap->GetTileAtWorldPos(0, newPos);
+	TileData* tile = _pTilemap->GetTileAtWorldPos(0, newPos);
 	//TIM_LOG_LOG("Player Tile Pos: " << tile->pos.x << ", " << tile->pos.y);
 
 	for (float x = newPos.x - 0.25f; x <= newPos.x + 0.25f; x += 0.25f) {
 		for (float y = newPos.y - 0.25f; y <= newPos.y + 0.25f; y += 0.25f) {
 			glm::vec2 pos = { x,y };
 
-			bool collidable = pTilemap->CollidableAtPosition(pos);
+			bool collidable = _pTilemap->CollidableAtPosition(pos);
 			if (collidable) {
-				TileData* tile = pTilemap->GetTileAtWorldPos(0, pos);
+				TileData* tile = _pTilemap->GetTileAtWorldPos(0, pos);
 
 				ColQuad tileQuad;
 				tileQuad.pos = tile->pos;
@@ -107,8 +124,6 @@ void MovementComponent::DecideDirection(glm::vec2& moveVec)
 		_direction = moveVec.x > 0.0f ? Direction::RIGHT : Direction::LEFT;
 
 		if (_direction == Direction::LEFT) {
-			
-			
 			newForward.x = 0.0f;
 			newForward.y = -1.0f;
 		}
@@ -116,7 +131,6 @@ void MovementComponent::DecideDirection(glm::vec2& moveVec)
 			newForward.x = 1.0f;
 			newForward.y = 0.0f;
 		}
-
 	}
 	else {
 		//We are moving up or down. Decide based on if the y component is greater than 0
@@ -134,12 +148,7 @@ void MovementComponent::DecideDirection(glm::vec2& moveVec)
 
 	
 	newForward = glm::normalize(newForward);
-
-	//std::cout << "Rotation: " << xVal << std::endl;
-
-	//TIM_LOG_LOG("Player Forward: " << newForward.x << ", " << newForward.y);
 	_pParentObject->GetTransform()->SetForward(newForward);
-	//_pParentObject->GetTransform()->SetRotation(xVal);
 }
 
 void MovementComponent::OnStart()

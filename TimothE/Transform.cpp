@@ -49,8 +49,14 @@ void Transform::OnUpdate()
 	GameObject* pParent = _pParentObject->GetParent();
 	if (pParent != nullptr) {
 		Transform* pTransform = pParent->GetTransform();
+		
+		try {
+			if (pTransform != nullptr)
+				_globalPosition = pTransform->GetPosition() + _localPosition;
+		}
+		catch (std::exception e) {
 
-		_globalPosition = pTransform->GetPosition() + _localPosition;
+		}
 	}
 	else {
 		_globalPosition = _localPosition;
@@ -88,43 +94,6 @@ void Transform::DrawEditorUI()
 	{
 		SetScale(glm::vec2(editorScale[0], editorScale[1]));
 	}
-}
-
-
-// Inherited via ISerializable
-inline bool Transform::SaveState(IStream& stream) const {
-	Component::SaveState(stream);
-
-	//Save position
-	WriteVec2(stream, _globalPosition);
-
-	//Save Rotation
-	WriteFloat(stream, _rotation);
-
-	//Save Scale
-	WriteVec2(stream, _size);
-
-	return true;
-
-}
-
-// Inherited via ISerializable
-bool Transform::LoadState(IStream& stream)
-{
-	Component::LoadState(stream);
-
-	//Load position
-	_globalPosition = ReadVec2(stream);
-
-	//Load Rotation
-	_rotation = ReadFloat(stream);
-	
-	//Load Scale
-	_size = ReadVec2(stream);
-
-	CalculateTransformMatrix();
-
-	return true;
 }
 
 void Transform::CalculateTransformMatrix() 

@@ -122,7 +122,6 @@
     <ClInclude Include="CoreResourceType.h" />
     <ClInclude Include="CropConfig.h" />
     <ClInclude Include="CropPlot.h" />
-    <ClInclude Include="CropsConfig.h" />
     <ClInclude Include="Day.h" />
     <ClInclude Include="DestroyAfterSecondsComponent.h" />
     <ClInclude Include="Dirent.h" />
@@ -159,6 +158,7 @@
     <ClInclude Include="MainMenuUI.h" />
     <ClInclude Include="MemoryManager.h" />
     <ClInclude Include="MovementComponent.h" />
+    <ClInclude Include="Node.h" />
     <ClInclude Include="OffensiveStructureObject.h" />
     <ClInclude Include="Particle.h" />
     <ClInclude Include="ParticleSystem.h" />
@@ -225,8 +225,8 @@
     <ClInclude Include="WaveManager.h" />
     <ClInclude Include="WeaponComponent.h" />
     <ClInclude Include="WeaponConfig.h" />
-    <ClInclude Include="pch.h" />
     <ClInclude Include="WeaponObject.h" />
+    <ClInclude Include="pch.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="AIController.cpp" />
@@ -324,12 +324,9 @@
     <ClCompile Include="TownScene.cpp" />
     <ClCompile Include="Transform.cpp" />
     <ClCompile Include="WaveManager.cpp" />
-    <ClCompile Include="pch.cpp" />
     <ClCompile Include="WeaponComponent.cpp" />
     <ClCompile Include="WeaponObject.cpp" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Node.h" />
+    <ClCompile Include="pch.cpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

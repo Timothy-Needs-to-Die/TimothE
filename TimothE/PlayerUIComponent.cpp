@@ -23,6 +23,25 @@ PlayerUIComponent::PlayerUIComponent(GameObject* parent)
 	_pBuildModeUI.emplace_back(pControls);
 
 	SetBuildModeUIActive(false);
+
+	TextObject* pFarmingModeTitle = new TextObject("Farming Mode", "arial.ttf");
+	pFarmingModeTitle->GetTransform()->SetPosition(800.0f, 1000.0f);
+	pScene->AddGameObject(pFarmingModeTitle);
+	_pFarmModeUI.emplace_back(pFarmingModeTitle);
+
+	std::string farmText = "F: Till / Harvest   1: Wheat   2: Potato";
+	TextObject* pFarmControls = new TextObject(farmText, "arial.ttf");
+	pFarmControls->GetTransform()->SetPosition(600.0f, 950.0f);
+	pScene->AddGameObject(pFarmControls);
+	_pFarmModeUI.emplace_back(pFarmControls);
+	
+	farmText = "3: Carrot   4: Demolish Plot\nF1: Sell all Crops";
+	pFarmControls = new TextObject(farmText, "arial.ttf");
+	pFarmControls->GetTransform()->SetPosition(700.0f, 900.0f);
+	pScene->AddGameObject(pFarmControls);
+	_pFarmModeUI.emplace_back(pFarmControls);
+
+	SetFarmModeUIActive(false);
 }
 
 void PlayerUIComponent::OnStart()
@@ -46,4 +65,7 @@ void PlayerUIComponent::SetBuildModeUIActive(bool val)
 
 void PlayerUIComponent::SetFarmModeUIActive(bool val)
 {
+	for (auto& obj : _pFarmModeUI) {
+		obj->SetActive(val);
+	}
 }

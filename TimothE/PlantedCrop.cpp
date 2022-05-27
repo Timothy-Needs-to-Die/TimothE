@@ -11,15 +11,21 @@
 
 */
 
-PlantedCrop::PlantedCrop(PlantResourceType cropType, int daysToGrow, std::string name, std::string tag) : GameObject(name, tag)
+PlantedCrop::PlantedCrop(PlantResourceType cropType, int daysToGrow, int startSpriteIndex, GameObject* parent) : Component(parent)
 {
 	/*int sheetX = 6, sheetY = 11;
 	SpriteSheet* sheet = ResourceManager::GetSpriteSheet("testSheet");
 	_currentSprite->SetSprite(sheet->GetSpriteAtIndex(sheet->GetSheetWidth() * sheetX + sheetY));*/
 
+	// Set the sprite
+	_pSpriteComponent = parent->GetComponent<SpriteComponent>();
+	_spriteIndex = startSpriteIndex;
+	_pSpriteComponent->SetSprite(ResourceManager::GetSpriteSheet("cropspritesheet")->GetSpriteAtIndex(_spriteIndex));
+
 	_type = cropType;
 	_daysToGrow = daysToGrow;
 	_currentGrowTime = 0;
+	_isHarvestable = false;
 }
 
 PlantedCrop::~PlantedCrop()
@@ -28,16 +34,38 @@ PlantedCrop::~PlantedCrop()
 
 void PlantedCrop::AddGrowth(int growTime)
 {
-	_currentGrowTime += growTime;
-
-	if (_currentGrowTime > _daysToGrow)
+	if (!_isHarvestable)
 	{
-		_isReady = true;
+		_spriteIndex++;
+		_pSpriteComponent->SetSprite(ResourceManager::GetSpriteSheet("cropspritesheet")->GetSpriteAtIndex(_spriteIndex));
+		_currentGrowTime += growTime;
+	}
+	if (_currentGrowTime >= _daysToGrow)
+	{
+		_isHarvestable = true;
 	}	
 }
 
-void PlantedCrop::Harvest()
+bool PlantedCrop::Harvest()
 {
+	if (_isHarvestable)
+	{
+		return true;
+	}
+	return false;
+	// give the player materials
+	// tell the crop plot to delete this component
+}
 
+void PlantedCrop::OnStart()
+{
+}
+
+void PlantedCrop::OnUpdate()
+{
+}
+
+void PlantedCrop::OnEnd()
+{
 }
 

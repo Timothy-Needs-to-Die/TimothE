@@ -4,7 +4,7 @@
 
 Font::Font(std::string font)
 {
-	_name = /*"./fonts/" + */font;
+	_name = "./" + font;
 
 	FT_Library ft;
 	if (FT_Init_FreeType(&ft))

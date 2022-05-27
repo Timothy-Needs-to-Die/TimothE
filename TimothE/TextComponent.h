@@ -30,17 +30,7 @@ public:
 
 	void RenderText(Shader& s, std::string text, float x, float y, float _tileScale, glm::vec3 color);
 
-	// Inherited via ISerializable
-	virtual bool SaveState(IStream& stream) const override {
-		Component::SaveState(stream);
 
-		return true;
-	}
-	virtual bool LoadState(IStream& stream) override {
-		Component::LoadState(stream);
-
-		return true;
-	}
 public:
 	Font* _font;
 	std::string _text;

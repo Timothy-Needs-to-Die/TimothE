@@ -9,6 +9,7 @@ class OffensiveStructureObject : public StructureObject
 public:
 	OffensiveStructureObject(std::string name = "Offensive Structure", std::string tag = "TOWER");
 
+	void CheckTarget(GameObject* target);
 
 	virtual void OnTriggerEnter(ColliderBase* other) override;
 	virtual void OnTriggerExit(ColliderBase* other) override;
