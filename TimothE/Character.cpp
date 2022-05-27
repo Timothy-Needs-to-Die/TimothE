@@ -3,6 +3,7 @@
 #include "MovementComponent.h"
 #include "SpriteComponent.h"
 #include "GameObject.h"
+#include "AudioSource.h"
 
 Character::Character(std::string texture, std::string name, std::string tag) 
 	: GameObject(name, tag) 
@@ -10,7 +11,7 @@ Character::Character(std::string texture, std::string name, std::string tag)
 	AddComponent(ResourceManager::GetTexture(texture));
 	_pAnimSheet = new AnimatedSpritesheet(ResourceManager::GetTexture(texture), 16, 32, "AnimatedCharacter");
 
-
+	_pAudioSource = AddComponent(new AudioSource(this));
 	_pMovement = AddComponent(new MovementComponent(this));
 	_pMovement->SetMovementSpeed(1.0f);
 	_pSc = AddComponent<SpriteComponent>(new SpriteComponent(this));

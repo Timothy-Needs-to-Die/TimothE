@@ -13,6 +13,7 @@
 #include "LightsourceObject.h"
 #include "PlayerHealth.h"
 #include "PlayerUIComponent.h"
+#include "AudioSource.h"
 
 void PlayerInputComponent::OnStart()
 {
@@ -125,6 +126,7 @@ void PlayerInputComponent::FarmingControls()
 		target.x += _pParentObject->GetTransform()->GetScale().x / 2;
 		target.y += _pParentObject->GetTransform()->GetScale().y / 2;
 		
+		GetParent()->GetComponent<AudioSource>()->PlaySound("PlantSeed", 50, 60, 1, 1);
 		// If we cant place farm land
 		if (!_pFarmlandManager->PlaceFarmLand(target))
 		{
@@ -169,20 +171,28 @@ void PlayerInputComponent::FarmingControls()
 		if (Input::IsKeyDown(KEY_1)) {
 			glm::vec2 playerPos = _pParentObject->GetTransform()->GetPosition();
 			_pFarmlandManager->PlantSeed(GetPlayerMidpoint(playerPos), PlantResourceType::WheatSeedRes);
+			//GetParent()->GetComponent<AudioSource>()->PlaySound("PlantSeed", 50, 60, 1, 1);
+
 		}
 		// Plant Potato
 		else if (Input::IsKeyDown(KEY_2)) {
 			glm::vec2 playerPos = _pParentObject->GetTransform()->GetPosition();
 			_pFarmlandManager->PlantSeed(GetPlayerMidpoint(playerPos), PlantResourceType::PotatoSeedRes);
+			//GetParent()->GetComponent<AudioSource>()->PlaySound("PlantSeed", 50, 60, 1, 1);
+
 		}
 		// Plant Carrot
 		else if (Input::IsKeyDown(KEY_3)) {
 			glm::vec2 playerPos = _pParentObject->GetTransform()->GetPosition();
 			_pFarmlandManager->PlantSeed(GetPlayerMidpoint(playerPos), PlantResourceType::CarrotSeedRes);
+			//GetParent()->GetComponent<AudioSource>()->PlaySound("PlantSeed", 50, 60, 1, 1);
+
 		}
 		else if (Input::IsKeyDown(KEY_4))
 		{
 			glm::vec2 playerPos = _pParentObject->GetTransform()->GetPosition();
+			//GetParent()->GetComponent<AudioSource>()->PlaySound("PlantSeed", 50, 60, 1, 1);
+
 			CropPlot* closestPlot = _pFarmlandManager->GetCropPlotAtPosition(GetPlayerMidpoint(playerPos));
 			_pFarmlandManager->RemoveCropPlot(closestPlot);
 		}
@@ -237,14 +247,17 @@ void PlayerInputComponent::BuildControls()
 		switch (_selectedStructure) {
 		case StructureType::Wall:
 			cost.woodRequired = 1;
+			
 			break;
 		case StructureType::Tower:
 			cost.woodRequired = 3;
 			cost.stoneRequired = 5;
+			
 			break;
 		case StructureType::Campfire:
 			cost.woodRequired = 3;
 			cost.coalRequired = 2;
+			
 			break;
 		default:
 			TIM_LOG_WARNING("Case not covered");
@@ -280,7 +293,12 @@ void PlayerInputComponent::BuildControls()
 
 				pFarmScene->AddStructure(pObject);
 
+				GetParent()->GetComponent<AudioSource>()->PlaySound("BuildSound", 40, 50, 0.9, 1.0);
+				//PlayerResourceManager::SpendResources(cost);
+
+
 				PlayerResourceManager::SpendResources(cost);
+
 
 			}
 		}
@@ -297,6 +315,8 @@ void PlayerInputComponent::BuildControls()
 			if (pos != tilePos) continue;
 
 			pFarmScene->RemoveStructure(structuresInScene[i]);
+			GetParent()->GetComponent<AudioSource>()->PlaySound("BuildSound", 40, 50, 0.9, 1.0);
+
 
 			break;
 		}

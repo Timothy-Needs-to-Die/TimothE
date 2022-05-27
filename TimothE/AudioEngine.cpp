@@ -105,13 +105,17 @@ void AudioEngine::ShutDownAudio()
 
 //If an error was detected with a certain issue this will print an error string
 //to aid with debugging
-void AudioEngine::CheckForErrors(FMOD_RESULT result)
+bool AudioEngine::CheckForErrors(FMOD_RESULT result)
 
 {
 	if (result != FMOD_OK)
 	{
 		std::cout << "Audio Engine Error: ";
 		std::cout << result << std::endl;
+		return true;
+	}
+	else {
+		return false;
 	}
 }
 
@@ -227,13 +231,15 @@ void AudioEngine::LoadSound(const char* name, const char* filePath, AudioType ty
 	FMOD_RESULT result = _fmodSystem->createSound(newSound.filePath, FMOD_DEFAULT, 0, &soundToLoad);
 	newSound.sound = soundToLoad;
 
-	CheckForErrors(result);
-	std::cout << "Sound Loaded: " << newSound.name << std::endl;
-	if (type == AudioType::Type_SFX) {
-		_loadedSFX[newSound.name] = newSound;
+	if (!CheckForErrors(result)) {
+		std::cout << "Sound Loaded: " << newSound.name << std::endl;
+		if (type == AudioType::Type_SFX) {
+			_loadedSFX[newSound.name] = newSound;
+		}
+		else
+			_loadedMusic[newSound.name] = newSound;
 	}
-	else
-		_loadedMusic[newSound.name] = newSound;
+	
 }
 
 
@@ -255,8 +261,8 @@ FMOD::Channel* AudioEngine::PlaySound(std::string soundName, float minVolume, fl
 {
 	auto sound = _loadedSFX.find(soundName);
 	if (sound == _loadedSFX.end()) {
-		std::cout << "Sound not found in loaded sounds" << std::endl;
-		return 0;
+		sound = _loadedMusic.find(soundName);
+		
 	}
 
 	if (sound->second.type == AudioType::Type_SFX) {
@@ -266,24 +272,29 @@ FMOD::Channel* AudioEngine::PlaySound(std::string soundName, float minVolume, fl
 
 		//Play the sound effects while applying values to the channel 
 		FMOD::Channel* channel;
-		_fmodSystem->playSound(sound->second.sound, NULL, false, &channel);
-		channel->setChannelGroup(_groups[Type_SFX]);
 		channel->setVolume(volume);
 		float frequency;
 		channel->getFrequency(&frequency);
 		channel->setFrequency(ChangeSemitone(frequency, pitch));
+		_fmodSystem->playSound(sound->second.sound, NULL, false, &channel);
+		channel->setChannelGroup(_groups[Type_SFX]);
+		
+		
 		channel->setPaused(false);
 		return channel;
 	}
 	else if (sound->second.type == AudioType::Type_Song) {
 		//Start playing song with volume set to 0 then fade in 
-
+		_currentSongChannel->stop();
 		FMOD::Channel* channel;
+		
 		FMOD_RESULT result = _fmodSystem->playSound(sound->second.sound, _groups[Type_Song], false, &channel);
+		_currentSongChannel = channel;
 		std::cout << "PlaySong";
 		CheckForErrors(result);
 		_currentSongChannel->setChannelGroup(_groups[Type_Song]);
 		_currentSongChannel->setVolume(0.0f);
+		
 		fade = Fade_In;
 
 

@@ -1,6 +1,7 @@
 #pragma once
 #include "GameObject.h"
 
+
 class Character : public GameObject
 {
 public:
@@ -12,8 +13,10 @@ private:
 protected:
 	virtual void UniqueLogic() override;
 
+	
 	class MovementComponent* _pMovement = nullptr;
 	class AnimatedSpritesheet* _pAnimSheet;
 	class SpriteComponent* _pSc = nullptr;
+	class AudioSource* _pAudioSource = nullptr;
 };
 

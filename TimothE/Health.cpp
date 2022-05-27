@@ -1,6 +1,7 @@
 #include "Health.h"
 #include "SceneManager.h"
 #include "Scene.h"
+#include "AudioSource.h"
 
 
 void Health::TakeDamage(int val, GameObject* instigator)
@@ -14,6 +15,7 @@ void Health::TakeDamage(int val, GameObject* instigator)
 	}
 	else {
 		OnDamage(instigator);
+		GetParent()->GetComponent<AudioSource>()->PlaySound("EnemyHit", 50, 60, 1, 1);
 	}
 }
 

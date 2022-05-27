@@ -1,3 +1,4 @@
+#pragma once 
 #include "AudioEngine.h"
 #include "Component.h"
 #include "GameObject.h"
@@ -7,7 +8,7 @@
 class AudioSource : public Component {
 
 public:
-	AudioSource();
+	AudioSource(GameObject* parent);
 
 	COMPONENT_STATIC_TYPE(Sound_Type);
 
@@ -26,4 +27,9 @@ private:
 
 	glm::vec2 _position;
 	float _volume = 1.0f;
+
+	// Inherited via Component
+	virtual void OnStart() override;
+	virtual void OnUpdate() override;
+	virtual void OnEnd() override;
 };

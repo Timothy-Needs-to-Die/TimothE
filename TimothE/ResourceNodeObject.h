@@ -12,7 +12,7 @@ public:
 private:
 	class ResourceNode* _pResourceNode;
 	class BoxColliderComponent* _pCollider;
-
+	class AudioSource* _pAudioSource;
 	
 
 protected:

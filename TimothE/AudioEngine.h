@@ -1,4 +1,4 @@
-
+#pragma once
 #include "pch.h"
 #include "fmod.h"
 #include <map>
@@ -21,10 +21,10 @@ public:
 	~AudioEngine();
 
 	// == System Functions == // 
-	void AudioUpdate(float elapsed);
-	void ShutDownAudio();
-	void ReleaseSound(FMOD::Sound* sound);
-	static void CheckForErrors(FMOD_RESULT result);
+	static void AudioUpdate(float elapsed);
+	static void ShutDownAudio();
+	static void ReleaseSound(FMOD::Sound* sound);
+	static bool CheckForErrors(FMOD_RESULT result);
 	static float RandomBetween(float min, float max);
 
 	//This should be set to whatever position the listener is, either the camera or the player itself

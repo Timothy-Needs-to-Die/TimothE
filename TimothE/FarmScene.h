@@ -13,6 +13,7 @@
 #include "Button.h"
 #include "CameraManager.h"
 #include "LightLevelManager.h"
+#include "AudioEngine.h"
 
 class FarmScene : public Scene
 {
@@ -61,6 +62,7 @@ private:
 	class InventoryScreen* _pInventoryScreen = nullptr;
 	class GameOverScreen* _pGameOverScreen = nullptr;
 
+	void RegisterSounds();
 	//Farmland
 	FarmlandManager* farmland;
 	bool farmKeyPressed = false;
