@@ -14,7 +14,7 @@ public:
 	bool isEPressed = false;
 private:
 	class BedHealth* _pHealth;
-	BoxColliderComponent* _pBoxCollider;
+	class BoxColliderComponent* _pBoxCollider;
 	Texture2D* _pTexture;
 	bool _isInRange = false;
 	bool _isKeyUP = true;
