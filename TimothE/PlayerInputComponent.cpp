@@ -210,7 +210,9 @@ void PlayerInputComponent::FarmingControls()
 		}
 		else if (Input::IsKeyDown(KEY_F4))
 		{
+			GetParent()->GetComponent<AudioSource>()->PlaySound("CashRegister", 50, 60, 1, 1);
 			PlayerResourceManager::SellAll();
+
 		}
 	}
 }

@@ -165,6 +165,7 @@ void FarmScene::RegisterSounds()
 	AudioEngine::LoadSound("BuildSound", "Resources/Sounds/SFX/PlaceBuilding.wav", AudioType::Type_SFX);
 	AudioEngine::LoadSound("NightSoundTrack", "Resources/Sounds/SFX/NightTimeMusic.wav", AudioType::Type_Song);
 	AudioEngine::LoadSound("FarmAmbience", "Resources/Sounds/SFX/FarmAmbience.wav", AudioType::Type_Song);
+	AudioEngine::LoadSound("CashRegister", "Resources/Sounds/SFX/CashRegister.wav", AudioType::Type_SFX);
 
 }
 

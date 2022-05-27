@@ -294,6 +294,7 @@ FMOD::Channel* AudioEngine::PlaySound(std::string soundName, float minVolume, fl
 		CheckForErrors(result);
 		_currentSongChannel->setChannelGroup(_groups[Type_Song]);
 		_currentSongChannel->setVolume(0.0f);
+		_currentSongChannel->setLoopCount(10);
 		
 		fade = Fade_In;
 
