@@ -228,6 +228,12 @@ void FarmScene::PlayerSlept()
 	if (fm) {
 		fm->OnNewDay();
 	}
+
+	Health* pHealth = _pPlayer->GetComponent<Health>();
+
+	if (pHealth != nullptr) {
+		pHealth->SetHealth(pHealth->GetMaxHealth());
+	}
 }
 
 void FarmScene::GameOver()
