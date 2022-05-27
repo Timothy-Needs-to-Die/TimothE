@@ -2,6 +2,7 @@
 #include "Button.h"
 #include "TextComponent.h"
 #include "SceneManager.h"
+#include "FarmScene.h"
 
 
 GameOverScreen::GameOverScreen(std::string name, std::string tag) : GameObject(name, tag)
@@ -32,7 +33,9 @@ GameOverScreen::GameOverScreen(std::string name, std::string tag) : GameObject(n
 //when game over retry button is pressed reset to start of day
 void GameOverScreen::TryAgainBTNClick()
 {
-	//TO-DO restart day
-	return;
+	FarmScene* fs = dynamic_cast<FarmScene*>(SceneManager::GetCurrentScene());
+	if (fs) {
+		SceneManager::SetCurrentScene(SceneManager::GetScene("FarmScene"));
+	}
 }
 

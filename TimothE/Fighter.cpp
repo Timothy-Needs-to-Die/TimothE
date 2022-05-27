@@ -58,7 +58,7 @@ void Fighter::Attack(GameObject* instigator)
 		
 		float dot = glm::dot(dir, fighterForward);
 
-		if (dot >= 0.3f) {
+		if (dot >= 0.05f) {
 			obj->TakeDamage(_weaponConfig.damage, instigator);
 		}
 	}
