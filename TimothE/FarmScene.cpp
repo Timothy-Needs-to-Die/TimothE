@@ -35,29 +35,8 @@ void FarmScene::UpdateObjects()
 
 	_pGameTime->Update();
 
-
-	if (Input::IsKeyDown(KEY_5)) {
-		SceneManager::SetCurrentScene(SceneManager::CreateScene(ResourceManager::GetScene("TownScene")));
-	}
-
-	//if (Input::IsKeyDown(KEY_G)) {
-	//	_pTilemap->AddTileAt(2, 15, 12, CameraManager::CurrentCamera());
-	//}
-
-	if (_pGameTime->IsDay()) {
-		if (Input::IsKeyDown(KEY_O)) {
-			_pGameTime->StartNight();
-		}
-	}
-	else {
+	if (!_pGameTime->IsDay()) {
 		_pWaveManager->Update();
-
-		if (Input::IsKeyDown(KEY_P)) {
-			_pGameTime->EndNight();
-			_pGameTime->StartNewDay();
-			// Tell the farmland that a new day has dawned
-			_pPlayer->GetComponent<FarmlandManager>()->OnNewDay();
-		}
 	}
 
 	if (Input::IsKeyUp(KEY_I)) {
@@ -74,9 +53,6 @@ void FarmScene::UpdateObjects()
 		_pInventoryScreen->SetAllActive(!current);
 		_pInventoryScreen->OnUpdate();
 	}
-
-
-
 
 	if (_pInventoryScreen->GetAllActive())
 	{
@@ -111,11 +87,6 @@ void FarmScene::InitScene()
 	_pBed->GetTransform()->SetScale({ .25f, .5f });
 	AddGameObject(_pBed);
 
-	//_pWaveController = new WaveController(this);
-
-	//_pDay = new Day();
-	//_pDay->SetWaveController(_pWaveController);
-
 	_pWoodNode = new ResourceNodeObject(Wood);
 	_pWoodNode->GetTransform()->SetPosition(5.0f, 1.0f);
 	AddGameObject(_pWoodNode);
@@ -140,7 +111,8 @@ void FarmScene::InitScene()
 
 	if (LoadScene("Resources/PlayerSaves/FarmSceneSaveData.sav")) {
 
-	}else{
+	}
+	else {
 		PlayerResourceManager::GetPlantResource(WheatSeedRes)->GainResource(5);
 		PlayerResourceManager::GetPlantResource(CarrotSeedRes)->GainResource(5);
 		PlayerResourceManager::GetPlantResource(PotatoSeedRes)->GainResource(5);

@@ -42,33 +42,9 @@ void PlayerInputComponent::OnUpdate()
 			_pNearbyResourceNode->Interact();
 		}
 	}
-	//testing game over
-	//if (Input::IsKeyDown(KEY_H)) {
-	//	_pParentObject->GetComponent<PlayerHealth>()->TakeDamage(10000, NULL);
-	//	TIM_LOG_LOG(_pParentObject->GetComponent<PlayerHealth>()->GetCurrentHealth());
-	//}
 
 	FarmingControls();
 
-	// Inventory
-
-	if (Input::IsKeyDown(KEY_H)) {
-		_pParentObject->GetComponent<PlayerHealth>()->TakeDamage(10, NULL);
-		TIM_LOG_LOG(_pParentObject->GetComponent<PlayerHealth>()->GetCurrentHealth());
-	}
-
-	if (Input::IsKeyDown(KEY_O)) {
-		int wheatAmount = PlayerResourceManager::GetPlantResource(PlantResourceType::WheatRes)->GetAmount();
-		int potatoAmount = PlayerResourceManager::GetPlantResource(PlantResourceType::PotatoRes)->GetAmount();
-		int carrotAmount = PlayerResourceManager::GetPlantResource(PlantResourceType::CarrotRes)->GetAmount();
-
-		TIM_LOG_LOG("Wheat: " << wheatAmount);
-		TIM_LOG_LOG("Potato: " << potatoAmount);
-		TIM_LOG_LOG("Carrot: " << carrotAmount);
-	}
-
-	// Selling
-	
 
 	// Building
 	if (Input::IsKeyUp(KEY_B)) {
@@ -285,7 +261,7 @@ void PlayerInputComponent::BuildControls()
 			return;
 		}
 
-		//if (PlayerResourceManager::CanAfford(cost)) {
+		if (PlayerResourceManager::CanAfford(cost)) {
 
 			if (!pTilemap->CollidableAtPosition(tilePos)) {
 				StructureObject* pObject;
@@ -314,10 +290,10 @@ void PlayerInputComponent::BuildControls()
 
 				pFarmScene->AddStructure(pObject);
 
-				//PlayerResourceManager::SpendResources(cost);
+				PlayerResourceManager::SpendResources(cost);
 
 			}
-		//}
+		}
 	}
 
 	if (Input::IsMouseButtonDown(BUTTON_RIGHT)) {
@@ -329,8 +305,6 @@ void PlayerInputComponent::BuildControls()
 			glm::vec2 pos = structuresInScene[i]->GetTransform()->GetPosition();
 
 			if (pos != tilePos) continue;
-
-			//pTilemap->SetCollidableAtLayer(5, tilePos, false);
 
 			pFarmScene->RemoveStructure(structuresInScene[i]);
 
