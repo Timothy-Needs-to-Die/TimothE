@@ -14,12 +14,9 @@ class MovementComponent : public Component
 {
 
 public:
-	MovementComponent(GameObject* gameObject) : Component(gameObject) 
-	{
-		_direction = Direction::STATIONARY;
-		_moving = false;
-		SetType(Types::Movement);
-	}
+	MovementComponent(GameObject* gameObject);// : Component(gameObject);
+
+	
 
 	COMPONENT_STATIC_TYPE(Movement);
 	
