@@ -7,7 +7,8 @@ MainMenuUI::MainMenuUI(std::string name, std::string tag) : GameObject(name, tag
 {
 	//creates a black background image to cover screen
 	AddComponent(ResourceManager::GetTexture("gameover_bg"));
-	GetTransform()->SetScale({ 8.0f, 5.0f });
+	GetTransform()->SetPosition({ -4, -2.0f });
+	GetTransform()->SetScale({ 800.0f, 500.0f });
 
 
 
