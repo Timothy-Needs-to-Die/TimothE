@@ -12,10 +12,13 @@ public:
 	void OnTriggerExit(ColliderBase* other) override;
 	bool canSleepThroughNight = false;
 	bool isEPressed = false;
+
+
 private:
 	class BedHealth* _pHealth;
 	class BoxColliderComponent* _pBoxCollider;
 	Texture2D* _pTexture;
+
 	bool _isInRange = false;
 	bool _isKeyUP = true;
 	//class Health* playerhealth = nullptr;

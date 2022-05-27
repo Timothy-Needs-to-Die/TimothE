@@ -442,6 +442,8 @@
       <Filter>Headers</Filter>
     </ClInclude>
     <ClInclude Include="PlayerUIComponent.h" />
+    <ClInclude Include="MainMenuScene.h" />
+    <ClInclude Include="MainMenuUI.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="AIController.cpp">
@@ -730,5 +732,7 @@
       <Filter>Source</Filter>
     </ClCompile>
     <ClCompile Include="PlayerUIComponent.cpp" />
+    <ClCompile Include="MainMenuScene.cpp" />
+    <ClCompile Include="MainMenuUI.cpp" />
   </ItemGroup>
 </Project>

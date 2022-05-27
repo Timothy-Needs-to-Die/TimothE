@@ -1,6 +1,7 @@
 #include "ResourceManager.h"
 #include "Core/Graphics/OpenGLError.h"
 #include "FarmScene.h"
+#include "MainMenuScene.h"
 #include "Dirent.h"
 #include "misc/cpp/imgui_stdlib.h"
 
@@ -71,6 +72,7 @@ void ResourceManager::Init()
 	ResourceManager::InstantiateShader("default", new Shader("VertexShader.vert", "FragmentShader.frag"));
 
 	//LOAD SCENES
+	ResourceManager::InstantiateScene("MainMenuScene", new MainMenuScene("MainMenuScene"));
 	ResourceManager::InstantiateScene("FarmScene", new FarmScene("FarmScene"));
 	ResourceManager::InstantiateScene("TownScene", new TownScene("TownScene"));
 

@@ -31,12 +31,13 @@ public:
 	void InitScene() override;
 
 	void SaveScene(std::string filename);
-	void LoadScene(std::string filename);
+	bool LoadScene(std::string filename);
 
 	void AddStructure(class StructureObject* object);
 	void RemoveStructure(class StructureObject* object);
 	std::vector<class StructureObject*> GetStructures() const;
 
+	void PlayerSlept();
 	void GameOver() override;
 
 	class GameTimeManager* GetGameTime() { return _pGameTime; }

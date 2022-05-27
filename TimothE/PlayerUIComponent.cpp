@@ -35,7 +35,7 @@ PlayerUIComponent::PlayerUIComponent(GameObject* parent)
 	pScene->AddGameObject(pFarmControls);
 	_pFarmModeUI.emplace_back(pFarmControls);
 	
-	farmText = "3: Carrot   4: Demolish Plot";
+	farmText = "3: Carrot   4: Demolish Plot\nF1: Sell all Crops";
 	pFarmControls = new TextObject(farmText, "arial.ttf");
 	pFarmControls->GetTransform()->SetPosition(700.0f, 900.0f);
 	pScene->AddGameObject(pFarmControls);

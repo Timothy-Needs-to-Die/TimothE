@@ -14,12 +14,10 @@ class MovementComponent : public Component
 {
 
 public:
-	MovementComponent(GameObject* gameObject);// : Component(gameObject);
-
-	
+	MovementComponent(GameObject* gameObject);
 
 	COMPONENT_STATIC_TYPE(Movement);
-	
+
 
 	void Move(glm::vec2 moveVec);
 
@@ -53,15 +51,14 @@ private:
 	bool _moving;
 	bool _allowCollisions = true;
 
-	
+
 
 	Direction _direction;
 
 protected:
 	class TileMap* _pTilemap;
-	
+
 	bool _constantlyMove;
 	glm::vec2 _desiredDirection;
 
 };
-

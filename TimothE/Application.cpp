@@ -80,7 +80,7 @@ void Application::Init(bool devMode)
 	Renderer2D::Init();
 
 	
-	SceneManager::SetCurrentScene(SceneManager::CreateScene(ResourceManager::GetScene("FarmScene")));
+	SceneManager::SetCurrentScene(SceneManager::CreateScene(ResourceManager::GetScene("MainMenuScene")));
 	//SceneManager::SetCurrentScene(SceneManager::CreateScene(ResourceManager::GetScene("TownScene")));
 	
 

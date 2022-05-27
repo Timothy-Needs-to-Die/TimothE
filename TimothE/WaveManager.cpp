@@ -44,7 +44,8 @@ void WaveManager::Update()
 {
 
 	if (_remainingEnemies == 0 && _livingEnemies.empty()) {
-		EndNight();
+		_nightCleared = true;
+		
 	}
 	else {
 		_timer += Time::GetDeltaTime();
@@ -62,13 +63,6 @@ void WaveManager::StartNight()
 {
 	GenerateSpawnTime();
 	GenerateWave();
-}
-
-void WaveManager::EndNight()
-{
-	_nightCleared = true;
-	_pFarmScene->GetGameTime()->EndNight();
-	_pFarmScene->GetGameTime()->StartNewDay();
 }
 
 void WaveManager::SpawnEnemies()
@@ -108,7 +102,7 @@ void WaveManager::AddSpawnPosition(glm::vec2 pos)
 
 void WaveManager::AddSpawnPosition()
 {
-	float maxX = 6.0f, maxY = 6.0f;
+	float maxX = 6.0f, maxY = 5.75f;
 
 	float x = (float)(rand() / (float)(RAND_MAX / maxX));
 	float y = (float)(rand() / (float)(RAND_MAX / maxY));

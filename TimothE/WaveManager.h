@@ -14,7 +14,6 @@ public:
 	void GenerateWave();
 	void Update();
 	void StartNight();
-	void EndNight();
 	void SpawnEnemies();
 	void AddSpawnPosition(glm::vec2 pos);
 	void AddSpawnPosition();

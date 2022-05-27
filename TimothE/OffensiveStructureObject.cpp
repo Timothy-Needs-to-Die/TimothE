@@ -22,6 +22,7 @@ void OffensiveStructureObject::CheckTarget(GameObject* target)
 void OffensiveStructureObject::OnTriggerEnter(ColliderBase* other)
 {
 	if (other->GetParent()->GetTag() == "ENEMY") {
+		if (!other->GetParent()->IsActive()) return;
 		//TIM_LOG_LOG("Target in range");
 		_pEnemiesInRange.emplace_back(other->GetParent());
 	}
@@ -31,7 +32,6 @@ void OffensiveStructureObject::OnTriggerExit(ColliderBase* other)
 {
 	if (other->GetParent()->GetTag() == "ENEMY") {
 		//TIM_LOG_LOG("Target not in range");
-
 		GameObject* enemy = other->GetParent();
 
 		if (_pCurrentTarget == enemy) _pCurrentTarget = nullptr;
@@ -43,15 +43,18 @@ void OffensiveStructureObject::OnTriggerExit(ColliderBase* other)
 				_pEnemiesInRange.erase(it);
 			}
 		}
-
 	}
 }
 
 void OffensiveStructureObject::UniqueLogic()
 {
 	if (_pCurrentTarget != nullptr) {
-		_pStructureFighter->Attack(_pCurrentTarget);
-		return;
+		if (!_pCurrentTarget->IsActive()) {
+			_pCurrentTarget = nullptr;
+		} else {
+			_pStructureFighter->Attack(_pCurrentTarget);
+			return;
+		}
 	}
 
 	if (_pEnemiesInRange.size() == 0) return;
@@ -61,6 +64,7 @@ void OffensiveStructureObject::UniqueLogic()
 	GameObject* closestEnemy = nullptr;
 	float closestDistance = 1000000.0f;
 	for (auto& obj : _pEnemiesInRange) {
+		if(!obj->IsActive()) continue;
 		float dist = glm::distance(towerPos, obj->GetTransform()->GetPosition());
 
 		if (dist < closestDistance) {

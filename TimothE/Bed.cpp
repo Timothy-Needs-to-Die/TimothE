@@ -37,7 +37,7 @@ void Bed::UniqueLogic()
 		else if (canSleepThroughNight && !daycontroller->IsDay())//wave cleared
 		{
 			//next day
-			daycontroller->StartNewDay();
+			scene->PlayerSlept();
 			// sleep and restore bed and player hp
 			_pHealth->SetHealth(_pHealth->GetMaxHealth());
 			
@@ -60,8 +60,6 @@ void Bed::OnTriggerEnter(ColliderBase* other)
 	{
 		_isInRange = true;
 		//playerhealth = other->GetParent()->GetComponent<Health>();
-
-		
 	}
 }
 
@@ -71,9 +69,6 @@ void Bed::OnTriggerExit(ColliderBase* other)
 	if (tag == "PLAYER")
 	{
 		_isInRange = true;
-
-
-
 	}
 }
 

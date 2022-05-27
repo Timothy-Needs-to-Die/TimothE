@@ -19,7 +19,7 @@ MovementComponent::MovementComponent(GameObject* gameObject) : Component(gameObj
 
 void MovementComponent::Move(glm::vec2 moveVec)
 {
-	// if magnitude greater than 1 (moving diagonally), normalise to prevent moving at double speed
+	// if magnitude greater than 1 (moving diagonally), normalize to prevent moving at double speed
 	float mag = sqrt((moveVec.x * moveVec.x) + (moveVec.y * moveVec.y));
 	if (mag > 1.0f)
 	{
