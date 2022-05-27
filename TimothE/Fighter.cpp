@@ -6,6 +6,7 @@
 #include "GameObject.h"
 #include "WeaponComponent.h"
 #include "Transform.h"
+#include "AudioSource.h"
 
 Fighter::Fighter(GameObject* pOwner) : Component(pOwner)
 {
@@ -17,7 +18,7 @@ void Fighter::Attack(GameObject* instigator)
 {
 	if (!_canAttack) return;
 	_pWeaponComponent->EndAttack();
-
+	instigator->GetComponent<AudioSource>()->PlaySound("SwordSlash", 95, 100, 0.9, 1.0);
 	_canAttack = false;
 	TIM_LOG_LOG("Attacking");
 

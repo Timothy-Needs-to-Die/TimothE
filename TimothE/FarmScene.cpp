@@ -90,6 +90,12 @@ void FarmScene::UpdateObjects()
 		_pBed->canSleepThroughNight = true;
 	}
 
+	AudioEngine::AudioUpdate(Time::GetDeltaTime());
+	//Set audio Listener to player position 
+	AudioEngine::Set3DListenerAttributes(FMOD_VECTOR{ _pPlayer->GetTransform()->GetPosition().x,
+													_pPlayer->GetTransform()->GetPosition().y,
+													0.0f }, FMOD_VECTOR{ 0.0f, 0.0f, 0.0f },
+		FMOD_VECTOR{ 0.0f, 0.0f, 0.0f }, FMOD_VECTOR{ 0.0f, 0.0f, 0.0f });
 }
 
 void FarmScene::InitScene()
@@ -179,7 +185,7 @@ void FarmScene::RegisterSounds()
 	AudioEngine::LoadSound("SwordSlash", "Resources/Sounds/SFX/SwordSlash.wav", AudioType::Type_SFX);
 	AudioEngine::LoadSound("Rooster", "Resources/Sounds/SFX/Rooster.wav", AudioType::Type_SFX);
 	AudioEngine::LoadSound("EnemyHit", "Resources/Sounds/SFX/EnemyHit.wav", AudioType::Type_SFX);
-	AudioEngine::LoadSound("BuildSound", "Resources/Sounds/SFX/BuildSound.wav", AudioType::Type_SFX);
+	AudioEngine::LoadSound("BuildSound", "Resources/Sounds/SFX/PlaceBuilding.wav", AudioType::Type_SFX);
 	AudioEngine::LoadSound("NightSoundTrack", "Resources/Sounds/SFX/NightTimeMusic.wav", AudioType::Type_Song);
 
 }

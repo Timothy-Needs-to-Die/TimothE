@@ -13,6 +13,7 @@
 #include "LightsourceObject.h"
 #include "PlayerHealth.h"
 #include "PlayerUIComponent.h"
+#include "AudioSource.h"
 
 void PlayerInputComponent::OnStart()
 {
@@ -258,14 +259,17 @@ void PlayerInputComponent::BuildControls()
 		switch (_selectedStructure) {
 		case StructureType::Wall:
 			cost.woodRequired = 1;
+			
 			break;
 		case StructureType::Tower:
 			cost.woodRequired = 3;
 			cost.stoneRequired = 5;
+			
 			break;
 		case StructureType::Campfire:
 			cost.woodRequired = 3;
 			cost.coalRequired = 2;
+			
 			break;
 		default:
 			TIM_LOG_WARNING("Case not covered");
@@ -300,7 +304,7 @@ void PlayerInputComponent::BuildControls()
 				pTransform->SetPosition(tilePos);
 
 				pFarmScene->AddStructure(pObject);
-
+				GetParent()->GetComponent<AudioSource>()->PlaySound("BuildSound", 95, 100, 0.9, 1.0);
 				//PlayerResourceManager::SpendResources(cost);
 
 			}
@@ -320,6 +324,8 @@ void PlayerInputComponent::BuildControls()
 			//pTilemap->SetCollidableAtLayer(5, tilePos, false);
 
 			pFarmScene->RemoveStructure(structuresInScene[i]);
+			GetParent()->GetComponent<AudioSource>()->PlaySound("BuildSound", 95, 100, 0.9, 1.0);
+
 
 			break;
 		}
