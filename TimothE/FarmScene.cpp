@@ -65,6 +65,9 @@ void FarmScene::UpdateObjects()
 	{
 		_pBed->canSleepThroughNight = true;
 	}
+	else {
+		_pBed->canSleepThroughNight = false;
+	}
 
 	AudioEngine::AudioUpdate(Time::GetDeltaTime());
 	//Set audio Listener to player position 
@@ -254,6 +257,12 @@ void FarmScene::PlayerSlept()
 	FarmlandManager* fm = _pPlayer->GetComponent<FarmlandManager>();
 	if (fm) {
 		fm->OnNewDay();
+	}
+
+	Health* pHealth = _pPlayer->GetComponent<Health>();
+
+	if (pHealth != nullptr) {
+		pHealth->SetHealth(pHealth->GetMaxHealth());
 	}
 }
 

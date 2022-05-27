@@ -59,6 +59,7 @@ void WaveManager::Update()
 
 void WaveManager::StartNight()
 {
+	_nightCleared = false;
 	GenerateSpawnTime();
 	GenerateWave();
 }
