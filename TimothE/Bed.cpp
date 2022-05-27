@@ -60,8 +60,6 @@ void Bed::OnTriggerEnter(ColliderBase* other)
 	{
 		_isInRange = true;
 		//playerhealth = other->GetParent()->GetComponent<Health>();
-
-		
 	}
 }
 
@@ -71,9 +69,6 @@ void Bed::OnTriggerExit(ColliderBase* other)
 	if (tag == "PLAYER")
 	{
 		_isInRange = true;
-
-
-
 	}
 }
 

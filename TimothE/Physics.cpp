@@ -241,20 +241,15 @@ void Physics::EndFrame()
 {
 	if (_pCollidersToRemove.empty()) return;
 
-	for (int i = 0; i < _pColliders.size(); i++)
-	{
-		std::swap(_pColliders.back(), _pColliders[i]);
-		_pColliders.pop_back();
+	for (std::vector<ColliderBase*>::iterator it = _pCollidersToRemove.begin(); it != _pCollidersToRemove.end(); ++it) {
+		std::vector<ColliderBase*>::iterator it2 = std::find(_pColliders.begin(), _pColliders.end(), *it);
+
+		if (it2 != _pColliders.end()) {
+			_pColliders.erase(it2);
+		}
+		
 		TIM_LOG_LOG("No of Colliders in scene: " << _pColliders.size());
 	}
-	/*for (std::vector<ColliderBase*>::iterator it = _pCollidersToRemove.begin(); it != _pCollidersToRemove.end(); ++it) {
-		_pColliders.erase(std::find(_pColliders.begin(), _pColliders.end(), *it));
-		TIM_LOG_LOG("No of Colliders in scene: " << _pColliders.size());
-	}*/
-
-	//for (std::vector<ColliderBase*>::iterator it = _pCollidersToRemove.begin(); it != _pCollidersToRemove.end(); ++it) {
-	//	delete *it;
-	//}
 
 	_pCollidersToRemove.clear();
 }

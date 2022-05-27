@@ -14,12 +14,7 @@ class MovementComponent : public Component
 {
 
 public:
-	MovementComponent(GameObject* gameObject) : Component(gameObject) 
-	{
-		_direction = Direction::STATIONARY;
-		_moving = false;
-		SetType(Types::Movement);
-	}
+	MovementComponent(GameObject* gameObject);
 
 	COMPONENT_STATIC_TYPE(Movement);
 	
@@ -29,7 +24,7 @@ public:
 	void CollisionCheck(glm::vec2& newPos);
 
 	void DecideDirection(glm::vec2& moveVec);
-
+	
 	void SetMovementSpeed(const float speed) {
 		_movementSpeed = speed;
 	}

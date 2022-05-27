@@ -16,6 +16,7 @@ StructureFighter::StructureFighter(GameObject* owner)
 void StructureFighter::Attack(GameObject* pTarget)
 {
 	if (pTarget == nullptr) return;
+	if (!pTarget->IsActive()) return;
 	if (_timeSinceLastAttack < _attackRate) return;
 
 	_timeSinceLastAttack = 0.0f;
