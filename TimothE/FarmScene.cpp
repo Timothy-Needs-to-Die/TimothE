@@ -109,13 +109,15 @@ void FarmScene::InitScene()
 
 	PlayerResourceManager::LoadInCropData();
 
+	PlayerResourceManager::GetPlantResource(WheatSeedRes)->GainResource(5);
+	PlayerResourceManager::GetPlantResource(CarrotSeedRes)->GainResource(5);
+	PlayerResourceManager::GetPlantResource(PotatoSeedRes)->GainResource(5);
+
 	if (LoadScene("Resources/PlayerSaves/FarmSceneSaveData.sav")) {
 
 	}
 	else {
-		PlayerResourceManager::GetPlantResource(WheatSeedRes)->GainResource(5);
-		PlayerResourceManager::GetPlantResource(CarrotSeedRes)->GainResource(5);
-		PlayerResourceManager::GetPlantResource(PotatoSeedRes)->GainResource(5);
+
 	}
 }
 
@@ -218,6 +220,11 @@ void FarmScene::PlayerSlept()
 	SaveScene("Resources/PlayerSaves/FarmSceneSaveData.sav");
 	_pGameTime->EndNight();
 	_pGameTime->StartNewDay();
+
+	FarmlandManager* fm = _pPlayer->GetComponent<FarmlandManager>();
+	if (fm) {
+		fm->OnNewDay();
+	}
 }
 
 void FarmScene::GameOver()

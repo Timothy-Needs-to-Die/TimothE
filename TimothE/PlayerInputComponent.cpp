@@ -163,16 +163,6 @@ void PlayerInputComponent::FarmingControls()
 	}
 	if (Input::IsKeyUp(KEY_G)) _bGkeyPressed = false;
 
-	// Debug
-	if (Input::IsKeyDown(KEY_Y))
-	{
-		if (_bHkeyPressed) return;
-		_bHkeyPressed = true;
-		_pFarmlandManager->OnNewDay();
-	}
-	if (Input::IsKeyUp(KEY_Y)) _bHkeyPressed = false;
-
-
 	if (_bFarmMode)
 	{
 		// Plant Wheat
