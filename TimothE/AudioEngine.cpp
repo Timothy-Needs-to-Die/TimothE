@@ -105,13 +105,17 @@ void AudioEngine::ShutDownAudio()
 
 //If an error was detected with a certain issue this will print an error string
 //to aid with debugging
-void AudioEngine::CheckForErrors(FMOD_RESULT result)
+bool AudioEngine::CheckForErrors(FMOD_RESULT result)
 
 {
 	if (result != FMOD_OK)
 	{
 		std::cout << "Audio Engine Error: ";
 		std::cout << result << std::endl;
+		return true;
+	}
+	else {
+		return false;
 	}
 }
 
@@ -227,13 +231,15 @@ void AudioEngine::LoadSound(const char* name, const char* filePath, AudioType ty
 	FMOD_RESULT result = _fmodSystem->createSound(newSound.filePath, FMOD_DEFAULT, 0, &soundToLoad);
 	newSound.sound = soundToLoad;
 
-	CheckForErrors(result);
-	std::cout << "Sound Loaded: " << newSound.name << std::endl;
-	if (type == AudioType::Type_SFX) {
-		_loadedSFX[newSound.name] = newSound;
+	if (!CheckForErrors(result)) {
+		std::cout << "Sound Loaded: " << newSound.name << std::endl;
+		if (type == AudioType::Type_SFX) {
+			_loadedSFX[newSound.name] = newSound;
+		}
+		else
+			_loadedMusic[newSound.name] = newSound;
 	}
-	else
-		_loadedMusic[newSound.name] = newSound;
+	
 }
 
 
