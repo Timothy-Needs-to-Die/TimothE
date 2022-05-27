@@ -157,9 +157,6 @@ private:
 	//How large the map is in tiles. mapSizeInScreenUnits * tilesPerUnit
 	glm::vec2 _mapInTiles;
 
-	//Resolution of the sprite map in pixels. e.g. 2560 x 1664 (20, 13 map of 128x128 pixel sprites)
-	glm::vec2 _spritemapResolution;
-
 	//X and Y Gap between tiles 1 unit / tiles per unit
 	float _gapBetweenTiles;
 

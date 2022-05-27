@@ -65,6 +65,9 @@ void FarmScene::UpdateObjects()
 	{
 		_pBed->canSleepThroughNight = true;
 	}
+	else {
+		_pBed->canSleepThroughNight = false;
+	}
 
 }
 
