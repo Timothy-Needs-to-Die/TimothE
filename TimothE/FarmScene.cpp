@@ -86,7 +86,7 @@ void FarmScene::UpdateObjects()
 
 	Physics::UpdateWorld();
 	
-		//if (WaveManager.GetWaveCleared())
+		if (_pWaveManager->GetWaveCleared())
 		{
 			_pBed->canSleepThroughNight = true;
 		}

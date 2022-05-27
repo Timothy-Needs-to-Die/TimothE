@@ -30,7 +30,7 @@ public:
 	void SetNight() { _dayTimer = _lengthOfDay + 1.0f; }
 
 private:
-	float _lengthOfDay = 10.0f;
+	float _lengthOfDay = 100.0f;
 	float _dayTimer = 0.0f;
 
 	bool _inDay = true;

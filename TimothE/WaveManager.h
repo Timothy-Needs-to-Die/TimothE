@@ -10,6 +10,7 @@ public:
 	WaveManager();
 	~WaveManager();
 
+	void RemoveEnemyFromAliveList(Enemy* enemy);
 	void GenerateWave();
 	void Update();
 	void StartNight();
