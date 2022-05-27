@@ -55,8 +55,6 @@ void WaveManager::Update()
 			GenerateSpawnTime();
 		}
 	}
-	
-	
 }
 
 void WaveManager::StartNight()
@@ -72,21 +70,19 @@ void WaveManager::SpawnEnemies()
 	//Decide how many enemies to spawn
 	int partySize = rand() % _remainingEnemies + 1; //+1 shifts it so parties are always at least one in size
 	
-	/*if (partySize > _remainingEnemies)
-		partySize = _remainingEnemies;*/
+	if (partySize > _remainingEnemies)
+		partySize = _remainingEnemies;
 
 	_remainingEnemies -= partySize;
 
-	//Decide spawn position
-	int randomIndex = rand() % _spawnPositions.size();
-	glm::vec2 position = _spawnPositions[randomIndex];
 	
 	for (int i = 0; i < partySize; i++) {
 		Enemy* newEnemy = new Enemy("Enemy", "ENEMY");
 
+		//Decide spawn position
+		int randomIndex = rand() % _spawnPositions.size();
+		glm::vec2 position = _spawnPositions[randomIndex];
 		newEnemy->GetTransform()->SetPosition(position);
-		//std::swap(_spawnPositions[randomIndex], _spawnPositions.back());
-		//_spawnPositions.pop_back();
 
 		_livingEnemies.emplace_back(newEnemy);
 		SceneManager::GetCurrentScene()->AddGameObject(newEnemy);
