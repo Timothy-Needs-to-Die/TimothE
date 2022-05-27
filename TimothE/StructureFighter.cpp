@@ -8,7 +8,7 @@
 #include "ProjectileObject.h"
 
 StructureFighter::StructureFighter(GameObject* owner)
-	: Component(owner), _timeSinceLastAttack(0.0)
+	: Component(owner), _timeSinceLastAttack(0.0f), _attackRate(2.5f)
 {
 	SetType(StructureFighter_Type);
 }

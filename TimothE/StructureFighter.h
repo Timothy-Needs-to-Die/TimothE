@@ -14,7 +14,7 @@ public:
 	virtual void OnEnd() override;
 
 private:
-	float _attackRate = 1.0f;
+	float _attackRate = 2.5f;
 	float _timeSinceLastAttack;
 };
 

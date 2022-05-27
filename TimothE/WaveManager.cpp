@@ -44,7 +44,8 @@ void WaveManager::Update()
 {
 
 	if (_remainingEnemies == 0 && _livingEnemies.empty()) {
-		EndNight();
+		_nightCleared = true;
+		
 	}
 	else {
 		_timer += Time::GetDeltaTime();
@@ -62,13 +63,6 @@ void WaveManager::StartNight()
 {
 	GenerateSpawnTime();
 	GenerateWave();
-}
-
-void WaveManager::EndNight()
-{
-	_nightCleared = true;
-	_pFarmScene->GetGameTime()->EndNight();
-	_pFarmScene->GetGameTime()->StartNewDay();
 }
 
 void WaveManager::SpawnEnemies()

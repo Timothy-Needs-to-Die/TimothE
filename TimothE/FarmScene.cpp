@@ -75,9 +75,8 @@ void FarmScene::UpdateObjects()
 		_pInventoryScreen->OnUpdate();
 	}
 
-	if (Input::IsKeyDown(KEY_1)) {
-		SaveScene("Resources/PlayerSaves/FarmSceneSaveData.sav");
-	}
+
+
 
 	if (_pInventoryScreen->GetAllActive())
 	{
@@ -134,14 +133,18 @@ void FarmScene::InitScene()
 	_pCoalNode->GetTransform()->SetPosition(7.75f, 1.25f);
 	AddGameObject(_pCoalNode);
 
+
 	_pWaveManager = new WaveManager();
 
 	PlayerResourceManager::LoadInCropData();
-	PlayerResourceManager::GetPlantResource(WheatSeedRes)->GainResource(5);
-	PlayerResourceManager::GetPlantResource(CarrotSeedRes)->GainResource(5);
-	PlayerResourceManager::GetPlantResource(PotatoSeedRes)->GainResource(5);
 
-	LoadScene("Resources/PlayerSaves/FarmSceneSaveData.sav");
+	if (LoadScene("Resources/PlayerSaves/FarmSceneSaveData.sav")) {
+
+	}else{
+		PlayerResourceManager::GetPlantResource(WheatSeedRes)->GainResource(5);
+		PlayerResourceManager::GetPlantResource(CarrotSeedRes)->GainResource(5);
+		PlayerResourceManager::GetPlantResource(PotatoSeedRes)->GainResource(5);
+	}
 }
 
 void FarmScene::SaveScene(std::string filename)
@@ -163,13 +166,15 @@ void FarmScene::SaveScene(std::string filename)
 	stream.Close();
 }
 
-void FarmScene::LoadScene(std::string filename)
+bool FarmScene::LoadScene(std::string filename)
 {
 	_pStructures.clear();
 
 	StreamFile stream;
 
-	stream.OpenRead(filename);
+	bool result = stream.OpenRead(filename);
+
+	if (!result) return false;
 
 	//_pStructures.resize(ReadInt(stream));
 	int size = ReadInt(stream);
@@ -195,6 +200,8 @@ void FarmScene::LoadScene(std::string filename)
 	}
 
 	stream.Close();
+
+	return true;
 }
 
 void FarmScene::AddStructure(StructureObject* object)
@@ -232,6 +239,13 @@ void FarmScene::RemoveStructure(StructureObject* object)
 std::vector<class StructureObject*> FarmScene::GetStructures() const
 {
 	return _pStructures;
+}
+
+void FarmScene::PlayerSlept()
+{
+	SaveScene("Resources/PlayerSaves/FarmSceneSaveData.sav");
+	_pGameTime->EndNight();
+	_pGameTime->StartNewDay();
 }
 
 void FarmScene::GameOver()

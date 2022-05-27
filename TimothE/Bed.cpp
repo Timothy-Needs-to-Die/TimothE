@@ -37,7 +37,7 @@ void Bed::UniqueLogic()
 		else if (canSleepThroughNight && !daycontroller->IsDay())//wave cleared
 		{
 			//next day
-			daycontroller->StartNewDay();
+			scene->PlayerSlept();
 			// sleep and restore bed and player hp
 			_pHealth->SetHealth(_pHealth->GetMaxHealth());
 			
