@@ -287,6 +287,7 @@ FMOD::Channel* AudioEngine::PlaySound(std::string soundName, float minVolume, fl
 		//Start playing song with volume set to 0 then fade in 
 		_currentSongChannel->stop();
 		FMOD::Channel* channel;
+		_currentSongChannel->setLoopCount(10);
 		
 		FMOD_RESULT result = _fmodSystem->playSound(sound->second.sound, _groups[Type_Song], false, &channel);
 		_currentSongChannel = channel;
@@ -294,7 +295,7 @@ FMOD::Channel* AudioEngine::PlaySound(std::string soundName, float minVolume, fl
 		CheckForErrors(result);
 		_currentSongChannel->setChannelGroup(_groups[Type_Song]);
 		_currentSongChannel->setVolume(0.0f);
-		_currentSongChannel->setLoopCount(10);
+		
 		
 		fade = Fade_In;
 
