@@ -16,7 +16,7 @@ MainMenuUI::MainMenuUI(std::string name, std::string tag) : GameObject(name, tag
 	_pPressToPlay = new GameObject("PressToPlay", "UI");
 	_pPressToPlay->AddComponent(new TextComponent(_pPressToPlay));
 	_pPressToPlay->GetComponent<TextComponent>()->SetText("Press Enter To Play");
-	_pPressToPlay->GetComponent<TextComponent>()->_scale = .85;
+	_pPressToPlay->GetComponent<TextComponent>()->SetScale(0.85f);
 	_pPressToPlay->GetTransform()->SetPosition(750, 500);
 	SceneManager::GetCurrentScene()->AddGameObject(_pPressToPlay);
 
@@ -24,7 +24,7 @@ MainMenuUI::MainMenuUI(std::string name, std::string tag) : GameObject(name, tag
 	_pTitle = new GameObject("Title", "UI");
 	_pTitle->AddComponent(new TextComponent(_pTitle));
 	_pTitle->GetComponent<TextComponent>()->SetText("Timothy Needs To Die");
-	_pTitle->GetComponent<TextComponent>()->_scale = 1.5;
+	_pTitle->GetComponent<TextComponent>()->SetScale(1.5f);
 	_pTitle->GetTransform()->SetPosition(600, 900);
 	SceneManager::GetCurrentScene()->AddGameObject(_pTitle);
 
@@ -32,7 +32,7 @@ MainMenuUI::MainMenuUI(std::string name, std::string tag) : GameObject(name, tag
 	_pLogo = new GameObject("Logo", "UI");
 	_pLogo->AddComponent(new TextComponent(_pLogo));
 	_pLogo->GetComponent<TextComponent>()->SetText("ThymotheE Engine");
-	_pLogo->GetComponent<TextComponent>()->_scale = .4;
+	_pLogo->GetComponent<TextComponent>()->SetScale(0.4f);
 	_pLogo->GetTransform()->SetPosition(100, 100);
 	SceneManager::GetCurrentScene()->AddGameObject(_pLogo);
 
@@ -40,7 +40,7 @@ MainMenuUI::MainMenuUI(std::string name, std::string tag) : GameObject(name, tag
 	_pMadeBy = new GameObject("Credits", "UI");
 	_pMadeBy->AddComponent(new TextComponent(_pMadeBy));
 	_pMadeBy->GetComponent<TextComponent>()->SetText("By Timothy Needs To Die Team");
-	_pMadeBy->GetComponent<TextComponent>()->_scale = .4;
+	_pMadeBy->GetComponent<TextComponent>()->SetScale(0.4f);
 	_pMadeBy->GetTransform()->SetPosition(1550, 100);
 	SceneManager::GetCurrentScene()->AddGameObject(_pMadeBy);
 
