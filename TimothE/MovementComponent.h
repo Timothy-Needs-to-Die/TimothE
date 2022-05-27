@@ -17,14 +17,14 @@ public:
 	MovementComponent(GameObject* gameObject);
 
 	COMPONENT_STATIC_TYPE(Movement);
-	
+
 
 	void Move(glm::vec2 moveVec);
 
 	void CollisionCheck(glm::vec2& newPos);
 
 	void DecideDirection(glm::vec2& moveVec);
-	
+
 	void SetMovementSpeed(const float speed) {
 		_movementSpeed = speed;
 	}
@@ -51,15 +51,14 @@ private:
 	bool _moving;
 	bool _allowCollisions = true;
 
-	
+
 
 	Direction _direction;
 
 protected:
 	class TileMap* _pTilemap;
-	
+
 	bool _constantlyMove;
 	glm::vec2 _desiredDirection;
 
 };
-
