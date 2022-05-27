@@ -12,7 +12,9 @@
 struct CropSellingData
 {
 	PlantResourceType type;
+	PlantResourceType rawType;
 	int sellPrice;
+	int buyPrice;
 };
 
 static class PlayerResourceManager
@@ -31,6 +33,8 @@ public:
 	//static bool CanAfford(int gold);
 	//static PlayerResource* GetHotbarItem(HotbarItem item);
 	static void SellAll();
+	static void BuyCrop(PlantResourceType type);
+
 	static void LoadInCropData();
 
 
