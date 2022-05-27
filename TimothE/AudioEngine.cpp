@@ -261,8 +261,8 @@ FMOD::Channel* AudioEngine::PlaySound(std::string soundName, float minVolume, fl
 {
 	auto sound = _loadedSFX.find(soundName);
 	if (sound == _loadedSFX.end()) {
-		std::cout << "Sound not found in loaded sounds" << std::endl;
-		return 0;
+		sound = _loadedMusic.find(soundName);
+		
 	}
 
 	if (sound->second.type == AudioType::Type_SFX) {
@@ -272,24 +272,29 @@ FMOD::Channel* AudioEngine::PlaySound(std::string soundName, float minVolume, fl
 
 		//Play the sound effects while applying values to the channel 
 		FMOD::Channel* channel;
-		_fmodSystem->playSound(sound->second.sound, NULL, false, &channel);
-		channel->setChannelGroup(_groups[Type_SFX]);
 		channel->setVolume(volume);
 		float frequency;
 		channel->getFrequency(&frequency);
 		channel->setFrequency(ChangeSemitone(frequency, pitch));
+		_fmodSystem->playSound(sound->second.sound, NULL, false, &channel);
+		channel->setChannelGroup(_groups[Type_SFX]);
+		
+		
 		channel->setPaused(false);
 		return channel;
 	}
 	else if (sound->second.type == AudioType::Type_Song) {
 		//Start playing song with volume set to 0 then fade in 
-
+		_currentSongChannel->stop();
 		FMOD::Channel* channel;
+		
 		FMOD_RESULT result = _fmodSystem->playSound(sound->second.sound, _groups[Type_Song], false, &channel);
+		_currentSongChannel = channel;
 		std::cout << "PlaySong";
 		CheckForErrors(result);
 		_currentSongChannel->setChannelGroup(_groups[Type_Song]);
 		_currentSongChannel->setVolume(0.0f);
+		
 		fade = Fade_In;
 
 

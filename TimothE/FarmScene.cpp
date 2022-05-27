@@ -125,7 +125,8 @@ void FarmScene::InitScene()
 		PlayerResourceManager::GetPlantResource(CarrotSeedRes)->GainResource(5);
 		PlayerResourceManager::GetPlantResource(PotatoSeedRes)->GainResource(5);
 	}
-
+	_pGameTime->StartNewDay();
+	
 }
 
 void FarmScene::SaveScene(std::string filename)
@@ -159,6 +160,7 @@ void FarmScene::RegisterSounds()
 	AudioEngine::LoadSound("EnemyHit", "Resources/Sounds/SFX/EnemyHit.wav", AudioType::Type_SFX);
 	AudioEngine::LoadSound("BuildSound", "Resources/Sounds/SFX/PlaceBuilding.wav", AudioType::Type_SFX);
 	AudioEngine::LoadSound("NightSoundTrack", "Resources/Sounds/SFX/NightTimeMusic.wav", AudioType::Type_Song);
+	AudioEngine::LoadSound("FarmAmbience", "Resources/Sounds/SFX/FarmAmbience.wav", AudioType::Type_Song);
 
 }
 

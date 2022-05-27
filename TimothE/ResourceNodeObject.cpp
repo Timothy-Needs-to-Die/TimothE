@@ -1,10 +1,12 @@
 #include "ResourceNodeObject.h"
 #include "ResourceNode.h"
 #include "BoxColliderComponent.h"
+#include "AudioSource.h"
 
 ResourceNodeObject::ResourceNodeObject(CoreResourceType type, std::string name /*= "Resource Node"*/, std::string tag /*= "RESOURCE_NODE"*/)
 	: GameObject(name,tag)
 {
+	_pAudioSource = AddComponent(new AudioSource(this));
 	_pResourceNode = AddComponent(new ResourceNode(this, type));
 	_pCollider = AddComponent(new BoxColliderComponent(this));
 	_pCollider->SetTrigger(true);
