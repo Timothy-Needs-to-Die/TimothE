@@ -68,10 +68,7 @@ void PlayerInputComponent::OnUpdate()
 	}
 
 	// Selling
-	if (Input::IsKeyDown(KEY_F1))
-	{
-		PlayerResourceManager::SellAll();
-	}
+	
 
 	// Building
 	if (Input::IsKeyUp(KEY_B)) {
@@ -222,6 +219,22 @@ void PlayerInputComponent::FarmingControls()
 			glm::vec2 playerPos = _pParentObject->GetTransform()->GetPosition();
 			CropPlot* closestPlot = _pFarmlandManager->GetCropPlotAtPosition(GetPlayerMidpoint(playerPos));
 			_pFarmlandManager->RemoveCropPlot(closestPlot);
+		}
+		else if (Input::IsKeyDown(KEY_F1))
+		{
+			PlayerResourceManager::BuyCrop(WheatSeedRes);
+		}
+		else if (Input::IsKeyDown(KEY_F2))
+		{
+			PlayerResourceManager::BuyCrop(PotatoSeedRes);
+		}
+		else if (Input::IsKeyDown(KEY_F3))
+		{
+			PlayerResourceManager::BuyCrop(CarrotSeedRes);
+		}
+		else if (Input::IsKeyDown(KEY_F4))
+		{
+			PlayerResourceManager::SellAll();
 		}
 	}
 }

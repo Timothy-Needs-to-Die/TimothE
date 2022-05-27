@@ -102,15 +102,33 @@ void PlayerResourceManager::SellAll()
 	PlayerResourceManager::GetCoreResource(Gold)->GainResource(totalIncome);
 }
 
+void PlayerResourceManager::BuyCrop(PlantResourceType type)
+{
+	for (CropSellingData cropConfig : _cropSellingData)
+	{
+		if (cropConfig.rawType == type)
+		{
+			if (_coreResourceMap[Gold].CanAfford(cropConfig.buyPrice))
+			{
+				_plantResourceMap[type].GainResource(1);
+				_coreResourceMap[Gold].SpendResource(cropConfig.buyPrice);
+			}
+		}
+	}
+}
+
 void PlayerResourceManager::LoadInCropData()
 {
 	std::vector<std::vector<std::string>> loadedData = CSVReader::RequestDataFromFile("Resources/Data/SeedsConfig.csv");
+	std::vector<std::vector<std::string>> loadedData2 = CSVReader::RequestDataFromFile("Resources/Data/CropsConfig.csv");
 	for (int i = 0; i < loadedData.size(); i++)
 	{
 		CropSellingData	newConfig;
 
-		newConfig.sellPrice = std::stoi(loadedData[i][2]);
+		newConfig.sellPrice = std::stoi(loadedData2[i][2]);
 		newConfig.type = (PlantResourceType)std::stoi(loadedData[i][9]);
+		newConfig.rawType = (PlantResourceType)std::stoi(loadedData[i][5]);
+		newConfig.buyPrice = std::stoi(loadedData[i][2]);
 
 		_cropSellingData.emplace_back(newConfig);
 	}
