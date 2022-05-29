@@ -1,3 +1,4 @@
+#include "pch.h"
 #include "TextObject.h"
 #include "TextComponent.h"
 

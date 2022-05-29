@@ -1,4 +1,5 @@
-﻿#include "Editor.h"
+﻿#include "pch.h"
+#include "Editor.h"
 #include "ImGuiManager.h"
 #include "Texture2D.h"
 #include "BoxColliderComponent.h"

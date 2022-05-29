@@ -1,3 +1,4 @@
+#include "pch.h"
 #include "DestroyAfterSecondsComponent.h"
 #include "Time.h"
 #include "SceneManager.h"

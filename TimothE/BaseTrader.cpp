@@ -1,3 +1,4 @@
+#include "pch.h"
 #include "BaseTrader.h"
 #include "PlayerResourceManager.h"
 #include "PlantResourceType.h"

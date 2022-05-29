@@ -1,3 +1,6 @@
+#include "pch.h"
+#include "Bed.h"
+
 #include "Bed.h"
 #include "BedHealth.h"
 #include "GameTimeManager.h"

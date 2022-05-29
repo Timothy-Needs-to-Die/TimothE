@@ -1,3 +1,4 @@
+#include "pch.h"
 #include "StructureHealth.h"
 #include "SceneManager.h"
 #include "FarmScene.h"

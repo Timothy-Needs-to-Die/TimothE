@@ -1,3 +1,4 @@
+#include "pch.h"
 #include "PlayerUIComponent.h"
 #include "TextObject.h"
 #include "Transform.h"

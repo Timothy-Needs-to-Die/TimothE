@@ -1,3 +1,4 @@
+#include "pch.h"
 #include "WeaponComponent.h"
 #include "AnimatedSpritesheet.h"
 #include "ResourceManager.h"

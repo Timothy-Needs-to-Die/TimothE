@@ -1,3 +1,4 @@
+#include "pch.h"
 #include "ResourceNode.h"
 #include "PlayerResourceManager.h"
 #include "ResourceManager.h"

@@ -1,3 +1,4 @@
+#include "../../pch.h"
 #include "SubTexture2D.h"
 
 SubTexture2D::SubTexture2D(Texture2D* texture, const glm::vec2& min, const glm::vec2& max)

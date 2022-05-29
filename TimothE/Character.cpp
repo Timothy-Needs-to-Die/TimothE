@@ -1,3 +1,4 @@
+#include "pch.h"
 #include "Character.h"
 #include "AnimatedSpritesheet.h"
 #include "MovementComponent.h"

@@ -1,3 +1,4 @@
+#include "pch.h"
 #include "LightsourceObject.h"
 #include "FarmScene.h"
 

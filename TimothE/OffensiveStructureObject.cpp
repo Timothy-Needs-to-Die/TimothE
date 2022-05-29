@@ -1,3 +1,4 @@
+#include "pch.h"
 #include "OffensiveStructureObject.h"
 #include "StructureFighter.h"
 #include "CircleColliderComponent.h"

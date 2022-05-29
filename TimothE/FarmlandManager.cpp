@@ -1,3 +1,4 @@
+#include "pch.h"
 #include "FarmlandManager.h"
 
 //std::vector<CropConfig> FarmlandManager::_pCropData = std::vector<CropConfig>();

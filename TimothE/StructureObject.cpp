@@ -1,3 +1,4 @@
+#include "pch.h"
 #include "StructureObject.h"
 #include "StructureHealth.h"
 

@@ -1,3 +1,4 @@
+#include "pch.h"
 #include "Physics.h"
 
 std::vector<ColliderBase*> Physics::_pColliders = std::vector<ColliderBase*>();

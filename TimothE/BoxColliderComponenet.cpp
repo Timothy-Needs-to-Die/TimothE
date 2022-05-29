@@ -1,3 +1,6 @@
+#include "pch.h"
+#include "Bed.h"
+
 #include "BoxColliderComponent.h"
 #include "GameObject.h"
 #include "imgui.h"

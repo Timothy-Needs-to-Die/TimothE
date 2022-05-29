@@ -1,3 +1,6 @@
+#include "pch.h"
+#include "Bed.h"
+
 #include "Button.h"
 #include "Physics.h"
 

@@ -1,3 +1,4 @@
+#include "pch.h"
 #include "SpriteComponent.h"
 
 SpriteComponent::SpriteComponent(GameObject* parent) : Component(parent)

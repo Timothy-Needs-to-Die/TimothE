@@ -1,3 +1,4 @@
+#include "pch.h"
 #include "MainMenuScene.h"
 #include "CameraManager.h"
 #include "GameTimeManager.h"

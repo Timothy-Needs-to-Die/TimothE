@@ -1,3 +1,4 @@
+#include "pch.h"
 #include "Console.h"
 
 void Console::Print(std::string message)

@@ -1,3 +1,4 @@
+#include "pch.h"
 #include "ProjectileObject.h"
 #include "MovementComponent.h"
 #include "BoxColliderComponent.h"

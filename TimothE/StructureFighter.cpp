@@ -1,3 +1,4 @@
+#include "pch.h"
 #include "StructureFighter.h"
 #include "GameObject.h"
 //#include "MovementComponent.h"

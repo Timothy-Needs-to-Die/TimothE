@@ -1,3 +1,4 @@
+#include "pch.h"
 #include "PlayerResource.h"
 #include "Core.h"
 

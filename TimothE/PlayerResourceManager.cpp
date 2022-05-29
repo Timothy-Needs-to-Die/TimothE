@@ -1,3 +1,4 @@
+#include "pch.h"
 #include "PlayerResourceManager.h"
 
 std::unordered_map<CoreResourceType, PlayerResource> PlayerResourceManager::_coreResourceMap = std::unordered_map<CoreResourceType, PlayerResource>();

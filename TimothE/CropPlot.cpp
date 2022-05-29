@@ -1,3 +1,4 @@
+#include "pch.h"
 #include "CropPlot.h"
 
 CropPlot::CropPlot(std::string name, std::string tag) : GameObject(name, tag)

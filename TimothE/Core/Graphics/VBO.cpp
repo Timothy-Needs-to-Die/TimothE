@@ -1,3 +1,4 @@
+#include "../../pch.h"
 #include "VBO.h"
 #include "Base.h"
 #include "OpenGLError.h"

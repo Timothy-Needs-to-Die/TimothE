@@ -1,3 +1,4 @@
+#include "pch.h"
 #include "CameraManager.h"
 
 void CameraManager::Init()

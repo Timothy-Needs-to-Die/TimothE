@@ -1,3 +1,4 @@
+#include "pch.h"
 #include "ResourceNodeObject.h"
 #include "ResourceNode.h"
 #include "BoxColliderComponent.h"

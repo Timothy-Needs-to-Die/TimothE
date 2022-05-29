@@ -1,3 +1,4 @@
+#include "pch.h"
 #include "Day.h"
 #include <iostream>
 #include "WaveManager.h"

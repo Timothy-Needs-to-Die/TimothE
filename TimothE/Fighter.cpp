@@ -1,3 +1,4 @@
+#include "pch.h"
 #include "Fighter.h"
 
 #include "SceneManager.h"

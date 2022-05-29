@@ -1,3 +1,6 @@
+#include "pch.h"
+#include "Bed.h"
+
 #include "CSVReader.h"
 #include "Core.h"
 
