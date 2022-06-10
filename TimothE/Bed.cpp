@@ -14,7 +14,7 @@ Bed::Bed() : GameObject("Bed", "BED")
 	_pBoxCollider = AddComponent<BoxColliderComponent>(new BoxColliderComponent(this));
 	_pBoxCollider->SetTrigger(true);
 
-	SpriteComponent* sc = AddComponent(new SpriteComponent(this));
+	SpriteComponent* sc = AddComponent(new SpriteComponent(this, 100));
 	sc->SetSprite(ResourceManager::GetSpriteSheet("bed")->GetSpriteAtIndex(0));
 }
 

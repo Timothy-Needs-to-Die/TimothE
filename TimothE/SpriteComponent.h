@@ -8,7 +8,7 @@ class SpriteComponent : public Component
 public:
 	COMPONENT_STATIC_TYPE(SpriteType)
 
-	SpriteComponent(GameObject* parent);
+	SpriteComponent(GameObject* parent, int drawOrder);
 	~SpriteComponent();
 	void OnStart() override;
 	void OnUpdate() override;
@@ -25,12 +25,15 @@ public:
 	void SetSprite(Sprite* sprite);
 	Sprite* GetSprite() { return _pSprite; };
 
+	int GetDrawOrder() const { return _drawOrder; }
+
 	void SetUVCoords();
 	void SetUVCoords(glm::vec2 topLeft, glm::vec2 topRight, glm::vec2 bottomLeft, glm::vec2 bottomRight);
 
 private:
 	Sprite* _pSprite;
 
+	int _drawOrder;
 	float _mPosX, _mPosY;
 	float _mSheetWidth, _mSheetHeight;
 	int _mSpriteWidth, _mSpriteHeight;

@@ -1,7 +1,7 @@
 #include "pch.h"
 #include "SpriteComponent.h"
 
-SpriteComponent::SpriteComponent(GameObject* parent) : Component(parent)
+SpriteComponent::SpriteComponent(GameObject* parent, int drawOrder) : Component(parent), _drawOrder(drawOrder)
 {
 	SetType(Component::SpriteType);
 	SetCategory(Component::Graphics_Category);

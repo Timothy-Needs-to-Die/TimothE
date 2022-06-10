@@ -7,7 +7,7 @@
 StructureObject::StructureObject(std::string name, std::string tag)
 	:  GameObject(name, tag)
 {
-	SpriteComponent* sc = AddComponent(new SpriteComponent(this));
+	SpriteComponent* sc = AddComponent(new SpriteComponent(this, 100));
 
 	if (tag == "WALL") {
 		sc->SetSprite(ResourceManager::GetSpriteSheet("wall")->GetSpriteAtIndex(0));

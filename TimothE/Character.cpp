@@ -14,7 +14,7 @@ Character::Character(std::string texture, std::string name, std::string tag)
 	_pAudioSource = AddComponent(new AudioSource(this));
 	_pMovement = AddComponent(new MovementComponent(this));
 	_pMovement->SetMovementSpeed(1.0f);
-	_pSc = AddComponent<SpriteComponent>(new SpriteComponent(this));
+	_pSc = AddComponent<SpriteComponent>(new SpriteComponent(this, 100));
 	_pSc->SetSprite(_pAnimSheet->GetSpriteAtIndex(0));
 	_pAnimSheet->SetFramerate(4);
 	_pTransform->SetScale({ 0.25f, 0.45f });

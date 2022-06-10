@@ -13,7 +13,7 @@ ResourceNodeObject::ResourceNodeObject(CoreResourceType type, std::string name /
 	_pCollider = AddComponent(new BoxColliderComponent(this));
 	_pCollider->SetTrigger(true);
 
-	SpriteComponent* sc = new SpriteComponent(this);
+	SpriteComponent* sc = new SpriteComponent(this, 100);
 
 	
 

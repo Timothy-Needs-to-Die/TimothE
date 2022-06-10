@@ -1,7 +1,7 @@
 #include "pch.h"
+
 #include "Texture2D.h"
 #include "Scene.h"
-#include <algorithm>
 #include "TextComponent.h"
 #include "StreamFile.h"
 #include "Button.h"
@@ -248,13 +248,21 @@ void Scene::RemoveGameObject(GameObject* gameObject)
 	//_gameObjectsToRemove.clear();
 }
 
+bool SortbyAscendingDrawOrder(GameObject* a, GameObject* b) 
+{
+	SpriteComponent* as = a->GetComponent<SpriteComponent>();
+	SpriteComponent* bs = b->GetComponent<SpriteComponent>();
+	return (as->GetDrawOrder() < bs->GetDrawOrder()); 
+}
+
 void Scene::AddedComponentHandler(GameObject* gameObject, Component* comp)
 {
 	//If this component is a graphics component
-	if (comp->IsInCategory(Component::Graphics_Category)) {
+	if (comp->GetType() == Component::Types::SpriteType) {
 		//If the Gameobject is not already in the drawables list
 		if (std::find(_listOfDrawableGameObjects.begin(), _listOfDrawableGameObjects.end(), gameObject) == _listOfDrawableGameObjects.end()) {
 			_listOfDrawableGameObjects.push_back(gameObject);
+			std::sort(_listOfDrawableGameObjects.begin(), _listOfDrawableGameObjects.end(), SortbyAscendingDrawOrder);
 		}
 	}
 }
