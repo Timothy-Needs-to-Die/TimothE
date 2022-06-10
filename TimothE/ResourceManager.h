@@ -25,13 +25,13 @@ public:
 	static void InstantiateFont(std::string name, Font* sound);
 
 	//get functions
-	static Texture2D* GetTexture(std::string name) { return _textures[name]; };
-	static Shader* GetShader(std::string name) { return _shaders[name]; };
-	static Scene* GetScene(std::string name) { return _scenes[name]; };
-	static SpriteSheet* GetSpriteSheet(std::string name) { return _spritesheets[name]; }
-	static Font* GetFont(std::string name) { return _fonts[name]; };
+	static Texture2D* GetTexture(std::string name);;
+	static Shader* GetShader(std::string name);;
+	static Scene* GetScene(std::string name);;
+	static SpriteSheet* GetSpriteSheet(std::string name);
+	static Font* GetFont(std::string name);;
 
-	static std::string GetUID() { return _UID; }
+	static std::string GetUID();
 
 private:
 	static void LoadFonts();
@@ -42,6 +42,4 @@ private:
 	static std::map<std::string, Scene*> _scenes;
 	static std::map<std::string, SpriteSheet*> _spritesheets;
 	static std::map<std::string, Font*> _fonts;
-	
-	static std::string _UID;
 };

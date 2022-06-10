@@ -31,7 +31,7 @@ Editor::Editor(Application* pApp)
 	//pContentTextureFolder->Load("Icons/FolderContent.png");
 
 	//Creates the screen shader for the framebuffer
-	_pScreenShader = new Shader("fbVert.vs", "fbFrag.fs");
+	_pScreenShader = new Shader("Resources/Shaders/fbVert.vs", "Resources/Shaders/fbFrag.fs");
 
 	//Creates the editor framebuffer
 	_pEditorFramebuffer = new Framebuffer(_pScreenShader);

@@ -9,7 +9,7 @@ TextComponent::TextComponent(GameObject* parentObject) : Component(parentObject)
 	_UID = UID::GenerateUID();
 	SetFont("arial.ttf");
 	_text = "Enter\ntext\nhere...";
-	_shader = new Shader("txtVert.vs", "txtFrag.fs");
+	_shader = new Shader("Resources/Shaders/txtVert.vs", "Resources/Shaders/txtFrag.fs");
 	_scale = 1.0f;
 	_color = { 1.0f, 1.0f, 1.0f };
 	_alignment = CENTER;

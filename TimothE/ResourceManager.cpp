@@ -15,15 +15,9 @@ std::map<std::string, Scene*> ResourceManager::_scenes;
 std::map<std::string, SpriteSheet*> ResourceManager::_spritesheets;
 std::map<std::string, Font*> ResourceManager::_fonts;
 
-std::string ResourceManager::_UID;
-
 void ResourceManager::Init()
 {
-	_UID = UID::GenerateUID();
-
 	//LOAD TEXTURES
-	ResourceManager::InstantiateTexture("lenna", new Texture2D("lenna3.jpg"));
-	ResourceManager::InstantiateTexture("fish", new Texture2D("Fish.png"));
 	ResourceManager::InstantiateTexture("player", new Texture2D("Resources/Images/Spritesheets/PlayerSpritesheet.png", true));
 	ResourceManager::InstantiateTexture("enemy", new Texture2D("Resources/Images/Spritesheets/EnemySpritesheet.png", true));
 	ResourceManager::InstantiateTexture("bed", new Texture2D("Resources/Images/Bed.png", true));
@@ -79,8 +73,8 @@ void ResourceManager::Init()
 	ResourceManager::InstantiateSpritesheet("bed", new SpriteSheet(ResourceManager::GetTexture("bed"), 32, 64, "bed"));
 
 	//LOAD SHADERS
-	ResourceManager::InstantiateShader("ui", new Shader("vr_UIShader.vert", "fr_UIShader.frag"));
-	ResourceManager::InstantiateShader("default", new Shader("VertexShader.vert", "FragmentShader.frag"));
+	ResourceManager::InstantiateShader("ui", new Shader("Resources/Shaders/vr_UIShader.vert", "Resources/Shaders/fr_UIShader.frag"));
+	ResourceManager::InstantiateShader("default", new Shader("Resources/Shaders/VertexShader.vert", "Resources/Shaders/FragmentShader.frag"));
 
 	//LOAD SCENES
 	ResourceManager::InstantiateScene("MainMenuScene", new MainMenuScene("MainMenuScene"));
@@ -151,4 +145,88 @@ void ResourceManager::InstantiateSpritesheet(std::string name, SpriteSheet* spri
 void ResourceManager::InstantiateFont(std::string name, Font* font)
 {
 	_fonts[name] = font;
+}
+
+Texture2D* ResourceManager::GetTexture(std::string name)
+{
+	try {
+		Texture2D* pTexture = _textures.at(name);
+		if (pTexture != nullptr) {
+			return pTexture;
+		}
+	}
+	catch (std::out_of_range& e) {
+		TIM_LOG_ERROR("Texture: " << name << " could not be found in resource manager");
+		__debugbreak();
+	}
+
+	return _textures.at("whiteTexture");
+}
+
+Shader* ResourceManager::GetShader(std::string name)
+{
+	try {
+		Shader* pShader = _shaders.at(name);
+		if (pShader != nullptr) {
+			return pShader;
+		}
+	}
+	catch (std::out_of_range& e) {
+		TIM_LOG_ERROR("Shader: " << name << " could not be found in resource managaer");
+		__debugbreak();
+	}
+
+
+	return nullptr;
+}
+
+Scene* ResourceManager::GetScene(std::string name)
+{
+	try {
+		Scene* pScene = _scenes.at(name);
+
+		if (pScene != nullptr) {
+			return pScene;
+		}
+	}
+	catch (std::out_of_range& e) {
+		TIM_LOG_ERROR("Scene: " << name << " could not be found in resource manager");
+		__debugbreak();
+	}
+
+	return nullptr;
+}
+
+SpriteSheet* ResourceManager::GetSpriteSheet(std::string name)
+{
+	try {
+		SpriteSheet* pSpritesheet = _spritesheets.at(name);
+
+		if (pSpritesheet != nullptr) {
+			return pSpritesheet;
+		}
+	}
+	catch (std::out_of_range& e) {
+		TIM_LOG_ERROR("Spritesheet: " << name << " could not be found in resource manager");
+		__debugbreak();
+	}
+
+	return nullptr;
+}
+
+Font* ResourceManager::GetFont(std::string name)
+{
+	try {
+		Font* pFont = _fonts.at(name);
+
+		if (pFont != nullptr) {
+			return pFont;
+		}
+	}
+	catch (std::out_of_range& e) {
+		TIM_LOG_ERROR("Font: " << name << " could not be found in resource manager");
+		__debugbreak();
+	}
+
+	return nullptr;
 }

@@ -105,8 +105,8 @@ void Renderer2D::Init()
 		samplers[i] = i;
 	}
 
-	_data.textureShader = std::make_shared<Shader>("vs_Texture.vert", "fr_Texture.frag");
-	_uiData.textureShader = std::make_shared<Shader>("vr_UIShader.vert", "fr_UIShader.frag");
+	_data.textureShader = std::make_shared<Shader>("Resources/Shaders/vs_Texture.vert", "Resources/Shaders/fr_Texture.frag");
+	_uiData.textureShader = std::make_shared<Shader>("Resources/Shaders/vr_UIShader.vert", "Resources/Shaders/fr_UIShader.frag");
 
 	_data.textureSlots[0] = _data.whiteTexture;
 	_uiData.textureSlots[0] = _uiData.whiteTexture;
