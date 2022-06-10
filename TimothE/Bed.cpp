@@ -13,8 +13,9 @@ Bed::Bed() : GameObject("Bed", "BED")
 	_pHealth->SetHealth(100);
 	_pBoxCollider = AddComponent<BoxColliderComponent>(new BoxColliderComponent(this));
 	_pBoxCollider->SetTrigger(true);
-	//_pTexture = AddComponent<Texture2D>(ResourceManager::GetTexture("bed"));
-	//_pTexture->SetParent(this);
+
+	SpriteComponent* sc = AddComponent(new SpriteComponent(this));
+	sc->SetSprite(ResourceManager::GetSpriteSheet("bed")->GetSpriteAtIndex(0));
 }
 
 Bed::~Bed()

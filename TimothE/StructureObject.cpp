@@ -2,17 +2,21 @@
 #include "StructureObject.h"
 #include "StructureHealth.h"
 
+#include "SpriteComponent.h"
+
 StructureObject::StructureObject(std::string name, std::string tag)
 	:  GameObject(name, tag)
 {
+	SpriteComponent* sc = AddComponent(new SpriteComponent(this));
+
 	if (tag == "WALL") {
-		//AddComponent(ResourceManager::GetTexture("wall"));
+		sc->SetSprite(ResourceManager::GetSpriteSheet("wall")->GetSpriteAtIndex(0));
 	}
 	else if (tag == "TOWER") {
-		//AddComponent(ResourceManager::GetTexture("tower"));
+		sc->SetSprite(ResourceManager::GetSpriteSheet("tower")->GetSpriteAtIndex(0));
 	}
 	else if (tag == "LIGHTSOURCE") {
-		//AddComponent(ResourceManager::GetTexture("campfire"));
+		sc->SetSprite(ResourceManager::GetSpriteSheet("campfire")->GetSpriteAtIndex(0));
 	}
 
 	_pHealth = AddComponent(new StructureHealth(this, 100));

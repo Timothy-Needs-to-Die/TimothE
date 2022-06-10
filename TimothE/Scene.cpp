@@ -162,7 +162,6 @@ void Scene::RenderScene(Camera* cam)
 		if (obj->GetTag() == "PLAYER") continue;
 
 		//TODO: Text won't render here as it uses its own internal texture data.
-		//Texture2D* objTex = obj->GetComponent<Texture2D>();
 		SpriteComponent* sc = obj->GetComponent<SpriteComponent>();
 
 		//if (objTex != nullptr || sc != nullptr) {

@@ -3,6 +3,7 @@
 #include "ResourceNode.h"
 #include "BoxColliderComponent.h"
 #include "AudioSource.h"
+#include "SpriteComponent.h"
 
 ResourceNodeObject::ResourceNodeObject(CoreResourceType type, std::string name /*= "Resource Node"*/, std::string tag /*= "RESOURCE_NODE"*/)
 	: GameObject(name,tag)
@@ -12,26 +13,32 @@ ResourceNodeObject::ResourceNodeObject(CoreResourceType type, std::string name /
 	_pCollider = AddComponent(new BoxColliderComponent(this));
 	_pCollider->SetTrigger(true);
 
+	SpriteComponent* sc = new SpriteComponent(this);
+
+	
+
 	switch (type)
 	{
 	case Wood:
-		//AddComponent(ResourceManager::GetTexture("small_wood"));
+		sc->SetSprite(ResourceManager::GetSpriteSheet("small_wood")->GetSpriteAtIndex(0));
 		break;
 	case Stone:
-		//AddComponent(ResourceManager::GetTexture("small_stone"));
+		sc->SetSprite(ResourceManager::GetSpriteSheet("small_stone")->GetSpriteAtIndex(0));
 		break;
 	case Metal:
-		//AddComponent(ResourceManager::GetTexture("small_metal"));
+		sc->SetSprite(ResourceManager::GetSpriteSheet("small_metal")->GetSpriteAtIndex(0));
 		break;
 	case Gold:
-
+		//sc->SetSprite(ResourceManager::GetSpriteSheet("small_wood")->GetSpriteAtIndex(0));
 		break;
 	case Coal:
-		//AddComponent(ResourceManager::GetTexture("small_coal"));
+		sc->SetSprite(ResourceManager::GetSpriteSheet("small_coal")->GetSpriteAtIndex(0));
 		break;
 	default:
 		break;
 	}
+
+	AddComponent(sc);
 }
 
 void ResourceNodeObject::OnTriggerEnter(ColliderBase* other)

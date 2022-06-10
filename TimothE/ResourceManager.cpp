@@ -51,6 +51,7 @@ void ResourceManager::Init()
 	ResourceManager::InstantiateTexture("whiteTexture", new Texture2D("Resources/Images/whiteTexture.png"));
 	ResourceManager::InstantiateTexture("campfire", new Texture2D("Resources/Images/Campfire.png", true));
 	ResourceManager::InstantiateTexture("gameover_bg", new Texture2D("Resources/Images/Game Over.png", true));
+	
 
 
 	//LOAD SPRITESHEETS
@@ -67,6 +68,15 @@ void ResourceManager::Init()
 	ResourceManager::InstantiateSpritesheet("axes", new SpriteSheet(ResourceManager::GetTexture("axes"), 16, 16, "axes"));
 	ResourceManager::InstantiateSpritesheet("pickaxes", new SpriteSheet(ResourceManager::GetTexture("pickaxes"), 16, 16, "pickaxes"));
 	ResourceManager::InstantiateSpritesheet("planks", new SpriteSheet(ResourceManager::GetTexture("planks"), 64, 64, "pickaxes"));
+	ResourceManager::InstantiateSpritesheet("wall", new SpriteSheet(ResourceManager::GetTexture("wall"), 64, 64, "wall"));
+	ResourceManager::InstantiateSpritesheet("tower", new SpriteSheet(ResourceManager::GetTexture("tower"), 213, 254, "tower"));
+	ResourceManager::InstantiateSpritesheet("fireball", new SpriteSheet(ResourceManager::GetTexture("fireball"), 64, 64, "fireball"));
+	ResourceManager::InstantiateSpritesheet("small_stone", new SpriteSheet(ResourceManager::GetTexture("small_stone"), 32, 32, "small_stone"));
+	ResourceManager::InstantiateSpritesheet("small_wood", new SpriteSheet(ResourceManager::GetTexture("small_wood"), 32, 32, "small_wood"));
+	ResourceManager::InstantiateSpritesheet("small_metal", new SpriteSheet(ResourceManager::GetTexture("small_metal"), 32, 32, "small_metal"));
+	ResourceManager::InstantiateSpritesheet("small_coal", new SpriteSheet(ResourceManager::GetTexture("small_coal"), 32, 32, "small_coal"));
+	ResourceManager::InstantiateSpritesheet("campfire", new SpriteSheet(ResourceManager::GetTexture("campfire"), 32, 32, "campfire"));
+	ResourceManager::InstantiateSpritesheet("bed", new SpriteSheet(ResourceManager::GetTexture("bed"), 32, 64, "bed"));
 
 	//LOAD SHADERS
 	ResourceManager::InstantiateShader("ui", new Shader("vr_UIShader.vert", "fr_UIShader.frag"));
