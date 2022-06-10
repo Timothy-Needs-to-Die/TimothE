@@ -9,7 +9,7 @@
 ProjectileObject::ProjectileObject(glm::vec2 spawnPosition, glm::vec2 direction, GameObject* owner, std::string name /*= "PROJECTILE"*/, std::string tag /*= "PROJECTILE"*/)
 	: GameObject(name, tag), _pOwningTower(owner)
 {
-	AddComponent(ResourceManager::GetTexture("fireball"));
+	//AddComponent(ResourceManager::GetTexture("fireball"));
 	_pTransform->SetScale({ 0.15f,0.15f });
 	_pTransform->SetPosition(spawnPosition);
 

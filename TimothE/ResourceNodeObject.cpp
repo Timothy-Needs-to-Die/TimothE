@@ -15,19 +15,19 @@ ResourceNodeObject::ResourceNodeObject(CoreResourceType type, std::string name /
 	switch (type)
 	{
 	case Wood:
-		AddComponent(ResourceManager::GetTexture("small_wood"));
+		//AddComponent(ResourceManager::GetTexture("small_wood"));
 		break;
 	case Stone:
-		AddComponent(ResourceManager::GetTexture("small_stone"));
+		//AddComponent(ResourceManager::GetTexture("small_stone"));
 		break;
 	case Metal:
-		AddComponent(ResourceManager::GetTexture("small_metal"));
+		//AddComponent(ResourceManager::GetTexture("small_metal"));
 		break;
 	case Gold:
 
 		break;
 	case Coal:
-		AddComponent(ResourceManager::GetTexture("small_coal"));
+		//AddComponent(ResourceManager::GetTexture("small_coal"));
 		break;
 	default:
 		break;

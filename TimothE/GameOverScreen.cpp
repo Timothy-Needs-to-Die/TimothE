@@ -9,7 +9,7 @@
 GameOverScreen::GameOverScreen(std::string name, std::string tag) : GameObject(name, tag)
 {
 	//creates a black background image to cover screen
-	AddComponent(ResourceManager::GetTexture("gameover_bg"));
+	//AddComponent(ResourceManager::GetTexture("gameover_bg"));
 	GetTransform()->SetScale({ 8.0f, 5.0f });
 
 

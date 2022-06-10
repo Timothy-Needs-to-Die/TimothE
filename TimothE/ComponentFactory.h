@@ -23,8 +23,8 @@ public:
 
 		case Component::Types::Transform_Type:
 			return new Transform(pParent);
-		case Component::Types::Texture_Type:
-			return new Texture2D(pParent);
+		//case Component::Types::Texture_Type:
+		//	return new Texture2D(pParent);
 		case Component::Types::Test_Type:
 			return new TestComponent(pParent);
 		case Component::Types::Boxcollision_Type:

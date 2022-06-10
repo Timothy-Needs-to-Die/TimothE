@@ -72,11 +72,11 @@ private:
 
 	Application* _pApplication;
 
-	Texture2D* pContentTextureImage = new Texture2D(NULL);
-	Texture2D* pContentTextureScene = new Texture2D(NULL);
-	Texture2D* pContentTextureConfig = new Texture2D(NULL);
-	Texture2D* pContentTextureScript = new Texture2D(NULL);
-	Texture2D* pContentTextureSound = new Texture2D(NULL);
-	Texture2D* pContentTextureFile = new Texture2D(NULL);
-	Texture2D* pContentTextureFolder = new Texture2D(NULL);
+	//Texture2D* pContentTextureImage = new Texture2D(NULL);
+	//Texture2D* pContentTextureScene = new Texture2D(NULL);
+	//Texture2D* pContentTextureConfig = new Texture2D(NULL);
+	//Texture2D* pContentTextureScript = new Texture2D(NULL);
+	//Texture2D* pContentTextureSound = new Texture2D(NULL);
+	//Texture2D* pContentTextureFile = new Texture2D(NULL);
+	//Texture2D* pContentTextureFolder = new Texture2D(NULL);
 };

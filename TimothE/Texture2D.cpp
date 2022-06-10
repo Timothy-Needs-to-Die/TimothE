@@ -3,18 +3,10 @@
 #include "imgui.h"
 #include "misc/cpp/imgui_stdlib.h"
 
-Texture2D::Texture2D(GameObject* pParent) : Component(pParent), _ID(0)
-{
-	_UID = UID::GenerateUID();
-	SetType(Component::Texture_Type);
-	SetCategory(Component::Graphics_Category);
-} 
 
-Texture2D::Texture2D(std::string path, bool flip) : Component(), _ID(0)
+Texture2D::Texture2D(std::string path, bool flip) :  _ID(0)
 {
 	_UID = UID::GenerateUID();
-	SetType(Component::Texture_Type);
-	SetCategory(Component::Graphics_Category);
 
 	Load(path,flip);
 }
@@ -23,33 +15,6 @@ Texture2D::~Texture2D()
 {
 	//Deletes this texture
 	//glDeleteTextures(1, &_ID);
-}
-
-void Texture2D::DrawEditorUI()
-{
-	static std::string texPath = "path";
-	//displays the texture in the editor window
-	ImGui::Text("Texture");
-	ImTextureID texID = (void*)_ID;
-	//specifies a size of 100x100 for the texture preview
-	ImGui::Image(texID, ImVec2(100.0f, 100.0f));
-	if (ImGui::BeginDragDropTarget())
-	{
-		if (const ImGuiPayload* payload = ImGui::AcceptDragDropPayload("DRAGCONTENT_IMAGE"))
-		{
-			const char* path = (const char*)payload->Data;
-			texPath = (std::string)path;
-		}
-		ImGui::EndDragDropTarget();
-	}
-	ImGui::InputText("##TexturePath", &texPath);
-	
-	//ImGui::SameLine();
-	if (ImGui::Button("Set texture"))
-	{
-		Load(texPath);
-	}
-	
 }
 
 // Pass in file path
@@ -95,21 +60,6 @@ void Texture2D::GenerateTexture(unsigned char* data)
 
 	//Releases the memory associated with the data
 	stbi_image_free(data);
-}
-
-void Texture2D::OnStart()
-{
-
-}
-
-void Texture2D::OnUpdate()
-{
-
-}
-
-void Texture2D::OnEnd()
-{
-
 }
 
 void Texture2D::SetFilterMode(GLenum filter)

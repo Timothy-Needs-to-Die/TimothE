@@ -8,20 +8,11 @@
 #include "SOIL/stb_image.h"
 #include "Core/Graphics/OpenGLError.h"
 
-class Texture2D : public Component
+class Texture2D
 {
 public:
-	Texture2D(GameObject* pParent);
 	Texture2D(std::string path, bool flip = false);
 	~Texture2D();
-
-	COMPONENT_STATIC_TYPE(Texture_Type)
-
-	//Inherited Component methods
-	void OnStart() override;
-	void OnUpdate() override;
-	void OnEnd() override;
-	void DrawEditorUI() override;
 
 	//Getters
 	int GetHeight() { return _height; };

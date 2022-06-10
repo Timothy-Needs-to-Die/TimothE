@@ -162,22 +162,22 @@ void Scene::RenderScene(Camera* cam)
 		if (obj->GetTag() == "PLAYER") continue;
 
 		//TODO: Text won't render here as it uses its own internal texture data.
-		Texture2D* objTex = obj->GetComponent<Texture2D>();
+		//Texture2D* objTex = obj->GetComponent<Texture2D>();
 		SpriteComponent* sc = obj->GetComponent<SpriteComponent>();
 
 		//if (objTex != nullptr || sc != nullptr) {
 		if (obj->GetTag() == "UI") {
-			if (objTex != nullptr) {
-				Renderer2D::DrawUIQuad(obj->GetTransform()->GetRenderQuad(), obj->GetComponent<Texture2D>());
-			}
+			//if (objTex != nullptr) {
+			//	Renderer2D::DrawUIQuad(obj->GetTransform()->GetRenderQuad(), obj->GetComponent<Texture2D>());
+			//}
 		}
 		else {
 			if (sc) {
 				Renderer2D::DrawQuad(obj->GetTransform()->GetRenderQuad(), sc->GetSprite()->GetTexture(), sc->GetSprite()->GetTexCoords());
 			}
-			else {
-				Renderer2D::DrawQuad(obj->GetTransform()->GetRenderQuad(), objTex);
-			}
+			//else {
+			//	Renderer2D::DrawQuad(obj->GetTransform()->GetRenderQuad(), objTex);
+			//}
 		}
 	}
 

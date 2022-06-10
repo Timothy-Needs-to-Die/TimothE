@@ -143,7 +143,7 @@ bool GameObject::LoadState(IStream& stream)
 			AddComponent(c);
 		}
 	}
-	Texture2D* texture = GetComponent<Texture2D>();
+	//Texture2D* texture = GetComponent<Texture2D>();
 
 	return true;
 }
