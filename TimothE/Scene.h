@@ -159,6 +159,8 @@ protected:
 	//Stores a vector of game objects. This is refreshed every time a scene loads.
 	static std::vector<GameObject*> _listOfGameObjects;
 	static std::vector<GameObject*> _listOfDrawableGameObjects;
+	static std::vector<GameObject*> _listofDrawableUIObjects;
+
 	std::vector<GameObject*> _gameObjectsToRemove;
 
 	bool _isInitialized = false;

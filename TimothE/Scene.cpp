@@ -17,6 +17,7 @@
 
 std::vector<GameObject*> Scene::_listOfGameObjects;
 std::vector<GameObject*> Scene::_listOfDrawableGameObjects;
+std::vector<GameObject*> Scene::_listofDrawableUIObjects;
 
 Scene::Scene(std::string name)
 {
@@ -42,6 +43,7 @@ void Scene::InitScene()
 {
 	_listOfGameObjects.clear();
 	_listOfDrawableGameObjects.clear();
+	_listofDrawableUIObjects.clear();
 	_gameObjectsToRemove.clear();
 
 
@@ -129,12 +131,17 @@ void Scene::FrameEnd()
 		if (it2 != _listOfGameObjects.end()) {
 			_listOfGameObjects.erase(it2);
 		}
+
+		std::vector<GameObject*>::iterator it3 = std::find(_listofDrawableUIObjects.begin(), _listofDrawableUIObjects.end(), obj);
+		if (it3 != _listofDrawableUIObjects.end()) {
+			_listofDrawableUIObjects.erase(it);
+		}
 	}
 
 	//cycle through list, disable object,
 	// 
 	// 	   in fighter or wherever just check if object is active before trying to shoot/collide etc.
-	
+
 	for (auto& obj : _gameObjectsToRemove) {
 		obj->SetActive(false);
 		/*delete obj;
@@ -163,21 +170,28 @@ void Scene::RenderScene(Camera* cam)
 
 		//TODO: Text won't render here as it uses its own internal texture data.
 		SpriteComponent* sc = obj->GetComponent<SpriteComponent>();
+		if (sc) {
+			Renderer2D::DrawQuad(obj->GetTransform()->GetRenderQuad(), sc->GetSprite()->GetTexture(), sc->GetSprite()->GetTexCoords());
+		}
+	}
 
-		//if (objTex != nullptr || sc != nullptr) {
-		if (obj->GetTag() == "UI") {
-			//if (objTex != nullptr) {
-			//	Renderer2D::DrawUIQuad(obj->GetTransform()->GetRenderQuad(), obj->GetComponent<Texture2D>());
-			//}
+	for (std::vector<GameObject*>::iterator it = _listofDrawableUIObjects.begin(); it != _listofDrawableUIObjects.end(); ++it) {
+		GameObject* obj = *it;
+
+		if (!obj->IsActive()) continue;
+		if (obj->IsToBeDestroyed()) continue;
+
+		SpriteComponent* sc = obj->GetComponent<SpriteComponent>();
+		if (sc) {
+			Renderer2D::DrawUIQuad(obj->GetTransform()->GetRenderQuad(), sc->GetSprite()->GetTexture(), sc->GetSprite()->GetTexCoords());
+			continue;
 		}
-		else {
-			if (sc) {
-				Renderer2D::DrawQuad(obj->GetTransform()->GetRenderQuad(), sc->GetSprite()->GetTexture(), sc->GetSprite()->GetTexCoords());
-			}
-			//else {
-			//	Renderer2D::DrawQuad(obj->GetTransform()->GetRenderQuad(), objTex);
-			//}
+
+		TextComponent* tc = obj->GetComponent<TextComponent>();
+		if (tc) {
+			tc->OnUpdate();
 		}
+
 	}
 
 	GameObject* player = FindObjectWithTag("PLAYER");
@@ -187,18 +201,6 @@ void Scene::RenderScene(Camera* cam)
 	}
 
 	Renderer2D::EndRender();
-
-	for (auto& obj : _listOfDrawableGameObjects) {
-		if (!obj->IsActive()) continue;
-
-		if (obj->GetTag() != "UI" && obj->GetTag() != "BUILDMODETEXT") continue;
-
-		TextComponent* tc = obj->GetComponent<TextComponent>();
-
-		if (tc != nullptr) {
-			tc->OnUpdate();
-		}
-	}
 }
 
 GameObject* Scene::AddGameObject(GameObject* gameObject)
@@ -248,11 +250,11 @@ void Scene::RemoveGameObject(GameObject* gameObject)
 	//_gameObjectsToRemove.clear();
 }
 
-bool SortbyAscendingDrawOrder(GameObject* a, GameObject* b) 
+bool SortbyAscendingDrawOrder(GameObject* a, GameObject* b)
 {
 	SpriteComponent* as = a->GetComponent<SpriteComponent>();
 	SpriteComponent* bs = b->GetComponent<SpriteComponent>();
-	return (as->GetDrawOrder() < bs->GetDrawOrder()); 
+	return (as->GetDrawOrder() < bs->GetDrawOrder());
 }
 
 void Scene::AddedComponentHandler(GameObject* gameObject, Component* comp)
@@ -261,8 +263,15 @@ void Scene::AddedComponentHandler(GameObject* gameObject, Component* comp)
 	if (comp->GetType() == Component::Types::SpriteType) {
 		//If the Gameobject is not already in the drawables list
 		if (std::find(_listOfDrawableGameObjects.begin(), _listOfDrawableGameObjects.end(), gameObject) == _listOfDrawableGameObjects.end()) {
-			_listOfDrawableGameObjects.push_back(gameObject);
+			_listOfDrawableGameObjects.emplace_back(gameObject);
 			std::sort(_listOfDrawableGameObjects.begin(), _listOfDrawableGameObjects.end(), SortbyAscendingDrawOrder);
+		}
+	}
+
+	if (gameObject->GetTag() == "UI") {
+
+		if (std::find(_listofDrawableUIObjects.begin(), _listofDrawableUIObjects.end(), gameObject) == _listofDrawableUIObjects.end()) {
+			_listofDrawableUIObjects.emplace_back(gameObject);
 		}
 	}
 }
@@ -435,17 +444,17 @@ std::vector<GameObject*> Scene::FindGameObjectsWithTag(const std::string& tagNam
 void Scene::PopulateToolVector()
 {
 	std::vector<std::vector<std::string>> loadedData = CSVReader::RequestDataFromFile("Resources/Data/BlacksmithVendorConfig.csv");
-		for (int i = 0; i < loadedData.size(); i++) {
-			ToolConfig newConfig;
-			newConfig.price = std::stoi(loadedData[i][3]);
-			newConfig.name = loadedData[i][1];
-			newConfig.resourceCost.woodRequired = std::stoi(loadedData[i][4]);
-			newConfig.resourceCost.stoneRequired = std::stoi(loadedData[i][5]);
-			newConfig.resourceCost.metalRequired = std::stoi(loadedData[i][6]);
-			newConfig.resourceCost.coalRequired = std::stoi(loadedData[i][7]);
-			newConfig.type = (ToolType)std::stoi(loadedData[i][10]);
-			newConfig.damagePerHit = std::stoi (loadedData[i][8]);
-			newConfig.townLevelRequired = std::stoi(loadedData[i][0]);
+	for (int i = 0; i < loadedData.size(); i++) {
+		ToolConfig newConfig;
+		newConfig.price = std::stoi(loadedData[i][3]);
+		newConfig.name = loadedData[i][1];
+		newConfig.resourceCost.woodRequired = std::stoi(loadedData[i][4]);
+		newConfig.resourceCost.stoneRequired = std::stoi(loadedData[i][5]);
+		newConfig.resourceCost.metalRequired = std::stoi(loadedData[i][6]);
+		newConfig.resourceCost.coalRequired = std::stoi(loadedData[i][7]);
+		newConfig.type = (ToolType)std::stoi(loadedData[i][10]);
+		newConfig.damagePerHit = std::stoi(loadedData[i][8]);
+		newConfig.townLevelRequired = std::stoi(loadedData[i][0]);
 
 	}
 }
