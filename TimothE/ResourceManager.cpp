@@ -108,9 +108,9 @@ void ResourceManager::Shutdown()
 
 void ResourceManager::LoadFonts() 
 {
-	std::ofstream fileStream("./fonts");
+	std::ofstream fileStream("./Resources/Fonts");
 	_fonts.clear();
-	DIR* directory = opendir("./fonts");
+	DIR* directory = opendir("./Resources/Fonts");
 	struct dirent* dirent;
 	if (directory)
 	{
@@ -118,7 +118,7 @@ void ResourceManager::LoadFonts()
 		{
 			if (dirent->d_type == 32768)
 			{
-				std::string fn = "fonts/" + std::string(dirent->d_name);
+				std::string fn = "Resources/Fonts/" + std::string(dirent->d_name);
 				InstantiateFont(dirent->d_name, new Font(fn));
 
 				std::cout << "Font loaded: " << dirent->d_name << std::endl;
