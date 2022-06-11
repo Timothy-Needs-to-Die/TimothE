@@ -174,5 +174,7 @@ private:
 
 	//The name of the tilemap is used to save and load the map
 	std::string _name;
+
+	std::vector<struct RendererData> _tilemapRendererData;
 };
 

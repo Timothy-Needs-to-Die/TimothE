@@ -3,37 +3,9 @@
 #include "OpenGLError.h"
 #include "../../ResourceManager.h"
 
-struct QuadVertex {
-	glm::vec3 position;
-	glm::vec4 color;
-	glm::vec2 texCoord;
-	int lightLevel;
-	float texIndex;
-	float tilingFactor;
-	int entityID;
-};
 
-struct RendererData {
-	static const unsigned int maxQuads = 1000;
-	static const unsigned int maxVertices = maxQuads * 4;
-	static const unsigned int maxIndices = maxQuads * 6;
-	static const unsigned int maxTextureSlots = 32;
 
-	std::shared_ptr<VAO> quadVertexArray;
-	std::shared_ptr<VBO> quadVertexBuffer;
-	std::shared_ptr<Shader> textureShader;
-	Texture2D* whiteTexture;
 
-	unsigned int quadIndexCount;
-	QuadVertex* quadVertexBufferBase = nullptr;
-	QuadVertex* quadVertexBufferPtr = nullptr;
-
-	//TODO: Replace 32 with a fixed size
-	std::array <Texture2D*, 32> textureSlots;
-	unsigned int textureSlotIndex = 1; //0 = white texture
-
-	glm::vec4 quadVertexPositions[4];
-};
 
 static RendererData _data;
 static RendererData _uiData;
@@ -222,11 +194,156 @@ void Renderer2D::DrawUIQuad(const glm::mat4& transform, Texture2D* texture, glm:
 	_uiData.quadIndexCount += 6;
 }
 
+struct RendererData Renderer2D::GenerateRendererData()
+{
+	RendererData data;
+
+	data.quadVertexArray = VAO::Create();
+
+	data.quadVertexBuffer = VBO::Create(data.maxVertices * sizeof(QuadVertex));
+
+	data.quadVertexBuffer->SetLayout({
+			{ ShaderDataTypes::Float3, "a_Position"     },
+			{ ShaderDataTypes::Float4, "a_Color"        },
+			{ ShaderDataTypes::Float2, "a_TexCoord"     },
+			{ ShaderDataTypes::Int, "a_LightLevel"     },
+			{ ShaderDataTypes::Float,  "a_TexIndex"     },
+			{ ShaderDataTypes::Float,  "a_TilingFactor" },
+			{ ShaderDataTypes::Int,  "a_EntityID" }
+		});
+
+	data.quadVertexArray->AddVertexBuffer(data.quadVertexBuffer);
+
+	data.quadVertexBufferBase = new QuadVertex[data.maxVertices];
+
+	unsigned int* quadIndices = new unsigned int[data.maxIndices];
+
+	unsigned int offset = 0;
+	for (unsigned int i = 0; i < data.maxIndices; i += 6) {
+		quadIndices[i + 0] = offset + 0;
+		quadIndices[i + 1] = offset + 1;
+		quadIndices[i + 2] = offset + 2;
+
+		quadIndices[i + 3] = offset + 2;
+		quadIndices[i + 4] = offset + 3;
+		quadIndices[i + 5] = offset + 0;
+
+		offset += 4;
+	}
+
+	std::shared_ptr<IBO> quadIB = IBO::Create(quadIndices, data.maxIndices);
+
+	data.quadVertexArray->SetIndexBuffer(quadIB);
+	delete[] quadIndices;
+
+	data.whiteTexture = ResourceManager::GetTexture("whiteTexture");
+
+	unsigned int samplers[data.maxTextureSlots];
+	for (unsigned int i = 0; i < data.maxTextureSlots; i++) {
+		samplers[i] = i;
+	}
+
+	data.textureShader = std::make_shared<Shader>("Resources/Shaders/vs_Texture.vert", "Resources/Shaders/fr_Texture.frag");
+
+	data.textureSlots[0] = data.whiteTexture;
+
+	data.quadVertexPositions[0] = { 0.0f, 0.0f, 0.0f, 1.0f };
+	data.quadVertexPositions[1] = { 1.0f, 0.0f, 0.0f, 1.0f };
+	data.quadVertexPositions[2] = { 1.0f,  1.0f, 0.0f, 1.0f };
+	data.quadVertexPositions[3] = { 0.0f,  1.0f, 0.0f, 1.0f };
+
+	data.quadVertexBufferPtr = data.quadVertexBufferBase;
+	data.quadIndexCount = 0;
+
+	return data;
+}
+
+void Renderer2D::AddData(RendererData& data, const Quad& quad, Texture2D* texture, glm::vec2* uvCoordinates /*= nullptr*/, float tilingFactor /*= 1.0f*/, glm::vec4& tintColor /*= glm::vec4(1.0f)*/)
+{
+	glm::mat4 transform = glm::translate(glm::mat4(1.0f), glm::vec3(quad.position, 0.0f)) * glm::scale(glm::mat4(1.0f), glm::vec3(quad.size, 1.0f));
+
+	constexpr size_t quadVertexCount = 4;
+	glm::vec2 textureCoords[] = { { 0.0f, 0.0f }, { 1.0f, 0.0f }, { 1.0f, 1.0f }, { 0.0f, 1.0f } };
+
+	if (uvCoordinates != nullptr) {
+		textureCoords[0] = uvCoordinates[0];
+		textureCoords[1] = uvCoordinates[1];
+		textureCoords[2] = uvCoordinates[2];
+		textureCoords[3] = uvCoordinates[3];
+	}
+
+	if (data.quadIndexCount >= RendererData::maxIndices)
+		NextBatch();
+
+	float textureIndex = -1.0f;
+	if (texture == nullptr) {
+		textureIndex = 0.0f;
+	}
+	else {
+		for (uint32_t i = 1; i < data.textureSlotIndex; i++)
+		{
+			if (data.textureSlots[i] == texture)
+			{
+				textureIndex = (float)i;
+				break;
+			}
+		}
+	}
+
+	if (textureIndex == -1.0f)
+	{
+		if (data.textureSlotIndex >= RendererData::maxTextureSlots)
+			NextBatch();
+
+		textureIndex = (float)data.textureSlotIndex;
+		data.textureSlots[data.textureSlotIndex] = texture;
+		data.textureSlotIndex++;
+	}
+
+
+	//Unrolled for loop, yielded minor fps improvements
+	data.quadVertexBufferPtr->position = transform * data.quadVertexPositions[0];
+	data.quadVertexBufferPtr->color = tintColor;
+	data.quadVertexBufferPtr->texCoord = textureCoords[0];
+	data.quadVertexBufferPtr->lightLevel = 5;
+	data.quadVertexBufferPtr->texIndex = textureIndex;
+	data.quadVertexBufferPtr->tilingFactor = tilingFactor;
+	data.quadVertexBufferPtr++;
+
+	data.quadVertexBufferPtr->position = transform * data.quadVertexPositions[1];
+	data.quadVertexBufferPtr->color = tintColor;
+	data.quadVertexBufferPtr->texCoord = textureCoords[1];
+	data.quadVertexBufferPtr->lightLevel = 5;
+	data.quadVertexBufferPtr->texIndex = textureIndex;
+	data.quadVertexBufferPtr->tilingFactor = tilingFactor;
+	data.quadVertexBufferPtr++;
+
+	data.quadVertexBufferPtr->position = transform * data.quadVertexPositions[2];
+	data.quadVertexBufferPtr->color = tintColor;
+	data.quadVertexBufferPtr->texCoord = textureCoords[2];
+	data.quadVertexBufferPtr->lightLevel = 5;
+	data.quadVertexBufferPtr->texIndex = textureIndex;
+	data.quadVertexBufferPtr->tilingFactor = tilingFactor;
+	data.quadVertexBufferPtr++;
+
+	data.quadVertexBufferPtr->position = transform * data.quadVertexPositions[3];
+	data.quadVertexBufferPtr->color = tintColor;
+	data.quadVertexBufferPtr->texCoord = textureCoords[3];
+	data.quadVertexBufferPtr->lightLevel = 5;
+	data.quadVertexBufferPtr->texIndex = textureIndex;
+	data.quadVertexBufferPtr->tilingFactor = tilingFactor;
+	data.quadVertexBufferPtr++;
+
+	data.quadIndexCount += 6;
+}
+
 void Renderer2D::DrawUIQuad(const Quad& quad, Texture2D* texture /*= nullptr*/, glm::vec2* uvCoordinates /*= nullptr*/, glm::vec4& tintColor /*= glm::vec4(1.0f)*/, float tilingFactor /*= 1.0f*/)
 {
 	glm::mat4 transform = glm::translate(glm::mat4(1.0f), glm::vec3(quad.position, 0.0f)) * glm::scale(glm::mat4(1.0f), glm::vec3(quad.size, 1.0f));
 	DrawUIQuad(transform, texture, uvCoordinates, tilingFactor, tintColor);
 }
+
+
 
 void Renderer2D::DrawQuad(const glm::mat4& transform, Texture2D* texture, glm::vec2* uvCoordinates, float tilingFactor, glm::vec4& tintColor, int lightLevel /*= 5*/)
 {

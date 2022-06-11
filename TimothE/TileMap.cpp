@@ -178,6 +178,22 @@ void TileMap::LoadTileMap()
 		}
 	}
 
+
+	for (int layer = 0; layer < _numLayers; layer++) {
+		RendererData data = Renderer2D::GenerateRendererData();
+
+		for (int i = 0; i < dimensions; i++) {
+			TileData& td = _tileArr[layer][i];
+			glm::vec2 pos = td.pos;
+
+			if(td._pSprite == nullptr) continue;
+
+			Renderer2D::AddData(data, Quad{ { pos.x, pos.y}, {0.25f, 0.25f} }, td._pSprite->GetTexture(), td._pSprite->GetTexCoords());
+		}
+
+		_tilemapRendererData.emplace_back(data);
+	}
+
 }
 
 void TileMap::AddTileAt(unsigned int layer, unsigned int uvX, unsigned int uvY, Camera* cam, SpriteSheet* sp, bool shouldCollide /*= false*/)
@@ -281,94 +297,112 @@ void TileMap::ClearLayer(int layer)
 void TileMap::RenderMap(Camera* cam)
 {
 	//Gets the camera position
-	glm::vec3 camPos = cam->Position();
+	//glm::vec3 camPos = cam->Position();
+	//
+	////Calculate the extents of the camera based on the aspect ratio and zoom level. 
+	////Multiplying by 2 stops tiles suddenly being rendered or unrendered. 
+	//
+	//const float extents = 4.0f;
+	//
+	////Pre-calculate the min and max values of the camera's extents to avoid recalculating them. Optimisation 
+	//float xMin = camPos.x - (extents);
+	//float xMax = camPos.x + (extents);
+	//float yMin = camPos.y - (extents);
+	//float yMax = camPos.y + (extents);
+	//
+	////TIM_LOG_LOG("Extents: X:(" << xMin << "-" << xMax << ") Y:(" << yMin << "-" << yMax << ")");
+	//
+	//if (xMin < 0) xMin = 0.0f;
+	//if (xMax > _mapSizeInUnits.x) xMax = _mapSizeInUnits.x;
+	//if (yMin < 0) yMin = 0.0f;
+	//if (yMax > _mapSizeInUnits.y) yMax = _mapSizeInUnits.y;
+	//
+	////Start the batch render for the tilemap
+	//Renderer2D::BeginRender(cam);
+	//
+	////Using this if check here means that we don't have to do the if check inside each tile, massively reducing comparisons on each tile (roughly 9000 comparisons per frame)
+	//if (TileMapEditor::_showCollisionMap) {
+	//	//Predefine these here to reduce the amount of created objects inside the loop.
+	//	glm::vec4 red = glm::vec4(1.0f, 0.0f, 0.0f, 1.0f);
+	//	glm::vec4 green = glm::vec4(0.0f, 1.0f, 0.0f, 1.0f);
+	//	glm::vec4 color;
+	//
+	//	//Cycle through each layer
+	//	for (int i = 0; i < _numLayers; i++) {
+	//		//Cycle through the Y axis
+	//		for (float y = 0.0f; y < _mapSizeInUnits.y; y += _gapBetweenTiles) {
+	//			//Cycle through the X axis
+	//			for (float x = 0.0f; x < _mapSizeInUnits.x; x += _gapBetweenTiles) {
+	//				if (x < xMin || x > xMax || y < yMin || y > yMax) continue;
+	//
+	//				//Get the index of the tile
+	//				int index = _mapInTiles.x * (int)(y * _tilesPerUnit) + (int)(x * _tilesPerUnit);
+	//
+	//				//if this tile does not have a sprite then go to next cycle
+	//				if (_tileArr[i][index]._pSprite == nullptr) continue;
+	//
+	//				//Decide the color based on the tiles collidability
+	//				color = (_tileArr[i][index].collidable) ? red : green;
+	//
+	//				Renderer2D::DrawQuad(Quad{ { x,y }, { _gapBetweenTiles,_gapBetweenTiles } }, _tileArr[i][index]._pSprite->GetTexture(), _tileArr[i][index]._pSprite->GetTexCoords(), _tileArr[i][index].lightLevel, color);
+	//			}
+	//		}
+	//	}
+	//}
+	//else {
+	//	glm::vec4 tileTint = glm::vec4(1.0f, 1.0f, 1.0f,1.0f);
+	//
+	//	//Cycle through each layer
+	//	for (int i = 0; i < _numLayers; i++) {
+	//		//Cycle through the Y axis
+	//		for (float y = 0.0f; y < _mapSizeInUnits.y; y += _gapBetweenTiles) {
+	//			//Cycle through the X axis
+	//			for (float x = 0.0f; x < _mapSizeInUnits.x; x += _gapBetweenTiles) {
+	//				if (x < xMin || x > xMax || y < yMin || y > yMax) continue;
+	//
+	//				tileTint = glm::vec4(1.0f);
+	//
+	//				//Get the index of the tile
+	//				int index = _mapInTiles.x * (int)(y * _tilesPerUnit) + (int)(x * _tilesPerUnit);
+	//
+	//				//if this tile does not have a sprite then go to next cycle
+	//				if (_tileArr[i][index]._pSprite == nullptr) continue;
+	//
+	//				if (TileMapEditor::_active) {
+	//					tileTint = glm::vec4(1.0f);
+	//					if (index == _currentTileIndex) {
+	//						tileTint.r = 0.0f;
+	//						tileTint.b = 0.0f;
+	//					}
+	//				}
+	//
+	//				//Draw this tile
+	//				Renderer2D::DrawQuad(Quad{ { x,y }, { _gapBetweenTiles,_gapBetweenTiles } }, _tileArr[i][index]._pSprite->GetTexture(), _tileArr[i][index]._pSprite->GetTexCoords(), _tileArr[i][index].lightLevel);
+	//			}
+	//		}
+	//	}
+	//}
+	//
+	////Ends the batch render for the tilemap
+	//Renderer2D::EndRender();
 
-	//Calculate the extents of the camera based on the aspect ratio and zoom level. 
-	//Multiplying by 2 stops tiles suddenly being rendered or unrendered. 
+	for (int i = 0; i < _tilemapRendererData.size(); i++) {
+		RendererData& data = _tilemapRendererData[i];
+		data.textureShader->SetMat4("view", cam->ViewProj());
 
-	const float extents = 4.0f;
+		if (data.quadIndexCount != 0) {
+			uint32_t dataSize = (uint32_t)((uint8_t*)data.quadVertexBufferPtr - (uint8_t*)data.quadVertexBufferBase);
+			data.quadVertexBuffer->SetData(data.quadVertexBufferBase, dataSize);
 
-	//Pre-calculate the min and max values of the camera's extents to avoid recalculating them. Optimisation 
-	float xMin = camPos.x - (extents);
-	float xMax = camPos.x + (extents);
-	float yMin = camPos.y - (extents);
-	float yMax = camPos.y + (extents);
-
-	//TIM_LOG_LOG("Extents: X:(" << xMin << "-" << xMax << ") Y:(" << yMin << "-" << yMax << ")");
-
-	if (xMin < 0) xMin = 0.0f;
-	if (xMax > _mapSizeInUnits.x) xMax = _mapSizeInUnits.x;
-	if (yMin < 0) yMin = 0.0f;
-	if (yMax > _mapSizeInUnits.y) yMax = _mapSizeInUnits.y;
-
-	//Start the batch render for the tilemap
-	Renderer2D::BeginRender(cam);
-
-	//Using this if check here means that we don't have to do the if check inside each tile, massively reducing comparisons on each tile (roughly 9000 comparisons per frame)
-	if (TileMapEditor::_showCollisionMap) {
-		//Predefine these here to reduce the amount of created objects inside the loop.
-		glm::vec4 red = glm::vec4(1.0f, 0.0f, 0.0f, 1.0f);
-		glm::vec4 green = glm::vec4(0.0f, 1.0f, 0.0f, 1.0f);
-		glm::vec4 color;
-
-		//Cycle through each layer
-		for (int i = 0; i < _numLayers; i++) {
-			//Cycle through the Y axis
-			for (float y = 0.0f; y < _mapSizeInUnits.y; y += _gapBetweenTiles) {
-				//Cycle through the X axis
-				for (float x = 0.0f; x < _mapSizeInUnits.x; x += _gapBetweenTiles) {
-					if (x < xMin || x > xMax || y < yMin || y > yMax) continue;
-
-					//Get the index of the tile
-					int index = _mapInTiles.x * (int)(y * _tilesPerUnit) + (int)(x * _tilesPerUnit);
-
-					//if this tile does not have a sprite then go to next cycle
-					if (_tileArr[i][index]._pSprite == nullptr) continue;
-
-					//Decide the color based on the tiles collidability
-					color = (_tileArr[i][index].collidable) ? red : green;
-
-					Renderer2D::DrawQuad(Quad{ { x,y }, { _gapBetweenTiles,_gapBetweenTiles } }, _tileArr[i][index]._pSprite->GetTexture(), _tileArr[i][index]._pSprite->GetTexCoords(), _tileArr[i][index].lightLevel, color);
-				}
+			for (unsigned int i = 0; i < data.textureSlotIndex; i++) {
+				data.textureSlots[i]->Bind(i);
 			}
+
+			data.textureShader->BindShader();
+
+			Renderer2D::DrawIndexed(data.quadVertexArray, data.quadIndexCount);
 		}
 	}
-	else {
-		glm::vec4 tileTint = glm::vec4(1.0f, 1.0f, 1.0f,1.0f);
-
-		//Cycle through each layer
-		for (int i = 0; i < _numLayers; i++) {
-			//Cycle through the Y axis
-			for (float y = 0.0f; y < _mapSizeInUnits.y; y += _gapBetweenTiles) {
-				//Cycle through the X axis
-				for (float x = 0.0f; x < _mapSizeInUnits.x; x += _gapBetweenTiles) {
-					if (x < xMin || x > xMax || y < yMin || y > yMax) continue;
-
-					tileTint = glm::vec4(1.0f);
-
-					//Get the index of the tile
-					int index = _mapInTiles.x * (int)(y * _tilesPerUnit) + (int)(x * _tilesPerUnit);
-
-					//if this tile does not have a sprite then go to next cycle
-					if (_tileArr[i][index]._pSprite == nullptr) continue;
-
-					if (TileMapEditor::_active) {
-						tileTint = glm::vec4(1.0f);
-						if (index == _currentTileIndex) {
-							tileTint.r = 0.0f;
-							tileTint.b = 0.0f;
-						}
-					}
-
-					//Draw this tile
-					Renderer2D::DrawQuad(Quad{ { x,y }, { _gapBetweenTiles,_gapBetweenTiles } }, _tileArr[i][index]._pSprite->GetTexture(), _tileArr[i][index]._pSprite->GetTexCoords(), _tileArr[i][index].lightLevel);
-				}
-			}
-		}
-	}
-
-	//Ends the batch render for the tilemap
-	Renderer2D::EndRender();
 }
 
 bool TileMap::CollidableAtPosition(const int x, const int y) const

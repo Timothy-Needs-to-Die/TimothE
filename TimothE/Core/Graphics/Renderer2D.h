@@ -9,6 +9,38 @@
 #include "../../Camera.h"
 #include "../../Texture2D.h"
 
+struct QuadVertex {
+	glm::vec3 position;
+	glm::vec4 color;
+	glm::vec2 texCoord;
+	int lightLevel;
+	float texIndex;
+	float tilingFactor;
+	int entityID;
+};
+
+struct RendererData {
+	static const unsigned int maxQuads = 20000;
+	static const unsigned int maxVertices = maxQuads * 4;
+	static const unsigned int maxIndices = maxQuads * 6;
+	static const unsigned int maxTextureSlots = 32;
+
+	std::shared_ptr<VAO> quadVertexArray;
+	std::shared_ptr<VBO> quadVertexBuffer;
+	std::shared_ptr<Shader> textureShader;
+	Texture2D* whiteTexture;
+
+	unsigned int quadIndexCount;
+	QuadVertex* quadVertexBufferBase = nullptr;
+	QuadVertex* quadVertexBufferPtr = nullptr;
+
+	//TODO: Replace 32 with a fixed size
+	std::array <Texture2D*, 32> textureSlots;
+	unsigned int textureSlotIndex = 1; //0 = white texture
+
+	glm::vec4 quadVertexPositions[4];
+};
+
 class Renderer2D
 {
 public:
@@ -64,9 +96,14 @@ public:
 	static void DrawUIQuad(const glm::mat4& transform, Texture2D* texture, glm::vec2* uvCoordinates = nullptr,
 		float tilingFactor = 1.0f, glm::vec4& tintColor = glm::vec4(1.0f));
 
+	static struct RendererData GenerateRendererData();
+
+	static void AddData(struct RendererData& data, const Quad& quad, Texture2D* texture, glm::vec2* uvCoordinates = nullptr,
+		float tilingFactor = 1.0f, glm::vec4& tintColor = glm::vec4(1.0f));
+
+	static void DrawIndexed(const std::shared_ptr<VAO>& vertexArray, uint32_t indexCount);
 private:
 	static void Flush();
-	static void DrawIndexed(const std::shared_ptr<VAO>& vertexArray, uint32_t indexCount);
 	static void StartBatch();
 	static void NextBatch();
 };

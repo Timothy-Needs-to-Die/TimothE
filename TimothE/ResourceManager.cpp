@@ -45,6 +45,7 @@ void ResourceManager::Init()
 	ResourceManager::InstantiateTexture("whiteTexture", new Texture2D("Resources/Images/whiteTexture.png"));
 	ResourceManager::InstantiateTexture("campfire", new Texture2D("Resources/Images/Campfire.png", true));
 	ResourceManager::InstantiateTexture("gameover_bg", new Texture2D("Resources/Images/Game Over.png", true));
+	ResourceManager::InstantiateTexture("testSheet", new Texture2D("Resources/Images/testSheet.png", true));
 	
 
 
@@ -71,6 +72,8 @@ void ResourceManager::Init()
 	ResourceManager::InstantiateSpritesheet("small_coal", new SpriteSheet(ResourceManager::GetTexture("small_coal"), 32, 32, "small_coal"));
 	ResourceManager::InstantiateSpritesheet("campfire", new SpriteSheet(ResourceManager::GetTexture("campfire"), 32, 32, "campfire"));
 	ResourceManager::InstantiateSpritesheet("bed", new SpriteSheet(ResourceManager::GetTexture("bed"), 32, 64, "bed"));
+	ResourceManager::InstantiateSpritesheet("testSheet", new SpriteSheet(ResourceManager::GetTexture("testSheet"), 64, 64, "testSheet"));
+
 
 	//LOAD SHADERS
 	ResourceManager::InstantiateShader("ui", new Shader("Resources/Shaders/vr_UIShader.vert", "Resources/Shaders/fr_UIShader.frag"));
