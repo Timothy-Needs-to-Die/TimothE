@@ -108,6 +108,10 @@ void TileMap::LoadTileMap()
 
 	_collidableTileArray = new bool[dimensions];
 
+	_lightLevelArray = new int[dimensions];
+	memset(_lightLevelArray, 5, dimensions);
+	
+
 	for (int layer = 0; layer < _numLayers; layer++) {
 		_tileArr[layer].resize(dimensions);
 
@@ -233,7 +237,6 @@ void TileMap::AddTileAt(unsigned int layer, unsigned int uvX, unsigned int uvY, 
 
 	newTile.size = _gapBetweenTiles;
 	newTile.pos = colPos;
-	newTile.lightLevel = 5;
 
 	newTile._pSpritesheet = sp;
 	newTile._pSprite = sp->GetSpriteAtIndex(sp->GetSheetWidth() * uvY + uvX);
@@ -271,7 +274,6 @@ glm::vec2 TileMap::MousePosToTile(Camera* cam)
 }
 
 //Sets the size of the tilemap in tiles. e.g a 256 x 140 tile map.
-
 void TileMap::SetTileMapSize(glm::vec2 mapSize)
 {
 	_mapInTiles = mapSize;
@@ -348,9 +350,9 @@ bool TileMap::CollidableAtPosition(glm::vec2 worldPos)
 void TileMap::UpdateLightLevelAtPosition(glm::vec2 pos, int lightLevel)
 {
 	//Convert position to a single dimension index.
-	int yIndex = pos.y / _gapBetweenTiles;
-	int xIndex = pos.x / _gapBetweenTiles;
-	int index = (yIndex * _mapInTiles.x) + xIndex;
+	int index = GetTileIndexFromPosition(pos);
+
+	_lightLevelArray[index] = lightLevel;
 
 	//Multiply index by 4 so it is quad vertex space
 	index *= 4;
@@ -382,8 +384,6 @@ void TileMap::SetCollidableAtPosition(glm::vec2 pos, bool val)
 
 int TileMap::GetTileIndexFromPosition(glm::vec2 pos)
 {
-	TileData* td = GetTileAtWorldPos(0, pos);
-
 	int index = _mapInTiles.x * (int)(pos.y * _tilesPerUnit) + (int)(pos.x * _tilesPerUnit);
 	return index;
 }
@@ -397,11 +397,21 @@ bool TileMap::CollidableAtPosition(const int index) const
 
 void TileMap::SetAllTilesLightLevel(int level)
 {
-	//loop through all tiles in map and set light level
-	for (int y = 0; y < 5; y++)
-	{
-		for (int i = 0; i < _tileArr[y].size(); ++i) {
-			_tileArr[y][i].lightLevel = level;
-		}
+	for (int i = 0; i < _mapInTiles.x * _mapSizeInUnits.y; ++i) {
+		UpdateLightLevelAtPosition(_tileArr[0][i].pos, level);
 	}
+
+	UpdateRenderInfo();
+}
+
+int TileMap::GetLightLevelAtPosition(glm::vec2 pos)
+{
+	int index = GetTileIndexFromPosition(pos);
+	return _lightLevelArray[index];
+}
+
+void TileMap::SetLightLevelAtPosition(glm::vec2 pos, int val)
+{
+	int index = GetTileIndexFromPosition(pos);
+	_lightLevelArray[index] = val;
 }

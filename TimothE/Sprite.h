@@ -15,6 +15,5 @@ public:
 private:
 	glm::vec2* _pTexCoords;
 	Texture2D* _pTexture;
-
 };
 

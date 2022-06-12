@@ -144,6 +144,9 @@ public:
 	/// <param name="level"> Applicable light level for tiles.</param>
 	void SetAllTilesLightLevel(int level);
 
+
+	int GetLightLevelAtPosition(glm::vec2 pos);
+	void SetLightLevelAtPosition(glm::vec2 pos, int val);
 	
 
 	//Returns the name of the tilemap
@@ -175,6 +178,8 @@ private:
 	std::vector<std::vector<TileData>> _tileArr;
 
 	bool* _collidableTileArray;
+
+	int* _lightLevelArray;
 
 	//How many tiles are there per unit in the X and Y axis
 	int _tilesPerUnit = 4;
