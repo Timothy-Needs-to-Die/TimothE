@@ -175,6 +175,16 @@ void Scene::RenderScene(Camera* cam)
 		}
 	}
 
+	GameObject* player = FindObjectWithTag("PLAYER");
+	if (player) {
+		SpriteComponent* sc = player->GetComponent<SpriteComponent>();
+		Renderer2D::DrawQuad(player->GetTransform()->GetRenderQuad(), sc->GetSprite()->GetTexture(), sc->GetSprite()->GetTexCoords());
+	}
+
+	Renderer2D::EndRender();
+
+	Renderer2D::BeginRender(cam);
+
 	for (std::vector<GameObject*>::iterator it = _listofDrawableUIObjects.begin(); it != _listofDrawableUIObjects.end(); ++it) {
 		GameObject* obj = *it;
 
@@ -192,12 +202,6 @@ void Scene::RenderScene(Camera* cam)
 			tc->OnUpdate();
 		}
 
-	}
-
-	GameObject* player = FindObjectWithTag("PLAYER");
-	if (player) {
-		SpriteComponent* sc = player->GetComponent<SpriteComponent>();
-		Renderer2D::DrawQuad(player->GetTransform()->GetRenderQuad(), sc->GetSprite()->GetTexture(), sc->GetSprite()->GetTexCoords());
 	}
 
 	Renderer2D::EndRender();
@@ -269,7 +273,6 @@ void Scene::AddedComponentHandler(GameObject* gameObject, Component* comp)
 	}
 
 	if (gameObject->GetTag() == "UI") {
-
 		if (std::find(_listofDrawableUIObjects.begin(), _listofDrawableUIObjects.end(), gameObject) == _listofDrawableUIObjects.end()) {
 			_listofDrawableUIObjects.emplace_back(gameObject);
 		}
