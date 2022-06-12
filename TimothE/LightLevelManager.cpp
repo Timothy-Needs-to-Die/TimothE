@@ -43,11 +43,13 @@ void LightLevelManager::UpdateLightMap()
 							if ((tile->lightLevel + affectiveValue) < _worldLightLevel)
 							{
 								tile->lightLevel = _worldLightLevel;
+								_pTileMap->UpdateLightLevelAtPosition({ x,y }, tile->lightLevel);
 								continue;
 							}
 							else if ((tile->lightLevel + affectiveValue) > _maxLightLevel)
 							{
 								tile->lightLevel = _maxLightLevel;
+								_pTileMap->UpdateLightLevelAtPosition({ x,y }, tile->lightLevel);
 								continue;
 							}
 

@@ -12,8 +12,9 @@ std::ostream& operator<<(std::ostream& os, glm::vec2 v) {
 	return os;
 }
 
-//TODO: Size details
-//TODO: Add a system to change how many tiles per unit
+//TODO: Single collision map
+//TODO: Single light value map
+
 TileMap::TileMap(std::string name)
 	: _name(name)
 {
@@ -123,7 +124,7 @@ void TileMap::LoadTileMap()
 				std::string s2;
 				getline(ss, s2, ' ');
 
-				
+
 				std::string s3;
 				getline(ss, s3, ' ');
 
@@ -186,7 +187,7 @@ void TileMap::LoadTileMap()
 			TileData& td = _tileArr[layer][i];
 			glm::vec2 pos = td.pos;
 
-			if(td._pSprite == nullptr) continue;
+			if (td._pSprite == nullptr) continue;
 
 			Renderer2D::AddData(data, Quad{ { pos.x, pos.y}, {0.25f, 0.25f} }, td._pSprite->GetTexture(), td._pSprite->GetTexCoords());
 		}
@@ -296,96 +297,6 @@ void TileMap::ClearLayer(int layer)
 
 void TileMap::RenderMap(Camera* cam)
 {
-	//Gets the camera position
-	//glm::vec3 camPos = cam->Position();
-	//
-	////Calculate the extents of the camera based on the aspect ratio and zoom level. 
-	////Multiplying by 2 stops tiles suddenly being rendered or unrendered. 
-	//
-	//const float extents = 4.0f;
-	//
-	////Pre-calculate the min and max values of the camera's extents to avoid recalculating them. Optimisation 
-	//float xMin = camPos.x - (extents);
-	//float xMax = camPos.x + (extents);
-	//float yMin = camPos.y - (extents);
-	//float yMax = camPos.y + (extents);
-	//
-	////TIM_LOG_LOG("Extents: X:(" << xMin << "-" << xMax << ") Y:(" << yMin << "-" << yMax << ")");
-	//
-	//if (xMin < 0) xMin = 0.0f;
-	//if (xMax > _mapSizeInUnits.x) xMax = _mapSizeInUnits.x;
-	//if (yMin < 0) yMin = 0.0f;
-	//if (yMax > _mapSizeInUnits.y) yMax = _mapSizeInUnits.y;
-	//
-	////Start the batch render for the tilemap
-	//Renderer2D::BeginRender(cam);
-	//
-	////Using this if check here means that we don't have to do the if check inside each tile, massively reducing comparisons on each tile (roughly 9000 comparisons per frame)
-	//if (TileMapEditor::_showCollisionMap) {
-	//	//Predefine these here to reduce the amount of created objects inside the loop.
-	//	glm::vec4 red = glm::vec4(1.0f, 0.0f, 0.0f, 1.0f);
-	//	glm::vec4 green = glm::vec4(0.0f, 1.0f, 0.0f, 1.0f);
-	//	glm::vec4 color;
-	//
-	//	//Cycle through each layer
-	//	for (int i = 0; i < _numLayers; i++) {
-	//		//Cycle through the Y axis
-	//		for (float y = 0.0f; y < _mapSizeInUnits.y; y += _gapBetweenTiles) {
-	//			//Cycle through the X axis
-	//			for (float x = 0.0f; x < _mapSizeInUnits.x; x += _gapBetweenTiles) {
-	//				if (x < xMin || x > xMax || y < yMin || y > yMax) continue;
-	//
-	//				//Get the index of the tile
-	//				int index = _mapInTiles.x * (int)(y * _tilesPerUnit) + (int)(x * _tilesPerUnit);
-	//
-	//				//if this tile does not have a sprite then go to next cycle
-	//				if (_tileArr[i][index]._pSprite == nullptr) continue;
-	//
-	//				//Decide the color based on the tiles collidability
-	//				color = (_tileArr[i][index].collidable) ? red : green;
-	//
-	//				Renderer2D::DrawQuad(Quad{ { x,y }, { _gapBetweenTiles,_gapBetweenTiles } }, _tileArr[i][index]._pSprite->GetTexture(), _tileArr[i][index]._pSprite->GetTexCoords(), _tileArr[i][index].lightLevel, color);
-	//			}
-	//		}
-	//	}
-	//}
-	//else {
-	//	glm::vec4 tileTint = glm::vec4(1.0f, 1.0f, 1.0f,1.0f);
-	//
-	//	//Cycle through each layer
-	//	for (int i = 0; i < _numLayers; i++) {
-	//		//Cycle through the Y axis
-	//		for (float y = 0.0f; y < _mapSizeInUnits.y; y += _gapBetweenTiles) {
-	//			//Cycle through the X axis
-	//			for (float x = 0.0f; x < _mapSizeInUnits.x; x += _gapBetweenTiles) {
-	//				if (x < xMin || x > xMax || y < yMin || y > yMax) continue;
-	//
-	//				tileTint = glm::vec4(1.0f);
-	//
-	//				//Get the index of the tile
-	//				int index = _mapInTiles.x * (int)(y * _tilesPerUnit) + (int)(x * _tilesPerUnit);
-	//
-	//				//if this tile does not have a sprite then go to next cycle
-	//				if (_tileArr[i][index]._pSprite == nullptr) continue;
-	//
-	//				if (TileMapEditor::_active) {
-	//					tileTint = glm::vec4(1.0f);
-	//					if (index == _currentTileIndex) {
-	//						tileTint.r = 0.0f;
-	//						tileTint.b = 0.0f;
-	//					}
-	//				}
-	//
-	//				//Draw this tile
-	//				Renderer2D::DrawQuad(Quad{ { x,y }, { _gapBetweenTiles,_gapBetweenTiles } }, _tileArr[i][index]._pSprite->GetTexture(), _tileArr[i][index]._pSprite->GetTexCoords(), _tileArr[i][index].lightLevel);
-	//			}
-	//		}
-	//	}
-	//}
-	//
-	////Ends the batch render for the tilemap
-	//Renderer2D::EndRender();
-
 	for (int i = 0; i < _tilemapRendererData.size(); i++) {
 		RendererData& data = _tilemapRendererData[i];
 		data.textureShader->SetMat4("view", cam->ViewProj());
@@ -425,31 +336,17 @@ bool TileMap::CollidableAtPosition(glm::vec2 worldPos)
 
 void TileMap::UpdateLightLevelAtPosition(glm::vec2 pos, int lightLevel)
 {
-	//Convert pos to a single dimension index.
-
-	/*Test Data :
-		pos { 0.25, 0.25 } 
-		expected result 
-			yIndex 1
-			xIndex 1
-			index 33
-
-	*/
-
+	//Convert position to a single dimension index.
 	int yIndex = pos.y / _gapBetweenTiles;
 	int xIndex = pos.x / _gapBetweenTiles;
-
 	int index = (yIndex * _mapInTiles.x) + xIndex;
 
-	//if (lightLevel != 5) {
-	//	__debugbreak();
-	//}
-
+	//Multiply index by 4 so it is quad vertex space
 	index *= 4;
 
+	//Loops through each layer of render data
 	for (int i = 0; i < _tilemapRendererData.size(); ++i) {
-		//QuadVertex* vert = 
-		
+		//Sets the light level on the four different vertices of the quad.
 		_tilemapRendererData[i].quadVertexBufferBase[index].lightLevel = lightLevel;
 		_tilemapRendererData[i].quadVertexBufferBase[index + 1].lightLevel = lightLevel;
 		_tilemapRendererData[i].quadVertexBufferBase[index + 2].lightLevel = lightLevel;
@@ -468,7 +365,7 @@ void TileMap::UpdateRenderInfo()
 void TileMap::SetCollidableAtLayer(int layer, glm::vec2 pos, bool val)
 {
 	//Safeguards against putting a layer greater than the number of layers in
-	if (layer >= _numLayers) layer = _numLayers -1;
+	if (layer >= _numLayers) layer = _numLayers - 1;
 	//Safeguards against putting a layer in thats below 0
 	if (layer < 0) layer = 0;
 

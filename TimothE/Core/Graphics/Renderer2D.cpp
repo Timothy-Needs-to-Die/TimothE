@@ -272,9 +272,6 @@ void Renderer2D::AddData(RendererData& data, const Quad& quad, Texture2D* textur
 		textureCoords[3] = uvCoordinates[3];
 	}
 
-	if (data.quadIndexCount >= RendererData::maxIndices)
-		NextBatch();
-
 	float textureIndex = -1.0f;
 	if (texture == nullptr) {
 		textureIndex = 0.0f;
@@ -292,47 +289,20 @@ void Renderer2D::AddData(RendererData& data, const Quad& quad, Texture2D* textur
 
 	if (textureIndex == -1.0f)
 	{
-		if (data.textureSlotIndex >= RendererData::maxTextureSlots)
-			NextBatch();
-
 		textureIndex = (float)data.textureSlotIndex;
 		data.textureSlots[data.textureSlotIndex] = texture;
 		data.textureSlotIndex++;
 	}
 
-
-	//Unrolled for loop, yielded minor fps improvements
-	data.quadVertexBufferPtr->position = transform * data.quadVertexPositions[0];
-	data.quadVertexBufferPtr->color = tintColor;
-	data.quadVertexBufferPtr->texCoord = textureCoords[0];
-	data.quadVertexBufferPtr->lightLevel = 5;
-	data.quadVertexBufferPtr->texIndex = textureIndex;
-	data.quadVertexBufferPtr->tilingFactor = tilingFactor;
-	data.quadVertexBufferPtr++;
-
-	data.quadVertexBufferPtr->position = transform * data.quadVertexPositions[1];
-	data.quadVertexBufferPtr->color = tintColor;
-	data.quadVertexBufferPtr->texCoord = textureCoords[1];
-	data.quadVertexBufferPtr->lightLevel = 5;
-	data.quadVertexBufferPtr->texIndex = textureIndex;
-	data.quadVertexBufferPtr->tilingFactor = tilingFactor;
-	data.quadVertexBufferPtr++;
-
-	data.quadVertexBufferPtr->position = transform * data.quadVertexPositions[2];
-	data.quadVertexBufferPtr->color = tintColor;
-	data.quadVertexBufferPtr->texCoord = textureCoords[2];
-	data.quadVertexBufferPtr->lightLevel = 5;
-	data.quadVertexBufferPtr->texIndex = textureIndex;
-	data.quadVertexBufferPtr->tilingFactor = tilingFactor;
-	data.quadVertexBufferPtr++;
-
-	data.quadVertexBufferPtr->position = transform * data.quadVertexPositions[3];
-	data.quadVertexBufferPtr->color = tintColor;
-	data.quadVertexBufferPtr->texCoord = textureCoords[3];
-	data.quadVertexBufferPtr->lightLevel = 5;
-	data.quadVertexBufferPtr->texIndex = textureIndex;
-	data.quadVertexBufferPtr->tilingFactor = tilingFactor;
-	data.quadVertexBufferPtr++;
+	for (int i = 0; i < 4; ++i) {
+		data.quadVertexBufferPtr->position = transform * data.quadVertexPositions[i];
+		data.quadVertexBufferPtr->color = tintColor;
+		data.quadVertexBufferPtr->texCoord = textureCoords[i];
+		data.quadVertexBufferPtr->lightLevel = 5;
+		data.quadVertexBufferPtr->texIndex = textureIndex;
+		data.quadVertexBufferPtr->tilingFactor = tilingFactor;
+		data.quadVertexBufferPtr++;
+	}
 
 	data.quadIndexCount += 6;
 }
