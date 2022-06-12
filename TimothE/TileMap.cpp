@@ -423,6 +423,48 @@ bool TileMap::CollidableAtPosition(glm::vec2 worldPos)
 	return CollidableAtPosition(index);
 }
 
+void TileMap::UpdateLightLevelAtPosition(glm::vec2 pos, int lightLevel)
+{
+	//Convert pos to a single dimension index.
+
+	/*Test Data :
+		pos { 0.25, 0.25 } 
+		expected result 
+			yIndex 1
+			xIndex 1
+			index 33
+
+	*/
+
+	int yIndex = pos.y / _gapBetweenTiles;
+	int xIndex = pos.x / _gapBetweenTiles;
+
+	int index = (yIndex * _mapInTiles.x) + xIndex;
+
+	//if (lightLevel != 5) {
+	//	__debugbreak();
+	//}
+
+	index *= 4;
+
+	for (int i = 0; i < _tilemapRendererData.size(); ++i) {
+		//QuadVertex* vert = 
+		
+		_tilemapRendererData[i].quadVertexBufferBase[index].lightLevel = lightLevel;
+		_tilemapRendererData[i].quadVertexBufferBase[index + 1].lightLevel = lightLevel;
+		_tilemapRendererData[i].quadVertexBufferBase[index + 2].lightLevel = lightLevel;
+		_tilemapRendererData[i].quadVertexBufferBase[index + 3].lightLevel = lightLevel;
+	}
+}
+
+void TileMap::UpdateRenderInfo()
+{
+	for (int i = 0; i < _tilemapRendererData.size(); ++i) {
+		uint32_t dataSize = (uint32_t)((uint8_t*)_tilemapRendererData[i].quadVertexBufferPtr - (uint8_t*)_tilemapRendererData[i].quadVertexBufferBase);
+		_tilemapRendererData[i].quadVertexBuffer->SetData(_tilemapRendererData[i].quadVertexBufferBase, dataSize);
+	}
+}
+
 void TileMap::SetCollidableAtLayer(int layer, glm::vec2 pos, bool val)
 {
 	//Safeguards against putting a layer greater than the number of layers in

@@ -267,7 +267,7 @@ void PlayerInputComponent::BuildControls()
 			return;
 		}
 
-		if (PlayerResourceManager::CanAfford(cost)) {
+		//if (PlayerResourceManager::CanAfford(cost)) {
 
 			if (!pTilemap->CollidableAtPosition(tilePos)) {
 				StructureObject* pObject;
@@ -300,11 +300,11 @@ void PlayerInputComponent::BuildControls()
 				//PlayerResourceManager::SpendResources(cost);
 
 
-				PlayerResourceManager::SpendResources(cost);
+				//PlayerResourceManager::SpendResources(cost);
 
 
 			}
-		}
+		//}
 	}
 
 	if (Input::IsMouseButtonDown(BUTTON_RIGHT)) {

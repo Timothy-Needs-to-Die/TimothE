@@ -53,11 +53,15 @@ void LightLevelManager::UpdateLightMap()
 
 							//get final light value and apply to tile
 							tile->lightLevel += affectiveValue;
+
+							_pTileMap->UpdateLightLevelAtPosition({ x,y }, tile->lightLevel);
 						}
 					}
 				}
 			}
 		}
+
+		_pTileMap->UpdateRenderInfo();
 	}
 }
 

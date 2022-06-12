@@ -120,6 +120,9 @@ public:
 	/// <param name="index">The index you want to check</param>
 	bool CollidableAtPosition(const int index) const;
 
+	void UpdateLightLevelAtPosition(glm::vec2 pos, int lightLevel);
+	void UpdateRenderInfo();
+
 	/// <summary>
 	/// Returns true if any tile on all layers at the passed in world position is collidable. 
 	/// </summary>
