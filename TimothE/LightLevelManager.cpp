@@ -13,7 +13,6 @@ void LightLevelManager::UpdateLightMap()
 
 	if (_lightSources.size() > 0)
 	{
-
 		float xMin, xMax;
 		float yMin, yMax;
 		float tileSize = 0.25f;
@@ -36,19 +35,16 @@ void LightLevelManager::UpdateLightMap()
 
 					int level = _pTileMap->GetLightLevelAtPosition({ x,y });
 
-					//get affective light value = baselight - (falloff * distance of tiles between source and tile rounded)
 					int affectiveValue = source->baseLightLevel - (source->fallOffRate * (int)round(glm::distance(glm::vec2(x, y), source->worldPos) / tileSize));
 					if (affectiveValue < 0) affectiveValue = 0;
 
 					if ((level + affectiveValue) < _worldLightLevel)
 					{
-						//tile->lightLevel = _worldLightLevel;
 						_pTileMap->UpdateLightLevelAtPosition({ x,y }, _worldLightLevel);
 						continue;
 					}
 					else if ((level + affectiveValue) > _maxLightLevel)
 					{
-						//tile->lightLevel = _maxLightLevel;
 						_pTileMap->UpdateLightLevelAtPosition({ x,y }, _maxLightLevel);
 						continue;
 					}

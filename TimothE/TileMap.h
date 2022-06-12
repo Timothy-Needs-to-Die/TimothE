@@ -146,7 +146,6 @@ public:
 
 
 	int GetLightLevelAtPosition(glm::vec2 pos);
-	void SetLightLevelAtPosition(glm::vec2 pos, int val);
 	
 
 	//Returns the name of the tilemap

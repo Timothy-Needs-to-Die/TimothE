@@ -109,7 +109,9 @@ void TileMap::LoadTileMap()
 	_collidableTileArray = new bool[dimensions];
 
 	_lightLevelArray = new int[dimensions];
-	memset(_lightLevelArray, 5, dimensions);
+	for (int i = 0; i < dimensions; i++) {
+		_lightLevelArray[i] = 5;
+	}
 	
 
 	for (int layer = 0; layer < _numLayers; layer++) {
@@ -288,6 +290,12 @@ void TileMap::SetTileMapSize(glm::vec2 mapSize)
 
 TileData* TileMap::GetTileAtWorldPos(int layer, glm::vec2 worldPos)
 {
+	if (worldPos.y < 0.0f) worldPos.y = 0.0f;
+	else if (worldPos.y > _mapSizeInUnits.y) worldPos.y = _mapSizeInUnits.y;
+
+	if (worldPos.x < 0.0f) worldPos.x = 0.0f;
+	else if (worldPos.x > _mapSizeInUnits.x) worldPos.x = _mapSizeInUnits.x;
+
 	//Calculates the index of the tile
 	int index = _mapInTiles.x * (int)(worldPos.y * _tilesPerUnit) + (int)(worldPos.x * _tilesPerUnit);
 
@@ -397,7 +405,7 @@ bool TileMap::CollidableAtPosition(const int index) const
 
 void TileMap::SetAllTilesLightLevel(int level)
 {
-	for (int i = 0; i < _mapInTiles.x * _mapSizeInUnits.y; ++i) {
+	for (int i = 0; i < _mapInTiles.x * _mapInTiles.y; ++i) {
 		UpdateLightLevelAtPosition(_tileArr[0][i].pos, level);
 	}
 
@@ -410,8 +418,3 @@ int TileMap::GetLightLevelAtPosition(glm::vec2 pos)
 	return _lightLevelArray[index];
 }
 
-void TileMap::SetLightLevelAtPosition(glm::vec2 pos, int val)
-{
-	int index = GetTileIndexFromPosition(pos);
-	_lightLevelArray[index] = val;
-}
