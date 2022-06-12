@@ -217,7 +217,7 @@ void FarmScene::AddStructure(StructureObject* object)
 	AddGameObject(object);
 	_pStructures.emplace_back(object);
 	_pAstarObject->UpdateNodeObstacleStatus(_pTilemap->GetTileAtWorldPos(0, object->GetTransform()->GetPosition())->pos, true);
-	_pTilemap->SetCollidableAtLayer(0, object->GetTransform()->GetPosition(), true);
+	_pTilemap->SetCollidableAtPosition(object->GetTransform()->GetPosition(), true);
 }
 
 void FarmScene::RemoveStructure(StructureObject* object)
@@ -227,10 +227,10 @@ void FarmScene::RemoveStructure(StructureObject* object)
 
 		if (pObject != object) continue;
 
-		_pTilemap->SetCollidableAtLayer(5, pObject->GetTransform()->GetPosition(), false);
+		_pTilemap->SetCollidableAtPosition(pObject->GetTransform()->GetPosition(), false);
 
 		_pAstarObject->UpdateNodeObstacleStatus(_pTilemap->GetTileAtWorldPos(0, pObject->GetTransform()->GetPosition())->pos, false);
-		_pTilemap->SetCollidableAtLayer(0, object->GetTransform()->GetPosition(), false);
+		_pTilemap->SetCollidableAtPosition(object->GetTransform()->GetPosition(), false);
 	}
 
 	if (object->GetTag() == "LIGHTSOURCE") {

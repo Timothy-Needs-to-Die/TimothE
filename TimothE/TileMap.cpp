@@ -373,13 +373,8 @@ void TileMap::UpdateRenderInfo()
 	}
 }
 
-void TileMap::SetCollidableAtLayer(int layer, glm::vec2 pos, bool val)
+void TileMap::SetCollidableAtPosition(glm::vec2 pos, bool val)
 {
-	//Safeguards against putting a layer greater than the number of layers in
-	if (layer >= _numLayers) layer = _numLayers - 1;
-	//Safeguards against putting a layer in thats below 0
-	if (layer < 0) layer = 0;
-
 	int index = GetTileIndexFromPosition(pos);
 
 	_collidableTileArray[index] = val;

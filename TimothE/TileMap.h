@@ -135,7 +135,7 @@ public:
 	/// <param name="layer">The layer (starting at 0) you want to query. (0 - 5 Accepted range currently) </param>
 	/// <param name="pos">Position of the tile in world space</param>
 	/// <param name="val">Should the tile be collidable</param>
-	void SetCollidableAtLayer(int layer, glm::vec2 pos, bool val);
+	void SetCollidableAtPosition(glm::vec2 pos, bool val);
 	int GetTileIndexFromPosition(glm::vec2 pos);
 
 	/// <summary>
