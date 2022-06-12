@@ -144,6 +144,8 @@ public:
 	/// <param name="level"> Applicable light level for tiles.</param>
 	void SetAllTilesLightLevel(int level);
 
+	
+
 	//Returns the name of the tilemap
 	std::string GetName() const { return _name; }
 
@@ -171,6 +173,8 @@ private:
 
 	//vector of vectors which holds the tiles on each layer. _tileArr[0][5] refers to tile five of the first layer. 
 	std::vector<std::vector<TileData>> _tileArr;
+
+	bool* _collidableTileArray;
 
 	//How many tiles are there per unit in the X and Y axis
 	int _tilesPerUnit = 4;

@@ -7,7 +7,6 @@ struct TileData {
 	int texIndex;
 	int layer;
 
-	bool collidable;
 	float size;
 
 	glm::vec2 pos;

@@ -62,6 +62,7 @@ void TileMap::SaveTilemap() {
 
 	for (int layer = 0; layer < _numLayers; layer++) {
 		std::string tileLayout;
+		int i = 0;
 		for each (TileData var in _tileArr[layer])
 		{
 			int index = var.texIndex;
@@ -71,7 +72,9 @@ void TileMap::SaveTilemap() {
 				resourceName = var._pSpritesheet->GetResourceName();
 			}
 
-			tileLayout += std::to_string(index) + " " + std::to_string((int)var.collidable) + " " + resourceName + ",";
+			tileLayout += std::to_string(index) + " " + std::to_string((int)_collidableTileArray[i]) + " " + resourceName + ",";
+
+			i++;
 		}
 		file["tiles" + std::to_string(layer)] = tileLayout;
 	}
@@ -102,6 +105,8 @@ void TileMap::LoadTileMap()
 	_tilesPerUnit = (int)file["tilePerUnit"];
 
 	int dimensions = _mapInTiles.x * _mapInTiles.y;
+
+	_collidableTileArray = new bool[dimensions];
 
 	for (int layer = 0; layer < _numLayers; layer++) {
 		_tileArr[layer].resize(dimensions);
@@ -142,7 +147,11 @@ void TileMap::LoadTileMap()
 
 				_tileArr[layer][i].texIndex = index;
 				_tileArr[layer][i]._pSprite = _tileArr[layer][i]._pSpritesheet->GetSpriteAtIndex(index);
-				_tileArr[layer][i].collidable = collidable;
+				//_tileArr[layer][i].collidable = collidable;
+
+				if (collidable) {
+					_collidableTileArray[i] = true;
+				}
 
 				int row = i / _mapInTiles.x;
 				int xIndex = i - (row * _mapInTiles.x);
@@ -164,7 +173,7 @@ void TileMap::LoadTileMap()
 
 				_tileArr[layer][i].texIndex = index;
 				_tileArr[layer][i]._pSprite = ResourceManager::GetSpriteSheet("spritesheet")->GetSpriteAtIndex(0);
-				_tileArr[layer][i].collidable = collidable;
+				_collidableTileArray[i] = collidable;
 
 				int row = i / _mapInTiles.x;
 				int xIndex = i - (row * _mapInTiles.x);
@@ -217,7 +226,11 @@ void TileMap::AddTileAt(unsigned int layer, unsigned int uvX, unsigned int uvY, 
 	TileData newTile;
 	newTile.texIndex = uvY * sp->GetSheetWidth() + uvX;
 	newTile.layer = layer;
-	newTile.collidable = shouldCollide;
+
+	if (shouldCollide) {
+		_collidableTileArray[index] = true;
+	}
+
 	newTile.size = _gapBetweenTiles;
 	newTile.pos = colPos;
 	newTile.lightLevel = 5;
@@ -319,10 +332,8 @@ void TileMap::RenderMap(Camera* cam)
 bool TileMap::CollidableAtPosition(const int x, const int y) const
 {
 	int tIndex = y * _mapInTiles.x + x;
-	for (int layer = 0; layer < _numLayers; layer++) {
-		if (_tileArr[layer][tIndex].collidable) return true;
-	}
-	return false;
+
+	return _collidableTileArray[tIndex];
 }
 
 bool TileMap::CollidableAtPosition(glm::vec2 worldPos)
@@ -371,7 +382,7 @@ void TileMap::SetCollidableAtLayer(int layer, glm::vec2 pos, bool val)
 
 	int index = GetTileIndexFromPosition(pos);
 
-	_tileArr[layer][index].collidable = val;
+	_collidableTileArray[index] = val;
 }
 
 int TileMap::GetTileIndexFromPosition(glm::vec2 pos)
@@ -386,10 +397,7 @@ bool TileMap::CollidableAtPosition(const int index) const
 {
 	if (index < 0 || index > _tileArr[0].size()) return false;
 
-	for (int layer = 0; layer < _numLayers; layer++) {
-		if (_tileArr[layer][index].collidable) return true;
-	}
-	return false;
+	return _collidableTileArray[index];
 }
 
 void TileMap::SetAllTilesLightLevel(int level)
