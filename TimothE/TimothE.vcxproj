@@ -90,6 +90,7 @@
     <ClInclude Include="ArmourConfig.h" />
     <ClInclude Include="AudioEngine.h" />
     <ClInclude Include="AudioSource.h" />
+    <ClInclude Include="base64.h" />
     <ClInclude Include="BaseTrader.h" />
     <ClInclude Include="Bed.h" />
     <ClInclude Include="BedHealth.h" />
@@ -176,6 +177,10 @@
     <ClInclude Include="ProjectileObject.h" />
     <ClInclude Include="PurchaseableConfig.h" />
     <ClInclude Include="Quad.h" />
+    <ClInclude Include="rapidxml\rapidxml.hpp" />
+    <ClInclude Include="rapidxml\rapidxml_iterators.hpp" />
+    <ClInclude Include="rapidxml\rapidxml_print.hpp" />
+    <ClInclude Include="rapidxml\rapidxml_utils.hpp" />
     <ClInclude Include="ResourceManager.h" />
     <ClInclude Include="ResourceNode.h" />
     <ClInclude Include="ResourceNodeObject.h" />
@@ -219,10 +224,12 @@
     <ClInclude Include="TileMapEditor.h" />
     <ClInclude Include="Time.h" />
     <ClInclude Include="TimothEInputCodes.h" />
+    <ClInclude Include="TMXParser.h" />
     <ClInclude Include="ToolConfig.h" />
     <ClInclude Include="TownScene.h" />
     <ClInclude Include="TraderConfig.h" />
     <ClInclude Include="Transform.h" />
+    <ClInclude Include="TSXParser.h" />
     <ClInclude Include="UID.h" />
     <ClInclude Include="WaveManager.h" />
     <ClInclude Include="WeaponComponent.h" />
@@ -355,8 +362,14 @@
     <ClCompile Include="Texture2D.cpp" />
     <ClCompile Include="TileMap.cpp" />
     <ClCompile Include="TileMapEditor.cpp" />
+    <ClCompile Include="TMXParser.cpp">
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">NotUsing</PrecompiledHeader>
+    </ClCompile>
     <ClCompile Include="TownScene.cpp" />
     <ClCompile Include="Transform.cpp" />
+    <ClCompile Include="TSXParser.cpp">
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">NotUsing</PrecompiledHeader>
+    </ClCompile>
     <ClCompile Include="WaveManager.cpp" />
     <ClCompile Include="WeaponComponent.cpp" />
     <ClCompile Include="WeaponObject.cpp" />

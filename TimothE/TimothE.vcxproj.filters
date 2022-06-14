@@ -444,6 +444,13 @@
     <ClInclude Include="PlayerUIComponent.h" />
     <ClInclude Include="MainMenuScene.h" />
     <ClInclude Include="MainMenuUI.h" />
+    <ClInclude Include="TMXParser.h" />
+    <ClInclude Include="TSXParser.h" />
+    <ClInclude Include="rapidxml\rapidxml.hpp" />
+    <ClInclude Include="rapidxml\rapidxml_iterators.hpp" />
+    <ClInclude Include="rapidxml\rapidxml_print.hpp" />
+    <ClInclude Include="rapidxml\rapidxml_utils.hpp" />
+    <ClInclude Include="base64.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="AIController.cpp">
@@ -734,5 +741,7 @@
     <ClCompile Include="PlayerUIComponent.cpp" />
     <ClCompile Include="MainMenuScene.cpp" />
     <ClCompile Include="MainMenuUI.cpp" />
+    <ClCompile Include="TMXParser.cpp" />
+    <ClCompile Include="TSXParser.cpp" />
   </ItemGroup>
 </Project>

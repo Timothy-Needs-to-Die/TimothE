@@ -5,6 +5,7 @@
 #include "Quad.h"
 #include "TileMapEditor.h"
 #include "Core.h"
+#include "TMXParser.h"
 
 
 std::ostream& operator<<(std::ostream& os, glm::vec2 v) {
@@ -210,6 +211,35 @@ void TileMap::LoadTileMap()
 
 		_tilemapRendererData.emplace_back(data);
 	}
+
+	TMX::Parser tmx;
+	tmx.load("Resources/Tilemaps/TileMapTMXTest.tmx");
+
+	TIM_LOG_LOG("Map Version: " << tmx.mapInfo.version);
+
+	for (int i = 0; i < tmx.tilesetList.size(); i++) {
+		std::cout << tmx.tilesetList[i].source << std::endl;
+	}
+
+	std::cout << std::endl;
+	for (std::map<std::string, TMX::Parser::TileLayer>::iterator it = tmx.tileLayer.begin(); it != tmx.tileLayer.end(); ++it) {
+		std::cout << std::endl;
+		std::cout << "Tile Layer Name: " << it->first << std::endl;
+		std::cout << "Tile Layer Visibility: " << tmx.tileLayer[it->first].visible << std::endl;
+		std::cout << "Tile Layer Opacity: " << tmx.tileLayer[it->first].opacity << std::endl;
+		std::cout << "Tile Layer Properties:" << std::endl;
+		if (tmx.tileLayer[it->first].property.size() > 0) {
+			for (std::map<std::string, std::string>::iterator it2 = tmx.tileLayer[it->first].property.begin(); it2 != tmx.tileLayer[it->first].property.end(); ++it2) {
+				std::cout << "-> " << it2->first << " : " << it2->second << std::endl;
+			}
+		}
+		std::cout << "Tile Layer Data Encoding: " << tmx.tileLayer[it->first].data.encoding << std::endl;
+		if (tmx.tileLayer[it->first].data.compression != "none") {
+			std::cout << "Tile Layer Data Compression: " << tmx.tileLayer[it->first].data.compression << std::endl;
+		}
+		std::cout << "Tile Layer Data Contents: " << tmx.tileLayer[it->first].data.contents << std::endl;
+	}
+
 
 }
 
