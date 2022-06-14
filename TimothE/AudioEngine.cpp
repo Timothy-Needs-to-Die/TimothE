@@ -12,6 +12,7 @@ FMOD::ChannelGroup* AudioEngine::_groups[Type_Count];
 AudioEngine::LoadedSoundMap AudioEngine::_loadedSFX;
 AudioEngine::LoadedSoundMap AudioEngine::_loadedMusic;
 SoundStruct AudioEngine::_nextSong;
+float AudioEngine::_soundtrackVolume;
 
 // ============================== System Functions =============================== // 
 AudioEngine::AudioEngine()
@@ -35,7 +36,7 @@ AudioEngine::AudioEngine()
 	modes[Type_Song] = FMOD_DEFAULT | FMOD_CREATESTREAM | FMOD_LOOP_NORMAL;
 
 	_currentSongChannel = nullptr;
-
+	_soundtrackVolume = 0.2f;
 
 }
 
@@ -66,9 +67,9 @@ void AudioEngine::AudioUpdate(float elapsed)
 		float volume;
 		_currentSongChannel->getVolume(&volume);
 		float nextVolume = volume + elapsed / fadeTime;
-		if (nextVolume >= 1.0f)
+		if (nextVolume >= _soundtrackVolume)
 		{
-			_currentSongChannel->setVolume(1.0f);
+			_currentSongChannel->setVolume(_soundtrackVolume);
 			fade = Fade_None;
 		}
 		else
@@ -273,11 +274,12 @@ FMOD::Channel* AudioEngine::PlaySound(std::string soundName, float minVolume, fl
 
 		//Play the sound effects while applying values to the channel 
 		FMOD::Channel* channel;
+		
+		_fmodSystem->playSound(sound->second.sound, NULL, false, &channel);
 		channel->setVolume(volume);
 		float frequency;
 		channel->getFrequency(&frequency);
 		channel->setFrequency(ChangeSemitone(frequency, pitch));
-		_fmodSystem->playSound(sound->second.sound, NULL, false, &channel);
 		channel->setChannelGroup(_groups[Type_SFX]);
 		
 		

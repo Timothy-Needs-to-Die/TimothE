@@ -70,6 +70,7 @@ private:
 
 
 	static FadeState fade;
+	static float _soundtrackVolume;
 
 	static FMOD::System* _fmodSystem;
 	static FMOD::ChannelGroup* _master;

@@ -19,7 +19,7 @@ void Fighter::Attack(GameObject* instigator)
 {
 	if (!_canAttack) return;
 	_pWeaponComponent->EndAttack();
-	instigator->GetComponent<AudioSource>()->PlaySound("SwordSlash", 5, 10, 0.6, 1.0);
+	instigator->GetComponent<AudioSource>()->PlaySound("SwordSlash", 0.2, 0.3, 0.6, 1.0);
 	_canAttack = false;
 	TIM_LOG_LOG("Attacking");
 
