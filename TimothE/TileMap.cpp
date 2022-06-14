@@ -12,9 +12,6 @@ std::ostream& operator<<(std::ostream& os, glm::vec2 v) {
 	return os;
 }
 
-//TODO: Single collision map
-//TODO: Single light value map
-
 TileMap::TileMap(std::string name)
 	: _name(name)
 {
@@ -85,42 +82,50 @@ void TileMap::SaveTilemap() {
 void TileMap::LoadTileMap()
 {
 	using nlohmann::json;
+
+	//Construct filepath and open file
 	std::string filename = "Resources/Scenes/" + _name + ".json";
 	std::ifstream inFile(filename);
-
+	//if the file is not found then output error.
 	if (!inFile.good()) {
 		TIM_LOG_ERROR("[ERROR: TileMap::LoadTileMap]: TileMap file: " << filename << " could not be loaded");
 		return;
 	}
 
+	//Construct json object and read data from file into it
 	json file;
-
 	file << inFile;
-
-	_mapInTiles.x = (float)file["sizeX"];
-	_mapInTiles.y = (float)file["sizeY"];
-
-	SetTileMapSize(_mapInTiles);
-
-	_tilesPerUnit = (int)file["tilePerUnit"];
-
+	
+	//Set map size
+	SetTileMapSize({ (float)file["sizeX"], (float)file["sizeY"] });
+	
+	//Calculate the dimensions of the map
 	int dimensions = _mapInTiles.x * _mapInTiles.y;
 
-	_collidableTileArray = new bool[dimensions];
+	//Set the tiles per unit
+	_tilesPerUnit = (int)file["tilePerUnit"];
 
+	//Create collidable array and set everything to false by default
+	_collidableTileArray = new bool[dimensions];
+	memset(_collidableTileArray, false, dimensions);
+
+	//Create the lightmap array and set everything to 5 by default
 	_lightLevelArray = new int[dimensions];
 	for (int i = 0; i < dimensions; i++) {
 		_lightLevelArray[i] = 5;
 	}
 	
-
+	//Cycle through all layers
 	for (int layer = 0; layer < _numLayers; layer++) {
-		_tileArr[layer].resize(dimensions);
-
+		//check to see if we have a tile layer collection
 		if (file.contains("tiles" + std::to_string(layer))) {
+			//Get the entire layers information
 			std::string tileInfo = file["tiles" + std::to_string(layer)];
+
+			//Consturct tile info into a stringstream
 			std::stringstream ss(tileInfo);
 
+			//Create a vector which stores each element separated by commas
 			std::vector<std::string> results;
 			while (ss.good()) {
 				std::string substr;
@@ -128,42 +133,43 @@ void TileMap::LoadTileMap()
 				results.push_back(substr);
 			}
 
+			//Cycle through the dimensions of the map
 			for (int i = 0; i < dimensions; i++) {
+				//create a stringstream based off the tile info
 				std::stringstream ss(results[i]);
-				std::string s1;
-				getline(ss, s1, ' ');
-				std::string s2;
-				getline(ss, s2, ' ');
 
-
-				std::string s3;
-				getline(ss, s3, ' ');
-
-				if (s3 != "") {
-					std::string resourceName = s3;
-					_tileArr[layer][i]._pSpritesheet = ResourceManager::GetSpriteSheet(resourceName);
-				}
-				else {
-					_tileArr[layer][i]._pSpritesheet = ResourceManager::GetSpriteSheet("spritesheet");
-				}
-				int index = std::stoi(s1);
-
-				bool collidable = std::stoi(s2);
-
-
+				//Read the texture index from the tile info and assign it
+				std::string texIndexString;
+				getline(ss, texIndexString, ' ');
+				int index = std::stoi(texIndexString);
 				_tileArr[layer][i].texIndex = index;
-				_tileArr[layer][i]._pSprite = _tileArr[layer][i]._pSpritesheet->GetSpriteAtIndex(index);
-				//_tileArr[layer][i].collidable = collidable;
 
+				//Read the collidable value from the tile info and assign it if needed
+				std::string collidableString;
+				getline(ss, collidableString, ' ');
+				bool collidable = std::stoi(collidableString);
+				//Ensures that a non collidable tile on layer 4 would not override a collidable tile on layer 2
 				if (collidable) {
 					_collidableTileArray[i] = true;
 				}
 
-				int row = i / _mapInTiles.x;
-				int xIndex = i - (row * _mapInTiles.x);
+				//Reads in the sprite sheet name and sets the sprites accordingly
+				std::string spritesheetName;
+				getline(ss, spritesheetName, ' ');
+				if (spritesheetName != "") {
+					_tileArr[layer][i]._pSpritesheet = ResourceManager::GetSpriteSheet(spritesheetName);
+				}
+				else {
+					_tileArr[layer][i]._pSpritesheet = ResourceManager::GetSpriteSheet("spritesheet");
+				}
+				_tileArr[layer][i]._pSprite = _tileArr[layer][i]._pSpritesheet->GetSpriteAtIndex(index);
+
+
+				int yIndex = i / _mapInTiles.x;
+				int xIndex = i - (yIndex * _mapInTiles.x);
 
 				float xPos = (float)xIndex * _gapBetweenTiles;
-				float yPos = ((float)row * _gapBetweenTiles);
+				float yPos = ((float)yIndex * _gapBetweenTiles);
 				glm::vec2 colPos = glm::vec2(xPos, yPos);
 				_tileArr[layer][i].pos = { xPos, yPos };
 
@@ -172,23 +178,18 @@ void TileMap::LoadTileMap()
 		}
 		else {
 			for (int i = 0; i < dimensions; i++) {
-
-				int index = 0;
-
-				bool collidable = false;
-
-				_tileArr[layer][i].texIndex = index;
+				_tileArr[layer][i].texIndex = 0;
 				_tileArr[layer][i]._pSprite = ResourceManager::GetSpriteSheet("spritesheet")->GetSpriteAtIndex(0);
-				_collidableTileArray[i] = collidable;
+				_collidableTileArray[i] = false;
 
-				int row = i / _mapInTiles.x;
-				int xIndex = i - (row * _mapInTiles.x);
+				int yIndex = i / _mapInTiles.x;
+				int xIndex = i - (yIndex * _mapInTiles.x);
 
 				float xPos = (float)xIndex * _gapBetweenTiles;
-				float yPos = ((float)row * _gapBetweenTiles);
+				float yPos = ((float)yIndex * _gapBetweenTiles);
+
 				glm::vec2 colPos = glm::vec2(xPos, yPos);
 				_tileArr[layer][i].pos = { xPos, yPos };
-
 				_tileArr[layer][i].size = _gapBetweenTiles;
 			}
 		}
