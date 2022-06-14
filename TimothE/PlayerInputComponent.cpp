@@ -127,7 +127,7 @@ void PlayerInputComponent::FarmingControls()
 		target.x += _pParentObject->GetTransform()->GetScale().x / 2;
 		target.y += _pParentObject->GetTransform()->GetScale().y / 2;
 		
-		GetParent()->GetComponent<AudioSource>()->PlaySound("PlantSeed", 50, 60, 1, 1);
+		GetParent()->GetComponent<AudioSource>()->PlaySound("PlantSeed", 0.4, 0.5, 1, 1);
 		// If we cant place farm land
 		if (!_pFarmlandManager->PlaceFarmLand(target))
 		{
@@ -211,7 +211,7 @@ void PlayerInputComponent::FarmingControls()
 		}
 		else if (Input::IsKeyDown(KEY_F4))
 		{
-			GetParent()->GetComponent<AudioSource>()->PlaySound("CashRegister", 50, 60, 1, 1);
+			GetParent()->GetComponent<AudioSource>()->PlaySound("CashRegister", 0.4, 0.5, 1, 1);
 			PlayerResourceManager::SellAll();
 
 		}
@@ -296,7 +296,7 @@ void PlayerInputComponent::BuildControls()
 
 				pFarmScene->AddStructure(pObject);
 
-				GetParent()->GetComponent<AudioSource>()->PlaySound("BuildSound", 40, 50, 0.9, 1.0);
+				GetParent()->GetComponent<AudioSource>()->PlaySound("BuildSound", 0.4, 0.5, 0.9, 1.0);
 				//PlayerResourceManager::SpendResources(cost);
 
 
@@ -318,7 +318,7 @@ void PlayerInputComponent::BuildControls()
 			if (pos != tilePos) continue;
 
 			pFarmScene->RemoveStructure(structuresInScene[i]);
-			GetParent()->GetComponent<AudioSource>()->PlaySound("BuildSound", 40, 50, 0.9, 1.0);
+			GetParent()->GetComponent<AudioSource>()->PlaySound("BuildSound", 0.4, 0.5, 0.9, 1.0);
 
 
 			break;

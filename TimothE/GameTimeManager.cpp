@@ -25,7 +25,7 @@ void GameTimeManager::StartNewDay()
 	_dayTimer = 0.0f;
 	_inDay = true;
 	AudioEngine::PlaySound("RoosterSound", 60, 70, 1, 1);
-	AudioEngine::PlaySound("FarmAmbience", 30, 40, 1, 1);
+	AudioEngine::PlaySound("FarmAmbience", 2, 2, 1, 1);
 	_pLightLevelManager->SetWorldLightLevel(5);
 }
 

@@ -33,7 +33,7 @@ void Health::OnDamage(GameObject* instigator)
 {
 	if (GetParent()->GetComponent<AudioSource>() != NULL)
 	{
-		GetParent()->GetComponent<AudioSource>()->PlaySound("EnemyHit", 50, 60, 1, 1);
+		GetParent()->GetComponent<AudioSource>()->PlaySound("EnemyHit", 0.5, 0.5, 1, 1);
 	}
 	
 }
