@@ -80,8 +80,10 @@ void Application::Init(bool devMode)
 
 	Renderer2D::Init();
 
-	
-	SceneManager::SetCurrentScene(SceneManager::CreateScene(ResourceManager::GetScene("MainMenuScene")));
+	Scene* pScene = SceneManager::CreateScene(ResourceManager::GetScene("MainMenuScene"));
+	pScene->SetHasTilemap(false);
+
+	SceneManager::SetCurrentScene(pScene);
 	//SceneManager::SetCurrentScene(SceneManager::CreateScene(ResourceManager::GetScene("TownScene")));
 	
 

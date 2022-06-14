@@ -46,17 +46,17 @@ void Scene::InitScene()
 	_listofDrawableUIObjects.clear();
 	_gameObjectsToRemove.clear();
 
-
-	_pTilemap = new TileMap(_name);
-
 	_pAstarObject = new AStar();
-	_pAstarObject->SetMap(_pTilemap);
-
-	_pLightManager = new LightLevelManager(_pTilemap);
-	_pLightManager->SetWorldLightLevel(5);
-	_pLightManager->SetMinLightLevel(1);
-	_pLightManager->SetMaxLightLevel(8);
-	_pLightManager->UpdateLightMap();
+	
+	if (_hasTilemap) {
+		_pTilemap = new TileMap(_name);
+		_pAstarObject->SetMap(_pTilemap);
+		_pLightManager = new LightLevelManager(_pTilemap);
+		_pLightManager->SetWorldLightLevel(5);
+		_pLightManager->SetMinLightLevel(1);
+		_pLightManager->SetMaxLightLevel(8);
+		_pLightManager->UpdateLightMap();
+	}
 }
 
 void Scene::SceneEnd()
@@ -157,7 +157,9 @@ void Scene::FrameEnd()
 
 void Scene::RenderScene(Camera* cam)
 {
-	_pTilemap->RenderMap(cam);
+	if (_hasTilemap) {
+		_pTilemap->RenderMap(cam);
+	}
 
 	Renderer2D::BeginRender(cam);
 

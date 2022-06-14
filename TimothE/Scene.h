@@ -140,6 +140,12 @@ public:
 	void PopulateSeedVector();
 	void PopulateCropVector();
 
+	void SetHasTilemap(bool val) {
+		_hasTilemap = val;
+	};
+
+	bool HasTilemap() const { return _hasTilemap; }
+
 	class AStar* GetAStar() const;
 	
 	virtual void GameOver() {}
@@ -164,6 +170,8 @@ protected:
 	std::vector<GameObject*> _gameObjectsToRemove;
 
 	bool _isInitialized = false;
+
+	bool _hasTilemap = true;
 
 	class AStar* _pAstarObject = nullptr;
 	LightLevelManager* _pLightManager;
