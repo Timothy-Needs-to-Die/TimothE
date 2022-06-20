@@ -22,7 +22,7 @@ void ResourceManager::Init()
 	ResourceManager::InstantiateTexture("enemy", new Texture2D("Resources/Images/Spritesheets/EnemySpritesheet.png", true));
 	ResourceManager::InstantiateTexture("bed", new Texture2D("Resources/Images/Bed.png", true));
 	ResourceManager::InstantiateTexture("cropspritesheet", new Texture2D("Resources/Images/Spritesheets/CropsSheet.png", true));
-	ResourceManager::InstantiateTexture("spritesheet", new Texture2D("Resources/Images/Spritesheets/RPGpack_sheet.png", true));
+	ResourceManager::InstantiateTexture("spritesheet", new Texture2D("Resources/Images/Spritesheets/RPGpack_sheet.png", false));
 	ResourceManager::InstantiateTexture("medispritesheet", new Texture2D("Resources/Images/Spritesheets/MediSprites.png", true));
 	ResourceManager::InstantiateTexture("roguespritesheet", new Texture2D("Resources/Images/Spritesheets/RogueSprites.png", true));
 	ResourceManager::InstantiateTexture("itemspritesheet", new Texture2D("Resources/Images/Spritesheets/ItemsSheet.png", true));

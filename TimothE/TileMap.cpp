@@ -96,10 +96,10 @@ void TileMap::LoadTileMap()
 	//Construct json object and read data from file into it
 	json file;
 	file << inFile;
-	
+
 	//Set map size
 	SetTileMapSize({ (float)file["sizeX"], (float)file["sizeY"] });
-	
+
 	//Calculate the dimensions of the map
 	int dimensions = _mapInTiles.x * _mapInTiles.y;
 
@@ -115,7 +115,7 @@ void TileMap::LoadTileMap()
 	for (int i = 0; i < dimensions; i++) {
 		_lightLevelArray[i] = 5;
 	}
-	
+
 	//Cycle through all layers
 	for (int layer = 0; layer < _numLayers; layer++) {
 		//check to see if we have a tile layer collection
@@ -197,7 +197,82 @@ void TileMap::LoadTileMap()
 	}
 
 
-	for (int layer = 0; layer < _numLayers; layer++) {
+
+
+	TMX::Parser tmx;
+	tmx.load("Resources/Tilemaps/TileMapTMXTest.tmx");
+
+	//std::cout << std::endl;
+	//for (std::map<std::string, TMX::Parser::TileLayer>::iterator it = tmx.tileLayer.begin(); it != tmx.tileLayer.end(); ++it) {
+	//	std::cout << std::endl;
+	//	std::cout << "Tile Layer Name: " << it->first << std::endl;
+	//	std::cout << "Tile Layer Visibility: " << tmx.tileLayer[it->first].visible << std::endl;
+	//	std::cout << "Tile Layer Opacity: " << tmx.tileLayer[it->first].opacity << std::endl;
+	//	std::cout << "Tile Layer Properties:" << std::endl;
+	//	if (tmx.tileLayer[it->first].property.size() > 0) {
+	//		for (std::map<std::string, std::string>::iterator it2 = tmx.tileLayer[it->first].property.begin(); it2 != tmx.tileLayer[it->first].property.end(); ++it2) {
+	//			std::cout << "-> " << it2->first << " : " << it2->second << std::endl;
+	//		}
+	//	}
+	//	std::cout << "Tile Layer Data Encoding: " << tmx.tileLayer[it->first].data.encoding << std::endl;
+	//	if (tmx.tileLayer[it->first].data.compression != "none") {
+	//		std::cout << "Tile Layer Data Compression: " << tmx.tileLayer[it->first].data.compression << std::endl;
+	//	}
+	//	std::cout << "Tile Layer Data Contents: " << tmx.tileLayer[it->first].data.contents << std::endl;
+	//}
+
+	//TODO: Handle loading the correct spritesheet based on the tileset
+	//TODO: Loading in collision info
+	//TODO: Figure out some form of object name position map that can be queried to find player spawn etc
+	//TODO: Expand TSX parser to handle the animated tiles
+	//TODO: Handle animated tiles
+
+
+	SetTileMapSize({ tmx.mapInfo.width, tmx.mapInfo.height });
+	dimensions = tmx.mapInfo.width * tmx.mapInfo.height;
+
+	_collidableTileArray = new bool[dimensions];
+	memset(_collidableTileArray, false, dimensions);
+
+	_lightLevelArray = new int[dimensions];
+	for (int i = 0; i < dimensions; ++i) {
+		_lightLevelArray[i] = 5;
+	}
+
+	int noOfLayers = tmx.tileLayer.size();
+	int currentLayer = 0;
+	for (std::map<std::string, TMX::Parser::TileLayer>::iterator it = tmx.tileLayer.begin(); it != tmx.tileLayer.end(); ++it) {
+		std::cout << "Tile Layer Data Contents: " << tmx.tileLayer[it->first].data.contents << std::endl;
+
+		std::stringstream ss(tmx.tileLayer[it->first].data.contents);
+
+		//Create a vector which stores each element separated by commas
+		std::vector<std::string> results;
+		while (ss.good()) {
+			std::string substr;
+			getline(ss, substr, ',');
+			results.push_back(substr);
+		}
+
+		for (int i = 0; i < results.size(); ++i) {
+			//Reads in the sprite sheet name and sets the sprites accordingly
+			_tileArr[currentLayer][i]._pSpritesheet = ResourceManager::GetSpriteSheet("spritesheet");
+			_tileArr[currentLayer][i]._pSprite = ResourceManager::GetSpriteSheet("spritesheet")->GetSpriteAtIndex(std::stoi(results[i]) - 1);
+
+			int yIndex = i / _mapInTiles.x;
+			int xIndex = i - (yIndex * _mapInTiles.x);
+
+			float xPos = (float)xIndex * _gapBetweenTiles;
+			float yPos = ((float)yIndex * _gapBetweenTiles);
+			glm::vec2 colPos = glm::vec2(xPos, yPos);
+			_tileArr[currentLayer][i].pos = { xPos, yPos };
+			_tileArr[currentLayer][i].size = _gapBetweenTiles;
+		}
+
+		currentLayer++;
+	}
+
+	for (int layer = 0; layer < noOfLayers; layer++) {
 		RendererData data = Renderer2D::GenerateRendererData();
 
 		for (int i = 0; i < dimensions; i++) {
@@ -211,36 +286,6 @@ void TileMap::LoadTileMap()
 
 		_tilemapRendererData.emplace_back(data);
 	}
-
-	TMX::Parser tmx;
-	tmx.load("Resources/Tilemaps/TileMapTMXTest.tmx");
-
-	TIM_LOG_LOG("Map Version: " << tmx.mapInfo.version);
-
-	for (int i = 0; i < tmx.tilesetList.size(); i++) {
-		std::cout << tmx.tilesetList[i].source << std::endl;
-	}
-
-	std::cout << std::endl;
-	for (std::map<std::string, TMX::Parser::TileLayer>::iterator it = tmx.tileLayer.begin(); it != tmx.tileLayer.end(); ++it) {
-		std::cout << std::endl;
-		std::cout << "Tile Layer Name: " << it->first << std::endl;
-		std::cout << "Tile Layer Visibility: " << tmx.tileLayer[it->first].visible << std::endl;
-		std::cout << "Tile Layer Opacity: " << tmx.tileLayer[it->first].opacity << std::endl;
-		std::cout << "Tile Layer Properties:" << std::endl;
-		if (tmx.tileLayer[it->first].property.size() > 0) {
-			for (std::map<std::string, std::string>::iterator it2 = tmx.tileLayer[it->first].property.begin(); it2 != tmx.tileLayer[it->first].property.end(); ++it2) {
-				std::cout << "-> " << it2->first << " : " << it2->second << std::endl;
-			}
-		}
-		std::cout << "Tile Layer Data Encoding: " << tmx.tileLayer[it->first].data.encoding << std::endl;
-		if (tmx.tileLayer[it->first].data.compression != "none") {
-			std::cout << "Tile Layer Data Compression: " << tmx.tileLayer[it->first].data.compression << std::endl;
-		}
-		std::cout << "Tile Layer Data Contents: " << tmx.tileLayer[it->first].data.contents << std::endl;
-	}
-
-
 }
 
 void TileMap::AddTileAt(unsigned int layer, unsigned int uvX, unsigned int uvY, Camera* cam, SpriteSheet* sp, bool shouldCollide /*= false*/)
@@ -274,6 +319,8 @@ void TileMap::AddTileAt(unsigned int layer, unsigned int uvX, unsigned int uvY, 
 	newTile._pSpritesheet = sp;
 	newTile._pSprite = sp->GetSpriteAtIndex(sp->GetSheetWidth() * uvY + uvX);
 	_tileArr[layer][index] = newTile;
+
+
 }
 
 void TileMap::FillLayer(unsigned int layer, int uvX, int uvY, SpriteSheet* sp)
