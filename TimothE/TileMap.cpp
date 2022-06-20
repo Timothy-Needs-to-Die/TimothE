@@ -5,6 +5,8 @@
 #include "Quad.h"
 #include "TileMapEditor.h"
 #include "Core.h"
+
+#include "TSXParser.h"
 #include "TMXParser.h"
 
 
@@ -82,122 +84,85 @@ void TileMap::SaveTilemap() {
 
 void TileMap::LoadTileMap()
 {
-	using nlohmann::json;
-
-	//Construct filepath and open file
-	std::string filename = "Resources/Scenes/" + _name + ".json";
-	std::ifstream inFile(filename);
-	//if the file is not found then output error.
-	if (!inFile.good()) {
-		TIM_LOG_ERROR("[ERROR: TileMap::LoadTileMap]: TileMap file: " << filename << " could not be loaded");
-		return;
-	}
-
-	//Construct json object and read data from file into it
-	json file;
-	file << inFile;
-
-	//Set map size
-	SetTileMapSize({ (float)file["sizeX"], (float)file["sizeY"] });
-
-	//Calculate the dimensions of the map
-	int dimensions = _mapInTiles.x * _mapInTiles.y;
-
-	//Set the tiles per unit
-	_tilesPerUnit = (int)file["tilePerUnit"];
-
-	//Create collidable array and set everything to false by default
-	_collidableTileArray = new bool[dimensions];
-	memset(_collidableTileArray, false, dimensions);
-
-	//Create the lightmap array and set everything to 5 by default
-	_lightLevelArray = new int[dimensions];
-	for (int i = 0; i < dimensions; i++) {
-		_lightLevelArray[i] = 5;
-	}
-
 	//Cycle through all layers
-	for (int layer = 0; layer < _numLayers; layer++) {
-		//check to see if we have a tile layer collection
-		if (file.contains("tiles" + std::to_string(layer))) {
-			//Get the entire layers information
-			std::string tileInfo = file["tiles" + std::to_string(layer)];
-
-			//Consturct tile info into a stringstream
-			std::stringstream ss(tileInfo);
-
-			//Create a vector which stores each element separated by commas
-			std::vector<std::string> results;
-			while (ss.good()) {
-				std::string substr;
-				getline(ss, substr, ',');
-				results.push_back(substr);
-			}
-
-			//Cycle through the dimensions of the map
-			for (int i = 0; i < dimensions; i++) {
-				//create a stringstream based off the tile info
-				std::stringstream ss(results[i]);
-
-				//Read the texture index from the tile info and assign it
-				std::string texIndexString;
-				getline(ss, texIndexString, ' ');
-				int index = std::stoi(texIndexString);
-				_tileArr[layer][i].texIndex = index;
-
-				//Read the collidable value from the tile info and assign it if needed
-				std::string collidableString;
-				getline(ss, collidableString, ' ');
-				bool collidable = std::stoi(collidableString);
-				//Ensures that a non collidable tile on layer 4 would not override a collidable tile on layer 2
-				if (collidable) {
-					_collidableTileArray[i] = true;
-				}
-
-				//Reads in the sprite sheet name and sets the sprites accordingly
-				std::string spritesheetName;
-				getline(ss, spritesheetName, ' ');
-				if (spritesheetName != "") {
-					_tileArr[layer][i]._pSpritesheet = ResourceManager::GetSpriteSheet(spritesheetName);
-				}
-				else {
-					_tileArr[layer][i]._pSpritesheet = ResourceManager::GetSpriteSheet("spritesheet");
-				}
-				_tileArr[layer][i]._pSprite = _tileArr[layer][i]._pSpritesheet->GetSpriteAtIndex(index);
-
-
-				int yIndex = i / _mapInTiles.x;
-				int xIndex = i - (yIndex * _mapInTiles.x);
-
-				float xPos = (float)xIndex * _gapBetweenTiles;
-				float yPos = ((float)yIndex * _gapBetweenTiles);
-				glm::vec2 colPos = glm::vec2(xPos, yPos);
-				_tileArr[layer][i].pos = { xPos, yPos };
-
-				_tileArr[layer][i].size = _gapBetweenTiles;
-			}
-		}
-		else {
-			for (int i = 0; i < dimensions; i++) {
-				_tileArr[layer][i].texIndex = 0;
-				_tileArr[layer][i]._pSprite = ResourceManager::GetSpriteSheet("spritesheet")->GetSpriteAtIndex(0);
-				_collidableTileArray[i] = false;
-
-				int yIndex = i / _mapInTiles.x;
-				int xIndex = i - (yIndex * _mapInTiles.x);
-
-				float xPos = (float)xIndex * _gapBetweenTiles;
-				float yPos = ((float)yIndex * _gapBetweenTiles);
-
-				glm::vec2 colPos = glm::vec2(xPos, yPos);
-				_tileArr[layer][i].pos = { xPos, yPos };
-				_tileArr[layer][i].size = _gapBetweenTiles;
-			}
-		}
-	}
-
-
-
+	//for (int layer = 0; layer < _numLayers; layer++) {
+	//	//check to see if we have a tile layer collection
+	//	if (file.contains("tiles" + std::to_string(layer))) {
+	//		//Get the entire layers information
+	//		std::string tileInfo = file["tiles" + std::to_string(layer)];
+	//
+	//		//Consturct tile info into a stringstream
+	//		std::stringstream ss(tileInfo);
+	//
+	//		//Create a vector which stores each element separated by commas
+	//		std::vector<std::string> results;
+	//		while (ss.good()) {
+	//			std::string substr;
+	//			getline(ss, substr, ',');
+	//			results.push_back(substr);
+	//		}
+	//
+	//		//Cycle through the dimensions of the map
+	//		for (int i = 0; i < dimensions; i++) {
+	//			//create a stringstream based off the tile info
+	//			std::stringstream ss(results[i]);
+	//
+	//			//Read the texture index from the tile info and assign it
+	//			std::string texIndexString;
+	//			getline(ss, texIndexString, ' ');
+	//			int index = std::stoi(texIndexString);
+	//			_tileArr[layer][i].texIndex = index;
+	//
+	//			//Read the collidable value from the tile info and assign it if needed
+	//			std::string collidableString;
+	//			getline(ss, collidableString, ' ');
+	//			bool collidable = std::stoi(collidableString);
+	//			//Ensures that a non collidable tile on layer 4 would not override a collidable tile on layer 2
+	//			if (collidable) {
+	//				_collidableTileArray[i] = true;
+	//			}
+	//
+	//			//Reads in the sprite sheet name and sets the sprites accordingly
+	//			std::string spritesheetName;
+	//			getline(ss, spritesheetName, ' ');
+	//			if (spritesheetName != "") {
+	//				_tileArr[layer][i]._pSpritesheet = ResourceManager::GetSpriteSheet(spritesheetName);
+	//			}
+	//			else {
+	//				_tileArr[layer][i]._pSpritesheet = ResourceManager::GetSpriteSheet("spritesheet");
+	//			}
+	//			_tileArr[layer][i]._pSprite = _tileArr[layer][i]._pSpritesheet->GetSpriteAtIndex(index);
+	//
+	//
+	//			int yIndex = i / _mapInTiles.x;
+	//			int xIndex = i - (yIndex * _mapInTiles.x);
+	//
+	//			float xPos = (float)xIndex * _gapBetweenTiles;
+	//			float yPos = ((float)yIndex * _gapBetweenTiles);
+	//			glm::vec2 colPos = glm::vec2(xPos, yPos);
+	//			_tileArr[layer][i].pos = { xPos, yPos };
+	//
+	//			_tileArr[layer][i].size = _gapBetweenTiles;
+	//		}
+	//	}
+	//	else {
+	//		for (int i = 0; i < dimensions; i++) {
+	//			_tileArr[layer][i].texIndex = 0;
+	//			_tileArr[layer][i]._pSprite = ResourceManager::GetSpriteSheet("spritesheet")->GetSpriteAtIndex(0);
+	//			_collidableTileArray[i] = false;
+	//
+	//			int yIndex = i / _mapInTiles.x;
+	//			int xIndex = i - (yIndex * _mapInTiles.x);
+	//
+	//			float xPos = (float)xIndex * _gapBetweenTiles;
+	//			float yPos = ((float)yIndex * _gapBetweenTiles);
+	//
+	//			glm::vec2 colPos = glm::vec2(xPos, yPos);
+	//			_tileArr[layer][i].pos = { xPos, yPos };
+	//			_tileArr[layer][i].size = _gapBetweenTiles;
+	//		}
+	//	}
+	//}
 
 	TMX::Parser tmx;
 	tmx.load("Resources/Tilemaps/TileMapTMXTest.tmx");
@@ -229,7 +194,7 @@ void TileMap::LoadTileMap()
 
 
 	SetTileMapSize({ tmx.mapInfo.width, tmx.mapInfo.height });
-	dimensions = tmx.mapInfo.width * tmx.mapInfo.height;
+	int dimensions = tmx.mapInfo.width * tmx.mapInfo.height;
 
 	_collidableTileArray = new bool[dimensions];
 	memset(_collidableTileArray, false, dimensions);
@@ -239,11 +204,21 @@ void TileMap::LoadTileMap()
 		_lightLevelArray[i] = 5;
 	}
 
+	//Get the number of layers
 	int noOfLayers = tmx.tileLayer.size();
 	int currentLayer = 0;
-	for (std::map<std::string, TMX::Parser::TileLayer>::iterator it = tmx.tileLayer.begin(); it != tmx.tileLayer.end(); ++it) {
-		std::cout << "Tile Layer Data Contents: " << tmx.tileLayer[it->first].data.contents << std::endl;
 
+	std::unordered_map<std::string, TSX::Parser> tileSets;
+	for (int i = 0; i < tmx.tilesetList.size(); ++i) {
+		std::string name = tmx.tilesetList[i].source;
+		TSX::Parser tileset;
+		tileset.load(("Resources/Tilemaps/" + name).c_str());
+		tileSets.insert(std::make_pair(name, tileset));
+	}
+
+	//Iterate through each layer
+	for (std::map<std::string, TMX::Parser::TileLayer>::iterator it = tmx.tileLayer.begin(); it != tmx.tileLayer.end(); ++it) {
+		//Load the content into a string stream
 		std::stringstream ss(tmx.tileLayer[it->first].data.contents);
 
 		//Create a vector which stores each element separated by commas
@@ -254,17 +229,58 @@ void TileMap::LoadTileMap()
 			results.push_back(substr);
 		}
 
+		//Cycles through each index in the results vector
 		for (int i = 0; i < results.size(); ++i) {
 			//Reads in the sprite sheet name and sets the sprites accordingly
-			_tileArr[currentLayer][i]._pSpritesheet = ResourceManager::GetSpriteSheet("spritesheet");
-			_tileArr[currentLayer][i]._pSprite = ResourceManager::GetSpriteSheet("spritesheet")->GetSpriteAtIndex(std::stoi(results[i]) - 1);
 
+			//TODO: Get the correct spritesheet
+
+			//if (std::stoi(results[i]) == 309) {
+			//	int i = 4;
+			//	__debugbreak();
+			//}
+
+			std::string spritesheetName = "";
+			int offset = 1;
+			for (int j = tmx.tilesetList.size() - 1; j >= 0; --j) {
+
+
+				if(std::stoi(results[i]) <= tmx.tilesetList[j].firstGID) continue;
+
+
+				std::string tsxName = tmx.tilesetList[j].source;
+				offset = tmx.tilesetList[j].firstGID;
+				TSX::Parser tileSet = tileSets[tsxName];
+
+				std::string imgSource = tileSet.tileset.image.source;
+
+				size_t slashPos = imgSource.find_last_of("/");
+				imgSource = imgSource.substr(slashPos + 1);
+
+				size_t dotPos = imgSource.find(".");
+				imgSource = imgSource.erase(dotPos, 4);
+
+				spritesheetName = imgSource;
+
+				//if (spritesheetName != "RPGpack_sheet") {
+				//	__debugbreak();
+				//}
+
+				break;
+			}
+
+			_tileArr[currentLayer][i]._pSpritesheet = ResourceManager::GetSpriteSheet(spritesheetName);
+
+			//Get the correct texture index based on the spritesheet
+			_tileArr[currentLayer][i]._pSprite = ResourceManager::GetSpriteSheet(spritesheetName)->GetSpriteAtIndex(std::stoi(results[i]) - offset);
+
+			//Calculate the Y and X index of the tile
 			int yIndex = i / _mapInTiles.x;
 			int xIndex = i - (yIndex * _mapInTiles.x);
 
+			//Calculate the tile position
 			float xPos = (float)xIndex * _gapBetweenTiles;
 			float yPos = ((float)yIndex * _gapBetweenTiles);
-			glm::vec2 colPos = glm::vec2(xPos, yPos);
 			_tileArr[currentLayer][i].pos = { xPos, yPos };
 			_tileArr[currentLayer][i].size = _gapBetweenTiles;
 		}
@@ -281,7 +297,7 @@ void TileMap::LoadTileMap()
 
 			if (td._pSprite == nullptr) continue;
 
-			Renderer2D::AddData(data, Quad{ { pos.x, pos.y}, {0.25f, 0.25f} }, td._pSprite->GetTexture(), td._pSprite->GetTexCoords());
+			Renderer2D::AddData(data, Quad{ { pos.x, pos.y}, {_gapBetweenTiles, _gapBetweenTiles} }, td._pSprite->GetTexture(), td._pSprite->GetTexCoords());
 		}
 
 		_tilemapRendererData.emplace_back(data);

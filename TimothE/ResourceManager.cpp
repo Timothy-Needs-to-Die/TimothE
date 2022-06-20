@@ -30,6 +30,7 @@ void ResourceManager::Init()
 	ResourceManager::InstantiateTexture("extraspritesheet", new Texture2D("Resources/Images/Spritesheets/ExtraSpriteSheet.png", true));
 	ResourceManager::InstantiateTexture("buildspritesheet", new Texture2D("Resources/Images/Spritesheets/BuildingSheet.png", true));
 	ResourceManager::InstantiateTexture("build2spritesheet", new Texture2D("Resources/Images/Spritesheets/BuildingSheet2.png", true));
+	ResourceManager::InstantiateTexture("tsxTestSheet", new Texture2D("Resources/Images/Spritesheets/TMX Tester.png"));
 	ResourceManager::InstantiateTexture("Button", new Texture2D("Resources/Images/ButtonTest.png"));
 	ResourceManager::InstantiateTexture("swords", new Texture2D("Resources/Images/swords.png", true));
 	ResourceManager::InstantiateTexture("axes", new Texture2D("Resources/Images/axes.png"));
@@ -50,7 +51,7 @@ void ResourceManager::Init()
 
 
 	//LOAD SPRITESHEETS
-	ResourceManager::InstantiateSpritesheet("spritesheet", new SpriteSheet(ResourceManager::GetTexture("spritesheet"), 64, 64, "spritesheet"));
+	ResourceManager::InstantiateSpritesheet("RPGpack_sheet", new SpriteSheet(ResourceManager::GetTexture("spritesheet"), 64, 64, "spritesheet"));
 	ResourceManager::InstantiateSpritesheet("medispritesheet", new SpriteSheet(ResourceManager::GetTexture("medispritesheet"), 64, 64, "medispritesheet"));
 	ResourceManager::InstantiateSpritesheet("itemspritesheet", new SpriteSheet(ResourceManager::GetTexture("itemspritesheet"), 128, 128, "itemspritesheet"));
 	ResourceManager::InstantiateSpritesheet("cropspritesheet", new SpriteSheet(ResourceManager::GetTexture("cropspritesheet"), 32, 32, "cropspritesheet"));
@@ -59,6 +60,7 @@ void ResourceManager::Init()
 	ResourceManager::InstantiateSpritesheet("extraspritesheet", new SpriteSheet(ResourceManager::GetTexture("extraspritesheet"), 15, 15, "extraspritesheet"));
 	ResourceManager::InstantiateSpritesheet("buildspritesheet", new SpriteSheet(ResourceManager::GetTexture("buildspritesheet"), 32, 32, "buildspritesheet"));
 	ResourceManager::InstantiateSpritesheet("build2spritesheet", new SpriteSheet(ResourceManager::GetTexture("build2spritesheet"), 32, 32, "buildspritesheet"));
+	ResourceManager::InstantiateSpritesheet("TMX Tester", new SpriteSheet(ResourceManager::GetTexture("tsxTestSheet"), 32, 32, "TMX Tester"));
 	ResourceManager::InstantiateSpritesheet("swords", new SpriteSheet(ResourceManager::GetTexture("swords"), 16, 16, "swords"));
 	ResourceManager::InstantiateSpritesheet("axes", new SpriteSheet(ResourceManager::GetTexture("axes"), 16, 16, "axes"));
 	ResourceManager::InstantiateSpritesheet("pickaxes", new SpriteSheet(ResourceManager::GetTexture("pickaxes"), 16, 16, "pickaxes"));

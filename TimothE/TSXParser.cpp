@@ -29,8 +29,8 @@ namespace TSX {
     tileset.name = root_node->first_attribute( "name" )->value();
     tileset.tileWidth = std::atoi( root_node->first_attribute( "tilewidth" )->value() );
     tileset.tileHeight = std::atoi( root_node->first_attribute( "tileheight" )->value() );
-    tileset.spacing = std::atoi( root_node->first_attribute( "spacing" )->value() );
-    tileset.margin = std::atoi( root_node->first_attribute( "margin" )->value() );
+    if(root_node->first_attribute("spacing") != 0) tileset.spacing = std::atoi(root_node->first_attribute("spacing")->value());
+    if (root_node->first_attribute("margin") != 0)tileset.margin = std::atoi( root_node->first_attribute( "margin" )->value() );
 
     if( root_node->first_node( "tileoffset" ) != 0 ) {
       tileset.offsetX = std::atoi( root_node->first_node( "tileoffset" )->first_attribute( "x" )->value() );
@@ -78,12 +78,14 @@ namespace TSX {
         //tile - id
         tile.id = std::atoi( tile_node->first_attribute( "id" )->value() );
         //tile - terrain
-        std::string tmp = tile_node->first_attribute( "terrain" )->value();
-        std::stringstream ss( tmp );
-        std::string tmpValue;
+        if (tile_node->first_attribute("terrain") != 0) {
+            std::string tmp = tile_node->first_attribute("terrain")->value();
+            std::stringstream ss(tmp);
+            std::string tmpValue;
 
-        while( std::getline( ss, tmpValue, ',' ) ) {
-          tile.terrain.push_back( std::atoi( tmpValue.c_str() ) );
+            while (std::getline(ss, tmpValue, ',')) {
+                tile.terrain.push_back(std::atoi(tmpValue.c_str()));
+            }
         }
 
         //parse tile properties

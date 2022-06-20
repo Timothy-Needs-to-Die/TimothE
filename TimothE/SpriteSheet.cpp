@@ -1,5 +1,6 @@
 #include "pch.h"
 #include "SpriteSheet.h"
+#include "Core.h"
 
 SpriteSheet::SpriteSheet(Texture2D* texture, int spriteWidth, int spriteHeight, std::string resourceName)
 	: _pTexture(texture), _spriteWidth(spriteWidth), _spriteHeight(spriteHeight), _resourceName(resourceName)
@@ -36,4 +37,15 @@ SpriteSheet::SpriteSheet(Texture2D* texture, int spriteWidth, int spriteHeight, 
 			_sprites[_sheetWidth * y + x] = sprite;
 		}
 	}
+}
+
+Sprite* SpriteSheet::GetSpriteAtIndex(int index)
+{
+	if (index < 0 || index > _numOfSprites - 1) {
+		TIM_LOG_LOG("Passed in sprite index was too large. Sprite Index: " << index << " Number of Sprites: " << _numOfSprites);
+		//__debugbreak();
+		index = 0;
+	}
+
+	return _sprites[index];
 }

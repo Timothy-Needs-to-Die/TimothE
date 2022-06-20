@@ -64,8 +64,10 @@ public:
 		//_listOfGameObjects.clear();
 		//_listOfDrawableGameObjects.clear();
 
-		delete _pTilemap;
-		_pTilemap = nullptr;
+		if (_hasTilemap && _pTilemap) {
+			delete _pTilemap;
+			_pTilemap = nullptr;
+		}
 	}
 
 	std::string GetName() const { return _name; }

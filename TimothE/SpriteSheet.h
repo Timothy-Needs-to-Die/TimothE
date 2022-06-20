@@ -33,7 +33,7 @@ public:
 	Texture2D* GetTexture() const { return _pTexture; }
 
 	//Returns the sprite at a specified index.
-	Sprite* GetSpriteAtIndex(int index) { return _sprites[index]; }
+	Sprite* GetSpriteAtIndex(int index);
 
 	//Returns the sprite at a specified position on the sheet.
 	Sprite* GetSpriteAtPosition(int x, int y) { return _sprites[y * _spriteWidth + x]; }
