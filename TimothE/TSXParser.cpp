@@ -92,8 +92,18 @@ namespace TSX {
         if( tile_node->first_node( "properties" ) != 0 ) {
           for( rapidxml::xml_node<>* properties_node = tile_node->first_node( "properties" )->first_node( "property" ); properties_node; properties_node = properties_node->next_sibling() ) {
             tile.property[properties_node->first_attribute( "name" )->value()] = properties_node->first_attribute( "value" )->value();
-          }
+		  }
         }
+
+		//Read in animation data
+		rapidxml::xml_node<>* animNode = tile_node->first_node("animation");
+		if (animNode != 0) {
+			tile._hasAnimations = true;
+			for (rapidxml::xml_node<>* frame_node = animNode->first_node("frame"); frame_node; frame_node = frame_node->next_sibling()) {
+				tile._animatedTileID.emplace_back(std::stoi(frame_node->first_attribute("tileid")->value()));
+				tile._frameDuration = std::stoi(frame_node->first_attribute("duration")->value());
+			}
+		}
 
         tileList.push_back( tile );
       }

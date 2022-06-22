@@ -4,6 +4,7 @@
 #include "Core/Graphics/Window.h"
 #include "Quad.h"
 #include "TileMapEditor.h"
+#include "Time.h"
 #include "Core.h"
 
 #include "TSXParser.h"
@@ -84,113 +85,10 @@ void TileMap::SaveTilemap() {
 
 void TileMap::LoadTileMap()
 {
-	//Cycle through all layers
-	//for (int layer = 0; layer < _numLayers; layer++) {
-	//	//check to see if we have a tile layer collection
-	//	if (file.contains("tiles" + std::to_string(layer))) {
-	//		//Get the entire layers information
-	//		std::string tileInfo = file["tiles" + std::to_string(layer)];
-	//
-	//		//Consturct tile info into a stringstream
-	//		std::stringstream ss(tileInfo);
-	//
-	//		//Create a vector which stores each element separated by commas
-	//		std::vector<std::string> results;
-	//		while (ss.good()) {
-	//			std::string substr;
-	//			getline(ss, substr, ',');
-	//			results.push_back(substr);
-	//		}
-	//
-	//		//Cycle through the dimensions of the map
-	//		for (int i = 0; i < dimensions; i++) {
-	//			//create a stringstream based off the tile info
-	//			std::stringstream ss(results[i]);
-	//
-	//			//Read the texture index from the tile info and assign it
-	//			std::string texIndexString;
-	//			getline(ss, texIndexString, ' ');
-	//			int index = std::stoi(texIndexString);
-	//			_tileArr[layer][i].texIndex = index;
-	//
-	//			//Read the collidable value from the tile info and assign it if needed
-	//			std::string collidableString;
-	//			getline(ss, collidableString, ' ');
-	//			bool collidable = std::stoi(collidableString);
-	//			//Ensures that a non collidable tile on layer 4 would not override a collidable tile on layer 2
-	//			if (collidable) {
-	//				_collidableTileArray[i] = true;
-	//			}
-	//
-	//			//Reads in the sprite sheet name and sets the sprites accordingly
-	//			std::string spritesheetName;
-	//			getline(ss, spritesheetName, ' ');
-	//			if (spritesheetName != "") {
-	//				_tileArr[layer][i]._pSpritesheet = ResourceManager::GetSpriteSheet(spritesheetName);
-	//			}
-	//			else {
-	//				_tileArr[layer][i]._pSpritesheet = ResourceManager::GetSpriteSheet("spritesheet");
-	//			}
-	//			_tileArr[layer][i]._pSprite = _tileArr[layer][i]._pSpritesheet->GetSpriteAtIndex(index);
-	//
-	//
-	//			int yIndex = i / _mapInTiles.x;
-	//			int xIndex = i - (yIndex * _mapInTiles.x);
-	//
-	//			float xPos = (float)xIndex * _gapBetweenTiles;
-	//			float yPos = ((float)yIndex * _gapBetweenTiles);
-	//			glm::vec2 colPos = glm::vec2(xPos, yPos);
-	//			_tileArr[layer][i].pos = { xPos, yPos };
-	//
-	//			_tileArr[layer][i].size = _gapBetweenTiles;
-	//		}
-	//	}
-	//	else {
-	//		for (int i = 0; i < dimensions; i++) {
-	//			_tileArr[layer][i].texIndex = 0;
-	//			_tileArr[layer][i]._pSprite = ResourceManager::GetSpriteSheet("spritesheet")->GetSpriteAtIndex(0);
-	//			_collidableTileArray[i] = false;
-	//
-	//			int yIndex = i / _mapInTiles.x;
-	//			int xIndex = i - (yIndex * _mapInTiles.x);
-	//
-	//			float xPos = (float)xIndex * _gapBetweenTiles;
-	//			float yPos = ((float)yIndex * _gapBetweenTiles);
-	//
-	//			glm::vec2 colPos = glm::vec2(xPos, yPos);
-	//			_tileArr[layer][i].pos = { xPos, yPos };
-	//			_tileArr[layer][i].size = _gapBetweenTiles;
-	//		}
-	//	}
-	//}
+	TMX::Parser tmx("Resources/Tilemaps/TileMapTMXTest.tmx");
 
-	TMX::Parser tmx;
-	tmx.load("Resources/Tilemaps/TileMapTMXTest.tmx");
-
-	//std::cout << std::endl;
-	//for (std::map<std::string, TMX::Parser::TileLayer>::iterator it = tmx.tileLayer.begin(); it != tmx.tileLayer.end(); ++it) {
-	//	std::cout << std::endl;
-	//	std::cout << "Tile Layer Name: " << it->first << std::endl;
-	//	std::cout << "Tile Layer Visibility: " << tmx.tileLayer[it->first].visible << std::endl;
-	//	std::cout << "Tile Layer Opacity: " << tmx.tileLayer[it->first].opacity << std::endl;
-	//	std::cout << "Tile Layer Properties:" << std::endl;
-	//	if (tmx.tileLayer[it->first].property.size() > 0) {
-	//		for (std::map<std::string, std::string>::iterator it2 = tmx.tileLayer[it->first].property.begin(); it2 != tmx.tileLayer[it->first].property.end(); ++it2) {
-	//			std::cout << "-> " << it2->first << " : " << it2->second << std::endl;
-	//		}
-	//	}
-	//	std::cout << "Tile Layer Data Encoding: " << tmx.tileLayer[it->first].data.encoding << std::endl;
-	//	if (tmx.tileLayer[it->first].data.compression != "none") {
-	//		std::cout << "Tile Layer Data Compression: " << tmx.tileLayer[it->first].data.compression << std::endl;
-	//	}
-	//	std::cout << "Tile Layer Data Contents: " << tmx.tileLayer[it->first].data.contents << std::endl;
-	//}
-
-	//TODO: Handle loading the correct spritesheet based on the tileset
 	//TODO: Loading in collision info
 	//TODO: Figure out some form of object name position map that can be queried to find player spawn etc
-	//TODO: Expand TSX parser to handle the animated tiles
-	//TODO: Handle animated tiles
 
 
 	SetTileMapSize({ tmx.mapInfo.width, tmx.mapInfo.height });
@@ -231,22 +129,14 @@ void TileMap::LoadTileMap()
 
 		//Cycles through each index in the results vector
 		for (int i = 0; i < results.size(); ++i) {
+			int texID = std::stoi(results[i]);
+			int trueID = texID;
+
 			//Reads in the sprite sheet name and sets the sprites accordingly
-
-			//TODO: Get the correct spritesheet
-
-			//if (std::stoi(results[i]) == 309) {
-			//	int i = 4;
-			//	__debugbreak();
-			//}
-
 			std::string spritesheetName = "";
 			int offset = 1;
 			for (int j = tmx.tilesetList.size() - 1; j >= 0; --j) {
-
-
-				if(std::stoi(results[i]) <= tmx.tilesetList[j].firstGID) continue;
-
+				if(texID <= tmx.tilesetList[j].firstGID) continue;
 
 				std::string tsxName = tmx.tilesetList[j].source;
 				offset = tmx.tilesetList[j].firstGID;
@@ -262,9 +152,15 @@ void TileMap::LoadTileMap()
 
 				spritesheetName = imgSource;
 
-				//if (spritesheetName != "RPGpack_sheet") {
-				//	__debugbreak();
-				//}
+				trueID = texID - offset;
+
+				for (int k = 0; k < tileSet.tileList.size(); k++) {
+					if (tileSet.tileList[k].id == trueID) {
+
+						_tileArr[currentLayer][i].animatedTileIDs = tileSet.tileList[k]._animatedTileID;
+						_animatedTileArr.emplace_back(&_tileArr[currentLayer][i]);
+					}
+				}
 
 				break;
 			}
@@ -272,7 +168,7 @@ void TileMap::LoadTileMap()
 			_tileArr[currentLayer][i]._pSpritesheet = ResourceManager::GetSpriteSheet(spritesheetName);
 
 			//Get the correct texture index based on the spritesheet
-			_tileArr[currentLayer][i]._pSprite = ResourceManager::GetSpriteSheet(spritesheetName)->GetSpriteAtIndex(std::stoi(results[i]) - offset);
+			_tileArr[currentLayer][i]._pSprite = ResourceManager::GetSpriteSheet(spritesheetName)->GetSpriteAtIndex(trueID);
 
 			//Calculate the Y and X index of the tile
 			int yIndex = i / _mapInTiles.x;
@@ -414,6 +310,35 @@ void TileMap::ClearLayer(int layer)
 
 void TileMap::RenderMap(Camera* cam)
 {
+	_mapAnimationTimer += Time::GetDeltaTime();
+	if (_mapAnimationTimer > _mapAnimationDuration) {
+		_mapAnimationTimer = 0.0f;
+		for (int i = 0; i < _animatedTileArr.size(); i++) {
+			TileData* pCurrentTile = _animatedTileArr[i];
+
+			pCurrentTile->animationIndex = (pCurrentTile->animationIndex + 1) % pCurrentTile->animatedTileIDs.size();
+
+			//Convert position to a single dimension index.
+			int index = GetTileIndexFromPosition(_animatedTileArr[i]->pos);
+
+			//Multiply index by 4 so it is quad vertex space
+			index *= 4;
+
+			//Loops through each layer of render data
+			for (int j = 0; j < _tilemapRendererData.size(); ++j) {
+				//Sets the light level on the four different vertices of the quad.
+				glm::vec2* texCoords = pCurrentTile->_pSpritesheet->GetSpriteAtIndex(pCurrentTile->animatedTileIDs[pCurrentTile->animationIndex])->GetTexCoords();
+
+				_tilemapRendererData[j].quadVertexBufferBase[index].texCoord = texCoords[0];
+				_tilemapRendererData[j].quadVertexBufferBase[index + 1].texCoord = texCoords[1];
+				_tilemapRendererData[j].quadVertexBufferBase[index + 2].texCoord = texCoords[2];
+				_tilemapRendererData[j].quadVertexBufferBase[index + 3].texCoord = texCoords[3];
+			}
+		}
+
+		UpdateRenderInfo();
+	}
+
 	for (int i = 0; i < _tilemapRendererData.size(); i++) {
 		RendererData& data = _tilemapRendererData[i];
 		data.textureShader->SetMat4("view", cam->ViewProj());

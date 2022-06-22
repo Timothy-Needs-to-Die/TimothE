@@ -50,6 +50,10 @@ namespace TSX {
         unsigned int id;
         std::vector<unsigned int> terrain;
         std::map<std::string, std::string> property;
+
+		bool _hasAnimations;
+		std::vector<unsigned int> _animatedTileID;
+		unsigned int _frameDuration;
       };
 
       Tileset tileset;

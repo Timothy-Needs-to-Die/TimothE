@@ -175,6 +175,10 @@ private:
 
 	//vector of vectors which holds the tiles on each layer. _tileArr[0][5] refers to tile five of the first layer. 
 	std::vector<std::vector<TileData>> _tileArr;
+	std::vector<TileData*> _animatedTileArr;
+
+	float _mapAnimationDuration = 0.25f;
+	float _mapAnimationTimer = 0.0f;
 
 	bool* _collidableTileArray;
 
