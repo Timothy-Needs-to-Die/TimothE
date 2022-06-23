@@ -48,6 +48,12 @@ namespace TSX {
     tileset.image.source = root_node->first_node( "image" )->first_attribute( "source" )->value();
     tileset.image.width = std::atoi( root_node->first_node( "image" )->first_attribute( "width" )->value() );
     tileset.image.height = std::atoi( root_node->first_node( "image" )->first_attribute( "height" )->value() );
+    
+	tileset.noOfTiles = std::atoi( root_node->first_attribute( "tilecount" )->value() );
+    tileset.columns = std::atoi( root_node->first_attribute( "columns" )->value() );
+	tileset.rows = tileset.noOfTiles / tileset.columns;
+	
+
 
     if( root_node->first_node( "image" )->first_attribute( "trans" ) != 0 ) {
       tileset.image.transparentColor = std::atoi( root_node->first_node( "image" )->first_attribute( "trans" )->value() );

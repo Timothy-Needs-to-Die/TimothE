@@ -34,6 +34,9 @@ namespace TSX {
         unsigned int margin;
         int offsetX;
         int offsetY;
+		int noOfTiles;
+		int columns;
+		int rows;
 
         std::map<std::string, std::string> property;
 

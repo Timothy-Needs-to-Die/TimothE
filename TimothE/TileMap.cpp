@@ -108,11 +108,32 @@ void TileMap::LoadTileMap()
 					for (int k = 0; k < tileSet.tileList.size(); k++) {
 						if (tileSet.tileList[k].id == trueID) {
 							if (tileSet.tileList[k]._collidable) {
-								_collidableTileArray[index] = true;
+								int tDex = trueY * _mapInTiles.y + x;
+								_collidableTileArray[tDex] = true;
 							}
 
 							if (tileSet.tileList[k]._hasAnimations) {
 								_tileArr[currentLayer][trueY][x].animatedTileIDs = tileSet.tileList[k]._animatedTileID;
+
+								for (int a = 0; a < tileSet.tileList[k]._animatedTileID.size(); a++) {
+									unsigned int ID = tileSet.tileList[k]._animatedTileID[a];
+
+									//tileSet.tileset.tileWidth
+
+									int noOfSprites = tileSet.tileset.noOfTiles;
+									int sheetWidth = tileSet.tileset.columns;
+									int sheetHeight = tileSet.tileset.rows;
+
+									int yIndex = ID / sheetWidth;
+									int xIndex = ID - (yIndex * sheetWidth);
+
+									yIndex = (sheetHeight - 1) - yIndex;
+
+									ID = yIndex * sheetWidth + xIndex;
+
+									_tileArr[currentLayer][trueY][x].animatedTileIDs.emplace_back(ID);
+								}
+
 								_animatedTileArr.emplace_back(&_tileArr[currentLayer][trueY][x]);
 							}
 						}
@@ -123,6 +144,18 @@ void TileMap::LoadTileMap()
 
 				//Set the spritesheet and sprite 
 				_tileArr[currentLayer][trueY][x]._pSpritesheet = ResourceManager::GetSpriteSheet(spritesheetName);
+
+				int noOfSprites = _tileArr[currentLayer][trueY][x]._pSpritesheet->GetNumberOfSprites();
+				int sheetWidth = _tileArr[currentLayer][trueY][x]._pSpritesheet->GetSheetWidth();
+				int sheetHeight = _tileArr[currentLayer][trueY][x]._pSpritesheet->GetSheetHeight();
+
+				int yIndex = trueID / sheetWidth;
+				int xIndex = trueID - (yIndex * sheetWidth);
+
+				yIndex = (sheetHeight - 1) - yIndex;
+
+				trueID = yIndex * sheetWidth + xIndex;
+
 				_tileArr[currentLayer][trueY][x]._pSprite = ResourceManager::GetSpriteSheet(spritesheetName)->GetSpriteAtIndex(trueID);
 
 

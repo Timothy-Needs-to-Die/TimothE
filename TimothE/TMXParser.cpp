@@ -37,21 +37,14 @@ namespace TMX {
     }
 
     mapInfo.version = root_node->first_attribute( "version" )->value();
-    std::cout << "Version: " << mapInfo.version << std::endl;
     mapInfo.orientation = root_node->first_attribute( "orientation" )->value();
-    std::cout << "Orientation: " << mapInfo.orientation << std::endl;
     mapInfo.width = std::atoi( root_node->first_attribute( "width" )->value() );
-    std::cout << "Width: " << mapInfo.width << std::endl;
     mapInfo.height = std::atoi( root_node->first_attribute( "height" )->value() );
-    std::cout << "Height: " << mapInfo.height << std::endl;
     mapInfo.tileWidth = std::atoi( root_node->first_attribute( "tilewidth" )->value() );
-    std::cout << "Tile Width: " << mapInfo.tileWidth << std::endl;
     mapInfo.tileHeight = std::atoi( root_node->first_attribute( "tileheight" )->value() );
-    std::cout << "Tile Height: " << mapInfo.tileHeight << std::endl;
 
     if( root_node->first_attribute( "backgroundcolor" )->value() != 0 ) {
       mapInfo.backgroundColor = root_node->first_attribute( "backgroundcolor" )->value();
-      std::cout << "Background Color: " << mapInfo.backgroundColor << std::endl;
     }
 
     if( root_node->first_node( "properties" ) != 0 ) {
@@ -59,14 +52,8 @@ namespace TMX {
         mapInfo.property[properties_node->first_attribute( "name" )->value()] = properties_node->first_attribute( "value" )->value();
       }
 
-      std::cout << "Properties: " << std::endl;
 
-      for( std::map<std::string, std::string>::iterator it = mapInfo.property.begin(); it != mapInfo.property.end(); ++it ) {
-        std::cout << "-> " << it->first << " : " << it->second << std::endl;
-      }
     }
-
-    std::cout << std::endl;
 
     for( rapidxml::xml_node<>* tileset_node = root_node->first_node( "tileset" ); tileset_node; tileset_node = tileset_node->next_sibling( "tileset" ) ) {
       Tileset tmpTileset;
