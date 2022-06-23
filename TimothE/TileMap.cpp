@@ -67,71 +67,72 @@ void TileMap::LoadTileMap()
 
 		//Create a vector which stores each element separated by commas
 		std::vector<std::string> results;
+
 		while (ss.good()) {
 			std::string substr;
 			getline(ss, substr, ',');
 			results.push_back(substr);
 		}
 
-		//Cycles through each index in the results vector
-		for (int i = 0; i < results.size(); ++i) {
-			int texID = std::stoi(results[i]);
-			int trueID = texID;
 
-			//Reads in the sprite sheet name and sets the sprites accordingly
-			std::string spritesheetName = "";
-			int offset = 1;
-			for (int j = tmx.tilesetList.size() - 1; j >= 0; --j) {
-				if (texID < tmx.tilesetList[j].firstGID) continue;
+		for (int y = _mapInTiles.y - 1; y >= 0; y--) {
+			for (int x = 0; x < _mapInTiles.x; x++) {
+				int index = y * _mapInTiles.y + x;
+				int texID = std::stoi(results[index]);
+				int trueID = texID;
 
-				std::string tsxName = tmx.tilesetList[j].source;
-				offset = tmx.tilesetList[j].firstGID;
-				TSX::Parser tileSet = tileSets[tsxName];
+				int trueY = (_mapInTiles.y - 1) - y;
 
-				std::string imgSource = tileSet.tileset.image.source;
+				//Reads in the sprite sheet name and sets the sprites accordingly
+				std::string spritesheetName = "";
+				int offset = 1;
+				for (int j = tmx.tilesetList.size() - 1; j >= 0; --j) {
+					if (texID < tmx.tilesetList[j].firstGID) continue;
 
-				size_t slashPos = imgSource.find_last_of("/");
-				imgSource = imgSource.substr(slashPos + 1);
+					std::string tsxName = tmx.tilesetList[j].source;
+					offset = tmx.tilesetList[j].firstGID;
+					TSX::Parser tileSet = tileSets[tsxName];
 
-				size_t dotPos = imgSource.find(".");
-				imgSource = imgSource.erase(dotPos, 4);
+					std::string imgSource = tileSet.tileset.image.source;
 
-				spritesheetName = imgSource;
+					size_t slashPos = imgSource.find_last_of("/");
+					imgSource = imgSource.substr(slashPos + 1);
 
-				trueID = texID - offset;
+					size_t dotPos = imgSource.find(".");
+					imgSource = imgSource.erase(dotPos, 4);
 
-				for (int k = 0; k < tileSet.tileList.size(); k++) {
-					if (tileSet.tileList[k].id == trueID) {
-						if (tileSet.tileList[k]._collidable) {
-							_collidableTileArray[i] = true;
-						}
+					spritesheetName = imgSource;
 
-						if (tileSet.tileList[k]._hasAnimations) {
-							_tileArr[currentLayer][i].animatedTileIDs = tileSet.tileList[k]._animatedTileID;
-							_animatedTileArr.emplace_back(&_tileArr[currentLayer][i]);
+					trueID = texID - offset;
+
+					for (int k = 0; k < tileSet.tileList.size(); k++) {
+						if (tileSet.tileList[k].id == trueID) {
+							if (tileSet.tileList[k]._collidable) {
+								_collidableTileArray[index] = true;
+							}
+
+							if (tileSet.tileList[k]._hasAnimations) {
+								_tileArr[currentLayer][trueY][x].animatedTileIDs = tileSet.tileList[k]._animatedTileID;
+								_animatedTileArr.emplace_back(&_tileArr[currentLayer][trueY][x]);
+							}
 						}
 					}
+
+					break;
 				}
 
-				break;
+				//Set the spritesheet and sprite 
+				_tileArr[currentLayer][trueY][x]._pSpritesheet = ResourceManager::GetSpriteSheet(spritesheetName);
+				_tileArr[currentLayer][trueY][x]._pSprite = ResourceManager::GetSpriteSheet(spritesheetName)->GetSpriteAtIndex(trueID);
+
+
+				//Calculate the tile position
+				float xPos = (float)x * _gapBetweenTiles;
+				float yPos = ((float)trueY * _gapBetweenTiles);
+
+				_tileArr[currentLayer][trueY][x].pos = { xPos, yPos };
+				_tileArr[currentLayer][trueY][x].size = _gapBetweenTiles;
 			}
-
-			//Set the spritesheet and sprite 
-			_tileArr[currentLayer][i]._pSpritesheet = ResourceManager::GetSpriteSheet(spritesheetName);
-			_tileArr[currentLayer][i]._pSprite = ResourceManager::GetSpriteSheet(spritesheetName)->GetSpriteAtIndex(trueID);
-
-			//Calculate the Y and X index of the tile
-			int yIndex = i / _mapInTiles.x;
-			int xIndex = i - (yIndex * _mapInTiles.x);
-
-			//Calculate the tile position
-			float xPos = (float)xIndex * _gapBetweenTiles;
-			float yPos = ((float)yIndex * _gapBetweenTiles);
-
-			float newYPos = _mapSizeInUnits.y - yPos;
-
-			_tileArr[currentLayer][i].pos = { xPos, yPos };
-			_tileArr[currentLayer][i].size = _gapBetweenTiles;
 		}
 
 		currentLayer++;
@@ -140,15 +141,16 @@ void TileMap::LoadTileMap()
 	for (int layer = 0; layer < noOfLayers; layer++) {
 		RendererData data = Renderer2D::GenerateRendererData();
 
-		for (int i = 0; i < dimensions; i++) {
-			TileData& td = _tileArr[layer][i];
-			glm::vec2 pos = td.pos;
+		for (int y = 0; y < _mapInTiles.y; y++) {
+			for (int x = 0; x < _mapInTiles.x; x++) {
+				TileData& td = _tileArr[layer][y][x];
+				glm::vec2 pos = td.pos;
 
-			if (td._pSprite == nullptr) continue;
+				if (td._pSprite == nullptr) continue;
 
-			Renderer2D::AddData(data, Quad{ { pos.x, pos.y}, {_gapBetweenTiles, _gapBetweenTiles} }, td._pSprite->GetTexture(), td._pSprite->GetTexCoords());
+				Renderer2D::AddData(data, Quad{ { pos.x, pos.y}, {_gapBetweenTiles, _gapBetweenTiles} }, td._pSprite->GetTexture(), td._pSprite->GetTexCoords());
+			}
 		}
-
 		_tilemapRendererData.emplace_back(data);
 	}
 }
@@ -178,8 +180,13 @@ void TileMap::SetTileMapSize(glm::vec2 mapSize)
 	int elementSize = _mapInTiles.x * _mapInTiles.y;
 
 	for (int i = 0; i < _tileArr.size(); i++) {
-		_tileArr[i].resize(elementSize);
+		_tileArr[i].resize(_mapInTiles.y);
+
+		for (int y = 0; y < _mapInTiles.y; y++) {
+			_tileArr[i][y].resize(_mapInTiles.x);
+		}
 	}
+
 
 	_mapSizeInUnits = glm::vec2(_mapInTiles.x / _tilesPerUnit, _mapInTiles.y / _tilesPerUnit);
 }
@@ -199,8 +206,11 @@ TileData* TileMap::GetTileAtWorldPos(int layer, glm::vec2 worldPos)
 	if (index < 0) index = 0;
 	if (index > _mapInTiles.x* _mapInTiles.y) index = (_mapInTiles.x * _mapInTiles.y) - 1;
 
+	int yIndex = index / _mapInTiles.x;
+	int xIndex = index - (yIndex * _mapInTiles.x);
+
 	//Gets the tile on the specified layer
-	return &_tileArr[layer][index];
+	return &_tileArr[layer][yIndex][xIndex];
 }
 
 void TileMap::RenderMap(Camera* cam)
@@ -319,8 +329,14 @@ bool TileMap::CollidableAtPosition(const int index) const
 
 void TileMap::SetAllTilesLightLevel(int level)
 {
+	for (int y = 0; y < _mapInTiles.y; y++) {
+		for (int x = 0; x < _mapInTiles.x; x++) {
+			UpdateLightLevelAtPosition(_tileArr[0][y][x].pos, level);
+		}
+	}
+
+
 	for (int i = 0; i < _mapInTiles.x * _mapInTiles.y; ++i) {
-		UpdateLightLevelAtPosition(_tileArr[0][i].pos, level);
 	}
 
 	UpdateRenderInfo();

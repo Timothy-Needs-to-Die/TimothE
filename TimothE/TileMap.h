@@ -51,14 +51,14 @@ public:
 	/// <summary>
 	//Returns the entirety of the tileArr (Large object. Use with caution)
 	/// </summary>
-	std::vector<std::vector<TileData>> GetAllTiles() const {
+	std::vector<std::vector<std::vector<TileData>>> GetAllTiles() const {
 		return _tileArr;
 	}
 	
 	/// <summary>
 	//Returns a vector of TileData of the specified layer
 	/// </summary>
-	std::vector<TileData> GetAllTilesInLayer(int layer) const {
+	std::vector<std::vector<TileData>> GetAllTilesInLayer(int layer) const {
 		//Range check the passed in layer
 		if (layer < 0) layer = 0;
 		if (layer >= _numLayers) layer = _numLayers - 1;
@@ -140,7 +140,7 @@ private:
 	int _currentTileIndex;
 
 	//vector of vectors which holds the tiles on each layer. _tileArr[0][5] refers to tile five of the first layer. 
-	std::vector<std::vector<TileData>> _tileArr;
+	std::vector<std::vector<std::vector<TileData>>> _tileArr;
 	std::vector<TileData*> _animatedTileArr;
 
 	float _mapAnimationDuration = 0.25f;

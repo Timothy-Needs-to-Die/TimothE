@@ -143,64 +143,66 @@ void AStar::SetMap(TileMap* map)
 	_mWidth = map->GetMapSize().x * _mTilesPerUnit;
 	_mHeight = map->GetMapSize().y * _mTilesPerUnit;
 
-	std::vector<TileData> tiles = map->GetAllTilesInLayer(0);
-	for (int i = 0; i < tiles.size(); i++)
-	{
-		Node tile;
-		tile._mIsObstacle = map->CollidableAtPosition(i);
-		tile._mPos = tiles.at(i).pos;
+	//TODO: Fix this
 
-		_mMapNodes.push_back(tile);
-	}
-
-	for (int i = 0; i < _mMapNodes.size(); i++)
-	{
-		_mMapNodes[i]._mNeighborNodes.clear();
-
-		int yIndex = i / _mWidth;
-		int xIndex = i - (yIndex * _mWidth);
-
-		glm::vec2 pos = _mMapNodes[i]._mPos;
-
-		//Left
-		if (xIndex > 0) {
-			_mMapNodes[i]._mNeighborNodes.emplace_back(&_mMapNodes[i - 1]);
-		}
-
-		//Right
-		if (xIndex < _mWidth) {
-			_mMapNodes[i]._mNeighborNodes.emplace_back(&_mMapNodes[i + 1]);
-		}
-
-		//Top 
-		if (yIndex < _mHeight) {
-			_mMapNodes[i]._mNeighborNodes.emplace_back(&_mMapNodes[i + _mWidth]);
-		}
-
-		//Bottom
-		if (yIndex > 0) {
-			_mMapNodes[i]._mNeighborNodes.emplace_back(&_mMapNodes[i - _mWidth]);
-		}
-
-		//TopLeft
-		if (xIndex > 0 && yIndex < _mHeight) {
-			_mMapNodes[i]._mNeighborNodes.push_back(&_mMapNodes[i - 1 + _mWidth]);
-		}
-
-		//TopRight
-		if (xIndex < _mWidth && yIndex < _mHeight) {
-			_mMapNodes[i]._mNeighborNodes.push_back(&_mMapNodes[i + 1 + _mWidth]);
-		}
-		//BottomLeft
-		if (xIndex > 0 && yIndex > _mHeight) {
-			_mMapNodes[i]._mNeighborNodes.push_back(&_mMapNodes[i - 1 - _mWidth]);
-		}
-
-		//BottomRight
-		if (xIndex < _mWidth && yIndex > _mHeight) {
-			_mMapNodes[i]._mNeighborNodes.push_back(&_mMapNodes[i + 1 - _mWidth]);
-		}
-	}
+	//std::vector<TileData> tiles = map->GetAllTilesInLayer(0);
+	//for (int i = 0; i < tiles.size(); i++)
+	//{
+	//	Node tile;
+	//	tile._mIsObstacle = map->CollidableAtPosition(i);
+	//	tile._mPos = tiles.at(i).pos;
+	//
+	//	_mMapNodes.push_back(tile);
+	//}
+	//
+	//for (int i = 0; i < _mMapNodes.size(); i++)
+	//{
+	//	_mMapNodes[i]._mNeighborNodes.clear();
+	//
+	//	int yIndex = i / _mWidth;
+	//	int xIndex = i - (yIndex * _mWidth);
+	//
+	//	glm::vec2 pos = _mMapNodes[i]._mPos;
+	//
+	//	//Left
+	//	if (xIndex > 0) {
+	//		_mMapNodes[i]._mNeighborNodes.emplace_back(&_mMapNodes[i - 1]);
+	//	}
+	//
+	//	//Right
+	//	if (xIndex < _mWidth) {
+	//		_mMapNodes[i]._mNeighborNodes.emplace_back(&_mMapNodes[i + 1]);
+	//	}
+	//
+	//	//Top 
+	//	if (yIndex < _mHeight) {
+	//		_mMapNodes[i]._mNeighborNodes.emplace_back(&_mMapNodes[i + _mWidth]);
+	//	}
+	//
+	//	//Bottom
+	//	if (yIndex > 0) {
+	//		_mMapNodes[i]._mNeighborNodes.emplace_back(&_mMapNodes[i - _mWidth]);
+	//	}
+	//
+	//	//TopLeft
+	//	if (xIndex > 0 && yIndex < _mHeight) {
+	//		_mMapNodes[i]._mNeighborNodes.push_back(&_mMapNodes[i - 1 + _mWidth]);
+	//	}
+	//
+	//	//TopRight
+	//	if (xIndex < _mWidth && yIndex < _mHeight) {
+	//		_mMapNodes[i]._mNeighborNodes.push_back(&_mMapNodes[i + 1 + _mWidth]);
+	//	}
+	//	//BottomLeft
+	//	if (xIndex > 0 && yIndex > _mHeight) {
+	//		_mMapNodes[i]._mNeighborNodes.push_back(&_mMapNodes[i - 1 - _mWidth]);
+	//	}
+	//
+	//	//BottomRight
+	//	if (xIndex < _mWidth && yIndex > _mHeight) {
+	//		_mMapNodes[i]._mNeighborNodes.push_back(&_mMapNodes[i + 1 - _mWidth]);
+	//	}
+	//}
 }
 
 void AStar::UpdateNodeObstacleStatus(glm::vec2 worldPos, bool val)
