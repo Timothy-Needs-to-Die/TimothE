@@ -16,7 +16,6 @@ void TileMapEditor::Update(TileMap* pTilemap)
 {
 	EditorUI(pTilemap);
 
-	pTilemap->UpdateLogic(CameraManager::CurrentCamera());
 }
 
 //Sets the data in the tileMap object that the editor will be editing
@@ -89,11 +88,11 @@ void TileMapEditor::EditorUI(TileMap* pTilemap)
 		ImGui::SameLine();
 		if (ImGui::Button("Fill Layer"))
 		{
-			pTilemap->FillLayer(_currentLayer, _selectedTile.tileX, _selectedTile.tileY, _pCurrentSpritesheet);
+			//pTilemap->FillLayer(_currentLayer, _selectedTile.tileX, _selectedTile.tileY, _pCurrentSpritesheet);
 		}
 		ImGui::SameLine();
 		if (ImGui::Button("Clear Current Layer")) {
-			pTilemap->ClearLayer(_currentLayer);
+			//pTilemap->ClearLayer(_currentLayer);
 		}
 
 		ImGui::Separator();
@@ -104,14 +103,13 @@ void TileMapEditor::EditorUI(TileMap* pTilemap)
 
 		if (ImGui::Button("Save TileMap"))
 		{
-			pTilemap->SaveTilemap();
 		}
 
 		ImGui::Separator();
 
 		//Clear Map Button
 		if (ImGui::Button("Clear Map")) {
-			pTilemap->ClearAllLayers();
+			//pTilemap->ClearAllLayers();
 		}
 
 		ImGui::Separator();
@@ -167,10 +165,10 @@ void TileMapEditor::EditorUI(TileMap* pTilemap)
 
 	if (ImGui::IsWindowFocused()) {
 		if (Input::IsMouseButtonDown(BUTTON_LEFT)) {
-			pTilemap->AddTileAt(_currentLayer, _selectedTile.tileX, _selectedTile.tileY, CameraManager::GetCamera("Editor"), _pCurrentSpritesheet, _collidableToggle);
+			//pTilemap->AddTileAt(_currentLayer, _selectedTile.tileX, _selectedTile.tileY, CameraManager::GetCamera("Editor"), _pCurrentSpritesheet, _collidableToggle);
 		}
 		else if (Input::IsMouseButtonDown(BUTTON_RIGHT)) {
-			pTilemap->AddTileAt(_currentLayer, 0, 0, CameraManager::GetCamera("Editor"), _pCurrentSpritesheet, _collidableToggle);
+			//pTilemap->AddTileAt(_currentLayer, 0, 0, CameraManager::GetCamera("Editor"), _pCurrentSpritesheet, _collidableToggle);
 		}
 	}
 	ImGui::End();

@@ -14,37 +14,8 @@ public:
 	TileMap(std::string name);
 	~TileMap();
 
-	//Saves the current tilemap
-	void SaveTilemap();
-
-	//Clears all layers of the tilemap. (WARNING UNREVERSIBLE)
-	void ClearAllLayers();
-
-	//Update logic for the tilemap such as deciding which tile the mouse is over
-	void UpdateLogic(Camera* cam);
-
 	//Loads the tilemap
 	void LoadTileMap();
-
-	/// <summary>
-	/// Adds a tile to the specified layer with a specified x and y coordinate on a specified spritesheet
-	/// </summary>
-	/// <param name="layer">The layer you want to fill</param>
-	/// <param name="uvX">The X position of the sprite on the spritesheet. In whole numbers e.g sprite 4</param>
-	/// <param name="uvY">The Y position of the sprite on the spritesheet. In whole numbers e.g sprite 7</param>
-	/// <param name="cam">The camera that will be used to perform mouse positon calculations</param>
-	/// <param name="sp">The spritesheet you want to place a tile from</param>
-	/// <param name="shouldCollide">If this tile should be collidable or not</param>
-	void AddTileAt(unsigned int layer, unsigned int uvX, unsigned int uvY, Camera* cam, SpriteSheet* sp, bool shouldCollide = false);
-
-	/// <summary>
-	/// Fills the desired layer with a specified x and y coordinate on a specified spritesheet
-	/// </summary>
-	/// <param name="layer">The layer you want to fill</param>
-	/// <param name="uvX">The X position of the sprite on the spritesheet. In whole numbers e.g sprite 4</param>
-	/// <param name="uvY">The Y position of the sprite on the spritesheet. In whole numbers e.g sprite 7</param>
-	/// <param name="sp">The spritesheet you want to place a tile from</param>
-	void FillLayer(unsigned int layer, int uvX, int uvY, SpriteSheet* sp);
 
 	//Converts the mouse position to a tile, takes in a camera to base the calculations around
 	glm::vec2 MousePosToTile(Camera* cam);
@@ -95,11 +66,6 @@ public:
 		return _tileArr[layer];
 	}
 
-	/// <summary>
-	/// Resets the tiledata of a layer
-	/// </summary>
-	/// <param name="layer">The layer of the tilemap you wish to clear. Starting at 0. (Current Range 0 - 5)</param>
-	void ClearLayer(int layer);
 
 	/// <summary>
 	/// Renders the tilemap around a specific Camera

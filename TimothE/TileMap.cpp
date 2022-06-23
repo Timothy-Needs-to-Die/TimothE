@@ -30,59 +30,6 @@ TileMap::~TileMap()
 {
 }
 
-void TileMap::ClearAllLayers()
-{
-	for (int i = 0; i < _numLayers; i++) {
-		for (int j = 0; j < _mapInTiles.x * _mapInTiles.y; j++) {
-			_tileArr[i][j] = TileData();
-		}
-	}
-}
-
-void TileMap::UpdateLogic(Camera* cam)
-{
-	_currentTile = MousePosToTile(cam);
-	_currentTileIndex = _mapInTiles.x * (int)(_currentTile.y * 4) + (int)(_currentTile.x * 4);
-}
-
-void TileMap::SaveTilemap() {
-	using nlohmann::json;
-
-	//TODO: Change to use the current scene instead
-
-	std::string filename = "Resources/Scenes/" + _name + ".json";
-	std::ofstream outfile(filename);
-
-	json file;
-
-	//TODO: Change this to getting the spritesheet name
-	file["spritesheet"] = "testSheet";
-	file["sizeX"] = _mapInTiles.x;
-	file["sizeY"] = _mapInTiles.y;
-	file["tilePerUnit"] = _tilesPerUnit;
-
-	for (int layer = 0; layer < _numLayers; layer++) {
-		std::string tileLayout;
-		int i = 0;
-		for each (TileData var in _tileArr[layer])
-		{
-			int index = var.texIndex;
-
-			std::string resourceName = "spritesheet";
-			if (var._pSpritesheet != nullptr) {
-				resourceName = var._pSpritesheet->GetResourceName();
-			}
-
-			tileLayout += std::to_string(index) + " " + std::to_string((int)_collidableTileArray[i]) + " " + resourceName + ",";
-
-			i++;
-		}
-		file["tiles" + std::to_string(layer)] = tileLayout;
-	}
-
-	outfile << file;
-}
-
 void TileMap::LoadTileMap()
 {
 	TMX::Parser tmx("Resources/Tilemaps/TileMapTMXTest.tmx");
@@ -205,53 +152,6 @@ void TileMap::LoadTileMap()
 		_tilemapRendererData.emplace_back(data);
 	}
 }
-
-void TileMap::AddTileAt(unsigned int layer, unsigned int uvX, unsigned int uvY, Camera* cam, SpriteSheet* sp, bool shouldCollide /*= false*/)
-{
-	if (sp == nullptr) return;
-
-	glm::vec2 worldPos = MousePosToTile(cam);
-
-	int index = _mapInTiles.x * (int)(worldPos.y * _tilesPerUnit) + (int)(worldPos.x * _tilesPerUnit);
-	if (index < 0) index = 0;
-	if (index > _mapInTiles.x* _mapInTiles.y) index = _mapInTiles.x * _mapInTiles.y;
-
-	int xTiles = worldPos.x * _tilesPerUnit;
-	int yTiles = worldPos.y * _tilesPerUnit;
-
-	float xPos = (float)xTiles * _gapBetweenTiles;
-	float yPos = (float)yTiles * _gapBetweenTiles;
-	glm::vec2 colPos = glm::vec2(xPos, yPos);
-
-	TileData newTile;
-	newTile.texIndex = uvY * sp->GetSheetWidth() + uvX;
-	newTile.layer = layer;
-
-	if (shouldCollide) {
-		_collidableTileArray[index] = true;
-	}
-
-	newTile.size = _gapBetweenTiles;
-	newTile.pos = colPos;
-
-	newTile._pSpritesheet = sp;
-	newTile._pSprite = sp->GetSpriteAtIndex(sp->GetSheetWidth() * uvY + uvX);
-	_tileArr[layer][index] = newTile;
-
-
-}
-
-void TileMap::FillLayer(unsigned int layer, int uvX, int uvY, SpriteSheet* sp)
-{
-	if (sp == nullptr) return;
-
-	for (int i = 0; i < _tileArr[layer].size(); i++) {
-		_tileArr[layer][i].texIndex = uvY * sp->GetSheetWidth() + uvX;
-		_tileArr[layer][i]._pSpritesheet = sp;
-		_tileArr[layer][i]._pSprite = sp->GetSpriteAtIndex(sp->GetSheetWidth() * uvY + uvX);
-	}
-}
-
 glm::vec2 TileMap::MousePosToTile(Camera* cam)
 {
 	glm::vec2 mousePos = Input::GetEditorMousePos();
@@ -301,17 +201,6 @@ TileData* TileMap::GetTileAtWorldPos(int layer, glm::vec2 worldPos)
 
 	//Gets the tile on the specified layer
 	return &_tileArr[layer][index];
-}
-
-void TileMap::ClearLayer(int layer)
-{
-	if (layer < 0) layer = 0;
-	if (layer >= _numLayers) layer = _numLayers - 1;
-
-	//Cycle through all tiles on this layer and remove their sprite
-	for (int i = 0; i < _mapInTiles.x * _mapInTiles.y; i++) {
-		_tileArr[layer][i] = TileData();
-	}
 }
 
 void TileMap::RenderMap(Camera* cam)
