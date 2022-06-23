@@ -87,7 +87,6 @@ void TileMap::LoadTileMap()
 {
 	TMX::Parser tmx("Resources/Tilemaps/TileMapTMXTest.tmx");
 
-	//TODO: Loading in collision info
 	//TODO: Figure out some form of object name position map that can be queried to find player spawn etc
 
 
@@ -136,7 +135,7 @@ void TileMap::LoadTileMap()
 			std::string spritesheetName = "";
 			int offset = 1;
 			for (int j = tmx.tilesetList.size() - 1; j >= 0; --j) {
-				if(texID <= tmx.tilesetList[j].firstGID) continue;
+				if (texID < tmx.tilesetList[j].firstGID) continue;
 
 				std::string tsxName = tmx.tilesetList[j].source;
 				offset = tmx.tilesetList[j].firstGID;
@@ -156,18 +155,22 @@ void TileMap::LoadTileMap()
 
 				for (int k = 0; k < tileSet.tileList.size(); k++) {
 					if (tileSet.tileList[k].id == trueID) {
+						if (tileSet.tileList[k]._collidable) {
+							_collidableTileArray[i] = true;
+						}
 
-						_tileArr[currentLayer][i].animatedTileIDs = tileSet.tileList[k]._animatedTileID;
-						_animatedTileArr.emplace_back(&_tileArr[currentLayer][i]);
+						if (tileSet.tileList[k]._hasAnimations) {
+							_tileArr[currentLayer][i].animatedTileIDs = tileSet.tileList[k]._animatedTileID;
+							_animatedTileArr.emplace_back(&_tileArr[currentLayer][i]);
+						}
 					}
 				}
 
 				break;
 			}
 
+			//Set the spritesheet and sprite 
 			_tileArr[currentLayer][i]._pSpritesheet = ResourceManager::GetSpriteSheet(spritesheetName);
-
-			//Get the correct texture index based on the spritesheet
 			_tileArr[currentLayer][i]._pSprite = ResourceManager::GetSpriteSheet(spritesheetName)->GetSpriteAtIndex(trueID);
 
 			//Calculate the Y and X index of the tile
@@ -177,6 +180,9 @@ void TileMap::LoadTileMap()
 			//Calculate the tile position
 			float xPos = (float)xIndex * _gapBetweenTiles;
 			float yPos = ((float)yIndex * _gapBetweenTiles);
+
+			float newYPos = _mapSizeInUnits.y - yPos;
+
 			_tileArr[currentLayer][i].pos = { xPos, yPos };
 			_tileArr[currentLayer][i].size = _gapBetweenTiles;
 		}
@@ -208,7 +214,7 @@ void TileMap::AddTileAt(unsigned int layer, unsigned int uvX, unsigned int uvY, 
 
 	int index = _mapInTiles.x * (int)(worldPos.y * _tilesPerUnit) + (int)(worldPos.x * _tilesPerUnit);
 	if (index < 0) index = 0;
-	if (index > _mapInTiles.x * _mapInTiles.y) index = _mapInTiles.x * _mapInTiles.y;
+	if (index > _mapInTiles.x* _mapInTiles.y) index = _mapInTiles.x * _mapInTiles.y;
 
 	int xTiles = worldPos.x * _tilesPerUnit;
 	int yTiles = worldPos.y * _tilesPerUnit;
@@ -291,7 +297,7 @@ TileData* TileMap::GetTileAtWorldPos(int layer, glm::vec2 worldPos)
 
 	//Protection incase specified position results in a tile outside of the map
 	if (index < 0) index = 0;
-	if (index > _mapInTiles.x * _mapInTiles.y) index = (_mapInTiles.x * _mapInTiles.y) - 1;
+	if (index > _mapInTiles.x* _mapInTiles.y) index = (_mapInTiles.x * _mapInTiles.y) - 1;
 
 	//Gets the tile on the specified layer
 	return &_tileArr[layer][index];

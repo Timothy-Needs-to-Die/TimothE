@@ -105,6 +105,13 @@ namespace TSX {
 			}
 		}
 
+		rapidxml::xml_node<>* objectGroupNode = tile_node->first_node("objectgroup");
+		if (objectGroupNode != 0) {
+			if (objectGroupNode->first_node("object") != 0) {
+				tile._collidable = true;
+			}
+		}
+
         tileList.push_back( tile );
       }
     }
