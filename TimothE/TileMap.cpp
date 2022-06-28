@@ -374,6 +374,17 @@ void TileMap::SetAllTilesLightLevel(int level)
 }
 
 
+struct RoomDetails {
+	int xPos;
+	int yPos;
+	int xSize;
+	int ySize;
+};
+
+bool CompareRoomX(RoomDetails& a, RoomDetails& b) {
+	return a.xPos < b.xPos;
+}
+
 void TileMap::GenerateTileMap(int noOfRooms, int width /*= 64*/, int height /*= 64*/, int seed /*= -1*/)
 {
 	if (seed == -1) {
@@ -384,44 +395,37 @@ void TileMap::GenerateTileMap(int noOfRooms, int width /*= 64*/, int height /*= 
 	}
 
 	int** tilemap = new int* [height];
-	
+
 	for (int i = 0; i < height; i++) {
 		tilemap[i] = new int[width];
 		memset(tilemap[i], 0, width);
-		
+
 	}
+
+	std::vector<RoomDetails> rooms;
+
 
 
 	//Pass 1: Find room placements
 	for (int i = 0; i < noOfRooms; i++) {
 		bool successful = false;
 		while (!successful) {
-			
+
 			int randX = rand() % width;
 			int randY = rand() % height;
 			int sizeX = rand() % 12 + 4;
 			int sizeY = rand() % 12 + 4;
 
-			if (randX + sizeX > width - 1) {
+			if (randX + sizeX + 2 > width - 1) {
 				continue;
 			}
-			if (randY + sizeY > height - 1) {
+			if (randY + sizeY + 2 > height - 1) {
 				continue;
 			}
-			
+
 			bool failed = false;
 			for (int yTest = randY; yTest < randY + sizeY + 2; yTest++) {
-				if (yTest >= height) {
-					failed = true;
-					continue;
-				}
-
 				for (int xTest = randX; xTest < randX + sizeX + 2; xTest++) {
-					if (xTest >= width) {
-						failed = true;
-						continue;
-					}
-
 					if (tilemap[yTest][xTest] == 1) {
 						failed = true;
 						break;
@@ -436,20 +440,67 @@ void TileMap::GenerateTileMap(int noOfRooms, int width /*= 64*/, int height /*= 
 
 			successful = true;
 
+
 			if (successful) {
+				RoomDetails roomInfo;
+
+				roomInfo.xPos = randX;
+				roomInfo.yPos = randY;
+				roomInfo.xSize = sizeX;
+				roomInfo.ySize = sizeY;
+
+
 				for (int yTest = randY; yTest < randY + sizeY; yTest++) {
 					for (int xTest = randX; xTest < randX + sizeX; xTest++) {
 						tilemap[yTest][xTest] = 1;
 					}
-					if (!successful) break;
 				}
+
+				rooms.emplace_back(roomInfo);
 			}
+
 		}
 	}
 
+	std::sort(rooms.begin(), rooms.end(), CompareRoomX);
 
 	//Pass 2: Connect rooms from left to right
 
+	for (int i = 0; i < rooms.size() - 1; i++) {
+		RoomDetails& a = rooms[i];
+		RoomDetails& b = rooms[i + 1];
+
+		int xStart = a.xPos + (a.xSize / 2);
+		int yStart = a.yPos + (a.ySize / 2);
+
+		int xEnd = b.xPos + (a.xSize / 2);
+		int yEnd = b.yPos + (b.ySize / 2);
+
+		if (yStart < yEnd) {
+			for (int y = yStart; y < yEnd; y++) {
+				tilemap[y][xStart] = 1;
+			}
+		}
+		else {
+			for (int y = yEnd; y > yStart; y--) {
+				tilemap[y][xStart] = 1;
+			}
+		}
+
+		if (xStart < xEnd) {
+			for (int x = xStart; x < xEnd; x++) {
+				tilemap[yEnd][x] = 1;
+			}
+		}
+		else {
+			for (int x = xEnd; x > xStart; x--) {
+				tilemap[yEnd][x] = 1;
+			}
+		}
+		
+
+
+	}
 
 	//Debug Test (Print map to screen)
 	for (int y = 0; y < height; y++) {
