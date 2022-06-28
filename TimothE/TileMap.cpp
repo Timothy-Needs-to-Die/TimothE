@@ -113,8 +113,6 @@ void TileMap::LoadTileMap()
 							}
 
 							if (tileSet.tileList[k]._hasAnimations) {
-								_tileArr[currentLayer][trueY][x].animatedTileIDs = tileSet.tileList[k]._animatedTileID;
-
 								for (int a = 0; a < tileSet.tileList[k]._animatedTileID.size(); a++) {
 									unsigned int ID = tileSet.tileList[k]._animatedTileID[a];
 
@@ -373,6 +371,94 @@ void TileMap::SetAllTilesLightLevel(int level)
 	}
 
 	UpdateRenderInfo();
+}
+
+
+void TileMap::GenerateTileMap(int noOfRooms, int width /*= 64*/, int height /*= 64*/, int seed /*= -1*/)
+{
+	if (seed == -1) {
+		srand(time(NULL));
+	}
+	else {
+		srand(seed);
+	}
+
+	int** tilemap = new int* [height];
+	
+	for (int i = 0; i < height; i++) {
+		tilemap[i] = new int[width];
+		memset(tilemap[i], 0, width);
+		
+	}
+
+
+	//Pass 1: Find room placements
+	for (int i = 0; i < noOfRooms; i++) {
+		bool successful = false;
+		while (!successful) {
+			
+			int randX = rand() % width;
+			int randY = rand() % height;
+			int sizeX = rand() % 12 + 4;
+			int sizeY = rand() % 12 + 4;
+
+			if (randX + sizeX > width - 1) {
+				continue;
+			}
+			if (randY + sizeY > height - 1) {
+				continue;
+			}
+			
+			bool failed = false;
+			for (int yTest = randY; yTest < randY + sizeY + 2; yTest++) {
+				if (yTest >= height) {
+					failed = true;
+					continue;
+				}
+
+				for (int xTest = randX; xTest < randX + sizeX + 2; xTest++) {
+					if (xTest >= width) {
+						failed = true;
+						continue;
+					}
+
+					if (tilemap[yTest][xTest] == 1) {
+						failed = true;
+						break;
+					}
+				}
+			}
+
+
+			if (failed) {
+				continue;
+			}
+
+			successful = true;
+
+			if (successful) {
+				for (int yTest = randY; yTest < randY + sizeY; yTest++) {
+					for (int xTest = randX; xTest < randX + sizeX; xTest++) {
+						tilemap[yTest][xTest] = 1;
+					}
+					if (!successful) break;
+				}
+			}
+		}
+	}
+
+
+	//Pass 2: Connect rooms from left to right
+
+
+	//Debug Test (Print map to screen)
+	for (int y = 0; y < height; y++) {
+		for (int x = 0; x < width; x++) {
+			std::cout << tilemap[y][x] << " ";
+		}
+		std::cout << std::endl;
+	}
+
 }
 
 int TileMap::GetLightLevelAtPosition(glm::vec2 pos)

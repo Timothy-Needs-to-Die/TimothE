@@ -111,6 +111,8 @@ public:
 	void SetAllTilesLightLevel(int level);
 
 
+	void GenerateTileMap(int noOfRooms = 10, int width = 64, int height = 64, int seed = -1);
+
 	int GetLightLevelAtPosition(glm::vec2 pos);
 	
 
