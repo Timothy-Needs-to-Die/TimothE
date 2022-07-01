@@ -34,9 +34,6 @@ void TileMap::LoadTileMap()
 {
 	TMX::Parser tmx("Resources/Tilemaps/TileMapTMXTest.tmx");
 
-	//TODO: Figure out some form of object name position map that can be queried to find player spawn etc
-
-
 	SetTileMapSize({ tmx.mapInfo.width, tmx.mapInfo.height });
 	int dimensions = tmx.mapInfo.width * tmx.mapInfo.height;
 
@@ -45,7 +42,6 @@ void TileMap::LoadTileMap()
 		_collidableTileArray[y] = new bool[_mapInTiles.x];
 		memset(_collidableTileArray[y], false, _mapInTiles.x);
 	}
-
 
 	_lightLevelArray = new int[dimensions];
 	for (int i = 0; i < dimensions; ++i) {
@@ -62,6 +58,10 @@ void TileMap::LoadTileMap()
 		TSX::Parser tileset;
 		tileset.load(("Resources/Tilemaps/" + name).c_str());
 		tileSets.insert(std::make_pair(name, tileset));
+	}
+
+	for (std::map<std::string, TMX::Parser::ObjectGroup>::iterator it = tmx.objectGroup.begin(); it != tmx.objectGroup.end(); ++it) {
+		_objectGroups.insert(std::make_pair(it->first, it->second));
 	}
 
 	//Iterate through each layer
@@ -195,6 +195,22 @@ void TileMap::LoadTileMap()
 			std::cout << (int)_collidableTileArray[y][x] << " ";
 		}
 		std::cout << std::endl;
+	}
+
+	TMX::Parser::Object playerSpawn = GetObjectByName("PlayerSpawn");
+	if (playerSpawn.name == "PlayerSpawn") {
+
+		float xPos = playerSpawn.x;
+		float yPos = playerSpawn.y;
+
+		xPos /= 64.0f;
+		yPos /= 64.0f;
+
+		xPos *= _gapBetweenTiles;
+		yPos *= _gapBetweenTiles;
+
+		_playerSpawn = GetTileAtWorldPos(0, { xPos, yPos })->pos;
+
 	}
 }
 glm::vec2 TileMap::MousePosToTile(Camera* cam)
@@ -547,5 +563,56 @@ int TileMap::GetLightLevelAtPosition(glm::vec2 pos)
 {
 	int index = GetTileIndexFromPosition(pos);
 	return _lightLevelArray[index];
+}
+
+TMX::Parser::Object TileMap::GetObjectByName(std::string name) const
+{
+	TMX::Parser::Object obj;
+
+	for (auto og : _objectGroups) {
+		for (auto o : og.second.object) {
+			if (o.second.name == name) {
+				obj = o.second;
+				break;
+			}
+		}
+	}
+
+	if (obj.name == "") {
+		TIM_LOG_LOG("Could not find object with name: " << name);
+	}
+	
+	return obj;
+}
+
+TMX::Parser::Object TileMap::GetObjectByNameInGroup(std::string groupName, std::string name) const
+{
+	TMX::Parser::Object obj;
+
+	auto it = _objectGroups.find(groupName);
+	if (it != _objectGroups.end()) {
+		for (auto o : it->second.object) {
+			if (o.second.name == name) {
+				obj = o.second;
+				break;
+			}
+		}
+	}
+
+	if (obj.name == "") {
+		TIM_LOG_LOG("Could not find object with name: " << name);
+	}
+
+	return obj;
+}
+
+TMX::Parser::ObjectGroup TileMap::GetObjectGroupByName(std::string groupName) const
+{
+	auto it = _objectGroups.find(groupName);
+	if (it != _objectGroups.end()) {
+		return it->second;
+	}
+
+	return TMX::Parser::ObjectGroup();
 }
 

@@ -89,7 +89,7 @@ void FarmScene::InitScene()
 	_pGameTime = new GameTimeManager(_pLightManager);
 
 	_pPlayer = new Player();
-	_pPlayer->GetTransform()->SetPosition(7.0f, 3.0f);
+	_pPlayer->GetTransform()->SetPosition(_pTilemap->GetPlayerSpawn());
 	AddGameObject(_pPlayer);
 
 	_pBed = new Bed();

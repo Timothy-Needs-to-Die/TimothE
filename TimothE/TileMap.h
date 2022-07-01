@@ -8,6 +8,8 @@
 #include "ResourceManager.h"
 #include "TileData.h"
 
+#include "TMXParser.h"
+
 class TileMap
 {
 public:
@@ -116,9 +118,14 @@ public:
 
 	int GetLightLevelAtPosition(glm::vec2 pos);
 	
+	glm::vec2 GetPlayerSpawn() const { return _playerSpawn; }
 
 	//Returns the name of the tilemap
 	std::string GetName() const { return _name; }
+
+	TMX::Parser::Object GetObjectByName(std::string name) const;
+	TMX::Parser::Object GetObjectByNameInGroup(std::string groupName, std::string name) const;
+	TMX::Parser::ObjectGroup GetObjectGroupByName(std::string groupName) const;
 
 private:
 	//Controls how many layers are used in the tilemap
@@ -158,6 +165,12 @@ private:
 
 	//The name of the tilemap is used to save and load the map
 	std::string _name;
+
+	std::map<std::string, TMX::Parser::ObjectGroup> _objectGroups;
+
+	std::vector< TMX::Parser::Object> _tilemapObjects;
+
+	glm::vec2 _playerSpawn;
 
 	std::vector<struct RendererData> _tilemapRendererData;
 };
