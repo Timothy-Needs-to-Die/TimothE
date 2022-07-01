@@ -84,7 +84,8 @@ public:
 	/// Returns true if any tile on all layers at the passed in index is collidable
 	/// </summary>
 	/// <param name="index">The index you want to check</param>
-	bool CollidableAtPosition(const int index) const;
+	bool CollidableAtPosition(int index) const;
+	bool CollidableAtIndexXY(int x, int y);
 
 	void UpdateLightLevelAtPosition(glm::vec2 pos, int lightLevel);
 	void UpdateRenderInfo();
@@ -148,7 +149,7 @@ private:
 	float _mapAnimationDuration = 0.25f;
 	float _mapAnimationTimer = 0.0f;
 
-	bool* _collidableTileArray;
+	bool** _collidableTileArray;
 
 	int* _lightLevelArray;
 

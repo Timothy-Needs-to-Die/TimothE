@@ -112,6 +112,10 @@ void MovementComponent::CollisionCheck(glm::vec2& newPos)
 			}
 		}
 	}
+
+
+
+
 }
 
 void MovementComponent::DecideDirection(glm::vec2& moveVec)

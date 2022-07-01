@@ -135,16 +135,16 @@ void FarmScene::InitScene()
 	}
 	_pGameTime->StartNewDay();
 	
-	std::cout << "Test 1" << std::endl;
-	_pTilemap->GenerateTileMap(10, 64, 64, 1);
-	std::cout << "Test 2" << std::endl;
-	_pTilemap->GenerateTileMap(10, 64, 64, 2);
-	std::cout << "Test 3" << std::endl;
-	_pTilemap->GenerateTileMap(10, 64, 64, 3);
-	std::cout << "Test 4" << std::endl;
-	_pTilemap->GenerateTileMap(10, 64, 64, 4);
-	std::cout << "Test 5" << std::endl;
-	_pTilemap->GenerateTileMap(10, 64, 64, 5);
+	//std::cout << "Test 1" << std::endl;
+	//_pTilemap->GenerateTileMap(10, 64, 64, 1);
+	//std::cout << "Test 2" << std::endl;
+	//_pTilemap->GenerateTileMap(10, 64, 64, 2);
+	//std::cout << "Test 3" << std::endl;
+	//_pTilemap->GenerateTileMap(10, 64, 64, 3);
+	//std::cout << "Test 4" << std::endl;
+	//_pTilemap->GenerateTileMap(10, 64, 64, 4);
+	//std::cout << "Test 5" << std::endl;
+	//_pTilemap->GenerateTileMap(10, 64, 64, 5);
 }
 
 void FarmScene::SaveScene(std::string filename)

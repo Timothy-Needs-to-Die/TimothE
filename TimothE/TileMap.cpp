@@ -40,8 +40,12 @@ void TileMap::LoadTileMap()
 	SetTileMapSize({ tmx.mapInfo.width, tmx.mapInfo.height });
 	int dimensions = tmx.mapInfo.width * tmx.mapInfo.height;
 
-	_collidableTileArray = new bool[dimensions];
-	memset(_collidableTileArray, false, dimensions);
+	_collidableTileArray = new bool* [_mapInTiles.y];
+	for (int y = 0; y < _mapInTiles.y; y++) {
+		_collidableTileArray[y] = new bool[_mapInTiles.x];
+		memset(_collidableTileArray[y], false, _mapInTiles.x);
+	}
+
 
 	_lightLevelArray = new int[dimensions];
 	for (int i = 0; i < dimensions; ++i) {
@@ -108,15 +112,13 @@ void TileMap::LoadTileMap()
 					for (int k = 0; k < tileSet.tileList.size(); k++) {
 						if (tileSet.tileList[k].id == trueID) {
 							if (tileSet.tileList[k]._collidable) {
-								int tDex = trueY * _mapInTiles.y + x;
-								_collidableTileArray[tDex] = true;
+								int tDex = (trueY * _mapInTiles.y + x);
+								_collidableTileArray[x][trueY] = true;
 							}
 
 							if (tileSet.tileList[k]._hasAnimations) {
 								for (int a = 0; a < tileSet.tileList[k]._animatedTileID.size(); a++) {
 									unsigned int ID = tileSet.tileList[k]._animatedTileID[a];
-
-									//tileSet.tileset.tileWidth
 
 									int noOfSprites = tileSet.tileset.noOfTiles;
 									int sheetWidth = tileSet.tileset.columns;
@@ -183,6 +185,16 @@ void TileMap::LoadTileMap()
 			}
 		}
 		_tilemapRendererData.emplace_back(data);
+	}
+
+	//Collision Map
+	std::cout << "Collision Map" << std::endl;
+	for (int y = 0; y < _mapInTiles.y; y++) {
+		for (int x = 0; x < _mapInTiles.x; x++) {
+			int index = y * _mapInTiles.y + x;
+			std::cout << (int)_collidableTileArray[y][x] << " ";
+		}
+		std::cout << std::endl;
 	}
 }
 glm::vec2 TileMap::MousePosToTile(Camera* cam)
@@ -307,7 +319,19 @@ bool TileMap::CollidableAtPosition(glm::vec2 worldPos)
 
 	int index = _mapInTiles.x * (int)(worldPos.y * _tilesPerUnit) + (int)(worldPos.x * _tilesPerUnit);
 
-	return CollidableAtPosition(index);
+	int row = worldPos.y / _gapBetweenTiles;
+	int column = worldPos.x / _gapBetweenTiles;
+
+
+	//row = _mapInTiles.y - row - 1;
+
+	return CollidableAtIndexXY(row, column);
+}
+
+
+bool TileMap::CollidableAtIndexXY(int x, int y)
+{
+	return _collidableTileArray[y][x];
 }
 
 void TileMap::UpdateLightLevelAtPosition(glm::vec2 pos, int lightLevel)
@@ -342,7 +366,12 @@ void TileMap::SetCollidableAtPosition(glm::vec2 pos, bool val)
 {
 	int index = GetTileIndexFromPosition(pos);
 
-	_collidableTileArray[index] = val;
+	int row = pos.y / _gapBetweenTiles;
+	int column = pos.x / _gapBetweenTiles;
+
+	//row = _mapInTiles.y - row - 1;
+
+	_collidableTileArray[row][column] = val;
 }
 
 int TileMap::GetTileIndexFromPosition(glm::vec2 pos)
@@ -351,7 +380,7 @@ int TileMap::GetTileIndexFromPosition(glm::vec2 pos)
 	return index;
 }
 
-bool TileMap::CollidableAtPosition(const int index) const
+bool TileMap::CollidableAtPosition(int index) const
 {
 	if (index < 0 || index > _tileArr[0].size()) return false;
 
@@ -470,36 +499,32 @@ void TileMap::GenerateTileMap(int noOfRooms, int width /*= 64*/, int height /*= 
 		RoomDetails& a = rooms[i];
 		RoomDetails& b = rooms[i + 1];
 
-		int xStart = a.xPos + (a.xSize / 2);
-		int yStart = a.yPos + (a.ySize / 2);
+		int xStart = a.xPos + (rand() % a.xSize + 1) - 1;
+		int yStart = a.yPos + (rand() % a.ySize + 1) - 1;
 
-		int xEnd = b.xPos + (a.xSize / 2);
-		int yEnd = b.yPos + (b.ySize / 2);
+		int xEnd = b.xPos + (rand() % b.xSize + 1) - 1;
+		int yEnd = b.yPos + (rand() % b.ySize + 1) - 1;
 
-		if (yStart < yEnd) {
-			for (int y = yStart; y < yEnd; y++) {
-				tilemap[y][xStart] = 1;
+		int x = xStart;
+		int y = yStart;
+
+		while (x != xEnd || y != yEnd)
+		{
+			if (x < xEnd) {
+				x += 1;
 			}
-		}
-		else {
-			for (int y = yEnd; y > yStart; y--) {
-				tilemap[y][xStart] = 1;
+			else if (x > xEnd) {
+				x -= 1;
 			}
-		}
-
-		if (xStart < xEnd) {
-			for (int x = xStart; x < xEnd; x++) {
-				tilemap[yEnd][x] = 1;
+			else if (y < yEnd) {
+				y += 1;
 			}
-		}
-		else {
-			for (int x = xEnd; x > xStart; x--) {
-				tilemap[yEnd][x] = 1;
+			else if (y > yEnd) {
+				y -= 1;
 			}
+
+			tilemap[y][x] = 1;
 		}
-		
-
-
 	}
 
 	//Debug Test (Print map to screen)
