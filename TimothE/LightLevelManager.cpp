@@ -31,10 +31,12 @@ void LightLevelManager::UpdateLightMap()
 			{
 				for (float x = xMin; x <= xMax; x += tileSize)
 				{
+					int index = _pTileMap->GetTileIndexFromPosition({ x,y });
+
 					TileData* tile = _pTileMap->GetTileAtWorldPos(0, glm::vec2(x, y));
 
 					int level = _pTileMap->GetLightLevelAtPosition({ x,y });
-
+					
 					int affectiveValue = source->baseLightLevel - (source->fallOffRate * (int)round(glm::distance(glm::vec2(x, y), source->worldPos) / tileSize));
 					if (affectiveValue < 0) affectiveValue = 0;
 
@@ -74,6 +76,9 @@ void LightLevelManager::SetWorldLightLevel(int value)
 void LightLevelManager::AddLightSource(LightSource* lightSource)
 {
 	_lightSources.push_back(lightSource);
+
+	TIM_LOG_LOG("Placing tile at position: " << lightSource->worldPos.x << ", " << lightSource->worldPos.y);
+
 	UpdateLightMap();
 }
 

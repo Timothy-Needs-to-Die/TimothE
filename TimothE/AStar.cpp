@@ -207,6 +207,9 @@ void AStar::SetMap(TileMap* map)
 
 void AStar::UpdateNodeObstacleStatus(glm::vec2 worldPos, bool val)
 {
+	//TODO: Remove this
+	return;
+
 	int index = (worldPos.y * _mTilesPerUnit) * _mWidth + (worldPos.x * _mTilesPerUnit);
 		//_mapInTiles.x * (int)(worldPos.y * _tilesPerUnit) + (int)(worldPos.x * _tilesPerUnit)
 	if (index < 0) index = 0;

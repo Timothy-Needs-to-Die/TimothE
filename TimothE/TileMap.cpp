@@ -240,14 +240,15 @@ TileData* TileMap::GetTileAtWorldPos(int layer, glm::vec2 worldPos)
 	else if (worldPos.y > _mapSizeInUnits.y) worldPos.y = _mapSizeInUnits.y;
 
 	if (worldPos.x < 0.0f) worldPos.x = 0.0f;
-	else if (worldPos.x > _mapSizeInUnits.x) worldPos.x = _mapSizeInUnits.x;
+	else if (worldPos.x >= _mapSizeInUnits.x) worldPos.x = _mapSizeInUnits.x - _gapBetweenTiles;
+
+	int index = GetTileIndexFromPosition(worldPos);
 
 	//Calculates the index of the tile
-	int index = _mapInTiles.x * (int)(worldPos.y * _tilesPerUnit) + (int)(worldPos.x * _tilesPerUnit);
 
 	//Protection incase specified position results in a tile outside of the map
 	if (index < 0) index = 0;
-	if (index > _mapInTiles.x* _mapInTiles.y) index = (_mapInTiles.x * _mapInTiles.y) - 1;
+	if (index >= _mapInTiles.x * _mapInTiles.y) index = (_mapInTiles.x * _mapInTiles.y) - 1;
 
 	int yIndex = index / _mapInTiles.x;
 	int xIndex = index - (yIndex * _mapInTiles.x);
@@ -322,6 +323,11 @@ bool TileMap::CollidableAtPosition(glm::vec2 worldPos)
 	int row = worldPos.y / _gapBetweenTiles;
 	int column = worldPos.x / _gapBetweenTiles;
 
+	if (row < 0) row = 0;
+	else if (row >= _mapInTiles.y) row = _mapInTiles.y - 1;
+
+	if (column < 0) column = 0;
+	else if (column >= _mapInTiles.x) column = _mapInTiles.x - 1;
 
 	//row = _mapInTiles.y - row - 1;
 
