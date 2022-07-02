@@ -76,17 +76,10 @@ public:
 	void RenderMap(Camera* cam);
 
 	/// <summary>
-	/// Returns true if any tile on all layers at a row and column position is collidable
-	/// </summary>
-	/// <param name="x">The Row the tile would be on</param>
-	/// <param name="y">The Column the tile is on</param>
-	bool CollidableAtPosition(const int x, const int y) const;
-
-	/// <summary>
 	/// Returns true if any tile on all layers at the passed in index is collidable
 	/// </summary>
 	/// <param name="index">The index you want to check</param>
-	bool CollidableAtPosition(int index) const;
+	bool CollidableAtIndex(int index) const;
 	bool CollidableAtIndexXY(int x, int y);
 
 	void UpdateLightLevelAtPosition(glm::vec2 pos, int lightLevel);

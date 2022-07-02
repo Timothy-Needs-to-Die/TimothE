@@ -10,7 +10,7 @@ WeaponComponent::WeaponComponent(GameObject* object)
 {
 	SetType(Component::Weapon_Type);
 
-	_pAnimSheet = new AnimatedSpritesheet(ResourceManager::GetTexture("swords"), 16, 16, "Swords");
+	_pAnimSheet = new AnimatedSpritesheet(ResourceManager::GetTexture("swords.png"), 16, 16);
 	_pSprite = _pParentObject->AddComponent<SpriteComponent>(new SpriteComponent(_pParentObject, 90));
 	_pSprite->SetSprite(_pAnimSheet->GetSpriteAtIndex(_currentLevel));
 	_pAnimSheet->SetFramerate(2);

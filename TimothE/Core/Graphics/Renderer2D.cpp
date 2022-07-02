@@ -69,7 +69,7 @@ void Renderer2D::Init()
 	_uiData.quadVertexArray->SetIndexBuffer(quadIB);
 	delete[] quadIndices;
 
-	_data.whiteTexture = ResourceManager::GetTexture("whiteTexture");
+	_data.whiteTexture = ResourceManager::GetTexture("whiteTexture.png");
 	_uiData.whiteTexture = _data.whiteTexture;
 
 	unsigned int samplers[_data.maxTextureSlots];
@@ -236,7 +236,7 @@ struct RendererData Renderer2D::GenerateRendererData()
 	data.quadVertexArray->SetIndexBuffer(quadIB);
 	delete[] quadIndices;
 
-	data.whiteTexture = ResourceManager::GetTexture("whiteTexture");
+	data.whiteTexture = ResourceManager::GetTexture("whiteTexture.png");
 
 	unsigned int samplers[data.maxTextureSlots];
 	for (unsigned int i = 0; i < data.maxTextureSlots; i++) {

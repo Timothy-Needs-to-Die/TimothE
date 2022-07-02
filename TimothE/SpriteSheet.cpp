@@ -2,8 +2,8 @@
 #include "SpriteSheet.h"
 #include "Core.h"
 
-SpriteSheet::SpriteSheet(Texture2D* texture, int spriteWidth, int spriteHeight, std::string resourceName)
-	: _pTexture(texture), _spriteWidth(spriteWidth), _spriteHeight(spriteHeight), _resourceName(resourceName)
+SpriteSheet::SpriteSheet(Texture2D* texture, int spriteWidth, int spriteHeight)
+	: _pTexture(texture), _spriteWidth(spriteWidth), _spriteHeight(spriteHeight)
 {
 	_sheetWidthInPixels = texture->GetWidth();
 	_sheetHeightInPixels = texture->GetHeight();

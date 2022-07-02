@@ -11,7 +11,7 @@
 class Texture2D
 {
 public:
-	Texture2D(std::string path, bool flip = false);
+	Texture2D(std::string path, bool flip = true);
 	~Texture2D();
 
 	//Getters

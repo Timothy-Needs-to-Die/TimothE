@@ -31,10 +31,11 @@ public:
 	static SpriteSheet* GetSpriteSheet(std::string name);
 	static Font* GetFont(std::string name);;
 
-	static std::string GetUID();
-
 private:
+	static void LoadShaders();
 	static void LoadFonts();
+	static void LoadTextures();
+	static void LoadSpritsheets();
 
 private:
 	static std::map<std::string, Texture2D*> _textures;

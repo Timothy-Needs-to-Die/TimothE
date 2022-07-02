@@ -180,21 +180,11 @@ void TileMap::LoadTileMap()
 				glm::vec2 pos = td.pos;
 
 				if (td._pSprite == nullptr) continue;
-
+				
 				Renderer2D::AddData(data, Quad{ { pos.x, pos.y}, {_gapBetweenTiles, _gapBetweenTiles} }, td._pSprite->GetTexture(), td._pSprite->GetTexCoords());
 			}
 		}
 		_tilemapRendererData.emplace_back(data);
-	}
-
-	//Collision Map
-	std::cout << "Collision Map" << std::endl;
-	for (int y = 0; y < _mapInTiles.y; y++) {
-		for (int x = 0; x < _mapInTiles.x; x++) {
-			int index = y * _mapInTiles.y + x;
-			std::cout << (int)_collidableTileArray[y][x] << " ";
-		}
-		std::cout << std::endl;
 	}
 
 	TMX::Parser::Object playerSpawn = GetObjectByName("PlayerSpawn");
@@ -275,9 +265,14 @@ TileData* TileMap::GetTileAtWorldPos(int layer, glm::vec2 worldPos)
 
 void TileMap::RenderMap(Camera* cam)
 {
+	//Increments the animation timer
 	_mapAnimationTimer += Time::GetDeltaTime();
+	//If the timer is greater than the duration
 	if (_mapAnimationTimer > _mapAnimationDuration) {
+		//Reset the timer
 		_mapAnimationTimer = 0.0f;
+
+		//Cycle through each animated tile and update the texture coords for it
 		for (int i = 0; i < _animatedTileArr.size(); i++) {
 			TileData* pCurrentTile = _animatedTileArr[i];
 
@@ -304,38 +299,39 @@ void TileMap::RenderMap(Camera* cam)
 		UpdateRenderInfo();
 	}
 
+	//Renders each layer as it's own draw call
 	for (int i = 0; i < _tilemapRendererData.size(); i++) {
+		//Gets a reference to the current renderer data.
 		RendererData& data = _tilemapRendererData[i];
+
+		//Updates the cameras position in the shader
 		data.textureShader->SetMat4("view", cam->ViewProj());
 
 		if (data.quadIndexCount != 0) {
+			//Sets the data for each quad vertex
 			uint32_t dataSize = (uint32_t)((uint8_t*)data.quadVertexBufferPtr - (uint8_t*)data.quadVertexBufferBase);
 			data.quadVertexBuffer->SetData(data.quadVertexBufferBase, dataSize);
 
+			//Binds all textures
 			for (unsigned int i = 0; i < data.textureSlotIndex; i++) {
 				data.textureSlots[i]->Bind(i);
 			}
 
+			//Binds the shader attached currently
 			data.textureShader->BindShader();
 
+			//Draws all the render data for the tilemap
 			Renderer2D::DrawIndexed(data.quadVertexArray, data.quadIndexCount);
 		}
 	}
 }
 
-bool TileMap::CollidableAtPosition(const int x, const int y) const
-{
-	int tIndex = y * _mapInTiles.x + x;
-
-	return _collidableTileArray[tIndex];
-}
-
 bool TileMap::CollidableAtPosition(glm::vec2 worldPos)
 {
+	//Gets the tile at this correct position. Ensures we are working with correct units
 	TileData* td = GetTileAtWorldPos(0, worldPos);
 
-	int index = _mapInTiles.x * (int)(worldPos.y * _tilesPerUnit) + (int)(worldPos.x * _tilesPerUnit);
-
+	//Finds the row and column for this world position
 	int row = worldPos.y / _gapBetweenTiles;
 	int column = worldPos.x / _gapBetweenTiles;
 
@@ -344,8 +340,6 @@ bool TileMap::CollidableAtPosition(glm::vec2 worldPos)
 
 	if (column < 0) column = 0;
 	else if (column >= _mapInTiles.x) column = _mapInTiles.x - 1;
-
-	//row = _mapInTiles.y - row - 1;
 
 	return CollidableAtIndexXY(row, column);
 }
@@ -378,31 +372,31 @@ void TileMap::UpdateLightLevelAtPosition(glm::vec2 pos, int lightLevel)
 
 void TileMap::UpdateRenderInfo()
 {
+	//Cycles through all the renderer data
 	for (int i = 0; i < _tilemapRendererData.size(); ++i) {
+		//Calculates the data size
 		uint32_t dataSize = (uint32_t)((uint8_t*)_tilemapRendererData[i].quadVertexBufferPtr - (uint8_t*)_tilemapRendererData[i].quadVertexBufferBase);
+		
+		//Sets the data in the vertex buffer to be the correct information
 		_tilemapRendererData[i].quadVertexBuffer->SetData(_tilemapRendererData[i].quadVertexBufferBase, dataSize);
 	}
 }
 
 void TileMap::SetCollidableAtPosition(glm::vec2 pos, bool val)
 {
-	int index = GetTileIndexFromPosition(pos);
-
+	//Calculate the row  and column to find the correct tile
 	int row = pos.y / _gapBetweenTiles;
 	int column = pos.x / _gapBetweenTiles;
-
-	//row = _mapInTiles.y - row - 1;
 
 	_collidableTileArray[row][column] = val;
 }
 
 int TileMap::GetTileIndexFromPosition(glm::vec2 pos)
 {
-	int index = _mapInTiles.x * (int)(pos.y * _tilesPerUnit) + (int)(pos.x * _tilesPerUnit);
-	return index;
+	return  _mapInTiles.x * (int)(pos.y * _tilesPerUnit) + (int)(pos.x * _tilesPerUnit);
 }
 
-bool TileMap::CollidableAtPosition(int index) const
+bool TileMap::CollidableAtIndex(int index) const
 {
 	if (index < 0 || index > _tileArr[0].size()) return false;
 
@@ -411,16 +405,15 @@ bool TileMap::CollidableAtPosition(int index) const
 
 void TileMap::SetAllTilesLightLevel(int level)
 {
+	//Cycle through each tile in the tilemap
 	for (int y = 0; y < _mapInTiles.y; y++) {
 		for (int x = 0; x < _mapInTiles.x; x++) {
+			//Set the light level of each tile to the desired value
 			UpdateLightLevelAtPosition(_tileArr[0][y][x].pos, level);
 		}
 	}
 
-
-	for (int i = 0; i < _mapInTiles.x * _mapInTiles.y; ++i) {
-	}
-
+	//Updates the VAO and VBO for the tilemap
 	UpdateRenderInfo();
 }
 
@@ -561,58 +554,55 @@ void TileMap::GenerateTileMap(int noOfRooms, int width /*= 64*/, int height /*= 
 
 int TileMap::GetLightLevelAtPosition(glm::vec2 pos)
 {
-	int index = GetTileIndexFromPosition(pos);
-	return _lightLevelArray[index];
+	//Gets the of the tile at the passed in world position and finds it's light value
+	return _lightLevelArray[GetTileIndexFromPosition(pos)];
 }
 
 TMX::Parser::Object TileMap::GetObjectByName(std::string name) const
 {
-	TMX::Parser::Object obj;
-
+	//Cylce through all object groups
 	for (auto og : _objectGroups) {
+		//Cylce through all objects in that group
 		for (auto o : og.second.object) {
+			//if the name matches the desired name then return that object
 			if (o.second.name == name) {
-				obj = o.second;
-				break;
+				return o.second;
 			}
 		}
 	}
 
-	if (obj.name == "") {
-		TIM_LOG_LOG("Could not find object with name: " << name);
-	}
-	
-	return obj;
+	//Catch condition for if we do not have the desired object
+	return TMX::Parser::Object();
 }
 
 TMX::Parser::Object TileMap::GetObjectByNameInGroup(std::string groupName, std::string name) const
 {
-	TMX::Parser::Object obj;
-
+	//Search for the desired group
 	auto it = _objectGroups.find(groupName);
 	if (it != _objectGroups.end()) {
+		//if the group exists, then cycle through all objects in it
 		for (auto o : it->second.object) {
+			//checks this objects name against the one we are searching for
 			if (o.second.name == name) {
-				obj = o.second;
-				break;
+				return o.second;
 			}
 		}
 	}
 
-	if (obj.name == "") {
-		TIM_LOG_LOG("Could not find object with name: " << name);
-	}
-
-	return obj;
+	//Catch condition for if we do not have the desired object
+	return TMX::Parser::Object();
 }
 
 TMX::Parser::ObjectGroup TileMap::GetObjectGroupByName(std::string groupName) const
 {
+	//See if we have a object group with the desired name
 	auto it = _objectGroups.find(groupName);
 	if (it != _objectGroups.end()) {
+		//if we have a object group with the desired name then return it
 		return it->second;
 	}
 
+	//Catch condition for if we do not have the desired object group
 	return TMX::Parser::ObjectGroup();
 }
 

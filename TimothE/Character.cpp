@@ -9,7 +9,7 @@
 Character::Character(std::string texture, std::string name, std::string tag) 
 	: GameObject(name, tag) 
 {
-	_pAnimSheet = new AnimatedSpritesheet(ResourceManager::GetTexture(texture), 16, 32, "AnimatedCharacter");
+	_pAnimSheet = new AnimatedSpritesheet(ResourceManager::GetTexture(texture), 16, 32);
 
 	_pAudioSource = AddComponent(new AudioSource(this));
 	_pMovement = AddComponent(new MovementComponent(this));
