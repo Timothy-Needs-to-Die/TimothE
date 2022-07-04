@@ -12,6 +12,24 @@
 
 #include "Constants.h"
 
+enum class ProcTileMapValues {
+	TOP_LEFT = 0,
+	TOP_MIDDLE = 1,
+	TOP_RIGHT = 2,
+	MIDDLE_LEFT = 3,
+	MIDDLE_MIDDLE = 4,
+	FLOOR = 4,
+	MIDDLE_RIGHT = 5,
+	BOTTOM_LEFT = 6,
+	BOTTOM_MIDDLE = 7,
+	BOTTOM_RIGHT = 8,
+	INTERIOR_TOP_LEFT = 10,
+	INTERIOR_TOP_RIGHT = 11,
+	INTERIOR_BOTTOM_LEFT = 12,
+	INTERIOR_BOTTOM_RIGHT = 13
+};
+
+
 class TileMap
 {
 public:
@@ -109,7 +127,7 @@ public:
 	void SetAllTilesLightLevel(int level);
 
 
-	void GenerateTileMap(int noOfRooms = 10, int width = 64, int height = 64, int seed = -1);
+	int** GenerateTileMap(int noOfRooms = 10, int width = 64, int height = 64, int seed = -1);
 
 	int GetLightLevelAtPosition(glm::vec2 pos);
 	
@@ -121,6 +139,9 @@ public:
 	TMX::Parser::Object GetObjectByName(std::string name) const;
 	TMX::Parser::Object GetObjectByNameInGroup(std::string groupName, std::string name) const;
 	TMX::Parser::ObjectGroup GetObjectGroupByName(std::string groupName) const;
+
+
+	void CreateTilemapFromProcGen(int** map, int width, int height, std::string spritesheetName);
 
 private:
 	//Controls how many layers are used in the tilemap

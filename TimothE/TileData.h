@@ -9,7 +9,6 @@ struct TileData {
 	unsigned int animationIndex = 0;
 
 	unsigned int texIndex;
-	unsigned int layer;
 
 	float size;
 

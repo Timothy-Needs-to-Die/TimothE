@@ -429,7 +429,7 @@ bool CompareRoomX(RoomDetails& a, RoomDetails& b) {
 	return a.xPos < b.xPos;
 }
 
-void TileMap::GenerateTileMap(int noOfRooms, int width /*= 64*/, int height /*= 64*/, int seed /*= -1*/)
+int** TileMap::GenerateTileMap(int noOfRooms, int width /*= 64*/, int height /*= 64*/, int seed /*= -1*/)
 {
 	if (seed == -1) {
 		srand(time(NULL));
@@ -442,8 +442,9 @@ void TileMap::GenerateTileMap(int noOfRooms, int width /*= 64*/, int height /*= 
 
 	for (int i = 0; i < height; i++) {
 		tilemap[i] = new int[width];
-		memset(tilemap[i], 0, width);
-
+		for (int x = 0; x < width; x++) {
+			tilemap[i][x] = 0;
+		}
 	}
 
 	std::vector<RoomDetails> rooms;
@@ -550,6 +551,7 @@ void TileMap::GenerateTileMap(int noOfRooms, int width /*= 64*/, int height /*= 
 		std::cout << std::endl;
 	}
 
+	return tilemap;
 }
 
 int TileMap::GetLightLevelAtPosition(glm::vec2 pos)
@@ -604,5 +606,142 @@ TMX::Parser::ObjectGroup TileMap::GetObjectGroupByName(std::string groupName) co
 
 	//Catch condition for if we do not have the desired object group
 	return TMX::Parser::ObjectGroup();
+}
+
+void TileMap::CreateTilemapFromProcGen(int** map, int width, int height, std::string spritesheetName)
+{
+	//Resize the tile map array to the right size
+	//Change the tile data to be what the tile is.
+	//Establish standard for the tile layout on the tilesheet
+	
+	_animatedTileArr.clear();
+
+	SpriteSheet* pSpriteSheet = ResourceManager::GetSpriteSheet(spritesheetName);
+
+	_tilemapRendererData.clear();
+
+	_tileArr.clear();
+	_tileArr.resize(2);
+
+	SetTileMapSize({ width, height });
+
+	_collidableTileArray = new bool* [_mapInTiles.y];
+	for (int y = 0; y < _mapInTiles.y; y++) {
+		_collidableTileArray[y] = new bool[_mapInTiles.x];
+		memset(_collidableTileArray[y], false, _mapInTiles.x);
+	}
+
+	_lightLevelArray = new int[width * height];
+	for (int i = 0; i < width * height; ++i) {
+		_lightLevelArray[i] = 5;
+	}
+
+	for (int y = 0; y < height; y++) {
+		for (int x = 0; x < width; x++) {
+			int mapIndex = y * width + x;
+
+			int value = map[y][x];
+
+			int rVal = 0;
+			int bVal = 0;
+			int rbVal = 0;
+
+			if (y < height - 2) {
+				bVal = map[y + 1][x];
+
+				if (x < width - 2) {
+					rbVal = map[y + 1][x + 1];
+				}
+			}
+
+			if (x < width - 2) {
+				rVal = map[y][x + 1];
+			}
+
+			TileData data;
+
+			data.animated = false;
+			data.size = 0.25f;
+
+			data.pos = { x * _gapBetweenTiles, y * _gapBetweenTiles };
+			data._pSpritesheet = pSpriteSheet;
+
+			int texIndex = -1;
+
+			std::string values;
+			values = std::to_string(value) + std::to_string(rVal) + std::to_string(bVal) + std::to_string(rbVal);
+
+			if (values == "0000") { //BLANK TILE
+				
+			}
+			else if (values == "0001") { //TOP LEFT
+				texIndex = (int)ProcTileMapValues::TOP_LEFT;
+			}
+			else if (values == "0011") { //TOP MIDDLE
+				texIndex = (int)ProcTileMapValues::TOP_MIDDLE;
+			}
+			else if (values == "0010") { //TOP RIGHT
+				texIndex = (int)ProcTileMapValues::TOP_RIGHT;
+			}
+			else if (values == "0101") { //MIDDLE LEFT
+				texIndex = (int)ProcTileMapValues::MIDDLE_LEFT;
+			}
+			else if (values == "1111") { //MIDDLE MIDDLE / FLOOR
+				texIndex = (int)ProcTileMapValues::MIDDLE_MIDDLE;
+			}
+			else if (values == "1010") { //MIDDLE RIGHT
+				texIndex = (int)ProcTileMapValues::MIDDLE_RIGHT;
+			}
+			else if (values == "0100") { //BOTTOM LEFT
+				texIndex = (int)ProcTileMapValues::BOTTOM_LEFT;
+			}
+			else if (values == "1100") { //BOTTOM MIDDLE
+				texIndex = (int)ProcTileMapValues::BOTTOM_MIDDLE;
+			}
+			else if (values == "1000") { //BOTTOM RIGHT
+				texIndex = (int)ProcTileMapValues::BOTTOM_RIGHT;
+			}
+			else if (values == "1011") {
+				texIndex = (int)ProcTileMapValues::INTERIOR_BOTTOM_LEFT;
+			}
+			else if (values == "0111") {
+				texIndex = (int)ProcTileMapValues::INTERIOR_BOTTOM_RIGHT;
+			}
+			else if (values == "1110") {
+				texIndex = (int)ProcTileMapValues::INTERIOR_TOP_LEFT;
+			}
+			else if (values == "1101") {
+				texIndex = (int)ProcTileMapValues::INTERIOR_TOP_RIGHT;
+			}
+
+
+			data.texIndex = texIndex;
+			if (texIndex != -1) {
+				data.texIndex = texIndex;
+				data._pSprite = data._pSpritesheet->GetSpriteAtIndex(texIndex);
+			}
+
+			_tileArr[0][y][x] = data;
+		}
+	}
+
+	for (int layer = 0; layer < 2; layer++) {
+		RendererData data = Renderer2D::GenerateRendererData();
+
+		for (int y = 0; y < _mapInTiles.y; y++) {
+			for (int x = 0; x < _mapInTiles.x; x++) {
+				TileData& td = _tileArr[layer][y][x];
+				glm::vec2 pos = td.pos;
+
+				if (td.texIndex == -1) continue;
+				if (td._pSprite == nullptr) continue;
+
+				Renderer2D::AddData(data, Quad{ { pos.x, pos.y}, {_gapBetweenTiles, _gapBetweenTiles} }, td._pSprite->GetTexture(), td._pSprite->GetTexCoords());
+			}
+		}
+		_tilemapRendererData.emplace_back(data);
+	}
+
+	UpdateRenderInfo();
 }
 
