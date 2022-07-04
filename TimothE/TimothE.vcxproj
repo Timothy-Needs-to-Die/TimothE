@@ -96,6 +96,7 @@
     <ClInclude Include="BedHealth.h" />
     <ClInclude Include="BoxColliderComponent.h" />
     <ClInclude Include="Button.h" />
+    <ClInclude Include="Constants.h" />
     <ClInclude Include="CSVReader.h" />
     <ClInclude Include="Camera.h" />
     <ClInclude Include="CameraManager.h" />

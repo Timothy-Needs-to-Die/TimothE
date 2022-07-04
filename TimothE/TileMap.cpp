@@ -193,8 +193,8 @@ void TileMap::LoadTileMap()
 		float xPos = playerSpawn.x;
 		float yPos = playerSpawn.y;
 
-		xPos /= 64.0f;
-		yPos /= 64.0f;
+		xPos /= (float)TILE_SIZE_IN_PIXELS;
+		yPos /= (float)TILE_SIZE_IN_PIXELS;
 
 		xPos *= _gapBetweenTiles;
 		yPos *= _gapBetweenTiles;

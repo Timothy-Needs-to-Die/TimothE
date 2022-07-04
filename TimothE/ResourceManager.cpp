@@ -51,7 +51,7 @@ void ResourceManager::LoadShaders()
 	ResourceManager::InstantiateShader("default", new Shader("Resources/Shaders/VertexShader.vert", "Resources/Shaders/FragmentShader.frag"));
 }
 
-void ResourceManager::LoadFonts() 
+void ResourceManager::LoadFonts()
 {
 	std::ofstream fileStream("./Resources/Fonts");
 	_fonts.clear();
@@ -124,8 +124,8 @@ void ResourceManager::LoadTextures()
 
 void ResourceManager::LoadSpritsheets()
 {
-	ResourceManager::InstantiateSpritesheet("RPGpack_sheet", new SpriteSheet(ResourceManager::GetTexture("RPGpack_sheet.png"), 64, 64));
-	ResourceManager::InstantiateSpritesheet("medispritesheet", new SpriteSheet(ResourceManager::GetTexture("MediSprites.png"), 64, 64));
+	ResourceManager::InstantiateSpritesheet("RPGpack_sheet", new SpriteSheet(ResourceManager::GetTexture("RPGpack_sheet.png"), TILE_SIZE_IN_PIXELS, TILE_SIZE_IN_PIXELS));
+	ResourceManager::InstantiateSpritesheet("medispritesheet", new SpriteSheet(ResourceManager::GetTexture("MediSprites.png"), TILE_SIZE_IN_PIXELS, TILE_SIZE_IN_PIXELS));
 	ResourceManager::InstantiateSpritesheet("itemspritesheet", new SpriteSheet(ResourceManager::GetTexture("ItemsSheet.png"), 128, 128));
 	ResourceManager::InstantiateSpritesheet("cropspritesheet", new SpriteSheet(ResourceManager::GetTexture("CropsSheet.png"), 32, 32));
 	ResourceManager::InstantiateSpritesheet("roguespritesheet", new SpriteSheet(ResourceManager::GetTexture("RogueSprites.png"), 17, 17));
@@ -133,37 +133,38 @@ void ResourceManager::LoadSpritsheets()
 	ResourceManager::InstantiateSpritesheet("extraspritesheet", new SpriteSheet(ResourceManager::GetTexture("ExtraSpriteSheet.png"), 15, 15));
 	ResourceManager::InstantiateSpritesheet("buildspritesheet", new SpriteSheet(ResourceManager::GetTexture("BuildingSheet.png"), 32, 32));
 	ResourceManager::InstantiateSpritesheet("build2spritesheet", new SpriteSheet(ResourceManager::GetTexture("BuildingSheet2.png"), 32, 32));
+	ResourceManager::InstantiateSpritesheet("dungeonGrey", new SpriteSheet(ResourceManager::GetTexture("DungeonGreySprites.png"), 32, 32));
 	ResourceManager::InstantiateSpritesheet("TMX Tester", new SpriteSheet(ResourceManager::GetTexture("TMX Tester.png"), 32, 32));
 	ResourceManager::InstantiateSpritesheet("swords", new SpriteSheet(ResourceManager::GetTexture("swords.png"), 16, 16));
 	ResourceManager::InstantiateSpritesheet("axes", new SpriteSheet(ResourceManager::GetTexture("axes.png"), 16, 16));
 	ResourceManager::InstantiateSpritesheet("pickaxes", new SpriteSheet(ResourceManager::GetTexture("pickaxes.png"), 16, 16));
-	ResourceManager::InstantiateSpritesheet("planks", new SpriteSheet(ResourceManager::GetTexture("Planks.png"), 64, 64));
-	ResourceManager::InstantiateSpritesheet("wall", new SpriteSheet(ResourceManager::GetTexture("Wall.png"), 64, 64));
+	ResourceManager::InstantiateSpritesheet("planks", new SpriteSheet(ResourceManager::GetTexture("Planks.png"), TILE_SIZE_IN_PIXELS, TILE_SIZE_IN_PIXELS));
+	ResourceManager::InstantiateSpritesheet("wall", new SpriteSheet(ResourceManager::GetTexture("Wall.png"), TILE_SIZE_IN_PIXELS, TILE_SIZE_IN_PIXELS));
 	ResourceManager::InstantiateSpritesheet("tower", new SpriteSheet(ResourceManager::GetTexture("Tower.png"), 213, 254));
-	ResourceManager::InstantiateSpritesheet("fireball", new SpriteSheet(ResourceManager::GetTexture("Fireball.png"), 64, 64));
+	ResourceManager::InstantiateSpritesheet("fireball", new SpriteSheet(ResourceManager::GetTexture("Fireball.png"), TILE_SIZE_IN_PIXELS, TILE_SIZE_IN_PIXELS));
 	ResourceManager::InstantiateSpritesheet("small_stone", new SpriteSheet(ResourceManager::GetTexture("Rock.png"), 32, 32));
 	ResourceManager::InstantiateSpritesheet("small_wood", new SpriteSheet(ResourceManager::GetTexture("TreeStump.png"), 32, 32));
 	ResourceManager::InstantiateSpritesheet("small_metal", new SpriteSheet(ResourceManager::GetTexture("Metal.png"), 32, 32));
 	ResourceManager::InstantiateSpritesheet("small_coal", new SpriteSheet(ResourceManager::GetTexture("Coal.png"), 32, 32));
 	ResourceManager::InstantiateSpritesheet("campfire", new SpriteSheet(ResourceManager::GetTexture("Campfire.png"), 32, 32));
-	ResourceManager::InstantiateSpritesheet("bed", new SpriteSheet(ResourceManager::GetTexture("Bed.png"), 32, 64));
-	ResourceManager::InstantiateSpritesheet("testSheet", new SpriteSheet(ResourceManager::GetTexture("testSheet.png"), 64, 64));
+	ResourceManager::InstantiateSpritesheet("bed", new SpriteSheet(ResourceManager::GetTexture("Bed.png"), 32, TILE_SIZE_IN_PIXELS));
+	ResourceManager::InstantiateSpritesheet("testSheet", new SpriteSheet(ResourceManager::GetTexture("testSheet.png"), TILE_SIZE_IN_PIXELS, TILE_SIZE_IN_PIXELS));
 
 }
 
 void ResourceManager::InstantiateTexture(std::string name, Texture2D* texture)
-{ 
+{
 	_textures[name] = texture;
 };
 
 void ResourceManager::InstantiateShader(std::string name, Shader* shader)
-{ 
+{
 	_shaders[name] = shader;
 };
 
 void ResourceManager::InstantiateScene(std::string name, Scene* scene)
-{ 
-	_scenes[name] = scene; 
+{
+	_scenes[name] = scene;
 }
 
 void ResourceManager::InstantiateSpritesheet(std::string name, SpriteSheet* spritesheet)
@@ -185,7 +186,7 @@ Texture2D* ResourceManager::GetTexture(std::string name)
 			return pTexture;
 		}
 	}
-	catch (std::out_of_range& e) {
+	catch (std::out_of_range & e) {
 		TIM_LOG_ERROR("Texture: " << name << " could not be found in resource manager");
 		__debugbreak();
 	}
@@ -201,7 +202,7 @@ Shader* ResourceManager::GetShader(std::string name)
 			return pShader;
 		}
 	}
-	catch (std::out_of_range& e) {
+	catch (std::out_of_range & e) {
 		TIM_LOG_ERROR("Shader: " << name << " could not be found in resource managaer");
 		__debugbreak();
 	}
@@ -219,7 +220,7 @@ Scene* ResourceManager::GetScene(std::string name)
 			return pScene;
 		}
 	}
-	catch (std::out_of_range& e) {
+	catch (std::out_of_range & e) {
 		TIM_LOG_ERROR("Scene: " << name << " could not be found in resource manager");
 		__debugbreak();
 	}
@@ -236,7 +237,7 @@ SpriteSheet* ResourceManager::GetSpriteSheet(std::string name)
 			return pSpritesheet;
 		}
 	}
-	catch (std::out_of_range& e) {
+	catch (std::out_of_range & e) {
 		TIM_LOG_ERROR("Spritesheet: " << name << " could not be found in resource manager");
 		__debugbreak();
 	}
@@ -253,7 +254,7 @@ Font* ResourceManager::GetFont(std::string name)
 			return pFont;
 		}
 	}
-	catch (std::out_of_range& e) {
+	catch (std::out_of_range & e) {
 		TIM_LOG_ERROR("Font: " << name << " could not be found in resource manager");
 		__debugbreak();
 	}

@@ -10,6 +10,8 @@
 
 #include "TMXParser.h"
 
+#include "Constants.h"
+
 class TileMap
 {
 public:
