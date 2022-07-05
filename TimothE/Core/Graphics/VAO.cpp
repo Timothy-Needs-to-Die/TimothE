@@ -31,6 +31,7 @@ void VAO::Unbind() const
 void VAO::AddVertexBuffer(const std::shared_ptr<VBO>& vertexBuffer)
 {
     GLCall(glBindVertexArray(_rendererID));
+
     vertexBuffer->Bind();
 
     const auto& layout = vertexBuffer->GetLayout();

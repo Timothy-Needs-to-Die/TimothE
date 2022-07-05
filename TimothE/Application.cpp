@@ -155,7 +155,6 @@ void Application::GameLoop()
 			}
 		}
 
-		GameUpdate();
 
 		if (_tileMapEditorEnabled) {
 			_pEditor->_pEditorFramebuffer->BindFramebuffer();
@@ -169,11 +168,11 @@ void Application::GameLoop()
 		else {
 
 			_pfb->BindFramebuffer();
-			//GameBeginRender();
-			GameRender(CameraManager::CurrentCamera());
+			GameBeginRender();
+			GameRender(CameraManager::MainCamera());
+			GameUpdate();
 			_pfb->UnbindFramebuffer();
 			
-
 			_pfb->DrawFramebuffer();
 		}
 

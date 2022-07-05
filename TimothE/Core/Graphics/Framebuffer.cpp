@@ -6,8 +6,8 @@
 Framebuffer::Framebuffer(Shader* screenShader, float* quadVertices)
 	: _pScreenShader(screenShader), _pQuadVertices(quadVertices)
 {
-	CreateFramebuffer();
 	_vbo = VBO::Create(_pQuadVertices, 24);
+	CreateFramebuffer();
 }
 
 Framebuffer::Framebuffer(Shader* screenShader)
@@ -24,7 +24,7 @@ Framebuffer::Framebuffer(Shader* screenShader)
 		 1.0f,  1.0f, 1.0f, 1.0f //Top Right
 	};
 
-	_vbo = CreateRef<VBO>(_pQuadVertices, 24);
+	_vbo = CreateRef<VBO>(_pQuadVertices, 24 * sizeof(float));
 	CreateFramebuffer();
 }
 
@@ -65,20 +65,10 @@ void Framebuffer::CreateFramebuffer()
 
 	GLCall(glFramebufferTexture2D(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0, GL_TEXTURE_2D, _texture, 0));
 
-
-	// create a render buffer object for depth and stencil attachment (we won't be sampling these)
-
-	//Generate the render buffer objects
-	//_rbo = new RBO();
-	//_rbo->CreateRBO();
-	//
-	////Adds the depth stencil attachments
-	//_rbo->AddDepthStencil();
-
 	unsigned int rbo;
 	glGenRenderbuffers(1, &rbo);
 	glBindRenderbuffer(GL_RENDERBUFFER, rbo);
-	glRenderbufferStorage(GL_RENDERBUFFER, GL_DEPTH24_STENCIL8, 1920, 1080);
+	glRenderbufferStorage(GL_RENDERBUFFER, GL_DEPTH24_STENCIL8, Window::GetWidth(), Window::GetHeight());
 	glBindRenderbuffer(GL_RENDERBUFFER, 0);
 
 	// now that we actually created the frame buffer and added all attachments we want to check if it is actually complete now
