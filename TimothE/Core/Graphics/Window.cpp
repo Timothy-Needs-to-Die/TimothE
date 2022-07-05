@@ -3,6 +3,8 @@
 
 #include "OpenGLError.h"
 
+//Screen goes black if minimized and refocused
+//Screen goes black if fullscreened
 
 void Window::Init(unsigned int width, unsigned int height, const char* name)
 {
@@ -44,7 +46,7 @@ void Window::SetWindowColour(float r, float g, float b, float a)
 	glfwMakeContextCurrent(_pWindow);
 
 	//Sets background colour and clears the colour buffer bit
-	GLCall(glClearColor(r,g,b,a));
+	GLCall(glClearColor(r, g, b, a));
 	GLCall(glClear(GL_COLOR_BUFFER_BIT));
 }
 
@@ -55,7 +57,10 @@ void Window::DestroyWindow()
 
 void Window::CreateWindow()
 {
+	glfwWindowHint(GLFW_AUTO_ICONIFY, 0);
+
 	//Create and assign the GLFWwindow object
+	//_pWindow = glfwCreateWindow(_windowData._width, _windowData._height, _windowData._title.c_str(), glfwGetPrimaryMonitor(), nullptr);
 	_pWindow = glfwCreateWindow(_windowData._width, _windowData._height, _windowData._title.c_str(), nullptr, nullptr);
 
 	//Makes this current window the context (current one to be edited
@@ -94,8 +99,32 @@ void Window::CreateWindow()
 
 	//glfwSetInputMode(_pWindow, GLFW_STICKY_KEYS, GLFW_TRUE);
 
+	//TODO: Implement this
+	glfwSetWindowMaximizeCallback(_pWindow, [](GLFWwindow* window, int maximized) {
+		if (maximized) {
+			std::cout << "Maximized" << std::endl;
+		}
+		else {
+			std::cout << "Is not maximized" << std::endl;
+		}
+		});
+
+	//TODO: Implement this
+	glfwSetWindowFocusCallback(_pWindow, [](GLFWwindow* window, int focused) {
+		WindowData& data = *(WindowData*)glfwGetWindowUserPointer(window);
+		WindowFocusedEvent event((bool)focused);
+		data._eventCallback(event);
+		});
+
+	glfwSetFramebufferSizeCallback(_pWindow, [](GLFWwindow* window, int width, int height) {
+		glViewport(0, 0, width, height);
+	});
+
+	
+
+
 	//Sets the callback for pressing a key
-	glfwSetKeyCallback(_pWindow, [](GLFWwindow* window, int key, int scancode, int action, int mods) 
+	glfwSetKeyCallback(_pWindow, [](GLFWwindow* window, int key, int scancode, int action, int mods)
 		{
 			WindowData& data = *(WindowData*)glfwGetWindowUserPointer(window);
 
@@ -126,7 +155,7 @@ void Window::CreateWindow()
 	glfwSetMouseButtonCallback(_pWindow, [](GLFWwindow* window, int button, int action, int mods)
 		{
 			WindowData& data = *(WindowData*)glfwGetWindowUserPointer(window);
-			
+
 			switch (action) {
 			case GLFW_PRESS:
 			{
@@ -181,6 +210,17 @@ void Window::ShowFPS(float dt)
 {
 	std::string title = "Timothe RE FPS: " + std::to_string((int)(1 / dt));
 	glfwSetWindowTitle(_pWindow, title.c_str());
+}
+
+//TODO: Test this
+void Window::SetFullscreen(bool val)
+{
+	if (val) {
+		glfwSetWindowMonitor(_pWindow, glfwGetPrimaryMonitor(), 0, 0, _windowData._width, _windowData._height, 60);
+	}
+	else {
+		glfwSetWindowMonitor(_pWindow, nullptr, 0, 0, _windowData._width, _windowData._height, 60);
+	}
 }
 
 GLFWwindow* Window::_pWindow;

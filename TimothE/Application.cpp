@@ -201,6 +201,7 @@ void Application::OnGameEvent(Event& e)
 	dispatcher.Dispatch<MouseMovedEvent>(BIND_EVENT_FN(OnMouseMovedEvent));
 	dispatcher.Dispatch<WindowResizeEvent>(BIND_EVENT_FN(OnWindowResize));
 	dispatcher.Dispatch<MouseScrolledEvent>(BIND_EVENT_FN(OnMouseScrolledEvent));
+	dispatcher.Dispatch<WindowFocusedEvent>(BIND_EVENT_FN(OnWindowFocusEvent));
 }
 
 //on game start start game state
@@ -351,6 +352,21 @@ bool Application::OnMouseScrolledEvent(MouseScrolledEvent& e)
 {
 	//TODO: Only allow this when hovered over the window
 	//CameraManager::GetCamera("Editor")->OnMouseScrolled(e.GetOffsetY());
+
+	return true;
+}
+
+
+bool Application::OnWindowFocusEvent(WindowFocusedEvent& e)
+{
+	std::cout << e.ToString() << std::endl;
+
+	if (e.IsFocused()) {
+		glfwFocusWindow(Window::GetGLFWWindow());
+		//CameraManager::ResizeCameras(Window::GetWidth(), Window::GetHeight());
+
+		CameraManager::MainCamera()->SetPosition({ 1.78f, 1.0f, -2.0f });
+	}
 
 	return true;
 }

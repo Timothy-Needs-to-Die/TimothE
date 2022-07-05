@@ -27,6 +27,30 @@ private:
 	unsigned int _width, _height;
 };
 
+class WindowFocusedEvent : public Event {
+
+public:
+	WindowFocusedEvent(bool focused) : _focused(focused) {
+
+	}
+
+	inline bool IsFocused() const {
+		return _focused;
+	}
+
+	std::string ToString() const override {
+		std::stringstream ss;
+		ss << "WindowFocusedEvent: " << _focused;
+		return ss.str();
+	}
+
+	EVENT_CLASS_TYPE(WindowFocus)
+	EVENT_CLASS_CATEGORY(EventCategoryApplication)
+
+private:
+	bool _focused;
+};
+
 //Window Close Event. Called when the window is closed
 class  WindowCloseEvent : public Event {
 public:

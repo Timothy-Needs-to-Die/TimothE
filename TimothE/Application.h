@@ -51,6 +51,7 @@ private:
 	bool OnMouseButtonReleasedEvent(MouseButtonReleasedEvent& e);
 	bool OnMouseMovedEvent(MouseMovedEvent& e);
 	bool OnMouseScrolledEvent(MouseScrolledEvent& e);
+	bool OnWindowFocusEvent(WindowFocusedEvent& e);
 	bool OnWindowResize(WindowResizeEvent& e);
 
 private:

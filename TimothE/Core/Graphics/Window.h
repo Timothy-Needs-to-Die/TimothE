@@ -47,6 +47,8 @@ public:
 
 	static void ShowFPS(float dt);
 
+
+	static void SetFullscreen(bool val);
 private:
 
 
