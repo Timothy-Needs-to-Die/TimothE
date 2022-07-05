@@ -167,26 +167,14 @@ void Application::GameLoop()
 			_pEditor->EditorRender();
 		}
 		else {
-			//_pGameFramebuffer->BeginRender();
-			//glEnable(GL_DEPTH_TEST);
-			
 
 			_pfb->BindFramebuffer();
-
-			GameBeginRender();
+			//GameBeginRender();
 			GameRender(CameraManager::CurrentCamera());
-			
 			_pfb->UnbindFramebuffer();
-
+			
 
 			_pfb->DrawFramebuffer();
-
-			//_pGameFramebuffer->EndRender();
-			
-			//glDisable(GL_DEPTH_TEST);
-			//glClear(GL_COLOR_BUFFER_BIT);
-
-			//_pGameFramebuffer->Render(0.016f);
 		}
 
 

@@ -61,17 +61,25 @@ void Framebuffer::CreateFramebuffer()
 	GLCall(glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, Window::GetWidth(), Window::GetHeight(), 0, GL_RGB, GL_UNSIGNED_BYTE, NULL));
 	GLCall(glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR));
 	GLCall(glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR));
+
+
 	GLCall(glFramebufferTexture2D(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0, GL_TEXTURE_2D, _texture, 0));
 
 
 	// create a render buffer object for depth and stencil attachment (we won't be sampling these)
 
 	//Generate the render buffer objects
-	_rbo = new RBO();
-	_rbo->CreateRBO();
+	//_rbo = new RBO();
+	//_rbo->CreateRBO();
+	//
+	////Adds the depth stencil attachments
+	//_rbo->AddDepthStencil();
 
-	//Adds the depth stencil attachments
-	_rbo->AddDepthStencil();
+	unsigned int rbo;
+	glGenRenderbuffers(1, &rbo);
+	glBindRenderbuffer(GL_RENDERBUFFER, rbo);
+	glRenderbufferStorage(GL_RENDERBUFFER, GL_DEPTH24_STENCIL8, 1920, 1080);
+	glBindRenderbuffer(GL_RENDERBUFFER, 0);
 
 	// now that we actually created the frame buffer and added all attachments we want to check if it is actually complete now
 	if (glCheckFramebufferStatus(GL_FRAMEBUFFER) != GL_FRAMEBUFFER_COMPLETE)
@@ -84,11 +92,17 @@ void Framebuffer::CreateFramebuffer()
 void Framebuffer::BindFramebuffer()
 {
 	GLCall(glBindFramebuffer(GL_FRAMEBUFFER, _fbo));
+	glEnable(GL_DEPTH_TEST);
+	glClearColor(0.1f, 0.1f, 0.1f, 1.0f);
+	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 }
 
 void Framebuffer::UnbindFramebuffer()
 {
 	GLCall(glBindFramebuffer(GL_FRAMEBUFFER, 0));
+	glDisable(GL_DEPTH_TEST); 
+	glClearColor(1.0f, 1.0f, 1.0f, 1.0f); // set clear color to white (not really necessary actually, since we won't be able to see behind the quad anyways)
+	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 }
 
 void Framebuffer::BindShader()
@@ -102,8 +116,13 @@ void Framebuffer::DrawFramebuffer()
 	_vao->Bind();
 
 	_pScreenShader->BindShader();
+	_pScreenShader->SetInt("screenTexture", 0);
+	
+	glActiveTexture(GL_TEXTURE0);
+	glBindTexture(GL_TEXTURE_2D, _texture);
 
-	BindTexture();
+
+	//BindTexture();
 	GLCall(glDrawArrays(GL_TRIANGLES, 0, 6));
 }
 
