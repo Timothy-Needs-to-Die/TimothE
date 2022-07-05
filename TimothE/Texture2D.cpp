@@ -37,6 +37,24 @@ bool Texture2D::Load(std::string path, bool flip)
 	return true;
 }
 
+
+void Texture2D::Generate(unsigned int width, unsigned int height, unsigned char* data)
+{
+	_width = width;
+	_height = height;
+
+	GLCall(glBindTexture(GL_TEXTURE_2D, _ID));
+	GLCall(glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, _width, _height, 0, GL_RGB, GL_UNSIGNED_BYTE, data));
+
+	GLCall(glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT));
+	GLCall(glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT));
+	GLCall(glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR));
+	GLCall(glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR));
+
+	// unbind texture
+	glBindTexture(GL_TEXTURE_2D, 0);
+}
+
 void Texture2D::GenerateTexture(unsigned char* data)
 {
 	GLCall(glGenTextures(1, &_ID));

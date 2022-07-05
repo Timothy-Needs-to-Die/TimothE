@@ -15,13 +15,13 @@ Framebuffer::Framebuffer(Shader* screenShader)
 {
 	_pQuadVertices = new float[24]{
 		// positions   // texCoords
-		-1.0f,  -1.0f,  0.0f, 0.0f, //Bottom left
-		-1.0f,   1.0f,	0.0f, 1.0f, //Top Left
-		 1.0f,   1.0f,	1.0f, 1.0f, //Top Right
+		-1.0f, -1.0f, 0.0f, 0.0f, //Bottom left
+		 1.0f,  1.0f, 1.0f, 1.0f, //Top right
+		-1.0f,  1.0f, 0.0f, 1.0f, //Top left
 
-		 1.0f,  -1.0f,  1.0f, 0.0f, //Bottom Right
-		-1.0f,  -1.0f,	0.0f, 0.0f, //Bottom Left
-		 1.0f,   1.0f,   1.0f, 1.0f //Top Right
+		-1.0f, -1.0f, 0.0f, 0.0f, //Bottom left
+		 1.0f, -1.0f, 1.0f, 0.0f, //Bottom Right
+		 1.0f,  1.0f, 1.0f, 1.0f //Top Right
 	};
 
 	_vbo = CreateRef<VBO>(_pQuadVertices, 24);
@@ -62,6 +62,8 @@ void Framebuffer::CreateFramebuffer()
 	GLCall(glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR));
 	GLCall(glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR));
 	GLCall(glFramebufferTexture2D(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0, GL_TEXTURE_2D, _texture, 0));
+
+
 	// create a render buffer object for depth and stencil attachment (we won't be sampling these)
 
 	//Generate the render buffer objects
@@ -98,6 +100,8 @@ void Framebuffer::DrawFramebuffer()
 {
 	//Bind Vertex Array
 	_vao->Bind();
+
+	_pScreenShader->BindShader();
 
 	BindTexture();
 	GLCall(glDrawArrays(GL_TRIANGLES, 0, 6));

@@ -30,6 +30,7 @@ public:
 	void SetColor(glm::vec3 color) { _color = color; }
 	void SetScale(float scale) { _scale = scale; }
 
+	void Render();
 	void RenderText(Shader& s, std::string text, float x, float y, float _tileScale, glm::vec3 color);
 	
 private:

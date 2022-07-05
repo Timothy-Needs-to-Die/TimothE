@@ -98,6 +98,9 @@ void Application::Init(bool devMode)
 	CameraManager::GetCamera("Editor")->SetPosition({ 1.78f, 1.0f, -1.0f });
 	CameraManager::SetToMainCamera();
 
+	_pGameFramebuffer = new PostProcessor(ResourceManager::GetShader("breakout"), 1920, 1080);
+	_pfb = new Framebuffer(ResourceManager::GetShader("breakout"));
+
 	_pEditor = new Editor(this);
 	//_pCameraManager->_pCameras = _pCurrentScene->FindObjectsOfType<Camera>();
 }
@@ -152,6 +155,8 @@ void Application::GameLoop()
 			}
 		}
 
+		GameUpdate();
+
 		if (_tileMapEditorEnabled) {
 			_pEditor->_pEditorFramebuffer->BindFramebuffer();
 			GameBeginRender();
@@ -160,12 +165,32 @@ void Application::GameLoop()
 
 			_pEditor->_pEditorFramebuffer->UnbindFramebuffer();
 			_pEditor->EditorRender();
+		}
+		else {
+			//_pGameFramebuffer->BeginRender();
+			//glEnable(GL_DEPTH_TEST);
+			
 
+			_pfb->BindFramebuffer();
+
+			GameBeginRender();
+			GameRender(CameraManager::CurrentCamera());
+			
+			_pfb->UnbindFramebuffer();
+
+
+			_pfb->DrawFramebuffer();
+
+			//_pGameFramebuffer->EndRender();
+			
+			//glDisable(GL_DEPTH_TEST);
+			//glClear(GL_COLOR_BUFFER_BIT);
+
+			//_pGameFramebuffer->Render(0.016f);
 		}
 
-		GameBeginRender();
-		GameUpdate();
-		GameRender(CameraManager::CurrentCamera());
+
+
 
 		ImGuiManager::ImGuiEndFrame();
 

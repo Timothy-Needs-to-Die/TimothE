@@ -12,6 +12,7 @@ class Texture2D
 {
 public:
 	Texture2D(std::string path, bool flip = true);
+	Texture2D() {}
 	~Texture2D();
 
 	//Getters
@@ -28,6 +29,8 @@ public:
 	void Bind(int slot) {
 		GLCall(glBindTextureUnit(slot, _ID));
 	}
+
+	void Generate(unsigned int width, unsigned int height, unsigned char* data);
 
 private:
 	void GenerateTexture(unsigned char* data);

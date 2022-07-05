@@ -201,7 +201,8 @@ void Scene::RenderScene(Camera* cam)
 
 		TextComponent* tc = obj->GetComponent<TextComponent>();
 		if (tc) {
-			tc->OnUpdate();
+			tc->Render();
+			
 		}
 
 	}
