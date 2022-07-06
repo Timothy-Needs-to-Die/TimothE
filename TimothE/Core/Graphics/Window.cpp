@@ -104,48 +104,35 @@ void Window::CreateWindow()
 
 	glfwSetInputMode(_pWindow, GLFW_STICKY_KEYS, GLFW_TRUE);
 
-	//glfwSetWindowMaximizeCallback(_pWindow, [](GLFWwindow* window, int maximized) {
-	//	if (maximized) {
-	//		std::cout << "Maximized" << std::endl;
-	//		glfwMakeContextCurrent(window);
-	//	}
-	//	else {
-	//		std::cout << "Is not maximized" << std::endl;
-	//	}
-	//	});
-	//
-	//glfwSetWindowIconifyCallback(_pWindow, [](GLFWwindow* window, int iconified) {
-	//	if (iconified) {
-	//		std::cout << "Iconed" << std::endl;
-	//	}
-	//	else {
-	//		std::cout << "Not Iconed" << std::endl;
-	//		//glViewport(0, 0, 1920, 1080);
-	//		//glfwRestoreWindow(window);
-	//		glfwMakeContextCurrent(window);
-	//		CameraManager::ResizeCameras(Window::GetWidth(), Window::GetHeight());
-	//		CameraManager::MainCamera()->SetPosition({ 1.78f, 1.0f, -2.0f });
-	//		CameraManager::MainCamera()->RecalculateViewMatrix();
-	//	}
-	//	});
-	//
-	//
-	//glfwSetWindowFocusCallback(_pWindow, [](GLFWwindow* window, int focused) {
-	//	WindowData& data = *(WindowData*)glfwGetWindowUserPointer(window);
-	//	WindowFocusedEvent event((bool)focused);
-	//	data._eventCallback(event);
-	//	});
-	//
-	//glfwSetFramebufferSizeCallback(_pWindow, [](GLFWwindow* window, int width, int height) {
-	//	//glViewport(0, 0, width, height);
-	//	//CameraManager::ResizeCameras(width, height);
-	//	//glfwMakeContextCurrent(window);
-	//	glViewport(0, 0, width, height);
-	//	//CameraManager::ResizeCameras(Window::GetWidth(), Window::GetHeight());
-	//	//CameraManager::MainCamera()->SetPosition({ 1.78f, 1.0f, -2.0f });
-	//	//CameraManager::MainCamera()->RecalculateViewMatrix();
-	//	std::cout << "fb size" << std::endl;
-	//	});
+	glfwSetWindowMaximizeCallback(_pWindow, [](GLFWwindow* window, int maximized) {
+		if (maximized) {
+			std::cout << "Maximized" << std::endl;
+		}
+		else {
+			std::cout << "Is not maximized" << std::endl;
+		}
+		});
+	
+	glfwSetWindowIconifyCallback(_pWindow, [](GLFWwindow* window, int iconified) {
+		if (iconified) {
+			std::cout << "Iconed" << std::endl;
+		}
+		else {
+			std::cout << "Not Iconed" << std::endl;
+		}
+		});
+	
+	
+	glfwSetWindowFocusCallback(_pWindow, [](GLFWwindow* window, int focused) {
+		WindowData& data = *(WindowData*)glfwGetWindowUserPointer(window);
+		WindowFocusedEvent event((bool)focused);
+		data._eventCallback(event);
+		});
+	
+	glfwSetFramebufferSizeCallback(_pWindow, [](GLFWwindow* window, int width, int height) {
+		glViewport(0, 0, width, height);
+		std::cout << "fb size" << std::endl;
+		});
 
 
 

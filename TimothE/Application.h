@@ -15,7 +15,6 @@
 #include "SceneManager.h"
 
 #include "FarmScene.h"
-#include "PostProcessor.h"
 
 class Editor;
 
@@ -55,7 +54,6 @@ private:
 
 private:
 	Framebuffer* _pfb = nullptr;
-	PostProcessor* _pGameFramebuffer;
 	AudioEngine* _pAudio;
 
 	bool _mInEditorMode = true;

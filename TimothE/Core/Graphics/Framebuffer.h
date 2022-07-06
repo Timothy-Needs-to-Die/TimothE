@@ -24,6 +24,9 @@ public:
 	//Binds this frame buffer to the opengl pipeline
 	void BindFramebuffer();
 
+	void RefreshTexture();
+	void RefreshRBO();
+
 	//Unbinds this frame buffer to the opengl pipeline
 	void UnbindFramebuffer();
 

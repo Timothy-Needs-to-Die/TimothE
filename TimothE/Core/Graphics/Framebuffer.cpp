@@ -56,20 +56,11 @@ void Framebuffer::CreateFramebuffer()
 	BindFramebuffer();
 
 	// create a color attachment texture
-	GLCall(glGenTextures(1, &_texture));
-	GLCall(glBindTexture(GL_TEXTURE_2D, _texture));
-	GLCall(glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, Window::GetWidth(), Window::GetHeight(), 0, GL_RGB, GL_UNSIGNED_BYTE, NULL));
-	GLCall(glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR));
-	GLCall(glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR));
+	RefreshTexture();
 
 
-	GLCall(glFramebufferTexture2D(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0, GL_TEXTURE_2D, _texture, 0));
 
-	unsigned int rbo;
-	glGenRenderbuffers(1, &rbo);
-	glBindRenderbuffer(GL_RENDERBUFFER, rbo);
-	glRenderbufferStorage(GL_RENDERBUFFER, GL_DEPTH24_STENCIL8, Window::GetWidth(), Window::GetHeight());
-	glBindRenderbuffer(GL_RENDERBUFFER, 0);
+
 
 	// now that we actually created the frame buffer and added all attachments we want to check if it is actually complete now
 	if (glCheckFramebufferStatus(GL_FRAMEBUFFER) != GL_FRAMEBUFFER_COMPLETE)
@@ -85,6 +76,33 @@ void Framebuffer::BindFramebuffer()
 	glEnable(GL_DEPTH_TEST);
 	glClearColor(0.1f, 0.1f, 0.1f, 1.0f);
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+}
+
+void Framebuffer::RefreshTexture()
+{
+	BindFramebuffer();
+
+	GLCall(glGenTextures(1, &_texture));
+	GLCall(glBindTexture(GL_TEXTURE_2D, _texture));
+	GLCall(glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, Window::GetWidth(), Window::GetHeight(), 0, GL_RGB, GL_UNSIGNED_BYTE, NULL));
+	GLCall(glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR));
+	GLCall(glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR));
+
+	GLCall(glFramebufferTexture2D(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0, GL_TEXTURE_2D, _texture, 0));
+
+	UnbindFramebuffer();
+}
+
+void Framebuffer::RefreshRBO()
+{
+	BindFramebuffer();
+	unsigned int rbo;
+	glGenRenderbuffers(1, &rbo);
+	glBindRenderbuffer(GL_RENDERBUFFER, rbo);
+	glRenderbufferStorage(GL_RENDERBUFFER, GL_DEPTH24_STENCIL8, Window::GetWidth(), Window::GetHeight());
+	glBindRenderbuffer(GL_RENDERBUFFER, 0);
+
+	UnbindFramebuffer();
 }
 
 void Framebuffer::UnbindFramebuffer()

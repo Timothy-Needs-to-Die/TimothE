@@ -3,6 +3,8 @@
 #include "TimothEInputCodes.h"
 
 #include <cassert>
+
+#include "Core/Graphics/Window.h"
 #include "Core.h"
 
 class Input
@@ -20,8 +22,8 @@ public:
 
 	
 	static glm::vec2 GetMouseScreenCoords() {
-		float absX = (_mouseXPos + 1.0f) * 0.5f * 1920;
-		float absY = (_mouseYPos + 1.0f) * 0.5f * 1080;
+		float absX = (_mouseXPos + 1.0f) * 0.5f * Window::GetWidth();
+		float absY = (_mouseYPos + 1.0f) * 0.5f * Window::GetHeight();
 		glm::vec2 result = { absX, absY };
 
 		//TIM_LOG_LOG("X: " << absX << ", Y: " << absY);

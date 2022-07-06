@@ -346,9 +346,6 @@ bool Application::OnWindowFocusEvent(WindowFocusedEvent& e)
 {
 	std::cout << e.ToString() << std::endl;
 	
-	glfwMakeContextCurrent(Window::GetGLFWWindow());
-	glfwRestoreWindow(Window::GetGLFWWindow());
-
 	if (e.IsFocused()) {
 		glfwFocusWindow(Window::GetGLFWWindow());
 		CameraManager::ResizeCameras(Window::GetWidth(), Window::GetHeight());
@@ -361,8 +358,12 @@ bool Application::OnWindowFocusEvent(WindowFocusedEvent& e)
 
 bool Application::OnWindowResize(WindowResizeEvent& e)
 {
-	//glfwMakeContextCurrent(Window::GetGLFWWindow());
 	CameraManager::ResizeCameras((float)e.GetWidth(), (float)e.GetHeight());
 	glViewport(0, 0, e.GetWidth(), e.GetHeight());
+	_pfb->RefreshTexture();
+	_pfb->RefreshRBO();
+
+	_pEditor->_pEditorFramebuffer->RefreshTexture();
+	_pEditor->_pEditorFramebuffer->RefreshRBO();
 	return true;
 }

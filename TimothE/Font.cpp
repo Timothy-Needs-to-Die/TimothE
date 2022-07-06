@@ -1,6 +1,7 @@
 #include "pch.h"
 #include "Font.h"
 #include "Core/Graphics/OpenGLError.h"
+#include "Core/Graphics/Window.h"
 #include "Core.h"
 
 Font::Font(std::string font)
