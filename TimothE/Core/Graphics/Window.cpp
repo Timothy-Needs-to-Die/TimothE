@@ -1,5 +1,6 @@
 #include "../../pch.h"
 #include "Window.h"
+#include "../../CameraManager.h"
 
 #include "OpenGLError.h"
 
@@ -57,37 +58,41 @@ void Window::DestroyWindow()
 
 void Window::CreateWindow()
 {
-	glfwWindowHint(GLFW_AUTO_ICONIFY, 0);
 
 	//Create and assign the GLFWwindow object
 	//_pWindow = glfwCreateWindow(_windowData._width, _windowData._height, _windowData._title.c_str(), glfwGetPrimaryMonitor(), nullptr);
 	_pWindow = glfwCreateWindow(_windowData._width, _windowData._height, _windowData._title.c_str(), nullptr, nullptr);
 
-	//Makes this current window the context (current one to be edited
-	glfwMakeContextCurrent(_pWindow);
 	if (!_pWindow)
 	{
 		//Output an error and terminate GLFW
 		std::cout << "Error creating window" << std::endl;
 		glfwTerminate();
+		return;
 	}
+
+	//Makes this current window the context (current one to be edited
+	glfwMakeContextCurrent(_pWindow);
 
 	//Syncs to monitor refresh rate
 	//1: Vsync. 0: No Vsync
-	glfwSwapInterval(0);
+	glfwSwapInterval(1);
+
+
 
 	glfwSetWindowUserPointer(_pWindow, &_windowData);
 
 	//Sets the callback for resizing the window
-	glfwSetWindowSizeCallback(_pWindow, [](GLFWwindow* window, int width, int height)
-		{
-			WindowData& data = *(WindowData*)glfwGetWindowUserPointer(window);
-			data._width = width;
-			data._height = height;
-
-			WindowResizeEvent event(width, height);
-			data._eventCallback(event);
-		});
+	//glfwSetWindowSizeCallback(_pWindow, [](GLFWwindow* window, int width, int height)
+	//	{
+	//		WindowData& data = *(WindowData*)glfwGetWindowUserPointer(window);
+	//		data._width = width;
+	//		data._height = height;
+	//
+	//		WindowResizeEvent event(width, height);
+	//		data._eventCallback(event);
+	//		glfwMakeContextCurrent(window);
+	//	});
 
 	//Sets the callback for closing a window
 	glfwSetWindowCloseCallback(_pWindow, [](GLFWwindow* window)
@@ -99,28 +104,50 @@ void Window::CreateWindow()
 
 	//glfwSetInputMode(_pWindow, GLFW_STICKY_KEYS, GLFW_TRUE);
 
-	//TODO: Implement this
-	glfwSetWindowMaximizeCallback(_pWindow, [](GLFWwindow* window, int maximized) {
-		if (maximized) {
-			std::cout << "Maximized" << std::endl;
-		}
-		else {
-			std::cout << "Is not maximized" << std::endl;
-		}
-		});
+	//glfwSetWindowMaximizeCallback(_pWindow, [](GLFWwindow* window, int maximized) {
+	//	if (maximized) {
+	//		std::cout << "Maximized" << std::endl;
+	//		glfwMakeContextCurrent(window);
+	//	}
+	//	else {
+	//		std::cout << "Is not maximized" << std::endl;
+	//	}
+	//	});
+	//
+	//glfwSetWindowIconifyCallback(_pWindow, [](GLFWwindow* window, int iconified) {
+	//	if (iconified) {
+	//		std::cout << "Iconed" << std::endl;
+	//	}
+	//	else {
+	//		std::cout << "Not Iconed" << std::endl;
+	//		//glViewport(0, 0, 1920, 1080);
+	//		//glfwRestoreWindow(window);
+	//		glfwMakeContextCurrent(window);
+	//		CameraManager::ResizeCameras(Window::GetWidth(), Window::GetHeight());
+	//		CameraManager::MainCamera()->SetPosition({ 1.78f, 1.0f, -2.0f });
+	//		CameraManager::MainCamera()->RecalculateViewMatrix();
+	//	}
+	//	});
+	//
+	//
+	//glfwSetWindowFocusCallback(_pWindow, [](GLFWwindow* window, int focused) {
+	//	WindowData& data = *(WindowData*)glfwGetWindowUserPointer(window);
+	//	WindowFocusedEvent event((bool)focused);
+	//	data._eventCallback(event);
+	//	});
+	//
+	//glfwSetFramebufferSizeCallback(_pWindow, [](GLFWwindow* window, int width, int height) {
+	//	//glViewport(0, 0, width, height);
+	//	//CameraManager::ResizeCameras(width, height);
+	//	//glfwMakeContextCurrent(window);
+	//	glViewport(0, 0, width, height);
+	//	//CameraManager::ResizeCameras(Window::GetWidth(), Window::GetHeight());
+	//	//CameraManager::MainCamera()->SetPosition({ 1.78f, 1.0f, -2.0f });
+	//	//CameraManager::MainCamera()->RecalculateViewMatrix();
+	//	std::cout << "fb size" << std::endl;
+	//	});
 
-	//TODO: Implement this
-	glfwSetWindowFocusCallback(_pWindow, [](GLFWwindow* window, int focused) {
-		WindowData& data = *(WindowData*)glfwGetWindowUserPointer(window);
-		WindowFocusedEvent event((bool)focused);
-		data._eventCallback(event);
-		});
 
-	glfwSetFramebufferSizeCallback(_pWindow, [](GLFWwindow* window, int width, int height) {
-		glViewport(0, 0, width, height);
-	});
-
-	
 
 
 	//Sets the callback for pressing a key

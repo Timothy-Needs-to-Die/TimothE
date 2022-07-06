@@ -41,8 +41,6 @@ protected:
 
 	void DisplayTileEditor();
 
-	void ImGUISwitchRender();
-
 private:
 	//Event Handlers
 	bool OnWindowClose(WindowCloseEvent& e);

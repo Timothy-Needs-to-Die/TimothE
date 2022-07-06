@@ -45,16 +45,23 @@ void Application::Init(bool devMode)
 
 	_mDevMode = devMode;
 
+
+
 	//checks if glfw initialsed
 	if (!glfwInit()) {
 		TIM_LOG_ERROR("glfw failed to initialize");
 	}
 
+
 	//sets up new window
 	glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 4);
 	glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 4);
+	glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
+	glfwWindowHint(GLFW_AUTO_ICONIFY, 0);
+	glfwWindowHint(GLFW_SAMPLES, 4);
 
-	Window::Init(1920, 1080, "ThymeoWthE");
+
+	Window::Init(1280, 720, "ThymeoWthE");
 
 	Window::SetEventCallback(BIND_EVENT_FN(OnGameEvent));
 	Window::CreateWindow();
@@ -63,7 +70,7 @@ void Application::Init(bool devMode)
 	GLint GlewInitResult = glewInit();
 	if (GlewInitResult != GLEW_OK)
 	{
-		//std::cout << "ERROR: %s", glewGetErrorString(GlewInitResult) << std::endl;
+		std::cout << "ERROR: %s" << glewGetErrorString(GlewInitResult) << std::endl;
 		exit(EXIT_FAILURE);
 	}
 
@@ -98,8 +105,7 @@ void Application::Init(bool devMode)
 	CameraManager::GetCamera("Editor")->SetPosition({ 1.78f, 1.0f, -1.0f });
 	CameraManager::SetToMainCamera();
 
-	_pGameFramebuffer = new PostProcessor(ResourceManager::GetShader("breakout"), 1920, 1080);
-	_pfb = new Framebuffer(ResourceManager::GetShader("breakout"));
+	_pfb = new Framebuffer(ResourceManager::GetShader("framebuffer"));
 
 	_pEditor = new Editor(this);
 	//_pCameraManager->_pCameras = _pCurrentScene->FindObjectsOfType<Camera>();
@@ -114,9 +120,8 @@ void Application::GameLoop()
 	int memBookmark = HeapManager::GetMemoryBookmark();
 
 	//creates new audio engine
-	_pAudio = new AudioEngine;
+	_pAudio = new AudioEngine();
 
-	//enables depth in opengl
 
 	//time update
 	double previousTime = glfwGetTime();
@@ -258,38 +263,6 @@ void Application::DisplayTileEditor()
 	TileMapEditor::Update(SceneManager::GetCurrentScene()->GetTileMap());
 }
 
-//stop and play buttons switches play states
-void Application::ImGUISwitchRender()
-{
-	{
-		//sets up window for application mode
-		ImGui::Begin("#Application Mode", 0, ImGuiWindowFlags_AlwaysAutoResize);
-		//stop playing button changes game back to editor mode
-		if (ImGui::Button("Stop Playing", ImVec2(100.0f, 30.0f))) {
-			_mInEditorMode = true;
-			_mGameRunning = false;
-			_mPaused = false;
-		}
-		ImGui::SameLine();
-		//unpauses game
-		if (_mPaused) {
-			if (ImGui::Button("Resume", ImVec2(90.0f, 30.0f)))
-			{
-				_mPaused = false;
-			}
-		}
-		ImGui::SameLine();
-
-		//pause button
-		if (ImGui::Button("Pause", ImVec2(90.0f, 30.0f)))
-		{
-			_mPaused = true;
-		}
-		ImGui::SameLine();
-		ImGui::End();
-	}
-}
-
 //closes game window
 bool Application::OnWindowClose(WindowCloseEvent& e)
 {
@@ -372,12 +345,15 @@ bool Application::OnMouseScrolledEvent(MouseScrolledEvent& e)
 bool Application::OnWindowFocusEvent(WindowFocusedEvent& e)
 {
 	std::cout << e.ToString() << std::endl;
+	
+	glfwMakeContextCurrent(Window::GetGLFWWindow());
+	glfwRestoreWindow(Window::GetGLFWWindow());
 
 	if (e.IsFocused()) {
 		glfwFocusWindow(Window::GetGLFWWindow());
-		//CameraManager::ResizeCameras(Window::GetWidth(), Window::GetHeight());
-
+		CameraManager::ResizeCameras(Window::GetWidth(), Window::GetHeight());
 		CameraManager::MainCamera()->SetPosition({ 1.78f, 1.0f, -2.0f });
+		CameraManager::MainCamera()->RecalculateViewMatrix();
 	}
 
 	return true;
@@ -385,7 +361,8 @@ bool Application::OnWindowFocusEvent(WindowFocusedEvent& e)
 
 bool Application::OnWindowResize(WindowResizeEvent& e)
 {
+	glfwMakeContextCurrent(Window::GetGLFWWindow());
 	CameraManager::ResizeCameras((float)e.GetWidth(), (float)e.GetHeight());
-
+	//glViewport(0, 0, 1920, 1080);
 	return true;
 }

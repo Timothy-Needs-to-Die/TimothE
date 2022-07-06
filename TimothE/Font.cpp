@@ -90,8 +90,6 @@ Font::~Font()
 
 void Font::RenderText(Shader& s, std::string text, float x = 0.0f, float y = 0.0f, float scale = 1.0f, glm::vec3 color = { 1.0f, 1.0f, 1.0f })
 {
-	
-
 	if (_VBO == 0) {
 		TIM_LOG_ERROR("VBO associated with font: " << _name << " is 0");
 		return;

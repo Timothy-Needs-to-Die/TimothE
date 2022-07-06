@@ -294,7 +294,7 @@ FMOD::Channel* AudioEngine::PlaySound(std::string soundName, float minVolume, fl
 		
 		FMOD_RESULT result = _fmodSystem->playSound(sound->second.sound, _groups[Type_Song], false, &channel);
 		_currentSongChannel = channel;
-		std::cout << "PlaySong";
+		std::cout << "PlaySong" << std::endl;
 		CheckForErrors(result);
 		_currentSongChannel->setChannelGroup(_groups[Type_Song]);
 		_currentSongChannel->setVolume(0.0f);

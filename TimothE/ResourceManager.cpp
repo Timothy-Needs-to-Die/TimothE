@@ -49,7 +49,7 @@ void ResourceManager::LoadShaders()
 {
 	ResourceManager::InstantiateShader("ui", new Shader("Resources/Shaders/vr_UIShader.vert", "Resources/Shaders/fr_UIShader.frag"));
 	ResourceManager::InstantiateShader("default", new Shader("Resources/Shaders/VertexShader.vert", "Resources/Shaders/FragmentShader.frag"));
-	ResourceManager::InstantiateShader("breakout", new Shader("Resources/Shaders/Breakout.vert", "Resources/Shaders/Breakout.frag"));
+	ResourceManager::InstantiateShader("framebuffer", new Shader("Resources/Shaders/Breakout.vert", "Resources/Shaders/Breakout.frag"));
 }
 
 void ResourceManager::LoadFonts()
