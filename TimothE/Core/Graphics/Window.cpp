@@ -83,16 +83,16 @@ void Window::CreateWindow()
 	glfwSetWindowUserPointer(_pWindow, &_windowData);
 
 	//Sets the callback for resizing the window
-	//glfwSetWindowSizeCallback(_pWindow, [](GLFWwindow* window, int width, int height)
-	//	{
-	//		WindowData& data = *(WindowData*)glfwGetWindowUserPointer(window);
-	//		data._width = width;
-	//		data._height = height;
-	//
-	//		WindowResizeEvent event(width, height);
-	//		data._eventCallback(event);
-	//		glfwMakeContextCurrent(window);
-	//	});
+	glfwSetWindowSizeCallback(_pWindow, [](GLFWwindow* window, int width, int height)
+		{
+			WindowData& data = *(WindowData*)glfwGetWindowUserPointer(window);
+			data._width = width;
+			data._height = height;
+
+			WindowResizeEvent event(width, height);
+			data._eventCallback(event);
+			//glfwMakeContextCurrent(window);
+		});
 
 	//Sets the callback for closing a window
 	glfwSetWindowCloseCallback(_pWindow, [](GLFWwindow* window)
@@ -102,7 +102,7 @@ void Window::CreateWindow()
 			data._eventCallback(event);
 		});
 
-	//glfwSetInputMode(_pWindow, GLFW_STICKY_KEYS, GLFW_TRUE);
+	glfwSetInputMode(_pWindow, GLFW_STICKY_KEYS, GLFW_TRUE);
 
 	//glfwSetWindowMaximizeCallback(_pWindow, [](GLFWwindow* window, int maximized) {
 	//	if (maximized) {

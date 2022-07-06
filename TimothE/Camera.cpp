@@ -24,7 +24,6 @@ void Camera::OnEnd()
 }
 void Camera::DrawEditorUI()
 {
-	
 	//displays the texture in the editor window
 	ImGui::Text("Camera");
 	if (ImGui::Checkbox("IsEnabled", _editorIsEnabled))
@@ -71,7 +70,7 @@ void Camera::OnMouseScrolled(float yOffset)
 
 void Camera::SetProjection(float left, float right, float bottom, float top)
 {
-	_projection = glm::ortho(left, right, bottom, top);
+	_projection = glm::ortho(left, right, bottom, top, -2.0f, 2.0f);
 	_viewProj = _projection * _view;
 }
 

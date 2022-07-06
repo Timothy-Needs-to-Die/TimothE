@@ -361,8 +361,8 @@ bool Application::OnWindowFocusEvent(WindowFocusedEvent& e)
 
 bool Application::OnWindowResize(WindowResizeEvent& e)
 {
-	glfwMakeContextCurrent(Window::GetGLFWWindow());
+	//glfwMakeContextCurrent(Window::GetGLFWWindow());
 	CameraManager::ResizeCameras((float)e.GetWidth(), (float)e.GetHeight());
-	//glViewport(0, 0, 1920, 1080);
+	glViewport(0, 0, e.GetWidth(), e.GetHeight());
 	return true;
 }
