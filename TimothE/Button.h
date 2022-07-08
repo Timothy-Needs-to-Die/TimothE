@@ -44,16 +44,3 @@ private:
 
 
 };
-
-
-/*
-	Button:
-		OnHoverering
-		Functions for adding and removing onClickCalls
-		EditorUI function
-
-	Different textures for clicked, idle, hovered?
-	Text, text colors, icons
-
-	Enable Disable buttons. Toggle Buttons?
-*/

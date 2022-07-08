@@ -64,18 +64,20 @@ void Renderer2D::Init()
 	}
 
 	std::shared_ptr<IBO> quadIB = IBO::Create(quadIndices, _data.maxIndices);
+	std::shared_ptr<IBO> quadIB2 = IBO::Create(quadIndices, _uiData.maxIndices);
 
 	_data.quadVertexArray->SetIndexBuffer(quadIB);
-	_uiData.quadVertexArray->SetIndexBuffer(quadIB);
+	_uiData.quadVertexArray->SetIndexBuffer(quadIB2);
+
 	delete[] quadIndices;
 
 	_data.whiteTexture = ResourceManager::GetTexture("whiteTexture.png");
-	_uiData.whiteTexture = _data.whiteTexture;
+	_uiData.whiteTexture = ResourceManager::GetTexture("whiteTexture.png");
 
-	unsigned int samplers[_data.maxTextureSlots];
-	for (unsigned int i = 0; i < _data.maxTextureSlots; i++) {
-		samplers[i] = i;
-	}
+	//unsigned int samplers[_data.maxTextureSlots];
+	//for (unsigned int i = 0; i < _data.maxTextureSlots; i++) {
+	//	samplers[i] = i;
+	//}
 
 	_data.textureShader = std::make_shared<Shader>("Resources/Shaders/vs_Texture.vert", "Resources/Shaders/fr_Texture.frag");
 	_uiData.textureShader = std::make_shared<Shader>("Resources/Shaders/vr_UIShader.vert", "Resources/Shaders/fr_UIShader.frag");
@@ -173,9 +175,6 @@ void Renderer2D::DrawUIQuad(const glm::mat4& transform, Texture2D* texture, glm:
 
 	if (textureIndex == -1.0f)
 	{
-		if (_uiData.textureSlotIndex >= RendererData::maxTextureSlots)
-			NextBatch();
-
 		textureIndex = (float)_uiData.textureSlotIndex;
 		_uiData.textureSlots[_uiData.textureSlotIndex] = texture;
 		_uiData.textureSlotIndex++;
@@ -188,6 +187,7 @@ void Renderer2D::DrawUIQuad(const glm::mat4& transform, Texture2D* texture, glm:
 		_uiData.quadVertexBufferPtr->texCoord = textureCoords[i];
 		_uiData.quadVertexBufferPtr->texIndex = textureIndex;
 		_uiData.quadVertexBufferPtr->tilingFactor = tilingFactor;
+		_uiData.quadVertexBufferPtr->lightLevel = 5;
 		_uiData.quadVertexBufferPtr++;
 	}
 
@@ -355,39 +355,16 @@ void Renderer2D::DrawQuad(const glm::mat4& transform, Texture2D* texture, glm::v
 		_data.textureSlotIndex++;
 	}
 
-	
-	//Unrolled for loop, yielded minor fps improvements
-	_data.quadVertexBufferPtr->position = transform * _data.quadVertexPositions[0];
-	_data.quadVertexBufferPtr->color = tintColor;
-	_data.quadVertexBufferPtr->texCoord = textureCoords[0];
-	_data.quadVertexBufferPtr->lightLevel = lightLevel;
-	_data.quadVertexBufferPtr->texIndex = textureIndex;
-	_data.quadVertexBufferPtr->tilingFactor = tilingFactor;
-	_data.quadVertexBufferPtr++;
-
-	_data.quadVertexBufferPtr->position = transform * _data.quadVertexPositions[1];
-	_data.quadVertexBufferPtr->color = tintColor;
-	_data.quadVertexBufferPtr->texCoord = textureCoords[1];
-	_data.quadVertexBufferPtr->lightLevel = lightLevel;
-	_data.quadVertexBufferPtr->texIndex = textureIndex;
-	_data.quadVertexBufferPtr->tilingFactor = tilingFactor;
-	_data.quadVertexBufferPtr++;
-
-	_data.quadVertexBufferPtr->position = transform * _data.quadVertexPositions[2];
-	_data.quadVertexBufferPtr->color = tintColor;
-	_data.quadVertexBufferPtr->texCoord = textureCoords[2];
-	_data.quadVertexBufferPtr->lightLevel = lightLevel;
-	_data.quadVertexBufferPtr->texIndex = textureIndex;
-	_data.quadVertexBufferPtr->tilingFactor = tilingFactor;
-	_data.quadVertexBufferPtr++;
-
-	_data.quadVertexBufferPtr->position = transform * _data.quadVertexPositions[3];
-	_data.quadVertexBufferPtr->color = tintColor;
-	_data.quadVertexBufferPtr->texCoord = textureCoords[3];
-	_data.quadVertexBufferPtr->lightLevel = lightLevel;
-	_data.quadVertexBufferPtr->texIndex = textureIndex;
-	_data.quadVertexBufferPtr->tilingFactor = tilingFactor;
-	_data.quadVertexBufferPtr++;
+	for (size_t i = 0; i < quadVertexCount; i++)
+	{
+		_data.quadVertexBufferPtr->position = transform * _data.quadVertexPositions[i];
+		_data.quadVertexBufferPtr->color = tintColor;
+		_data.quadVertexBufferPtr->texCoord = textureCoords[i];
+		_data.quadVertexBufferPtr->texIndex = textureIndex;
+		_data.quadVertexBufferPtr->lightLevel = lightLevel;
+		_data.quadVertexBufferPtr->tilingFactor = tilingFactor;
+		_data.quadVertexBufferPtr++;
+	}
 
 	_data.quadIndexCount += 6;
 }

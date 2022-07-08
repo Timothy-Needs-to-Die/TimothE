@@ -117,6 +117,21 @@ void FarmScene::InitScene()
 
 	_pWaveManager = new WaveManager();
 
+	GameObject* buttonGO = new GameObject("buttonGO", "UI");
+	SpriteComponent* sc = buttonGO->AddComponent(new SpriteComponent(buttonGO, 200));
+
+	sc->SetSprite(ResourceManager::GetSpriteSheet("campfire")->GetSpriteAtIndex(0));
+
+
+	Button* pButton = new Button(buttonGO);
+
+	buttonGO->AddComponent(pButton);
+
+	buttonGO->GetTransform()->SetPosition(-1.0f, 0.0f);
+	buttonGO->GetTransform()->SetScale({ 0.5f, 0.5f });
+
+	AddGameObject(buttonGO);
+
 	PlayerResourceManager::LoadInCropData();
 
 
