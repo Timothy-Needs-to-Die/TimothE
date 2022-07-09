@@ -1,6 +1,20 @@
 #include "pch.h"
 #include "UIObject.h"
 
+
+//TODO: Handling deleting an object and moving its children to this objects parent (if applicable)
+
+UIObject::UIObject(std::string name, glm::vec2 designPos, glm::vec2 designSize) 
+	: _designPosition(designPos), _designSize(designSize), _name(name)
+{
+
+}
+
+UIObject::~UIObject()
+{
+
+}
+
 void UIObject::Draw()
 {
 

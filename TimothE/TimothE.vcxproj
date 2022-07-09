@@ -142,6 +142,7 @@
     <ClInclude Include="Health.h" />
     <ClInclude Include="Heap.h" />
     <ClInclude Include="HeapManager.h" />
+    <ClInclude Include="ImageUIObject.h" />
     <ClInclude Include="ImGuiManager.h" />
     <ClInclude Include="Imgui\imconfig.h" />
     <ClInclude Include="Imgui\imgui.h" />
@@ -232,6 +233,7 @@
     <ClInclude Include="Transform.h" />
     <ClInclude Include="TSXParser.h" />
     <ClInclude Include="UID.h" />
+    <ClInclude Include="UIObject.h" />
     <ClInclude Include="WaveManager.h" />
     <ClInclude Include="WeaponComponent.h" />
     <ClInclude Include="WeaponConfig.h" />
@@ -301,6 +303,7 @@
     <ClCompile Include="Health.cpp" />
     <ClCompile Include="Heap.cpp" />
     <ClCompile Include="HeapManager.cpp" />
+    <ClCompile Include="ImageUIObject.cpp" />
     <ClCompile Include="Imgui\imgui.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">NotUsing</PrecompiledHeader>
     </ClCompile>
@@ -371,6 +374,7 @@
     <ClCompile Include="TSXParser.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">NotUsing</PrecompiledHeader>
     </ClCompile>
+    <ClCompile Include="UIObject.cpp" />
     <ClCompile Include="WaveManager.cpp" />
     <ClCompile Include="WeaponComponent.cpp" />
     <ClCompile Include="WeaponObject.cpp" />

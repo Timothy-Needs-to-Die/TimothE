@@ -8,6 +8,8 @@ class UIObject
 {
 
 public:
+	UIObject(std::string name, glm::vec2 designPos = glm::vec2{ 0.0f }, glm::vec2 designSize = glm::vec2{ 100.0f });
+	~UIObject();
 
 	virtual void Draw();
 	virtual void Update();

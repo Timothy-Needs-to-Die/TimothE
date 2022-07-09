@@ -4,9 +4,6 @@
 #include "../../ResourceManager.h"
 
 
-
-
-
 static RendererData _data;
 static RendererData _uiData;
 
@@ -35,12 +32,11 @@ void Renderer2D::Init()
 			{ ShaderDataTypes::Float3, "a_Position"     },
 			{ ShaderDataTypes::Float4, "a_Color"        },
 			{ ShaderDataTypes::Float2, "a_TexCoord"     },
+			{ ShaderDataTypes::Int, "a_LightLevel"},
 			{ ShaderDataTypes::Float,  "a_TexIndex"     },
 			{ ShaderDataTypes::Float,  "a_TilingFactor" },
 			{ ShaderDataTypes::Int,  "a_EntityID" }
 		});
-
-
 
 	_data.quadVertexArray->AddVertexBuffer(_data.quadVertexBuffer);
 	_uiData.quadVertexArray->AddVertexBuffer(_uiData.quadVertexBuffer);
@@ -74,11 +70,6 @@ void Renderer2D::Init()
 	_data.whiteTexture = ResourceManager::GetTexture("whiteTexture.png");
 	_uiData.whiteTexture = ResourceManager::GetTexture("whiteTexture.png");
 
-	//unsigned int samplers[_data.maxTextureSlots];
-	//for (unsigned int i = 0; i < _data.maxTextureSlots; i++) {
-	//	samplers[i] = i;
-	//}
-
 	_data.textureShader = std::make_shared<Shader>("Resources/Shaders/vs_Texture.vert", "Resources/Shaders/fr_Texture.frag");
 	_uiData.textureShader = std::make_shared<Shader>("Resources/Shaders/vr_UIShader.vert", "Resources/Shaders/fr_UIShader.frag");
 
@@ -107,6 +98,14 @@ void Renderer2D::BeginRender(Camera* camera)
 	StartBatch();
 	currentCam = camera;
 	_data.textureShader->SetMat4("view", currentCam->ViewProj());
+
+	_data.quadIndexCount = 0;
+	_data.quadVertexBufferPtr = _data.quadVertexBufferBase;
+	_data.textureSlotIndex = 1;
+
+	_uiData.quadIndexCount = 0;
+	_uiData.quadVertexBufferPtr = _uiData.quadVertexBufferBase;
+	_uiData.textureSlotIndex = 1;
 }
 
 void Renderer2D::EndRender()

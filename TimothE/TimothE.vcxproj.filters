@@ -452,6 +452,8 @@
     <ClInclude Include="rapidxml\rapidxml_utils.hpp" />
     <ClInclude Include="base64.h" />
     <ClInclude Include="Constants.h" />
+    <ClInclude Include="UIObject.h" />
+    <ClInclude Include="ImageUIObject.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="AIController.cpp">
@@ -744,5 +746,7 @@
     <ClCompile Include="MainMenuUI.cpp" />
     <ClCompile Include="TMXParser.cpp" />
     <ClCompile Include="TSXParser.cpp" />
+    <ClCompile Include="UIObject.cpp" />
+    <ClCompile Include="ImageUIObject.cpp" />
   </ItemGroup>
 </Project>
