@@ -26,5 +26,11 @@ void main()
 	v_TexIndex = a_TexIndex;
 	v_EntityID = a_EntityID;
 
-	gl_Position = vec4(a_Position, 1.0);
+	float posX = ((a_Position.x - 1920) / 1920) + 1;
+	posX = (posX * 2) - 1;
+	float posY = ((a_Position.y - 1080) / 1080) + 1;
+	posY = (posY * 2) - 1;
+	
+
+	gl_Position = vec4(posX, posY, 0.0, 1.0);
 }

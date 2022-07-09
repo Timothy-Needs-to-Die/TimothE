@@ -127,8 +127,8 @@ void FarmScene::InitScene()
 
 	buttonGO->AddComponent(pButton);
 
-	buttonGO->GetTransform()->SetPosition(-1.0f, 0.0f);
-	buttonGO->GetTransform()->SetScale({ 0.5f, 0.5f });
+	buttonGO->GetTransform()->SetPosition(935.0f, 100.0f);
+	buttonGO->GetTransform()->SetScale({ 50.f, 50.0f });
 
 	AddGameObject(buttonGO);
 
