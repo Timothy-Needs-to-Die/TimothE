@@ -53,15 +53,15 @@ private:
 	bool OnWindowResize(WindowResizeEvent& e);
 
 private:
-	Framebuffer* _pfb = nullptr;
-	AudioEngine* _pAudio;
+	std::shared_ptr<Framebuffer> _pfb = nullptr;
+	std::shared_ptr<AudioEngine> _pAudio = nullptr;
 
 	bool _mInEditorMode = true;
 	bool _mDevMode;
 
 	bool _mRunning;
 
-	class Editor* _pEditor;
+	class std::shared_ptr<Editor> _pEditor;
 
 	bool _mPaused = false;
 	bool _mGameRunning = false;

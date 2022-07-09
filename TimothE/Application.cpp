@@ -105,9 +105,9 @@ void Application::Init(bool devMode)
 	CameraManager::GetCamera("Editor")->SetPosition({ 1.78f, 1.0f, -1.0f });
 	CameraManager::SetToMainCamera();
 
-	_pfb = new Framebuffer(ResourceManager::GetShader("framebuffer"));
+	_pfb = std::make_shared<Framebuffer>(ResourceManager::GetShader("framebuffer"));
 
-	_pEditor = new Editor(this);
+	_pEditor = std::make_shared<Editor>(this);
 	//_pCameraManager->_pCameras = _pCurrentScene->FindObjectsOfType<Camera>();
 }
 
@@ -120,7 +120,7 @@ void Application::GameLoop()
 	int memBookmark = HeapManager::GetMemoryBookmark();
 
 	//creates new audio engine
-	_pAudio = new AudioEngine();
+	_pAudio = std::make_shared<AudioEngine>();
 
 
 	//time update
@@ -199,7 +199,6 @@ void Application::GameLoop()
 
 	//delete
 	ImGuiManager::DestroyImGui();
-	delete _pEditor;
 	Window::DestroyWindow();
 
 	//Prints the memory status and reports and memory leaks
