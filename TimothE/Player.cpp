@@ -15,6 +15,7 @@ Player::Player(std::string name /*= "Player"*/, std::string tag /*= "PLAYER"*/)
 	_pInput = AddComponent(new PlayerInputComponent(this));
 
 	_pWeapon = new WeaponObject();
+	_pWeapon->GetTransform()->SetRotation(30.0f);
 	_pWeapon->SetParent(this);
 	SceneManager::GetCurrentScene()->AddGameObject(_pWeapon);
 

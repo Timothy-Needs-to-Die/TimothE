@@ -21,6 +21,7 @@ struct Animation {
 	void AddAnimationID(int index) {
 		_animationIDs.emplace_back(index);
 		_framesInAnimation++;
+		_duration = 1.0f / _framesInAnimation;
 	}
 
 	void Update() {
@@ -28,8 +29,18 @@ struct Animation {
 
 		if (_timer > _duration) {
 			_timer = 0.0f;
+
 			_currentIndex = (_currentIndex + 1) % _framesInAnimation;
 		}
+	}
+
+	void SetIndex(int newIndex) {
+		_currentIndex = newIndex;
+	}
+
+	void EndAnimation() {
+		_currentIndex = 0;
+		_timer = 0.0f;
 	}
 };
 

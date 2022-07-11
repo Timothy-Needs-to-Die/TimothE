@@ -30,7 +30,7 @@ void WeaponComponent::OnEnd()
 
 void WeaponComponent::StartAttack()
 {
-	_pSprite->SetSprite(_pAnimSheet->GetSpriteAtIndex(_currentLevel));
+	//_pSprite->SetSprite(_pAnimSheet->GetSpriteAtIndex(_currentLevel));
 }
 
 void WeaponComponent::EndAttack()

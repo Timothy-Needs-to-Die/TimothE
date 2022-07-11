@@ -123,6 +123,8 @@ public:
 	static std::vector<T*> FindObjectsOfType() {
 		std::vector<T*> compList;
 		for (GameObject* obj : _listOfGameObjects) {
+			if(obj == nullptr) continue;
+
 			if (obj->IsToBeDestroyed()) continue;
 
 			T* comp = obj->GetComponent<T>();

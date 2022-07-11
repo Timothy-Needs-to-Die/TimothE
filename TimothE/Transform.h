@@ -25,7 +25,7 @@ public:
 	glm::vec2 GetScale() const { return _size; }
 	float GetRotation() const { return _rotation; }
 	glm::mat4 GetTransformMatrix() const { return _transformationMatrix; }
-	Quad GetRenderQuad() const { return Quad{ _globalPosition, _size }; }
+	Quad GetRenderQuad() const { return Quad{ _globalPosition, _size, _rotation }; }
 	glm::vec2 GetForward() const { return _forward; }
 
 	//Setters

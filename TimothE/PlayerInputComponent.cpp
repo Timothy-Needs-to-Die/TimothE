@@ -36,6 +36,7 @@ void PlayerInputComponent::OnUpdate()
 	// Fighting
 	if (Input::IsKeyDown(KEY_SPACE)) {
 		_pFighter->Attack(_pParentObject);
+
 	}
 
 	// Resource Gathering

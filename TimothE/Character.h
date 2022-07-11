@@ -7,12 +7,17 @@ class Character : public GameObject
 public:
 	Character(std::string texutre, std::string name = "New Character", std::string tag = "UNTAGGED");
 
+	void SetAttacking(bool val) {
+		_isAttacking = val;
+		std::cout << "Is Attacking: " << val << std::endl;
+	}
+
 private:
-	
 
 protected:
 	virtual void UniqueLogic() override;
 
+	bool _isAttacking = false;
 	
 	class MovementComponent* _pMovement = nullptr;
 	class AnimatedSpritesheet* _pAnimSheet;
@@ -29,6 +34,7 @@ protected:
 	struct Animation* _pMoveRight;
 	struct Animation* _pMoveUp;
 	struct Animation* _pMoveLeft;
+	struct Animation* _pArmAttack;
 
 	struct Animation* _pCurrentAnimation;
 	struct Animation* _pCurrentArmAnimation;

@@ -78,6 +78,12 @@ Character::Character(std::string texture, std::string name, std::string tag)
 	_pArmLeft->AddAnimationID(54);
 	_pArmLeft->AddAnimationID(55);
 
+	_pArmAttack = new Animation();
+	_pArmAttack->AddAnimationID(68);
+	_pArmAttack->AddAnimationID(69);
+	_pArmAttack->AddAnimationID(70);
+	_pArmAttack->AddAnimationID(71);
+
 	_pCurrentAnimation = _pMoveDown;
 	_pCurrentArmAnimation = _pArmDown;
 }
@@ -115,11 +121,15 @@ void Character::UniqueLogic()
 		break;
 	}
 
-	//if (currentRow != _pAnimSheet->GetCurrentRow()) {
-	//	_pAnimSheet->SetCurrentRow(currentRow);
-	//}
-	//
-	//_pAnimSheet->SetStationary(!_pMovement->IsMoving());
+	if (!_pMovement->IsMoving()) {
+		_pCurrentAnimation->SetIndex(0);
+		
+		if(!_isAttacking) _pCurrentArmAnimation->SetIndex(0);
+	}
+
+	if (_isAttacking) {
+		_pCurrentArmAnimation = _pArmAttack;
+	}
 
 	_pSc->SetSprite(_pAnimSheet->GetSpriteAtIndex(_pCurrentAnimation->GetCurrentID()));
 	_pArmSc->SetSprite(_pAnimSheet->GetSpriteAtIndex(_pCurrentArmAnimation->GetCurrentID()));
