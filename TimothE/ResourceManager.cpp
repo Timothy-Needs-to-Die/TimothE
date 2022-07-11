@@ -93,7 +93,14 @@ void ResourceManager::LoadTextures()
 				if (extension == ".pdn") continue;
 
 				std::string fn = "Resources/Images/" + filename;
-				InstantiateTexture(dirent->d_name, new Texture2D(fn));
+
+				if (fn == "Resources/Images/PlayerSheet_Updated.png") {
+					InstantiateTexture(dirent->d_name, new Texture2D(fn, true));
+				}
+				else {
+					InstantiateTexture(dirent->d_name, new Texture2D(fn));
+				}
+
 
 				std::cout << "Image loaded: " << dirent->d_name << std::endl;
 			}
@@ -150,7 +157,7 @@ void ResourceManager::LoadSpritsheets()
 	ResourceManager::InstantiateSpritesheet("campfire", new SpriteSheet(ResourceManager::GetTexture("Campfire.png"), 32, 32));
 	ResourceManager::InstantiateSpritesheet("bed", new SpriteSheet(ResourceManager::GetTexture("Bed.png"), 32, TILE_SIZE_IN_PIXELS));
 	ResourceManager::InstantiateSpritesheet("testSheet", new SpriteSheet(ResourceManager::GetTexture("testSheet.png"), TILE_SIZE_IN_PIXELS, TILE_SIZE_IN_PIXELS));
-
+	ResourceManager::InstantiateSpritesheet("player", new SpriteSheet(ResourceManager::GetTexture("PlayerSheet_Updated.png"), 16, 32));
 }
 
 void ResourceManager::InstantiateTexture(std::string name, Texture2D* texture)

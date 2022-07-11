@@ -180,33 +180,48 @@ void GameObject::UniqueLogic()
 {
 }
 
-Component* GameObject::GetComponentInChild(Component::Types type)
+Component* GameObject::GetComponentInChild(std::string name, Component::Types type)
 {
-	if (_pChild != nullptr)
-	{
-		for (Component* c : _pChild->GetComponents())
+	//if (_pChild != nullptr)
+	//{
+	//	for (Component* c : _pChild->GetComponents())
+	//	{
+	//		if (c->GetType() == type)
+	//			return c;
+	//	}
+	//
+	//	std::cout << "[ERROR]: Component does not exist in child." << std::endl;
+	//
+	//	return nullptr;
+	//}
+	//else
+	//{
+	//	std::cout << "[ERROR]: GameObject child does not exist." << std::endl;
+	//	return nullptr;
+	//}
+
+	for (auto& child : _pChildren) {
+		if (child->GetName() != name) continue;
+
+		for (auto& comp : child->GetComponents())
 		{
-			if (c->GetType() == type)
-				return c;
+			if (comp->GetType() == type) {
+				return comp;
+			}
 		}
-
-		std::cout << "[ERROR]: Component does not exist in child." << std::endl;
-
-		return nullptr;
 	}
-	else
-	{
-		std::cout << "[ERROR]: GameObject child does not exist." << std::endl;
-		return nullptr;
-	}
+
+
+	return nullptr;
 }
 
-std::vector<Component*> GameObject::GetComponentsInChild()
+std::vector<Component*> GameObject::GetComponentsInChild(std::string name)
 {
-	if (_pChild != nullptr)
-		return _pChild->GetComponents();
-
-	std::cout << "[ERROR]: GameObject child does not exist." << std::endl;
+	for (auto& child : _pChildren) {
+		if (child->GetName() == name) {
+			return child->GetComponents();
+		}
+	}
 
 	return std::vector<Component*>();
 }
@@ -256,12 +271,12 @@ void GameObject::SetName(std::string name)
 void GameObject::SetParent(GameObject* parent)
 {
 	_pParent = parent;
-	_pParent->SetChild(this);
+	_pParent->AddChild(this);
 }
 
-void GameObject::SetChild(GameObject* child)
+void GameObject::AddChild(GameObject* newChild)
 {
-	_pChild = child;
+	_pChildren.emplace_back(newChild);
 }
 
 void GameObject::AddedComponent(Component* comp)

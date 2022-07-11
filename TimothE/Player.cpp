@@ -10,7 +10,7 @@
 #include "TextComponent.h"
 
 Player::Player(std::string name /*= "Player"*/, std::string tag /*= "PLAYER"*/)
-	: Character("PlayerSpritesheet.png", name, tag)
+	: Character("PlayerSheet_Updated.png", name, tag)
 {
 	_pInput = AddComponent(new PlayerInputComponent(this));
 

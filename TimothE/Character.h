@@ -17,6 +17,20 @@ protected:
 	class MovementComponent* _pMovement = nullptr;
 	class AnimatedSpritesheet* _pAnimSheet;
 	class SpriteComponent* _pSc = nullptr;
+	class SpriteComponent* _pArmSc = nullptr;
+
 	class AudioSource* _pAudioSource = nullptr;
+
+	struct Animation* _pArmDown;
+	struct Animation* _pArmLeft;
+	struct Animation* _pArmRight;
+	struct Animation* _pArmUp;
+	struct Animation* _pMoveDown;
+	struct Animation* _pMoveRight;
+	struct Animation* _pMoveUp;
+	struct Animation* _pMoveLeft;
+
+	struct Animation* _pCurrentAnimation;
+	struct Animation* _pCurrentArmAnimation;
 };
 

@@ -35,6 +35,7 @@ Scene::~Scene()
 void Scene::SceneStart()
 {
 	for (GameObject* obj : _listOfGameObjects) {
+		if(obj == nullptr) continue;
 		obj->Start();
 	}
 }
@@ -104,6 +105,8 @@ void Scene::UpdateObjects()
 	//Cycles through all gameobjects in the scene and updates them
 	for (GameObject* obj : _listOfGameObjects)
 	{
+		if (obj == nullptr) continue;
+
 		if (obj->IsToBeDestroyed()) continue;
 
 		if (obj->IsActive()) {
@@ -224,10 +227,10 @@ void Scene::RemoveGameObject(GameObject* gameObject)
 
 	gameObject->SetToBeDestroyed(true);
 
-	if (it == _gameObjectsToRemove.end()) {
-		RemoveGameObject(gameObject->GetChild());
-		_gameObjectsToRemove.emplace_back(gameObject);
-	}
+	//if (it == _gameObjectsToRemove.end()) {
+	//	RemoveGameObject(gameObject->GetChild());
+	//	_gameObjectsToRemove.emplace_back(gameObject);
+	//}
 
 	//for (GameObject* obj : _gameObjectsToRemove) {
 
@@ -423,6 +426,8 @@ std::vector<GameObject*> Scene::GetGameObjectsByName(std::string name)
 GameObject* Scene::FindObjectWithTag(const std::string& tagName)
 {
 	for (GameObject* obj : _listOfGameObjects) {
+		if(obj == nullptr) continue;
+
 		//if (!obj->IsActive()) continue;
 		if (obj->IsToBeDestroyed()) continue;
 

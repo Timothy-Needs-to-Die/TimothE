@@ -12,13 +12,13 @@
 Fighter::Fighter(GameObject* pOwner) : Component(pOwner)
 {
 	SetType(Component::Types::Fighter_Type);
-	_pWeaponComponent = dynamic_cast<WeaponComponent*>(_pParentObject->GetComponentInChild(Weapon_Type));
+	//_pWeaponComponent = dynamic_cast<WeaponComponent*>(_pParentObject->GetComponentInChild(Weapon_Type));
 }
 
 void Fighter::Attack(GameObject* instigator)
 {
 	if (!_canAttack) return;
-	_pWeaponComponent->EndAttack();
+	//_pWeaponComponent->EndAttack();
 	instigator->GetComponent<AudioSource>()->PlaySound("SwordSlash", 0.2, 0.3, 0.6, 1.0);
 	_canAttack = false;
 	TIM_LOG_LOG("Attacking");

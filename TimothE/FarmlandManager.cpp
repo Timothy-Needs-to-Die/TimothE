@@ -87,7 +87,7 @@ void FarmlandManager::PlantSeed(glm::vec2 position, PlantResourceType cropType)
 
 				// Make the plot its on its parent
 				plantObject->SetParent(cropPlot);
-				cropPlot->SetChild(plantObject);
+				//cropPlot->SetChild(plantObject);
 
 				// Add Sprite component as the PlantedCrop needs it
 				SpriteComponent* s = plantObject->AddComponent(new SpriteComponent(plantObject, 110));
@@ -145,27 +145,27 @@ void FarmlandManager::HarvestPlot(CropPlot* plot)
 	// If the plot exists
 	if (plot != nullptr)
 	{
-		PlantedCrop* plantedCrop = plot->GetChild()->GetComponent<PlantedCrop>();
-		// Get our CropsConfig
-		CropConfig cropConfig;
-		for (CropConfig c : _pCropData)
-		{
-			// If the data is that of the current crop being harvested
-			if (c.type == plantedCrop->GetCrop())
-			{
-				cropConfig = c;
-			}
-		}
-
-		// If we can succesfully harvest the crop
-		if (plantedCrop->Harvest())
-		{
-			// Add the resources to the players inventory
-			PlayerResourceManager::GetPlantResource(cropConfig.produceType)->GainResource(cropConfig.yield);
-			// For now just destroy the game object - Future work: Object Pooling
-			plot->SetOccupied(false);
-			plot->GetChild()->SetToBeDestroyed(true);
-		}
+		//PlantedCrop* plantedCrop = plot->GetChild()->GetComponent<PlantedCrop>();
+		//// Get our CropsConfig
+		//CropConfig cropConfig;
+		//for (CropConfig c : _pCropData)
+		//{
+		//	// If the data is that of the current crop being harvested
+		//	if (c.type == plantedCrop->GetCrop())
+		//	{
+		//		cropConfig = c;
+		//	}
+		//}
+		//
+		//// If we can succesfully harvest the crop
+		//if (plantedCrop->Harvest())
+		//{
+		//	// Add the resources to the players inventory
+		//	PlayerResourceManager::GetPlantResource(cropConfig.produceType)->GainResource(cropConfig.yield);
+		//	// For now just destroy the game object - Future work: Object Pooling
+		//	plot->SetOccupied(false);
+		//	plot->GetChild()->SetToBeDestroyed(true);
+		//}
 	}
 	
 }
@@ -176,14 +176,14 @@ void FarmlandManager::RemoveCropPlot(CropPlot* plot)
 	{
 		if (cp == plot)
 		{
-			GameObject* plotChild = plot->GetChild();
-			if (plotChild != nullptr)
-			{
-				plotChild->SetToBeDestroyed(true);
-			}
-			
-			_pCropPlotObjects.erase(std::remove(_pCropPlotObjects.begin(), _pCropPlotObjects.end(), plot), _pCropPlotObjects.end());
-			plot->SetToBeDestroyed(true);
+			//GameObject* plotChild = plot->GetChild();
+			//if (plotChild != nullptr)
+			//{
+			//	plotChild->SetToBeDestroyed(true);
+			//}
+			//
+			//_pCropPlotObjects.erase(std::remove(_pCropPlotObjects.begin(), _pCropPlotObjects.end(), plot), _pCropPlotObjects.end());
+			//plot->SetToBeDestroyed(true);
 		}
 	}
 }

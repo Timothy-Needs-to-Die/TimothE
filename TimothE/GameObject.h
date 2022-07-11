@@ -49,14 +49,23 @@ public:
 	//Get Ownership States//
 	////////////////////////
 	GameObject* GetParent() { return _pParent; };
-	GameObject* GetChild() { return _pChild; };
+	GameObject* GetChild(std::string name) 
+	{
+		for (auto& child : _pChildren) {
+			if (child->GetName() == name) {
+				return child;
+			}
+		}
+		
+		return nullptr;
+	};
 
 	////////////////////////
 	//Set Ownership States//
 	////////////////////////
 	void SetParent(GameObject* parent);
-	void SetChild(GameObject* child);
 
+	void AddChild(GameObject* newChild);
 
 	void AddedComponent(Component* comp);
 
@@ -69,8 +78,8 @@ public:
 	////////////////////////
 	//Get Child Components//
 	////////////////////////
-	Component* GetComponentInChild(Component::Types type);
-	std::vector<Component*> GetComponentsInChild();
+	Component* GetComponentInChild(std::string name, Component::Types type);
+	std::vector<Component*> GetComponentsInChild(std::string name);
 
 	/////////////////////////
 	//Get Parent Components//
@@ -133,9 +142,9 @@ public:
 	void SetActive(bool val) {
 		_isActive = val;
 		//TIM_LOG_LOG("IsActive: " << _isActive);
-		if (_pChild != nullptr)
-		{
-			_pChild->SetActive(false);
+
+		for (auto& child : _pChildren) {
+			child->SetActive(val);
 		}
 	}
 
@@ -163,7 +172,7 @@ protected:
 	//Ownership//
 	/////////////
 	GameObject* _pParent = nullptr;
-	GameObject* _pChild = nullptr;
+	std::vector<GameObject*> _pChildren;
 
 	bool _toBeDestroyed = false;
 

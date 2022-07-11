@@ -1,5 +1,39 @@
 #pragma once
 #include "SpriteSheet.h"
+#include "Time.h"
+
+struct Animation {
+	std::vector<int> _animationIDs;
+
+	int _currentIndex = 0;
+	
+	std::string _name = "WALK_LEFT";
+
+	int _framesInAnimation;
+
+	float _duration = 1.0f;
+	float _timer = 0.0f;
+
+	int GetCurrentID() {
+		return _animationIDs[_currentIndex];
+	}
+
+	void AddAnimationID(int index) {
+		_animationIDs.emplace_back(index);
+		_framesInAnimation++;
+	}
+
+	void Update() {
+		_timer += Time::GetDeltaTime();
+
+		if (_timer > _duration) {
+			_timer = 0.0f;
+			_currentIndex = (_currentIndex + 1) % _framesInAnimation;
+		}
+	}
+};
+
+
 class AnimatedSpritesheet : public SpriteSheet
 {
 public:
@@ -20,6 +54,14 @@ public:
 		_isStationary = isStationary;
 	}
 
+	Animation* GetAnimationByName(std::string& name) {
+		return _animations[name];
+	}
+
+	void AddAnimation(std::string name, Animation* pAnimation) {
+		_animations[name] = pAnimation;
+	}
+
 	void Update();
 
 	glm::vec2* GetNextTexCoords(int row, int currentIndex);
@@ -38,5 +80,7 @@ private:
 
 	float _timeOnEachSprite;
 	float _timer;
+
+	std::unordered_map<std::string, Animation*> _animations;
 };
 
