@@ -158,6 +158,7 @@ void ResourceManager::LoadSpritsheets()
 	ResourceManager::InstantiateSpritesheet("bed", new SpriteSheet(ResourceManager::GetTexture("Bed.png"), 32, TILE_SIZE_IN_PIXELS));
 	ResourceManager::InstantiateSpritesheet("testSheet", new SpriteSheet(ResourceManager::GetTexture("testSheet.png"), TILE_SIZE_IN_PIXELS, TILE_SIZE_IN_PIXELS));
 	ResourceManager::InstantiateSpritesheet("player", new SpriteSheet(ResourceManager::GetTexture("PlayerSheet_Updated.png"), 16, 32));
+	ResourceManager::InstantiateSpritesheet("swords_new", new SpriteSheet(ResourceManager::GetTexture("Swords_New.png"), 32, 32));
 }
 
 void ResourceManager::InstantiateTexture(std::string name, Texture2D* texture)

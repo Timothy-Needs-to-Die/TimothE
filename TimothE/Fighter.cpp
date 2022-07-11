@@ -13,7 +13,8 @@
 Fighter::Fighter(GameObject* pOwner) : Component(pOwner)
 {
 	SetType(Component::Types::Fighter_Type);
-	//_pWeaponComponent = dynamic_cast<WeaponComponent*>(_pParentObject->GetComponentInChild(Weapon_Type));
+	
+	_pWeaponComponent = dynamic_cast<WeaponComponent*>(_pParentObject->GetComponentInChild("Weapon", Weapon_Type));
 }
 
 void Fighter::Attack(GameObject* instigator)
@@ -26,6 +27,8 @@ void Fighter::Attack(GameObject* instigator)
 	if (pOwningCharacter != nullptr) {
 		pOwningCharacter->SetAttacking(true);
 	}
+
+	_pWeaponComponent->StartAttack();
 
 	instigator->GetComponent<AudioSource>()->PlaySound("SwordSlash", 0.2, 0.3, 0.6, 1.0);
 	_canAttack = false;
@@ -88,7 +91,8 @@ void Fighter::OnUpdate()
 		if (_timeSinceLastAttack > _weaponConfig.attackSpeed) {
 			_timeSinceLastAttack = 0.0f;
 			_canAttack = true;
-			_pWeaponComponent->StartAttack();
+			
+			_pWeaponComponent->EndAttack();
 
 			Character* pOwningCharacter = dynamic_cast<Character*>(_pParentObject);
 			if (pOwningCharacter != nullptr) {

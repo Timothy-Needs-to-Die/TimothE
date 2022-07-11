@@ -25,6 +25,8 @@ private:
 	int _currentLevel = 0;
 	int _amountOfLevels = 6;
 
+	bool _swinging = false;
+
 	class AnimatedSpritesheet* _pAnimSheet = nullptr;
 	class SpriteComponent* _pSprite = nullptr;
 
