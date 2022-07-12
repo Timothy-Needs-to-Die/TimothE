@@ -9,11 +9,7 @@ public:
 	WeaponComponent(GameObject* object);
 
 	// Inherited via Component
-	virtual void OnStart() override;
-
 	virtual void OnUpdate() override;
-
-	virtual void OnEnd() override;
 
 	void StartAttack();
 	void EndAttack();

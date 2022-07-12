@@ -10,18 +10,9 @@ WeaponComponent::WeaponComponent(GameObject* object)
 {
 	SetType(Component::Weapon_Type);
 
-	//_pAnimSheet = new AnimatedSpritesheet(ResourceManager::GetTexture("swords.png"), 16, 16);
 	_pSprite = _pParentObject->AddComponent<SpriteComponent>(new SpriteComponent(_pParentObject, 90));
 	_pSprite->SetSprite(ResourceManager::GetSpriteSheet("swords_new")->GetSpriteAtIndex(0));
 	_pSprite->SetEnabled(false);
-
-	//_pParentObject->GetTransform()->SetPosition({ 0.0f, 1.6f });
-	
-	//_pAnimSheet->SetFramerate(2);
-}
-
-void WeaponComponent::OnStart()
-{
 }
 
 void WeaponComponent::OnUpdate()
@@ -37,10 +28,6 @@ void WeaponComponent::OnUpdate()
 	}
 }
 
-void WeaponComponent::OnEnd()
-{
-}
-
 void WeaponComponent::StartAttack()
 {
 
@@ -50,8 +37,6 @@ void WeaponComponent::StartAttack()
 	_originalPosition = _pParentObject->GetTransform()->GetPosition();
 
 	_swinging = true;
-
-	//_pSprite->SetSprite(_pAnimSheet->GetSpriteAtIndex(_currentLevel));
 }
 
 void WeaponComponent::EndAttack()
@@ -62,6 +47,4 @@ void WeaponComponent::EndAttack()
 	_pParentObject->GetTransform()->SetPosition(_originalPosition);
 
 	_swinging = false;
-
-	//_pSprite->SetSprite(_pAnimSheet->GetSpriteAtIndex(_currentLevel + _amountOfLevels));
 }

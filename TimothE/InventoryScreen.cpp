@@ -18,12 +18,12 @@ InventoryScreen::InventoryScreen(string name, string tag) : GameObject(name, tag
 	//_pInventoryBody->GetChild()->SetChild(new GameObject("Column3", "UI"));
 	//_pInventoryBody->GetChild()->GetChild()->AddComponent(new TextComponent(_pInventoryBody->GetChild()->GetChild()));
 	
-	Display();
-	SceneManager::GetCurrentScene()->AddGameObject(_pInventoryBody);
+	//Display();
+	//SceneManager::GetCurrentScene()->AddGameObject(_pInventoryBody);
 }
 
 void InventoryScreen::SetAllActive(bool val) {
-	SetActive(val);
+	//SetActive(val);
 	//_pInventoryTitle->SetActive(val);
 	//_pInventoryTitle->GetChild()->SetActive(val);
 	//_pInventoryBody->SetActive(val);
@@ -33,8 +33,9 @@ void InventoryScreen::SetAllActive(bool val) {
 
 bool InventoryScreen::GetAllActive()
 {
-	if (_pInventoryTitle == nullptr) return false;
-	return _pInventoryTitle->IsActive();
+	return false;
+	//if (_pInventoryTitle == nullptr) return false;
+	//return _pInventoryTitle->IsActive();
 }
 
 void InventoryScreen::Display()
@@ -82,5 +83,5 @@ void InventoryScreen::OnUpdate()
 	//_pInventoryTitle->GetComponent<TextComponent>()->SetText("Inventory");
 	//_pInventoryTitle->GetChild()->GetComponent<TextComponent>()->SetText("Gold: " + std::to_string(PlayerResourceManager::GetCoreResource(Gold)->GetAmount()));
 
-	Display();
+	//Display();
 }
