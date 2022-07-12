@@ -7,10 +7,7 @@ class Character : public GameObject
 public:
 	Character(std::string texutre, std::string name = "New Character", std::string tag = "UNTAGGED");
 
-	void SetAttacking(bool val) {
-		_isAttacking = val;
-		std::cout << "Is Attacking: " << val << std::endl;
-	}
+	void SetAttacking(bool val);
 
 private:
 

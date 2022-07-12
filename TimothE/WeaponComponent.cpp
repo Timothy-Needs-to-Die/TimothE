@@ -13,9 +13,9 @@ WeaponComponent::WeaponComponent(GameObject* object)
 	//_pAnimSheet = new AnimatedSpritesheet(ResourceManager::GetTexture("swords.png"), 16, 16);
 	_pSprite = _pParentObject->AddComponent<SpriteComponent>(new SpriteComponent(_pParentObject, 90));
 	_pSprite->SetSprite(ResourceManager::GetSpriteSheet("swords_new")->GetSpriteAtIndex(0));
+	_pSprite->SetEnabled(false);
 
-
-	_pParentObject->GetTransform()->SetPosition({ 0.0f, 1.6f });
+	//_pParentObject->GetTransform()->SetPosition({ 0.0f, 1.6f });
 	
 	//_pAnimSheet->SetFramerate(2);
 }
@@ -28,10 +28,12 @@ void WeaponComponent::OnUpdate()
 {
 	if (_swinging) {
 		float currentRot = _pParentObject->GetTransform()->GetRotation();
-
-		currentRot -= 105.0f * Time::GetDeltaTime();
-
+		currentRot -= 185.0f * Time::GetDeltaTime();
 		_pParentObject->GetTransform()->SetRotation(currentRot);
+
+		glm::vec2 currentPos = _pParentObject->GetTransform()->GetPosition();
+		currentPos.x += 0.1f * Time::GetDeltaTime();
+		_pParentObject->GetTransform()->SetPosition(currentPos);
 	}
 }
 
@@ -41,7 +43,11 @@ void WeaponComponent::OnEnd()
 
 void WeaponComponent::StartAttack()
 {
-	_pParentObject->GetTransform()->SetRotation(-20.0f);
+
+	_pSprite->SetEnabled(true);
+	_pParentObject->GetTransform()->SetRotation(80.0f);
+
+	_originalPosition = _pParentObject->GetTransform()->GetPosition();
 
 	_swinging = true;
 
@@ -50,7 +56,10 @@ void WeaponComponent::StartAttack()
 
 void WeaponComponent::EndAttack()
 {
-	_pParentObject->GetTransform()->SetRotation(0.0f);
+	_pSprite->SetEnabled(false);
+	_pParentObject->GetTransform()->SetRotation(80.0f);
+	
+	_pParentObject->GetTransform()->SetPosition(_originalPosition);
 
 	_swinging = false;
 

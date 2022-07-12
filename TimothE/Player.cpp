@@ -15,10 +15,10 @@ Player::Player(std::string name /*= "Player"*/, std::string tag /*= "PLAYER"*/)
 	_pInput = AddComponent(new PlayerInputComponent(this));
 
 	_pWeapon = new WeaponObject();
-	_pWeapon->GetTransform()->SetRotation(30.0f);
 	_pWeapon->SetParent(this);
 
-	_pWeapon->GetTransform()->SetPosition({ 0.0f, 1.0f });
+	_pWeapon->GetTransform()->SetPosition({ 0.0f, 0.38f });
+	_pWeapon->GetTransform()->SetScale({ 0.5f, 0.25f });
 	SceneManager::GetCurrentScene()->AddGameObject(_pWeapon);
 
 	//_pHealth = AddComponent(new PlayerHealth(this, 100));

@@ -27,6 +27,8 @@ private:
 
 	bool _swinging = false;
 
+	glm::vec2 _originalPosition;
+
 	class AnimatedSpritesheet* _pAnimSheet = nullptr;
 	class SpriteComponent* _pSprite = nullptr;
 

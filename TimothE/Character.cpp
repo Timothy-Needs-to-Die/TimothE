@@ -88,6 +88,12 @@ Character::Character(std::string texture, std::string name, std::string tag)
 	_pCurrentArmAnimation = _pArmDown;
 }
 
+void Character::SetAttacking(bool val) {
+	_isAttacking = val;
+	_pArmAttack->SetIndex(0);
+	std::cout << "Is Attacking: " << val << std::endl;
+}
+
 void Character::UniqueLogic()
 {
 	_pCurrentAnimation->Update();

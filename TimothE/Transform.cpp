@@ -97,6 +97,14 @@ void Transform::DrawEditorUI()
 	}
 }
 
+float Transform::GetRotation() const
+{
+	if (_pParentObject->GetParent() != nullptr) {
+		return _pParentObject->GetParent()->GetTransform()->GetRotation() + _rotation;
+	}
+	return _rotation;
+}
+
 void Transform::CalculateTransformMatrix() 
 {
 	//Reset matrix to identity

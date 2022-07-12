@@ -173,9 +173,9 @@ void Scene::RenderScene(Camera* cam)
 		if (obj->IsToBeDestroyed()) continue;
 		if (obj->GetTag() == "PLAYER") continue;
 
-		//TODO: Text won't render here as it uses its own internal texture data.
 		SpriteComponent* sc = obj->GetComponent<SpriteComponent>();
 		if (sc) {
+			if (!sc->IsEnabled()) continue;
 			Renderer2D::DrawQuad(obj->GetTransform()->GetRenderQuad(), sc->GetSprite()->GetTexture(), sc->GetSprite()->GetTexCoords());
 		}
 	}
@@ -183,7 +183,9 @@ void Scene::RenderScene(Camera* cam)
 	GameObject* player = FindObjectWithTag("PLAYER");
 	if (player) {
 		SpriteComponent* sc = player->GetComponent<SpriteComponent>();
-		Renderer2D::DrawQuad(player->GetTransform()->GetRenderQuad(), sc->GetSprite()->GetTexture(), sc->GetSprite()->GetTexCoords());
+
+		if(sc->IsEnabled())
+			Renderer2D::DrawQuad(player->GetTransform()->GetRenderQuad(), sc->GetSprite()->GetTexture(), sc->GetSprite()->GetTexCoords());
 	}
 
 	Renderer2D::EndRender();
@@ -198,6 +200,7 @@ void Scene::RenderScene(Camera* cam)
 
 		SpriteComponent* sc = obj->GetComponent<SpriteComponent>();
 		if (sc) {
+			if(!sc->IsEnabled()) continue;
 			Renderer2D::DrawUIQuad(obj->GetTransform()->GetRenderQuad(), sc->GetSprite()->GetTexture(), sc->GetSprite()->GetTexCoords());
 			continue;
 		}

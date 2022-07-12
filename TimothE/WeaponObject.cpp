@@ -9,6 +9,6 @@ WeaponObject::WeaponObject(std::string name /*= "Weapon"*/, std::string tag /*= 
 
 void WeaponObject::UniqueLogic()
 {
-	if(_pTransform != nullptr && _pParent != nullptr)
-		_pTransform->SetPosition(_pParent->GetTransform()->GetForward() * 0.25f);
+	//if(_pTransform != nullptr && _pParent != nullptr)
+	//	_pTransform->SetPosition(_pParent->GetTransform()->GetForward() * 0.25f);
 }
