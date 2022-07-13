@@ -78,11 +78,6 @@ void Fighter::Attack(GameObject* instigator)
 
 }
 
-void Fighter::OnStart()
-{
-
-}
-
 void Fighter::OnUpdate()
 {
 	if (!_canAttack) {
@@ -101,8 +96,4 @@ void Fighter::OnUpdate()
 		}
 	}
 
-}
-
-void Fighter::OnEnd()
-{
 }

@@ -19,11 +19,8 @@ public:
 
 
 	// Inherited via Component
-	virtual void OnStart() override;
-
 	virtual void OnUpdate() override;
 
-	virtual void OnEnd() override;
 
 private:
 	WeaponConfig _weaponConfig = WeaponConfig();
