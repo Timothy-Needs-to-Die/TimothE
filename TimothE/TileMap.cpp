@@ -37,10 +37,7 @@ void TileMap::LoadTileMap()
 
 	SetTileMapSize({ tmx.mapInfo.width, tmx.mapInfo.height });
 
-	//Get the number of layers
-	_numLayers = tmx.tileLayer.size();
-	int currentLayer = 0;
-
+	//Load Tilesets
 	std::unordered_map<std::string, TSX::Parser> tileSets;
 	for (int i = 0; i < tmx.tilesetList.size(); ++i) {
 		std::string name = tmx.tilesetList[i].source;
@@ -49,18 +46,23 @@ void TileMap::LoadTileMap()
 		tileSets.insert(std::make_pair(name, tileset));
 	}
 
+	//Load Objects
 	for (std::map<std::string, TMX::Parser::ObjectGroup>::iterator it = tmx.objectGroup.begin(); it != tmx.objectGroup.end(); ++it) {
 		_objectGroups.insert(std::make_pair(it->first, it->second));
 	}
 
-	//Iterate through each layer
+
+	//Get the number of layers
+	_numLayers = tmx.tileLayer.size();
+	int currentLayer = 0;
+
+	//Iterate through each layer of the tilemap
 	for (std::map<std::string, TMX::Parser::TileLayer>::iterator it = tmx.tileLayer.begin(); it != tmx.tileLayer.end(); ++it) {
 		//Load the content into a string stream
 		std::stringstream ss(tmx.tileLayer[it->first].data.contents);
 
 		//Create a vector which stores each element separated by commas
 		std::vector<std::string> results;
-
 		while (ss.good()) {
 			std::string substr;
 			getline(ss, substr, ',');
@@ -70,26 +72,30 @@ void TileMap::LoadTileMap()
 
 		for (int y = _mapInTiles.y - 1; y >= 0; y--) {
 			for (int x = 0; x < _mapInTiles.x; x++) {
-				int index = y * _mapInTiles.y + x;
+
+				int index = y * _mapInTiles.x + x;
 				int texID = std::stoi(results[index]);
-				int trueID = texID;
 
 
 
 				int trueY = (_mapInTiles.y - 1) - y;
 
 				//Reads in the sprite sheet name and sets the sprites accordingly
-				int offset = 1;
 
 				if (texID != 0) {
+					int trueID = texID;
 					std::string spritesheetName = "";
+
+					//Loop through each tileset
 					for (int j = tmx.tilesetList.size() - 1; j >= 0; --j) {
+						//Check we are in range of this tilesets ids
 						if (texID < tmx.tilesetList[j].firstGID - 1) continue;
 
+						//Get the name of the source for this tileset
 						std::string tsxName = tmx.tilesetList[j].source;
-						offset = tmx.tilesetList[j].firstGID;
-						TSX::Parser tileSet = tileSets[tsxName];
 
+						//Gets the tileset from the stored sets
+						TSX::Parser tileSet = tileSets[tsxName];
 						std::string imgSource = tileSet.tileset.image.source;
 
 						size_t slashPos = imgSource.find_last_of("/");
@@ -100,13 +106,14 @@ void TileMap::LoadTileMap()
 
 						spritesheetName = imgSource;
 
+						int offset = tmx.tilesetList[j].firstGID;
 						trueID = texID - offset;
 
 						for (int k = 0; k < tileSet.tileList.size(); k++) {
 							if (tileSet.tileList[k].id == trueID) {
 								if (tileSet.tileList[k]._collidable) {
 									int tDex = (trueY * _mapInTiles.y + x);
-									_collidableTileArray[x][trueY] = true;
+									_collidableTileArray[trueY][x] = true;
 								}
 
 								if (tileSet.tileList[k]._hasAnimations) {
@@ -124,10 +131,10 @@ void TileMap::LoadTileMap()
 
 										ID = yIndex * sheetWidth + xIndex;
 
-										_tileArr[currentLayer][trueY][x].animatedTileIDs.emplace_back(ID);
+										_tileArr[currentLayer][trueY][x]->animatedTileIDs.emplace_back(ID);
 									}
 
-									_animatedTileArr.emplace_back(&_tileArr[currentLayer][trueY][x]);
+									_animatedTileArr.emplace_back(_tileArr[currentLayer][trueY][x]);
 								}
 							}
 						}
@@ -136,11 +143,11 @@ void TileMap::LoadTileMap()
 					}
 
 					//Set the spritesheet and sprite 
-					_tileArr[currentLayer][trueY][x]._pSpritesheet = ResourceManager::GetSpriteSheet(spritesheetName);
+					_tileArr[currentLayer][trueY][x]->_pSpritesheet = ResourceManager::GetSpriteSheet(spritesheetName);
 
-					int noOfSprites = _tileArr[currentLayer][trueY][x]._pSpritesheet->GetNumberOfSprites();
-					int sheetWidth = _tileArr[currentLayer][trueY][x]._pSpritesheet->GetSheetWidth();
-					int sheetHeight = _tileArr[currentLayer][trueY][x]._pSpritesheet->GetSheetHeight();
+					int noOfSprites = _tileArr[currentLayer][trueY][x]->_pSpritesheet->GetNumberOfSprites();
+					int sheetWidth = _tileArr[currentLayer][trueY][x]->_pSpritesheet->GetSheetWidth();
+					int sheetHeight = _tileArr[currentLayer][trueY][x]->_pSpritesheet->GetSheetHeight();
 
 					int yIndex = trueID / sheetWidth;
 					int xIndex = trueID - (yIndex * sheetWidth);
@@ -149,15 +156,15 @@ void TileMap::LoadTileMap()
 
 					trueID = yIndex * sheetWidth + xIndex;
 
-					_tileArr[currentLayer][trueY][x]._pSprite = ResourceManager::GetSpriteSheet(spritesheetName)->GetSpriteAtIndex(trueID);
+					_tileArr[currentLayer][trueY][x]->_pSprite = ResourceManager::GetSpriteSheet(spritesheetName)->GetSpriteAtIndex(trueID);
 				}
 
 				//Calculate the tile position
 				float xPos = (float)x * _gapBetweenTiles;
 				float yPos = ((float)trueY * _gapBetweenTiles);
 
-				_tileArr[currentLayer][trueY][x].pos = { xPos, yPos };
-				_tileArr[currentLayer][trueY][x].size = _gapBetweenTiles;
+				_tileArr[currentLayer][trueY][x]->pos = { xPos, yPos };
+				_tileArr[currentLayer][trueY][x]->size = _gapBetweenTiles;
 			}
 		}
 
@@ -170,12 +177,12 @@ void TileMap::LoadTileMap()
 
 		for (int y = 0; y < _mapInTiles.y; y++) {
 			for (int x = 0; x < _mapInTiles.x; x++) {
-				TileData& td = _tileArr[layer][y][x];
-				glm::vec2 pos = td.pos;
+				TileData* td = _tileArr[layer][y][x];
+				glm::vec2 pos = td->pos;
 
-				if (td._pSprite == nullptr) continue;
+				if (td->_pSprite == nullptr) continue;
 				
-				Renderer2D::AddData(data, Quad{ { pos.x, pos.y}, {_gapBetweenTiles, _gapBetweenTiles} }, td._pSprite->GetTexture(), td._pSprite->GetTexCoords());
+				Renderer2D::AddData(data, Quad{ { pos.x, pos.y}, {_gapBetweenTiles, _gapBetweenTiles} }, td->_pSprite->GetTexture(), td->_pSprite->GetTexCoords());
 			}
 		}
 		_tilemapRendererData.emplace_back(data);
@@ -225,11 +232,15 @@ void TileMap::SetTileMapSize(glm::vec2 mapSize)
 	_mapInTiles = mapSize;
 	int elementSize = _mapInTiles.x * _mapInTiles.y;
 
-	for (int i = 0; i < _tileArr.size(); i++) {
-		_tileArr[i].resize(_mapInTiles.y);
+	for (int layer = 0; layer < _tileArr.size(); layer++) {
+		_tileArr[layer].resize(_mapInTiles.y);
 
 		for (int y = 0; y < _mapInTiles.y; y++) {
-			_tileArr[i][y].resize(_mapInTiles.x);
+			_tileArr[layer][y].resize(_mapInTiles.x);
+
+			for (int z = 0; z < _tileArr[layer][y].size(); z++) {
+				_tileArr[layer][y][z] = new TileData();
+			}
 		}
 	}
 
@@ -268,7 +279,7 @@ TileData* TileMap::GetTileAtWorldPos(int layer, glm::vec2 worldPos)
 	int xIndex = index - (yIndex * _mapInTiles.x);
 
 	//Gets the tile on the specified layer
-	return &_tileArr[layer][yIndex][xIndex];
+	return _tileArr[layer][yIndex][xIndex];
 }
 
 void TileMap::RenderMap(Camera* cam)
@@ -355,7 +366,7 @@ bool TileMap::CollidableAtPosition(glm::vec2 worldPos)
 
 bool TileMap::CollidableAtIndexXY(int x, int y)
 {
-	return _collidableTileArray[y][x];
+	return _collidableTileArray[x][y];
 }
 
 void TileMap::UpdateLightLevelAtPosition(glm::vec2 pos, int lightLevel)
@@ -417,7 +428,7 @@ void TileMap::SetAllTilesLightLevel(int level)
 	for (int y = 0; y < _mapInTiles.y; y++) {
 		for (int x = 0; x < _mapInTiles.x; x++) {
 			//Set the light level of each tile to the desired value
-			UpdateLightLevelAtPosition(_tileArr[0][y][x].pos, level);
+			UpdateLightLevelAtPosition(_tileArr[0][y][x]->pos, level);
 		}
 	}
 
@@ -633,17 +644,6 @@ void TileMap::CreateTilemapFromProcGen(int** map, int width, int height, std::st
 
 	SetTileMapSize({ width, height });
 
-	_collidableTileArray = new bool* [_mapInTiles.y];
-	for (int y = 0; y < _mapInTiles.y; y++) {
-		_collidableTileArray[y] = new bool[_mapInTiles.x];
-		memset(_collidableTileArray[y], false, _mapInTiles.x);
-	}
-
-	_lightLevelArray = new int[width * height];
-	for (int i = 0; i < width * height; ++i) {
-		_lightLevelArray[i] = 5;
-	}
-
 	for (int y = 0; y < height; y++) {
 		for (int x = 0; x < width; x++) {
 			int mapIndex = y * width + x;
@@ -666,13 +666,13 @@ void TileMap::CreateTilemapFromProcGen(int** map, int width, int height, std::st
 				rVal = map[y][x + 1];
 			}
 
-			TileData data;
+			TileData* data = new TileData();
 
-			data.animated = false;
-			data.size = 0.25f;
+			data->animated = false;
+			data->size = 0.25f;
 
-			data.pos = { x * _gapBetweenTiles, y * _gapBetweenTiles };
-			data._pSpritesheet = pSpriteSheet;
+			data->pos = { x * _gapBetweenTiles, y * _gapBetweenTiles };
+			data->_pSpritesheet = pSpriteSheet;
 
 			int texIndex = -1;
 
@@ -723,28 +723,28 @@ void TileMap::CreateTilemapFromProcGen(int** map, int width, int height, std::st
 			}
 
 
-			data.texIndex = texIndex;
+			data->texIndex = texIndex;
 			if (texIndex != -1) {
-				data.texIndex = texIndex;
-				data._pSprite = data._pSpritesheet->GetSpriteAtIndex(texIndex);
+				data->texIndex = texIndex;
+				data->_pSprite = data->_pSpritesheet->GetSpriteAtIndex(texIndex);
 			}
 
 			_tileArr[0][y][x] = data;
 		}
 	}
 
-	for (int layer = 0; layer < 2; layer++) {
+	for (int layer = 0; layer < _numLayers; layer++) {
 		RendererData data = Renderer2D::GenerateRendererData();
 
 		for (int y = 0; y < _mapInTiles.y; y++) {
 			for (int x = 0; x < _mapInTiles.x; x++) {
-				TileData& td = _tileArr[layer][y][x];
-				glm::vec2 pos = td.pos;
+				TileData* td = _tileArr[layer][y][x];
+				glm::vec2 pos = td->pos;
 
-				if (td.texIndex == -1) continue;
-				if (td._pSprite == nullptr) continue;
+				if (td->texIndex == -1) continue;
+				if (td->_pSprite == nullptr) continue;
 
-				Renderer2D::AddData(data, Quad{ { pos.x, pos.y}, {_gapBetweenTiles, _gapBetweenTiles} }, td._pSprite->GetTexture(), td._pSprite->GetTexCoords());
+				Renderer2D::AddData(data, Quad{ { pos.x, pos.y}, {_gapBetweenTiles, _gapBetweenTiles} }, td->_pSprite->GetTexture(), td->_pSprite->GetTexCoords());
 			}
 		}
 		_tilemapRendererData.emplace_back(data);

@@ -59,13 +59,15 @@ void MovementComponent::CollisionCheck(glm::vec2& newPos)
 		newPos.y = 0.0f;
 	}
 
+	glm::vec2 size = SceneManager::GetCurrentScene()->GetTileMap()->GetMapSize();
+
 	//These values should be retrieved from the tilemap
-	if (newPos.y > 8.0f) { //HARDCODED value for top of map
-		newPos.y = 8.0f;
+	if (newPos.y > size.y) {
+		newPos.y = size.y;
 	}
 
-	if (newPos.x > 16.0f) {
-		newPos.x = 16.0f; //HARDCODED value for right side of map.
+	if (newPos.x > size.x) {
+		newPos.x = size.x;
 	}
 
 
