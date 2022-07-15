@@ -43,7 +43,7 @@ namespace TMX {
 		mapInfo.tileWidth = std::atoi(root_node->first_attribute("tilewidth")->value());
 		mapInfo.tileHeight = std::atoi(root_node->first_attribute("tileheight")->value());
 
-		if (root_node->first_attribute("backgroundcolor")->value() != 0) {
+		if (root_node->first_attribute("backgroundcolor") != 0) {
 			mapInfo.backgroundColor = root_node->first_attribute("backgroundcolor")->value();
 		}
 

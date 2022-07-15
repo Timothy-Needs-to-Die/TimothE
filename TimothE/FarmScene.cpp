@@ -152,8 +152,8 @@ void FarmScene::InitScene()
 	
 	//std::cout << "Test 1" << std::endl;
 
-	int** map = _pTilemap->GenerateTileMap(10, 64, 64, 3);
-	_pTilemap->CreateTilemapFromProcGen(map, 64, 64, "dungeonGrey");
+	//int** map = _pTilemap->GenerateTileMap(10, 64, 64, 3);
+	//_pTilemap->CreateTilemapFromProcGen(map, 64, 64, "dungeonGrey");
 
 	//std::cout << "Test 2" << std::endl;
 	//_pTilemap->GenerateTileMap(10, 64, 64, 2);

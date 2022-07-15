@@ -132,7 +132,8 @@ void ResourceManager::LoadTextures()
 
 void ResourceManager::LoadSpritsheets()
 {
-	ResourceManager::InstantiateSpritesheet("RPGpack_sheet", new SpriteSheet(ResourceManager::GetTexture("RPGpack_sheet.png"), TILE_SIZE_IN_PIXELS, TILE_SIZE_IN_PIXELS));
+	ResourceManager::InstantiateSpritesheet("Overworld_Spring", new SpriteSheet(ResourceManager::GetTexture("Overworld_Spring.png"), 32, 32));
+	ResourceManager::InstantiateSpritesheet("RPGpack_sheet", new SpriteSheet(ResourceManager::GetTexture("RPGpack_sheet.png"), 64, 64));
 	ResourceManager::InstantiateSpritesheet("medispritesheet", new SpriteSheet(ResourceManager::GetTexture("MediSprites.png"), TILE_SIZE_IN_PIXELS, TILE_SIZE_IN_PIXELS));
 	ResourceManager::InstantiateSpritesheet("itemspritesheet", new SpriteSheet(ResourceManager::GetTexture("ItemsSheet.png"), 128, 128));
 	ResourceManager::InstantiateSpritesheet("cropspritesheet", new SpriteSheet(ResourceManager::GetTexture("CropsSheet.png"), 32, 32));
