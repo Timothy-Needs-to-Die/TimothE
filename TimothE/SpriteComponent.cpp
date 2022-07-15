@@ -4,7 +4,6 @@
 SpriteComponent::SpriteComponent(GameObject* parent, int drawOrder) : Component(parent), _drawOrder(drawOrder)
 {
 	SetType(Component::SpriteType);
-	SetCategory(Component::Graphics_Category);
 	//sets default coord
 	_pUVSpriteCoords = new glm::vec2[4];
 	_pUVSpriteCoords[0] = glm::vec2(0,0);

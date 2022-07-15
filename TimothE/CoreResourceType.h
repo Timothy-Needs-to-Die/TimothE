@@ -1,6 +1,6 @@
 #pragma once
 
-enum CoreResourceType
+enum class CoreResourceType
 {
 	Wood,
 	Stone,

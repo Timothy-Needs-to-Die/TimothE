@@ -3,7 +3,7 @@
 #include "Physics.h"
 
 
-ColliderBase::ColliderBase(GameObject* parent, ColliderType type) : Component(parent), _type(type)
+ColliderBase::ColliderBase(GameObject* parent, ColliderType type) : Component(parent), _colType(type)
 {
 	Physics::AddCollider(this);
 }

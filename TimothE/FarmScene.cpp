@@ -97,7 +97,7 @@ void FarmScene::InitScene()
 	_pBed->GetTransform()->SetScale({ .25f, .5f });
 	AddGameObject(_pBed);
 
-	_pWoodNode = new ResourceNodeObject(Wood);
+	_pWoodNode = new ResourceNodeObject(CoreResourceType::Wood);
 	_pWoodNode->GetTransform()->SetPosition(3.0f, 3.0f);
 	AddGameObject(_pWoodNode);
 

@@ -12,7 +12,7 @@ public:
 	//Reads an amount of data into a buffer of bytes
 	virtual int  Read(int bytes, void* pBuffer);
 	//Writes an amount of data from a buffer of bytes
-	virtual int  Write(int bytes, const void* pBuffer);
+	virtual size_t  Write(int bytes, const void* pBuffer);
 
 	//Sets the cursor position for the file
 	virtual bool SetCurPos(int pos);

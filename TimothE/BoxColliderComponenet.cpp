@@ -7,10 +7,9 @@
 #include "Input.h"
 #include "Physics.h"
 
-BoxColliderComponent::BoxColliderComponent(GameObject* parent) : ColliderBase(parent, Box)
+BoxColliderComponent::BoxColliderComponent(GameObject* parent) : ColliderBase(parent, ColliderType::Box)
 {
 	SetType(Component::Collider);
-	SetCategory(Component::Collisions_Category);
 
 	// Set the boxcollider to be enabled by default
 	_isEnabled = true;

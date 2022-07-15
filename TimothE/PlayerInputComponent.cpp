@@ -16,6 +16,12 @@
 #include "PlayerUIComponent.h"
 #include "AudioSource.h"
 
+#include "TileData.h"
+#include "TileMap.h"
+#include "MovementComponent.h"
+#include "Fighter.h"
+#include "FarmlandManager.h"
+
 void PlayerInputComponent::OnStart()
 {
 	_pMovement = _pParentObject->GetComponent<MovementComponent>();

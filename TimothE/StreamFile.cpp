@@ -67,7 +67,7 @@ int StreamFile::Read(int bytes, void* pBuffer)
 }
 
 
-int StreamFile::Write(int bytes, const void* pBuffer)
+size_t StreamFile::Write(int bytes, const void* pBuffer)
 {
 	//Asserts that we have a buffer
 	assert(pBuffer != NULL);

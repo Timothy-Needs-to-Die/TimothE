@@ -2,12 +2,12 @@
 #include "ParticleSystem.h"
 #include "misc/cpp/imgui_stdlib.h"
 #include "Time.h"
+#include "Texture2D.h"
 
 ParticleSystem::ParticleSystem(int count, glm::vec4 colour, Texture2D* texture, Transform* parentTransform) : _maxParticles(count), _particleColour(colour), _pTexture(texture), _pParentTransform(parentTransform), _particleLife(1.0f)
 {
 	//Sets the type and category for the component
 	SetType(Component::ParticleSystem_Type);
-	SetCategory(Component::Graphics_Category);
 
 	SetShader("default");
 

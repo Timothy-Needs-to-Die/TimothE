@@ -115,7 +115,6 @@ bool GameObject::LoadState(IStream& stream)
 
 	for (int i = 0; i < noComponents; ++i) {
 		Component::Types type = (Component::Types)ReadInt(stream);
-		Component::Categories cat = (Component::Categories)ReadInt(stream);
 
 		if (type == Component::Transform_Type) {
 			//_pTransform->LoadState(stream);

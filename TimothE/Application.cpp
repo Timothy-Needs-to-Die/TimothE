@@ -142,7 +142,7 @@ void Application::GameLoop()
 		//}
 
 		//deltatime update
-		double deltaTime = glfwGetTime();
+		float deltaTime = (float)glfwGetTime();
 
 		Time::Update(deltaTime - previousTime , glfwGetTime());
 

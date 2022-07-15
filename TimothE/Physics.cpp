@@ -212,24 +212,24 @@ void Physics::UpdateWorld()
 {
 	for (int i = 0; i < _pColliders.size(); ++i) {
 		ColliderBase* pColA = _pColliders[i];
-		ColliderType aType = pColA->GetType();
+		ColliderType aType = pColA->GetColliderType();
 
 		for (int j = i; j < _pColliders.size(); ++j) {
 			if (j == i) continue;
 
 			ColliderBase* pColB = _pColliders[j];
-			ColliderType bType = pColB->GetType();
+			ColliderType bType = pColB->GetColliderType();
 
-			if (aType == Circle && bType == Circle) {
+			if (aType == ColliderType::Circle && bType == ColliderType::Circle) {
 				Intersects((CircleColliderComponent*)pColA, (CircleColliderComponent*)pColB);
 			}
-			else if (aType == Box && bType == Box) {
+			else if (aType == ColliderType::Box && bType == ColliderType::Box) {
 				Intersects((BoxColliderComponent*)pColA, (BoxColliderComponent*)pColB);
 			}
-			else if (aType == Box && bType == Circle) {
+			else if (aType == ColliderType::Box && bType == ColliderType::Circle) {
 				Intersects((CircleColliderComponent*)pColB, (BoxColliderComponent*)pColA);
 			}
-			else if (aType == Circle && bType == Box) {
+			else if (aType == ColliderType::Circle && bType == ColliderType::Box) {
 				Intersects((CircleColliderComponent*)pColA, (BoxColliderComponent*)pColB);
 			}
 		}

@@ -2,7 +2,7 @@
 #include "pch.h"
 #include "Component.h"
 
-enum ColliderType {
+enum class ColliderType{
 	Circle,
 	Box
 };
@@ -19,7 +19,7 @@ public:
 	bool IsTrigger() const { return _isTrigger; }
 	void SetTrigger(bool val) { _isTrigger = val; }
 
-	ColliderType GetType() const { return _type; }
+	ColliderType GetColliderType() const { return _colType; }
 
 	float GetScale() const { return _scale; }
 	void SetScale(float val) { _scale = val; }
@@ -28,6 +28,6 @@ protected:
 	bool _isTrigger;
 	float _scale = 1.0f;
 
-	ColliderType _type;
+	ColliderType _colType;
 };
 

@@ -14,7 +14,6 @@ TextComponent::TextComponent(GameObject* parentObject) : Component(parentObject)
 	_color = { 1.0f, 1.0f, 1.0f };
 	_alignment = CENTER;
 	SetType(Component::Types::Text_Type);
-	SetCategory(Component::Categories::Graphics_Category);
 }
 
 TextComponent::~TextComponent()

@@ -115,6 +115,6 @@ bool WaveManager::GetWaveCleared()
 
 void WaveManager::GenerateSpawnTime()
 {
-	_currentSpawnTime = rand() % _maxSpawnTime + _minSpawnTime;
+	_currentSpawnTime = (float)(rand() % _maxSpawnTime + _minSpawnTime);
 
 }

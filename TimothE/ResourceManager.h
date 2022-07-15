@@ -2,12 +2,12 @@
 #include "pch.h"
 #include "UID.h"
 
-#include "Core/Graphics/Shader.h"
-#include "Texture2D.h"
-#include "SpriteSheet.h"
-#include "Font.h"
 
 class Scene;
+class Font;
+class SpriteSheet;
+class Texture2D;
+class Shader;
 
 //#include "AudioEngine.h"
 

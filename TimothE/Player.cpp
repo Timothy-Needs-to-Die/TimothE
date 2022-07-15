@@ -8,6 +8,8 @@
 #include "WeaponObject.h"
 #include "PlayerUIComponent.h"
 #include "TextComponent.h"
+#include "Fighter.h"
+#include "FarmlandManager.h"
 
 Player::Player(std::string name /*= "Player"*/, std::string tag /*= "PLAYER"*/)
 	: Character("PlayerSheet_Updated.png", name, tag)

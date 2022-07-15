@@ -46,14 +46,14 @@ public:
 
 	void RegisterSounds();
 private:
-	class Player* _pPlayer;
+	class Player* _pPlayer = nullptr;
 	class ResourceNodeObject* _pWoodNode = nullptr;
 	class GameTimeManager* _pGameTime = nullptr;
-	class Bed* _pBed;
+	class Bed* _pBed = nullptr;
 	class InventoryScreen* _pInventoryScreen = nullptr;
 	class GameOverScreen* _pGameOverScreen = nullptr;
-	class FarmlandManager* farmland;
-	class WaveManager* _pWaveManager;
+	class FarmlandManager* farmland = nullptr;
+	class WaveManager* _pWaveManager = nullptr;
 
 	//Farmland
 

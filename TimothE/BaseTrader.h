@@ -11,7 +11,7 @@
 class CSVReader;
 class PlayerResourceManager;
 enum PlantResourceType; 
-enum CoreResourceType;
+enum class CoreResourceType;
 struct HotbarItem;
 
 class BaseTrader : Component

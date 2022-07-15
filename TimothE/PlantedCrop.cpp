@@ -1,5 +1,7 @@
 #include "pch.h"
 #include "PlantedCrop.h"
+#include "SpriteSheet.h"
+#include "Sprite.h"
 
 /*
 	Planted Crop

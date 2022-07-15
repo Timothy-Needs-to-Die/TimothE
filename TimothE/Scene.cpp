@@ -290,16 +290,13 @@ void Scene::AddedComponentHandler(GameObject* gameObject, Component* comp)
 
 void Scene::RemoveComponentHandler(GameObject* gameObject, Component* comp)
 {
-	if (!comp->IsInCategory(Component::Graphics_Category)) return;
+	if (comp->GetType() != Component::SpriteType) return;
 
 	//Get all components the gameobject has
 	std::vector<Component*> goComps = gameObject->GetComponents();
 	for (auto& c : goComps) {
 		//if the current component is the one we are removing then go to next iteration
 		if (c == comp) continue;
-
-		//if the current component is a graphics category then return as the object does not need to be removed from drawables.
-		if (c->IsInCategory(Component::Graphics_Category)) return;
 	}
 
 	//remove from drawables if all graphics components have been removed

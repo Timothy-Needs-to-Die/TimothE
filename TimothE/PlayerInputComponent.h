@@ -4,12 +4,8 @@
 #include "Transform.h"
 #include "GameObject.h"
 #include "Input.h"
-#include "TileData.h"
-#include "TileMap.h"
 #include "Physics.h"
-#include "MovementComponent.h"
-#include "Fighter.h"
-#include "FarmlandManager.h"
+
 
 
 enum class StructureType {
@@ -53,23 +49,23 @@ public:
 	virtual void OnTriggerEnter(ColliderBase* other) override;
 	virtual void OnTriggerExit(ColliderBase* other) override;
 private:
-	TileMap* _pTileMap;
-	MovementComponent* _pMovement = nullptr;
-	Fighter* _pFighter = nullptr;
+	class TileMap* _pTileMap;
+	class MovementComponent* _pMovement = nullptr;
+	class Fighter* _pFighter = nullptr;
 
-	FarmlandManager* _pFarmlandManager = nullptr;
+	class FarmlandManager* _pFarmlandManager = nullptr;
 
 	class ResourceNode* _pNearbyResourceNode = nullptr;
 
-	StructureType _selectedStructure;
+	StructureType _selectedStructure = StructureType::Wall;
 
 	bool _inBuildMode = false;
 	bool _bFarmMode = false;
 	bool _bReadyforbuildPress = false;
 
 	// input bools
-	bool _bFkeyPressed;
-	bool _bGkeyPressed;
-	bool _bHkeyPressed;
+	bool _bFkeyPressed = false;
+	bool _bGkeyPressed = false;
+	bool _bHkeyPressed = false;
 };
 

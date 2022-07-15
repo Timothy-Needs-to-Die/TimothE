@@ -9,7 +9,6 @@ Transform::Transform(GameObject* pParent)
 {
 	//Sets the type and category for the component
 	SetType(Component::Transform_Type);
-	SetCategory(Component::Transform_Category);
 
 	//Calculates the transform matrix based on the pos, rot, and scale
 	CalculateTransformMatrix();

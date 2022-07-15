@@ -34,11 +34,11 @@ PlayerResource* PlayerResourceManager::GetPlantResource(PlantResourceType type)
 
 bool PlayerResourceManager::CanAfford(const ResourceCost& cost)
 {
-	if(_coreResourceMap[Wood].CanAfford(cost.woodRequired) && 
-		_coreResourceMap[Stone].CanAfford(cost.stoneRequired) &&
-		_coreResourceMap[Metal].CanAfford(cost.metalRequired) &&
-		_coreResourceMap[Coal].CanAfford(cost.coalRequired) &&
-		_coreResourceMap[Gold].CanAfford(cost.goldRequired)) {
+	if(_coreResourceMap[CoreResourceType::Wood].CanAfford(cost.woodRequired) && 
+		_coreResourceMap[CoreResourceType::Stone].CanAfford(cost.stoneRequired) &&
+		_coreResourceMap[CoreResourceType::Metal].CanAfford(cost.metalRequired) &&
+		_coreResourceMap[CoreResourceType::Coal].CanAfford(cost.coalRequired) &&
+		_coreResourceMap[CoreResourceType::Gold].CanAfford(cost.goldRequired)) {
 		return true;
 	}
 
@@ -47,10 +47,10 @@ bool PlayerResourceManager::CanAfford(const ResourceCost& cost)
 
 void PlayerResourceManager::SpendResources(const ResourceCost& cost)
 {
-	_coreResourceMap[Wood].SpendResource(cost.woodRequired);
-	_coreResourceMap[Metal].SpendResource(cost.metalRequired);
-	_coreResourceMap[Stone].SpendResource(cost.stoneRequired);
-	_coreResourceMap[Coal].SpendResource(cost.coalRequired);
+	_coreResourceMap[CoreResourceType::Wood].SpendResource(cost.woodRequired);
+	_coreResourceMap[CoreResourceType::Metal].SpendResource(cost.metalRequired);
+	_coreResourceMap[CoreResourceType::Stone].SpendResource(cost.stoneRequired);
+	_coreResourceMap[CoreResourceType::Coal].SpendResource(cost.coalRequired);
 
 }
 void PlayerResourceManager::SetTool(ToolConfig tool)
@@ -100,7 +100,7 @@ void PlayerResourceManager::SellAll()
 		}
 	}
 
-	PlayerResourceManager::GetCoreResource(Gold)->GainResource(totalIncome);
+	PlayerResourceManager::GetCoreResource(CoreResourceType::Gold)->GainResource(totalIncome);
 }
 
 void PlayerResourceManager::BuyCrop(PlantResourceType type)
@@ -109,10 +109,10 @@ void PlayerResourceManager::BuyCrop(PlantResourceType type)
 	{
 		if (cropConfig.rawType == type)
 		{
-			if (_coreResourceMap[Gold].CanAfford(cropConfig.buyPrice))
+			if (_coreResourceMap[CoreResourceType::Gold].CanAfford(cropConfig.buyPrice))
 			{
 				_plantResourceMap[type].GainResource(1);
-				_coreResourceMap[Gold].SpendResource(cropConfig.buyPrice);
+				_coreResourceMap[CoreResourceType::Gold].SpendResource(cropConfig.buyPrice);
 			}
 		}
 	}

@@ -9,6 +9,12 @@
 #include "FarmScene.h"
 #include "TownScene.h"
 
+#include "Core/Graphics/Shader.h"
+#include "Texture2D.h"
+#include "SpriteSheet.h"
+#include "Font.h"
+
+
 std::map<std::string, Texture2D*> ResourceManager::_textures;
 std::map<std::string, Shader*> ResourceManager::_shaders;
 std::map<std::string, Scene*> ResourceManager::_scenes;

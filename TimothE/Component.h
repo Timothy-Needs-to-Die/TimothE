@@ -20,8 +20,6 @@ class GameObject;
 
 #define COMPONENT_STATIC_TYPE(type) static Types GetStaticType() {return Types::##type; }
 
-//macros to define component type in subclass
-#define BIT(x) (1<<x)
 class GameObject;
 
 class Component
@@ -61,22 +59,10 @@ public:
 		PlayerUI_Type
 	};
 
-	//enums for different categories of components
-	enum Categories {
-		None_Category = 0,
-		Transform_Category = BIT(0),
-		SoundSystem_Category = BIT(1),
-		Collisions_Category = BIT(2),
-		AI_Category = BIT(3),
-		Graphics_Category = BIT(4),
-		Debug_Category = BIT(5),
-		UI_Category = BIT(6),
-	};
-
 	COMPONENT_STATIC_TYPE(None)
 
 	//constructor and destructor calling start and end methods
-	Component(GameObject* pParent) : _pParentObject(pParent), _type(None), _category(None_Category) { }
+	Component(GameObject* pParent) : _pParentObject(pParent), _type(None) { }
 	Component() = default;
 	~Component() 
 	{
@@ -100,11 +86,9 @@ public:
 	}
 
 	//gets the component type and category
-	Categories GetCategory() const { return _category; }
 	Types GetType() const { return _type; }
 
 	//Set functions
-	void SetCategory(Component::Categories category) { _category = category; }
 	void SetType(Component::Types type) { _type = type; }
 
 	//setter
@@ -113,7 +97,6 @@ public:
 	GameObject* GetParent() { return _pParentObject; }
 
 	//checks if item is in category and type enums
-	inline bool IsInCategory(Categories category) { return GetCategory() & category; }
 	inline bool IsInTypes(Types type) { return GetType() & type; }
 
 
@@ -129,7 +112,6 @@ public:
 protected:
 	//variable for type and categories to be assigned to
 	Types _type;
-	Categories _category;
 	GameObject* _pParentObject;
 
 	bool _isEnabled = true;

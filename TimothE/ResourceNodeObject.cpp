@@ -5,6 +5,9 @@
 #include "AudioSource.h"
 #include "SpriteComponent.h"
 
+#include "SpriteSheet.h"
+#include "Sprite.h"
+
 ResourceNodeObject::ResourceNodeObject(CoreResourceType type, std::string name /*= "Resource Node"*/, std::string tag /*= "RESOURCE_NODE"*/)
 	: GameObject(name,tag)
 {
@@ -19,19 +22,19 @@ ResourceNodeObject::ResourceNodeObject(CoreResourceType type, std::string name /
 
 	switch (type)
 	{
-	case Wood:
+	case CoreResourceType::Wood:
 		sc->SetSprite(ResourceManager::GetSpriteSheet("small_wood")->GetSpriteAtIndex(0));
 		break;
-	case Stone:
+	case CoreResourceType::Stone:
 		sc->SetSprite(ResourceManager::GetSpriteSheet("small_stone")->GetSpriteAtIndex(0));
 		break;
-	case Metal:
+	case CoreResourceType::Metal:
 		sc->SetSprite(ResourceManager::GetSpriteSheet("small_metal")->GetSpriteAtIndex(0));
 		break;
-	case Gold:
+	case CoreResourceType::Gold:
 		//sc->SetSprite(ResourceManager::GetSpriteSheet("small_wood")->GetSpriteAtIndex(0));
 		break;
-	case Coal:
+	case CoreResourceType::Coal:
 		sc->SetSprite(ResourceManager::GetSpriteSheet("small_coal")->GetSpriteAtIndex(0));
 		break;
 	default:

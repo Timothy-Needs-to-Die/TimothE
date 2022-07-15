@@ -7,7 +7,6 @@
 Button::Button(GameObject* parent) : Component(parent)
 {
 	SetType(Component::Button_Type);
-	SetCategory(Component::UI_Category);
 
 	// Set buttons to be enabled by default
 	_isEnabled = true;

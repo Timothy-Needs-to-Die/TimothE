@@ -3,6 +3,8 @@
 #include "StructureHealth.h"
 
 #include "SpriteComponent.h"
+#include "SpriteSheet.h"
+#include "Sprite.h"
 
 StructureObject::StructureObject(std::string name, std::string tag)
 	:  GameObject(name, tag)

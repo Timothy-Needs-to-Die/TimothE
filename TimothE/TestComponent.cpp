@@ -4,7 +4,6 @@
 TestComponent::TestComponent(GameObject* pParent) : Component(pParent)
 {
 	SetType(Component::Types::Test_Type);
-	SetCategory(Component::Categories::Debug_Category);
 	OnStart();
 }
 

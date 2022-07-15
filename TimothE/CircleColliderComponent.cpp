@@ -4,10 +4,9 @@
 #include "GameObject.h"
 
 CircleColliderComponent::CircleColliderComponent(GameObject* owner)
-	: ColliderBase(owner, Circle)
+	: ColliderBase(owner, ColliderType::Circle), _position(glm::vec2(0.0f)), _radius(1.0f)
 {
 	SetType(Component::Collider);
-	SetCategory(Component::Collisions_Category);
 }
 
 void CircleColliderComponent::OnStart()

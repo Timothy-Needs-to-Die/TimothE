@@ -102,7 +102,7 @@ std::vector<glm::vec2> AStar::FindPath(glm::vec2 start, glm::vec2 end)
 			//Sets the previousNode to the endPoint as the A* algorithm works backwards
 		Node& previousNode = *_mEndNode;
 		
-		int size = _mPathOfNodes.size();
+		size_t size = _mPathOfNodes.size();
 		//keep looping until the previousNode no longer has a parent this can only be the starting node
 		while (previousNode._mParentNode != start)
 		{

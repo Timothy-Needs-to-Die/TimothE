@@ -9,7 +9,7 @@ public:
 	virtual ~IStream() {};
 
 	virtual int Read(int bytes, void* pBuffer) = 0;
-	virtual int Write(int bytes, const void* pBuffer) = 0;
+	virtual size_t Write(int bytes, const void* pBuffer) = 0;
 
 	virtual bool SetCurPos(int pos) = 0;
 	virtual int GetCurPos() = 0;
