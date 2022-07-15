@@ -42,34 +42,24 @@ public:
 
 	class GameTimeManager* GetGameTime() { return _pGameTime; }
 
-	LightLevelManager* GetLightManager() const { return _pLightManager; }
-
 	class WaveManager* GetWaveManager() const { return _pWaveManager; }
 
+	void RegisterSounds();
 private:
-	//class WaveController* _pWaveController = nullptr;
-
 	class Player* _pPlayer;
-	//class OffensiveStructureObject* _pTower = nullptr;
-
 	class ResourceNodeObject* _pWoodNode = nullptr;
-	class ResourceNodeObject* _pMetalNode = nullptr;
-	class ResourceNodeObject* _pStoneNode = nullptr;
-	class ResourceNodeObject* _pCoalNode = nullptr;
-
 	class GameTimeManager* _pGameTime = nullptr;
 	class Bed* _pBed;
 	class InventoryScreen* _pInventoryScreen = nullptr;
 	class GameOverScreen* _pGameOverScreen = nullptr;
+	class FarmlandManager* farmland;
+	class WaveManager* _pWaveManager;
 
-	void RegisterSounds();
 	//Farmland
-	FarmlandManager* farmland;
-	bool farmKeyPressed = false;
-	bool _inventoryKeyPressed = false;
-	bool spawnEnemyKey = false;
 
 	std::vector<class StructureObject*> _pStructures;
 
-	class WaveManager* _pWaveManager;
+	bool farmKeyPressed = false;
+	bool _inventoryKeyPressed = false;
+	bool spawnEnemyKey = false;
 };

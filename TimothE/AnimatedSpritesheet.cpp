@@ -63,7 +63,7 @@ glm::vec2* AnimatedSpritesheet::GetNextTexCoords(int row, int currentIndex)
 Sprite* AnimatedSpritesheet::GetNextSprite(int currentIndex)
 {
 	if (currentIndex == _numOfSprites) {
-		currentIndex == 0;
+		currentIndex = 0;
 	}
 
 	return GetSpriteAtIndex(currentIndex);

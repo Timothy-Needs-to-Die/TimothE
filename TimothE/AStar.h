@@ -14,7 +14,7 @@
 class AStar
 {
 public:
-	AStar(){ }
+	AStar() : _mHeight(32), _mTilesPerUnit(4.0f), _mWidth(32) { }
 
 	~AStar();
 

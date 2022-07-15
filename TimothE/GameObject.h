@@ -7,7 +7,6 @@
 #include "UID.h"
 #include "Serializable.h"
 #include "ParticleSystem.h"
-#include "Tag.h"
 
 class Texture2D;
 class Scene;

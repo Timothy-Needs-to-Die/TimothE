@@ -82,6 +82,10 @@ void Framebuffer::RefreshTexture()
 {
 	BindFramebuffer();
 
+	if (_texture != 0) {
+		GLCall(glDeleteTextures(1, &_texture));
+	}
+
 	GLCall(glGenTextures(1, &_texture));
 	GLCall(glBindTexture(GL_TEXTURE_2D, _texture));
 	GLCall(glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, Window::GetWidth(), Window::GetHeight(), 0, GL_RGB, GL_UNSIGNED_BYTE, NULL));

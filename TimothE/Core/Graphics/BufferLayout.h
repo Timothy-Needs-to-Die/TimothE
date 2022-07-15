@@ -62,7 +62,7 @@ struct BufferElement {
 
 class BufferLayout {
 public:
-	BufferLayout() {}
+	BufferLayout() : _stride(12) {}
 	BufferLayout(std::initializer_list<BufferElement> elements)
 		: _elements(elements) {
 		CalculateOffsetsAndStride();

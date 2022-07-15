@@ -250,7 +250,7 @@ void TileMap::SetTileMapSize(glm::vec2 mapSize)
 		memset(_collidableTileArray[y], false, _mapInTiles.x);
 	}
 
-	_lightLevelArray = new int[mapSize.x * mapSize.y];
+	_lightLevelArray = new int[(int)mapSize.x * (int)mapSize.y];
 	for (int i = 0; i < mapSize.x * mapSize.y; ++i) {
 		_lightLevelArray[i] = 5;
 	}
@@ -271,7 +271,7 @@ TileData* TileMap::GetTileAtWorldPos(int layer, glm::vec2 worldPos)
 
 	//Calculates the index of the tile
 
-	//Protection incase specified position results in a tile outside of the map
+	//Protection in case specified position results in a tile outside of the map
 	if (index < 0) index = 0;
 	if (index >= _mapInTiles.x * _mapInTiles.y) index = (_mapInTiles.x * _mapInTiles.y) - 1;
 

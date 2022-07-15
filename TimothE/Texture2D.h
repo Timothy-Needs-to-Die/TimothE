@@ -12,7 +12,7 @@ class Texture2D
 {
 public:
 	Texture2D(std::string path, bool flip = true);
-	Texture2D() {}
+	Texture2D() : _height(1024), _width(1024), _channels(4), _ID(0) {}
 	~Texture2D();
 
 	//Getters
@@ -36,7 +36,6 @@ private:
 	void GenerateTexture(unsigned char* data);
 
 	std::string _filePath;
-	std::string _UID;
 	
 	//texture ID
 	GLuint _ID; 

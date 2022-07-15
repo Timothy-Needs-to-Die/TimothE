@@ -20,14 +20,7 @@ GameObject::GameObject(std::string name, std::string tag)
 		name = "New GameObject";
 	}
 
-	//Check the tag exists 
-	if (Tag::CheckTag(tag)) {
-		_tag = tag;
-	}
-	else {
-		Tag::AddTag(tag);
-		_tag = tag;
-	}
+	_tag = tag;
 
 	_pTransform = AddComponent<Transform>(new Transform(this));
 

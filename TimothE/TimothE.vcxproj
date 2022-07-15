@@ -216,7 +216,6 @@
     <ClInclude Include="StructureFighter.h" />
     <ClInclude Include="StructureHealth.h" />
     <ClInclude Include="StructureObject.h" />
-    <ClInclude Include="Tag.h" />
     <ClInclude Include="TestComponent.h" />
     <ClInclude Include="TextComponent.h" />
     <ClInclude Include="TextObject.h" />
@@ -359,7 +358,6 @@
     <ClCompile Include="StructureFighter.cpp" />
     <ClCompile Include="StructureHealth.cpp" />
     <ClCompile Include="StructureObject.cpp" />
-    <ClCompile Include="Tag.cpp" />
     <ClCompile Include="TestComponent.cpp" />
     <ClCompile Include="TextComponent.cpp" />
     <ClCompile Include="TextObject.cpp" />

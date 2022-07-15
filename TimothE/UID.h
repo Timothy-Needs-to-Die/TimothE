@@ -12,7 +12,7 @@ This system uses the first eight characters as time since time began minimising 
 class UID {
 public:
 	static void Init() {
-		srand(time(NULL));
+		srand((unsigned int)time(NULL));
 	}
 
 	static std::string GenerateUID() {

@@ -132,7 +132,7 @@ void Window::CreateWindow()
 	glfwSetFramebufferSizeCallback(_pWindow, [](GLFWwindow* window, int width, int height) {
 		glViewport(0, 0, width, height);
 		std::cout << "fb size" << std::endl;
-		});
+	});
 
 
 

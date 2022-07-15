@@ -381,9 +381,6 @@
     <ClInclude Include="StructureObject.h">
       <Filter>Headers</Filter>
     </ClInclude>
-    <ClInclude Include="Tag.h">
-      <Filter>Headers</Filter>
-    </ClInclude>
     <ClInclude Include="TestComponent.h">
       <Filter>Headers</Filter>
     </ClInclude>
@@ -700,9 +697,6 @@
       <Filter>Source</Filter>
     </ClCompile>
     <ClCompile Include="StructureObject.cpp">
-      <Filter>Source</Filter>
-    </ClCompile>
-    <ClCompile Include="Tag.cpp">
       <Filter>Source</Filter>
     </ClCompile>
     <ClCompile Include="TestComponent.cpp">

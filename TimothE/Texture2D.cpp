@@ -6,8 +6,6 @@
 
 Texture2D::Texture2D(std::string path, bool flip) :  _ID(0)
 {
-	_UID = UID::GenerateUID();
-
 	Load(path,flip);
 }
 

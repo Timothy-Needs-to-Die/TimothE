@@ -6,9 +6,8 @@
 #include "TileMap.h"
 #include "Physics.h"
 #include "AnimatedSpritesheet.h"
-#include "Tag.h"
-#include <vector>
 #include "Day.h"
+
 //Configs
 #include "ItemConfig.h"
 #include "ToolConfig.h"
@@ -46,6 +45,8 @@ public:
 	void EditorUpdate();
 
 	TileMap* GetTileMap() { return _pTilemap; }
+
+	class LightLevelManager* GetLightManager() { return _pLightManager; }
 
 	void Update();
 	virtual void UpdateUI();
@@ -178,5 +179,5 @@ protected:
 	bool _hasTilemap = true;
 
 	class AStar* _pAstarObject = nullptr;
-	LightLevelManager* _pLightManager;
+	class LightLevelManager* _pLightManager;
 };

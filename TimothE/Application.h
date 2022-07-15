@@ -16,8 +16,6 @@
 
 #include "FarmScene.h"
 
-class Editor;
-
 class Application
 {
 public:
@@ -53,15 +51,15 @@ private:
 	bool OnWindowResize(WindowResizeEvent& e);
 
 private:
-	std::shared_ptr<Framebuffer> _pfb = nullptr;
-	std::shared_ptr<AudioEngine> _pAudio = nullptr;
+	std::shared_ptr<class Framebuffer> _pfb = nullptr;
+	std::shared_ptr<class AudioEngine> _pAudio = nullptr;
 
 	bool _mInEditorMode = true;
 	bool _mDevMode;
 
 	bool _mRunning;
 
-	class std::shared_ptr<Editor> _pEditor;
+	class std::shared_ptr<class Editor> _pEditor;
 
 	bool _mPaused = false;
 	bool _mGameRunning = false;

@@ -4,20 +4,20 @@ class Time
 {
 public:
 	//Update time variables
-	static void Update(double dt, double t)
+	static void Update(float dt, float t)
 	{
 		_deltaTime = dt;
 		_time = t;
 	}
 
 	//Get the interval in seconds from the last frame to the current one
-	static double GetDeltaTime() { return _deltaTime; };
+	static float GetDeltaTime() { return _deltaTime; };
 
 	//Get the interval in seconds from when the application started
-	static double GetTime() { return _time; };
+	static float GetTime() { return _time; };
 private:
 	//interval in seconds from the last frame to the current one
-	static double _deltaTime;
+	static float _deltaTime;
 	//interval in seconds from when the application started
-	static double _time;
+	static float _time;
 };

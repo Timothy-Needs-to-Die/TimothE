@@ -25,8 +25,8 @@ private:
 
 	bool _isNight = false;
 	bool _nightCleared = false; 
-	float _interestRate = 0.12;
-	float _principle = 10;
+	float _interestRate = 0.12f;
+	float _principle = 10.0f;
 	int _minSpawnTime = 0;
 	int _maxSpawnTime = 5;
 	float _currentSpawnTime;

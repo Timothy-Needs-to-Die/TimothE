@@ -29,7 +29,7 @@ void AIMovementCompnent::SetDestination(glm::vec2 targetPos)
 	_destination = targetPos;
 
 	//set path
-	int size = tempPath.size();
+	size_t size = tempPath.size();
 	for (int i = 0; i < size; i++)
 	{
    		_mPathToFollow.push_front(tempPath[i]);

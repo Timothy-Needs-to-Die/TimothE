@@ -101,20 +101,6 @@ void FarmScene::InitScene()
 	_pWoodNode->GetTransform()->SetPosition(3.0f, 3.0f);
 	AddGameObject(_pWoodNode);
 
-	_pMetalNode = new ResourceNodeObject(Metal);
-	_pMetalNode->GetTransform()->SetPosition(10.0f, 0.75f);
-	AddGameObject(_pMetalNode);
-
-	_pStoneNode = new ResourceNodeObject(Stone);
-	_pStoneNode->GetTransform()->SetPosition(9.75f, 1.75f);
-	AddGameObject(_pStoneNode);
-
-
-	_pCoalNode = new ResourceNodeObject(Coal);
-	_pCoalNode->GetTransform()->SetPosition(5.5f, 1.25f);
-	AddGameObject(_pCoalNode);
-
-
 	_pWaveManager = new WaveManager();
 
 	GameObject* buttonGO = new GameObject("buttonGO", "UI");
@@ -150,19 +136,8 @@ void FarmScene::InitScene()
 	}
 	_pGameTime->StartNewDay();
 	
-	//std::cout << "Test 1" << std::endl;
-
 	//int** map = _pTilemap->GenerateTileMap(10, 64, 64, 3);
 	//_pTilemap->CreateTilemapFromProcGen(map, 64, 64, "dungeonGrey");
-
-	//std::cout << "Test 2" << std::endl;
-	//_pTilemap->GenerateTileMap(10, 64, 64, 2);
-	//std::cout << "Test 3" << std::endl;
-	//_pTilemap->GenerateTileMap(10, 64, 64, 3);
-	//std::cout << "Test 4" << std::endl;
-	//_pTilemap->GenerateTileMap(10, 64, 64, 4);
-	//std::cout << "Test 5" << std::endl;
-	//_pTilemap->GenerateTileMap(10, 64, 64, 5);
 }
 
 void FarmScene::SaveScene(std::string filename)
@@ -216,23 +191,25 @@ bool FarmScene::LoadScene(std::string filename)
 	int size = ReadInt(stream);
 
 	for (int i = 0; i < size; ++i) {
-		StructureObject* object;
+		StructureObject* pObject = nullptr;
 
 		glm::vec2 pos = ReadVec2(stream);
 		std::string tag = ReadString(stream);
 
 		if (tag == "WALL") {
-			object = new StructureObject("Wall", tag);
+			pObject = new StructureObject("Wall", tag);
 		}
 		else if (tag == "TOWER") {
-			object = new OffensiveStructureObject("Tower", tag);
+			pObject = new OffensiveStructureObject("Tower", tag);
 		}
 		else if (tag == "LIGHTSOURCE") {
-			object = new LightsourceObject(pos);
+			pObject = new LightsourceObject(pos);
 		}
 
-		object->GetTransform()->SetPosition(pos);
-		AddStructure(object);
+		if (pObject != nullptr) {
+			pObject->GetTransform()->SetPosition(pos);
+			AddStructure(pObject);
+		}
 	}
 
 	stream.Close();

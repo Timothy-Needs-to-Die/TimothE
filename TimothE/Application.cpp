@@ -19,8 +19,8 @@
 
 #define BIND_EVENT_FN(x) std::bind(&Application::x, this, std::placeholders::_1)
 
-double Time::_deltaTime;
-double Time::_time;
+float Time::_deltaTime;
+float Time::_time;
 
 void GLAPIENTRY MessageCallback(GLenum source,
 	GLenum type,
