@@ -32,7 +32,7 @@ int main() {
 	std::vector<std::string> tokenisedLines;
 
 	std::stringstream fileStream;
-	
+
 	fileStream << file.rdbuf();
 
 	std::string line;
@@ -47,39 +47,43 @@ int main() {
 		std::string tokenisedLine;
 
 
-		int lbPos = l.find_first_of("[");
-		int rbPos = l.find_first_of("]");
 
-		std::string characterName = l.substr(lbPos, rbPos + 1);
+		int leftBracePos = l.find_first_of("[");
+		int rightBracePos = l.find_first_of("]");
+
+		std::string characterName = l.substr(leftBracePos, rightBracePos + 1);
 		tokenisedLine += characterName + ": ";
 
-		int lsPos = l.find_first_of('"');
-		int rsPos = l.find_last_of('"');
-		std::string eolContent = l.substr(rsPos + 1);
+		int lastSpeechMark = l.find_last_of('"');
+		std::string eolContent = l.substr(lastSpeechMark + 1);
 
-		int aPos;
-		std::string filterString = l.substr(rbPos + 1);
-		while (aPos = filterString.find('"') != std::string::npos) {
-			filterString = filterString.substr(aPos + 1);
+		int markAPos;
+		std::string filterString = l.substr(rightBracePos + 2);
+		while (markAPos = filterString.find('"') != std::string::npos) {
 
-			int bPos = filterString.find('"');
+			filterString = filterString.substr(markAPos - 1);
 
-			std::string sentence = filterString.substr(0, bPos - 1);
+			int markBPos = filterString.find('"');
 
+			std::string sentence = filterString.substr(0, markBPos);
+
+			if (sentence == "") {
+				continue;
+			}
+
+			//Converts hello world to HELLO WORLD
 			std::string upperedSentence;
 			for (int i = 0; i < sentence.length(); i++) {
 				upperedSentence += std::toupper(sentence[i]);
 			}
-			std::cout << upperedSentence << std::endl;
 
+			//Converts HELLO WORLD to a vector of (HELLO), (WORLD). Also parses punctuation
 			std::vector<std::string> brokenSentence;
 			std::istringstream ss(upperedSentence);
 			std::string token;
 
 			while (std::getline(ss, token, ' ')) {
-				int pos;
-
-				pos = token.find('?');
+				int pos = token.find('?');
 				if (pos != std::string::npos)
 				{
 					token = token.substr(0, pos);
@@ -91,11 +95,15 @@ int main() {
 					brokenSentence.emplace_back(".");
 				}
 
-
+				//Places the token into the broken sentence list
 				brokenSentence.emplace_back(token);
 			}
 
+			//Cycles through all tokens
 			for (auto& word : brokenSentence) {
+				if(word == "") continue;
+
+				//If the word is game data then it is added to the tokenised line and the next word is checked
 				if (word[0] == '#') {
 					tokenisedLine += word + " ";
 					continue;
@@ -108,37 +116,38 @@ int main() {
 					tokenisedLine += word + " ";
 					continue;
 				}
+				else if (word[0] == '-') {
+					tokenisedLine += word + " ";
+					continue;
+				}
 
+				//If the word cannot be found in our dictionary
 				if (dictionary.find(word) == dictionary.end()) {
-					dictionary[word] = index;
-					tokenisedLine += std::to_string(index) + " ";
-					index++;
+					dictionary[word] = index; //Add this word to the dictionary with our new index
+					tokenisedLine += std::to_string(index) + " "; //Adds this index to the tokenised line
+					index++; //Increments our index
 				}
 				else {
-					tokenisedLine += std::to_string(dictionary[word]) + " ";
+					tokenisedLine += std::to_string(dictionary[word]) + " "; //Adds this words token to the line
 				}
 			}
 
-			filterString = filterString.substr(bPos + 1);
+
+			filterString = filterString.substr(markBPos + 1);
+			markAPos = filterString.find('"');
 
 		}
 
-
-
-		//std::cout << l << std::endl;
-		//Turns [Robin]: "Hi Im the town carpenter" into Im the town carpenter
-		//std::string sentence = l.substr(lsPos + 1, (rsPos - lsPos) - 1);
-		
 		tokenisedLine += eolContent;
 
 		tokenisedLines.emplace_back(tokenisedLine);
 	}
 
 
-	std::cout << "--------------------------------------------------" << std::endl;
-	for (auto& word : dictionary) {
-		std::cout << word.second << ":\t" << word.first << std::endl;
-	}
+	//std::cout << "--------------------------------------------------" << std::endl;
+	//for (auto& word : dictionary) {
+	//	std::cout << word.second << ":\t" << word.first << std::endl;
+	//}
 
 	std::multimap<int, std::string> outputDict = flip_map(dictionary);
 	std::cout << "--------------------------------------------------" << std::endl;

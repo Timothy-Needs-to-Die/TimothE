@@ -1,6 +1,8 @@
 [Robin]: "Hello I am Robin, I'm the town carpenter. Feel free to come to me to get upgrades for your house"
 [Lewis]: "Stop trying to sell your upgrades. Let them settle in first"
 [Lewis]: "Sorry about that, here take some seeds" [1]{1}
-[Player]: "Thank you" / "Go Away!"
-[Lewis]: 1"See you around #playername#" 2"That's rather rude"
+[Player]: -1- "Thank you"
+[Player]: -2- "Go Away!"
+[Lewis]: -1- "See you around #playername#" 
+[Lewis]: -2- "That's rather rude"
 [Robin]: "Why don't you do something useful and get me some wood" ~collect20Wood~
