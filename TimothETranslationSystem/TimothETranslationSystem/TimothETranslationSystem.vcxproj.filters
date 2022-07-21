@@ -26,5 +26,8 @@
     <ClInclude Include="CSVReader.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="Dirent.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
 </Project>

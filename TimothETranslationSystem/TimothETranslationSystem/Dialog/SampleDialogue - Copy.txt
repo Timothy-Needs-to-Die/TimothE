@@ -1,0 +1,8 @@
+[Robin]: "Fuck you, I'm the town carpenter. Never feel free to come to me to get upgrades for your house"
+[Lewis]: "Stop being rude to sell your upgrades."
+[Lewis]: "Sorry about that, here take some seeds" [1]{1}
+[Player]: -1- "You are a bitch"
+[Player]: -2- "Potato!"
+[Lewis]: -1- "Hope to never see you around #playername#" 
+[Lewis]: -2- "That's rather rude"
+[Robin]: "Why don't you do something useful and get me some clay" ~collect20Clay~
