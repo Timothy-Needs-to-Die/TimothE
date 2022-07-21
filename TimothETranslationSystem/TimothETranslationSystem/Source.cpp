@@ -6,6 +6,7 @@
 #include <unordered_map>
 #include <algorithm>
 #include <map>
+#include "CSVReader.h"
 
 template<typename A, typename B>
 std::pair<B, A> flip_pair(const std::pair<A, B>& p)
@@ -24,7 +25,34 @@ std::multimap<B, A> flip_map(const std::map<A, B>& src)
 
 int main() {
 	std::map<std::string, int> dictionary;
+	
+
+	std::map<int, std::string> inputDict;
+
+	std::vector<std::vector<std::string>> dictionaryContents = CSVReader::RequestDataFromFile("Dictionary.csv");
+
+	
+	int lastRow;
 	int index = 0;
+	for (auto& line : dictionaryContents)
+	{
+		if (index == 0) {
+			index++;
+			continue;
+		}
+		int t = std::stoi(line[0]);
+		std::string word = line[1];
+
+		inputDict[t] = word;
+		index++;
+	}
+
+	for (auto& p : inputDict) {
+		dictionary[p.second] = p.first;
+	}
+
+	lastRow = index;
+
 
 	std::ifstream file("SampleDialogue.txt");
 
@@ -40,8 +68,6 @@ int main() {
 	{
 		lines.emplace_back(line);
 	}
-
-
 
 	for (auto& l : lines) {
 		std::string tokenisedLine;
@@ -101,7 +127,7 @@ int main() {
 
 			//Cycles through all tokens
 			for (auto& word : brokenSentence) {
-				if(word == "") continue;
+				if(word.empty()) continue;
 
 				//If the word is game data then it is added to the tokenised line and the next word is checked
 				if (word[0] == '#') {
@@ -143,19 +169,62 @@ int main() {
 		tokenisedLines.emplace_back(tokenisedLine);
 	}
 
+	std::map<int, std::string> outputDict;
 
-	//std::cout << "--------------------------------------------------" << std::endl;
-	//for (auto& word : dictionary) {
-	//	std::cout << word.second << ":\t" << word.first << std::endl;
-	//}
+	for (auto& el : dictionary) {
+		outputDict[el.second] = el.first;
+	}
 
-	std::multimap<int, std::string> outputDict = flip_map(dictionary);
 	std::cout << "--------------------------------------------------" << std::endl;
 	for (auto& word : outputDict) {
 		std::cout << word.first << ":\t" << word.second << std::endl;
 	}
 
+
+	std::ofstream output("TokenedDialog.txt");
+	
 	for (auto& tl : tokenisedLines) {
 		std::cout << tl << std::endl;
+		output << tl << "\n";
 	}
+
+	std::ofstream outDictFile("Dictionary.csv");
+
+	if (dictionaryContents.empty()) {
+		std::vector<std::string> nl;
+		nl.emplace_back("Index");
+		nl.emplace_back("English");
+		nl.emplace_back("French");
+		nl.emplace_back("Spanish");
+		nl.emplace_back("Italian");
+		nl.emplace_back("German");
+
+		dictionaryContents.emplace_back(nl);
+	}
+	
+	for (int i = 0; i < dictionaryContents[0].size(); i++) {
+		outDictFile << dictionaryContents[0][i] << ",";
+	}
+	outDictFile << "\n";
+
+	for (int i = 1; i < dictionaryContents.size(); i++) {
+		for (int j = 0; j < dictionaryContents[i].size(); j++) {
+			outDictFile << dictionaryContents[i][j] << ",";
+		}
+		outDictFile << "\n";
+	}
+
+	for (int i = lastRow; i < index; i++) {
+		outDictFile << i << "," << outputDict[i] << "\n";
+	}
+
+	outDictFile.close();
+
+	//for (auto& e : outputDict)
+	//{
+	//	outDictFile << e.first << ", " << e.second << "\n";
+	//}
+
+
+	
 }
