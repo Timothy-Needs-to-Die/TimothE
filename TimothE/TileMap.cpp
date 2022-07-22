@@ -33,7 +33,6 @@ TileMap::~TileMap()
 
 void TileMap::LoadTileMap()
 {
-	//TMX::Parser tmx("Resources/Tilemaps/TileMapTMXTest.tmx");
 	TMX::Parser tmx("Resources/Tilemaps/ArtTestMap.tmx");
 
 	SetTileMapSize({ tmx.mapInfo.width, tmx.mapInfo.height });
@@ -193,9 +192,11 @@ void TileMap::LoadTileMap()
 	//Find Player Spawn object and set the player spawn variable
 	TMX::Parser::Object playerSpawn = GetObjectByName("PlayerSpawn");
 	if (playerSpawn.name == "PlayerSpawn") {
+		
+
 
 		float xPos = playerSpawn.x;
-		float yPos = playerSpawn.y;
+		float yPos = (tmx.mapInfo.height * tmx.mapInfo.tileHeight) - playerSpawn.y;
 
 		xPos /= (float)TILE_SIZE_IN_PIXELS;
 		yPos /= (float)TILE_SIZE_IN_PIXELS;
