@@ -138,34 +138,36 @@ void ResourceManager::LoadTextures()
 
 void ResourceManager::LoadSpritsheets()
 {
-	ResourceManager::InstantiateSpritesheet("Overworld_Spring", new SpriteSheet(ResourceManager::GetTexture("Overworld_Spring.png"), 32, 32));
-	ResourceManager::InstantiateSpritesheet("RPGpack_sheet", new SpriteSheet(ResourceManager::GetTexture("RPGpack_sheet.png"), 64, 64));
-	ResourceManager::InstantiateSpritesheet("medispritesheet", new SpriteSheet(ResourceManager::GetTexture("MediSprites.png"), TILE_SIZE_IN_PIXELS, TILE_SIZE_IN_PIXELS));
+	ResourceManager::InstantiateSpritesheet("Overworld_Spring", new SpriteSheet(ResourceManager::GetTexture("Overworld_Spring.png"), TILE_SIZE_IN_PIXELS, TILE_SIZE_IN_PIXELS));
 	ResourceManager::InstantiateSpritesheet("itemspritesheet", new SpriteSheet(ResourceManager::GetTexture("ItemsSheet.png"), 128, 128));
-	ResourceManager::InstantiateSpritesheet("cropspritesheet", new SpriteSheet(ResourceManager::GetTexture("CropsSheet.png"), 32, 32));
-	ResourceManager::InstantiateSpritesheet("roguespritesheet", new SpriteSheet(ResourceManager::GetTexture("RogueSprites.png"), 17, 17));
-	ResourceManager::InstantiateSpritesheet("animalspritesheet", new SpriteSheet(ResourceManager::GetTexture("AnimalSheet.png"), 32, 32));
-	ResourceManager::InstantiateSpritesheet("extraspritesheet", new SpriteSheet(ResourceManager::GetTexture("ExtraSpriteSheet.png"), 15, 15));
-	ResourceManager::InstantiateSpritesheet("buildspritesheet", new SpriteSheet(ResourceManager::GetTexture("BuildingSheet.png"), 32, 32));
-	ResourceManager::InstantiateSpritesheet("build2spritesheet", new SpriteSheet(ResourceManager::GetTexture("BuildingSheet2.png"), 32, 32));
-	ResourceManager::InstantiateSpritesheet("dungeonGrey", new SpriteSheet(ResourceManager::GetTexture("DungeonGreySprites.png"), 32, 32));
-	ResourceManager::InstantiateSpritesheet("TMX Tester", new SpriteSheet(ResourceManager::GetTexture("TMX Tester.png"), 32, 32));
+	ResourceManager::InstantiateSpritesheet("cropspritesheet", new SpriteSheet(ResourceManager::GetTexture("CropsSheet.png"), TILE_SIZE_IN_PIXELS, TILE_SIZE_IN_PIXELS));
+	ResourceManager::InstantiateSpritesheet("buildspritesheet", new SpriteSheet(ResourceManager::GetTexture("BuildingSheet.png"), TILE_SIZE_IN_PIXELS, TILE_SIZE_IN_PIXELS));
+	ResourceManager::InstantiateSpritesheet("build2spritesheet", new SpriteSheet(ResourceManager::GetTexture("BuildingSheet2.png"), TILE_SIZE_IN_PIXELS, TILE_SIZE_IN_PIXELS));
+	ResourceManager::InstantiateSpritesheet("dungeonGrey", new SpriteSheet(ResourceManager::GetTexture("DungeonGreySprites.png"), TILE_SIZE_IN_PIXELS, TILE_SIZE_IN_PIXELS));
+	ResourceManager::InstantiateSpritesheet("TMX Tester", new SpriteSheet(ResourceManager::GetTexture("TMX Tester.png"), TILE_SIZE_IN_PIXELS, TILE_SIZE_IN_PIXELS));
 	ResourceManager::InstantiateSpritesheet("swords", new SpriteSheet(ResourceManager::GetTexture("swords.png"), 16, 16));
 	ResourceManager::InstantiateSpritesheet("axes", new SpriteSheet(ResourceManager::GetTexture("axes.png"), 16, 16));
 	ResourceManager::InstantiateSpritesheet("pickaxes", new SpriteSheet(ResourceManager::GetTexture("pickaxes.png"), 16, 16));
 	ResourceManager::InstantiateSpritesheet("planks", new SpriteSheet(ResourceManager::GetTexture("Planks.png"), TILE_SIZE_IN_PIXELS, TILE_SIZE_IN_PIXELS));
 	ResourceManager::InstantiateSpritesheet("wall", new SpriteSheet(ResourceManager::GetTexture("Wall.png"), TILE_SIZE_IN_PIXELS, TILE_SIZE_IN_PIXELS));
-	ResourceManager::InstantiateSpritesheet("tower", new SpriteSheet(ResourceManager::GetTexture("Tower.png"), 213, 254));
 	ResourceManager::InstantiateSpritesheet("fireball", new SpriteSheet(ResourceManager::GetTexture("Fireball.png"), TILE_SIZE_IN_PIXELS, TILE_SIZE_IN_PIXELS));
-	ResourceManager::InstantiateSpritesheet("small_stone", new SpriteSheet(ResourceManager::GetTexture("Rock.png"), 32, 32));
-	ResourceManager::InstantiateSpritesheet("small_wood", new SpriteSheet(ResourceManager::GetTexture("TreeStump.png"), 32, 32));
-	ResourceManager::InstantiateSpritesheet("small_metal", new SpriteSheet(ResourceManager::GetTexture("Metal.png"), 32, 32));
-	ResourceManager::InstantiateSpritesheet("small_coal", new SpriteSheet(ResourceManager::GetTexture("Coal.png"), 32, 32));
-	ResourceManager::InstantiateSpritesheet("campfire", new SpriteSheet(ResourceManager::GetTexture("Campfire.png"), 32, 32));
+	ResourceManager::InstantiateSpritesheet("small_stone", new SpriteSheet(ResourceManager::GetTexture("Rock.png"), TILE_SIZE_IN_PIXELS, TILE_SIZE_IN_PIXELS));
+	ResourceManager::InstantiateSpritesheet("small_wood", new SpriteSheet(ResourceManager::GetTexture("TreeStump.png"), TILE_SIZE_IN_PIXELS, TILE_SIZE_IN_PIXELS));
+	ResourceManager::InstantiateSpritesheet("small_metal", new SpriteSheet(ResourceManager::GetTexture("Metal.png"), TILE_SIZE_IN_PIXELS, TILE_SIZE_IN_PIXELS));
+	ResourceManager::InstantiateSpritesheet("small_coal", new SpriteSheet(ResourceManager::GetTexture("Coal.png"), TILE_SIZE_IN_PIXELS, TILE_SIZE_IN_PIXELS));
+	ResourceManager::InstantiateSpritesheet("campfire", new SpriteSheet(ResourceManager::GetTexture("Campfire.png"), TILE_SIZE_IN_PIXELS, TILE_SIZE_IN_PIXELS));
 	ResourceManager::InstantiateSpritesheet("bed", new SpriteSheet(ResourceManager::GetTexture("Bed.png"), 32, TILE_SIZE_IN_PIXELS));
 	ResourceManager::InstantiateSpritesheet("testSheet", new SpriteSheet(ResourceManager::GetTexture("testSheet.png"), TILE_SIZE_IN_PIXELS, TILE_SIZE_IN_PIXELS));
 	ResourceManager::InstantiateSpritesheet("player", new SpriteSheet(ResourceManager::GetTexture("PlayerSheet_Updated.png"), 16, 32));
-	ResourceManager::InstantiateSpritesheet("swords_new", new SpriteSheet(ResourceManager::GetTexture("Swords_New.png"), 32, 32));
+	ResourceManager::InstantiateSpritesheet("swords_new", new SpriteSheet(ResourceManager::GetTexture("Swords_New.png"), TILE_SIZE_IN_PIXELS, TILE_SIZE_IN_PIXELS));
+	
+	
+	ResourceManager::InstantiateSpritesheet("animalspritesheet", new SpriteSheet(ResourceManager::GetTexture("AnimalSheet.png"), TILE_SIZE_IN_PIXELS, TILE_SIZE_IN_PIXELS));
+	ResourceManager::InstantiateSpritesheet("roguespritesheet", new SpriteSheet(ResourceManager::GetTexture("RogueSprites.png"), 17, 17));
+	ResourceManager::InstantiateSpritesheet("extraspritesheet", new SpriteSheet(ResourceManager::GetTexture("ExtraSpriteSheet.png"), 15, 15));
+	ResourceManager::InstantiateSpritesheet("RPGpack_sheet", new SpriteSheet(ResourceManager::GetTexture("RPGpack_sheet.png"), 64, 64));
+	ResourceManager::InstantiateSpritesheet("tower", new SpriteSheet(ResourceManager::GetTexture("Tower.png"), 213, 254));
+	ResourceManager::InstantiateSpritesheet("medispritesheet", new SpriteSheet(ResourceManager::GetTexture("MediSprites.png"), TILE_SIZE_IN_PIXELS, TILE_SIZE_IN_PIXELS));
 }
 
 void ResourceManager::InstantiateTexture(std::string name, Texture2D* texture)

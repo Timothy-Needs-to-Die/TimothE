@@ -113,7 +113,7 @@ void PlayerInputComponent::MoveControls()
 
 	
 	_pMovement->Move(moveVec);
-
+	
 	CameraManager::MainCamera()->SetPosition({ _pParentObject->GetTransform()->GetPosition(), -2.0f });
 }
 

@@ -15,7 +15,7 @@ void LightLevelManager::UpdateLightMap()
 	{
 		float xMin, xMax;
 		float yMin, yMax;
-		float tileSize = 0.25f;
+		float tileSize = _pTileMap->GetTileSize();
 
 		for (auto const& source : _lightSources)
 		{

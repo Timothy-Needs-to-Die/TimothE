@@ -21,6 +21,16 @@ public:
 
 	void SetPosition(glm::vec3 pos) { _cameraPos = pos; }
 	void SetCameraSpeed(float speed) { _cameraSpeed = speed; }
+	void SetZoomLevel(float val) {
+		_zoomLevel = val;
+
+		_bottom = -_zoomLevel;
+		_top = _zoomLevel;
+
+		SetProjection(_left, _right, _bottom, _top);
+		RecalculateViewMatrix();
+	}
+
 	float GetCameraSpeed() const { return _cameraSpeed; }
 	float GetAspectRatio() const { return _aspectRatio; }
 	float GetZoomLevel() const { return _zoomLevel; }
@@ -53,6 +63,8 @@ private:
 	glm::mat4 _view;
 	glm::mat4 _viewProj;
 	float x, y, z = 0;
+
+	float _left, _right, _top, _bottom;
 
 	
 

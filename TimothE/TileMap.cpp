@@ -21,6 +21,7 @@ TileMap::TileMap(std::string name)
 {
 	_tileArr.resize(_numLayers);
 
+	_tilesPerUnit = 4;
 	_gapBetweenTiles = 1.0f / _tilesPerUnit;
 
 	LoadTileMap();
@@ -669,7 +670,7 @@ void TileMap::CreateTilemapFromProcGen(int** map, int width, int height, std::st
 			TileData* data = new TileData();
 
 			data->animated = false;
-			data->size = 0.25f;
+			data->size = _gapBetweenTiles;
 
 			data->pos = { x * _gapBetweenTiles, y * _gapBetweenTiles };
 			data->_pSpritesheet = pSpriteSheet;

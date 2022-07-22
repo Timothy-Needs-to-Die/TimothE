@@ -116,6 +116,7 @@ void FarmScene::InitScene()
 	buttonGO->GetTransform()->SetPosition(935.0f, 100.0f);
 	buttonGO->GetTransform()->SetScale({ 50.f, 50.0f });
 
+
 	AddGameObject(buttonGO);
 
 	PlayerResourceManager::LoadInCropData();
@@ -127,6 +128,7 @@ void FarmScene::InitScene()
 
 	RegisterSounds();
 
+	//CameraManager::MainCamera()->SetZoomLevel(1.5f);
 
 	if (LoadScene("Resources/PlayerSaves/FarmSceneSaveData.sav")) {
 

@@ -13,6 +13,13 @@ Camera::Camera(float left, float right, float bottom, float top, std::string nam
 	_aspectRatio = abs(left);
 	_zoomLevel = abs(bottom);
 	_mName = name;
+
+
+	_left = left;
+	_right = right;
+	_top = top;
+	_bottom = bottom;
+
 	RecalculateViewMatrix();
 }
 void Camera::OnStart()

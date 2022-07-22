@@ -126,6 +126,15 @@ public:
 	/// <param name="level"> Applicable light level for tiles.</param>
 	void SetAllTilesLightLevel(int level);
 
+	void SetTileSize(float val) {
+		_tileSize = { val, val};
+
+		_gapBetweenTiles = 1.0f / _tileSize.x;
+	}
+
+	float GetTileSize() const {
+		return _tileSize.x;
+	}
 
 	int** GenerateTileMap(int noOfRooms = 10, int width = 64, int height = 64, int seed = -1);
 
