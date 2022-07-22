@@ -181,7 +181,7 @@ void TileMap::LoadTileMap()
 				glm::vec2 pos = td->pos;
 
 				if (td->_pSprite == nullptr) continue;
-				
+
 				Renderer2D::AddData(data, Quad{ { pos.x, pos.y}, {_gapBetweenTiles, _gapBetweenTiles} }, td->_pSprite->GetTexture(), td->_pSprite->GetTexCoords());
 			}
 		}
@@ -192,9 +192,6 @@ void TileMap::LoadTileMap()
 	//Find Player Spawn object and set the player spawn variable
 	TMX::Parser::Object playerSpawn = GetObjectByName("PlayerSpawn");
 	if (playerSpawn.name == "PlayerSpawn") {
-		
-
-
 		float xPos = playerSpawn.x;
 		float yPos = (tmx.mapInfo.height * tmx.mapInfo.tileHeight) - playerSpawn.y;
 
@@ -397,7 +394,7 @@ void TileMap::UpdateRenderInfo()
 	for (int i = 0; i < _tilemapRendererData.size(); ++i) {
 		//Calculates the data size
 		uint32_t dataSize = (uint32_t)((uint8_t*)_tilemapRendererData[i].quadVertexBufferPtr - (uint8_t*)_tilemapRendererData[i].quadVertexBufferBase);
-		
+
 		//Sets the data in the vertex buffer to be the correct information
 		_tilemapRendererData[i].quadVertexBuffer->SetData(_tilemapRendererData[i].quadVertexBufferBase, dataSize);
 	}
@@ -450,7 +447,7 @@ bool CompareRoomX(RoomDetails& a, RoomDetails& b) {
 	return a.xPos < b.xPos;
 }
 
-int** TileMap::GenerateTileMap(int noOfRooms, int width /*= 64*/, int height /*= 64*/, int seed /*= -1*/)
+int*** TileMap::GenerateTileMap(int noOfRooms, int width /*= 64*/, int height /*= 64*/, int seed /*= -1*/)
 {
 	if (seed == -1) {
 		srand(time(NULL));
@@ -459,14 +456,20 @@ int** TileMap::GenerateTileMap(int noOfRooms, int width /*= 64*/, int height /*=
 		srand(seed);
 	}
 
-	int** tilemap = new int* [height];
+	//3 Layers
+	_numLayers = 3;
+	int*** tilemap = new int** [3];
 
-	for (int i = 0; i < height; i++) {
-		tilemap[i] = new int[width];
-		for (int x = 0; x < width; x++) {
-			tilemap[i][x] = 0;
+	for (int layer = 0; layer < 3; layer++) {
+		tilemap[layer] = new int* [height];
+		for (int i = 0; i < height; i++) {
+			tilemap[layer][i] = new int[width];
+			for (int x = 0; x < width; x++) {
+				tilemap[layer][i][x] = 0;
+			}
 		}
 	}
+
 
 	std::vector<RoomDetails> rooms;
 
@@ -492,20 +495,18 @@ int** TileMap::GenerateTileMap(int noOfRooms, int width /*= 64*/, int height /*=
 			bool failed = false;
 			for (int yTest = randY; yTest < randY + sizeY + 2; yTest++) {
 				for (int xTest = randX; xTest < randX + sizeX + 2; xTest++) {
-					if (tilemap[yTest][xTest] == 1) {
+					if (tilemap[0][yTest][xTest] == 1) {
 						failed = true;
 						break;
 					}
 				}
 			}
 
-
 			if (failed) {
 				continue;
 			}
 
 			successful = true;
-
 
 			if (successful) {
 				RoomDetails roomInfo;
@@ -518,7 +519,7 @@ int** TileMap::GenerateTileMap(int noOfRooms, int width /*= 64*/, int height /*=
 
 				for (int yTest = randY; yTest < randY + sizeY; yTest++) {
 					for (int xTest = randX; xTest < randX + sizeX; xTest++) {
-						tilemap[yTest][xTest] = 1;
+						tilemap[0][yTest][xTest] = 1;
 					}
 				}
 
@@ -560,9 +561,22 @@ int** TileMap::GenerateTileMap(int noOfRooms, int width /*= 64*/, int height /*=
 				y -= 1;
 			}
 
-			tilemap[y][x] = 1;
+			tilemap[0][y][x] = 1;
 		}
 	}
+
+	//Player Spawn
+	int room1xStart = rooms[0].xPos;
+	int room1yStart = rooms[0].yPos;
+	int room1xEnd = rooms[0].xPos + rooms[0].xSize;
+	int room1yEnd = rooms[0].yPos + rooms[0].ySize;
+
+	int playerSpawnX = rand() % (room1xStart + 1) + (room1xEnd - 1);
+	int playerSpawnY = rand() % (room1yStart + 1) + (room1yEnd - 1);
+
+	tilemap[2][playerSpawnY][playerSpawnX] = 3;
+
+
 
 	//Debug Test (Print map to screen)
 	//for (int y = 0; y < height; y++) {
@@ -629,12 +643,12 @@ TMX::Parser::ObjectGroup TileMap::GetObjectGroupByName(std::string groupName) co
 	return TMX::Parser::ObjectGroup();
 }
 
-void TileMap::CreateTilemapFromProcGen(int** map, int width, int height, std::string spritesheetName)
+void TileMap::CreateTilemapFromProcGen(int*** map, int width, int height, std::string spritesheetName)
 {
 	//Resize the tile map array to the right size
 	//Change the tile data to be what the tile is.
 	//Establish standard for the tile layout on the tilesheet
-	
+
 	_animatedTileArr.clear();
 
 	SpriteSheet* pSpriteSheet = ResourceManager::GetSpriteSheet(spritesheetName);
@@ -642,39 +656,71 @@ void TileMap::CreateTilemapFromProcGen(int** map, int width, int height, std::st
 	_tilemapRendererData.clear();
 
 	_tileArr.clear();
-	_tileArr.resize(2);
+	_tileArr.resize(_numLayers);
 
 	SetTileMapSize({ width, height });
 
+
+	//Set all layers tile details
+	for (int layer = 0; layer < _numLayers; layer++) {
+		for (int y = 0; y < height; y++) {
+			for (int x = 0; x < width; x++) {
+				int mapIndex = y * width + x;
+
+				int value = map[0][y][x];
+
+				int rVal = 0;
+				int bVal = 0;
+				int rbVal = 0;
+
+				if (y < height - 2) {
+					bVal = map[0][y + 1][x];
+
+					if (x < width - 2) {
+						rbVal = map[0][y + 1][x + 1];
+					}
+				}
+
+				if (x < width - 2) {
+					rVal = map[0][y][x + 1];
+				}
+
+				TileData* data = new TileData();
+
+				data->animated = false;
+				data->size = _gapBetweenTiles;
+
+				data->pos = { x * _gapBetweenTiles, y * _gapBetweenTiles };
+				data->_pSpritesheet = pSpriteSheet;
+				_tileArr[0][y][x] = data;
+			}
+		}
+	}
+
+	//Background Pass
 	for (int y = 0; y < height; y++) {
 		for (int x = 0; x < width; x++) {
 			int mapIndex = y * width + x;
 
-			int value = map[y][x];
+			int value = map[0][y][x];
 
 			int rVal = 0;
 			int bVal = 0;
 			int rbVal = 0;
 
 			if (y < height - 2) {
-				bVal = map[y + 1][x];
+				bVal = map[0][y + 1][x];
 
 				if (x < width - 2) {
-					rbVal = map[y + 1][x + 1];
+					rbVal = map[0][y + 1][x + 1];
 				}
 			}
 
 			if (x < width - 2) {
-				rVal = map[y][x + 1];
+				rVal = map[0][y][x + 1];
 			}
 
-			TileData* data = new TileData();
-
-			data->animated = false;
-			data->size = _gapBetweenTiles;
-
-			data->pos = { x * _gapBetweenTiles, y * _gapBetweenTiles };
-			data->_pSpritesheet = pSpriteSheet;
+			TileData* data = _tileArr[0][y][x];
 
 			int texIndex = -1;
 
@@ -682,7 +728,7 @@ void TileMap::CreateTilemapFromProcGen(int** map, int width, int height, std::st
 			values = std::to_string(value) + std::to_string(rVal) + std::to_string(bVal) + std::to_string(rbVal);
 
 			if (values == "0000") { //BLANK TILE
-				
+				_collidableTileArray[y][x] = true;
 			}
 			else if (values == "0001") { //TOP LEFT
 				texIndex = (int)ProcTileMapValues::TOP_LEFT;
@@ -730,10 +776,36 @@ void TileMap::CreateTilemapFromProcGen(int** map, int width, int height, std::st
 				data->texIndex = texIndex;
 				data->_pSprite = data->_pSpritesheet->GetSpriteAtIndex(texIndex);
 			}
+		}
 
-			_tileArr[0][y][x] = data;
+	}
+
+
+	//Decoration Layer
+
+
+	//Interactive Layer
+	int psX = 0;
+	int psY = 0;
+
+	for (int y = 0; y < height; y++) {
+		for (int x = 0; x < width; x++) {
+			if (map[2][y][x] == 3) {
+				psX = x;
+				psY = y;
+			}
 		}
 	}
+
+	//Player Spawn
+	_playerSpawn = _tileArr[2][psY][psX]->pos;
+
+
+
+
+	//Level End
+
+
 
 	for (int layer = 0; layer < _numLayers; layer++) {
 		RendererData data = Renderer2D::GenerateRendererData();

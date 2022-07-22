@@ -89,7 +89,6 @@ void FarmScene::InitScene()
 	_pGameTime = new GameTimeManager(_pLightManager);
 
 	_pPlayer = new Player();
-	_pPlayer->GetTransform()->SetPosition(_pTilemap->GetPlayerSpawn());
 	AddGameObject(_pPlayer);
 
 	_pBed = new Bed();
@@ -138,8 +137,9 @@ void FarmScene::InitScene()
 	}
 	_pGameTime->StartNewDay();
 	
-	//int** map = _pTilemap->GenerateTileMap(10, 64, 64, 3);
-	//_pTilemap->CreateTilemapFromProcGen(map, 64, 64, "dungeonGrey");
+	int*** map = _pTilemap->GenerateTileMap(10, 64, 64, 3);
+	_pTilemap->CreateTilemapFromProcGen(map, 64, 64, "dungeonGrey");
+	_pPlayer->GetTransform()->SetPosition(_pTilemap->GetPlayerSpawn());
 }
 
 void FarmScene::SaveScene(std::string filename)

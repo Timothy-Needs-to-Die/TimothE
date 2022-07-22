@@ -136,7 +136,7 @@ public:
 		return _tileSize.x;
 	}
 
-	int** GenerateTileMap(int noOfRooms = 10, int width = 64, int height = 64, int seed = -1);
+	int*** GenerateTileMap(int noOfRooms = 10, int width = 64, int height = 64, int seed = -1);
 
 	int GetLightLevelAtPosition(glm::vec2 pos);
 	
@@ -150,7 +150,7 @@ public:
 	TMX::Parser::ObjectGroup GetObjectGroupByName(std::string groupName) const;
 
 
-	void CreateTilemapFromProcGen(int** map, int width, int height, std::string spritesheetName);
+	void CreateTilemapFromProcGen(int*** map, int width, int height, std::string spritesheetName);
 
 private:
 	//Controls how many layers are used in the tilemap
