@@ -23,15 +23,11 @@ float Time::_deltaTime;
 float Time::_time;
 
 //initializes application
-void Application::Init(bool devMode)
+void Application::Init()
 {
 	UID::Init();
 	Input::Init();
 	HeapManager::Init();
-
-	_devMode = devMode;
-
-
 
 	//checks if glfw initialsed
 	if (!glfwInit()) {
@@ -46,7 +42,7 @@ void Application::Init(bool devMode)
 	glfwWindowHint(GLFW_AUTO_ICONIFY, 0);
 	glfwWindowHint(GLFW_SAMPLES, 4);
 
-
+	//TODO: Switch this to loading from some user setting config
 	Window::Init(1280, 720, "ThymeoWthE");
 
 	Window::SetEventCallback(BIND_EVENT_FN(OnGameEvent));
@@ -63,9 +59,7 @@ void Application::Init(bool devMode)
 	//enables debug messages
 	GLCall(glEnable(GL_DEBUG_OUTPUT));
 
-	if (_devMode) {
-		ImGuiManager::CreateImGuiContext(Window::GetGLFWWindow());
-	}
+	ImGuiManager::CreateImGuiContext(Window::GetGLFWWindow());
 
 	//initializes resource manager
 	ResourceManager::Init();
@@ -145,7 +139,7 @@ void Application::GameLoop()
 			_pEditor->_pEditorFramebuffer->BindFramebuffer();
 			GameBeginRender();
 			GameRender(CameraManager::GetCamera("Editor"));
-			_pEditor->EditorLoop(SceneManager::GetCurrentScene(), _inEditorMode, _mPaused);
+			_pEditor->EditorLoop(SceneManager::GetCurrentScene(), _inEditorMode, _paused);
 
 			_pEditor->_pEditorFramebuffer->UnbindFramebuffer();
 			_pEditor->EditorRender();
@@ -202,8 +196,8 @@ void Application::GameStart()
 {
 	SceneManager::GetCurrentScene()->SceneStart();
 	_inEditorMode = false;
-	_mPaused = false;
-	_mGameRunning = true;
+	_paused = false;
+	_gameRunning = true;
 }
 
 //polls input

@@ -3,10 +3,8 @@
 #include "Application.h"
 
 void main() {
-	Application* game = new Application();
-	game->Init(true);
-	game->GameLoop();
+	std::shared_ptr<Application> game = std::make_shared<Application>();
 
-	delete game;
-	game = nullptr;
+	game->Init();
+	game->GameLoop();
 }

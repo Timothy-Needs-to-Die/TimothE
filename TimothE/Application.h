@@ -20,7 +20,7 @@ class Application
 {
 public:
 	//Initialize the application. If true is passed in then a editor window will also be created.
-	void Init(bool devMode = true);
+	void Init();
 
 	//Starts the game loop and the editor window loop
 	void GameLoop();
@@ -52,12 +52,10 @@ private:
 	std::shared_ptr<class AudioEngine> _pAudio = nullptr;
 
 	bool _inEditorMode = true;
-	bool _devMode;
-
 	bool _running;
+	bool _paused = false;
+	bool _gameRunning = false;
 
 	class std::shared_ptr<class Editor> _pEditor;
 
-	bool _mPaused = false;
-	bool _mGameRunning = false;
 };
