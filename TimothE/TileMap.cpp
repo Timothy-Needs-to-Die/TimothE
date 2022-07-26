@@ -568,23 +568,23 @@ int*** TileMap::GenerateTileMap(int noOfRooms, int width /*= 64*/, int height /*
 	//Player Spawn
 	int room1xStart = rooms[0].xPos;
 	int room1yStart = rooms[0].yPos;
-	int room1xEnd = rooms[0].xPos + rooms[0].xSize;
-	int room1yEnd = rooms[0].yPos + rooms[0].ySize;
 
-	int playerSpawnX = rand() % (room1xStart + 1) + (room1xEnd - 1);
-	int playerSpawnY = rand() % (room1yStart + 1) + (room1yEnd - 1);
-
-	tilemap[2][playerSpawnY][playerSpawnX] = 3;
+	tilemap[2][room1yStart + (rooms[0].ySize / 2)][room1xStart + (rooms[0].xSize / 2)] = 3;
 
 
 
 	//Debug Test (Print map to screen)
-	//for (int y = 0; y < height; y++) {
-	//	for (int x = 0; x < width; x++) {
-	//		std::cout << tilemap[y][x] << " ";
-	//	}
-	//	std::cout << std::endl;
-	//}
+	for (int y = 0; y < height; y++) {
+		for (int x = 0; x < width; x++) {
+			if (tilemap[2][y][x] == 3) {
+				std::cout << "3 ";
+			}
+			else {
+				std::cout << tilemap[0][y][x] << " ";
+			}
+		}
+		std::cout << std::endl;
+	}
 
 	return tilemap;
 }
@@ -692,7 +692,7 @@ void TileMap::CreateTilemapFromProcGen(int*** map, int width, int height, std::s
 
 				data->pos = { x * _gapBetweenTiles, y * _gapBetweenTiles };
 				data->_pSpritesheet = pSpriteSheet;
-				_tileArr[0][y][x] = data;
+				_tileArr[layer][y][x] = data;
 			}
 		}
 	}
