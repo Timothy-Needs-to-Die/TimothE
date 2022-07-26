@@ -5,7 +5,7 @@
 #include "Transform.h"
 #include "TileMap.h"
 
-Camera::Camera(float left, float right, float bottom, float top, std::string name, GameObject* parent) : Component(parent)
+Camera::Camera(float left, float right, float bottom, float top, float aspectRatio, std::string name, GameObject* parent) : Component(parent)
 {
 	SetType(Component::Camera_Type);
 	std::cout << "Camera created" << std::endl;
@@ -13,7 +13,7 @@ Camera::Camera(float left, float right, float bottom, float top, std::string nam
 	_view = glm::mat4(1.0f);
 	_projection = glm::ortho(left, right, bottom, top, -2.0f, 2.0f);
 	_rotation = 0.0f;
-	_aspectRatio = abs(left);
+	_aspectRatio = aspectRatio;
 	_zoomLevel = abs(bottom);
 	_name = name;
 

@@ -33,7 +33,7 @@ TileMap::~TileMap()
 
 void TileMap::LoadTileMap()
 {
-	TMX::Parser tmx("Resources/Tilemaps/ArtTest.tmx");
+	TMX::Parser tmx("Resources/Tilemaps/ArtTestMap.tmx");
 
 	SetTileMapSize({ tmx.mapInfo.width, tmx.mapInfo.height });
 

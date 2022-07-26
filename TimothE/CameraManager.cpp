@@ -9,7 +9,7 @@ void CameraManager::Init()
 	float right = aspectRatio * zoomLevel;
 	float bottom = -zoomLevel;
 	float top = zoomLevel;
-	_pMainCamera = new Camera(left, right, bottom, top, "Main Camera", NULL);
+	_pMainCamera = new Camera(left, right, bottom, top, aspectRatio, "Main Camera", NULL);
 }
 
 CameraManager::CameraManager(Camera* mainCamera)
@@ -101,7 +101,7 @@ void CameraManager::AddCamera(std::string name)
 	float right = aspectRatio * zoomLevel;
 	float bottom = -zoomLevel;
 	float top = zoomLevel;
-	Camera* nc = new Camera(left, right, bottom, top, name, NULL);
+	Camera* nc = new Camera(left, right, bottom, top, Window::GetAspectRatio(), name, NULL);
 	_pCameras.push_back(nc);
 }
 

@@ -9,7 +9,7 @@ class Camera : public Component
 public:
 	COMPONENT_STATIC_TYPE(Camera_Type);
 
-	Camera(float left, float right, float bottom, float top, std::string name, GameObject* parent);
+	Camera(float left, float right, float bottom, float top, float aspectRatio, std::string name, GameObject* parent);
 
 	void OnUpdate() override;
 	void DrawEditorUI() override;
@@ -26,6 +26,9 @@ public:
 
 		_bottom = -_zoomLevel;
 		_top = _zoomLevel;
+
+		_left = -_aspectRatio * _zoomLevel;
+		_right = _aspectRatio * _zoomLevel;
 
 		SetProjection(_left, _right, _bottom, _top);
 		RecalculateViewMatrix();

@@ -70,6 +70,16 @@ void FarmScene::UpdateObjects()
 		_pBed->canSleepThroughNight = false;
 	}
 
+
+	if (Input::IsKeyDown(KEY_LEFT_SHIFT)) {
+		CameraManager::MainCamera()->SetZoomLevel(1.5f);
+	}
+
+	if (Input::IsKeyDown(KEY_RIGHT_SHIFT)) {
+		CameraManager::MainCamera()->SetZoomLevel(2.5f);
+	}
+
+
 	AudioEngine::AudioUpdate(Time::GetDeltaTime());
 	//Set audio Listener to player position 
 	AudioEngine::Set3DListenerAttributes(FMOD_VECTOR{ _pPlayer->GetTransform()->GetPosition().x,
