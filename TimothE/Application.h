@@ -33,11 +33,8 @@ protected:
 	void PollInput();
 
 	void GameBeginRender();
-	void GameRender(Camera* cam);
+	void GameRender(std::shared_ptr<Camera> cam);
 	void GameUpdate();
-
-	void DisplayTileEditor();
-
 private:
 	//Event Handlers
 	bool OnWindowClose(WindowCloseEvent& e);
@@ -54,15 +51,13 @@ private:
 	std::shared_ptr<class Framebuffer> _pfb = nullptr;
 	std::shared_ptr<class AudioEngine> _pAudio = nullptr;
 
-	bool _mInEditorMode = true;
-	bool _mDevMode;
+	bool _inEditorMode = true;
+	bool _devMode;
 
-	bool _mRunning;
+	bool _running;
 
 	class std::shared_ptr<class Editor> _pEditor;
 
 	bool _mPaused = false;
 	bool _mGameRunning = false;
-
-	bool _tileMapEditorEnabled = false;
 };

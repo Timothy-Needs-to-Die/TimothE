@@ -9,7 +9,7 @@ class Camera : public Component
 public:
 	COMPONENT_STATIC_TYPE(Camera_Type);
 
-	Camera(float left, float right, float bottom, float top, float aspectRatio, std::string name, GameObject* parent);
+	Camera(float left, float right, float bottom, float top, float aspectRatio, std::string name);
 
 	void OnUpdate() override;
 	void DrawEditorUI() override;
@@ -39,12 +39,9 @@ public:
 	}
 	GameObject* GetFollowTarget() const { return _pFollowTarget; }
 
-	void SetTileMap(class TileMap* pMap)
-	{
-		_pCurrentMap = pMap;
-	}
+	void SetTileMap(class TileMap* pMap);
 
-	class TileMap* GetTilemap() const { return _pCurrentMap; }
+	class TileMap* GetTilemap() const;
 
 	float GetCameraSpeed() const { return _cameraSpeed; }
 	float GetAspectRatio() const { return _aspectRatio; }

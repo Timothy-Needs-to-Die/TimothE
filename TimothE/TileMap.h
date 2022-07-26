@@ -93,7 +93,7 @@ public:
 	/// Renders the tilemap around a specific Camera
 	/// </summary>
 	/// <param name="cam">The camera you want to render from</param>
-	void RenderMap(Camera* cam);
+	void RenderMap(std::shared_ptr<Camera> cam);
 
 	/// <summary>
 	/// Returns true if any tile on all layers at the passed in index is collidable

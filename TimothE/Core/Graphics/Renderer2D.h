@@ -47,7 +47,7 @@ public:
 	static void Init();
 	static void Shutdown();
 
-	static void BeginRender(Camera* camera);
+	static void BeginRender(std::shared_ptr<Camera> camera);
 	static void EndRender();
 
 	//Draw Quads

@@ -158,7 +158,7 @@ void Scene::FrameEnd()
 	_gameObjectsToRemove.clear();
 }
 
-void Scene::RenderScene(Camera* cam)
+void Scene::RenderScene(std::shared_ptr<Camera> cam)
 {
 	if (_hasTilemap) {
 		_pTilemap->RenderMap(cam);

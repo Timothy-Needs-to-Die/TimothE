@@ -399,9 +399,6 @@
     <ClInclude Include="TileMap.h">
       <Filter>Headers</Filter>
     </ClInclude>
-    <ClInclude Include="TileMapEditor.h">
-      <Filter>Headers</Filter>
-    </ClInclude>
     <ClInclude Include="Time.h">
       <Filter>Headers</Filter>
     </ClInclude>
@@ -712,9 +709,6 @@
       <Filter>Source</Filter>
     </ClCompile>
     <ClCompile Include="TileMap.cpp">
-      <Filter>Source</Filter>
-    </ClCompile>
-    <ClCompile Include="TileMapEditor.cpp">
       <Filter>Source</Filter>
     </ClCompile>
     <ClCompile Include="TownScene.cpp">

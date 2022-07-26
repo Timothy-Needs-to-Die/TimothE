@@ -5,7 +5,7 @@
 #include "Transform.h"
 #include "TileMap.h"
 
-Camera::Camera(float left, float right, float bottom, float top, float aspectRatio, std::string name, GameObject* parent) : Component(parent)
+Camera::Camera(float left, float right, float bottom, float top, float aspectRatio, std::string name) : Component(nullptr)
 {
 	SetType(Component::Camera_Type);
 	std::cout << "Camera created" << std::endl;
@@ -85,7 +85,7 @@ void Camera::OnUpdate()
 				_cameraPos.x = tilemapXMax - _right;
 			}
 
-			if (camYMin < tilemapYMin && camYMax + 0.25f> tilemapYMax) {
+			if (camYMin < tilemapYMin && camYMax + 0.25f > tilemapYMax) {
 				int noOfTiles = _pCurrentMap->GetTileMapDimensions().y;
 				_cameraPos.y = 0.25f * (noOfTiles / 2);
 			}
@@ -99,6 +99,16 @@ void Camera::OnUpdate()
 	}
 
 	RecalculateViewMatrix();
+}
+
+void Camera::SetTileMap(class TileMap* pMap)
+{
+	_pCurrentMap = pMap;
+}
+
+class TileMap* Camera::GetTilemap() const
+{
+	return _pCurrentMap;
 }
 
 void Camera::OnResize(float width, float height)

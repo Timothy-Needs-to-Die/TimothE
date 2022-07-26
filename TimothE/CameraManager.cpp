@@ -9,10 +9,10 @@ void CameraManager::Init()
 	float right = aspectRatio * zoomLevel;
 	float bottom = -zoomLevel;
 	float top = zoomLevel;
-	_pMainCamera = new Camera(left, right, bottom, top, aspectRatio, "Main Camera", NULL);
+	_pMainCamera = std::make_shared<Camera>(left, right, bottom, top, aspectRatio, "Main Camera");
 }
 
-CameraManager::CameraManager(Camera* mainCamera)
+CameraManager::CameraManager(std::shared_ptr<Camera> mainCamera)
 {
 	_pMainCamera = mainCamera;
 	_pCurrentCamera = _pMainCamera;
@@ -20,16 +20,15 @@ CameraManager::CameraManager(Camera* mainCamera)
 
 CameraManager::~CameraManager()
 {
-	delete _pCurrentCamera;
-	delete _pMainCamera;
+	
 }
 
-Camera* CameraManager::MainCamera()
+std::shared_ptr<Camera> CameraManager::MainCamera()
 {
 	return _pMainCamera;
 }
 
-Camera* CameraManager::CurrentCamera()
+std::shared_ptr<Camera> CameraManager::CurrentCamera()
 {
 	return _pCurrentCamera;
 }
@@ -88,7 +87,7 @@ void CameraManager::RemoveCamera(std::string cameraID)
 }
 
 //adds new camera
-void CameraManager::AddCamera(Camera* newCamera)
+void CameraManager::AddCamera(std::shared_ptr<Camera> newCamera)
 {
 	_pCameras.push_back(newCamera);
 }
@@ -101,7 +100,7 @@ void CameraManager::AddCamera(std::string name)
 	float right = aspectRatio * zoomLevel;
 	float bottom = -zoomLevel;
 	float top = zoomLevel;
-	Camera* nc = new Camera(left, right, bottom, top, Window::GetAspectRatio(), name, NULL);
+	std::shared_ptr<Camera> nc = std::make_shared<Camera>(left, right, bottom, top, Window::GetAspectRatio(), name);
 	_pCameras.push_back(nc);
 }
 
@@ -113,8 +112,6 @@ void CameraManager::ResizeCameras(float width, float height)
 	}
 }
 
-Camera* CameraManager::_pMainCamera;
-
-std::vector<Camera*> CameraManager::_pCameras;
-
-Camera* CameraManager::_pCurrentCamera;
+std::shared_ptr<Camera> CameraManager::_pMainCamera;
+std::vector<std::shared_ptr<Camera>> CameraManager::_pCameras;
+std::shared_ptr<Camera> CameraManager::_pCurrentCamera;

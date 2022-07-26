@@ -7,7 +7,7 @@
 static RendererData _data;
 static RendererData _uiData;
 
-static Camera* currentCam;
+static std::shared_ptr<Camera> currentCam;
 
 
 void Renderer2D::Init()
@@ -93,7 +93,7 @@ void Renderer2D::Shutdown()
 
 }
 
-void Renderer2D::BeginRender(Camera* camera)
+void Renderer2D::BeginRender(std::shared_ptr<Camera> camera)
 {
 	StartBatch();
 	currentCam = camera;

@@ -6,7 +6,7 @@ class TileMap;
 
 struct LightSource
 {
-	LightSource() : baseLightLevel(6), fallOffRate(1.0f), range(10), worldPos(glm::vec2(0.0f, 0.0f))
+	LightSource() : baseLightLevel(6), fallOffRate(1), range(10), worldPos(glm::vec2(0.0f, 0.0f))
 	{
 		
 	}

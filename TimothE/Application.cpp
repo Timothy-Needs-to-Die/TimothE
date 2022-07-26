@@ -22,20 +22,6 @@
 float Time::_deltaTime;
 float Time::_time;
 
-void GLAPIENTRY MessageCallback(GLenum source,
-	GLenum type,
-	GLuint id,
-	GLenum severity,
-	GLsizei length,
-	const GLchar* message,
-	const void* userParam)
-{
-	fprintf(stderr, "GL CALLBACK: %s type = 0x%x, severity = 0x%x, message = %s\n",
-		(type == GL_DEBUG_TYPE_ERROR ? "** GL ERROR **" : ""),
-		type, severity, message);
-
-}
-
 //initializes application
 void Application::Init(bool devMode)
 {
@@ -43,7 +29,7 @@ void Application::Init(bool devMode)
 	Input::Init();
 	HeapManager::Init();
 
-	_mDevMode = devMode;
+	_devMode = devMode;
 
 
 
@@ -76,9 +62,8 @@ void Application::Init(bool devMode)
 
 	//enables debug messages
 	GLCall(glEnable(GL_DEBUG_OUTPUT));
-	//GLCall(glDebugMessageCallback(MessageCallback, 0));
 
-	if (_mDevMode) {
+	if (_devMode) {
 		ImGuiManager::CreateImGuiContext(Window::GetGLFWWindow());
 	}
 
@@ -94,9 +79,7 @@ void Application::Init(bool devMode)
 	//SceneManager::SetCurrentScene(SceneManager::CreateScene(ResourceManager::GetScene("TownScene")));
 	
 
-	//initializes editor with scene
-
-	_mRunning = true;
+	_running = true;
 
 	CameraManager::Init();
 	CameraManager::MainCamera()->SetCameraSpeed(2.0f);
@@ -114,8 +97,6 @@ void Application::Init(bool devMode)
 //game loop update
 void Application::GameLoop()
 {
-	//TODO: Setup build process for game only
-
 	//Intial mem bookmark
 	int memBookmark = HeapManager::GetMemoryBookmark();
 
@@ -130,43 +111,41 @@ void Application::GameLoop()
 
 	//_pCurrentScene->LoadScene("scene1.scene");
 
-	//While the editor window should not close
-	while (_mRunning) {
-		PollInput();
+	//plays sounds
+	//if (STstarted == false)
+	//{
+	//	//_audio->PlaySong(TitleSong);
+	//	STstarted = true;
+	//}
+	
 
-		//plays sounds
-		//if (STstarted == false)
-		//{
-		//	//_audio->PlaySong(TitleSong);
-		//	STstarted = true;
-		//}
+	//While the editor window should not close
+	while (_running) {
+		PollInput();
 
 		//deltatime update
 		float deltaTime = (float)glfwGetTime();
 
-		Time::Update(deltaTime - previousTime , glfwGetTime());
+		Time::Update(deltaTime - previousTime , (float)glfwGetTime());
 
 		//imgui update frame
 		ImGuiManager::ImGuiNewFrame();
 
-		//_pTilemap->UpdateLogic(CameraManager::GetCamera("Editor"));
-
 		if (DEV_MODE) {
 			if (Input::IsKeyDown(TimothEKeyCode::KEY_0)) {
 				CameraManager::GetCamera("Editor")->SetPosition(CameraManager::MainCamera()->Position());
-				_tileMapEditorEnabled = !_tileMapEditorEnabled;
-				TileMapEditor::_active = _tileMapEditorEnabled;
-				std::string cameraName = _tileMapEditorEnabled ? "Editor" : "Main Camera";
+				_inEditorMode = !_inEditorMode;
+				std::string cameraName = _inEditorMode ? "Editor" : "Main Camera";
 				CameraManager::SetCamera(cameraName);
 			}
 		}
 
 
-		if (_tileMapEditorEnabled) {
+		if (_inEditorMode) {
 			_pEditor->_pEditorFramebuffer->BindFramebuffer();
 			GameBeginRender();
 			GameRender(CameraManager::GetCamera("Editor"));
-			_pEditor->EditorLoop(SceneManager::GetCurrentScene(), _tileMapEditorEnabled, _mPaused);
+			_pEditor->EditorLoop(SceneManager::GetCurrentScene(), _inEditorMode, _mPaused);
 
 			_pEditor->_pEditorFramebuffer->UnbindFramebuffer();
 			_pEditor->EditorRender();
@@ -181,9 +160,6 @@ void Application::GameLoop()
 			
 			_pfb->DrawFramebuffer();
 		}
-
-
-
 
 		ImGuiManager::ImGuiEndFrame();
 
@@ -225,7 +201,7 @@ void Application::OnGameEvent(Event& e)
 void Application::GameStart()
 {
 	SceneManager::GetCurrentScene()->SceneStart();
-	_mInEditorMode = false;
+	_inEditorMode = false;
 	_mPaused = false;
 	_mGameRunning = true;
 }
@@ -244,7 +220,7 @@ void Application::GameBeginRender()
 }
 
 //render game
-void Application::GameRender(Camera* cam)
+void Application::GameRender(std::shared_ptr<Camera> cam)
 {
 	//_pTilemap->RenderMap(cam);
 	SceneManager::GetCurrentScene()->RenderScene(cam);
@@ -257,16 +233,11 @@ void Application::GameUpdate()
 	SceneManager::GetCurrentScene()->Update();
 }
 
-void Application::DisplayTileEditor()
-{
-	TileMapEditor::Update(SceneManager::GetCurrentScene()->GetTileMap());
-}
-
 //closes game window
 bool Application::OnWindowClose(WindowCloseEvent& e)
 {
 	std::cout << "Game Window: " << e.ToString() << std::endl;
-	_mRunning = false;
+	_running = false;
 	return true;
 }
 

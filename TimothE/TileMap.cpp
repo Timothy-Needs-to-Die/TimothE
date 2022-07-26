@@ -3,7 +3,6 @@
 #include "Core/Graphics/Renderer2D.h"
 #include "Core/Graphics/Window.h"
 #include "Quad.h"
-#include "TileMapEditor.h"
 #include "Time.h"
 #include "Core.h"
 
@@ -281,7 +280,7 @@ TileData* TileMap::GetTileAtWorldPos(int layer, glm::vec2 worldPos)
 	return _tileArr[layer][yIndex][xIndex];
 }
 
-void TileMap::RenderMap(Camera* cam)
+void TileMap::RenderMap(std::shared_ptr<Camera> cam)
 {
 	//Increments the animation timer
 	_mapAnimationTimer += Time::GetDeltaTime();

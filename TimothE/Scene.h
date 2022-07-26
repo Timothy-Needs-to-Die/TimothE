@@ -54,7 +54,7 @@ public:
 
 	void FrameEnd();
 
-	void RenderScene(Camera* cam);
+	void RenderScene(std::shared_ptr<Camera> cam);
 
 	//TODO: Implement unloading logic.
 	void Unload() {
