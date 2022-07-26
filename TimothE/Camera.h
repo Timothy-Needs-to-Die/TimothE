@@ -7,11 +7,11 @@
 class Camera : public Component
 {
 public:
-	Camera(float left, float right, float bottom, float top, std::string name, GameObject* parent);
 	COMPONENT_STATIC_TYPE(Camera_Type);
-	void OnStart() override;
+
+	Camera(float left, float right, float bottom, float top, std::string name, GameObject* parent);
+
 	void OnUpdate() override;
-	void OnEnd() override;
 	void DrawEditorUI() override;
 
 	glm::mat4 Proj() { return _projection; }
@@ -31,6 +31,18 @@ public:
 		RecalculateViewMatrix();
 	}
 
+	void SetFollowTarget(GameObject* pTarget) {
+		_pFollowTarget = pTarget;
+	}
+	GameObject* GetFollowTarget() const { return _pFollowTarget; }
+
+	void SetTileMap(class TileMap* pMap)
+	{
+		_pCurrentMap = pMap;
+	}
+
+	class TileMap* GetTilemap() const { return _pCurrentMap; }
+
 	float GetCameraSpeed() const { return _cameraSpeed; }
 	float GetAspectRatio() const { return _aspectRatio; }
 	float GetZoomLevel() const { return _zoomLevel; }
@@ -39,19 +51,23 @@ public:
 	void OnMouseScrolled(float yOffset);
 	void SetProjection(float left, float right, float bottom, float top);
 
+	void SetFollowTargetOffset(glm::vec3 offset) {
+		_followTargetOffset = offset;
+	}
+
 	void RecalculateViewMatrix();
 
 	glm::vec2 PositionXY() const { return { _cameraPos.x, _cameraPos.y }; }
 	glm::vec2 Size() const { return { _aspectRatio, _zoomLevel }; }
 
-	void PrintInfo() {
-		std::cout << "Camera: " << _cameraPos.x << ", " << _cameraPos.y << ", " << _cameraPos.z << std::endl;
-	}
-	std::string _mName;
+	std::string GetName() const { return _name; }
+
 private:
 	void PollInput();
 
 private:
+	std::string _name;
+
 	glm::vec3 _cameraPos;
 	float _rotation;
 
@@ -62,11 +78,12 @@ private:
 	glm::mat4 _projection;
 	glm::mat4 _view;
 	glm::mat4 _viewProj;
-	float x, y, z = 0;
+
+	GameObject* _pFollowTarget = nullptr;
+	glm::vec3 _followTargetOffset = glm::vec3{ 0.0f,0.0f,1.0f };
 
 	float _left, _right, _top, _bottom;
 
-	
-
+	class TileMap* _pCurrentMap = nullptr;
 };
 

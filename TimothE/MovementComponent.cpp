@@ -51,6 +51,10 @@ void MovementComponent::Move(glm::vec2 moveVec)
 
 void MovementComponent::CollisionCheck(glm::vec2& newPos)
 {
+	glm::vec2 mapSize = SceneManager::GetCurrentScene()->GetTileMap()->GetMapSize();
+	glm::vec2 parentScale = _pParentObject->GetTransform()->GetScale();
+
+
 	if (newPos.x < 0.0f) {
 		newPos.x = 0.0f;
 	}
@@ -59,22 +63,21 @@ void MovementComponent::CollisionCheck(glm::vec2& newPos)
 		newPos.y = 0.0f;
 	}
 
-	glm::vec2 size = SceneManager::GetCurrentScene()->GetTileMap()->GetMapSize();
 
 	//These values should be retrieved from the tilemap
-	if (newPos.y > size.y) {
-		newPos.y = size.y;
+	if (newPos.y + parentScale.y > mapSize.y) {
+		newPos.y = mapSize.y - parentScale.y;
 	}
 
-	if (newPos.x > size.x) {
-		newPos.x = size.x;
+	if (newPos.x + parentScale.x > mapSize.x) {
+		newPos.x = mapSize.x - parentScale.x;
 	}
 
 
 	ColQuad playerQuad;
 	playerQuad.pos = newPos;
 
-	playerQuad.size = _pParentObject->GetTransform()->GetScale();
+	playerQuad.size = parentScale;
 	playerQuad.size.y /= 2.0f;
 	playerQuad.CalculateMax();
 	

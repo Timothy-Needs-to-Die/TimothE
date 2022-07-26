@@ -114,7 +114,7 @@ void PlayerInputComponent::MoveControls()
 	
 	_pMovement->Move(moveVec);
 	
-	CameraManager::MainCamera()->SetPosition({ _pParentObject->GetTransform()->GetPosition(), -2.0f });
+	//CameraManager::MainCamera()->SetPosition({ _pParentObject->GetTransform()->GetPosition(), -2.0f });
 }
 
 void PlayerInputComponent::FarmingControls()

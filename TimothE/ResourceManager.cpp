@@ -141,8 +141,6 @@ void ResourceManager::LoadSpritsheets()
 	ResourceManager::InstantiateSpritesheet("Overworld_Spring", new SpriteSheet(ResourceManager::GetTexture("Overworld_Spring.png"), TILE_SIZE_IN_PIXELS, TILE_SIZE_IN_PIXELS));
 	ResourceManager::InstantiateSpritesheet("itemspritesheet", new SpriteSheet(ResourceManager::GetTexture("ItemsSheet.png"), 128, 128));
 	ResourceManager::InstantiateSpritesheet("cropspritesheet", new SpriteSheet(ResourceManager::GetTexture("CropsSheet.png"), TILE_SIZE_IN_PIXELS, TILE_SIZE_IN_PIXELS));
-	ResourceManager::InstantiateSpritesheet("buildspritesheet", new SpriteSheet(ResourceManager::GetTexture("BuildingSheet.png"), TILE_SIZE_IN_PIXELS, TILE_SIZE_IN_PIXELS));
-	ResourceManager::InstantiateSpritesheet("build2spritesheet", new SpriteSheet(ResourceManager::GetTexture("BuildingSheet2.png"), TILE_SIZE_IN_PIXELS, TILE_SIZE_IN_PIXELS));
 	ResourceManager::InstantiateSpritesheet("dungeonGrey", new SpriteSheet(ResourceManager::GetTexture("DungeonGreySprites.png"), TILE_SIZE_IN_PIXELS, TILE_SIZE_IN_PIXELS));
 	ResourceManager::InstantiateSpritesheet("TMX Tester", new SpriteSheet(ResourceManager::GetTexture("TMX Tester.png"), TILE_SIZE_IN_PIXELS, TILE_SIZE_IN_PIXELS));
 	ResourceManager::InstantiateSpritesheet("swords", new SpriteSheet(ResourceManager::GetTexture("swords.png"), 16, 16));
@@ -162,7 +160,6 @@ void ResourceManager::LoadSpritsheets()
 	ResourceManager::InstantiateSpritesheet("swords_new", new SpriteSheet(ResourceManager::GetTexture("Swords_New.png"), TILE_SIZE_IN_PIXELS, TILE_SIZE_IN_PIXELS));
 	
 	
-	ResourceManager::InstantiateSpritesheet("animalspritesheet", new SpriteSheet(ResourceManager::GetTexture("AnimalSheet.png"), TILE_SIZE_IN_PIXELS, TILE_SIZE_IN_PIXELS));
 	ResourceManager::InstantiateSpritesheet("roguespritesheet", new SpriteSheet(ResourceManager::GetTexture("RogueSprites.png"), 17, 17));
 	ResourceManager::InstantiateSpritesheet("extraspritesheet", new SpriteSheet(ResourceManager::GetTexture("ExtraSpriteSheet.png"), 15, 15));
 	ResourceManager::InstantiateSpritesheet("RPGpack_sheet", new SpriteSheet(ResourceManager::GetTexture("RPGpack_sheet.png"), 64, 64));

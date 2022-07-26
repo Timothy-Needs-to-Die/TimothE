@@ -55,7 +55,7 @@ void CameraManager::SetCamera(std::string cameraID)
 	}
 	for (int i = 0; i < _pCameras.size(); i++)
 	{
-		if (_pCameras[i]->_mName == cameraID)
+		if (_pCameras[i]->GetName() == cameraID)
 		{
 			_pCurrentCamera = _pCameras[i];
 			break;
@@ -79,7 +79,7 @@ void CameraManager::RemoveCamera(std::string cameraID)
 {
 	for (int i = 0; i < _pCameras.size(); i++)
 	{
-		if (_pCameras[i]->_mName == cameraID)
+		if (_pCameras[i]->GetName() == cameraID)
 		{
 			_pCameras.erase(_pCameras.begin() + i);
 			break;

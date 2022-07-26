@@ -33,13 +33,13 @@ public:
 	static Camera* GetCamera(std::string cameraID) 
 	{ 
 		for (int i = 0; i < _pCameras.size(); i++) {
-			if (_pCameras[i]->_mName == cameraID) return _pCameras[i];
+			if (_pCameras[i]->GetName() == cameraID) return _pCameras[i];
 		}
 
 		TIM_LOG_ERROR("Camera with ID: " << cameraID << " could not be found");
 
 		return nullptr;
-	}//return _pCameras.at(cameraID);
+	}
 
 
 private:

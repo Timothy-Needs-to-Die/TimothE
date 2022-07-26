@@ -1,6 +1,9 @@
 #include "pch.h"
 #include "Camera.h"
 #include "Time.h"
+#include "GameObject.h"
+#include "Transform.h"
+#include "TileMap.h"
 
 Camera::Camera(float left, float right, float bottom, float top, std::string name, GameObject* parent) : Component(parent)
 {
@@ -12,7 +15,7 @@ Camera::Camera(float left, float right, float bottom, float top, std::string nam
 	_rotation = 0.0f;
 	_aspectRatio = abs(left);
 	_zoomLevel = abs(bottom);
-	_mName = name;
+	_name = name;
 
 
 	_left = left;
@@ -22,12 +25,7 @@ Camera::Camera(float left, float right, float bottom, float top, std::string nam
 
 	RecalculateViewMatrix();
 }
-void Camera::OnStart()
-{
-}
-void Camera::OnEnd()
-{
-}
+
 void Camera::DrawEditorUI()
 {
 	//displays the texture in the editor window
@@ -43,18 +41,61 @@ void Camera::DrawEditorUI()
 	ImGui::InputFloat("Zoom", &_zoomLevel);
 	
 	ImGui::Text("Position");
-	ImGui::InputFloat("X", &x);
-	ImGui::InputFloat("Y", &y);
-	ImGui::InputFloat("Z", &z);
+
 	ImGui::Text("Rotation"); ImGui::SameLine();
 	ImGui::InputFloat("Rotation", &_rotation);
-	SetPosition(glm::vec3(x,y,z));
 }
 
 void Camera::OnUpdate()
 {
-	if (_mName == "Editor") {
+	if (_name == "Editor") {
 		PollInput();
+	}
+
+	if (_pFollowTarget != nullptr)
+	{
+		glm::vec2 followTargetPos = _pFollowTarget->GetTransform()->GetPosition();
+
+		glm::vec3 adjustedPos;
+		adjustedPos.x = followTargetPos.x + _followTargetOffset.x;
+		adjustedPos.y = followTargetPos.y + _followTargetOffset.y;
+		adjustedPos.z = _followTargetOffset.z;
+
+		_cameraPos = adjustedPos;
+
+		if (_pCurrentMap != nullptr) {
+			float camXMin = _cameraPos.x + _left; //Left is negative
+			float camXMax = _cameraPos.x + _right;
+			float camYMin = _cameraPos.y + _bottom; //Bottom is negative
+			float camYMax = _cameraPos.y + _top;
+
+			float tilemapXMin = 0.0f;
+			float tilemapXMax = _pCurrentMap->GetMapSize().x;
+			float tilemapYMin = 0.0f;
+			float tilemapYMax = _pCurrentMap->GetMapSize().y;
+
+			if (camXMin < tilemapXMax && camXMax > tilemapXMax) {
+				int noOfTiles = _pCurrentMap->GetTileMapDimensions().x;
+				_cameraPos.x = 0.25f * (noOfTiles / 2);
+			}
+			else if (camXMin < tilemapXMin) {
+				_cameraPos.x = tilemapXMin - _left;
+			}
+			else if (camXMax > tilemapXMax) {
+				_cameraPos.x = tilemapXMax - _right;
+			}
+
+			if (camYMin < tilemapYMin && camYMax + 0.25f> tilemapYMax) {
+				int noOfTiles = _pCurrentMap->GetTileMapDimensions().y;
+				_cameraPos.y = 0.25f * (noOfTiles / 2);
+			}
+			else if (camYMin < tilemapYMin) {
+				_cameraPos.y = tilemapYMin - _bottom;
+			}
+			else if (camYMax > tilemapYMax) {
+				_cameraPos.y = tilemapYMax - _top;
+			}
+		}
 	}
 
 	RecalculateViewMatrix();
@@ -77,7 +118,6 @@ void Camera::OnMouseScrolled(float yOffset)
 void Camera::SetProjection(float left, float right, float bottom, float top)
 {
 	_projection = glm::ortho(left, right, bottom, top, -2.0f, 2.0f);
-	_viewProj = _projection * _view;
 }
 
 void Camera::RecalculateViewMatrix()
