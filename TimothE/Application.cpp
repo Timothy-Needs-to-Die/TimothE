@@ -102,7 +102,7 @@ void Application::Init(bool devMode)
 	CameraManager::MainCamera()->SetCameraSpeed(2.0f);
 
 	CameraManager::AddCamera("Editor");
-	CameraManager::GetCamera("Editor")->SetPosition({ 1.78f, 1.0f, -1.0f });
+	
 	CameraManager::SetToMainCamera();
 
 	_pfb = std::make_shared<Framebuffer>(ResourceManager::GetShader("framebuffer"));
@@ -153,6 +153,7 @@ void Application::GameLoop()
 
 		if (DEV_MODE) {
 			if (Input::IsKeyDown(TimothEKeyCode::KEY_0)) {
+				CameraManager::GetCamera("Editor")->SetPosition(CameraManager::MainCamera()->Position());
 				_tileMapEditorEnabled = !_tileMapEditorEnabled;
 				TileMapEditor::_active = _tileMapEditorEnabled;
 				std::string cameraName = _tileMapEditorEnabled ? "Editor" : "Main Camera";

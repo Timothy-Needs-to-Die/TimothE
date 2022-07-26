@@ -14,8 +14,6 @@
 
 class Application;
 
-#define CONTENT_BROWSER_DIRECTORY "./Resources" //sets file directory for the content browser
-
 class Editor
 {
 public:
@@ -37,29 +35,13 @@ public:
 
 	void ConvertGameToEditorSpace();
 
-	static vector<string> GetDirectoriesOfType(string type, string currentDir);
-
 	Framebuffer* _pEditorFramebuffer;
 private:
-
-	//Where all ImGui code will go
-	void EditorImGui(Scene* currentScene);
-
-	//ImGui
-	void ImGUISwitchRender(bool& editorMode, bool& paused);
-
 	//Editor update loop
 	void EditorUpdate(Scene* currentScene);
 
 	Shader* _pScreenShader;
 	char* _pNotesBuffer;
-
-	GameObject* _pSelectedGameObject = nullptr;
-
-	void CreateFileInContentBrowser(std::string name, std::string type);
-	void CheckFileType(std::string fileDirectory, int i);
-	void SearchFileDirectory();
-	std::string _mCurrentDir = CONTENT_BROWSER_DIRECTORY;
 
 	bool tileEditorOpen;
 
@@ -71,12 +53,4 @@ private:
 	Texture2D* pImGuiSample;
 
 	Application* _pApplication;
-
-	//Texture2D* pContentTextureImage = new Texture2D(NULL);
-	//Texture2D* pContentTextureScene = new Texture2D(NULL);
-	//Texture2D* pContentTextureConfig = new Texture2D(NULL);
-	//Texture2D* pContentTextureScript = new Texture2D(NULL);
-	//Texture2D* pContentTextureSound = new Texture2D(NULL);
-	//Texture2D* pContentTextureFile = new Texture2D(NULL);
-	//Texture2D* pContentTextureFolder = new Texture2D(NULL);
 };
