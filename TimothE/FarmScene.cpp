@@ -151,6 +151,12 @@ void FarmScene::InitScene()
 	//_pTilemap->CreateTilemapFromProcGen(map, 64, 64, "dungeonGrey");
 	_pPlayer->GetTransform()->SetPosition(_pTilemap->GetPlayerSpawn());
 
+	_pEnemyTester = new Enemy("Enemy");
+	
+	_pEnemyTester->GetComponent<AIMovementCompnent>()->SetDestination({ 0.5f, 5.5f });
+
+	AddGameObject(_pEnemyTester);
+
 
 	CameraManager::MainCamera()->SetFollowTarget(_pPlayer);
 	CameraManager::MainCamera()->SetTileMap(_pTilemap);

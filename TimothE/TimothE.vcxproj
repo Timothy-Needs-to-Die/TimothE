@@ -140,8 +140,6 @@
     <ClInclude Include="GameOverScreen.h" />
     <ClInclude Include="GameTimeManager.h" />
     <ClInclude Include="Health.h" />
-    <ClInclude Include="Heap.h" />
-    <ClInclude Include="HeapManager.h" />
     <ClInclude Include="ImageUIObject.h" />
     <ClInclude Include="ImGuiManager.h" />
     <ClInclude Include="Imgui\imconfig.h" />
@@ -161,7 +159,6 @@
     <ClInclude Include="LightsourceObject.h" />
     <ClInclude Include="MainMenuScene.h" />
     <ClInclude Include="MainMenuUI.h" />
-    <ClInclude Include="MemoryManager.h" />
     <ClInclude Include="MovementComponent.h" />
     <ClInclude Include="Node.h" />
     <ClInclude Include="OffensiveStructureObject.h" />
@@ -299,8 +296,6 @@
     <ClCompile Include="GameOverScreen.cpp" />
     <ClCompile Include="GameTimeManager.cpp" />
     <ClCompile Include="Health.cpp" />
-    <ClCompile Include="Heap.cpp" />
-    <ClCompile Include="HeapManager.cpp" />
     <ClCompile Include="ImageUIObject.cpp" />
     <ClCompile Include="Imgui\imgui.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">NotUsing</PrecompiledHeader>
@@ -329,7 +324,6 @@
     <ClCompile Include="LightsourceObject.cpp" />
     <ClCompile Include="MainMenuScene.cpp" />
     <ClCompile Include="MainMenuUI.cpp" />
-    <ClCompile Include="MemoryManager.cpp" />
     <ClCompile Include="MovementComponent.cpp" />
     <ClCompile Include="OffensiveStructureObject.cpp" />
     <ClCompile Include="Particle.cpp" />

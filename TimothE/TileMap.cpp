@@ -32,7 +32,7 @@ TileMap::~TileMap()
 
 void TileMap::LoadTileMap()
 {
-	TMX::Parser tmx("Resources/Tilemaps/ArtTestMap.tmx");
+	TMX::Parser tmx("Resources/Tilemaps/CameraTest.tmx");
 
 	SetTileMapSize({ tmx.mapInfo.width, tmx.mapInfo.height });
 
@@ -341,6 +341,7 @@ bool TileMap::CollidableAtPosition(glm::vec2 worldPos)
 
 	return CollidableAtIndexXY(row, column);
 }
+
 
 
 bool TileMap::CollidableAtIndexXY(int x, int y)

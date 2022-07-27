@@ -6,7 +6,7 @@
 AStar::~AStar()
 {
 	//clears the nodes list
-	_mPathOfNodes.clear();
+	_pathOfNodes.clear();
 }
 
 struct node_greater_than {
@@ -17,24 +17,24 @@ struct node_greater_than {
 
 std::vector<glm::vec2> AStar::FindPath(glm::vec2 start, glm::vec2 end)
 {
-	_mPathOfNodes.clear();
+	_pathOfNodes.clear();
 
 	//This list will contain the untested nodes that will be used to cycle through each node in the map 
 	std::vector<Node*> untestedNodes;
 
 	//Reset all nodes on map.
-	for (int i = 0; i < _mMapNodes.size(); ++i) {
-		_mMapNodes[i]._mIsVisited = false;
-		_mMapNodes[i]._mParentNode = glm::vec2(-1);
-		_mMapNodes[i]._mGlobalGoal = FLT_MAX;
-		_mMapNodes[i]._mLocalGoal = FLT_MAX;
+	for (int i = 0; i < _mapNodes.size(); ++i) {
+		_mapNodes[i]._mIsVisited = false;
+		_mapNodes[i]._mParentNode = glm::vec2(-1);
+		_mapNodes[i]._mGlobalGoal = FLT_MAX;
+		_mapNodes[i]._mLocalGoal = FLT_MAX;
 	}
 
 	Node* currentNode = new Node();
 	currentNode->_mPos = start;
 	currentNode->_mLocalGoal = 0.0f;
 	currentNode->_mGlobalGoal = glm::distance(currentNode->_mPos, end);
-	currentNode->_mNeighborNodes = _mMapNodes.at((start.y * _mTilesPerUnit) * _mWidth + (start.x * _mTilesPerUnit))._mNeighborNodes;
+	currentNode->_mNeighborNodes = _mapNodes.at((start.y * _tilesPerUnit) * _width + (start.x * _tilesPerUnit))._mNeighborNodes;
 
 	untestedNodes.emplace_back(currentNode);
 
@@ -89,9 +89,9 @@ std::vector<glm::vec2> AStar::FindPath(glm::vec2 start, glm::vec2 end)
 			However it may not be the shortest path*/
 			float dist = glm::distance(nodeNeighbor->_mPos, end);
 
-			if (dist <= 0.25f)
+			if (dist <= 1.25f)
 			{
-				_mEndNode = nodeNeighbor;
+				_pEndNode = nodeNeighbor;
 				pathFound = true;
 			}
 		}
@@ -100,9 +100,9 @@ std::vector<glm::vec2> AStar::FindPath(glm::vec2 start, glm::vec2 end)
 	if (pathFound) {
 		//if (mEnd != nullptr) {
 			//Sets the previousNode to the endPoint as the A* algorithm works backwards
-		Node& previousNode = *_mEndNode;
+		Node& previousNode = *_pEndNode;
 		
-		size_t size = _mPathOfNodes.size();
+		size_t size = _pathOfNodes.size();
 		//keep looping until the previousNode no longer has a parent this can only be the starting node
 		while (previousNode._mParentNode != start)
 		{
@@ -111,22 +111,22 @@ std::vector<glm::vec2> AStar::FindPath(glm::vec2 start, glm::vec2 end)
 
 			//adds the node to the path of nodes
 			for (int i = 0; i < size; ++i) {
-				if (_mPathOfNodes[i]._mPos == previousNode._mPos) {
-					int index = (start.y * _mTilesPerUnit) * _mWidth + (start.x * _mTilesPerUnit);
+				if (_pathOfNodes[i]._mPos == previousNode._mPos) {
+					int index = (start.y * _tilesPerUnit) * _width + (start.x * _tilesPerUnit);
 					if (index < 0) index = 0;
-					previousNode = _mMapNodes.at(index);
+					previousNode = _mapNodes.at(index);
 					previousNode._mParentNode = start;
 					return ProcessPath();
 				}
 			}
 
-			_mPathOfNodes.emplace_back(previousNode);
+			_pathOfNodes.emplace_back(previousNode);
 			size++;
 
 			//Sets the previous node to the parent of this node
-			int index = (previousNode._mParentNode.y * _mTilesPerUnit) * _mWidth + (previousNode._mParentNode.x * _mTilesPerUnit);
+			int index = (previousNode._mParentNode.y * _tilesPerUnit) * _width + (previousNode._mParentNode.x * _tilesPerUnit);
 			if (index < 0) index = 0;
-			previousNode = _mMapNodes.at(index);
+			previousNode = _mapNodes.at(index);
 		}
 	}
 	return ProcessPath();
@@ -134,95 +134,76 @@ std::vector<glm::vec2> AStar::FindPath(glm::vec2 start, glm::vec2 end)
 
 void AStar::SetMap(TileMap* map)
 {
-	for (int i = 0; i < _mMapNodes.size(); ++i) {
-		_mMapNodes[i]._mNeighborNodes.clear();
+	for (int i = 0; i < _mapNodes.size(); ++i) {
+		_mapNodes[i]._mNeighborNodes.clear();
 	}
 
-	_mMapNodes.clear();
-	_mTilesPerUnit = map->GetTilesPerUnit();
-	_mWidth = map->GetMapSize().x * _mTilesPerUnit;
-	_mHeight = map->GetMapSize().y * _mTilesPerUnit;
+	_mapNodes.clear();
+	_tilesPerUnit = map->GetTilesPerUnit();
+	_width = map->GetMapSize().x * _tilesPerUnit;
+	_height = map->GetMapSize().y * _tilesPerUnit;
 
-	//TODO: Fix this
+	glm::vec2 mapDimensions = map->GetTileMapDimensions();
 
-	//std::vector<TileData> tiles = map->GetAllTilesInLayer(0);
-	//for (int i = 0; i < tiles.size(); i++)
-	//{
-	//	Node tile;
-	//	tile._mIsObstacle = map->CollidableAtPosition(i);
-	//	tile._mPos = tiles.at(i).pos;
-	//
-	//	_mMapNodes.push_back(tile);
-	//}
-	//
-	//for (int i = 0; i < _mMapNodes.size(); i++)
-	//{
-	//	_mMapNodes[i]._mNeighborNodes.clear();
-	//
-	//	int yIndex = i / _mWidth;
-	//	int xIndex = i - (yIndex * _mWidth);
-	//
-	//	glm::vec2 pos = _mMapNodes[i]._mPos;
-	//
-	//	//Left
-	//	if (xIndex > 0) {
-	//		_mMapNodes[i]._mNeighborNodes.emplace_back(&_mMapNodes[i - 1]);
-	//	}
-	//
-	//	//Right
-	//	if (xIndex < _mWidth) {
-	//		_mMapNodes[i]._mNeighborNodes.emplace_back(&_mMapNodes[i + 1]);
-	//	}
-	//
-	//	//Top 
-	//	if (yIndex < _mHeight) {
-	//		_mMapNodes[i]._mNeighborNodes.emplace_back(&_mMapNodes[i + _mWidth]);
-	//	}
-	//
-	//	//Bottom
-	//	if (yIndex > 0) {
-	//		_mMapNodes[i]._mNeighborNodes.emplace_back(&_mMapNodes[i - _mWidth]);
-	//	}
-	//
-	//	//TopLeft
-	//	if (xIndex > 0 && yIndex < _mHeight) {
-	//		_mMapNodes[i]._mNeighborNodes.push_back(&_mMapNodes[i - 1 + _mWidth]);
-	//	}
-	//
-	//	//TopRight
-	//	if (xIndex < _mWidth && yIndex < _mHeight) {
-	//		_mMapNodes[i]._mNeighborNodes.push_back(&_mMapNodes[i + 1 + _mWidth]);
-	//	}
-	//	//BottomLeft
-	//	if (xIndex > 0 && yIndex > _mHeight) {
-	//		_mMapNodes[i]._mNeighborNodes.push_back(&_mMapNodes[i - 1 - _mWidth]);
-	//	}
-	//
-	//	//BottomRight
-	//	if (xIndex < _mWidth && yIndex > _mHeight) {
-	//		_mMapNodes[i]._mNeighborNodes.push_back(&_mMapNodes[i + 1 - _mWidth]);
-	//	}
-	//}
+	bool** collidableMap = map->GetCollidableTileMap();
+
+	//Loop through map Y and X
+	for (int y = 0; y < mapDimensions.y; y++) {
+		for (int x = 0; x < mapDimensions.x; x++) {
+			//Gets the desired tile
+			TileData* td = map->GetTileFromXYIndex(x, y);
+
+			//Sets the basic attributes.
+			Node tile;
+			tile._mIsObstacle = collidableMap[y][x];
+			tile._mPos = td->pos;
+			tile._mNeighborNodes.clear();
+			_mapNodes.emplace_back(tile);
+
+		}
+	}
+
+	for (int i = 0; i < _mapNodes.size(); i++)
+	{
+		int yIndex = i / _width;
+		int xIndex = i - (yIndex * _width);
+
+		glm::vec2 pos = _mapNodes[i]._mPos;
+
+		//Left and Right
+		if (xIndex > 0) _mapNodes[i]._mNeighborNodes.emplace_back(&_mapNodes[i - 1]); 
+		else if (xIndex < _width) _mapNodes[i]._mNeighborNodes.emplace_back(&_mapNodes[i + 1]);
+
+		//Top and Bottom		
+		if (yIndex < _height) _mapNodes[i]._mNeighborNodes.emplace_back(&_mapNodes[i + _width]);
+		else if (yIndex > 0) _mapNodes[i]._mNeighborNodes.emplace_back(&_mapNodes[i - _width]); 
+
+		//Top Left and Top Right
+		if (xIndex > 0 && yIndex < _height) _mapNodes[i]._mNeighborNodes.push_back(&_mapNodes[i - 1 + _width]); //TopLeft
+		else if (xIndex < _width && yIndex < _height) _mapNodes[i]._mNeighborNodes.push_back(&_mapNodes[i + 1 + _width]); //TopRight
+
+		//Bottom Left and Bottom Right
+		if (xIndex > 0 && yIndex > _height) _mapNodes[i]._mNeighborNodes.push_back(&_mapNodes[i - 1 - _width]);
+		else  if (xIndex < _width && yIndex > _height) _mapNodes[i]._mNeighborNodes.push_back(&_mapNodes[i + 1 - _width]);
+	}
 }
 
 void AStar::UpdateNodeObstacleStatus(glm::vec2 worldPos, bool val)
 {
 	//TODO: Remove this
-	return;
 
-	int index = (worldPos.y * _mTilesPerUnit) * _mWidth + (worldPos.x * _mTilesPerUnit);
-		//_mapInTiles.x * (int)(worldPos.y * _tilesPerUnit) + (int)(worldPos.x * _tilesPerUnit)
+	int index = (worldPos.y * _tilesPerUnit) * _width + (worldPos.x * _tilesPerUnit);
+
 	if (index < 0) index = 0;
-	if (index > _mMapNodes.size() - 1) index = _mMapNodes.size() - 1;
+	if (index > _mapNodes.size() - 1) index = _mapNodes.size() - 1;
 
-	_mMapNodes[index]._mIsObstacle = val;
-
+	_mapNodes[index]._mIsObstacle = val;
 }
 
 std::vector<glm::vec2> AStar::ProcessPath()
 {
-	for (std::vector<Node>::iterator it = _mPathOfNodes.begin(); it != _mPathOfNodes.end(); ++it) {
-		processedPath.emplace_back(it->_mPos);
+	for (std::vector<Node>::iterator it = _pathOfNodes.begin(); it != _pathOfNodes.end(); ++it) {
+		_processedPath.emplace_back(it->_mPos);
 	}
-	return processedPath;
+	return _processedPath;
 }

@@ -55,6 +55,8 @@ private:
 	class FarmlandManager* farmland = nullptr;
 	class WaveManager* _pWaveManager = nullptr;
 
+	class Enemy* _pEnemyTester = nullptr;
+
 	//Farmland
 
 	std::vector<class StructureObject*> _pStructures;

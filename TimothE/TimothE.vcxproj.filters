@@ -177,12 +177,6 @@
     <ClInclude Include="Health.h">
       <Filter>Headers</Filter>
     </ClInclude>
-    <ClInclude Include="Heap.h">
-      <Filter>Headers</Filter>
-    </ClInclude>
-    <ClInclude Include="HeapManager.h">
-      <Filter>Headers</Filter>
-    </ClInclude>
     <ClInclude Include="ImGuiManager.h">
       <Filter>Headers</Filter>
     </ClInclude>
@@ -229,9 +223,6 @@
       <Filter>Headers</Filter>
     </ClInclude>
     <ClInclude Include="LightsourceObject.h">
-      <Filter>Headers</Filter>
-    </ClInclude>
-    <ClInclude Include="MemoryManager.h">
       <Filter>Headers</Filter>
     </ClInclude>
     <ClInclude Include="MovementComponent.h">
@@ -576,12 +567,6 @@
     <ClCompile Include="Health.cpp">
       <Filter>Source</Filter>
     </ClCompile>
-    <ClCompile Include="Heap.cpp">
-      <Filter>Source</Filter>
-    </ClCompile>
-    <ClCompile Include="HeapManager.cpp">
-      <Filter>Source</Filter>
-    </ClCompile>
     <ClCompile Include="Imgui\imgui.cpp">
       <Filter>Source</Filter>
     </ClCompile>
@@ -613,9 +598,6 @@
       <Filter>Source</Filter>
     </ClCompile>
     <ClCompile Include="LightsourceObject.cpp">
-      <Filter>Source</Filter>
-    </ClCompile>
-    <ClCompile Include="MemoryManager.cpp">
       <Filter>Source</Filter>
     </ClCompile>
     <ClCompile Include="MovementComponent.cpp">

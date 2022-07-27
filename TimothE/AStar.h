@@ -14,7 +14,7 @@
 class AStar
 {
 public:
-	AStar() : _mHeight(32), _mTilesPerUnit(4.0f), _mWidth(32) { }
+	AStar() : _height(32), _tilesPerUnit(4.0f), _width(32) { }
 
 	~AStar();
 
@@ -28,20 +28,20 @@ public:
 
 	void UpdateNodeObstacleStatus(glm::vec2 worldPos, bool val);
 
-	std::vector<glm::vec2> processedPath;
+	std::vector<glm::vec2> _processedPath;
 private:
 	std::vector<glm::vec2> ProcessPath();
 
 
-	Node* _mEndNode = nullptr;
+	Node* _pEndNode = nullptr;
 
 	//This list contains the directions the player needs to take in the form of Nodes. 
-	std::vector<Node> _mPathOfNodes;
+	std::vector<Node> _pathOfNodes;
 
-	std::vector<Node> _mMapNodes;
-	float _mWidth;
-	float _mHeight;
-	float _mTilesPerUnit;
+	std::vector<Node> _mapNodes;
+	float _width;
+	float _height;
+	float _tilesPerUnit;
 };
 
 

@@ -39,7 +39,7 @@ void AIMovementCompnent::SetDestination(glm::vec2 targetPos)
 	_mCurrentTarget = GetNextTarget();
 
 	//clear paths
-	_pAStar->processedPath.clear();
+	_pAStar->_processedPath.clear();
 	tempPath.clear();
 
 }

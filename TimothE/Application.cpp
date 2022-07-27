@@ -27,7 +27,6 @@ void Application::Init()
 {
 	UID::Init();
 	Input::Init();
-	HeapManager::Init();
 
 	//checks if glfw initialsed
 	if (!glfwInit()) {
@@ -91,9 +90,6 @@ void Application::Init()
 //game loop update
 void Application::GameLoop()
 {
-	//Intial mem bookmark
-	int memBookmark = HeapManager::GetMemoryBookmark();
-
 	//creates new audio engine
 	_pAudio = std::make_shared<AudioEngine>();
 
@@ -171,9 +167,6 @@ void Application::GameLoop()
 	//delete
 	ImGuiManager::DestroyImGui();
 	Window::DestroyWindow();
-
-	//Prints the memory status and reports and memory leaks
-	//HeapManager::ReportMemoryLeaks(memBookmark);
 }
 
 //run events

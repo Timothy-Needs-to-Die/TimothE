@@ -2,7 +2,6 @@
 
 #include "imgui.h"
 #include "Component.h"
-#include "MemoryManager.h"
 
 #include "pch.h"
 #include "Quad.h"

@@ -5,7 +5,6 @@
 #include "Core/Graphics/Window.h"
 #include "Core/Events/ApplicationEvent.h"
 #include "Scene.h"
-#include "MemoryManager.h"
 #include "CameraManager.h"
 
 #include "AudioEngine.h"

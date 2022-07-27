@@ -108,6 +108,14 @@ public:
 	/// <param name="worldPos">The world position you want to query</param>
 	bool CollidableAtPosition(glm::vec2 worldPos);
 	
+	TileData* GetTileFromXYIndex(const int x, const int y) {
+		return _tileArr[0][y][x];
+	}
+
+	bool** GetCollidableTileMap() const {
+		return _collidableTileArray;
+	}
+
 	/// <summary>
 	/// Sets a specified tile on a specified layer to a specified collision value
 	/// </summary>
