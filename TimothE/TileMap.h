@@ -39,9 +39,6 @@ public:
 	//Loads the tilemap
 	void LoadTileMap();
 
-	//Converts the mouse position to a tile, takes in a camera to base the calculations around
-	glm::vec2 MousePosToTile(Camera* cam);
-
 	/// <summary>
 	/// Sets the size of the tilemap in tiles e.g. Pass in 64,32 if you want a 64 to tile wide 32 tile tall map.
 	/// </summary>

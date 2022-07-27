@@ -51,7 +51,7 @@ private:
 	std::shared_ptr<class Framebuffer> _pfb = nullptr;
 	std::shared_ptr<class AudioEngine> _pAudio = nullptr;
 
-	bool _inEditorMode = true;
+	bool _inEditorMode = false;
 	bool _running;
 	bool _paused = false;
 	bool _gameRunning = false;

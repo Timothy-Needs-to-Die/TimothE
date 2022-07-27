@@ -65,16 +65,8 @@ bool Input::IsMouseButtonUp(TimothEMouseCode button)
 	return _pMouseArr[button] == GLFW_RELEASE;
 }
 
-void Input::SetEditorMousePos(float x, float y)
-{
-	_mousePosXRelativetoEditor = x;
-	_mousePosYRelativetoEditor = y;
-}
-
 //Initialize static members
 int* Input::_pKeyArr = new int[KEY_LAST];
 int* Input::_pMouseArr = new int[BUTTON_LAST];
 float Input::_mouseXPos = 0.0f;
 float Input::_mouseYPos = 0.0f;
-float Input::_mousePosXRelativetoEditor = 0.0f;
-float Input::_mousePosYRelativetoEditor = 0.0f;

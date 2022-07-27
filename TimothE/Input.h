@@ -47,9 +47,6 @@ public:
 	//Is the mouse button currently up?
 	static bool IsMouseButtonUp(TimothEMouseCode button);
 
-	static void SetEditorMousePos(float x, float y);
-	static glm::vec2 GetEditorMousePos() { return { _mousePosXRelativetoEditor, _mousePosYRelativetoEditor }; }
-
 private:
 	//Holds each of the keys that can be queried
 	static int* _pKeyArr;
@@ -59,9 +56,5 @@ private:
 
 	static float _mouseXPos;
 	static float _mouseYPos;
-
-	static float _mousePosXRelativetoEditor;
-	static float _mousePosYRelativetoEditor;
-
 };
 

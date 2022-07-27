@@ -205,25 +205,6 @@ void TileMap::LoadTileMap()
 	}
 }
 
-glm::vec2 TileMap::MousePosToTile(Camera* cam)
-{
-	glm::vec2 mousePos = Input::GetEditorMousePos();
-	glm::vec2 camPos = cam->PositionXY();
-	glm::vec2 convertedPosition = camPos + mousePos;
-
-	if (convertedPosition.x > _mapSizeInUnits.x) {
-		//Puts tile on upmost index
-		convertedPosition.x = _mapSizeInUnits.x - _gapBetweenTiles;
-	}
-	if (convertedPosition.y > _mapSizeInUnits.y) {
-		//Puts tile on furthest right index
-		convertedPosition.y = _mapSizeInUnits.y - _gapBetweenTiles;
-	}
-
-
-	return convertedPosition;
-}
-
 //Sets the size of the tilemap in tiles. e.g a 256 x 140 tile map.
 void TileMap::SetTileMapSize(glm::vec2 mapSize)
 {
