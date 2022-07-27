@@ -3,13 +3,18 @@
 #include "Button.h"
 #include "TextComponent.h"
 #include "SceneManager.h"
+#include "SpriteComponent.h"
 
 MainMenuUI::MainMenuUI(std::string name, std::string tag) : GameObject(name, tag)
 {
 	//creates a black background image to cover screen
-	//AddComponent(ResourceManager::GetTexture("gameover_bg"));
+	SpriteComponent* sc = AddComponent(new SpriteComponent(this, 100));
+
+	Sprite* sp = new Sprite(ResourceManager::GetTexture("Game Over.png"));
+
+	sc->SetSprite(sp);
 	GetTransform()->SetPosition({ -4, -2.0f });
-	GetTransform()->SetScale({ 800.0f, 500.0f });
+	GetTransform()->SetScale({ 1920.0f, 1080.0f });
 
 
 
