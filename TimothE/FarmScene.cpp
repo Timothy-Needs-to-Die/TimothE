@@ -63,15 +63,18 @@ void FarmScene::UpdateObjects()
 	if (Input::IsKeyDown(KEY_P)) {
 		if (_genPathKeyPressed) return;
 
+		for (int i = 0; i < 100; i++) {
+			Enemy* pEnemy = _pEnemyStress[i];
 
-		int randX = rand() % 12;
-		int randY = rand() % 64;
+			int randX = rand() % 12;
+			int randY = rand() % 64;
 
-		float xPos = randX * 0.25f;
-		float yPos = randY * 0.25f;
+			float xPos = randX * 0.25f;
+			float yPos = randY * 0.25f;
 
 
-		_pEnemyTester->GetComponent<AIMovementCompnent>()->SetDestination({ xPos, yPos });
+			pEnemy->GetComponent<AIMovementCompnent>()->SetDestination({ xPos, yPos });
+		}
 	}
 
 
@@ -166,17 +169,24 @@ void FarmScene::InitScene()
 
 	}
 	_pGameTime->StartNewDay();
-	
+
 	//int*** map = _pTilemap->GenerateTileMap(10, 64, 64, 3);
 	//_pTilemap->CreateTilemapFromProcGen(map, 64, 64, "dungeonGrey");
 	_pPlayer->GetTransform()->SetPosition(_pTilemap->GetPlayerSpawn());
 
-	_pEnemyTester = new Enemy("Enemy");
-	
-	_pEnemyTester->GetComponent<AIMovementCompnent>()->SetDestination({ 1.25f, 2.5f });
+	//_pEnemyTester = new Enemy("Enemy");
 
-	AddGameObject(_pEnemyTester);
+	//_pEnemyTester->GetComponent<AIMovementCompnent>()->SetDestination({ 1.25f, 2.5f });
 
+	//AddGameObject(_pEnemyTester);
+
+
+	for (int i = 0; i < 100; i++) {
+		Enemy* pEnemy = new Enemy();
+
+		_pEnemyStress.emplace_back(pEnemy);
+		AddGameObject(pEnemy);
+	}
 
 	CameraManager::MainCamera()->SetFollowTarget(_pPlayer);
 	CameraManager::MainCamera()->SetTileMap(_pTilemap);
