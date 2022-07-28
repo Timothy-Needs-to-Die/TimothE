@@ -25,41 +25,41 @@ void AIController::OnStart()
 
 void AIController::OnUpdate()
 {
-	if (_pCurrentTarget)
-	{
-		if (glm::distance(_pMover->GetDestination(), _pTargetTransform->GetPosition()) > 1.0f) {
-			_pMover->SetDestination(_pTargetTransform->GetPosition());
-		}
-	}
-
-	float distToPlayer = glm::distance(_pOwnerTransform->GetPosition(), _pPlayerTransform->GetPosition()); //ai position
-
-	if (distToPlayer < 0.5) //config.tolerance
-	{
-		SetTarget(_pPlayer);
-	}
-	else if (distToPlayer > 5.0f && _pCurrentTarget == _pPlayer) {
-		if (_mTargetArr[0] != "PLAYER" && _mTargetArr[1] != "PLAYER" && _mTargetArr[2] != "PLAYER") {
-			FindTarget();
-		}
-	}
-
-	if (_pCurrentTarget && _pCurrentTarget->IsToBeDestroyed()) {
-		FindTarget();
-	}
-
-	if (_pCurrentTarget == nullptr)
-	{
-		TIM_LOG_LOG("Finding Target");
-		FindTarget();
-	}
-
-	float distToTarget = glm::distance(_pOwnerTransform->GetPosition(), _pCurrentTarget->GetTransform()->GetPosition());//ai pos
-	if (distToTarget < 0.25) //config.attackRange
-	{
-		_pFighter->Attack(_pParentObject);
-		return;
-	}
+	//if (_pCurrentTarget)
+	//{
+	//	if (glm::distance(_pMover->GetDestination(), _pTargetTransform->GetPosition()) > 1.0f) {
+	//		_pMover->SetDestination(_pTargetTransform->GetPosition());
+	//	}
+	//}
+	//
+	//float distToPlayer = glm::distance(_pOwnerTransform->GetPosition(), _pPlayerTransform->GetPosition()); //ai position
+	//
+	//if (distToPlayer < 0.5) //config.tolerance
+	//{
+	//	SetTarget(_pPlayer);
+	//}
+	//else if (distToPlayer > 5.0f && _pCurrentTarget == _pPlayer) {
+	//	if (_mTargetArr[0] != "PLAYER" && _mTargetArr[1] != "PLAYER" && _mTargetArr[2] != "PLAYER") {
+	//		FindTarget();
+	//	}
+	//}
+	//
+	//if (_pCurrentTarget && _pCurrentTarget->IsToBeDestroyed()) {
+	//	FindTarget();
+	//}
+	//
+	//if (_pCurrentTarget == nullptr)
+	//{
+	//	TIM_LOG_LOG("Finding Target");
+	//	FindTarget();
+	//}
+	//
+	//float distToTarget = glm::distance(_pOwnerTransform->GetPosition(), _pCurrentTarget->GetTransform()->GetPosition());//ai pos
+	//if (distToTarget < 0.25) //config.attackRange
+	//{
+	//	_pFighter->Attack(_pParentObject);
+	//	return;
+	//}
 }
 
 void AIController::OnEnd()

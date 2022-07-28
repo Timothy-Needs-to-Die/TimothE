@@ -5,36 +5,47 @@
 
 AStar::~AStar()
 {
-	//clears the nodes list
-	_pathOfNodes.clear();
 }
 
 struct node_greater_than {
 	bool operator()(Node const* a, Node const* b) const {
-		return a->_mGlobalGoal > b->_mGlobalGoal;
+		return a->_globalGoal > b->_globalGoal;
 	}
 };
 
 std::vector<glm::vec2> AStar::FindPath(glm::vec2 start, glm::vec2 end)
 {
-	_pathOfNodes.clear();
+	auto distance = [](Node* a, Node* b)
+	{
+		//Returns the distance between the two nodes
+		return sqrtf((a->_pos.x - b->_pos.x) * (a->_pos.x - b->_pos.x) + (a->_pos.y - b->_pos.y) * (a->_pos.y - b->_pos.y));
+	};
+
+	auto heuristic = [distance](Node* a, Node* b) {
+		return distance(a, b);
+	};
+
+	std::vector<Node> pathOfNodes;
 
 	//This list will contain the untested nodes that will be used to cycle through each node in the map 
-	std::vector<Node*> untestedNodes;
+	std::list<Node*> untestedNodes;
 
 	//Reset all nodes on map.
 	for (int i = 0; i < _mapNodes.size(); ++i) {
-		_mapNodes[i]._mIsVisited = false;
-		_mapNodes[i]._mParentNode = glm::vec2(-1);
-		_mapNodes[i]._mGlobalGoal = FLT_MAX;
-		_mapNodes[i]._mLocalGoal = FLT_MAX;
+		_mapNodes[i]._isVisited = false;
+		_mapNodes[i]._parentNodePosition = glm::vec2(-1);
+		_mapNodes[i]._globalGoal = FLT_MAX;
+		_mapNodes[i]._localGoal = FLT_MAX;
 	}
 
 	Node* currentNode = new Node();
-	currentNode->_mPos = start;
-	currentNode->_mLocalGoal = 0.0f;
-	currentNode->_mGlobalGoal = glm::distance(currentNode->_mPos, end);
-	currentNode->_mNeighborNodes = _mapNodes.at((start.y * _tilesPerUnit) * _width + (start.x * _tilesPerUnit))._mNeighborNodes;
+	currentNode->_pos = start;
+	currentNode->_localGoal = 0.0f;
+	currentNode->_globalGoal = glm::distance(currentNode->_pos, end);
+	currentNode->_neighborNodes = _mapNodes.at((start.y * _tilesPerUnit) * _width + (start.x * _tilesPerUnit))._neighborNodes;
+
+
+	_pEndNode = &_mapNodes.at((end.y * _tilesPerUnit) * _width + (end.x * _tilesPerUnit));
 
 	untestedNodes.emplace_back(currentNode);
 
@@ -42,11 +53,14 @@ std::vector<glm::vec2> AStar::FindPath(glm::vec2 start, glm::vec2 end)
 
 	while (!untestedNodes.empty())
 	{
-		//Converts the untested nodes into a binary heap
-		std::make_heap(untestedNodes.begin(), untestedNodes.end(), node_greater_than());
+		untestedNodes.sort(
+			[](const Node* nodeA, const Node* nodeB) {
+				return nodeA->_globalGoal < nodeB->_globalGoal;
+			});
+
 
 		//The elements at the start of the list may have already been visited, meaning that testing them would use unnecessary resources.
-		while (!untestedNodes.empty() && untestedNodes.front()->_mIsVisited)
+		while (!untestedNodes.empty() && untestedNodes.front()->_isVisited)
 		{
 			//remove the front node if it has been visited
 			untestedNodes.erase(untestedNodes.begin());
@@ -57,85 +71,80 @@ std::vector<glm::vec2> AStar::FindPath(glm::vec2 start, glm::vec2 end)
 
 		//sets the current node to the front of the list
 		currentNode = untestedNodes.front();
-		currentNode->_mIsVisited = true; //Nodes only need to be calculated once
+		currentNode->_isVisited = true; //Nodes only need to be calculated once
 
 		//Explore this node's neighbors
-		for (auto& nodeNeighbor : currentNode->_mNeighborNodes) {
+		for (auto& nodeNeighbor : currentNode->_neighborNodes) {
 			if (nodeNeighbor == nullptr) continue;
 
 			//if the neighbor node is not visited and is not an obstacle then add it to the untestedNode list
-			if (!nodeNeighbor->_mIsVisited && !nodeNeighbor->_mIsObstacle) {
+			if (!nodeNeighbor->_isVisited && !nodeNeighbor->_isObstacle) {
 				//Adds the neighboring node to the list
 				untestedNodes.emplace_back(nodeNeighbor);
 			}
 
 
 			//Calculates the neighbors 'potentially' lower distance 
-			float potentiallyLowerGoal = currentNode->_mLocalGoal + glm::length(currentNode->_mPos + nodeNeighbor->_mPos);
+			float potentiallyLowerGoal = currentNode->_localGoal + distance(currentNode, nodeNeighbor);
 
 			//If the distance between this node and the neighbors is lower than the local score of the neighbor is then this should be the new parent node of the neighbor 
-			if (potentiallyLowerGoal < nodeNeighbor->_mLocalGoal) {
+			if (potentiallyLowerGoal < nodeNeighbor->_localGoal) {
 				//Sets the parent node to the new closest node
-				nodeNeighbor->_mParentNode = currentNode->_mPos;
+				nodeNeighbor->_parentNodePosition = currentNode->_pos;
 
 				//sets the local goal to the new lowest goal
-				nodeNeighbor->_mLocalGoal = potentiallyLowerGoal;
+				nodeNeighbor->_localGoal = potentiallyLowerGoal;
 
 				//Calculate the heuristic value of the neighbor based on there local goal and the distance to the end point
-				nodeNeighbor->_mGlobalGoal = nodeNeighbor->_mLocalGoal + glm::length(nodeNeighbor->_mPos + end);
+				nodeNeighbor->_globalGoal = nodeNeighbor->_localGoal + heuristic(nodeNeighbor, _pEndNode);
 			}
 
-			/*if the distance between the neighbor node and the end node is 0 then it means a path has been found.
-			However it may not be the shortest path*/
-			float dist = glm::distance(nodeNeighbor->_mPos, end);
-
-			if (dist <= 1.25f)
+			if (distance(nodeNeighbor, _pEndNode) == 0.0f)
 			{
-				_pEndNode = nodeNeighbor;
 				pathFound = true;
+				untestedNodes.clear();
+				break;
 			}
 		}
 	}
 
 	if (pathFound) {
-		//if (mEnd != nullptr) {
-			//Sets the previousNode to the endPoint as the A* algorithm works backwards
 		Node& previousNode = *_pEndNode;
 		
-		size_t size = _pathOfNodes.size();
+		size_t size = pathOfNodes.size();
 		//keep looping until the previousNode no longer has a parent this can only be the starting node
-		while (previousNode._mParentNode != start)
+		while (previousNode._parentNodePosition != start)
 		{
 			//Check the parent node is valid
-			if (previousNode._mParentNode.y == ERROR_PATH_POSITION) break;
+			if (previousNode._parentNodePosition.y == ERROR_PATH_POSITION) break;
 
 			//adds the node to the path of nodes
 			for (int i = 0; i < size; ++i) {
-				if (_pathOfNodes[i]._mPos == previousNode._mPos) {
+				if (pathOfNodes[i]._pos == previousNode._pos) {
 					int index = (start.y * _tilesPerUnit) * _width + (start.x * _tilesPerUnit);
 					if (index < 0) index = 0;
 					previousNode = _mapNodes.at(index);
-					previousNode._mParentNode = start;
-					return ProcessPath();
+					previousNode._parentNodePosition = start;
+					return ProcessPath(pathOfNodes);
 				}
 			}
 
-			_pathOfNodes.emplace_back(previousNode);
+			pathOfNodes.emplace_back(previousNode);
 			size++;
 
 			//Sets the previous node to the parent of this node
-			int index = (previousNode._mParentNode.y * _tilesPerUnit) * _width + (previousNode._mParentNode.x * _tilesPerUnit);
+			int index = (previousNode._parentNodePosition.y * _tilesPerUnit) * _width + (previousNode._parentNodePosition.x * _tilesPerUnit);
 			if (index < 0) index = 0;
 			previousNode = _mapNodes.at(index);
 		}
 	}
-	return ProcessPath();
+	return ProcessPath(pathOfNodes);
 }
 
 void AStar::SetMap(TileMap* map)
 {
 	for (int i = 0; i < _mapNodes.size(); ++i) {
-		_mapNodes[i]._mNeighborNodes.clear();
+		_mapNodes[i]._neighborNodes.clear();
 	}
 
 	_mapNodes.clear();
@@ -155,9 +164,9 @@ void AStar::SetMap(TileMap* map)
 
 			//Sets the basic attributes.
 			Node tile;
-			tile._mIsObstacle = collidableMap[y][x];
-			tile._mPos = td->pos;
-			tile._mNeighborNodes.clear();
+			tile._isObstacle = collidableMap[y][x];
+			tile._pos = td->pos;
+			tile._neighborNodes.clear();
 			_mapNodes.emplace_back(tile);
 
 		}
@@ -168,23 +177,23 @@ void AStar::SetMap(TileMap* map)
 		int yIndex = i / _width;
 		int xIndex = i - (yIndex * _width);
 
-		glm::vec2 pos = _mapNodes[i]._mPos;
+		glm::vec2 pos = _mapNodes[i]._pos;
 
 		//Left and Right
-		if (xIndex > 0) _mapNodes[i]._mNeighborNodes.emplace_back(&_mapNodes[i - 1]); 
-		else if (xIndex < _width) _mapNodes[i]._mNeighborNodes.emplace_back(&_mapNodes[i + 1]);
+		if (xIndex > 0) _mapNodes[i]._neighborNodes.emplace_back(&_mapNodes[i - 1]); 
+		if (xIndex < _width) _mapNodes[i]._neighborNodes.emplace_back(&_mapNodes[i + 1]);
 
 		//Top and Bottom		
-		if (yIndex < _height) _mapNodes[i]._mNeighborNodes.emplace_back(&_mapNodes[i + _width]);
-		else if (yIndex > 0) _mapNodes[i]._mNeighborNodes.emplace_back(&_mapNodes[i - _width]); 
+		if (yIndex < _height) _mapNodes[i]._neighborNodes.emplace_back(&_mapNodes[i + _width]);
+		if (yIndex > 0) _mapNodes[i]._neighborNodes.emplace_back(&_mapNodes[i - _width]); 
 
 		//Top Left and Top Right
-		if (xIndex > 0 && yIndex < _height) _mapNodes[i]._mNeighborNodes.push_back(&_mapNodes[i - 1 + _width]); //TopLeft
-		else if (xIndex < _width && yIndex < _height) _mapNodes[i]._mNeighborNodes.push_back(&_mapNodes[i + 1 + _width]); //TopRight
+		if (xIndex > 0 && yIndex < _height) _mapNodes[i]._neighborNodes.push_back(&_mapNodes[i - 1 + _width]); //TopLeft
+		if (xIndex < _width && yIndex < _height) _mapNodes[i]._neighborNodes.push_back(&_mapNodes[i + 1 + _width]); //TopRight
 
 		//Bottom Left and Bottom Right
-		if (xIndex > 0 && yIndex > _height) _mapNodes[i]._mNeighborNodes.push_back(&_mapNodes[i - 1 - _width]);
-		else  if (xIndex < _width && yIndex > _height) _mapNodes[i]._mNeighborNodes.push_back(&_mapNodes[i + 1 - _width]);
+		if (xIndex > 0 && yIndex > _height) _mapNodes[i]._neighborNodes.push_back(&_mapNodes[i - 1 - _width]);
+		if (xIndex < _width && yIndex > _height) _mapNodes[i]._neighborNodes.push_back(&_mapNodes[i + 1 - _width]);
 	}
 }
 
@@ -197,13 +206,14 @@ void AStar::UpdateNodeObstacleStatus(glm::vec2 worldPos, bool val)
 	if (index < 0) index = 0;
 	if (index > _mapNodes.size() - 1) index = _mapNodes.size() - 1;
 
-	_mapNodes[index]._mIsObstacle = val;
+	_mapNodes[index]._isObstacle = val;
 }
 
-std::vector<glm::vec2> AStar::ProcessPath()
+std::vector<glm::vec2> AStar::ProcessPath(std::vector<Node>& nodePath)
 {
-	for (std::vector<Node>::iterator it = _pathOfNodes.begin(); it != _pathOfNodes.end(); ++it) {
-		_processedPath.emplace_back(it->_mPos);
+	std::vector<glm::vec2> processedPath;
+	for (std::vector<Node>::iterator it = nodePath.begin(); it != nodePath.end(); ++it) {
+		processedPath.emplace_back(it->_pos);
 	}
-	return _processedPath;
+	return processedPath;
 }

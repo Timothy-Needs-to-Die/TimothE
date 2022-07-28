@@ -153,7 +153,7 @@ void FarmScene::InitScene()
 
 	_pEnemyTester = new Enemy("Enemy");
 	
-	_pEnemyTester->GetComponent<AIMovementCompnent>()->SetDestination({ 0.5f, 5.5f });
+	_pEnemyTester->GetComponent<AIMovementCompnent>()->SetDestination({ 1.25f, 2.5f });
 
 	AddGameObject(_pEnemyTester);
 

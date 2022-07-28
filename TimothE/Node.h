@@ -7,22 +7,21 @@
 /// </summary>
 struct Node {
 	//Is this node an obstacle i.e a wall
-	bool _mIsObstacle = false;
+	bool _isObstacle = false;
 	//Has this node already been visited 
-	bool _mIsVisited = false;
+	bool _isVisited = false;
 
 	//Distance to the end node
-	float _mGlobalGoal = FLT_MAX;
+	float _globalGoal = FLT_MAX;
 
 	//Distance to the end node from here
-	float _mLocalGoal = FLT_MAX;
+	float _localGoal = FLT_MAX;
 
 	//X and Y position of the node in the map
-
-	glm::vec2 _mPos;
+	glm::vec2 _pos;
 
 	//A vector containing all of the nodes in the maze level
-	std::vector<Node*> _mNeighborNodes;
+	std::vector<Node*> _neighborNodes;
 	//A pointer to the neighbor node that is closest to the start node
-	glm::vec2 _mParentNode = { ERROR_PATH_POSITION, ERROR_PATH_POSITION };
+	glm::vec2 _parentNodePosition = { ERROR_PATH_POSITION, ERROR_PATH_POSITION };
 };
