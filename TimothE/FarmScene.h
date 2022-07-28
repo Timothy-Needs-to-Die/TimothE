@@ -63,5 +63,6 @@ private:
 
 	bool farmKeyPressed = false;
 	bool _inventoryKeyPressed = false;
+	bool _genPathKeyPressed = false;
 	bool spawnEnemyKey = false;
 };

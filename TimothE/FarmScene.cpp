@@ -55,6 +55,26 @@ void FarmScene::UpdateObjects()
 		_pInventoryScreen->OnUpdate();
 	}
 
+
+	if (Input::IsKeyUp(KEY_P)) {
+		_genPathKeyPressed = false;
+	}
+
+	if (Input::IsKeyDown(KEY_P)) {
+		if (_genPathKeyPressed) return;
+
+
+		int randX = rand() % 12;
+		int randY = rand() % 64;
+
+		float xPos = randX * 0.25f;
+		float yPos = randY * 0.25f;
+
+
+		_pEnemyTester->GetComponent<AIMovementCompnent>()->SetDestination({ xPos, yPos });
+	}
+
+
 	if (_pInventoryScreen->GetAllActive())
 	{
 		_pInventoryScreen->OnUpdate();
