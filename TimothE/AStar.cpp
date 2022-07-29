@@ -1,18 +1,6 @@
 #include "pch.h"
 #include "AStar.h"
 
-
-
-AStar::~AStar()
-{
-}
-
-struct node_greater_than {
-	bool operator()(Node const* a, Node const* b) const {
-		return a->_globalGoal > b->_globalGoal;
-	}
-};
-
 std::vector<glm::vec2> AStar::FindPath(glm::vec2 start, glm::vec2 end)
 {
 	auto distance = [](Node* a, Node* b)
@@ -212,8 +200,22 @@ void AStar::UpdateNodeObstacleStatus(glm::vec2 worldPos, bool val)
 std::vector<glm::vec2> AStar::ProcessPath(std::vector<Node>& nodePath)
 {
 	std::vector<glm::vec2> processedPath;
-	for (std::vector<Node>::iterator it = nodePath.begin(); it != nodePath.end(); ++it) {
-		processedPath.emplace_back(it->_pos);
+
+	TIM_LOG_LOG("Original Path Size: " << nodePath.size());
+
+	glm::vec2 directionOld = glm::vec2{ 0.0f };
+
+	for (int i = 1; i < nodePath.size(); i++) {
+		glm::vec2 newDirection = glm::vec2{ nodePath[i - 1]._pos.x - nodePath[i]._pos.x, nodePath[i - 1]._pos.y - nodePath[i]._pos.y };
+
+		if (newDirection != directionOld) 
+		{
+			processedPath.emplace_back(nodePath[i]._pos);
+		}
+		directionOld = newDirection;
 	}
+
+	TIM_LOG_LOG("Processed Path Size: " << processedPath.size());
+
 	return processedPath;
 }

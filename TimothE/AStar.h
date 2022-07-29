@@ -16,8 +16,6 @@ class AStar
 public:
 	AStar() : _height(32), _tilesPerUnit(4.0f), _width(32) { }
 
-	~AStar();
-
 	/// <summary>
 	/// This function will calculate the shortest path for the maze. Using the A* Pathfinding Algorithm
 	/// </summary>
@@ -41,67 +39,5 @@ private:
 	float _height;
 	float _tilesPerUnit;
 };
-
-/*
-	auto distance = [](Node* a, Node* b)
-	{
-		//Returns the distance between the two nodes
-		return sqrtf((a->xPos - b->xPos) * (a->xPos - b->xPos) + (a->yPos - b->yPos) * (a->yPos - b->yPos));
-	};
-
-	auto heuristic = [distance](Node* a, Node* b) {
-		return distance(a, b);
-	};
-
-	Node* currentNode = mStartNode;
-
-	mStartNode->localGoal = 0.0f;
-	mStartNode->globalGoal = heuristic(currentNode, mEndNode);
-
-	std::list<Node*> untestedNodes;
-	untestedNodes.push_back(mStartNode);
-
-	bool pathFound = false;
-
-	while (!untestedNodes.empty())
-	{
-		untestedNodes.sort(
-			[](const Node* nodeA, const Node* nodeB) {
-				return nodeA->globalGoal < nodeB->globalGoal;
-			});
-
-		while (!untestedNodes.empty() && untestedNodes.front()->isVisited)
-		{
-			untestedNodes.pop_front();
-		}
-
-		if (untestedNodes.empty())
-			break;
-
-		currentNode = untestedNodes.front();
-		currentNode->isVisited = true; //Nodes only need to be calculated once
-
-		for (auto nodeNeighbor : currentNode->neighborNodes) {
-			if (!nodeNeighbor->isVisited && !nodeNeighbor->isObstacle) {
-				untestedNodes.push_back(nodeNeighbor);
-			}
-
-
-			float potentiallyLowerGoal = currentNode->localGoal + distance(currentNode, nodeNeighbor);
-
-			if (potentiallyLowerGoal < nodeNeighbor->localGoal) {
-				nodeNeighbor->parentNode = currentNode;
-
-				nodeNeighbor->localGoal = potentiallyLowerGoal;
-
-				nodeNeighbor->globalGoal = nodeNeighbor->localGoal + heuristic(nodeNeighbor, mEndNode);
-			}
-
-			if (distance(nodeNeighbor, mEndNode) == 0) pathFound = true;
-		}
-	}
-
-	return pathFound;
-*/
 
 
