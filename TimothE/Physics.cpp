@@ -210,12 +210,18 @@ void Physics::HandleNoCollision(ColliderBase* c1, ColliderBase* c2)
 
 void Physics::UpdateWorld()
 {
+	constexpr float MAX_DISTANCE = 8.0f;
+
+
 	for (int i = 0; i < _pColliders.size(); ++i) {
 		ColliderBase* pColA = _pColliders[i];
 		ColliderType aType = pColA->GetColliderType();
 		CollisionChannel colAChannel = pColA->GetCollisionChannel();
 
+
 		if (colAChannel == CollisionChannel_None) continue;
+
+		glm::vec2 colAPos = pColA->GetParent()->GetTransform()->GetPosition();
 
 		for (int j = i; j < _pColliders.size(); ++j) {
 			if (j == i) continue;
@@ -225,6 +231,8 @@ void Physics::UpdateWorld()
 			CollisionChannel colBChannel = pColB->GetCollisionChannel();
 
 			if(colBChannel == CollisionChannel_None) continue;
+
+			if (glm::distance(colAPos, pColB->GetParent()->GetTransform()->GetPosition()) > MAX_DISTANCE) continue;
 
 			if (pColA->IsColliderCompatible(colBChannel) || pColB->IsColliderCompatible(colAChannel)) {
 				ColliderType bType = pColB->GetColliderType();

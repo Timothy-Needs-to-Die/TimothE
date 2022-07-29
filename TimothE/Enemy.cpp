@@ -25,7 +25,6 @@ Enemy::Enemy(std::string name, std::string tag)
 	pBox->SetTrigger(true);
 	pBox->SetCollidersChannel(CollisionChannel_Enemy);
 	pBox->AddCompatibleChannel(CollisionChannel_Player);
-	//pBox->AddCompatibleChannel(CollisionChannel_Enemy);
 
 
 	_pMover->SetAllowCollisions(false);
