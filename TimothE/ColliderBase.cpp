@@ -6,6 +6,8 @@
 ColliderBase::ColliderBase(GameObject* parent, ColliderType type) : Component(parent), _colType(type)
 {
 	Physics::AddCollider(this);
+	_collidersChannel = CollisionChannel_None;
+	_flags = 0;
 }
 
 ColliderBase::~ColliderBase()

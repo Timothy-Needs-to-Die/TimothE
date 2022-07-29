@@ -213,24 +213,33 @@ void Physics::UpdateWorld()
 	for (int i = 0; i < _pColliders.size(); ++i) {
 		ColliderBase* pColA = _pColliders[i];
 		ColliderType aType = pColA->GetColliderType();
+		CollisionChannel colAChannel = pColA->GetCollisionChannel();
+
+		if (colAChannel == CollisionChannel_None) continue;
 
 		for (int j = i; j < _pColliders.size(); ++j) {
 			if (j == i) continue;
 
-			ColliderBase* pColB = _pColliders[j];
-			ColliderType bType = pColB->GetColliderType();
 
-			if (aType == ColliderType::Circle && bType == ColliderType::Circle) {
-				Intersects((CircleColliderComponent*)pColA, (CircleColliderComponent*)pColB);
-			}
-			else if (aType == ColliderType::Box && bType == ColliderType::Box) {
-				Intersects((BoxColliderComponent*)pColA, (BoxColliderComponent*)pColB);
-			}
-			else if (aType == ColliderType::Box && bType == ColliderType::Circle) {
-				Intersects((CircleColliderComponent*)pColB, (BoxColliderComponent*)pColA);
-			}
-			else if (aType == ColliderType::Circle && bType == ColliderType::Box) {
-				Intersects((CircleColliderComponent*)pColA, (BoxColliderComponent*)pColB);
+			ColliderBase* pColB = _pColliders[j];
+			CollisionChannel colBChannel = pColB->GetCollisionChannel();
+
+			if(colBChannel == CollisionChannel_None) continue;
+
+			if (pColA->IsColliderCompatible(colBChannel) || pColB->IsColliderCompatible(colAChannel)) {
+				ColliderType bType = pColB->GetColliderType();
+				if (aType == ColliderType::Circle && bType == ColliderType::Circle) {
+					Intersects((CircleColliderComponent*)pColA, (CircleColliderComponent*)pColB);
+				}
+				else if (aType == ColliderType::Box && bType == ColliderType::Box) {
+					Intersects((BoxColliderComponent*)pColA, (BoxColliderComponent*)pColB);
+				}
+				else if (aType == ColliderType::Box && bType == ColliderType::Circle) {
+					Intersects((CircleColliderComponent*)pColB, (BoxColliderComponent*)pColA);
+				}
+				else if (aType == ColliderType::Circle && bType == ColliderType::Box) {
+					Intersects((CircleColliderComponent*)pColA, (BoxColliderComponent*)pColB);
+				}
 			}
 		}
 	}

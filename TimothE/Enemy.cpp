@@ -21,7 +21,12 @@ Enemy::Enemy(std::string name, std::string tag)
 	_pFighter = AddComponent(new Fighter(this));
 	_pHealth = AddComponent(new EnemyHealth(this, 50));
 
-	AddComponent(new BoxColliderComponent(this))->SetTrigger(true);
+	BoxColliderComponent* pBox = AddComponent(new BoxColliderComponent(this));
+	pBox->SetTrigger(true);
+	pBox->SetCollidersChannel(CollisionChannel_Enemy);
+	pBox->AddCompatibleChannel(CollisionChannel_Player);
+	//pBox->AddCompatibleChannel(CollisionChannel_Enemy);
+
 
 	_pMover->SetAllowCollisions(false);
 
