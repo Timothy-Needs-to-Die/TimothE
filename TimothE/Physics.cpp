@@ -21,7 +21,7 @@ void Physics::RemoveCollider(ColliderBase* collider)
 		_pCollidersToRemove.emplace_back(collider);
 	}
 
-	//TIM_LOG_LOG("REMOVING COLLIDER: No of Colliders in scene: " << _pColliders.size());
+	TIM_LOG_LOG("REMOVING COLLIDER: No of Colliders in scene: " << _pColliders.size());
 }
 
 
@@ -211,6 +211,7 @@ void Physics::HandleNoCollision(ColliderBase* c1, ColliderBase* c2)
 void Physics::UpdateWorld()
 {
 	constexpr float MAX_DISTANCE = 8.0f;
+
 
 
 	for (int i = 0; i < _pColliders.size(); ++i) {

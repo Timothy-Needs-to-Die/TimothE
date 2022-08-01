@@ -69,6 +69,8 @@ public:
 			delete _pTilemap;
 			_pTilemap = nullptr;
 		}
+
+		FrameEnd();
 	}
 
 	std::string GetName() const { return _name; }

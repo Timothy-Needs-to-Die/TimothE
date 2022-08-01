@@ -139,7 +139,7 @@ void Scene::FrameEnd()
 
 		std::vector<GameObject*>::iterator it3 = std::find(_listofDrawableUIObjects.begin(), _listofDrawableUIObjects.end(), obj);
 		if (it3 != _listofDrawableUIObjects.end()) {
-			_listofDrawableUIObjects.erase(it);
+			_listofDrawableUIObjects.erase(it3);
 		}
 	}
 
@@ -147,15 +147,14 @@ void Scene::FrameEnd()
 	// 
 	// 	   in fighter or wherever just check if object is active before trying to shoot/collide etc.
 
-	for (auto& obj : _gameObjectsToRemove) {
-		obj->SetActive(false);
-		/*delete obj;
-		obj = nullptr;*/
-		////if (*it != nullptr) {
-		////	delete* it;
-		////	*it = nullptr;
-		////}
-	}
+	//for (auto& obj : _gameObjectsToRemove) {
+	//	delete obj;
+	//	obj = nullptr;
+	//	//if (*obj != nullptr) {
+	//	//	delete* obj;
+	//	//	*obj = nullptr;
+	//	//}
+	//}
 
 	_gameObjectsToRemove.clear();
 }

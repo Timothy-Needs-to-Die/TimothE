@@ -553,17 +553,17 @@ int*** TileMap::GenerateTileMap(int noOfRooms, int width /*= 64*/, int height /*
 
 
 	//Debug Test (Print map to screen)
-	for (int y = 0; y < height; y++) {
-		for (int x = 0; x < width; x++) {
-			if (tilemap[2][y][x] == 3) {
-				std::cout << "3 ";
-			}
-			else {
-				std::cout << tilemap[0][y][x] << " ";
-			}
-		}
-		std::cout << std::endl;
-	}
+	//for (int y = 0; y < height; y++) {
+	//	for (int x = 0; x < width; x++) {
+	//		if (tilemap[2][y][x] == 3) {
+	//			std::cout << "3 ";
+	//		}
+	//		else {
+	//			std::cout << tilemap[0][y][x] << " ";
+	//		}
+	//	}
+	//	std::cout << std::endl;
+	//}
 
 	return tilemap;
 }
