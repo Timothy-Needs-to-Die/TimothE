@@ -105,26 +105,15 @@ std::vector<glm::vec2> AStar::FindPath(glm::vec2 start, glm::vec2 end)
 			//Check the parent node is valid
 			if (previousNode->_parentNodePosition.y == ERROR_PATH_POSITION) break;
 
-			int size = pathOfNodes.size();
-			//adds the node to the path of nodes
-			for (int i = 0; i < size; ++i) {
-				if (pathOfNodes[i]._pos == previousNode->_pos) {
-					int index = (start.y * _tilesPerUnit) * _width + (start.x * _tilesPerUnit);
-					if (index < 0) index = 0;
-					previousNode = _mapNodes.at(index);
-					previousNode->_parentNodePosition = start;
-					return ProcessPath(pathOfNodes);
-				}
-			}
-
 			pathOfNodes.emplace_back(*previousNode);
-			size++;
 
 			//Sets the previous node to the parent of this node
 			int index = (previousNode->_parentNodePosition.y * _tilesPerUnit) * _width + (previousNode->_parentNodePosition.x * _tilesPerUnit);
 			if (index < 0) index = 0;
 			previousNode = _mapNodes.at(index);
 		}
+		//Puts the start node into the list
+		pathOfNodes.emplace_back(*previousNode);
 	}
 	return ProcessPath(pathOfNodes);
 }
@@ -201,7 +190,7 @@ std::vector<glm::vec2> AStar::ProcessPath(std::vector<Node>& nodePath)
 {
 	std::vector<glm::vec2> processedPath;
 
-	TIM_LOG_LOG("Original Path Size: " << nodePath.size());
+	//TIM_LOG_LOG("Original Path Size: " << nodePath.size());
 
 	glm::vec2 directionOld = glm::vec2{ 0.0f };
 
@@ -215,7 +204,7 @@ std::vector<glm::vec2> AStar::ProcessPath(std::vector<Node>& nodePath)
 		directionOld = newDirection;
 	}
 
-	TIM_LOG_LOG("Processed Path Size: " << processedPath.size());
+	//TIM_LOG_LOG("Processed Path Size: " << processedPath.size());
 
 	return processedPath;
 }
