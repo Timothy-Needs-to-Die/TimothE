@@ -1,5 +1,6 @@
 #pragma once
 #include "SceneManager.h"
+#include "GameTimeStructures.h"
 
 class LightLevelManager;
 
@@ -8,10 +9,11 @@ class GameTimeManager
 public:
 	GameTimeManager(LightLevelManager* lightLevelManager) : _pLightLevelManager(lightLevelManager)
 	{
-		if (SceneManager::GetCurrentScene()->GetName() == "FarmScene")
+		/*if (SceneManager::GetCurrentScene()->GetName() == "FarmScene")
 		{
 			_pFarmScene = (FarmScene*)SceneManager::GetCurrentScene();
-		}
+		}*/
+
 	}
 
 	void Update();
@@ -19,23 +21,38 @@ public:
 	//Check if time is day.
 	bool IsDay() const { return _inDay; }
 
-	//Start new day.
 	void StartNewDay();
-	//Start the night.
 	void StartNight();
-	//End the night.
 	void EndNight();
 
+	void ProgressDay();
+	void ProgressWeek();
+	void ProgressSeason();
+	void ProgressYear();
+
+	void GameTimeToString();
+	void LoadTimeFromString();
+	SeasonPhase CheckSeasonPhase();
+
 	//Set game time to night.
-	void SetNight() { _dayTimer = _lengthOfDay + 1.0f; }
+	void SetNight() { _currentDayTimer = _lengthOfDay + 1.0f; }
 
 private:
+
+	int _currentDay = 1;
+	Days _currentDayOfWeek;
+	int _currentYear = 1;
+	float _currentDayTimer = 0.0f;
+	int _currentWeekOfMonth = 1;
+
+	SeasonPhase _currentSeasonPhase;
+	SeasonType _currentSeason;
+
+
 	float _lengthOfDay = 180.0f;
-	float _dayTimer = 0.0f;
 
 	bool _inDay = true;
-
-	class FarmScene* _pFarmScene = nullptr;
+	
 	LightLevelManager* _pLightLevelManager;
 };
 

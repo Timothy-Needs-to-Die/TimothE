@@ -138,6 +138,7 @@
     <ClInclude Include="Font.h" />
     <ClInclude Include="GameObject.h" />
     <ClInclude Include="GameOverScreen.h" />
+    <ClInclude Include="GameTimeStructures.h" />
     <ClInclude Include="GameTimeManager.h" />
     <ClInclude Include="Health.h" />
     <ClInclude Include="ImageUIObject.h" />

@@ -439,6 +439,7 @@
     <ClInclude Include="Constants.h" />
     <ClInclude Include="UIObject.h" />
     <ClInclude Include="ImageUIObject.h" />
+    <ClInclude Include="GameTimeStructures.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="AIController.cpp">
