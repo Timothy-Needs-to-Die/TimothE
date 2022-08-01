@@ -37,7 +37,7 @@ public:
 	~TileMap();
 
 	//Loads the tilemap
-	void LoadTileMap();
+	void LoadTileMap(std::string filename);
 
 	/// <summary>
 	/// Sets the size of the tilemap in tiles e.g. Pass in 64,32 if you want a 64 to tile wide 32 tile tall map.

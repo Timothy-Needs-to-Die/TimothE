@@ -55,6 +55,9 @@ void FarmScene::UpdateObjects()
 		_pInventoryScreen->OnUpdate();
 	}
 
+	if (Input::IsKeyDown(KEY_O)) {
+		SceneManager::SetCurrentScene("EastPlains");
+	}
 
 	if (Input::IsKeyUp(KEY_P)) {
 		_genPathKeyPressed = false;
@@ -63,11 +66,13 @@ void FarmScene::UpdateObjects()
 	if (Input::IsKeyDown(KEY_P)) {
 		if (_genPathKeyPressed) return;
 
+		glm::vec2 mapDimensions = _pTilemap->GetTileMapDimensions();
+
 		for (int i = 0; i < 100; i++) {
 			Enemy* pEnemy = _pEnemyStress[i];
 
-			int randX = rand() % 12;
-			int randY = rand() % 64;
+			int randX = rand() % (int)mapDimensions.x;
+			int randY = rand() % (int)mapDimensions.y;
 
 			float xPos = randX * 0.25f;
 			float yPos = randY * 0.25f;
@@ -91,15 +96,6 @@ void FarmScene::UpdateObjects()
 
 	Physics::UpdateWorld();
 
-	if (_pWaveManager->GetWaveCleared())
-	{
-
-	}
-	else {
-
-	}
-
-
 	if (Input::IsKeyDown(KEY_LEFT_SHIFT)) {
 		CameraManager::MainCamera()->SetZoomLevel(1.5f);
 	}
@@ -120,6 +116,7 @@ void FarmScene::UpdateObjects()
 void FarmScene::InitScene()
 {
 	Scene::InitScene();
+	
 
 	_pInventoryScreen = new InventoryScreen("InventoryScreen", "UI");
 	AddGameObject(_pInventoryScreen);
@@ -153,8 +150,6 @@ void FarmScene::InitScene()
 	AddGameObject(buttonGO);
 
 	PlayerResourceManager::LoadInCropData();
-
-
 	PlayerResourceManager::GetPlantResource(WheatSeedRes)->GainResource(5);
 	PlayerResourceManager::GetPlantResource(CarrotSeedRes)->GainResource(5);
 	PlayerResourceManager::GetPlantResource(PotatoSeedRes)->GainResource(5);
@@ -175,12 +170,6 @@ void FarmScene::InitScene()
 	//_pTilemap->CreateTilemapFromProcGen(map, 64, 64, "dungeonGrey");
 	_pPlayer->GetTransform()->SetPosition(_pTilemap->GetPlayerSpawn());
 
-	//_pEnemyTester = new Enemy("Enemy");
-
-	//_pEnemyTester->GetComponent<AIMovementCompnent>()->SetDestination({ 1.25f, 2.5f });
-
-	//AddGameObject(_pEnemyTester);
-
 
 	for (int i = 0; i < 100; i++) {
 		Enemy* pEnemy = new Enemy();
@@ -191,6 +180,7 @@ void FarmScene::InitScene()
 
 	CameraManager::MainCamera()->SetFollowTarget(_pPlayer);
 	CameraManager::MainCamera()->SetTileMap(_pTilemap);
+	
 }
 
 void FarmScene::SaveScene(std::string filename)

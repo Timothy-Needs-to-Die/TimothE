@@ -133,6 +133,7 @@
     <ClInclude Include="Day.h" />
     <ClInclude Include="DestroyAfterSecondsComponent.h" />
     <ClInclude Include="Dirent.h" />
+    <ClInclude Include="EastPlainsScene.h" />
     <ClInclude Include="Editor.h" />
     <ClInclude Include="Enemy.h" />
     <ClInclude Include="EnemyHealth.h" />
@@ -291,6 +292,7 @@
     <ClCompile Include="CropPlot.cpp" />
     <ClCompile Include="Day.cpp" />
     <ClCompile Include="DestroyAfterSecondsComponent.cpp" />
+    <ClCompile Include="EastPlainsScene.cpp" />
     <ClCompile Include="Editor.cpp" />
     <ClCompile Include="Enemy.cpp" />
     <ClCompile Include="EnemyHealth.cpp" />

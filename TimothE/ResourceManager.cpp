@@ -8,6 +8,7 @@
 
 #include "FarmScene.h"
 #include "TownScene.h"
+#include "EastPlainsScene.h"
 
 #include "Core/Graphics/Shader.h"
 #include "Texture2D.h"
@@ -27,6 +28,7 @@ void ResourceManager::Init()
 	ResourceManager::InstantiateScene("MainMenuScene", new MainMenuScene("MainMenuScene"));
 	ResourceManager::InstantiateScene("FarmScene", new FarmScene("FarmScene"));
 	ResourceManager::InstantiateScene("TownScene", new TownScene("TownScene"));
+	ResourceManager::InstantiateScene("EastPlains", new EastPlainsScene("EastPlains"));
 
 	LoadTextures();
 	LoadSpritsheets();

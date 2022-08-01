@@ -441,6 +441,7 @@
     <ClInclude Include="ImageUIObject.h" />
     <ClInclude Include="ThreadMaster.h" />
     <ClInclude Include="ThreadWorker.h" />
+    <ClInclude Include="EastPlainsScene.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="AIController.cpp">
@@ -722,5 +723,6 @@
     <ClCompile Include="ImageUIObject.cpp" />
     <ClCompile Include="ThreadMaster.cpp" />
     <ClCompile Include="ThreadWorker.cpp" />
+    <ClCompile Include="EastPlainsScene.cpp" />
   </ItemGroup>
 </Project>

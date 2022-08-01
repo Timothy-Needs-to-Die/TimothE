@@ -22,17 +22,15 @@ TileMap::TileMap(std::string name)
 
 	_tilesPerUnit = 4;
 	_gapBetweenTiles = 1.0f / _tilesPerUnit;
-
-	LoadTileMap();
 }
 
 TileMap::~TileMap()
 {
 }
 
-void TileMap::LoadTileMap()
+void TileMap::LoadTileMap(std::string filename)
 {
-	TMX::Parser tmx("Resources/Tilemaps/CameraTest.tmx");
+	TMX::Parser tmx(filename.c_str());
 
 	SetTileMapSize({ tmx.mapInfo.width, tmx.mapInfo.height });
 

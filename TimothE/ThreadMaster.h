@@ -14,9 +14,9 @@ public:
 			std::lock_guard lk{ _mtx };
 			++_doneCount;
 		}
+		_cv.notify_one();
 
 		if (_doneCount == _workerCount) {
-			_cv.notify_one();
 		}
 	}
 

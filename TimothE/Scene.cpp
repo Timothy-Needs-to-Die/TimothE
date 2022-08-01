@@ -51,6 +51,8 @@ void Scene::InitScene()
 	
 	if (_hasTilemap) {
 		_pTilemap = new TileMap(_name);
+		//_pTilemap->LoadTileMap("Resources/Tilemaps/ArtTestMap.tmx");
+		_pTilemap->LoadTileMap("Resources/Tilemaps/" + _name + ".tmx");
 		_pAstarObject->SetMap(_pTilemap);
 		_pLightManager = new LightLevelManager(_pTilemap);
 		_pLightManager->SetWorldLightLevel(5);
