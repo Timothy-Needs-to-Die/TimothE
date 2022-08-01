@@ -34,7 +34,7 @@ private:
 
 	//This list contains the directions the player needs to take in the form of Nodes. 
 
-	std::vector<Node> _mapNodes;
+	std::vector<Node*> _mapNodes;
 	float _width;
 	float _height;
 	float _tilesPerUnit;

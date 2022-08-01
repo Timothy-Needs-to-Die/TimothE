@@ -49,7 +49,6 @@ private:
 	class Player* _pPlayer = nullptr;
 	class ResourceNodeObject* _pWoodNode = nullptr;
 	class GameTimeManager* _pGameTime = nullptr;
-	class Bed* _pBed = nullptr;
 	class InventoryScreen* _pInventoryScreen = nullptr;
 	class GameOverScreen* _pGameOverScreen = nullptr;
 	class FarmlandManager* farmland = nullptr;

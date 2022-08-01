@@ -13,27 +13,26 @@ std::vector<glm::vec2> AStar::FindPath(glm::vec2 start, glm::vec2 end)
 		return distance(a, b);
 	};
 
-	std::vector<Node> pathOfNodes;
 
 	//This list will contain the untested nodes that will be used to cycle through each node in the map 
 	std::list<Node*> untestedNodes;
 
 	//Reset all nodes on map.
 	for (int i = 0; i < _mapNodes.size(); ++i) {
-		_mapNodes[i]._isVisited = false;
-		_mapNodes[i]._parentNodePosition = glm::vec2(-1);
-		_mapNodes[i]._globalGoal = FLT_MAX;
-		_mapNodes[i]._localGoal = FLT_MAX;
+		_mapNodes[i]->_isVisited = false;
+		_mapNodes[i]->_parentNodePosition = glm::vec2(ERROR_PATH_POSITION);
+		_mapNodes[i]->_globalGoal = FLT_MAX;
+		_mapNodes[i]->_localGoal = FLT_MAX;
 	}
 
 	Node* currentNode = new Node();
 	currentNode->_pos = start;
 	currentNode->_localGoal = 0.0f;
 	currentNode->_globalGoal = glm::distance(currentNode->_pos, end);
-	currentNode->_neighborNodes = _mapNodes.at((start.y * _tilesPerUnit) * _width + (start.x * _tilesPerUnit))._neighborNodes;
+	currentNode->_neighborNodes = _mapNodes.at((start.y * _tilesPerUnit) * _width + (start.x * _tilesPerUnit))->_neighborNodes;
 
 
-	_pEndNode = &_mapNodes.at((end.y * _tilesPerUnit) * _width + (end.x * _tilesPerUnit));
+	_pEndNode = _mapNodes.at((end.y * _tilesPerUnit) * _width + (end.x * _tilesPerUnit));
 
 	untestedNodes.emplace_back(currentNode);
 
@@ -96,32 +95,33 @@ std::vector<glm::vec2> AStar::FindPath(glm::vec2 start, glm::vec2 end)
 		}
 	}
 
+	std::vector<Node> pathOfNodes;
 	if (pathFound) {
-		Node& previousNode = *_pEndNode;
+		Node* previousNode = _pEndNode;
 		
-		size_t size = pathOfNodes.size();
 		//keep looping until the previousNode no longer has a parent this can only be the starting node
-		while (previousNode._parentNodePosition != start)
+		while (previousNode->_parentNodePosition != start)
 		{
 			//Check the parent node is valid
-			if (previousNode._parentNodePosition.y == ERROR_PATH_POSITION) break;
+			if (previousNode->_parentNodePosition.y == ERROR_PATH_POSITION) break;
 
+			int size = pathOfNodes.size();
 			//adds the node to the path of nodes
 			for (int i = 0; i < size; ++i) {
-				if (pathOfNodes[i]._pos == previousNode._pos) {
+				if (pathOfNodes[i]._pos == previousNode->_pos) {
 					int index = (start.y * _tilesPerUnit) * _width + (start.x * _tilesPerUnit);
 					if (index < 0) index = 0;
 					previousNode = _mapNodes.at(index);
-					previousNode._parentNodePosition = start;
+					previousNode->_parentNodePosition = start;
 					return ProcessPath(pathOfNodes);
 				}
 			}
 
-			pathOfNodes.emplace_back(previousNode);
+			pathOfNodes.emplace_back(*previousNode);
 			size++;
 
 			//Sets the previous node to the parent of this node
-			int index = (previousNode._parentNodePosition.y * _tilesPerUnit) * _width + (previousNode._parentNodePosition.x * _tilesPerUnit);
+			int index = (previousNode->_parentNodePosition.y * _tilesPerUnit) * _width + (previousNode->_parentNodePosition.x * _tilesPerUnit);
 			if (index < 0) index = 0;
 			previousNode = _mapNodes.at(index);
 		}
@@ -132,7 +132,7 @@ std::vector<glm::vec2> AStar::FindPath(glm::vec2 start, glm::vec2 end)
 void AStar::SetMap(TileMap* map)
 {
 	for (int i = 0; i < _mapNodes.size(); ++i) {
-		_mapNodes[i]._neighborNodes.clear();
+		_mapNodes[i]->_neighborNodes.clear();
 	}
 
 	_mapNodes.clear();
@@ -151,10 +151,10 @@ void AStar::SetMap(TileMap* map)
 			TileData* td = map->GetTileFromXYIndex(x, y);
 
 			//Sets the basic attributes.
-			Node tile;
-			tile._isObstacle = collidableMap[y][x];
-			tile._pos = td->pos;
-			tile._neighborNodes.clear();
+			Node* tile = new Node();
+			tile->_isObstacle = collidableMap[y][x];
+			tile->_pos = td->pos;
+			tile->_neighborNodes.clear();
 			_mapNodes.emplace_back(tile);
 
 		}
@@ -165,23 +165,23 @@ void AStar::SetMap(TileMap* map)
 		int yIndex = i / _width;
 		int xIndex = i - (yIndex * _width);
 
-		glm::vec2 pos = _mapNodes[i]._pos;
+		glm::vec2 pos = _mapNodes[i]->_pos;
 
 		//Left and Right
-		if (xIndex > 0) _mapNodes[i]._neighborNodes.emplace_back(&_mapNodes[i - 1]); 
-		if (xIndex < _width) _mapNodes[i]._neighborNodes.emplace_back(&_mapNodes[i + 1]);
+		if (xIndex > 0) _mapNodes[i]->_neighborNodes.emplace_back(_mapNodes[i - 1]); 
+		if (xIndex < _width) _mapNodes[i]->_neighborNodes.emplace_back(_mapNodes[i + 1]);
 
 		//Top and Bottom		
-		if (yIndex < _height) _mapNodes[i]._neighborNodes.emplace_back(&_mapNodes[i + _width]);
-		if (yIndex > 0) _mapNodes[i]._neighborNodes.emplace_back(&_mapNodes[i - _width]); 
+		if (yIndex < _height) _mapNodes[i]->_neighborNodes.emplace_back(_mapNodes[i + _width]);
+		if (yIndex > 0) _mapNodes[i]->_neighborNodes.emplace_back(_mapNodes[i - _width]); 
 
 		//Top Left and Top Right
-		if (xIndex > 0 && yIndex < _height) _mapNodes[i]._neighborNodes.push_back(&_mapNodes[i - 1 + _width]); //TopLeft
-		if (xIndex < _width && yIndex < _height) _mapNodes[i]._neighborNodes.push_back(&_mapNodes[i + 1 + _width]); //TopRight
+		if (xIndex > 0 && yIndex < _height) _mapNodes[i]->_neighborNodes.push_back(_mapNodes[i - 1 + _width]); //TopLeft
+		if (xIndex < _width && yIndex < _height) _mapNodes[i]->_neighborNodes.push_back(_mapNodes[i + 1 + _width]); //TopRight
 
 		//Bottom Left and Bottom Right
-		if (xIndex > 0 && yIndex > _height) _mapNodes[i]._neighborNodes.push_back(&_mapNodes[i - 1 - _width]);
-		if (xIndex < _width && yIndex > _height) _mapNodes[i]._neighborNodes.push_back(&_mapNodes[i + 1 - _width]);
+		if (xIndex > 0 && yIndex > _height) _mapNodes[i]->_neighborNodes.push_back(_mapNodes[i - 1 - _width]);
+		if (xIndex < _width && yIndex > _height) _mapNodes[i]->_neighborNodes.push_back(_mapNodes[i + 1 - _width]);
 	}
 }
 
@@ -194,7 +194,7 @@ void AStar::UpdateNodeObstacleStatus(glm::vec2 worldPos, bool val)
 	if (index < 0) index = 0;
 	if (index > _mapNodes.size() - 1) index = _mapNodes.size() - 1;
 
-	_mapNodes[index]._isObstacle = val;
+	_mapNodes[index]->_isObstacle = val;
 }
 
 std::vector<glm::vec2> AStar::ProcessPath(std::vector<Node>& nodePath)

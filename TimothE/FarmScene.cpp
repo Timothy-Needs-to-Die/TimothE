@@ -72,6 +72,12 @@ void FarmScene::UpdateObjects()
 			float xPos = randX * 0.25f;
 			float yPos = randY * 0.25f;
 
+			if (xPos == _pTilemap->GetMapSize().x) {
+				xPos -= 0.25f;
+			}
+			if (yPos == _pTilemap->GetMapSize().y) {
+				yPos -= 0.25f;
+			}
 
 			pEnemy->GetComponent<AIMovementCompnent>()->SetDestination({ xPos, yPos });
 		}
@@ -87,10 +93,10 @@ void FarmScene::UpdateObjects()
 
 	if (_pWaveManager->GetWaveCleared())
 	{
-		_pBed->canSleepThroughNight = true;
+
 	}
 	else {
-		_pBed->canSleepThroughNight = false;
+
 	}
 
 
@@ -123,11 +129,6 @@ void FarmScene::InitScene()
 
 	_pPlayer = new Player();
 	AddGameObject(_pPlayer);
-
-	_pBed = new Bed();
-	_pBed->GetTransform()->SetPosition(5.0f, 3.5f);
-	_pBed->GetTransform()->SetScale({ .25f, .5f });
-	AddGameObject(_pBed);
 
 	_pWoodNode = new ResourceNodeObject(CoreResourceType::Wood);
 	_pWoodNode->GetTransform()->SetPosition(3.0f, 3.0f);
