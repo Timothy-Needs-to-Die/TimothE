@@ -40,7 +40,7 @@ void PlayerInputComponent::OnUpdate()
 	}
 
 	// Fighting
-	if (Input::IsKeyDown(KEY_SPACE)) {
+	if (Input::IsKeyPressedOnce(KEY_SPACE)) {
 		_pFighter->Attack(_pOwner);
 
 	}
@@ -55,16 +55,7 @@ void PlayerInputComponent::OnUpdate()
 	FarmingControls();
 
 
-	// Building
-	if (Input::IsKeyUp(KEY_B)) {
-		_bReadyforbuildPress = true;
-	}
-
-	if (_bReadyforbuildPress && Input::IsKeyDown(KEY_B)) {
-		
-		if (_bFarmMode) { return; }
-		
-		_bReadyforbuildPress = false;
+	if (Input::IsKeyPressedOnce(KEY_B)) {
 		_inBuildMode = !_inBuildMode;
 		PlayerUIComponent* pUI = _pOwner->GetComponent<PlayerUIComponent>();
 		if (pUI) {
@@ -76,6 +67,7 @@ void PlayerInputComponent::OnUpdate()
 
 		TIM_LOG_LOG("In Build Mode: " << _inBuildMode);
 	}
+
 
 	if (_inBuildMode) {
 		BuildControls();
@@ -122,11 +114,8 @@ void PlayerInputComponent::FarmingControls()
 	// Farming
 
 	// Harvesitng / Tilling Land
-	if (Input::IsKeyDown(KEY_F))
+	if (Input::IsKeyPressedOnce(KEY_F))
 	{
-		// Stops method being called multiple times
-		if (_bFkeyPressed) return;
-		_bFkeyPressed = true;
 
 		// Get our players pos
 		glm::vec2 target = _pOwner->GetTransform()->GetPosition();
@@ -155,14 +144,9 @@ void PlayerInputComponent::FarmingControls()
 			}
 		}
 	}
-	if (Input::IsKeyUp(KEY_F)) _bFkeyPressed = false;
-
 	// Farming mode Toggle
-	if (Input::IsKeyDown(KEY_G))
+	if (Input::IsKeyPressedOnce(KEY_G))
 	{
-		if (_bGkeyPressed) return;
-		_bGkeyPressed = true;
-
 		if (_inBuildMode) { return; }
 
 		_bFarmMode = !_bFarmMode;
@@ -171,32 +155,31 @@ void PlayerInputComponent::FarmingControls()
 			pUI->SetFarmModeUIActive(_bFarmMode);
 		}
 	}
-	if (Input::IsKeyUp(KEY_G)) _bGkeyPressed = false;
 
 	if (_bFarmMode)
 	{
 		// Plant Wheat
-		if (Input::IsKeyDown(KEY_1)) {
+		if (Input::IsKeyPressedOnce(KEY_1)) {
 			glm::vec2 playerPos = _pOwner->GetTransform()->GetPosition();
 			_pFarmlandManager->PlantSeed(GetPlayerMidpoint(playerPos), PlantResourceType::WheatSeedRes);
 			//GetParent()->GetComponent<AudioSource>()->PlaySound("PlantSeed", 50, 60, 1, 1);
 
 		}
 		// Plant Potato
-		else if (Input::IsKeyDown(KEY_2)) {
+		else if (Input::IsKeyPressedOnce(KEY_2)) {
 			glm::vec2 playerPos = _pOwner->GetTransform()->GetPosition();
 			_pFarmlandManager->PlantSeed(GetPlayerMidpoint(playerPos), PlantResourceType::PotatoSeedRes);
 			//GetParent()->GetComponent<AudioSource>()->PlaySound("PlantSeed", 50, 60, 1, 1);
 
 		}
 		// Plant Carrot
-		else if (Input::IsKeyDown(KEY_3)) {
+		else if (Input::IsKeyPressedOnce(KEY_3)) {
 			glm::vec2 playerPos = _pOwner->GetTransform()->GetPosition();
 			_pFarmlandManager->PlantSeed(GetPlayerMidpoint(playerPos), PlantResourceType::CarrotSeedRes);
 			//GetParent()->GetComponent<AudioSource>()->PlaySound("PlantSeed", 50, 60, 1, 1);
 
 		}
-		else if (Input::IsKeyDown(KEY_4))
+		else if (Input::IsKeyPressedOnce(KEY_4))
 		{
 			glm::vec2 playerPos = _pOwner->GetTransform()->GetPosition();
 			//GetParent()->GetComponent<AudioSource>()->PlaySound("PlantSeed", 50, 60, 1, 1);
@@ -204,19 +187,19 @@ void PlayerInputComponent::FarmingControls()
 			CropPlot* closestPlot = _pFarmlandManager->GetCropPlotAtPosition(GetPlayerMidpoint(playerPos));
 			_pFarmlandManager->RemoveCropPlot(closestPlot);
 		}
-		else if (Input::IsKeyDown(KEY_F1))
+		else if (Input::IsKeyPressedOnce(KEY_F1))
 		{
 			PlayerResourceManager::BuyCrop(WheatSeedRes);
 		}
-		else if (Input::IsKeyDown(KEY_F2))
+		else if (Input::IsKeyPressedOnce(KEY_F2))
 		{
 			PlayerResourceManager::BuyCrop(PotatoSeedRes);
 		}
-		else if (Input::IsKeyDown(KEY_F3))
+		else if (Input::IsKeyPressedOnce(KEY_F3))
 		{
 			PlayerResourceManager::BuyCrop(CarrotSeedRes);
 		}
-		else if (Input::IsKeyDown(KEY_F4))
+		else if (Input::IsKeyPressedOnce(KEY_F4))
 		{
 			GetOwner()->GetComponent<AudioSource>()->PlaySound("CashRegister", 0.4, 0.5, 1, 1);
 			PlayerResourceManager::SellAll();
@@ -232,13 +215,13 @@ void PlayerInputComponent::BuildControls()
 
 	TileMap* pTilemap = pFarmScene->GetTileMap();
 
-	if (Input::IsKeyDown(KEY_1)) {
+	if (Input::IsKeyPressedOnce(KEY_1)) {
 		_selectedStructure = StructureType::Wall;
 	}
-	else if (Input::IsKeyDown(KEY_2)) {
+	else if (Input::IsKeyPressedOnce(KEY_2)) {
 		_selectedStructure = StructureType::Tower;
 	}
-	else if (Input::IsKeyDown(KEY_3)) {
+	else if (Input::IsKeyPressedOnce(KEY_3)) {
 		TIM_LOG_LOG("Selected campfire");
 		_selectedStructure = StructureType::Campfire;
 	}

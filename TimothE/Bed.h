@@ -20,6 +20,5 @@ private:
 	Texture2D* _pTexture;
 
 	bool _isInRange = false;
-	bool _isKeyUP = true;
 	//class Health* playerhealth = nullptr;
 };

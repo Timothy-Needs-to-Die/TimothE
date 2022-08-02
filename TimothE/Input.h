@@ -32,8 +32,6 @@ public:
 	}
 
 
-	//Is the key pressed?
-	static bool IsKeyDown(TimothEKeyCode keycode);
 
 	//Is the key held down?
 	static bool IsKeyHeld(TimothEKeyCode keycode);
@@ -47,7 +45,13 @@ public:
 	//Is the mouse button currently up?
 	static bool IsMouseButtonUp(TimothEMouseCode button);
 
+	static bool IsKeyPressedOnce(TimothEKeyCode code);
+
 private:
+	//Is the key pressed?
+	static bool IsKeyDown(TimothEKeyCode keycode);
+
+
 	//Holds each of the keys that can be queried
 	static int* _pKeyArr;
 
@@ -56,5 +60,6 @@ private:
 
 	static float _mouseXPos;
 	static float _mouseYPos;
+	static bool* _pControlBools;
 };
 

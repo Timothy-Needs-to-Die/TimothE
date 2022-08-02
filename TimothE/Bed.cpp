@@ -24,12 +24,7 @@ Bed::~Bed()
 
 void Bed::UniqueLogic()
 {
-	if (Input::IsKeyUp(KEY_E))
-	{
-		_isKeyUP = true;
-	}
-	if (Input::IsKeyDown(TimothEKeyCode::KEY_E) && _isInRange == true && _isKeyUP) {
-		_isKeyUP = false;
+	if (Input::IsKeyPressedOnce(TimothEKeyCode::KEY_E) && _isInRange == true) {
 		GameTimeManager* daycontroller = nullptr;
 		FarmScene* scene = (FarmScene*)SceneManager::GetCurrentScene();
 		daycontroller = scene->GetGameTime();

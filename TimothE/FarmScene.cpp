@@ -40,32 +40,19 @@ void FarmScene::UpdateObjects()
 		_pWaveManager->Update();
 	}
 
-	if (Input::IsKeyUp(KEY_I)) {
-		_inventoryKeyPressed = false;
-	}
 
-	if (Input::IsKeyDown(KEY_I)) {
-		if (_inventoryKeyPressed) return;
-
-		_inventoryKeyPressed = true;
-
+	if (Input::IsKeyPressedOnce(KEY_I)) {
 		bool current = _pInventoryScreen->GetAllActive();
 
 		_pInventoryScreen->SetAllActive(!current);
 		_pInventoryScreen->OnUpdate();
 	}
 
-	if (Input::IsKeyDown(KEY_O)) {
+	if (Input::IsKeyPressedOnce(KEY_O)) {
 		SceneManager::SetCurrentScene("EastPlains");
 	}
 
-	if (Input::IsKeyUp(KEY_P)) {
-		_genPathKeyPressed = false;
-	}
-
-	if (Input::IsKeyDown(KEY_P)) {
-		if (_genPathKeyPressed) return;
-
+	if (Input::IsKeyPressedOnce(KEY_P)) {
 		glm::vec2 mapDimensions = _pTilemap->GetTileMapDimensions();
 
 		//for (int i = 0; i < 100; i++) {
@@ -96,11 +83,11 @@ void FarmScene::UpdateObjects()
 
 	Physics::UpdateWorld();
 
-	if (Input::IsKeyDown(KEY_LEFT_SHIFT)) {
+	if (Input::IsKeyPressedOnce(KEY_LEFT_SHIFT)) {
 		CameraManager::MainCamera()->SetZoomLevel(1.5f);
 	}
 
-	if (Input::IsKeyDown(KEY_RIGHT_SHIFT)) {
+	if (Input::IsKeyPressedOnce(KEY_RIGHT_SHIFT)) {
 		CameraManager::MainCamera()->SetZoomLevel(2.5f);
 	}
 

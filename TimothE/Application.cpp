@@ -128,7 +128,7 @@ void Application::GameLoop()
 		ImGuiManager::ImGuiNewFrame();
 
 		if (DEV_MODE) {
-			if (Input::IsKeyDown(TimothEKeyCode::KEY_0)) {
+			if (Input::IsKeyPressedOnce(TimothEKeyCode::KEY_0)) {
 				CameraManager::GetCamera("Editor")->SetPosition(CameraManager::MainCamera()->Position());
 				_inEditorMode = !_inEditorMode;
 				std::string cameraName = _inEditorMode ? "Editor" : "Main Camera";

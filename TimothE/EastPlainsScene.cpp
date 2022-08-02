@@ -17,7 +17,7 @@ void EastPlainsScene::UpdateObjects()
 {
 	Scene::UpdateObjects();
 
-	if (Input::IsKeyDown(KEY_O)) {
+	if (Input::IsKeyPressedOnce(KEY_O)) {
 		SceneManager::SetCurrentScene("FarmScene");
 	}
 }

@@ -60,9 +60,4 @@ private:
 	//Farmland
 
 	std::vector<class StructureObject*> _pStructures;
-
-	bool farmKeyPressed = false;
-	bool _inventoryKeyPressed = false;
-	bool _genPathKeyPressed = false;
-	bool spawnEnemyKey = false;
 };

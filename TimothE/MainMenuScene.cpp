@@ -18,7 +18,7 @@ void MainMenuScene::UpdateObjects()
 	Scene::UpdateObjects();
 
 	//if enter is pressed start game
-	if (Input::IsKeyDown(KEY_ENTER)) {
+	if (Input::IsKeyPressedOnce(KEY_ENTER)) {
 		SceneManager::SetCurrentScene(SceneManager::CreateScene(ResourceManager::GetScene("FarmScene")));
 	}
 }

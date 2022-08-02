@@ -61,11 +61,7 @@ private:
 
 	bool _inBuildMode = false;
 	bool _bFarmMode = false;
-	bool _bReadyforbuildPress = false;
-
-	// input bools
-	bool _bFkeyPressed = false;
-	bool _bGkeyPressed = false;
-	bool _bHkeyPressed = false;
 };
+
+
 

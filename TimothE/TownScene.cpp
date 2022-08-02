@@ -9,7 +9,7 @@ void TownScene::UpdateUI()
 
 void TownScene::UpdateObjects()
 {
-	if (Input::IsKeyDown(KEY_4)) {
+	if (Input::IsKeyPressedOnce(KEY_4)) {
 		SceneManager::SetCurrentScene(SceneManager::CreateScene(ResourceManager::GetScene("FarmScene")));
 	}
 }
