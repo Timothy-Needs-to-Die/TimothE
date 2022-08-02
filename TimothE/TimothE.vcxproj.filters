@@ -439,7 +439,9 @@
     <ClInclude Include="Constants.h" />
     <ClInclude Include="UIObject.h" />
     <ClInclude Include="ImageUIObject.h" />
-    <ClInclude Include="GameTimeStructures.h" />
+    <ClInclude Include="ThreadMaster.h" />
+    <ClInclude Include="ThreadWorker.h" />
+    <ClInclude Include="EastPlainsScene.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="AIController.cpp">
@@ -719,5 +721,8 @@
     <ClCompile Include="TSXParser.cpp" />
     <ClCompile Include="UIObject.cpp" />
     <ClCompile Include="ImageUIObject.cpp" />
+    <ClCompile Include="ThreadMaster.cpp" />
+    <ClCompile Include="ThreadWorker.cpp" />
+    <ClCompile Include="EastPlainsScene.cpp" />
   </ItemGroup>
 </Project>

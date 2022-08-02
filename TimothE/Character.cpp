@@ -94,6 +94,22 @@ void Character::SetAttacking(bool val) {
 	std::cout << "Is Attacking: " << val << std::endl;
 }
 
+Character::~Character()
+{
+	delete _pArmDown;
+	delete _pArmLeft;
+	delete _pArmRight;
+	delete _pArmUp;
+	delete _pMoveDown;
+	delete _pMoveUp;
+	delete _pMoveLeft;
+	delete _pMoveRight;
+	delete _pArmAttack;
+
+	_pCurrentAnimation = nullptr;
+	_pCurrentArmAnimation = nullptr;
+}
+
 void Character::UniqueLogic()
 {
 	_pCurrentAnimation->Update();

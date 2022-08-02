@@ -8,39 +8,52 @@ AIMovementCompnent::AIMovementCompnent(GameObject* owner, AStar* pAStar)
 	SetType(Component::AIMovement_Type);
 
 	_pAStar = pAStar;
-	//_mAStar = new AStar();
 	SetMovementSpeed(0.5f); //TODO: Get from config
-	_mPathToFollow = std::list<glm::vec2>();
+	_pathToFollow = std::list<glm::vec2>();
 }
 
 //sets target destination of AI to move to
 void AIMovementCompnent::SetDestination(glm::vec2 targetPos)
 {
 	//reset variables
-	_mPathToFollow.clear();
-	_constantlyMove = true;
-	_mHasDestination = true;
+	_pathToFollow.clear();
+	_constantlyMove = false;
+	_hasDestination = false;
 
 	//sets map and finds path
-	
 	glm::vec2 tilePos = SceneManager::GetCurrentScene()->GetTileMap()->GetTileAtWorldPos(0, GetParent()->GetTransform()->GetPosition())->pos;
-	std::vector<glm::vec2> tempPath = _pAStar->FindPath(tilePos, targetPos);
 
-	_destination = targetPos;
+	AStar* pLocal = _pAStar;
 
-	//set path
-	size_t size = tempPath.size();
-	for (int i = 0; i < size; i++)
-	{
-   		_mPathToFollow.push_front(tempPath[i]);
-	}
+	glm::vec2& localDest = _destination;
+	std::thread t([&tilePos, &targetPos, pLocal, this, &localDest]
+		{
+			std::vector<glm::vec2> tempPath;
+			tempPath = pLocal->FindPath(tilePos, targetPos);
 
-	//set next target
-	_mCurrentTarget = GetNextTarget();
+			AIMovementCompnent::FinishDestination();
+			localDest = targetPos;
 
-	//clear paths
-	tempPath.clear();
+			//set path
+			size_t size = tempPath.size();
+			for (int i = 0; i < size; i++)
+			{
+				this->_pathToFollow.push_front(tempPath[i]);
+			}
 
+			//set next target
+			this->_currentTarget = GetNextTarget();
+
+			//clear paths
+			tempPath.clear();
+		});
+	t.join();
+}
+
+void AIMovementCompnent::FinishDestination()
+{
+	_constantlyMove = true;
+	_hasDestination = true;
 }
 
 void AIMovementCompnent::OnUpdate()
@@ -51,19 +64,19 @@ void AIMovementCompnent::OnUpdate()
 	GameObject* parent = GetParent();
 
 	//skip if no destination is found
-	if (!_mHasDestination) return;
+	if (!_hasDestination) return;
 
 	//distance to target
-	float dist = glm::distance(parent->GetTransform()->GetPosition(), _mCurrentTarget);
+	float dist = glm::distance(parent->GetTransform()->GetPosition(), _currentTarget);
 
 	//if player is in range of enemy set new target
-	if (dist <= _mTolerance)
+	if (dist <= _tolerance)
 	{
-		_mCurrentTarget = GetNextTarget();
+		_currentTarget = GetNextTarget();
 
 	}
 	//move towards player
-	glm::vec2 direction = glm::normalize(_mCurrentTarget - parent->GetTransform()->GetPosition());
+	glm::vec2 direction = glm::normalize(_currentTarget - parent->GetTransform()->GetPosition());
 	_desiredDirection = direction;
 
 
@@ -73,18 +86,18 @@ void AIMovementCompnent::OnUpdate()
 glm::vec2 AIMovementCompnent::GetNextTarget()
 {
 	//if no path then stop movement and return
-	if (_mPathToFollow.size() == 0)
+	if (_pathToFollow.size() == 0)
 	{
 		_constantlyMove = false;
-		_mHasDestination = false;
+		_hasDestination = false;
 
 		return glm::vec2(0, 0);
 	}
 
 
 	//set target to move as the first path position
-	_mCurrentTarget = _mPathToFollow.front();
-	_mPathToFollow.erase(_mPathToFollow.begin());
+	_currentTarget = _pathToFollow.front();
+	_pathToFollow.erase(_pathToFollow.begin());
 
-	return _mCurrentTarget; //return target
+	return _currentTarget; //return target
 }

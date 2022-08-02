@@ -57,18 +57,19 @@ public:
 	void RenderScene(std::shared_ptr<Camera> cam);
 
 	//TODO: Implement unloading logic.
-	void Unload() {
+	void Unload(bool deleteTileMap = false) {
 		for (auto& obj : _listOfGameObjects) {
 			_gameObjectsToRemove.emplace_back(obj);
 		}
 
-		//_listOfGameObjects.clear();
-		//_listOfDrawableGameObjects.clear();
 
-		if (_hasTilemap && _pTilemap) {
+
+		if (deleteTileMap && _hasTilemap && _pTilemap) {
 			delete _pTilemap;
 			_pTilemap = nullptr;
 		}
+
+		FrameEnd();
 	}
 
 	std::string GetName() const { return _name; }

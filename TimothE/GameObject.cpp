@@ -33,8 +33,9 @@ GameObject::~GameObject()
 	for (int i = 0; i < _pComponents.size(); i++)
 	{
 		if(_pComponents[i]->GetType() == Component::Texture_Type) continue;
-		_pComponents.erase(_pComponents.begin() + i);
-		//delete(_pComponents[i]);
+		
+		auto it = _pComponents.erase(_pComponents.begin() + i);
+		delete* it;
 	}
 }
 

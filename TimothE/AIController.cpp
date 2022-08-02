@@ -151,7 +151,7 @@ GameObject* AIController::FindClosestTargetFromList(std::vector<GameObject*> tar
 {
 	GameObject* closestObj = targets[0];
 	float closestDistance = FLT_MAX;
-	for each (GameObject* go in targets)
+	for (GameObject* go : targets)
 	{
 		float dist = glm::distance(_pOwnerTransform->GetPosition(), go->GetTransform()->GetPosition());
 		if (dist < closestDistance)

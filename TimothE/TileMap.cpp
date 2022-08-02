@@ -22,17 +22,34 @@ TileMap::TileMap(std::string name)
 
 	_tilesPerUnit = 4;
 	_gapBetweenTiles = 1.0f / _tilesPerUnit;
-
-	LoadTileMap();
 }
 
 TileMap::~TileMap()
 {
+	for (int i = 0; i < _mapInTiles.y; i++) {
+		delete[] _collidableTileArray[i];
+	}
+	delete _collidableTileArray;
+
+	delete[] _lightLevelArray;
+
+	for (int layer = 0; layer < _numLayers; layer++) {
+		for (int y = 0; y < _mapInTiles.y; y++) {
+			for (int x = 0; x < _mapInTiles.x; x++) {
+				delete _tileArr[layer][y][x];
+			}
+			_tileArr[layer][y].clear();
+		}
+		_tileArr[layer].clear();
+	}
+	_tileArr.clear();
+
+
 }
 
-void TileMap::LoadTileMap()
+void TileMap::LoadTileMap(std::string filename)
 {
-	TMX::Parser tmx("Resources/Tilemaps/CameraTest.tmx");
+	TMX::Parser tmx(filename.c_str());
 
 	SetTileMapSize({ tmx.mapInfo.width, tmx.mapInfo.height });
 
@@ -203,6 +220,8 @@ void TileMap::LoadTileMap()
 		_playerSpawn = GetTileAtWorldPos(0, { xPos, yPos })->pos;
 
 	}
+
+	_loaded = true;
 }
 
 //Sets the size of the tilemap in tiles. e.g a 256 x 140 tile map.
@@ -555,17 +574,17 @@ int*** TileMap::GenerateTileMap(int noOfRooms, int width /*= 64*/, int height /*
 
 
 	//Debug Test (Print map to screen)
-	for (int y = 0; y < height; y++) {
-		for (int x = 0; x < width; x++) {
-			if (tilemap[2][y][x] == 3) {
-				std::cout << "3 ";
-			}
-			else {
-				std::cout << tilemap[0][y][x] << " ";
-			}
-		}
-		std::cout << std::endl;
-	}
+	//for (int y = 0; y < height; y++) {
+	//	for (int x = 0; x < width; x++) {
+	//		if (tilemap[2][y][x] == 3) {
+	//			std::cout << "3 ";
+	//		}
+	//		else {
+	//			std::cout << tilemap[0][y][x] << " ";
+	//		}
+	//	}
+	//	std::cout << std::endl;
+	//}
 
 	return tilemap;
 }

@@ -223,6 +223,15 @@ void AudioEngine::SetGroupPitch(FMOD::ChannelGroup* group, float value) {
 
 void AudioEngine::LoadSound(const char* name, const char* filePath, AudioType type)
 {
+	if (type == AudioType::Type_SFX) {
+		auto it = _loadedSFX.find(name);
+		if (it != _loadedSFX.end()) return;
+	}
+	else{
+		auto it = _loadedMusic.find(name);
+		if (it != _loadedMusic.end()) return;
+	}
+
 	SoundStruct newSound = SoundStruct();
 	newSound.name = name;
 	newSound.filePath = filePath;

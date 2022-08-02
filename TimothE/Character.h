@@ -9,6 +9,9 @@ public:
 
 	void SetAttacking(bool val);
 
+
+	~Character();
+
 private:
 
 protected:

@@ -7,6 +7,9 @@
 #include "AStar.h"
 #include "SceneManager.h"
 #include "Scene.h"
+#include "ThreadMaster.h"
+#include "ThreadWorker.h"
+
 class AIMovementCompnent : public MovementComponent
 {
 public:
@@ -15,15 +18,18 @@ public:
 	AIMovementCompnent(GameObject* owner, AStar* pAStar);
 
 	void SetDestination(glm::vec2);
+	void FinishDestination();
+	
 	glm::vec2 GetDestination() const { return _destination;  }
 
 	virtual void OnUpdate() override;
 private:
+
 	glm::vec2 _destination;
-	std::list<glm::vec2> _mPathToFollow;
-	glm::vec2 _mCurrentTarget;
-	float _mTolerance = 0.05f;
-	bool _mHasDestination;
+	std::list<glm::vec2> _pathToFollow;
+	glm::vec2 _currentTarget;
+	float _tolerance = 0.05f;
+	bool _hasDestination;
 	AStar* _pAStar;
 
 	glm::vec2 GetNextTarget();

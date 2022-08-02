@@ -37,7 +37,7 @@ public:
 	~TileMap();
 
 	//Loads the tilemap
-	void LoadTileMap();
+	void LoadTileMap(std::string filename);
 
 	/// <summary>
 	/// Sets the size of the tilemap in tiles e.g. Pass in 64,32 if you want a 64 to tile wide 32 tile tall map.
@@ -157,7 +157,12 @@ public:
 
 	void CreateTilemapFromProcGen(int*** map, int width, int height, std::string spritesheetName);
 
+	bool IsLoaded() const { return _loaded; }
+
 private:
+	bool _loaded = false;
+
+
 	//Controls how many layers are used in the tilemap
 	int _numLayers = 6;
 

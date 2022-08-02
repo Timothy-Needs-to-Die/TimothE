@@ -66,6 +66,12 @@ void Application::Init()
 	Renderer2D::Init();
 
 	Scene* pScene = SceneManager::CreateScene(ResourceManager::GetScene("MainMenuScene"));
+
+	SceneManager::CreateScene(ResourceManager::GetScene("FarmScene"));
+	SceneManager::CreateScene(ResourceManager::GetScene("TownScene"));
+	SceneManager::CreateScene(ResourceManager::GetScene("EastPlains"));
+
+
 	pScene->SetHasTilemap(false);
 
 	SceneManager::SetCurrentScene(pScene);
