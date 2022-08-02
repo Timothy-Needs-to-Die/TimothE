@@ -52,6 +52,7 @@ void TileMap::LoadTileMap(std::string filename)
 	TMX::Parser tmx(filename.c_str());
 
 	SetTileMapSize({ tmx.mapInfo.width, tmx.mapInfo.height });
+	SetTileSize(0.25f);
 
 	//Load Tilesets
 	std::unordered_map<std::string, TSX::Parser> tileSets;
@@ -373,10 +374,6 @@ void TileMap::UpdateLightLevelAtPosition(glm::vec2 pos, int lightLevel)
 	//Convert position to a single dimension index.
 	int index = GetTileIndexFromPosition(pos);
 
-	if (lightLevel == 5) {
-		__debugbreak();
-	}
-
 	_lightLevelArray[index] = lightLevel;
 
 	//Multiply index by 4 so it is quad vertex space
@@ -664,6 +661,7 @@ void TileMap::CreateTilemapFromProcGen(int*** map, int width, int height, std::s
 	_tileArr.resize(_numLayers);
 
 	SetTileMapSize({ width, height });
+	SetTileSize(0.25f);
 
 
 	//Set all layers tile details

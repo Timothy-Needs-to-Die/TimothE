@@ -134,7 +134,7 @@ public:
 	void SetTileSize(float val) {
 		_tileSize = { val, val};
 
-		_gapBetweenTiles = 1.0f / _tileSize.x;
+		_gapBetweenTiles = 1.0f * _tileSize.x;
 	}
 
 	float GetTileSize() const {

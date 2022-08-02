@@ -22,7 +22,6 @@ void GameTimeManager::Update()
 void GameTimeManager::StartNewDay()
 {
 	Window::SetWindowColour(0.0f, 0.0f, 0.0f, 1.0f);
-	//Window::SetWindowColour(0.553f, 0.768f, 0.207f, 1.0f);
 	_currentDayTimer = 0.0f;
 	_inDay = true;
 	AudioEngine::PlaySound("RoosterSound", 60, 70, 1, 1);
@@ -32,7 +31,6 @@ void GameTimeManager::StartNewDay()
 
 void GameTimeManager::StartNight()
 {
-	//Window::SetWindowColour(0.109f, 0.1529f, 0.04313f, 1.0f);
 	AudioEngine::PlaySound("NightSoundTrack", 55, 60, 1, 1);
 	_currentDayTimer = 0.0f;
 	_inDay = false;
