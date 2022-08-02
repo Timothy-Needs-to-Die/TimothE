@@ -10,12 +10,12 @@
 AIController::AIController(GameObject* gameObject) : Component(gameObject)
 {
 	SetType(Types::AIControllerType);
-	_pFighter = _pParentObject->AddComponent(new Fighter(_pParentObject));
+	_pFighter = _pOwner->AddComponent(new Fighter(_pOwner));
 	_pPlayer = dynamic_cast<Player*>(SceneManager::GetCurrentScene()->GetGameObjectByName("Player"));
 
 	_pPlayerTransform = _pPlayer->GetTransform();
-	_pOwnerTransform = _pParentObject->GetTransform();
-	_pMover = _pParentObject->GetComponent<AIMovementCompnent>();
+	_pOwnerTransform = _pOwner->GetTransform();
+	_pMover = _pOwner->GetComponent<AIMovementCompnent>();
 }
 
 void AIController::OnStart()

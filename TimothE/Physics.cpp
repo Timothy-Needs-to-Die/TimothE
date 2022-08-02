@@ -176,13 +176,13 @@ void Physics::HandleCollision(ColliderBase* c1, ColliderBase* c2 /*= nullptr*/)
 		_collidingBodies.emplace_back(std::make_pair(c1, c2));
 
 		if (c1->IsTrigger()) {
-			if (c1->GetParent() != nullptr && c2->GetParent() != nullptr) {
-				c1->GetParent()->OnTriggerEnter(c2);
+			if (c1->GetOwner() != nullptr && c2->GetOwner() != nullptr) {
+				c1->GetOwner()->OnTriggerEnter(c2);
 			}
 		}
 		if (c2->IsTrigger()) {
-			if (c2->GetParent() != nullptr && c1->GetParent() != nullptr) {
-				c2->GetParent()->OnTriggerEnter(c1);
+			if (c2->GetOwner() != nullptr && c1->GetOwner() != nullptr) {
+				c2->GetOwner()->OnTriggerEnter(c1);
 			}
 		}
 	}
@@ -192,15 +192,15 @@ void Physics::HandleNoCollision(ColliderBase* c1, ColliderBase* c2)
 {
 	std::vector<std::pair<ColliderBase*, ColliderBase*>>::iterator it = std::find(_collidingBodies.begin(), _collidingBodies.end(), std::make_pair(c1, c2));
 	if (it != _collidingBodies.end()) {
-		if (c1->GetParent() != nullptr && c1->IsTrigger()) {
-			if (c2->GetParent() != nullptr) {
-				c1->GetParent()->OnTriggerExit(c2);
+		if (c1->GetOwner() != nullptr && c1->IsTrigger()) {
+			if (c2->GetOwner() != nullptr) {
+				c1->GetOwner()->OnTriggerExit(c2);
 			}
 		}
 
-		if (c2->GetParent() != nullptr && c2->IsTrigger()) {
-			if (c1->GetParent() != nullptr) {
-				c2->GetParent()->OnTriggerExit(c1);
+		if (c2->GetOwner() != nullptr && c2->IsTrigger()) {
+			if (c1->GetOwner() != nullptr) {
+				c2->GetOwner()->OnTriggerExit(c1);
 			}
 		}
 
@@ -222,7 +222,7 @@ void Physics::UpdateWorld()
 
 		if (colAChannel == CollisionChannel_None) continue;
 
-		glm::vec2 colAPos = pColA->GetParent()->GetTransform()->GetPosition();
+		glm::vec2 colAPos = pColA->GetOwner()->GetTransform()->GetPosition();
 
 		for (int j = i; j < _pColliders.size(); ++j) {
 			if (j == i) continue;
@@ -233,7 +233,7 @@ void Physics::UpdateWorld()
 
 			if(colBChannel == CollisionChannel_None) continue;
 
-			if (glm::distance(colAPos, pColB->GetParent()->GetTransform()->GetPosition()) > MAX_DISTANCE) continue;
+			if (glm::distance(colAPos, pColB->GetOwner()->GetTransform()->GetPosition()) > MAX_DISTANCE) continue;
 
 			if (pColA->IsColliderCompatible(colBChannel) || pColB->IsColliderCompatible(colAChannel)) {
 				ColliderType bType = pColB->GetColliderType();

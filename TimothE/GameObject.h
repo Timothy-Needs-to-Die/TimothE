@@ -47,7 +47,7 @@ public:
 	////////////////////////
 	//Get Ownership States//
 	////////////////////////
-	GameObject* GetParent() { return _pParent; };
+	GameObject* GetOwner() { return _pParent; };
 	GameObject* GetChild(std::string name) 
 	{
 		for (auto& child : _pChildren) {
@@ -62,7 +62,7 @@ public:
 	////////////////////////
 	//Set Ownership States//
 	////////////////////////
-	void SetParent(GameObject* parent);
+	void SetOwner(GameObject* parent);
 
 	void AddChild(GameObject* newChild);
 
@@ -90,7 +90,7 @@ public:
 		if (!searchHierarchy) return false;
 
 		//Creates a GameObject* to act as a way to traverse up the hierachy
-		GameObject* parentToSearch = possibleParent->GetParent();
+		GameObject* parentToSearch = possibleParent->GetOwner();
 
 		//Stores the game object we want to check against
 		GameObject* previousGO = possibleParent;
@@ -103,7 +103,7 @@ public:
 			}
 
 			previousGO = parentToSearch;
-			parentToSearch = parentToSearch->GetParent();
+			parentToSearch = parentToSearch->GetOwner();
 		}
 	}
 

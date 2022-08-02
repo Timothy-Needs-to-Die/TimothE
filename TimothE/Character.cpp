@@ -16,7 +16,7 @@ Character::Character(std::string texture, std::string name, std::string tag)
 	_pArmSc = pArms->AddComponent(new SpriteComponent(pArms, 110));
 	_pArmSc->SetSprite(_pAnimSheet->GetSpriteAtIndex(0));
 
-	pArms->SetParent(this);
+	pArms->SetOwner(this);
 	pArms->GetTransform()->SetPosition({ 0.0f,0.0f });
 	pArms->GetTransform()->SetScale({ 0.25f, 0.45f });
 

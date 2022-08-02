@@ -15,6 +15,7 @@
 
 #include "Player.h"
 #include "AStar.h"
+#include "CameraManager.h"
 
 std::vector<GameObject*> Scene::_listOfGameObjects;
 std::vector<GameObject*> Scene::_listOfDrawableGameObjects;
@@ -29,14 +30,14 @@ Scene::~Scene()
 {
 	for (GameObject* obj : _listOfGameObjects)
 	{
-		delete(obj);
+		delete obj;
 	}
 }
 
 void Scene::SceneStart()
 {
 	for (GameObject* obj : _listOfGameObjects) {
-		if(obj == nullptr) continue;
+		if (obj == nullptr) continue;
 		obj->Start();
 	}
 }
@@ -49,11 +50,10 @@ void Scene::InitScene(bool hasPlayer)
 	_gameObjectsToRemove.clear();
 
 	_pAstarObject = new AStar();
-	
+
 	if (_hasTilemap) {
 		if (_pTilemap == nullptr) {
 			_pTilemap = new TileMap(_name);
-			//_pTilemap->LoadTileMap("Resources/Tilemaps/ArtTestMap.tmx");
 			_pTilemap->LoadTileMap("Resources/Tilemaps/" + _name + ".tmx");
 			_pAstarObject->SetMap(_pTilemap);
 			_pLightManager = new LightLevelManager(_pTilemap);
@@ -66,7 +66,7 @@ void Scene::InitScene(bool hasPlayer)
 			if (!_pTilemap->IsLoaded()) {
 				_pTilemap->LoadTileMap("Resources/Tilemaps/" + _name + ".tmx");
 				_pAstarObject->SetMap(_pTilemap);
-				
+
 				if (_pLightManager != nullptr) {
 					_pLightManager->SetTilemap(_pTilemap);
 					_pLightManager->SetWorldLightLevel(5);
@@ -76,13 +76,19 @@ void Scene::InitScene(bool hasPlayer)
 				}
 			}
 		}
-
+		CameraManager::MainCamera()->SetTileMap(_pTilemap);
 	}
 
 	if (hasPlayer) {
 		_pPlayer = new Player();
 		AddGameObject(_pPlayer);
+
+		CameraManager::MainCamera()->SetFollowTarget(_pPlayer);
+		if (_hasTilemap) {
+			_pPlayer->GetTransform()->SetPosition(_pTilemap->GetPlayerSpawn());
+		}
 	}
+
 }
 
 void Scene::SceneEnd()
@@ -105,7 +111,6 @@ void Scene::EditorUpdate()
 		if (!obj->IsActive()) continue;
 		if (obj->IsToBeDestroyed()) continue;
 
-		obj->GetTransform()->CalculateTransformMatrix();
 		TextComponent* tc = obj->GetComponent<TextComponent>();
 		if (tc != nullptr) {
 			tc->OnStart();
@@ -192,12 +197,12 @@ void Scene::RenderScene(std::shared_ptr<Camera> cam)
 		}
 	}
 
-	GameObject* player = FindObjectWithTag("PLAYER");
-	if (player) {
-		SpriteComponent* sc = player->GetComponent<SpriteComponent>();
-
-		if(sc->IsEnabled())
-			Renderer2D::DrawQuad(player->GetTransform()->GetRenderQuad(), sc->GetSprite()->GetTexture(), sc->GetSprite()->GetTexCoords());
+	
+	if (_pPlayer) {
+		SpriteComponent* sc = _pPlayer->GetComponent<SpriteComponent>();
+	
+		if (sc->IsEnabled())
+			Renderer2D::DrawQuad(_pPlayer->GetTransform()->GetRenderQuad(), sc->GetSprite()->GetTexture(), sc->GetSprite()->GetTexCoords());
 	}
 
 	Renderer2D::EndRender();
@@ -212,7 +217,7 @@ void Scene::RenderScene(std::shared_ptr<Camera> cam)
 
 		SpriteComponent* sc = obj->GetComponent<SpriteComponent>();
 		if (sc) {
-			if(!sc->IsEnabled()) continue;
+			if (!sc->IsEnabled()) continue;
 			Renderer2D::DrawUIQuad(obj->GetTransform()->GetRenderQuad(), sc->GetSprite()->GetTexture(), sc->GetSprite()->GetTexCoords());
 			continue;
 		}
@@ -220,7 +225,7 @@ void Scene::RenderScene(std::shared_ptr<Camera> cam)
 		TextComponent* tc = obj->GetComponent<TextComponent>();
 		if (tc) {
 			tc->Render();
-			
+
 		}
 
 	}
@@ -454,7 +459,7 @@ std::vector<GameObject*> Scene::GetGameObjectsByName(std::string name)
 GameObject* Scene::FindObjectWithTag(const std::string& tagName)
 {
 	for (GameObject* obj : _listOfGameObjects) {
-		if(obj == nullptr) continue;
+		if (obj == nullptr) continue;
 
 		//if (!obj->IsActive()) continue;
 		if (obj->IsToBeDestroyed()) continue;

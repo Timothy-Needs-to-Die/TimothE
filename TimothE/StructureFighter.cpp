@@ -22,12 +22,12 @@ void StructureFighter::Attack(GameObject* pTarget)
 
 	_timeSinceLastAttack = 0.0f;
 
-	glm::vec2 towerPos = _pParentObject->GetTransform()->GetPosition();
+	glm::vec2 towerPos = _pOwner->GetTransform()->GetPosition();
 	glm::vec2 directionToTarget = glm::normalize(pTarget->GetTransform()->GetPosition() - towerPos);
 
 	towerPos += (directionToTarget * 3.0f) / 4.0f;
 
-	ProjectileObject* pProjectileObject = new ProjectileObject(towerPos, directionToTarget, _pParentObject);
+	ProjectileObject* pProjectileObject = new ProjectileObject(towerPos, directionToTarget, _pOwner);
 	SceneManager::GetCurrentScene()->AddGameObject(pProjectileObject);
 }
 

@@ -24,9 +24,9 @@
 
 void PlayerInputComponent::OnStart()
 {
-	_pMovement = _pParentObject->GetComponent<MovementComponent>();
-	_pFighter = _pParentObject->GetComponent<Fighter>();
-	_pFarmlandManager = _pParentObject->GetComponent<FarmlandManager>();
+	_pMovement = _pOwner->GetComponent<MovementComponent>();
+	_pFighter = _pOwner->GetComponent<Fighter>();
+	_pFarmlandManager = _pOwner->GetComponent<FarmlandManager>();
 	_pFarmlandManager->LoadInCropData();
 }
 
@@ -41,7 +41,7 @@ void PlayerInputComponent::OnUpdate()
 
 	// Fighting
 	if (Input::IsKeyDown(KEY_SPACE)) {
-		_pFighter->Attack(_pParentObject);
+		_pFighter->Attack(_pOwner);
 
 	}
 
@@ -66,7 +66,7 @@ void PlayerInputComponent::OnUpdate()
 		
 		_bReadyforbuildPress = false;
 		_inBuildMode = !_inBuildMode;
-		PlayerUIComponent* pUI = _pParentObject->GetComponent<PlayerUIComponent>();
+		PlayerUIComponent* pUI = _pOwner->GetComponent<PlayerUIComponent>();
 		if (pUI) {
 			pUI->SetBuildModeUIActive(_inBuildMode);
 		}
@@ -129,12 +129,12 @@ void PlayerInputComponent::FarmingControls()
 		_bFkeyPressed = true;
 
 		// Get our players pos
-		glm::vec2 target = _pParentObject->GetTransform()->GetPosition();
+		glm::vec2 target = _pOwner->GetTransform()->GetPosition();
 		// Targets the midpoint of the player
-		target.x += _pParentObject->GetTransform()->GetScale().x / 2;
-		target.y += _pParentObject->GetTransform()->GetScale().y / 2;
+		target.x += _pOwner->GetTransform()->GetScale().x / 2;
+		target.y += _pOwner->GetTransform()->GetScale().y / 2;
 		
-		GetParent()->GetComponent<AudioSource>()->PlaySound("PlantSeed", 0.4, 0.5, 1, 1);
+		GetOwner()->GetComponent<AudioSource>()->PlaySound("PlantSeed", 0.4, 0.5, 1, 1);
 		// If we cant place farm land
 		if (!_pFarmlandManager->PlaceFarmLand(target))
 		{
@@ -166,7 +166,7 @@ void PlayerInputComponent::FarmingControls()
 		if (_inBuildMode) { return; }
 
 		_bFarmMode = !_bFarmMode;
-		PlayerUIComponent* pUI = _pParentObject->GetComponent<PlayerUIComponent>();
+		PlayerUIComponent* pUI = _pOwner->GetComponent<PlayerUIComponent>();
 		if (pUI) {
 			pUI->SetFarmModeUIActive(_bFarmMode);
 		}
@@ -177,28 +177,28 @@ void PlayerInputComponent::FarmingControls()
 	{
 		// Plant Wheat
 		if (Input::IsKeyDown(KEY_1)) {
-			glm::vec2 playerPos = _pParentObject->GetTransform()->GetPosition();
+			glm::vec2 playerPos = _pOwner->GetTransform()->GetPosition();
 			_pFarmlandManager->PlantSeed(GetPlayerMidpoint(playerPos), PlantResourceType::WheatSeedRes);
 			//GetParent()->GetComponent<AudioSource>()->PlaySound("PlantSeed", 50, 60, 1, 1);
 
 		}
 		// Plant Potato
 		else if (Input::IsKeyDown(KEY_2)) {
-			glm::vec2 playerPos = _pParentObject->GetTransform()->GetPosition();
+			glm::vec2 playerPos = _pOwner->GetTransform()->GetPosition();
 			_pFarmlandManager->PlantSeed(GetPlayerMidpoint(playerPos), PlantResourceType::PotatoSeedRes);
 			//GetParent()->GetComponent<AudioSource>()->PlaySound("PlantSeed", 50, 60, 1, 1);
 
 		}
 		// Plant Carrot
 		else if (Input::IsKeyDown(KEY_3)) {
-			glm::vec2 playerPos = _pParentObject->GetTransform()->GetPosition();
+			glm::vec2 playerPos = _pOwner->GetTransform()->GetPosition();
 			_pFarmlandManager->PlantSeed(GetPlayerMidpoint(playerPos), PlantResourceType::CarrotSeedRes);
 			//GetParent()->GetComponent<AudioSource>()->PlaySound("PlantSeed", 50, 60, 1, 1);
 
 		}
 		else if (Input::IsKeyDown(KEY_4))
 		{
-			glm::vec2 playerPos = _pParentObject->GetTransform()->GetPosition();
+			glm::vec2 playerPos = _pOwner->GetTransform()->GetPosition();
 			//GetParent()->GetComponent<AudioSource>()->PlaySound("PlantSeed", 50, 60, 1, 1);
 
 			CropPlot* closestPlot = _pFarmlandManager->GetCropPlotAtPosition(GetPlayerMidpoint(playerPos));
@@ -218,7 +218,7 @@ void PlayerInputComponent::FarmingControls()
 		}
 		else if (Input::IsKeyDown(KEY_F4))
 		{
-			GetParent()->GetComponent<AudioSource>()->PlaySound("CashRegister", 0.4, 0.5, 1, 1);
+			GetOwner()->GetComponent<AudioSource>()->PlaySound("CashRegister", 0.4, 0.5, 1, 1);
 			PlayerResourceManager::SellAll();
 
 		}
@@ -245,7 +245,7 @@ void PlayerInputComponent::BuildControls()
 
 	glm::vec2 mousePos = Input::GetMousePos();
 	glm::vec2 size = CameraManager::CurrentCamera()->Size();
-	glm::vec2 convertedPos = _pParentObject->GetTransform()->GetPosition() + (mousePos * size);
+	glm::vec2 convertedPos = _pOwner->GetTransform()->GetPosition() + (mousePos * size);
 
 	if (convertedPos.x < 0.0f || convertedPos.y < 0.0f) return;
 	
@@ -303,7 +303,7 @@ void PlayerInputComponent::BuildControls()
 
 				pFarmScene->AddStructure(pObject);
 
-				GetParent()->GetComponent<AudioSource>()->PlaySound("BuildSound", 0.4, 0.5, 0.9, 1.0);
+				GetOwner()->GetComponent<AudioSource>()->PlaySound("BuildSound", 0.4, 0.5, 0.9, 1.0);
 				//PlayerResourceManager::SpendResources(cost);
 
 
@@ -325,7 +325,7 @@ void PlayerInputComponent::BuildControls()
 			if (pos != tilePos) continue;
 
 			pFarmScene->RemoveStructure(structuresInScene[i]);
-			GetParent()->GetComponent<AudioSource>()->PlaySound("BuildSound", 0.4, 0.5, 0.9, 1.0);
+			GetOwner()->GetComponent<AudioSource>()->PlaySound("BuildSound", 0.4, 0.5, 0.9, 1.0);
 
 
 			break;
@@ -340,14 +340,14 @@ void PlayerInputComponent::NearbyResourceNode(class ResourceNode* nearbyResource
 
 void PlayerInputComponent::OnTriggerEnter(ColliderBase* other)
 {
-	if (other->GetParent()->GetTag() == "RESOURCE_NODE") {
-		_pNearbyResourceNode = other->GetParent()->GetComponent<ResourceNode>();
+	if (other->GetOwner()->GetTag() == "RESOURCE_NODE") {
+		_pNearbyResourceNode = other->GetOwner()->GetComponent<ResourceNode>();
 	}
 }
 
 void PlayerInputComponent::OnTriggerExit(ColliderBase* other)
 {
-	if (other->GetParent()->GetTag() == "RESOURCE_NODE") {
+	if (other->GetOwner()->GetTag() == "RESOURCE_NODE") {
 		_pNearbyResourceNode = nullptr;
 	}
 }

@@ -86,7 +86,7 @@ void FarmlandManager::PlantSeed(glm::vec2 position, PlantResourceType cropType)
 				GameObject* plantObject = new GameObject("Plant");
 
 				// Make the plot its on its parent
-				plantObject->SetParent(cropPlot);
+				plantObject->SetOwner(cropPlot);
 				//cropPlot->SetChild(plantObject);
 
 				// Add Sprite component as the PlantedCrop needs it

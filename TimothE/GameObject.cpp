@@ -52,8 +52,8 @@ void GameObject::Update()
 	for (Component* c : _pComponents)
 	{
 		if (c == nullptr) continue;
-		if (c->GetParent() == nullptr) continue;
-		if (c->GetParent()->IsToBeDestroyed() || !c->GetParent()->IsActive()) continue;
+		if (c->GetOwner() == nullptr) continue;
+		if (c->GetOwner()->IsToBeDestroyed() || !c->GetOwner()->IsActive()) continue;
 
 		c->OnUpdate();
 		if (c->GetType() == Component::ParticleSystem_Type)
@@ -261,7 +261,7 @@ void GameObject::SetName(std::string name)
 }
 
 
-void GameObject::SetParent(GameObject* parent)
+void GameObject::SetOwner(GameObject* parent)
 {
 	_pParent = parent;
 	_pParent->AddChild(this);

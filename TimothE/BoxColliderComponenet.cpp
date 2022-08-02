@@ -15,8 +15,8 @@ BoxColliderComponent::BoxColliderComponent(GameObject* parent) : ColliderBase(pa
 	_isEnabled = true;
 
 	// Transform.GetPosition() returns the center of an object
-	glm::vec2 objectCenterPoint = GetParent()->GetTransform()->GetPosition();
-	glm::vec2 objectScale = GetParent()->GetTransform()->GetScale();
+	glm::vec2 objectCenterPoint = GetOwner()->GetTransform()->GetPosition();
+	glm::vec2 objectScale = GetOwner()->GetTransform()->GetScale();
 	
 	
 	// Create a box around the "object"  ERROR: current *2 because transform doesnt return the true scale???
@@ -48,8 +48,8 @@ void BoxColliderComponent::OnUpdate()
 	if (Component::IsEnabled())
 	{
 		// Update our center and size from the transform incase its moved.
-		glm::vec2 position = _pParentObject->GetTransform()->GetPosition();
-		glm::vec2 scale = _pParentObject->GetTransform()->GetScale() * _scale;
+		glm::vec2 position = _pOwner->GetTransform()->GetPosition();
+		glm::vec2 scale = _pOwner->GetTransform()->GetScale() * _scale;
 
 		// Update our collider to the correct position
 		_boxCollider->xPos = position.x;

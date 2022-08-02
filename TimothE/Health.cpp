@@ -22,7 +22,7 @@ void Health::TakeDamage(int val, GameObject* instigator)
 
 void Health::OnDeath(GameObject* instigator)
 {
-	SceneManager::GetCurrentScene()->RemoveGameObject(this->GetParent());
+	SceneManager::GetCurrentScene()->RemoveGameObject(this->GetOwner());
 }
 
 void Health::OnHeal()
@@ -31,9 +31,9 @@ void Health::OnHeal()
 
 void Health::OnDamage(GameObject* instigator)
 {
-	if (GetParent()->GetComponent<AudioSource>() != NULL)
+	if (GetOwner()->GetComponent<AudioSource>() != NULL)
 	{
-		GetParent()->GetComponent<AudioSource>()->PlaySound("EnemyHit", 0.5, 0.5, 1, 1);
+		GetOwner()->GetComponent<AudioSource>()->PlaySound("EnemyHit", 0.5, 0.5, 1, 1);
 	}
 	
 }

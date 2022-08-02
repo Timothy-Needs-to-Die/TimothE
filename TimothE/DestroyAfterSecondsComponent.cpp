@@ -19,7 +19,7 @@ void DestroyAfterSecondsComponent::OnUpdate()
 	_timer += Time::GetDeltaTime();
 
 	if (_timer > _duration) {
-		SceneManager::GetCurrentScene()->RemoveGameObject(_pParentObject);
+		SceneManager::GetCurrentScene()->RemoveGameObject(_pOwner);
 	}
 }
 

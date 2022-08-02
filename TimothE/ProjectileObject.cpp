@@ -30,10 +30,10 @@ void ProjectileObject::UniqueLogic()
 
 void ProjectileObject::OnTriggerEnter(ColliderBase* other)
 {
-	if (other->GetParent()->GetTag() == "TOWER") return;
+	if (other->GetOwner()->GetTag() == "TOWER") return;
 
-	if (other->GetParent()->GetTag() == "ENEMY") {
-		other->GetParent()->GetComponent<EnemyHealth>()->TakeDamage(5.0f, _pOwningTower);
+	if (other->GetOwner()->GetTag() == "ENEMY") {
+		other->GetOwner()->GetComponent<EnemyHealth>()->TakeDamage(5.0f, _pOwningTower);
 	}
 	//else if (other->GetParent()->GetTag() == "PLAYER") {
 	//	other->GetParent()->GetComponent<Health>()->TakeDamage(5.0f);

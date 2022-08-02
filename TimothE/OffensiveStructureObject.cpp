@@ -22,18 +22,18 @@ void OffensiveStructureObject::CheckTarget(GameObject* target)
 
 void OffensiveStructureObject::OnTriggerEnter(ColliderBase* other)
 {
-	if (other->GetParent()->GetTag() == "ENEMY") {
-		if (!other->GetParent()->IsActive()) return;
+	if (other->GetOwner()->GetTag() == "ENEMY") {
+		if (!other->GetOwner()->IsActive()) return;
 		//TIM_LOG_LOG("Target in range");
-		_pEnemiesInRange.emplace_back(other->GetParent());
+		_pEnemiesInRange.emplace_back(other->GetOwner());
 	}
 }
 
 void OffensiveStructureObject::OnTriggerExit(ColliderBase* other)
 {
-	if (other->GetParent()->GetTag() == "ENEMY") {
+	if (other->GetOwner()->GetTag() == "ENEMY") {
 		//TIM_LOG_LOG("Target not in range");
-		GameObject* enemy = other->GetParent();
+		GameObject* enemy = other->GetOwner();
 
 		if (_pCurrentTarget == enemy) _pCurrentTarget = nullptr;
 

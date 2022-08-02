@@ -27,7 +27,7 @@ public:
 
 	bool IsActive() const { return _isActive; }
 
-	UIObject* GetParent() { return _pParentObject; }
+	UIObject* GetOwner() { return _pOwner; }
 
 	std::vector<UIObject*> GetChildren() { return _pChildrenObjects; }
 
@@ -53,14 +53,14 @@ public:
 
 	void SetActive(bool val) { _isActive = val; }
 
-	void SetParent(UIObject* parent) {
-		_pParentObject = parent;
+	void SetOwner(UIObject* parent) {
+		_pOwner = parent;
 	}
 
 	void AddChild(UIObject* child) {
 		_pChildrenObjects.emplace_back(child);
 
-		child->SetParent(this);
+		child->SetOwner(this);
 	}
 private:
 	glm::vec2 _designPosition;
@@ -73,7 +73,7 @@ private:
 
 	bool _isActive;
 
-	UIObject* _pParentObject = nullptr;
+	UIObject* _pOwner = nullptr;
 	std::vector<UIObject*> _pChildrenObjects;
 
 protected:

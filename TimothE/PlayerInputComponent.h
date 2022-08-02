@@ -41,8 +41,8 @@ public:
 	glm::vec2 GetPlayerMidpoint(glm::vec2 target)
 	{
 		// Targets the midpoint of the player
-		target.x += _pParentObject->GetTransform()->GetScale().x / 2;
-		target.y += _pParentObject->GetTransform()->GetScale().y / 2;
+		target.x += _pOwner->GetTransform()->GetScale().x / 2;
+		target.y += _pOwner->GetTransform()->GetScale().y / 2;
 		return target;
 	}
 

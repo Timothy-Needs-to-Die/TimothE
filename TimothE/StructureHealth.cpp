@@ -18,7 +18,7 @@ void StructureHealth::OnDeath(GameObject* instigator)
 {
 	FarmScene* pFarmScene = dynamic_cast<FarmScene*>(SceneManager::GetCurrentScene());
 	if (pFarmScene) {
-		pFarmScene->RemoveStructure(dynamic_cast<StructureObject*>(_pParentObject));
+		pFarmScene->RemoveStructure(dynamic_cast<StructureObject*>(_pOwner));
 	}
 
 	AIController* pAi = instigator->GetComponent<AIController>();

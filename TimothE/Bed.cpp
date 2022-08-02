@@ -59,7 +59,7 @@ void Bed::OnTriggerEnter(ColliderBase* other)
 
 
 	//player collided with bed
-	std::string tag = other->GetParent()->GetTag();
+	std::string tag = other->GetOwner()->GetTag();
 	if (tag == "PLAYER")
 	{
 		_isInRange = true;
@@ -69,7 +69,7 @@ void Bed::OnTriggerEnter(ColliderBase* other)
 
 void Bed::OnTriggerExit(ColliderBase* other)
 {
-	std::string tag = other->GetParent()->GetTag();
+	std::string tag = other->GetOwner()->GetTag();
 	if (tag == "PLAYER")
 	{
 		_isInRange = true;

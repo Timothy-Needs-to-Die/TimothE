@@ -161,6 +161,7 @@ void FarmScene::InitScene(bool hasPlayer)
 	//else {
 	//
 	//}
+
 	_pGameTime->StartNewDay();
 
 	//int*** map = _pTilemap->GenerateTileMap(10, 64, 64, 3);
@@ -175,8 +176,7 @@ void FarmScene::InitScene(bool hasPlayer)
 	//	AddGameObject(pEnemy);
 	//}
 
-	CameraManager::MainCamera()->SetFollowTarget(_pPlayer);
-	CameraManager::MainCamera()->SetTileMap(_pTilemap);
+
 	
 }
 

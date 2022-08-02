@@ -12,21 +12,21 @@ EnemyHealth::EnemyHealth(GameObject* pOwner, int startingHealth)
 
 void EnemyHealth::OnDeath(GameObject* instigator)
 {
-	SceneManager::GetCurrentScene()->RemoveGameObject(_pParentObject);
+	SceneManager::GetCurrentScene()->RemoveGameObject(_pOwner);
 
 	std::vector<GameObject*> towers = SceneManager::GetCurrentScene()->FindGameObjectsWithTag("TOWER");
 
 	for (auto& obj : towers) {
 		OffensiveStructureObject* offensive = dynamic_cast<OffensiveStructureObject*>(obj);
 		if (offensive) {
-			offensive->CheckTarget(_pParentObject);
+			offensive->CheckTarget(_pOwner);
 		}
 	}
 
 	FarmScene* pFarmScene = dynamic_cast<FarmScene*>(SceneManager::GetCurrentScene());
 
 	if (pFarmScene) {
-		pFarmScene->GetWaveManager()->RemoveEnemyFromAliveList(dynamic_cast<Enemy*>(_pParentObject));
+		pFarmScene->GetWaveManager()->RemoveEnemyFromAliveList(dynamic_cast<Enemy*>(_pOwner));
 	}
 
 	Health::OnDeath(instigator);
@@ -34,6 +34,6 @@ void EnemyHealth::OnDeath(GameObject* instigator)
 
 void EnemyHealth::OnDamage(GameObject* instigator)
 {
-	_pParentObject->GetComponent<AIController>()->AttackedBy(instigator);
+	_pOwner->GetComponent<AIController>()->AttackedBy(instigator);
 	Health::OnDamage(instigator);
 }

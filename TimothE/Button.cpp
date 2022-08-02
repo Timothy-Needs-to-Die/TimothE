@@ -18,20 +18,20 @@ Button::Button(GameObject* parent) : Component(parent)
 	_editorIsEnabled = &_isEnabled;
 
 	// If there is no box collider component, add one since the button needs one
-	if (GetParent()->GetComponent<BoxColliderComponent>() == nullptr)
+	if (GetOwner()->GetComponent<BoxColliderComponent>() == nullptr)
 	{
 		// Print to console to let the user know a new component was added
 		Console::Print("[LOG: Button::Constructor]: Created Component::BoxCollider");// as is required for Button::OnUpdate");
 		//std::cout << "BUTTON COMPONENT: created default box component for object" << std::endl;
-		GetParent()->AddComponent(new BoxColliderComponent(GetParent()));
+		GetOwner()->AddComponent(new BoxColliderComponent(GetOwner()));
 	}
 	// If there is no text component, add one since the button needs one
-	if (GetParent()->GetComponent<TextComponent>() == nullptr)
+	if (GetOwner()->GetComponent<TextComponent>() == nullptr)
 	{
 		// Print to console to let the user know a new component was added
 		Console::Print("[LOG: Button::Constructor]: Created Component::TextComponent");
 		//std::cout << "BUTTON COMPONENT: created default text component for object" << std::endl;
-		GetParent()->AddComponent(new TextComponent(GetParent()));
+		GetOwner()->AddComponent(new TextComponent(GetOwner()));
 	}
 
 }
@@ -50,7 +50,7 @@ void Button::OnUpdate()
 	if (Component::IsEnabled())
 	{
 		// Check if the mouse is inside the button
-		if (Physics::Intersects(_pParentObject->GetComponent<BoxColliderComponent>(), Input::GetMouseScreenCoords()))
+		if (Physics::Intersects(_pOwner->GetComponent<BoxColliderComponent>(), Input::GetMouseScreenCoords()))
 		{
 			// If the mouse is inside the button then we are now hovering over the button;
 			_isHovering = true;

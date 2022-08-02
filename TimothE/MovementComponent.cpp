@@ -35,7 +35,7 @@ void MovementComponent::Move(glm::vec2 moveVec)
 	DecideDirection(moveVec);
 
 
-	Transform* transform = _pParentObject->GetTransform();
+	Transform* transform = _pOwner->GetTransform();
 	glm::vec2 originalPosition = transform->GetPosition();
 	glm::vec2 newPos = originalPosition;
 
@@ -54,7 +54,7 @@ void MovementComponent::CollisionCheck(glm::vec2& newPos)
 	if (!SceneManager::GetCurrentScene()->HasTilemap()) return;
 
 	glm::vec2 mapSize = SceneManager::GetCurrentScene()->GetTileMap()->GetMapSize();
-	glm::vec2 parentScale = _pParentObject->GetTransform()->GetScale();
+	glm::vec2 parentScale = _pOwner->GetTransform()->GetScale();
 
 
 	if (newPos.x < 0.0f) {
@@ -163,7 +163,7 @@ void MovementComponent::DecideDirection(glm::vec2& moveVec)
 
 	
 	newForward = glm::normalize(newForward);
-	_pParentObject->GetTransform()->SetForward(newForward);
+	_pOwner->GetTransform()->SetForward(newForward);
 }
 
 void MovementComponent::OnStart()

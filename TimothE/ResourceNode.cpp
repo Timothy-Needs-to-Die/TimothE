@@ -17,16 +17,16 @@ void ResourceNode::Interact()
 		_timer = 0.0f;
 		PlayerResourceManager::GetCoreResource(_resourceType)->GainResource(1);
 		if (_resourceType == CoreResourceType::Wood) {
-			GetParent()->GetComponent<AudioSource>()->PlaySound("WoodChop", 0.2, 0.4, 0.3, 1);
+			GetOwner()->GetComponent<AudioSource>()->PlaySound("WoodChop", 0.2, 0.4, 0.3, 1);
 		}
 		if (_resourceType == CoreResourceType::Metal) {
-			GetParent()->GetComponent<AudioSource>()->PlaySound("StoneMine", 0.2, 0.4, 0.3, 1);
+			GetOwner()->GetComponent<AudioSource>()->PlaySound("StoneMine", 0.2, 0.4, 0.3, 1);
 		}
 		if (_resourceType == CoreResourceType::Coal) {
-			GetParent()->GetComponent<AudioSource>()->PlaySound("StoneMine", 0.2, 0.4, 0.3, 1);
+			GetOwner()->GetComponent<AudioSource>()->PlaySound("StoneMine", 0.2, 0.4, 0.3, 1);
 		}
 		if (_resourceType == CoreResourceType::Stone) {
-			GetParent()->GetComponent<AudioSource>()->PlaySound("StoneMine", 0.2, 0.4, 0.3, 1);
+			GetOwner()->GetComponent<AudioSource>()->PlaySound("StoneMine", 0.2, 0.4, 0.3, 1);
 		}
 		
 	}

@@ -14,7 +14,7 @@ Enemy::Enemy(std::string name, std::string tag)
 	_pMover = AddComponent(new AIMovementCompnent(this, SceneManager::GetCurrentScene()->GetAStar()));
 
 	_pWeapon = new WeaponObject();
-	_pWeapon->SetParent(this);
+	_pWeapon->SetOwner(this);
 	SceneManager::GetCurrentScene()->AddGameObject(_pWeapon);
 
 	_pController = AddComponent(new AIController(this));

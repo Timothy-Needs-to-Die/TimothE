@@ -10,7 +10,7 @@ WeaponComponent::WeaponComponent(GameObject* object)
 {
 	SetType(Component::Weapon_Type);
 
-	_pSprite = _pParentObject->AddComponent<SpriteComponent>(new SpriteComponent(_pParentObject, 90));
+	_pSprite = _pOwner->AddComponent<SpriteComponent>(new SpriteComponent(_pOwner, 90));
 	_pSprite->SetSprite(ResourceManager::GetSpriteSheet("swords_new")->GetSpriteAtIndex(0));
 	_pSprite->SetEnabled(false);
 }
@@ -18,13 +18,13 @@ WeaponComponent::WeaponComponent(GameObject* object)
 void WeaponComponent::OnUpdate()
 {
 	if (_swinging) {
-		float currentRot = _pParentObject->GetTransform()->GetRotation();
+		float currentRot = _pOwner->GetTransform()->GetRotation();
 		currentRot -= 185.0f * Time::GetDeltaTime();
-		_pParentObject->GetTransform()->SetRotation(currentRot);
+		_pOwner->GetTransform()->SetRotation(currentRot);
 
-		glm::vec2 currentPos = _pParentObject->GetTransform()->GetPosition();
+		glm::vec2 currentPos = _pOwner->GetTransform()->GetPosition();
 		currentPos.x += 0.1f * Time::GetDeltaTime();
-		_pParentObject->GetTransform()->SetPosition(currentPos);
+		_pOwner->GetTransform()->SetPosition(currentPos);
 	}
 }
 
@@ -32,9 +32,9 @@ void WeaponComponent::StartAttack()
 {
 
 	_pSprite->SetEnabled(true);
-	_pParentObject->GetTransform()->SetRotation(80.0f);
+	_pOwner->GetTransform()->SetRotation(80.0f);
 
-	_originalPosition = _pParentObject->GetTransform()->GetPosition();
+	_originalPosition = _pOwner->GetTransform()->GetPosition();
 
 	_swinging = true;
 }
@@ -42,9 +42,9 @@ void WeaponComponent::StartAttack()
 void WeaponComponent::EndAttack()
 {
 	_pSprite->SetEnabled(false);
-	_pParentObject->GetTransform()->SetRotation(80.0f);
+	_pOwner->GetTransform()->SetRotation(80.0f);
 	
-	_pParentObject->GetTransform()->SetPosition(_originalPosition);
+	_pOwner->GetTransform()->SetPosition(_originalPosition);
 
 	_swinging = false;
 }

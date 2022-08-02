@@ -17,7 +17,7 @@ Player::Player(std::string name /*= "Player"*/, std::string tag /*= "PLAYER"*/)
 	_pInput = AddComponent(new PlayerInputComponent(this));
 
 	_pWeapon = new WeaponObject();
-	_pWeapon->SetParent(this);
+	_pWeapon->SetOwner(this);
 
 	_pWeapon->GetTransform()->SetPosition({ 0.0f, 0.38f });
 	_pWeapon->GetTransform()->SetScale({ 0.5f, 0.25f });

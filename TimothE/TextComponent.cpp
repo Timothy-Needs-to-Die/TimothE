@@ -37,7 +37,7 @@ void TextComponent::OnUpdate()
 
 void TextComponent::Render()
 {
-	RenderText(*_shader, _text, _pParentObject->GetTransform()->GetPosition().x, _pParentObject->GetTransform()->GetPosition().y, _scale, _color); // pass in _alignment
+	RenderText(*_shader, _text, _pOwner->GetTransform()->GetPosition().x, _pOwner->GetTransform()->GetPosition().y, _scale, _color); // pass in _alignment
 }
 
 void TextComponent::RenderText(Shader& s, std::string text, float x = 0.0f, float y = 0.0f, float _tileScale = 1.0f, glm::vec3 color = { 1.0f, 1.0f, 1.0f })

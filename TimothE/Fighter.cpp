@@ -14,7 +14,7 @@ Fighter::Fighter(GameObject* pOwner) : Component(pOwner)
 {
 	SetType(Component::Types::Fighter_Type);
 	
-	_pWeaponComponent = dynamic_cast<WeaponComponent*>(_pParentObject->GetComponentInChild("Weapon", Weapon_Type));
+	_pWeaponComponent = dynamic_cast<WeaponComponent*>(_pOwner->GetComponentInChild("Weapon", Weapon_Type));
 }
 
 void Fighter::Attack(GameObject* instigator)
@@ -23,7 +23,7 @@ void Fighter::Attack(GameObject* instigator)
 	//_pWeaponComponent->EndAttack();
 
 
-	Character* pOwningCharacter = dynamic_cast<Character*>(_pParentObject);
+	Character* pOwningCharacter = dynamic_cast<Character*>(_pOwner);
 	if (pOwningCharacter != nullptr) {
 		pOwningCharacter->SetAttacking(true);
 	}
@@ -41,7 +41,7 @@ void Fighter::Attack(GameObject* instigator)
 	std::vector<Health*> nearbyHealthObjects;
 
 	//Stores the fighters position, reduces memory access
-	glm::vec2 fighterPos = _pParentObject->GetTransform()->GetPosition();
+	glm::vec2 fighterPos = _pOwner->GetTransform()->GetPosition();
 
 
 	//Cache the weapon range to reduce memory access
@@ -49,10 +49,10 @@ void Fighter::Attack(GameObject* instigator)
 
 	//Cycles through all health objects
 	for (auto& h : healthObjects) {
-		if (h->GetParent() == _pParentObject) continue;
+		if (h->GetOwner() == _pOwner) continue;
 
 		//Get the position of this health object
-		glm::vec2 hPos = h->GetParent()->GetTransform()->GetPosition();
+		glm::vec2 hPos = h->GetOwner()->GetTransform()->GetPosition();
 
 		//if the distance between them is less than our weapons range
 		if (glm::distance(fighterPos, hPos) < weaponRange) {
@@ -62,12 +62,12 @@ void Fighter::Attack(GameObject* instigator)
 	}
 
 
-	glm::vec2 fighterForward = _pParentObject->GetTransform()->GetForward();
+	glm::vec2 fighterForward = _pOwner->GetTransform()->GetForward();
 
 	//Cycles through each nearby health object
 	for (auto& obj : nearbyHealthObjects) {
 		//Calculate the direction vector
-		glm::vec2 dir = obj->GetParent()->GetTransform()->GetPosition() - fighterPos;
+		glm::vec2 dir = obj->GetOwner()->GetTransform()->GetPosition() - fighterPos;
 		
 		float dot = glm::dot(dir, fighterForward);
 
@@ -89,7 +89,7 @@ void Fighter::OnUpdate()
 			
 			_pWeaponComponent->EndAttack();
 
-			Character* pOwningCharacter = dynamic_cast<Character*>(_pParentObject);
+			Character* pOwningCharacter = dynamic_cast<Character*>(_pOwner);
 			if (pOwningCharacter != nullptr) {
 				pOwningCharacter->SetAttacking(false);
 			}

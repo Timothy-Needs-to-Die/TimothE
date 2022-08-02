@@ -21,7 +21,7 @@ void AIMovementCompnent::SetDestination(glm::vec2 targetPos)
 	_hasDestination = false;
 
 	//sets map and finds path
-	glm::vec2 tilePos = SceneManager::GetCurrentScene()->GetTileMap()->GetTileAtWorldPos(0, GetParent()->GetTransform()->GetPosition())->pos;
+	glm::vec2 tilePos = SceneManager::GetCurrentScene()->GetTileMap()->GetTileAtWorldPos(0, GetOwner()->GetTransform()->GetPosition())->pos;
 
 	AStar* pLocal = _pAStar;
 
@@ -61,7 +61,7 @@ void AIMovementCompnent::OnUpdate()
 
 	MovementComponent::OnUpdate();
 
-	GameObject* parent = GetParent();
+	GameObject* parent = GetOwner();
 
 	//skip if no destination is found
 	if (!_hasDestination) return;

@@ -62,13 +62,11 @@ public:
 	COMPONENT_STATIC_TYPE(None)
 
 	//constructor and destructor calling start and end methods
-	Component(GameObject* pParent) : _pParentObject(pParent), _type(None) { }
+	Component(GameObject* pOwner) : _pOwner(pOwner), _type(None) { }
 	Component() = default;
 	~Component() 
 	{
-		//delete _editorIsEnabled;
-		//_editorIsEnabled = nullptr;
-		_pParentObject = nullptr;
+		_pOwner = nullptr;
 	}
 
 	//virtual function for sub class of components
@@ -92,9 +90,9 @@ public:
 	void SetType(Component::Types type) { _type = type; }
 
 	//setter
-	void SetParent(GameObject* parent) { _pParentObject = parent; }
+	void SetOwner(GameObject* parent) { _pOwner = parent; }
 	// Getter
-	GameObject* GetParent() { return _pParentObject; }
+	GameObject* GetOwner() { return _pOwner; }
 
 	//checks if item is in category and type enums
 	inline bool IsInTypes(Types type) { return GetType() & type; }
@@ -112,7 +110,7 @@ public:
 protected:
 	//variable for type and categories to be assigned to
 	Types _type;
-	GameObject* _pParentObject;
+	GameObject* _pOwner;
 
 	bool _isEnabled = true;
 	bool* _editorIsEnabled = &_isEnabled;

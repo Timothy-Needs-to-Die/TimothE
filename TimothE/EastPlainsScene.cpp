@@ -25,10 +25,5 @@ void EastPlainsScene::UpdateObjects()
 void EastPlainsScene::InitScene(bool hasPlayer)
 {
 	Scene::InitScene(hasPlayer);
-	_pPlayer->GetTransform()->SetPosition(_pTilemap->GetPlayerSpawn());
 	
-
-	CameraManager::MainCamera()->SetFollowTarget(_pPlayer);
-	CameraManager::MainCamera()->SetTileMap(_pTilemap);
-	CameraManager::MainCamera()->RecalculateViewMatrix();
 }
