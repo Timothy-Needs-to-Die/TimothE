@@ -28,7 +28,7 @@ public:
 
 	void UpdateUI() override;
 	void UpdateObjects() override;
-	void InitScene() override;
+	void InitScene(bool hasPlayer = true) override;
 
 	void SaveScene(std::string filename);
 	bool LoadScene(std::string filename);
@@ -46,7 +46,6 @@ public:
 
 	void RegisterSounds();
 private:
-	class Player* _pPlayer = nullptr;
 	class ResourceNodeObject* _pWoodNode = nullptr;
 	class GameTimeManager* _pGameTime = nullptr;
 	class InventoryScreen* _pInventoryScreen = nullptr;

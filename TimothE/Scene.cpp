@@ -13,6 +13,7 @@
 #include "SpriteComponent.h"
 #include "Time.h"
 
+#include "Player.h"
 #include "AStar.h"
 
 std::vector<GameObject*> Scene::_listOfGameObjects;
@@ -40,7 +41,7 @@ void Scene::SceneStart()
 	}
 }
 
-void Scene::InitScene()
+void Scene::InitScene(bool hasPlayer)
 {
 	_listOfGameObjects.clear();
 	_listOfDrawableGameObjects.clear();
@@ -76,6 +77,11 @@ void Scene::InitScene()
 			}
 		}
 
+	}
+
+	if (hasPlayer) {
+		_pPlayer = new Player();
+		AddGameObject(_pPlayer);
 	}
 }
 
@@ -122,6 +128,7 @@ void Scene::UpdateUI()
 void Scene::UpdateObjects()
 {
 	//Cycles through all gameobjects in the scene and updates them
+
 	for (GameObject* obj : _listOfGameObjects)
 	{
 		if (obj == nullptr) continue;
@@ -219,6 +226,22 @@ void Scene::RenderScene(std::shared_ptr<Camera> cam)
 	}
 
 	Renderer2D::EndRender();
+}
+
+void Scene::Unload(bool deleteTileMap /*= false*/)
+{
+	for (auto& obj : _listOfGameObjects) {
+		if (obj->GetTag() == "PLAYER" || obj->IsChildOf(_pPlayer)) continue;
+
+		_gameObjectsToRemove.emplace_back(obj);
+	}
+
+	if (deleteTileMap && _hasTilemap && _pTilemap) {
+		delete _pTilemap;
+		_pTilemap = nullptr;
+	}
+
+	FrameEnd();
 }
 
 GameObject* Scene::AddGameObject(GameObject* gameObject)

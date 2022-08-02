@@ -267,7 +267,7 @@ void Physics::EndFrame()
 			_pColliders.erase(it2);
 		}
 		
-		TIM_LOG_LOG("No of Colliders in scene: " << _pColliders.size());
+		//TIM_LOG_LOG("No of Colliders in scene: " << _pColliders.size());
 	}
 
 	_pCollidersToRemove.clear();

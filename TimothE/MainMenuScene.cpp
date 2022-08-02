@@ -6,7 +6,7 @@
 #include "SceneManager.h"
 #include "MainMenuUI.h"
 #include "SpriteComponent.h"
-
+#include "Player.h"
 
 void MainMenuScene::UpdateUI()
 {
@@ -23,11 +23,11 @@ void MainMenuScene::UpdateObjects()
 	}
 }
 
-void MainMenuScene::InitScene()
+
+void MainMenuScene::InitScene(bool hasPlayer)
 {
 	//initialises main menu with UI
-	Scene::InitScene();
+	Scene::InitScene(false);
 	_pMainMenuUI = new MainMenuUI();
-
 	AddGameObject(_pMainMenuUI);
 }

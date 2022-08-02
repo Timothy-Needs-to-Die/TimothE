@@ -51,6 +51,8 @@ void MovementComponent::Move(glm::vec2 moveVec)
 
 void MovementComponent::CollisionCheck(glm::vec2& newPos)
 {
+	if (!SceneManager::GetCurrentScene()->HasTilemap()) return;
+
 	glm::vec2 mapSize = SceneManager::GetCurrentScene()->GetTileMap()->GetMapSize();
 	glm::vec2 parentScale = _pParentObject->GetTransform()->GetScale();
 

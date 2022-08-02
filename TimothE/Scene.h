@@ -33,7 +33,7 @@ public:
 	//Triggers the gameobjects start methods
 	void SceneStart();
 
-	virtual void InitScene();
+	virtual void InitScene(bool hasPlayer = true);
 
 	//Triggers the gameobjects end methods
 	void SceneEnd();
@@ -46,6 +46,8 @@ public:
 
 	TileMap* GetTileMap() { return _pTilemap; }
 
+	class Player* GetPlayer() { return _pPlayer; }
+
 	class LightLevelManager* GetLightManager() { return _pLightManager; }
 
 	void Update();
@@ -57,20 +59,7 @@ public:
 	void RenderScene(std::shared_ptr<Camera> cam);
 
 	//TODO: Implement unloading logic.
-	void Unload(bool deleteTileMap = false) {
-		for (auto& obj : _listOfGameObjects) {
-			_gameObjectsToRemove.emplace_back(obj);
-		}
-
-
-
-		if (deleteTileMap && _hasTilemap && _pTilemap) {
-			delete _pTilemap;
-			_pTilemap = nullptr;
-		}
-
-		FrameEnd();
-	}
+	void Unload(bool deleteTileMap = false);
 
 	std::string GetName() const { return _name; }
 
@@ -180,5 +169,6 @@ protected:
 	bool _hasTilemap = true;
 
 	class AStar* _pAstarObject = nullptr;
+	class Player* _pPlayer = nullptr;
 	class LightLevelManager* _pLightManager;
 };

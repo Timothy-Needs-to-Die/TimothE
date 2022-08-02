@@ -68,24 +68,24 @@ void FarmScene::UpdateObjects()
 
 		glm::vec2 mapDimensions = _pTilemap->GetTileMapDimensions();
 
-		for (int i = 0; i < 100; i++) {
-			Enemy* pEnemy = _pEnemyStress[i];
-
-			int randX = rand() % (int)mapDimensions.x;
-			int randY = rand() % (int)mapDimensions.y;
-
-			float xPos = randX * 0.25f;
-			float yPos = randY * 0.25f;
-
-			if (xPos == _pTilemap->GetMapSize().x) {
-				xPos -= 0.25f;
-			}
-			if (yPos == _pTilemap->GetMapSize().y) {
-				yPos -= 0.25f;
-			}
-
-			pEnemy->GetComponent<AIMovementCompnent>()->SetDestination({ xPos, yPos });
-		}
+		//for (int i = 0; i < 100; i++) {
+		//	Enemy* pEnemy = _pEnemyStress[i];
+		//
+		//	int randX = rand() % (int)mapDimensions.x;
+		//	int randY = rand() % (int)mapDimensions.y;
+		//
+		//	float xPos = randX * 0.25f;
+		//	float yPos = randY * 0.25f;
+		//
+		//	if (xPos == _pTilemap->GetMapSize().x) {
+		//		xPos -= 0.25f;
+		//	}
+		//	if (yPos == _pTilemap->GetMapSize().y) {
+		//		yPos -= 0.25f;
+		//	}
+		//
+		//	pEnemy->GetComponent<AIMovementCompnent>()->SetDestination({ xPos, yPos });
+		//}
 	}
 
 
@@ -113,9 +113,9 @@ void FarmScene::UpdateObjects()
 		FMOD_VECTOR{ 0.0f, 0.0f, 0.0f }, FMOD_VECTOR{ 0.0f, 0.0f, 0.0f });
 }
 
-void FarmScene::InitScene()
+void FarmScene::InitScene(bool hasPlayer)
 {
-	Scene::InitScene();
+	Scene::InitScene(hasPlayer);
 	
 
 	_pInventoryScreen = new InventoryScreen("InventoryScreen", "UI");
@@ -123,9 +123,6 @@ void FarmScene::InitScene()
 	_pInventoryScreen->SetAllActive(false);
 
 	_pGameTime = new GameTimeManager(_pLightManager);
-
-	_pPlayer = new Player();
-	AddGameObject(_pPlayer);
 
 	_pWoodNode = new ResourceNodeObject(CoreResourceType::Wood);
 	_pWoodNode->GetTransform()->SetPosition(3.0f, 3.0f);
@@ -171,12 +168,12 @@ void FarmScene::InitScene()
 	_pPlayer->GetTransform()->SetPosition(_pTilemap->GetPlayerSpawn());
 
 
-	for (int i = 0; i < 100; i++) {
-		Enemy* pEnemy = new Enemy();
-
-		_pEnemyStress.emplace_back(pEnemy);
-		AddGameObject(pEnemy);
-	}
+	//for (int i = 0; i < 100; i++) {
+	//	Enemy* pEnemy = new Enemy();
+	//
+	//	_pEnemyStress.emplace_back(pEnemy);
+	//	AddGameObject(pEnemy);
+	//}
 
 	CameraManager::MainCamera()->SetFollowTarget(_pPlayer);
 	CameraManager::MainCamera()->SetTileMap(_pTilemap);

@@ -68,6 +68,45 @@ public:
 
 	void AddedComponent(Component* comp);
 
+
+	/// <summary>
+	/// Checks if this GameObject is a child of the passed in possibleParent GameObject. 
+	/// Allows a single level search i.e. Hands are a child of wrists but not of person. 
+	/// Or a hierarchical search which would return hands as a child of person
+	/// </summary>
+	/// <param name="searchHierarchy">Searches this objects parents, grand-parents, great grand parents etc.</param>
+	/// <returns></returns>
+	bool IsChildOf(GameObject* possibleParent, bool searchHierarchy = true) {
+		//If the passed in parent is nullptr, then return. Acts as a fail safe
+		if (possibleParent == nullptr) return false;
+
+		//Checks if this object is a child of the possible parent
+		if (possibleParent->GetChild(_name) != nullptr) {
+			return true;
+		}
+		
+		//If we are not searching the whole hierarchy then return false
+		//(the immediate parent was not our parent so we can return false here)
+		if (!searchHierarchy) return false;
+
+		//Creates a GameObject* to act as a way to traverse up the hierachy
+		GameObject* parentToSearch = possibleParent->GetParent();
+
+		//Stores the game object we want to check against
+		GameObject* previousGO = possibleParent;
+
+		//Loops until we have ran out of parents to search
+		while (parentToSearch != nullptr) {
+			//If the parent to search does contain the previous game object as child. Then we know that the original object is a child
+			if (parentToSearch->GetChild(previousGO->GetName()) != nullptr) {
+				return true;
+			}
+
+			previousGO = parentToSearch;
+			parentToSearch = parentToSearch->GetParent();
+		}
+	}
+
 	//////////////////
 	//Get Components//
 	//////////////////

@@ -223,8 +223,6 @@
     <ClInclude Include="TextComponent.h" />
     <ClInclude Include="TextObject.h" />
     <ClInclude Include="Texture2D.h" />
-    <ClInclude Include="ThreadMaster.h" />
-    <ClInclude Include="ThreadWorker.h" />
     <ClInclude Include="TileData.h" />
     <ClInclude Include="TileMap.h" />
     <ClInclude Include="Time.h" />
@@ -364,8 +362,6 @@
     <ClCompile Include="TextComponent.cpp" />
     <ClCompile Include="TextObject.cpp" />
     <ClCompile Include="Texture2D.cpp" />
-    <ClCompile Include="ThreadMaster.cpp" />
-    <ClCompile Include="ThreadWorker.cpp" />
     <ClCompile Include="TileMap.cpp" />
     <ClCompile Include="TMXParser.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">NotUsing</PrecompiledHeader>

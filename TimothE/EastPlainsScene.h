@@ -13,10 +13,9 @@ public:
 
 	void UpdateUI() override;
 	void UpdateObjects() override;
-	void InitScene() override;
+	void InitScene(bool hasPlayer) override;
 
 private:
-	class Player* _pPlayer = nullptr;
 
 
 };

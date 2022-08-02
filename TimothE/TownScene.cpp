@@ -14,7 +14,7 @@ void TownScene::UpdateObjects()
 	}
 }
 
-void TownScene::InitScene()
+void TownScene::InitScene(bool hasPlayer)
 {
-	Scene::InitScene();
+	Scene::InitScene(hasPlayer);
 }

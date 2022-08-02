@@ -7,8 +7,6 @@
 #include "AStar.h"
 #include "SceneManager.h"
 #include "Scene.h"
-#include "ThreadMaster.h"
-#include "ThreadWorker.h"
 
 class AIMovementCompnent : public MovementComponent
 {

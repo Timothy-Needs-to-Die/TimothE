@@ -22,12 +22,11 @@ void EastPlainsScene::UpdateObjects()
 	}
 }
 
-void EastPlainsScene::InitScene()
+void EastPlainsScene::InitScene(bool hasPlayer)
 {
-	Scene::InitScene();
-	_pPlayer = new Player();
+	Scene::InitScene(hasPlayer);
 	_pPlayer->GetTransform()->SetPosition(_pTilemap->GetPlayerSpawn());
-	AddGameObject(_pPlayer);
+	
 
 	CameraManager::MainCamera()->SetFollowTarget(_pPlayer);
 	CameraManager::MainCamera()->SetTileMap(_pTilemap);
