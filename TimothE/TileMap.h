@@ -157,7 +157,12 @@ public:
 
 	void CreateTilemapFromProcGen(int*** map, int width, int height, std::string spritesheetName);
 
+	bool IsLoaded() const { return _loaded; }
+
 private:
+	bool _loaded = false;
+
+
 	//Controls how many layers are used in the tilemap
 	int _numLayers = 6;
 

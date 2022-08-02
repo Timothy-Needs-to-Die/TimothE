@@ -21,7 +21,7 @@ void Physics::RemoveCollider(ColliderBase* collider)
 		_pCollidersToRemove.emplace_back(collider);
 	}
 
-	TIM_LOG_LOG("REMOVING COLLIDER: No of Colliders in scene: " << _pColliders.size());
+	//TIM_LOG_LOG("REMOVING COLLIDER: No of Colliders in scene: " << _pColliders.size());
 }
 
 

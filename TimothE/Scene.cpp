@@ -50,15 +50,32 @@ void Scene::InitScene()
 	_pAstarObject = new AStar();
 	
 	if (_hasTilemap) {
-		_pTilemap = new TileMap(_name);
-		//_pTilemap->LoadTileMap("Resources/Tilemaps/ArtTestMap.tmx");
-		_pTilemap->LoadTileMap("Resources/Tilemaps/" + _name + ".tmx");
-		_pAstarObject->SetMap(_pTilemap);
-		_pLightManager = new LightLevelManager(_pTilemap);
-		_pLightManager->SetWorldLightLevel(5);
-		_pLightManager->SetMinLightLevel(1);
-		_pLightManager->SetMaxLightLevel(8);
-		_pLightManager->UpdateLightMap();
+		if (_pTilemap == nullptr) {
+			_pTilemap = new TileMap(_name);
+			//_pTilemap->LoadTileMap("Resources/Tilemaps/ArtTestMap.tmx");
+			_pTilemap->LoadTileMap("Resources/Tilemaps/" + _name + ".tmx");
+			_pAstarObject->SetMap(_pTilemap);
+			_pLightManager = new LightLevelManager(_pTilemap);
+			_pLightManager->SetWorldLightLevel(5);
+			_pLightManager->SetMinLightLevel(1);
+			_pLightManager->SetMaxLightLevel(8);
+			_pLightManager->UpdateLightMap();
+		}
+		else {
+			if (!_pTilemap->IsLoaded()) {
+				_pTilemap->LoadTileMap("Resources/Tilemaps/" + _name + ".tmx");
+				_pAstarObject->SetMap(_pTilemap);
+				
+				if (_pLightManager != nullptr) {
+					_pLightManager->SetTilemap(_pTilemap);
+					_pLightManager->SetWorldLightLevel(5);
+					_pLightManager->SetMinLightLevel(1);
+					_pLightManager->SetMaxLightLevel(8);
+					_pLightManager->UpdateLightMap();
+				}
+			}
+		}
+
 	}
 }
 
@@ -122,7 +139,6 @@ void Scene::UpdateObjects()
 
 void Scene::FrameEnd()
 {
-	Physics::EndFrame();
 
 	for (GameObject* obj : _gameObjectsToRemove) {
 		Physics::RemoveCollider(obj->GetComponent<ColliderBase>());
@@ -143,20 +159,8 @@ void Scene::FrameEnd()
 		}
 	}
 
-	//cycle through list, disable object,
-	// 
-	// 	   in fighter or wherever just check if object is active before trying to shoot/collide etc.
-
-	//for (auto& obj : _gameObjectsToRemove) {
-	//	delete obj;
-	//	obj = nullptr;
-	//	//if (*obj != nullptr) {
-	//	//	delete* obj;
-	//	//	*obj = nullptr;
-	//	//}
-	//}
-
 	_gameObjectsToRemove.clear();
+	Physics::EndFrame();
 }
 
 void Scene::RenderScene(std::shared_ptr<Camera> cam)

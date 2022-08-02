@@ -26,6 +26,25 @@ TileMap::TileMap(std::string name)
 
 TileMap::~TileMap()
 {
+	for (int i = 0; i < _mapInTiles.y; i++) {
+		delete[] _collidableTileArray[i];
+	}
+	delete _collidableTileArray;
+
+	delete[] _lightLevelArray;
+
+	for (int layer = 0; layer < _numLayers; layer++) {
+		for (int y = 0; y < _mapInTiles.y; y++) {
+			for (int x = 0; x < _mapInTiles.x; x++) {
+				delete _tileArr[layer][y][x];
+			}
+			_tileArr[layer][y].clear();
+		}
+		_tileArr[layer].clear();
+	}
+	_tileArr.clear();
+
+
 }
 
 void TileMap::LoadTileMap(std::string filename)
@@ -201,6 +220,8 @@ void TileMap::LoadTileMap(std::string filename)
 		_playerSpawn = GetTileAtWorldPos(0, { xPos, yPos })->pos;
 
 	}
+
+	_loaded = true;
 }
 
 //Sets the size of the tilemap in tiles. e.g a 256 x 140 tile map.

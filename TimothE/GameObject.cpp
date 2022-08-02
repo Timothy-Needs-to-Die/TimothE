@@ -36,7 +36,6 @@ GameObject::~GameObject()
 		
 		auto it = _pComponents.erase(_pComponents.begin() + i);
 		delete* it;
-		//delete(_pComponents[i]);
 	}
 }
 

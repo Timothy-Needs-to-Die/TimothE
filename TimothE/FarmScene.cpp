@@ -158,12 +158,12 @@ void FarmScene::InitScene()
 
 	//CameraManager::MainCamera()->SetZoomLevel(1.5f);
 
-	if (LoadScene("Resources/PlayerSaves/FarmSceneSaveData.sav")) {
-
-	}
-	else {
-
-	}
+	//if (LoadScene("Resources/PlayerSaves/FarmSceneSaveData.sav")) {
+	//
+	//}
+	//else {
+	//
+	//}
 	_pGameTime->StartNewDay();
 
 	//int*** map = _pTilemap->GenerateTileMap(10, 64, 64, 3);

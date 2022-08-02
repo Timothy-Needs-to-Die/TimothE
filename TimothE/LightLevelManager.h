@@ -27,12 +27,18 @@ public:
 	void RemoveLightSource(LightSource* lightSource);
 	void UpdateLightMap();
 
+
 public:
 	//getters
 	int GetWorldLightLevel() { return _worldLightLevel; }
 	int GetMinTileLightLevel() { return _minLightLevel; }
 	int GetMaxTileLightLevel() { return _maxLightLevel; }
 	bool GetSourceEnabledState(int index) { return _lightSources[index]->isEnabled; }
+
+	void SetTilemap(TileMap* pMap) {
+		_pTileMap = pMap;
+		UpdateLightMap();
+	}
 
 	//setters
 	
