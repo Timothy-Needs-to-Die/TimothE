@@ -57,7 +57,7 @@ void Scene::InitScene(bool hasPlayer)
 			_pTilemap->LoadTileMap("Resources/Tilemaps/" + _name + ".tmx");
 			_pAstarObject->SetMap(_pTilemap);
 			_pLightManager = new LightLevelManager(_pTilemap);
-			_pLightManager->SetWorldLightLevel(5);
+			_pLightManager->SetWorldLightLevel(2);
 			_pLightManager->SetMinLightLevel(1);
 			_pLightManager->SetMaxLightLevel(8);
 			_pLightManager->UpdateLightMap();
@@ -69,7 +69,7 @@ void Scene::InitScene(bool hasPlayer)
 
 				if (_pLightManager != nullptr) {
 					_pLightManager->SetTilemap(_pTilemap);
-					_pLightManager->SetWorldLightLevel(5);
+					_pLightManager->SetWorldLightLevel(2);
 					_pLightManager->SetMinLightLevel(1);
 					_pLightManager->SetMaxLightLevel(8);
 					_pLightManager->UpdateLightMap();
@@ -193,15 +193,26 @@ void Scene::RenderScene(std::shared_ptr<Camera> cam)
 		SpriteComponent* sc = obj->GetComponent<SpriteComponent>();
 		if (sc) {
 			if (!sc->IsEnabled()) continue;
-			Renderer2D::DrawQuad(obj->GetTransform()->GetRenderQuad(), sc->GetSprite()->GetTexture(), sc->GetSprite()->GetTexCoords());
+
+			if (_hasTilemap) {
+				int light = _pTilemap->GetLightLevelAtPosition(obj->GetTransform()->GetPosition());
+				Renderer2D::DrawQuad(obj->GetTransform()->GetRenderQuad(), sc->GetSprite()->GetTexture(), sc->GetSprite()->GetTexCoords(), light);
+			}
+			else
+			{
+				Renderer2D::DrawQuad(obj->GetTransform()->GetRenderQuad(), sc->GetSprite()->GetTexture(), sc->GetSprite()->GetTexCoords());
+			}
 		}
 	}
 
 	if (_pPlayer) {
 		SpriteComponent* sc = _pPlayer->GetComponent<SpriteComponent>();
-	
+
 		if (sc->IsEnabled())
-			Renderer2D::DrawQuad(_pPlayer->GetTransform()->GetRenderQuad(), sc->GetSprite()->GetTexture(), sc->GetSprite()->GetTexCoords());
+		{
+			int light = _pTilemap->GetLightLevelAtPosition(_pPlayer->GetTransform()->GetPosition());
+			Renderer2D::DrawQuad(_pPlayer->GetTransform()->GetRenderQuad(), sc->GetSprite()->GetTexture(), sc->GetSprite()->GetTexCoords(), light);
+		}
 	}
 
 	Renderer2D::EndRender();

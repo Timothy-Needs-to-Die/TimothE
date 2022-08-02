@@ -373,6 +373,10 @@ void TileMap::UpdateLightLevelAtPosition(glm::vec2 pos, int lightLevel)
 	//Convert position to a single dimension index.
 	int index = GetTileIndexFromPosition(pos);
 
+	if (lightLevel == 5) {
+		__debugbreak();
+	}
+
 	_lightLevelArray[index] = lightLevel;
 
 	//Multiply index by 4 so it is quad vertex space
@@ -411,7 +415,8 @@ void TileMap::SetCollidableAtPosition(glm::vec2 pos, bool val)
 
 int TileMap::GetTileIndexFromPosition(glm::vec2 pos)
 {
-	return  _mapInTiles.x * (int)(pos.y * _tilesPerUnit) + (int)(pos.x * _tilesPerUnit);
+	int index = _mapInTiles.x * (int)(pos.y * _tilesPerUnit) + (int)(pos.x * _tilesPerUnit);
+	return  index;
 }
 
 bool TileMap::CollidableAtIndex(int index) const
