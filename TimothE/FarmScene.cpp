@@ -169,12 +169,12 @@ void FarmScene::InitScene(bool hasPlayer)
 	_pPlayer->GetTransform()->SetPosition(_pTilemap->GetPlayerSpawn());
 
 
-	//for (int i = 0; i < 100; i++) {
-	//	Enemy* pEnemy = new Enemy();
-	//
-	//	_pEnemyStress.emplace_back(pEnemy);
-	//	AddGameObject(pEnemy);
-	//}
+	for (int i = 0; i < 100; i++) {
+		Enemy* pEnemy = new Enemy();
+
+		_pEnemyStress.emplace_back(pEnemy);
+		AddGameObject(pEnemy);
+	}
 
 
 	

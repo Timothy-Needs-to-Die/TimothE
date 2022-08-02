@@ -197,7 +197,6 @@ void Scene::RenderScene(std::shared_ptr<Camera> cam)
 		}
 	}
 
-	
 	if (_pPlayer) {
 		SpriteComponent* sc = _pPlayer->GetComponent<SpriteComponent>();
 	
@@ -263,37 +262,15 @@ void Scene::RemoveGameObject(GameObject* gameObject)
 
 	gameObject->SetToBeDestroyed(true);
 
-	//if (it == _gameObjectsToRemove.end()) {
-	//	RemoveGameObject(gameObject->GetChild());
-	//	_gameObjectsToRemove.emplace_back(gameObject);
-	//}
+	if (it == _gameObjectsToRemove.end()) {
+		if (gameObject->HasChildren()) {
+			for (auto& child : gameObject->GetChildren()) {
+				RemoveGameObject(child);
+			}
+		}
 
-	//for (GameObject* obj : _gameObjectsToRemove) {
-
-	//	std::vector<GameObject*>::iterator it = std::find(_listOfDrawableGameObjects.begin(), _listOfDrawableGameObjects.end(), obj);
-	//	if (it != _listOfDrawableGameObjects.end()) {
-	//		_listOfDrawableGameObjects.erase(it);
-	//	}
-
-
-	//	std::vector<GameObject*>::iterator it2 = std::find(_listOfGameObjects.begin(), _listOfGameObjects.end(), obj);
-	//	if (it2 != _listOfGameObjects.end()) {
-	//		_listOfGameObjects.erase(it2);
-	//	}
-
-	//	Physics::RemoveCollider(obj->GetComponent<ColliderBase>());
-	//}
-
-	//for (int i = 0; i < _gameObjectsToRemove.size(); i++) {
-	//	_gameObjectsToRemove.erase(_gameObjectsToRemove.begin() + i);
-	//}
-	///*for (std::vector<GameObject*>::iterator it = _gameObjectsToRemove.begin(); it != _gameObjectsToRemove.end(); ++it) {
-	//	if (*it != nullptr) {
-	//		delete* it;
-	//	}
-	//}*/
-
-	//_gameObjectsToRemove.clear();
+		_gameObjectsToRemove.emplace_back(gameObject);
+	}
 }
 
 bool SortbyAscendingDrawOrder(GameObject* a, GameObject* b)
@@ -431,8 +408,6 @@ GameObject* Scene::GetGameObjectByID(std::string id)
 	return nullptr;
 }
 
-
-
 std::vector<GameObject*> Scene::GetGameObjectsByName(std::string name)
 {
 	//vector of gameobjects
@@ -452,8 +427,6 @@ std::vector<GameObject*> Scene::GetGameObjectsByName(std::string name)
 	//Returns the vector
 	return list;
 }
-
-
 
 //Find first GameObject with the desired tag
 GameObject* Scene::FindObjectWithTag(const std::string& tagName)
@@ -499,7 +472,6 @@ void Scene::PopulateToolVector()
 		newConfig.type = (ToolType)std::stoi(loadedData[i][10]);
 		newConfig.damagePerHit = std::stoi(loadedData[i][8]);
 		newConfig.townLevelRequired = std::stoi(loadedData[i][0]);
-
 	}
 }
 

@@ -5,8 +5,6 @@
 #include "Stream.h"
 #include "imgui.h"
 
-class GameObject;
-
 /// <summary>
 ///
 ///COMPONENT_STATIC_TYPE(Texture_Type)
@@ -19,8 +17,6 @@ class GameObject;
 /// <returns></returns>
 
 #define COMPONENT_STATIC_TYPE(type) static Types GetStaticType() {return Types::##type; }
-
-class GameObject;
 
 class Component
 {
@@ -62,7 +58,7 @@ public:
 	COMPONENT_STATIC_TYPE(None)
 
 	//constructor and destructor calling start and end methods
-	Component(GameObject* pOwner) : _pOwner(pOwner), _type(None) { }
+	Component(class GameObject* pOwner) : _pOwner(pOwner), _type(None) { }
 	Component() = default;
 	~Component() 
 	{
@@ -90,9 +86,9 @@ public:
 	void SetType(Component::Types type) { _type = type; }
 
 	//setter
-	void SetOwner(GameObject* parent) { _pOwner = parent; }
+	void SetOwner(class GameObject* parent) { _pOwner = parent; }
 	// Getter
-	GameObject* GetOwner() { return _pOwner; }
+	class GameObject* GetOwner() { return _pOwner; }
 
 	//checks if item is in category and type enums
 	inline bool IsInTypes(Types type) { return GetType() & type; }
@@ -110,7 +106,7 @@ public:
 protected:
 	//variable for type and categories to be assigned to
 	Types _type;
-	GameObject* _pOwner;
+	class GameObject* _pOwner;
 
 	bool _isEnabled = true;
 	bool* _editorIsEnabled = &_isEnabled;

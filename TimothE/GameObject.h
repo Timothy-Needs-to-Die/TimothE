@@ -66,6 +66,12 @@ public:
 
 	void AddChild(GameObject* newChild);
 
+	bool HasChildren() const {
+		return _pChildren.size() != 0;
+	}
+
+	std::vector<GameObject*> GetChildren() { return _pChildren; }
+
 	void AddedComponent(Component* comp);
 
 
