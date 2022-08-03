@@ -69,29 +69,42 @@ void Camera::OnUpdate()
 			float camYMin = _cameraPos.y + _bottom; //Bottom is negative
 			float camYMax = _cameraPos.y + _top;
 
+			//Left and Right boundaries
 			float tilemapXMin = 0.0f;
 			float tilemapXMax = _pCurrentMap->GetMapSize().x;
+
+			//Bottom and Top boundaries
 			float tilemapYMin = 0.0f;
 			float tilemapYMax = _pCurrentMap->GetMapSize().y;
 
-			if (camXMin < tilemapXMax && camXMax > tilemapXMax) {
+			//if the camera view is larger than the tilemap
+			if ((_left < tilemapXMax && _right > tilemapXMax)) {
 				int noOfTiles = _pCurrentMap->GetTileMapDimensions().x;
 				_cameraPos.x = 0.25f * (noOfTiles / 2);
+				//_cameraPos.x = 0.25f * noOfTiles;
+
 			}
-			else if (camXMin < tilemapXMin) {
-				_cameraPos.x = tilemapXMin - _left;
+			//If the camera is going towards the left side of the map
+			else if (camXMin < tilemapXMin && camXMax > tilemapXMax) {
+				int noOfTiles = _pCurrentMap->GetTileMapDimensions().x;
+				_cameraPos.x = 0.25f * (noOfTiles / 2);
+				//_cameraPos.x = tilemapXMin - _left;
 			}
+			//if the camera is going towards the right side of the map
 			else if (camXMax > tilemapXMax) {
 				_cameraPos.x = tilemapXMax - _right;
 			}
 
+			//if the camera view is larger than the tilemap
 			if (camYMin < tilemapYMin && camYMax + 0.25f > tilemapYMax) {
 				int noOfTiles = _pCurrentMap->GetTileMapDimensions().y;
 				_cameraPos.y = 0.25f * (noOfTiles / 2);
 			}
+			//if the camera is going towards the bottom side of the map
 			else if (camYMin < tilemapYMin) {
 				_cameraPos.y = tilemapYMin - _bottom;
 			}
+			//if the camera is going towards the top side of the map
 			else if (camYMax > tilemapYMax) {
 				_cameraPos.y = tilemapYMax - _top;
 			}

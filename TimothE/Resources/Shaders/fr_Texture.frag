@@ -17,7 +17,7 @@ layout (location = 5) in flat int v_EntityID;
 
 layout(binding = 0) uniform sampler2D u_Textures[32];
 
-vec4 darkest = vec4(0.2f, 0.2f, 0.2f, 1.0f);
+vec4 darkest = vec4(0.15f, 0.15f, 0.15f, 0.6f);
 
 void main()
 {

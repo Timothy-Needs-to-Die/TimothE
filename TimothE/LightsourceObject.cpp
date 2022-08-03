@@ -10,7 +10,7 @@ LightsourceObject::LightsourceObject(glm::vec2 pos, std::string name, std::strin
 	_pTransform->SetPosition(pos);
 	_pLightSource->worldPos = pos;
 
-	//TODO: Change this
+	//TODO: Change this. Shouldn't be referencing the farm scene and should be generalised
 	FarmScene* pFarmScene = dynamic_cast<FarmScene*>(SceneManager::GetCurrentScene());
 
 	if (pFarmScene) {
