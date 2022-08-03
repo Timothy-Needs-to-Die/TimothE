@@ -277,6 +277,44 @@ void GameObject::AddedComponent(Component* comp)
 	Scene::AddedComponentHandler(this, comp);
 }
 
+bool GameObject::IsChildOf(GameObject* possibleParent, bool searchHierarchy /*= true*/)
+{
+	//If the passed in parent is nullptr, then return. Acts as a fail safe
+	if (possibleParent == nullptr) return false;
+
+	//if (_name == "Enemy_Arms") {
+	//	__debugbreak();
+	//}
+
+	//Checks if this object is a child of the possible parent
+	if (possibleParent->GetChild(_name) != nullptr) {
+		return true;
+	}
+
+
+	//If we are not searching the whole hierarchy then return false
+	//(the immediate parent was not our parent so we can return false here)
+	if (!searchHierarchy) return false;
+
+	//Creates a GameObject* to act as a way to traverse up the hierachy
+	GameObject* parentToSearch = possibleParent->GetOwner();
+
+	//Stores the game object we want to check against
+	GameObject* previousGO = possibleParent;
+
+	//Loops until we have ran out of parents to search
+	while (parentToSearch != nullptr) {
+		//If the parent to search does contain the previous game object as child. Then we know that the original object is a child
+		if (parentToSearch->GetChild(previousGO->GetName()) != nullptr) {
+			return true;
+		}
+
+		previousGO = parentToSearch;
+		parentToSearch = parentToSearch->GetOwner();
+	}
+	return false;
+}
+
 void GameObject::RemoveComponent(Component* comp)
 {
 	Scene::RemoveComponentHandler(this, comp);

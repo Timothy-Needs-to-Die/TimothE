@@ -42,7 +42,7 @@ void SceneTransitionObject::OnTriggerEnter(ColliderBase* other)
 		glm::vec2 spawnPos = SceneManager::GetScene(sceneName)->GetSpawnPosition(finishedString);
 
 		_transitioning = true;
-		//TIM_LOG_LOG("Scene Name: " << sceneName << " Spawn Point Name: " << finishedString << " Spawn Position: " << spawnPos.x << ", " << spawnPos.y);
+		TIM_LOG_LOG("Scene Name: " << sceneName << " Spawn Point Name: " << finishedString << " Spawn Position: " << spawnPos.x << ", " << spawnPos.y);
 
 		SceneManager::SetCurrentScene(sceneName, spawnPos);
 

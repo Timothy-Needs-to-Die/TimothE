@@ -77,7 +77,9 @@ void Scene::InitScene(bool hasPlayer)
 	}
 
 	if (hasPlayer) {
-		_pPlayer = new Player();
+		if (_pPlayer == nullptr) {
+			_pPlayer = new Player();
+		}
 		AddGameObject(_pPlayer);
 
 		CameraManager::MainCamera()->SetFollowTarget(_pPlayer);
@@ -191,6 +193,7 @@ void Scene::FrameEnd()
 			_listofDrawableUIObjects.erase(it3);
 		}
 	}
+
 
 	_gameObjectsToRemove.clear();
 	Physics::EndFrame();

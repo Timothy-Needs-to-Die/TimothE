@@ -8,7 +8,6 @@ std::vector<std::pair<ColliderBase*, ColliderBase*>> Physics::_collidingBodies =
 void Physics::AddCollider(ColliderBase* collider)
 {
 	_pColliders.emplace_back(collider);
-	//TIM_LOG_LOG("ADDING COLLIDER: No of Colliders in scene: " << _pColliders.size());
 }
 
 void Physics::RemoveCollider(ColliderBase* collider)
@@ -20,8 +19,6 @@ void Physics::RemoveCollider(ColliderBase* collider)
 	if (it == _pCollidersToRemove.end()) {
 		_pCollidersToRemove.emplace_back(collider);
 	}
-
-	//TIM_LOG_LOG("REMOVING COLLIDER: No of Colliders in scene: " << _pColliders.size());
 }
 
 
@@ -267,7 +264,7 @@ void Physics::EndFrame()
 			_pColliders.erase(it2);
 		}
 		
-		//TIM_LOG_LOG("No of Colliders in scene: " << _pColliders.size());
+		TIM_LOG_LOG("No of Colliders in scene: " << _pColliders.size());
 	}
 
 	_pCollidersToRemove.clear();

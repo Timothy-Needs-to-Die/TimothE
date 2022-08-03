@@ -12,7 +12,7 @@ Character::Character(std::string texture, std::string name, std::string tag)
 {
 	_pAnimSheet = new AnimatedSpritesheet(ResourceManager::GetTexture(texture), 16, 32);
 
-	GameObject* pArms = new GameObject("Arms");
+	GameObject* pArms = new GameObject(name + "_Arms");
 	_pArmSc = pArms->AddComponent(new SpriteComponent(pArms, 110));
 	_pArmSc->SetSprite(_pAnimSheet->GetSpriteAtIndex(0));
 

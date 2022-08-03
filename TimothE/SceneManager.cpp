@@ -45,7 +45,6 @@ Scene* SceneManager::SetCurrentScene(Scene* scene, glm::vec2 spawnPoint)
 	}
 
 	if (scene != nullptr) {
-		//_pCurrentScene->Unload();
 		_pCurrentScene = scene;
 		_pCurrentScene->InitScene();
 		_pCurrentScene->SceneStart(spawnPoint);
