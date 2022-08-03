@@ -35,8 +35,8 @@ public:
 	
 private:
 	std::string _UID;
-	Shader* _shader;
-	Font* _font;
+	Shader* _shader = nullptr;
+	Font* _font = nullptr;
 	std::string _text;
 	float _scale;
 	glm::vec3 _color;

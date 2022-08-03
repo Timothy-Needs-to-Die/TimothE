@@ -49,7 +49,7 @@ public:
 	virtual void OnTriggerEnter(ColliderBase* other) override;
 	virtual void OnTriggerExit(ColliderBase* other) override;
 private:
-	class TileMap* _pTileMap;
+	class TileMap* _pTileMap = nullptr;
 	class MovementComponent* _pMovement = nullptr;
 	class Fighter* _pFighter = nullptr;
 

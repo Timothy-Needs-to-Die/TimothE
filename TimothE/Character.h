@@ -26,17 +26,17 @@ protected:
 
 	class AudioSource* _pAudioSource = nullptr;
 
-	struct Animation* _pArmDown;
-	struct Animation* _pArmLeft;
-	struct Animation* _pArmRight;
-	struct Animation* _pArmUp;
-	struct Animation* _pMoveDown;
-	struct Animation* _pMoveRight;
-	struct Animation* _pMoveUp;
-	struct Animation* _pMoveLeft;
-	struct Animation* _pArmAttack;
+	struct Animation* _pArmDown = nullptr;
+	struct Animation* _pArmLeft = nullptr;
+	struct Animation* _pArmRight = nullptr;
+	struct Animation* _pArmUp = nullptr;
+	struct Animation* _pMoveDown = nullptr;
+	struct Animation* _pMoveRight = nullptr;
+	struct Animation* _pMoveUp = nullptr;
+	struct Animation* _pMoveLeft = nullptr;
+	struct Animation* _pArmAttack = nullptr;
 
-	struct Animation* _pCurrentAnimation;
-	struct Animation* _pCurrentArmAnimation;
+	struct Animation* _pCurrentAnimation = nullptr;
+	struct Animation* _pCurrentArmAnimation = nullptr;
 };
 

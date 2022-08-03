@@ -18,7 +18,7 @@ private:
 	class TextComponent* _pInteractableUI = nullptr;
 	class TextComponent* _pHealthUI = nullptr;
 
-	GameObject* _pHealthObj;
+	GameObject* _pHealthObj = nullptr;
 
 protected:
 	virtual void UniqueLogic() override;

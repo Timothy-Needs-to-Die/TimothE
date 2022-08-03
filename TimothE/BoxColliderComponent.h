@@ -45,7 +45,7 @@ public:
 private:
 	bool _isEnabled;
 
-	Rect* _boxCollider;
+	Rect* _boxCollider = nullptr;
 
 	// Editor UI
 	bool* _editorIsEnabled;

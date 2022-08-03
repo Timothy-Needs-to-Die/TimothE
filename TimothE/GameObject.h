@@ -210,7 +210,7 @@ protected:
 	//Components//
 	//////////////
 	std::vector<Component*> _pComponents;
-	Transform* _pTransform;
+	Transform* _pTransform = nullptr;
 
 	/////////////
 	//Ownership//

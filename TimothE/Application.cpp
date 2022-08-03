@@ -62,8 +62,8 @@ void Application::Init()
 
 	//initializes resource manager
 	ResourceManager::Init();
-
 	Renderer2D::Init();
+	CameraManager::Init();
 
 	Scene* pScene = SceneManager::CreateScene(ResourceManager::GetScene("MainMenuScene"));
 
@@ -80,7 +80,6 @@ void Application::Init()
 
 	_running = true;
 
-	CameraManager::Init();
 	CameraManager::MainCamera()->SetCameraSpeed(2.0f);
 
 	CameraManager::AddCamera("Editor");

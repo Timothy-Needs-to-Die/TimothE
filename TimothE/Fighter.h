@@ -25,7 +25,7 @@ public:
 private:
 	WeaponConfig _weaponConfig = WeaponConfig();
 
-	class WeaponComponent* _pWeaponComponent;
+	class WeaponComponent* _pWeaponComponent = nullptr;
 	
 	float _timeSinceLastAttack = 0.0f;
 
