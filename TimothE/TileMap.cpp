@@ -222,6 +222,35 @@ void TileMap::LoadTileMap(std::string filename)
 
 	}
 
+
+	TMX::Parser::ObjectGroup group = GetObjectGroupByName("PlayerInteractions");
+
+	if (group.name != "") {
+		for (auto& obj : group.object) {
+			std::string objName = obj.first;
+
+			float xPos = obj.second.x;
+			float yPos = (tmx.mapInfo.height * tmx.mapInfo.tileHeight) - obj.second.y;
+
+			xPos /= (float)TILE_SIZE_IN_PIXELS;
+			yPos /= (float)TILE_SIZE_IN_PIXELS;
+
+			xPos *= _gapBetweenTiles;
+			yPos *= _gapBetweenTiles;
+
+
+			glm::vec2 pos = { xPos, yPos };
+
+			if (objName[0] == 'S') {
+				_tilemapSpawnPoints[objName] = pos;
+			}
+			else if (objName[0] == 'D') {
+				_tilemapDestinationPoints[objName] = pos;
+			}
+		}
+	}
+
+
 	_loaded = true;
 }
 

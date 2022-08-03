@@ -441,6 +441,7 @@
     <ClInclude Include="ImageUIObject.h" />
     <ClInclude Include="EastPlainsScene.h" />
     <ClInclude Include="GameTimeStructures.h" />
+    <ClInclude Include="SceneTransitionObject.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="AIController.cpp">
@@ -721,5 +722,6 @@
     <ClCompile Include="UIObject.cpp" />
     <ClCompile Include="ImageUIObject.cpp" />
     <ClCompile Include="EastPlainsScene.cpp" />
+    <ClCompile Include="SceneTransitionObject.cpp" />
   </ItemGroup>
 </Project>

@@ -19,7 +19,7 @@ void MainMenuScene::UpdateObjects()
 
 	//if enter is pressed start game
 	if (Input::IsKeyPressedOnce(KEY_ENTER)) {
-		SceneManager::SetCurrentScene(SceneManager::CreateScene(ResourceManager::GetScene("FarmScene")));
+		SceneManager::SetCurrentScene(SceneManager::CreateScene(ResourceManager::GetScene("Farm")));
 	}
 }
 

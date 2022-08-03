@@ -50,10 +50,10 @@
 </data>
  </layer>
  <objectgroup id="3" name="PlayerInteractions">
-  <object id="4" name="D_Farm_Sp1" x="497" y="308">
+  <object id="4" name="D_Farm_Sp1" x="493.318" y="330.864">
    <point/>
   </object>
-  <object id="5" name="S_EastPlains_Sp2" x="497" y="322">
+  <object id="5" name="S_EastPlains_Sp2" x="367" y="322">
    <point/>
   </object>
   <object id="7" name="PlayerSpawn" x="233" y="111">

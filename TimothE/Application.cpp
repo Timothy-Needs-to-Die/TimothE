@@ -67,12 +67,13 @@ void Application::Init()
 
 	Scene* pScene = SceneManager::CreateScene(ResourceManager::GetScene("MainMenuScene"));
 
-	SceneManager::CreateScene(ResourceManager::GetScene("FarmScene"));
-	SceneManager::CreateScene(ResourceManager::GetScene("TownScene"));
+	SceneManager::CreateScene(ResourceManager::GetScene("Farm"));
 	SceneManager::CreateScene(ResourceManager::GetScene("EastPlains"));
 
 
 	pScene->SetHasTilemap(false);
+
+	SceneManager::LoadAllTilemaps();
 
 	SceneManager::SetCurrentScene(pScene);
 	//SceneManager::SetCurrentScene(SceneManager::CreateScene(ResourceManager::GetScene("TownScene")));

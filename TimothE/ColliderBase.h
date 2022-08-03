@@ -30,7 +30,7 @@ enum CollisionChannel {
 	CollisionChannel_None = 0x00000,
 	CollisionChannel_Player = 0x00002,
 	CollisionChannel_Enemy = 0x00004,
-	CC_03 = 0x00006,
+	CollisionChannel_SceneTransition = 0x00006,
 	CC_04 = 0x00008,
 	CC_05 = 0x00010,
 	CC_06 = 0x00012,

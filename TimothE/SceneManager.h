@@ -20,10 +20,10 @@ public:
 	static Scene* GetDefaultScene();
 
 	//Sets the current scene to the passed in one
-	static Scene* SetCurrentScene(Scene* scene);
+	static Scene* SetCurrentScene(Scene* scene, glm::vec2 spawnPoint = glm::vec2{0.0f,0.0f});
 
 	//Sets the current scene to the passed in one by the name
-	static Scene* SetCurrentScene(std::string name);
+	static Scene* SetCurrentScene(std::string name, glm::vec2 spawnPoint = glm::vec2{ 0.0f,0.0f });
 
 	//Deletes a scene
 	static void DeleteScene(std::string name);
@@ -33,6 +33,8 @@ public:
 
 	//Sets the default scene to the passed in one
 	static void SetDefaultScene(Scene* scene);
+
+	static void LoadAllTilemaps();
 
 private:
 	//Holds all of the scenes that the engine knows about

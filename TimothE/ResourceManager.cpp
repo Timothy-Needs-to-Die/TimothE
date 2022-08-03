@@ -26,8 +26,7 @@ void ResourceManager::Init()
 {
 	//LOAD SCENES
 	ResourceManager::InstantiateScene("MainMenuScene", new MainMenuScene("MainMenuScene"));
-	ResourceManager::InstantiateScene("FarmScene", new FarmScene("FarmScene"));
-	ResourceManager::InstantiateScene("TownScene", new TownScene("TownScene"));
+	ResourceManager::InstantiateScene("Farm", new FarmScene("Farm"));
 	ResourceManager::InstantiateScene("EastPlains", new EastPlainsScene("EastPlains"));
 
 	LoadTextures();

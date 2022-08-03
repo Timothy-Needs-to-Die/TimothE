@@ -159,6 +159,14 @@ public:
 
 	bool IsLoaded() const { return _loaded; }
 
+	std::unordered_map<std::string, glm::vec2> GetMapSpawnPoints() const {
+		return _tilemapSpawnPoints;
+	}
+
+	std::unordered_map<std::string, glm::vec2> GetMapDestinationPoints() const {
+		return _tilemapDestinationPoints;
+	}
+
 private:
 	bool _loaded = false;
 
@@ -204,6 +212,9 @@ private:
 	std::map<std::string, TMX::Parser::ObjectGroup> _objectGroups;
 
 	std::vector< TMX::Parser::Object> _tilemapObjects;
+
+	std::unordered_map<std::string, glm::vec2> _tilemapSpawnPoints;
+	std::unordered_map<std::string, glm::vec2> _tilemapDestinationPoints;
 
 	glm::vec2 _playerSpawn;
 

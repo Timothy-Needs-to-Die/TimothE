@@ -182,6 +182,7 @@ void Physics::HandleCollision(ColliderBase* c1, ColliderBase* c2 /*= nullptr*/)
 		}
 		if (c2->IsTrigger()) {
 			if (c2->GetOwner() != nullptr && c1->GetOwner() != nullptr) {
+				std::cout << "Collider A Pos: " << c1->GetOwner()->GetTransform()->GetPosition().x << " Collider B Pos: " << c2->GetOwner()->GetTransform()->GetPosition().x << std::endl;
 				c2->GetOwner()->OnTriggerEnter(c1);
 			}
 		}
@@ -211,7 +212,6 @@ void Physics::HandleNoCollision(ColliderBase* c1, ColliderBase* c2)
 void Physics::UpdateWorld()
 {
 	constexpr float MAX_DISTANCE = 8.0f;
-
 
 
 	for (int i = 0; i < _pColliders.size(); ++i) {

@@ -189,6 +189,7 @@
     <ClInclude Include="ResourceManager.h" />
     <ClInclude Include="ResourceNode.h" />
     <ClInclude Include="ResourceNodeObject.h" />
+    <ClInclude Include="SceneTransitionObject.h" />
     <ClInclude Include="SOIL\SOIL2.h" />
     <ClInclude Include="SOIL\image_DXT.h" />
     <ClInclude Include="SOIL\image_helper.h" />
@@ -349,6 +350,7 @@
     <ClCompile Include="ResourceNodeObject.cpp" />
     <ClCompile Include="Scene.cpp" />
     <ClCompile Include="SceneManager.cpp" />
+    <ClCompile Include="SceneTransitionObject.cpp" />
     <ClCompile Include="Source.cpp" />
     <ClCompile Include="Sprite.cpp" />
     <ClCompile Include="SpriteComponent.cpp" />

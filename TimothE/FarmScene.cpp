@@ -49,7 +49,7 @@ void FarmScene::UpdateObjects()
 	}
 
 	if (Input::IsKeyPressedOnce(KEY_O)) {
-		SceneManager::SetCurrentScene("EastPlains");
+		SceneManager::SetCurrentScene("EastPlains", glm::vec2(0.0f));
 	}
 
 	if (Input::IsKeyPressedOnce(KEY_P)) {

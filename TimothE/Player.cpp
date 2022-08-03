@@ -26,7 +26,12 @@ Player::Player(std::string name /*= "Player"*/, std::string tag /*= "PLAYER"*/)
 	//_pHealth = AddComponent(new PlayerHealth(this, 100));
 	_pFighter = AddComponent(new Fighter(this));
 	_pCollider = AddComponent(new BoxColliderComponent(this));
+
 	_pCollider->SetTrigger(true);
+	_pCollider->SetCollidersChannel(CollisionChannel_Player);
+	_pCollider->AddCompatibleChannel(CollisionChannel_Enemy);
+	_pCollider->AddCompatibleChannel(CollisionChannel_SceneTransition);
+
 	_pFarmlandManager = AddComponent(new FarmlandManager(this));
 	
 	_pUI = AddComponent(new PlayerUIComponent(this));

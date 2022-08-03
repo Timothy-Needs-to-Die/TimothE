@@ -31,7 +31,7 @@ public:
 	~Scene();
 
 	//Triggers the gameobjects start methods
-	void SceneStart();
+	void SceneStart(glm::vec2 spawnPoint = glm::vec2{ 0.0f });
 
 	virtual void InitScene(bool hasPlayer = true);
 
@@ -41,8 +41,16 @@ public:
 	//Handles pausing the scene
 	void ScenePause();
 
+	glm::vec2 GetSpawnPosition(std::string query) {
+		return _spawnPoints[query];
+	}
+
+	void LoadTileMap();
+
 	//Any updates that need to be performed in the editor. Primarily every game objects transform
 	void EditorUpdate();
+
+	void MovePlayerToSpawnPoint(std::string spawnPointName);
 
 	TileMap* GetTileMap() { return _pTilemap; }
 
@@ -148,7 +156,7 @@ public:
 protected:
 	//Stores the name of the scene
 	std::string _name;
-	TileMap* _pTilemap;
+	TileMap* _pTilemap = nullptr;
 
 	std::vector<ToolConfig> _toolConfigs;
 	std::vector<SeedConfig> _seedConfigs;
@@ -161,6 +169,8 @@ protected:
 	static std::vector<GameObject*> _listOfGameObjects;
 	static std::vector<GameObject*> _listOfDrawableGameObjects;
 	static std::vector<GameObject*> _listofDrawableUIObjects;
+
+	std::unordered_map<std::string, glm::vec2> _spawnPoints;
 
 	std::vector<GameObject*> _gameObjectsToRemove;
 

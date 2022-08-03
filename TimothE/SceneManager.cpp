@@ -38,7 +38,7 @@ Scene* SceneManager::GetDefaultScene()
 	return _pDefaultScene;
 }
 
-Scene* SceneManager::SetCurrentScene(Scene* scene)
+Scene* SceneManager::SetCurrentScene(Scene* scene, glm::vec2 spawnPoint)
 {
 	if (_pCurrentScene != nullptr) {
 		_pCurrentScene->Unload();
@@ -48,7 +48,7 @@ Scene* SceneManager::SetCurrentScene(Scene* scene)
 		//_pCurrentScene->Unload();
 		_pCurrentScene = scene;
 		_pCurrentScene->InitScene();
-		_pCurrentScene->SceneStart();
+		_pCurrentScene->SceneStart(spawnPoint);
 
 		//_pCurrentScene->LoadScene("Resources/Scenes/" + scene->GetName() + ".scene");
 	}
@@ -56,11 +56,11 @@ Scene* SceneManager::SetCurrentScene(Scene* scene)
 	return _pCurrentScene;
 }
 
-Scene* SceneManager::SetCurrentScene(std::string name)
+Scene* SceneManager::SetCurrentScene(std::string name, glm::vec2 spawnPoint)
 {
 	Scene* scene = _scenes[name];
 	if (scene != nullptr) {
-		return SetCurrentScene(scene);
+		return SetCurrentScene(scene, spawnPoint);
 	}
 	else {
 		std::cout << "Scene Not found: " << name << std::endl;
@@ -89,6 +89,13 @@ void SceneManager::SetDefaultScene(std::string name)
 void SceneManager::SetDefaultScene(Scene* scene)
 {
 	_pDefaultScene = scene;
+}
+
+void SceneManager::LoadAllTilemaps()
+{
+	for (auto& scene : _scenes) {
+		scene.second->LoadTileMap();
+	}
 }
 
 std::unordered_map<std::string, Scene*> SceneManager::_scenes;

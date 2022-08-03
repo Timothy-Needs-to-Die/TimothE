@@ -15,6 +15,7 @@
 
 #include "Player.h"
 #include "AStar.h"
+#include "SceneTransitionObject.h"
 #include "CameraManager.h"
 
 std::vector<GameObject*> Scene::_listOfGameObjects;
@@ -34,11 +35,15 @@ Scene::~Scene()
 	}
 }
 
-void Scene::SceneStart()
+void Scene::SceneStart(glm::vec2 spawnPoint)
 {
+	if (_pPlayer != nullptr && spawnPoint != glm::vec2{ 0.0f,0.0f }) {
+		_pPlayer->GetTransform()->SetPosition(spawnPoint);
+	}
 	for (GameObject* obj : _listOfGameObjects) {
 		if (obj == nullptr) continue;
 		obj->Start();
+		obj->Update();
 	}
 }
 
@@ -52,31 +57,23 @@ void Scene::InitScene(bool hasPlayer)
 	_pAstarObject = new AStar();
 
 	if (_hasTilemap) {
-		if (_pTilemap == nullptr) {
-			_pTilemap = new TileMap(_name);
-			_pTilemap->LoadTileMap("Resources/Tilemaps/" + _name + ".tmx");
-			_pAstarObject->SetMap(_pTilemap);
-			_pLightManager = new LightLevelManager(_pTilemap);
-			_pLightManager->SetWorldLightLevel(2);
-			_pLightManager->SetMinLightLevel(1);
-			_pLightManager->SetMaxLightLevel(8);
+		if (_pLightManager != nullptr) {
 			_pLightManager->UpdateLightMap();
 		}
-		else {
-			if (!_pTilemap->IsLoaded()) {
-				_pTilemap->LoadTileMap("Resources/Tilemaps/" + _name + ".tmx");
-				_pAstarObject->SetMap(_pTilemap);
 
-				if (_pLightManager != nullptr) {
-					_pLightManager->SetTilemap(_pTilemap);
-					_pLightManager->SetWorldLightLevel(2);
-					_pLightManager->SetMinLightLevel(1);
-					_pLightManager->SetMaxLightLevel(8);
-					_pLightManager->UpdateLightMap();
-				}
-			}
-		}
 		CameraManager::MainCamera()->SetTileMap(_pTilemap);
+	
+
+		std::unordered_map<std::string, glm::vec2> destinationPoints = _pTilemap->GetMapDestinationPoints();
+
+		for (auto& element : destinationPoints) {
+			SceneTransitionObject* pSceneTransition = new SceneTransitionObject(element.first);
+
+			pSceneTransition->GetTransform()->SetPosition(element.second);
+			pSceneTransition->GetTransform()->SetScale({ 0.2f, 0.2f });
+
+			AddGameObject(pSceneTransition);
+		}
 	}
 
 	if (hasPlayer) {
@@ -103,6 +100,25 @@ void Scene::ScenePause()
 
 }
 
+void Scene::LoadTileMap()
+{
+	if (!_hasTilemap) return;
+
+	_pTilemap = new TileMap(_name);
+	_pTilemap->LoadTileMap("Resources/Tilemaps/" + _name + ".tmx");
+
+	_pAstarObject = new AStar();
+
+	_pAstarObject->SetMap(_pTilemap);
+	_pLightManager = new LightLevelManager(_pTilemap);
+	_pLightManager->SetWorldLightLevel(2);
+	_pLightManager->SetMinLightLevel(1);
+	_pLightManager->SetMaxLightLevel(8);
+	_pLightManager->UpdateLightMap();
+
+	_spawnPoints = _pTilemap->GetMapSpawnPoints();
+}
+
 void Scene::EditorUpdate()
 {
 	//Cycles through all gameobjects in the scene and calculates there transform.
@@ -117,6 +133,11 @@ void Scene::EditorUpdate()
 			tc->OnUpdate();
 		}
 	}
+}
+
+void Scene::MovePlayerToSpawnPoint(std::string spawnPointName)
+{
+	_pPlayer->GetTransform()->SetPosition(_spawnPoints[spawnPointName]);
 }
 
 void Scene::Update()
