@@ -82,9 +82,9 @@ void Scene::InitScene(bool hasPlayer)
 		}
 		AddGameObject(_pPlayer);
 
-		for (auto& obj : _pPlayer->GetChildren()) {
-			AddGameObject(obj);
-		}
+		//for (auto& obj : _pPlayer->GetChildren()) {
+		//	AddGameObject(obj);
+		//}
 
 		CameraManager::MainCamera()->SetFollowTarget(_pPlayer);
 		if (_hasTilemap) {

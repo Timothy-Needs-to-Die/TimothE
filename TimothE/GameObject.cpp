@@ -49,6 +49,10 @@ void GameObject::Start()
 
 void GameObject::Update()
 {
+	for (auto& obj : _pChildren) {
+		obj->Update();
+	}
+
 	for (Component* c : _pComponents)
 	{
 		if (c == nullptr) continue;
