@@ -61,6 +61,8 @@ void Scene::InitScene(bool hasPlayer)
 
 
 	_readyToShow = false;
+	_pFb->GetAttachedShader()->SetBool("shouldBeBlack", true);
+	_pFb->GetAttachedShader()->SetFloat("blackAlpha", 1.0f);
 	RenderScene(CameraManager::MainCamera());
 	glfwSwapBuffers(Window::GetGLFWWindow());
 
@@ -92,10 +94,6 @@ void Scene::InitScene(bool hasPlayer)
 		}
 		AddGameObject(_pPlayer);
 
-		//for (auto& obj : _pPlayer->GetChildren()) {
-		//	AddGameObject(obj);
-		//}
-
 		CameraManager::MainCamera()->SetFollowTarget(_pPlayer);
 		if (_hasTilemap) {
 			_pPlayer->GetTransform()->SetPosition(_pTilemap->GetPlayerSpawn());
@@ -103,14 +101,17 @@ void Scene::InitScene(bool hasPlayer)
 	}
 
 
-	int counter = 0;
-	while (counter < 2000) {
-		counter++;
-		TIM_LOG_LOG(counter);
-	}
+	//int counter = 0;
+	//while (counter < 2000) {
+	//	counter++;
+	//	TIM_LOG_LOG(counter);
+	//}
 
-	_readyToShow = true;
 	_pFb->GetAttachedShader()->SetBool("shouldBeBlack", false);
+	_pFb->GetAttachedShader()->SetBool("fadingIn", true);
+	_readyToShow = true;
+	_fadingIn = true;
+	_fade = 1.0f;
 
 }
 
@@ -124,6 +125,23 @@ void Scene::SceneEnd()
 void Scene::ScenePause()
 {
 
+}
+
+void Scene::FinishedObjects()
+{
+	//_pFb->GetAttachedShader()->SetFloat("blackAlpha", 0.5f);
+	//RenderScene(CameraManager::MainCamera());
+	//glfwSwapBuffers(Window::GetGLFWWindow());
+}
+
+void Scene::FinishedLoading()
+{
+	//_pFb->GetAttachedShader()->SetFloat("blackAlpha", 0.0f);
+	//_pFb->GetAttachedShader()->SetBool("shouldBeBlack", false);
+	//_readyToShow = true;
+	//
+	//RenderScene(CameraManager::MainCamera());
+	//glfwSwapBuffers(Window::GetGLFWWindow());
 }
 
 void Scene::LoadTileMap()
@@ -233,19 +251,30 @@ void Scene::RenderScene(std::shared_ptr<Camera> cam)
 
 
 		_pFb->BindFramebuffer();
-		_pFb->GetAttachedShader()->SetBool("shouldBeBlack", true);
 
 		Renderer2D::BeginRender(cam);
 
-		
-
 		Renderer2D::EndRender();
+		
 
 		_pFb->UnbindFramebuffer();
 
 		_pFb->DrawFramebuffer();
 
+		glfwSwapBuffers(Window::GetGLFWWindow());
+
 		return;
+	}
+
+	if (_fadingIn) {
+		_fade -= _fadeDecrement;
+		_pFb->GetAttachedShader()->SetFloat("blackAlpha", _fade);
+
+		if (_fade <= 0.0f) {
+			_pFb->GetAttachedShader()->SetBool("fadingIn", false);
+			_fadingIn = false;
+			_fade = 1.0f;
+		}
 	}
 
 	_pFb->BindFramebuffer();

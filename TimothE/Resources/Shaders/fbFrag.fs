@@ -5,6 +5,8 @@ in vec2 TexCoords;
 
 uniform sampler2D screenTexture;
 uniform bool shouldBeBlack;
+uniform float blackAlpha;
+uniform bool fadingIn;
 
 void main()
 {
@@ -13,5 +15,18 @@ void main()
 
     col = shouldBeBlack ? vec3(0.0) : texture(screenTexture, TexCoords).rgb;
 
-    FragColor = vec4(col, 1.0);
+    float alpha = 1.0 * blackAlpha;
+
+    if(fadingIn){
+        float r = mix(col.r, 0.0, blackAlpha);
+        float g = mix(col.g, 0.0, blackAlpha);
+        float b = mix(col.b, 0.0, blackAlpha);
+        FragColor = vec4(r,g,b,1.0);
+
+    }
+    else
+    {
+        FragColor = vec4(col, 1.0);
+    }
+
 } 
