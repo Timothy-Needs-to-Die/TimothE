@@ -18,6 +18,8 @@
 #include "SceneTransitionObject.h"
 #include "CameraManager.h"
 
+#include "Core/Graphics/Framebuffer.h"
+
 std::vector<GameObject*> Scene::_listOfGameObjects;
 std::vector<GameObject*> Scene::_listOfDrawableGameObjects;
 std::vector<GameObject*> Scene::_listofDrawableUIObjects;
@@ -25,6 +27,9 @@ std::vector<GameObject*> Scene::_listofDrawableUIObjects;
 Scene::Scene(std::string name)
 {
 	_name = name;
+
+	Shader* pFbShader = ResourceManager::GetShader("framebuffer");
+	_pFb = new Framebuffer(pFbShader);
 }
 
 Scene::~Scene()
@@ -53,6 +58,11 @@ void Scene::InitScene(bool hasPlayer)
 	//_listOfDrawableGameObjects.clear();
 	//_listofDrawableUIObjects.clear();
 	_gameObjectsToRemove.clear();
+
+
+	_readyToShow = false;
+	RenderScene(CameraManager::MainCamera());
+	glfwSwapBuffers(Window::GetGLFWWindow());
 
 	_pAstarObject = new AStar();
 
@@ -91,6 +101,16 @@ void Scene::InitScene(bool hasPlayer)
 			_pPlayer->GetTransform()->SetPosition(_pTilemap->GetPlayerSpawn());
 		}
 	}
+
+
+	int counter = 0;
+	while (counter < 2000) {
+		counter++;
+		TIM_LOG_LOG(counter);
+	}
+
+	_readyToShow = true;
+	_pFb->GetAttachedShader()->SetBool("shouldBeBlack", false);
 
 }
 
@@ -159,6 +179,8 @@ void Scene::UpdateUI()
 
 void Scene::UpdateObjects()
 {
+	if (!_readyToShow) return;
+
 	//Cycles through all gameobjects in the scene and updates them
 
 	for (GameObject* obj : _listOfGameObjects)
@@ -205,6 +227,29 @@ void Scene::FrameEnd()
 
 void Scene::RenderScene(std::shared_ptr<Camera> cam)
 {
+	if (!_readyToShow) {
+		glClear(GL_COLOR_BUFFER_BIT);
+		glClearColor(0.0f, 0.0f, 0.0f, 1.0f);
+
+
+		_pFb->BindFramebuffer();
+		_pFb->GetAttachedShader()->SetBool("shouldBeBlack", true);
+
+		Renderer2D::BeginRender(cam);
+
+		
+
+		Renderer2D::EndRender();
+
+		_pFb->UnbindFramebuffer();
+
+		_pFb->DrawFramebuffer();
+
+		return;
+	}
+
+	_pFb->BindFramebuffer();
+
 	if (_hasTilemap) {
 		_pTilemap->RenderMap(cam);
 	}
@@ -269,6 +314,10 @@ void Scene::RenderScene(std::shared_ptr<Camera> cam)
 	}
 
 	Renderer2D::EndRender();
+
+	_pFb->UnbindFramebuffer();
+
+	_pFb->DrawFramebuffer();
 }
 
 void Scene::Unload(bool deleteTileMap /*= false*/)

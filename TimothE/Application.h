@@ -47,7 +47,6 @@ private:
 	bool OnWindowResize(WindowResizeEvent& e);
 
 private:
-	std::shared_ptr<class Framebuffer> _pfb = nullptr;
 	std::shared_ptr<class AudioEngine> _pAudio = nullptr;
 
 	bool _inEditorMode = false;

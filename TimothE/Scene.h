@@ -163,6 +163,8 @@ protected:
 	std::vector<CropConfig> _cropConfigs;
 
 private:
+	bool _readyToShow = false;
+	class Framebuffer* _pFb;
 
 protected:
 	//Stores a vector of game objects. This is refreshed every time a scene loads.

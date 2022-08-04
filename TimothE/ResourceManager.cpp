@@ -24,17 +24,17 @@ std::map<std::string, Font*> ResourceManager::_fonts;
 
 void ResourceManager::Init()
 {
-	//LOAD SCENES
-	ResourceManager::InstantiateScene("MainMenuScene", new MainMenuScene("MainMenuScene"));
-	ResourceManager::InstantiateScene("Farm", new FarmScene("Farm"));
-	ResourceManager::InstantiateScene("EastPlains", new EastPlainsScene("EastPlains"));
+
 
 	LoadTextures();
 	LoadSpritsheets();
 	LoadShaders();
 	LoadFonts();
 
-
+	//LOAD SCENES
+	ResourceManager::InstantiateScene("MainMenuScene", new MainMenuScene("MainMenuScene"));
+	ResourceManager::InstantiateScene("Farm", new FarmScene("Farm"));
+	ResourceManager::InstantiateScene("EastPlains", new EastPlainsScene("EastPlains"));
 	//LOAD SOUNDS
 }
 

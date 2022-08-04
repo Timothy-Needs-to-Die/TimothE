@@ -87,9 +87,9 @@ void Application::Init()
 	
 	CameraManager::SetToMainCamera();
 
-	_pfb = std::make_shared<Framebuffer>(ResourceManager::GetShader("framebuffer"));
+	//_pfb = std::make_shared<Framebuffer>(ResourceManager::GetShader("framebuffer"));
 
-	_pfb->GetAttachedShader()->SetBool("shouldBeBlack", false);
+	//_pfb->GetAttachedShader()->SetBool("shouldBeBlack", false);
 
 	_pEditor = std::make_shared<Editor>(this);
 	//_pCameraManager->_pCameras = _pCurrentScene->FindObjectsOfType<Camera>();
@@ -150,13 +150,13 @@ void Application::GameLoop()
 		}
 		else {
 
-			_pfb->BindFramebuffer();
+			//_pfb->BindFramebuffer();
 			GameBeginRender();
 			GameRender(CameraManager::MainCamera());
 			GameUpdate();
-			_pfb->UnbindFramebuffer();
+		//	_pfb->UnbindFramebuffer();
 			
-			_pfb->DrawFramebuffer();
+		//	_pfb->DrawFramebuffer();
 		}
 
 		ImGuiManager::ImGuiEndFrame();
@@ -325,8 +325,9 @@ bool Application::OnWindowResize(WindowResizeEvent& e)
 {
 	CameraManager::ResizeCameras((float)e.GetWidth(), (float)e.GetHeight());
 	glViewport(0, 0, e.GetWidth(), e.GetHeight());
-	_pfb->RefreshTexture();
-	_pfb->RefreshRBO();
+	//_pfb->RefreshTexture();
+	//_pfb->RefreshRBO();
+	//TODO: Resize scene buffers on resize
 
 	_pEditor->_pEditorFramebuffer->RefreshTexture();
 	_pEditor->_pEditorFramebuffer->RefreshRBO();
