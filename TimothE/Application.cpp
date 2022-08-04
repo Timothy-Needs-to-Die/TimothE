@@ -89,6 +89,8 @@ void Application::Init()
 
 	_pfb = std::make_shared<Framebuffer>(ResourceManager::GetShader("framebuffer"));
 
+	_pfb->GetAttachedShader()->SetBool("shouldBeBlack", false);
+
 	_pEditor = std::make_shared<Editor>(this);
 	//_pCameraManager->_pCameras = _pCurrentScene->FindObjectsOfType<Camera>();
 }
