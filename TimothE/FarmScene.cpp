@@ -41,12 +41,12 @@ void FarmScene::UpdateObjects()
 	}
 
 
-	if (Input::IsKeyPressedOnce(KEY_I)) {
-		bool current = _pInventoryScreen->GetAllActive();
-
-		_pInventoryScreen->SetAllActive(!current);
-		_pInventoryScreen->OnUpdate();
-	}
+	//if (Input::IsKeyPressedOnce(KEY_I)) {
+	//	bool current = _pInventoryScreen->GetAllActive();
+	//
+	//	_pInventoryScreen->SetAllActive(!current);
+	//	_pInventoryScreen->OnUpdate();
+	//}
 
 	if (Input::IsKeyPressedOnce(KEY_O)) {
 		SceneManager::SetCurrentScene("EastPlains", glm::vec2(0.0f));
@@ -76,10 +76,10 @@ void FarmScene::UpdateObjects()
 	}
 
 
-	if (_pInventoryScreen->GetAllActive())
-	{
-		_pInventoryScreen->OnUpdate();
-	}
+	//if (_pInventoryScreen->GetAllActive())
+	//{
+	//	_pInventoryScreen->OnUpdate();
+	//}
 
 	Physics::UpdateWorld();
 
@@ -105,9 +105,9 @@ void FarmScene::InitScene(bool hasPlayer)
 	Scene::InitScene(hasPlayer);
 	
 
-	_pInventoryScreen = new InventoryScreen("InventoryScreen", "UI");
-	AddGameObject(_pInventoryScreen);
-	_pInventoryScreen->SetAllActive(false);
+	//_pInventoryScreen = new InventoryScreen("InventoryScreen", "UI");
+	//AddGameObject(_pInventoryScreen);
+	//_pInventoryScreen->SetAllActive(false);
 
 	_pGameTime = new GameTimeManager(_pLightManager);
 
@@ -156,12 +156,12 @@ void FarmScene::InitScene(bool hasPlayer)
 	_pPlayer->GetTransform()->SetPosition(_pTilemap->GetPlayerSpawn());
 
 
-	for (int i = 0; i < 100; i++) {
-		Enemy* pEnemy = new Enemy();
-
-		_pEnemyStress.emplace_back(pEnemy);
-		AddGameObject(pEnemy);
-	}
+	//for (int i = 0; i < 100; i++) {
+	//	Enemy* pEnemy = new Enemy();
+	//
+	//	_pEnemyStress.emplace_back(pEnemy);
+	//	AddGameObject(pEnemy);
+	//}
 
 
 	
@@ -303,8 +303,8 @@ void FarmScene::GameOver()
 	TIM_LOG_LOG("Game over");
 
 	//creates game over screen
-	_pGameOverScreen = new GameOverScreen();
-	glm::vec2 playerPos = _pPlayer->GetTransform()->GetPosition();
-	_pGameOverScreen->GetTransform()->SetPosition(playerPos.x - 4.0f, playerPos.y - 2.5f); //sets position to centre on player
-	AddGameObject(_pGameOverScreen);
+	//_pGameOverScreen = new GameOverScreen();
+	//glm::vec2 playerPos = _pPlayer->GetTransform()->GetPosition();
+	//_pGameOverScreen->GetTransform()->SetPosition(playerPos.x - 4.0f, playerPos.y - 2.5f); //sets position to centre on player
+	//AddGameObject(_pGameOverScreen);
 }

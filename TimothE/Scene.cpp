@@ -50,8 +50,8 @@ void Scene::SceneStart(glm::vec2 spawnPoint)
 void Scene::InitScene(bool hasPlayer)
 {
 	_listOfGameObjects.clear();
-	_listOfDrawableGameObjects.clear();
-	_listofDrawableUIObjects.clear();
+	//_listOfDrawableGameObjects.clear();
+	//_listofDrawableUIObjects.clear();
 	_gameObjectsToRemove.clear();
 
 	_pAstarObject = new AStar();
@@ -62,7 +62,7 @@ void Scene::InitScene(bool hasPlayer)
 		}
 
 		CameraManager::MainCamera()->SetTileMap(_pTilemap);
-	
+
 
 		std::unordered_map<std::string, glm::vec2> destinationPoints = _pTilemap->GetMapDestinationPoints();
 
@@ -81,6 +81,10 @@ void Scene::InitScene(bool hasPlayer)
 			_pPlayer = new Player();
 		}
 		AddGameObject(_pPlayer);
+
+		for (auto& obj : _pPlayer->GetChildren()) {
+			AddGameObject(obj);
+		}
 
 		CameraManager::MainCamera()->SetFollowTarget(_pPlayer);
 		if (_hasTilemap) {
@@ -163,9 +167,9 @@ void Scene::UpdateObjects()
 
 		if (obj->IsToBeDestroyed()) continue;
 
-		if (obj->IsActive()) {
-			obj->Update();
-		}
+		if (!obj->IsActive()) continue;
+
+		obj->Update();
 		//TIM_LOG_LOG(obj->IsToBeDestroyed());
 	}
 
@@ -286,6 +290,13 @@ void Scene::Unload(bool deleteTileMap /*= false*/)
 GameObject* Scene::AddGameObject(GameObject* gameObject)
 {
 	_listOfGameObjects.push_back(gameObject);
+
+	//if (gameObject->HasChildren()) {
+	//	for (auto& child : gameObject->GetChildren()) {
+	//		AddGameObject(child);
+	//	}
+	//}
+
 	return gameObject;
 }
 

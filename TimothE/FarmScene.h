@@ -48,8 +48,8 @@ public:
 private:
 	class ResourceNodeObject* _pWoodNode = nullptr;
 	class GameTimeManager* _pGameTime = nullptr;
-	class InventoryScreen* _pInventoryScreen = nullptr;
-	class GameOverScreen* _pGameOverScreen = nullptr;
+	//class InventoryScreen* _pInventoryScreen = nullptr;
+	//class GameOverScreen* _pGameOverScreen = nullptr;
 	class FarmlandManager* farmland = nullptr;
 	class WaveManager* _pWaveManager = nullptr;
 
