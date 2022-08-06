@@ -14,13 +14,11 @@ public:
 	void StartAttack();
 	void EndAttack();
 
-	void SetWeaponLevel(int level) { _currentLevel = level; }
-	int GetWeaponLevel() const { return _currentLevel; }
+	void IncrementFrame();
+	void ResetFrames();
+	void SetToFrame(int val);
 
 private:
-	int _currentLevel = 0;
-	int _amountOfLevels = 6;
-
 	bool _swinging = false;
 
 	glm::vec2 _originalPosition;
@@ -28,5 +26,9 @@ private:
 	class AnimatedSpritesheet* _pAnimSheet = nullptr;
 	class SpriteComponent* _pSprite = nullptr;
 
+	glm::vec2 _positionEachFrame[4];
+	float _rotationEachFrame[4];
+	int _currentFrame = 0;
+	int _numberOfFrames = 4;
 };
 

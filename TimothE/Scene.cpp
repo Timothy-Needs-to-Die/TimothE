@@ -27,9 +27,7 @@ std::vector<GameObject*> Scene::_listofDrawableUIObjects;
 Scene::Scene(std::string name)
 {
 	_name = name;
-
-	Shader* pFbShader = ResourceManager::GetShader("framebuffer");
-	_pFb = new Framebuffer(pFbShader);
+	_pFb = new Framebuffer(ResourceManager::GetShader("framebuffer"));
 }
 
 Scene::~Scene()
@@ -55,18 +53,22 @@ void Scene::SceneStart(glm::vec2 spawnPoint)
 void Scene::InitScene(bool hasPlayer)
 {
 	_listOfGameObjects.clear();
-	//_listOfDrawableGameObjects.clear();
-	//_listofDrawableUIObjects.clear();
 	_gameObjectsToRemove.clear();
 
-
+	//Disables the level from being rendered until the scene is loaded
 	_readyToShow = false;
+
+	//Turns on the black screen at max intensity
 	_pFb->GetAttachedShader()->SetBool("shouldBeBlack", true);
 	_pFb->GetAttachedShader()->SetFloat("blackAlpha", 1.0f);
+
+	//Renders the black frame
 	RenderScene(CameraManager::MainCamera());
 	glfwSwapBuffers(Window::GetGLFWWindow());
 
-	_pAstarObject = new AStar();
+	if (_pAstarObject == nullptr) {
+		_pAstarObject = new AStar();
+	}
 
 	if (_hasTilemap) {
 		if (_pLightManager != nullptr) {
@@ -76,14 +78,15 @@ void Scene::InitScene(bool hasPlayer)
 		CameraManager::MainCamera()->SetTileMap(_pTilemap);
 
 
+		//Finds all of the destination points on the tilemap to create the transition objects
 		std::unordered_map<std::string, glm::vec2> destinationPoints = _pTilemap->GetMapDestinationPoints();
-
 		for (auto& element : destinationPoints) {
+			//element.first is the name of the destination
 			SceneTransitionObject* pSceneTransition = new SceneTransitionObject(element.first);
 
+			//element.second is the position
 			pSceneTransition->GetTransform()->SetPosition(element.second);
 			pSceneTransition->GetTransform()->SetScale({ 0.2f, 0.2f });
-
 			AddGameObject(pSceneTransition);
 		}
 	}
@@ -99,13 +102,6 @@ void Scene::InitScene(bool hasPlayer)
 			_pPlayer->GetTransform()->SetPosition(_pTilemap->GetPlayerSpawn());
 		}
 	}
-
-
-	//int counter = 0;
-	//while (counter < 2000) {
-	//	counter++;
-	//	TIM_LOG_LOG(counter);
-	//}
 
 	_pFb->GetAttachedShader()->SetBool("shouldBeBlack", false);
 	_pFb->GetAttachedShader()->SetBool("fadingIn", true);
@@ -125,23 +121,6 @@ void Scene::SceneEnd()
 void Scene::ScenePause()
 {
 
-}
-
-void Scene::FinishedObjects()
-{
-	//_pFb->GetAttachedShader()->SetFloat("blackAlpha", 0.5f);
-	//RenderScene(CameraManager::MainCamera());
-	//glfwSwapBuffers(Window::GetGLFWWindow());
-}
-
-void Scene::FinishedLoading()
-{
-	//_pFb->GetAttachedShader()->SetFloat("blackAlpha", 0.0f);
-	//_pFb->GetAttachedShader()->SetBool("shouldBeBlack", false);
-	//_readyToShow = true;
-	//
-	//RenderScene(CameraManager::MainCamera());
-	//glfwSwapBuffers(Window::GetGLFWWindow());
 }
 
 void Scene::LoadTileMap()
@@ -246,23 +225,9 @@ void Scene::FrameEnd()
 void Scene::RenderScene(std::shared_ptr<Camera> cam)
 {
 	if (!_readyToShow) {
-		glClear(GL_COLOR_BUFFER_BIT);
-		glClearColor(0.0f, 0.0f, 0.0f, 1.0f);
-
-
 		_pFb->BindFramebuffer();
-
-		Renderer2D::BeginRender(cam);
-
-		Renderer2D::EndRender();
-		
-
 		_pFb->UnbindFramebuffer();
-
 		_pFb->DrawFramebuffer();
-
-		glfwSwapBuffers(Window::GetGLFWWindow());
-
 		return;
 	}
 
@@ -271,6 +236,7 @@ void Scene::RenderScene(std::shared_ptr<Camera> cam)
 		_pFb->GetAttachedShader()->SetFloat("blackAlpha", _fade);
 
 		if (_fade <= 0.0f) {
+			_pFb->GetAttachedShader()->SetFloat("blackAlpha", 0.0f);
 			_pFb->GetAttachedShader()->SetBool("fadingIn", false);
 			_fadingIn = false;
 			_fade = 1.0f;
@@ -288,9 +254,7 @@ void Scene::RenderScene(std::shared_ptr<Camera> cam)
 	if (_listOfDrawableGameObjects.size() == 0) return;
 	for (std::vector<GameObject*>::iterator it = _listOfDrawableGameObjects.begin(); it != _listOfDrawableGameObjects.end(); ++it) {
 		GameObject* obj = *it;
-		if (!obj->IsActive()) continue;
-		if (obj->IsToBeDestroyed()) continue;
-		if (obj->GetTag() == "PLAYER") continue;
+		if (!obj->IsActive() || obj->IsToBeDestroyed()) continue;
 
 		SpriteComponent* sc = obj->GetComponent<SpriteComponent>();
 		if (sc) {
@@ -307,16 +271,6 @@ void Scene::RenderScene(std::shared_ptr<Camera> cam)
 		}
 	}
 
-	if (_pPlayer) {
-		SpriteComponent* sc = _pPlayer->GetComponent<SpriteComponent>();
-
-		if (sc->IsEnabled())
-		{
-			int light = _pTilemap->GetLightLevelAtPosition(_pPlayer->GetTransform()->GetPosition());
-			Renderer2D::DrawQuad(_pPlayer->GetTransform()->GetRenderQuad(), sc->GetSprite()->GetTexture(), sc->GetSprite()->GetTexCoords(), light);
-		}
-	}
-
 	Renderer2D::EndRender();
 
 	Renderer2D::BeginRender(cam);
@@ -324,8 +278,7 @@ void Scene::RenderScene(std::shared_ptr<Camera> cam)
 	for (std::vector<GameObject*>::iterator it = _listofDrawableUIObjects.begin(); it != _listofDrawableUIObjects.end(); ++it) {
 		GameObject* obj = *it;
 
-		if (!obj->IsActive()) continue;
-		if (obj->IsToBeDestroyed()) continue;
+		if (!obj->IsActive() || obj->IsToBeDestroyed()) continue;
 
 		SpriteComponent* sc = obj->GetComponent<SpriteComponent>();
 		if (sc) {
@@ -337,9 +290,7 @@ void Scene::RenderScene(std::shared_ptr<Camera> cam)
 		TextComponent* tc = obj->GetComponent<TextComponent>();
 		if (tc) {
 			tc->Render();
-
 		}
-
 	}
 
 	Renderer2D::EndRender();
@@ -369,12 +320,6 @@ GameObject* Scene::AddGameObject(GameObject* gameObject)
 {
 	_listOfGameObjects.push_back(gameObject);
 
-	//if (gameObject->HasChildren()) {
-	//	for (auto& child : gameObject->GetChildren()) {
-	//		AddGameObject(child);
-	//	}
-	//}
-
 	return gameObject;
 }
 
@@ -387,10 +332,8 @@ void Scene::RemoveGameObject(GameObject* gameObject)
 	gameObject->SetToBeDestroyed(true);
 
 	if (it == _gameObjectsToRemove.end()) {
-		if (gameObject->HasChildren()) {
-			for (auto& child : gameObject->GetChildren()) {
-				RemoveGameObject(child);
-			}
+		for (auto& child : gameObject->GetChildren()) {
+			RemoveGameObject(child);
 		}
 
 		_gameObjectsToRemove.emplace_back(gameObject);
@@ -426,77 +369,9 @@ void Scene::RemoveComponentHandler(GameObject* gameObject, Component* comp)
 {
 	if (comp->GetType() != Component::SpriteType) return;
 
-	//Get all components the gameobject has
-	std::vector<Component*> goComps = gameObject->GetComponents();
-	for (auto& c : goComps) {
-		//if the current component is the one we are removing then go to next iteration
-		if (c == comp) continue;
-	}
-
-	//remove from drawables if all graphics components have been removed
+	//remove from drawables if the component is a sprite type
 	_listOfDrawableGameObjects.erase(std::find(_listOfDrawableGameObjects.begin(), _listOfDrawableGameObjects.end(), gameObject));
 }
-//
-//void Scene::LoadScene(const std::string& filename)
-//{
-//	if (_pTilemap != nullptr) {
-//		_pTilemap->LoadTileMap();
-//	}
-//
-//	//Clears the list (this is in case we are going from one scene to the next)
-//	_listOfGameObjects.clear();
-//
-//	//Creates a stream
-//	StreamFile stream;
-//	//Opens the stream for reading
-//	stream.OpenRead(filename);
-//
-//	//recreates the list of gameobjects
-//	_listOfGameObjects = std::vector<GameObject*>();
-//
-//	//Read in the amount of game objects in the scene
-//	int amountOfGo = ReadInt(stream);
-//	_listOfGameObjects.resize(amountOfGo);
-//
-//	//Read in the information for each game object
-//	for (int i = 0; i < amountOfGo; ++i) {
-//		GameObject* go = new GameObject();
-//		go->LoadState(stream);
-//		_listOfGameObjects[i] = go;
-//	}
-//
-//	//FindObjectOfType<PlayerMovement>()->SetTileMap(_pTilemap);
-//
-//	stream.Close();
-//}
-
-//void Scene::SaveScene(const std::string& filename)
-//{
-//	if (_pTilemap != nullptr) {
-//		_pTilemap->SaveTilemap();
-//	}
-//
-//	//Creates a stream file object
-//	StreamFile stream;
-//	//Opens this stream for writing
-//	stream.OpenWrite(filename);
-//
-//	//Writes the amount of game objects in the scene
-//	WriteInt(stream, _listOfGameObjects.size());
-//
-//	//Cycles through each object and calls there save method
-//	for (int i = 0; i < _listOfGameObjects.size(); ++i) {
-//		_listOfGameObjects[i]->SaveState(stream);
-//	}
-//
-//	//Closes the stream
-//	stream.Close();
-//}
-//
-//void Scene::Save()
-//{
-//	SaveScene("Resources/Scenes/" + _name);
-//}
 
 GameObject* Scene::GetGameObjectByName(std::string name)
 {
@@ -556,10 +431,7 @@ std::vector<GameObject*> Scene::GetGameObjectsByName(std::string name)
 GameObject* Scene::FindObjectWithTag(const std::string& tagName)
 {
 	for (GameObject* obj : _listOfGameObjects) {
-		if (obj == nullptr) continue;
-
-		//if (!obj->IsActive()) continue;
-		if (obj->IsToBeDestroyed()) continue;
+		if (obj == nullptr || obj->IsToBeDestroyed()) continue;
 
 		if (obj->GetTag() == tagName) {
 			return obj;
@@ -572,8 +444,7 @@ std::vector<GameObject*> Scene::FindGameObjectsWithTag(const std::string& tagNam
 {
 	std::vector<GameObject*> objects;
 	for (GameObject* obj : _listOfGameObjects) {
-		if (!obj->IsActive()) continue;
-		if (obj->IsToBeDestroyed()) continue;
+		if (!obj->IsActive() || obj->IsToBeDestroyed()) continue;
 
 		if (obj->GetTag() == tagName) {
 			objects.emplace_back(obj);
@@ -622,11 +493,5 @@ void Scene::PopulateCropVector()
 		newConfig.name = loadedData[i][1];
 		newConfig.sellPrice = std::stoi(loadedData[i][2]);
 		newConfig.description = loadedData[i][3];
-		//newConfig.type = (CropType)std::stoi(loadedData[i][5]);
 	}
-}
-
-class AStar* Scene::GetAStar() const
-{
-	return _pAstarObject;
 }

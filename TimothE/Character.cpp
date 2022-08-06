@@ -20,7 +20,7 @@ Character::Character(std::string texture, std::string name, std::string tag)
 	pArms->GetTransform()->SetPosition({ 0.0f,0.0f });
 	pArms->GetTransform()->SetScale({ 0.25f, 0.45f });
 
-	SceneManager::GetCurrentScene()->AddGameObject(pArms);
+	//SceneManager::GetCurrentScene()->AddGameObject(pArms);
 
 	_pAudioSource = AddComponent(new AudioSource(this));
 	_pMovement = AddComponent(new MovementComponent(this));
@@ -155,4 +155,7 @@ void Character::UniqueLogic()
 
 	_pSc->SetSprite(_pAnimSheet->GetSpriteAtIndex(_pCurrentAnimation->GetCurrentID()));
 	_pArmSc->SetSprite(_pAnimSheet->GetSpriteAtIndex(_pCurrentArmAnimation->GetCurrentID()));
+
+
+	
 }

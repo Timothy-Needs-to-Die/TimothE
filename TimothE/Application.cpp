@@ -57,6 +57,8 @@ void Application::Init()
 
 	//enables debug messages
 	GLCall(glEnable(GL_DEBUG_OUTPUT));
+	GLCall(glEnable(GL_BLEND));
+	GLCall(glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA));
 
 	ImGuiManager::CreateImGuiContext(Window::GetGLFWWindow());
 

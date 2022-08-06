@@ -18,6 +18,10 @@ struct Animation {
 		return _animationIDs[_currentIndex];
 	}
 
+	int GetCurrentIndex() {
+		return _currentIndex;
+	}
+
 	void AddAnimationID(int index) {
 		_animationIDs.emplace_back(index);
 		_framesInAnimation++;

@@ -15,8 +15,6 @@ void main()
 
     col = shouldBeBlack ? vec3(0.0) : texture(screenTexture, TexCoords).rgb;
 
-    float alpha = 1.0 * blackAlpha;
-
     if(fadingIn){
         float r = mix(col.r, 0.0, blackAlpha);
         float g = mix(col.g, 0.0, blackAlpha);

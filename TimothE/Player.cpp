@@ -10,6 +10,7 @@
 #include "TextComponent.h"
 #include "Fighter.h"
 #include "FarmlandManager.h"
+#include "WeaponComponent.h"
 
 Player::Player(std::string name /*= "Player"*/, std::string tag /*= "PLAYER"*/)
 	: Character("PlayerSheet_Updated.png", name, tag)
@@ -20,8 +21,8 @@ Player::Player(std::string name /*= "Player"*/, std::string tag /*= "PLAYER"*/)
 	_pWeapon->SetOwner(this);
 
 	_pWeapon->GetTransform()->SetPosition({ 0.0f, 0.38f });
-	_pWeapon->GetTransform()->SetScale({ 0.5f, 0.25f });
-	SceneManager::GetCurrentScene()->AddGameObject(_pWeapon);
+	_pWeapon->GetTransform()->SetScale({ 0.5f, 0.5f });
+	//SceneManager::GetCurrentScene()->AddGameObject(_pWeapon);
 
 	//_pHealth = AddComponent(new PlayerHealth(this, 100));
 	_pFighter = AddComponent(new Fighter(this));
@@ -43,13 +44,20 @@ Player::Player(std::string name /*= "Player"*/, std::string tag /*= "PLAYER"*/)
 	_pHealthObj = new GameObject("PlayerHealth", "UI");
 	_pHealthUI = _pHealthObj->AddComponent(new TextComponent(_pHealthObj));
 	_pHealthObj->GetTransform()->SetPosition(1600.0f, 1000.0f);
-	SceneManager::GetCurrentScene()->AddGameObject(_pHealthObj);
+	//SceneManager::GetCurrentScene()->AddGameObject(_pHealthObj);
 }
 
 void Player::UniqueLogic()
 {
 	Character::UniqueLogic();
 	DisplayPlayerUI();
+
+	if (_pCurrentArmAnimation == _pArmAttack) {
+		WeaponComponent* pWeaponComp = _pWeapon->GetComponent<WeaponComponent>();
+
+		pWeaponComp->SetToFrame(_pCurrentArmAnimation->GetCurrentIndex());
+	}
+
 }
 
 void Player::DisplayPlayerUI()

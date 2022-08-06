@@ -45,9 +45,6 @@ public:
 		return _spawnPoints[query];
 	}
 
-	void FinishedObjects();
-	void FinishedLoading();
-
 	void LoadTileMap();
 
 	//Any updates that need to be performed in the editor. Primarily every game objects transform
@@ -90,9 +87,7 @@ public:
 	static GameObject* GetGameObjectByName(std::string name);
 	static GameObject* GetGameObjectByID(std::string id);
 
-	bool _fadingIn = false;
-	float _fade = 1.0f;
-	float _fadeDecrement = 0.05f;
+
 
 	static std::vector<GameObject*> GetGameObjectsByName(std::string name);
 
@@ -154,8 +149,11 @@ public:
 
 	bool HasTilemap() const { return _hasTilemap; }
 
-	class AStar* GetAStar() const;
-	
+	class AStar* GetAStar() const
+	{
+		return _pAstarObject;
+	}
+
 	virtual void GameOver() {}
 
 protected:
@@ -170,6 +168,10 @@ protected:
 private:
 	bool _readyToShow = false;
 	class Framebuffer* _pFb;
+
+	bool _fadingIn = false;
+	float _fade = 1.0f;
+	float _fadeDecrement = 0.025f;
 
 protected:
 	//Stores a vector of game objects. This is refreshed every time a scene loads.

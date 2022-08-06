@@ -6,22 +6,18 @@
 #include "SceneManager.h"
 
 SceneTransitionObject::SceneTransitionObject(std::string destination, std::string name /*= "SceneTransitionObject"*/, std::string tag /*= "TRANSITION_POINT"*/)
-	: GameObject(name, tag)
+	: GameObject(name, tag), _destination(destination)
 {
 
+	//Creates a box collider that's a trigger and will only intersect with the player
 	_pBoxCollider = AddComponent(new BoxColliderComponent(this));
 	_pBoxCollider->SetTrigger(true);
 	_pBoxCollider->SetCollidersChannel(CollisionChannel_SceneTransition);
 	_pBoxCollider->AddCompatibleChannel(CollisionChannel_Player);
-
-	_destination = destination;
-
 }
 
 void SceneTransitionObject::OnTriggerEnter(ColliderBase* other)
 {
-	if (_transitioning) return;
-
 	if (other->GetOwner()->GetTag() == "PLAYER") {
 		TIM_LOG_LOG("Should Transition to other scene");
 
@@ -30,10 +26,8 @@ void SceneTransitionObject::OnTriggerEnter(ColliderBase* other)
 
 		std::string cache = sceneName;
 
-		int underscorePos = sceneName.find("_");
-
 		//Turns EastPlains_Sp1 into EastPlains
-		sceneName = sceneName.substr(0, underscorePos);
+		sceneName = sceneName.substr(0, sceneName.find("_"));
 
 		//Creates S_EastPlains_Sp1
 		std::string finishedString = "S_" + cache;
@@ -41,12 +35,8 @@ void SceneTransitionObject::OnTriggerEnter(ColliderBase* other)
 		
 		glm::vec2 spawnPos = SceneManager::GetScene(sceneName)->GetSpawnPosition(finishedString);
 
-		_transitioning = true;
-		TIM_LOG_LOG("Scene Name: " << sceneName << " Spawn Point Name: " << finishedString << " Spawn Position: " << spawnPos.x << ", " << spawnPos.y);
+		//TIM_LOG_LOG("Scene Name: " << sceneName << " Spawn Point Name: " << finishedString << " Spawn Position: " << spawnPos.x << ", " << spawnPos.y);
 
 		SceneManager::SetCurrentScene(sceneName, spawnPos);
-
-
-		//SceneManager::GetCurrentScene()->MovePlayerToSpawnPoint(finishedString);
 	}
 }
